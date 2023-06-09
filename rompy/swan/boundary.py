@@ -1,8 +1,8 @@
 """SWAN boundary classes."""
-import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Literal, Optional
+import logging
 
 import intake
 import numpy as np
@@ -10,7 +10,6 @@ import wavespectra
 import xarray as xr
 from pydantic import Field, confloat, root_validator
 
-from rompy.core import Dataset, DatasetIntake, DatasetXarray
 from rompy.core.data import DataBlob
 from rompy.core.filters import Filter
 from rompy.core.time import TimeRange
@@ -76,6 +75,55 @@ def find_minimum_distance(points: list[tuple[float, float]]) -> float:
             j += 1
 
     return min(min_distance, strip_min)
+
+
+class Dataset(RompyBaseModel, ABC):
+    """Abstract base class for a dataset."""
+
+    @abstractmethod
+    def open(self):
+        """Return a dataset instance with the wavespectra accessor."""
+        pass
+
+
+class DatasetXarray(Dataset):
+    """Wavespectra dataset from xarray reader."""
+
+    model_type: Literal["xarray"] = Field(
+        default="xarray",
+        description="Model type discriminator",
+    )
+    uri: str | Path = Field(description="Path to the dataset")
+    engine: Optional[str] = Field(
+        default=None,
+        description="Engine to use for reading the dataset with xarray.open_dataset",
+    )
+    kwargs: dict = Field(
+        default={},
+        description="Keyword arguments to pass to xarray.open_dataset",
+    )
+
+    def open(self):
+        return xr.open_dataset(self.uri, engine=self.engine, **self.kwargs)
+
+
+class DatasetIntake(Dataset):
+    """Wavespectra dataset from intake catalog."""
+
+    model_type: Literal["intake"] = Field(
+        default="intake",
+        description="Model type discriminator",
+    )
+    dataset_id: str = Field(description="The id of the dataset to read in the catalog")
+    catalog_uri: str | Path = Field(description="The URI of the catalog to read from")
+    kwargs: dict = Field(
+        default={},
+        description="Keyword arguments to pass to intake.open_catalog",
+    )
+
+    def open(self):
+        cat = intake.open_catalog(self.catalog_uri)
+        return cat[self.dataset_id](**self.kwargs).to_dask()
 
 
 class DatasetWavespectra(Dataset):
@@ -153,8 +201,7 @@ class DataBoundary(RompyBaseModel):
         """Return the filtered xarray dataset instance."""
         dset = self.filter(self.dataset.open())
         if dset.efth.size == 0:
-            raise ValueError(
-                f"Empty dataset after applying filter {self.filter}")
+            raise ValueError(f"Empty dataset after applying filter {self.filter}")
         return dset
 
     def _boundary_resolutions(self, grid):

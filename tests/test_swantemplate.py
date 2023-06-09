@@ -10,7 +10,7 @@ import pytest
 import xarray as xr
 from utils import compare_files
 
-from rompy.core import DatasetXarray, ModelRun, TimeRange
+from rompy.core import ModelRun, TimeRange
 from rompy.swan import DataBoundary, SwanConfig, SwanDataGrid, SwanGrid
 from rompy.swan.boundary import DatasetXarray  # This will likely get moved
 
@@ -54,12 +54,7 @@ def nc_bathy():
     )
     ds.to_netcdf(source)
     return SwanDataGrid(
-        id="bottom",
-        dataset=DatasetXarray(uri=source),
-        z1="depth",
-        var="BOTTOM",
-        latname="lat",
-        lonname="lon",
+        id="bottom", path=source, z1="depth", var="BOTTOM", latname="lat", lonname="lon"
     )
 
 
@@ -68,8 +63,7 @@ def nc_bnd(tmpdir, time):
     # Dummy dataset to cover the same time range
     fname = tmpdir / "aus-boundary.nc"
     dset_in = xr.open_dataset(HERE / "data/aus-20230101.nc")
-    dset_out = xr.concat(len(time.date_range) *
-                         [dset_in.isel(time=[0])], dim="time")
+    dset_out = xr.concat(len(time.date_range) * [dset_in.isel(time=[0])], dim="time")
     dset_out = dset_out.assign_coords({"time": time.date_range})
     dset_out["lon"] = dset_out.lon.isel(time=0, drop=True)
     dset_out["lat"] = dset_out.lat.isel(time=0, drop=True)
@@ -129,9 +123,7 @@ def nc_data_source(tmpdir, time):
         }
     )
     ds.to_netcdf(source)
-    return SwanDataGrid(
-        id="wind", var="WIND", dataset=DatasetXarray(uri=source), z1="u", z2="v"
-    )
+    return SwanDataGrid(id="wind", var="WIND", path=source, z1="u", z2="v")
 
 
 @pytest.fixture
@@ -139,8 +131,7 @@ def config(grid, nc_data_source, nc_bathy, nc_bnd):
     """Create a SwanConfig object."""
     return SwanConfig(
         grid=grid,
-        forcing={"bottom": nc_bathy,
-                 "wind": nc_data_source, "boundary": nc_bnd},
+        forcing={"bottom": nc_bathy, "wind": nc_data_source, "boundary": nc_bnd},
     )
 
 

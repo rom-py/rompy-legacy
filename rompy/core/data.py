@@ -2,14 +2,12 @@
 
 import os
 import pathlib
-from abc import ABC, abstractmethod
-from pathlib import Path
-from typing import Literal, Optional
+from typing import List, Optional
 
 import cloudpathlib
 import intake
 import xarray as xr
-from pydantic import Field, root_validator
+from pydantic import BaseModel, Field, root_validator
 
 from .filters import Filter
 from .time import TimeRange
@@ -57,57 +55,6 @@ class DataBlob(RompyBaseModel):
         return DataBlob(id=self.id, path=dest)
 
 
-class Dataset(RompyBaseModel, ABC):
-    """Abstract base class for a dataset."""
-
-    @abstractmethod
-    def open(self):
-        """Return a dataset instance with the wavespectra accessor."""
-        pass
-
-
-class DatasetXarray(Dataset):
-    """Dataset from xarray reader."""
-
-    model_type: Literal["xarray"] = Field(
-        default="xarray",
-        description="Model type discriminator",
-    )
-    uri: str | Path = Field(description="Path to the dataset")
-    engine: Optional[str] = Field(
-        default=None,
-        description="Engine to use for reading the dataset with xarray.open_dataset",
-    )
-    kwargs: dict = Field(
-        default={},
-        description="Keyword arguments to pass to xarray.open_dataset",
-    )
-
-    def open(self):
-        return xr.open_dataset(self.uri, engine=self.engine, **self.kwargs)
-
-
-class DatasetIntake(Dataset):
-    """Wavespectra dataset from intake catalog."""
-
-    model_type: Literal["intake"] = Field(
-        default="intake",
-        description="Model type discriminator",
-    )
-    dataset_id: str = Field(
-        description="The id of the dataset to read in the catalog")
-    catalog_uri: str | Path = Field(
-        description="The URI of the catalog to read from")
-    kwargs: dict = Field(
-        default={},
-        description="Keyword arguments to pass to intake.open_catalog",
-    )
-
-    def open(self):
-        cat = intake.open_catalog(self.catalog_uri)
-        return cat[self.dataset_id](**self.kwargs).to_dask()
-
-
 class DataGrid(RompyBaseModel):
     """Data source for model ingestion. This is intended to be a generic data
     source for xarray datasets that need to be filtered and written to netcdf.
@@ -118,15 +65,19 @@ class DataGrid(RompyBaseModel):
     """
 
     id: str = Field(description="Unique identifier for this data source")
-    dataset: DatasetXarray | DatasetIntake = Field(
-        description="Dataset reader, must return a wavespectra-enabled xarray dataset in the open method",
-        discriminator="model_type",
+    path: Optional[str] = Field(None, description="Optional local file path")
+    url: Optional[str] = Field(None, description="Optional remote file url")
+    catalog: Optional[str] = Field(None, description="Optional intake catalog")
+    dataset: Optional[str] = Field(
+        None, description="Optional intake dataset id")
+    args: Optional[dict] = Field(
+        {}, description="Optional arguments to pass to the intake catalog"
+    )
+    params: Optional[dict] = Field(
+        {}, description="Optional parameters to pass to the intake catalog"
     )
     filter: Optional[Filter] = Field(
         Filter(), description="Optional filter specification to apply to the dataset"
-    )
-    variables: Optional[list[str]] = Field(
-        [], description="Subset of variables to extract from the dataset"
     )
     latname: Optional[str] = Field(
         "latitude", description="Name of the latitude variable"
@@ -136,6 +87,28 @@ class DataGrid(RompyBaseModel):
     )
     timename: Optional[str] = Field(
         "time", description="Name of the time variable")
+    xarray_kwargs: Optional[dict] = Field(
+        {}, description="Optional keyword arguments to pass to xarray.open_dataset"
+    )
+    netcdf_kwargs: Optional[dict] = Field(
+        {"mode": "w", "format": "NETCDF4"},
+        description="Optional keyword arguments to pass to xarray.Dataset.to_netcdf",
+    )
+
+    @root_validator
+    def check_path_or_url_or_intake(cls, values):
+        if values.get("path") is None and values.get("url") is None:
+            if values.get("catalog") is None or values.get("dataset") is None:
+                raise ValueError(
+                    "Must provide either a path or a url or a catalog and dataset"
+                )
+        if (
+            values.get("path") is not None
+            and values.get("url") is not None
+            and values.get("catalog") is not None
+        ):
+            raise ValueError("Must provide only one of a path url or catalog")
+        return values
 
     def _filter_grid(self, grid, buffer=0.1):
         """Define the filters to use to extract data to this grid"""
@@ -158,9 +131,13 @@ class DataGrid(RompyBaseModel):
     @property
     def ds(self):
         """Return the xarray dataset for this data source."""
-        ds = self.dataset.open()
-        if self.variables:
-            ds = ds[self.variables]
+        if self.path:
+            ds = xr.open_dataset(self.path, **self.xarray_kwargs)
+        elif self.url:
+            ds = xr.open_dataset(self.url, **self.xarray_kwargs)
+        elif self.catalog:
+            cat = intake.open_catalog(self.catalog)
+            ds = cat[self.dataset](**self.args, **self.params).to_dask()
         if self.filter:
             ds = self.filter(ds)
         return ds
@@ -171,7 +148,8 @@ class DataGrid(RompyBaseModel):
         import cartopy.crs as ccrs
         import cartopy.feature as cfeature
         import matplotlib.pyplot as plt
-        from cartopy.mpl.gridliner import LATITUDE_FORMATTER, LONGITUDE_FORMATTER
+        from cartopy.mpl.gridliner import (LATITUDE_FORMATTER,
+                                           LONGITUDE_FORMATTER)
 
         ds = self.ds
         if param not in ds:

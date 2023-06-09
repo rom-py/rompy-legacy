@@ -7,7 +7,7 @@ import pandas as pd
 import xarray as xr
 from pydantic import Field, root_validator, validator
 
-from rompy.core import DataGrid, DatasetIntake, DatasetXarray
+from rompy.core import DataGrid
 
 from .grid import SwanGrid
 
@@ -19,16 +19,11 @@ FILL_VALUE = -99.0
 class SwanDataGrid(DataGrid):
     """This class is used to write SWAN data from a dataset."""
 
-    dataset: DatasetXarray | DatasetIntake = Field(
-        description="Dataset reader, must return a wavespectra-enabled xarray dataset in the open method",
-        discriminator="model_type",
-    )
     z1: str = Field(
         description="Scaler paramater u componet of vecotr field",
         default=None,
     )
-    z2: str = Field(description="v componet of vecotr field",
-                    type=str, default=None)
+    z2: str = Field(description="v componet of vecotr field", type=str, default=None)
     var: str = Field(
         description="SWAN variable name (WIND, BOTTOM, CURRENT)",
         default="WIND",
@@ -37,12 +32,13 @@ class SwanDataGrid(DataGrid):
     # root validator
     @root_validator
     def ensure_z1_in_data_vars(cls, values):
-        data_vars = values.get("variables", [])
+        params = values.get("params")
+        data_vars = params.get("data_vars", [])
         for z in [values.get("z1"), values.get("z2")]:
             if z and z not in data_vars:
                 logger.debug(f"Adding {z} to data_vars")
                 data_vars.append(z)
-        values["variables"] = data_vars
+        values["params"]["data_vars"] = data_vars
         return values
 
     @validator("var")
