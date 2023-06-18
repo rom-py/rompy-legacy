@@ -104,3 +104,26 @@ sources:
       storage_options:
         token: null
       consolidated: True
+
+  gebco_2022:
+    description: The General Bathymetric Chart of the Oceans - GEBCO 2022 15-sec global bathymetry.
+    metadata:
+      name: gebco 2022
+      yname: lat
+      xname: lon
+      url: https://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_2022/
+      tags:
+        - bathymetry
+        - global
+        - gebco
+        - seabed
+        - seafoor
+        - land
+        - 2022
+        - 15-sec
+    driver: intake_xarray.xzarr.ZarrSource
+    args:
+      urlpath: gs://oceanum-bathy/gebco_2022.zarr
+      storage_options:
+        token: null
+      consolidated: True

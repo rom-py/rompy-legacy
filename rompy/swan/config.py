@@ -4,9 +4,11 @@ from typing import Literal, Optional, Union
 
 from pydantic import Field, root_validator, validator
 
-from rompy.core import BaseConfig, Coordinate, RompyBaseModel, Spectrum, TimeRange
+from rompy.core import (BaseConfig, Coordinate, RompyBaseModel, Spectrum,
+                        TimeRange)
 from rompy.swan.boundary import DataBoundary
-from rompy.swan.components import base, boundary, cgrid, inpgrid, physics, startup
+from rompy.swan.components import (base, boundary, cgrid, inpgrid, physics,
+                                   startup)
 
 from .data import SwanDataGrid
 from .grid import SwanGrid

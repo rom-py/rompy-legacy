@@ -7,7 +7,8 @@ Thumbnails gallery
 ==================
 
 .. nbgallery::
-  notebooks/demo
-  notebooks/templates_demo
+  notebooks/demo.ipynb
+  notebooks/templates_demo.ipynb
+  notebooks/oceanum_example.ipynb
   notebooks/swan-config-components.ipynb
   notebooks/physics.ipynb

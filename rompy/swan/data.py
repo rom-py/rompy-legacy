@@ -23,8 +23,7 @@ class SwanDataGrid(DataGrid):
         description="Scaler paramater u componet of vecotr field",
         default=None,
     )
-    z2: str = Field(description="v componet of vecotr field",
-                    type=str, default=None)
+    z2: str = Field(description="v componet of vecotr field", type=str, default=None)
     var: str = Field(
         description="SWAN variable name (WIND, BOTTOM, CURRENT)",
         default="WIND",
