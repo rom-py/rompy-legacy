@@ -7,7 +7,7 @@ import pytest
 import yaml
 
 from rompy.core.model import ModelRun
-from rompy.swan.config import SwanConfigPydantic as SwanConfig
+from rompy.swan.config import SwanConfigComponents as SwanConfig
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +30,7 @@ def test_swan_model(tmpdir, config):
         inpgrid=config["inpgrid"],
         boundary=config["boundary"],
         initial=config["initial"],
+        physics=config["physics"],
     )
     model = ModelRun(
         run_id="test",

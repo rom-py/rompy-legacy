@@ -40,14 +40,14 @@ def test_par_constant():
 
 def test_par_variable():
     par = VARIABLEPAR(
-        hs=[1.0, 1.0], per=[10.0, 10.0], dir=[0.0, 0.0], dd=[0.0, 0.0], dist=[0, 1]
+        hs=[1.0, 1.0], per=[10.0, 10.0], dir=[0.0, 0.0], dd=[0.0, 0.0], len=[0, 1]
     )
     assert par.render().startswith("VARIABLE PAR &")
 
 
 def test_varpar_all_same_size():
     with pytest.raises(ValidationError):
-        VARIABLEPAR(hs=[1.0], per=[10.0], dir=[0.0], dd=[0.0, 0.0], dist=[0.0])
+        VARIABLEPAR(hs=[1.0], per=[10.0], dir=[0.0], dd=[0.0, 0.0], len=[0.0])
 
 
 def test_file_constant():
@@ -56,10 +56,10 @@ def test_file_constant():
 
 
 def test_file_variable():
-    file = VARIABLEFILE(fname=["tpar0.txt", "tpar1.txt"], dist=[0, 1])
+    file = VARIABLEFILE(fname=["tpar0.txt", "tpar1.txt"], len=[0, 1])
     assert file.render().startswith("VARIABLE FILE &")
 
 
 def test_varfile_all_same_size():
     with pytest.raises(ValidationError):
-        VARIABLEFILE(fname=["tpar0.txt", "tpar1.txt"], dist=[0, 1, 2])
+        VARIABLEFILE(fname=["tpar0.txt", "tpar1.txt"], len=[0, 1, 2])

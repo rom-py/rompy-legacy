@@ -1,13 +1,12 @@
 import logging
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
 from pydantic import Field, root_validator, validator
 
-from rompy.core import (BaseConfig, Coordinate, RompyBaseModel, Spectrum,
-                        TimeRange)
+from rompy.core import BaseConfig, Coordinate, RompyBaseModel, Spectrum, TimeRange
 from rompy.swan.boundary import DataBoundary
-from rompy.swan.components import base, boundary, cgrid, inpgrid, startup
+from rompy.swan.components import base, boundary, cgrid, inpgrid, physics, startup
 
 from .data import SwanDataGrid
 from .grid import SwanGrid
@@ -16,30 +15,19 @@ logger = logging.getLogger(__name__)
 
 HERE = Path(__file__).parent
 
-COMPONENTS = {
-    "project": startup.PROJECT | base.BaseComponent,
-    "set": startup.SET | base.BaseComponent,
-    "mode": startup.MODE | base.BaseComponent,
-    "coordinates": startup.COORDINATES | base.BaseComponent,
-    "cgrid": cgrid.REGULAR
-    | cgrid.CURVILINEAR
-    | cgrid.UNSTRUCTURED
-    | base.BaseComponent,
-    "inpgrid": list[
-        inpgrid.REGULAR
-        | inpgrid.CURVILINEAR
-        | inpgrid.UNSTRUCTURED
-        | base.BaseComponent
-    ],
-    "boundary": boundary.BOUNDSPEC
-    | boundary.BOUNDNEST1
-    | boundary.BOUNDNEST2
-    | boundary.BOUNDNEST3
-    | base.BaseComponent,
-    "initial": boundary.INITIAL | base.BaseComponent,
-}
-
 DEFAULT_TEMPLATE = str(Path(__file__).parent.parent / "templates" / "swan")
+
+PROJECT_TYPES = startup.PROJECT
+SET_TYPES = startup.SET
+MODE_TYPES = startup.MODE
+COORDINATES_TYPES = startup.COORDINATES
+CGRID_TYPES = Union[cgrid.REGULAR, cgrid.CURVILINEAR, cgrid.UNSTRUCTURED]
+INPGRID_TYPES = inpgrid.INPGRIDS
+BOUNDARY_TYPES = Union[
+    boundary.BOUNDSPEC, boundary.BOUNDNEST1, boundary.BOUNDNEST2, boundary.BOUNDNEST3
+]
+INITIAL_TYPES = boundary.INITIAL
+PHYSICS_TYPES = physics.PHYSICS
 
 
 class OutputLocs(RompyBaseModel):
@@ -117,7 +105,7 @@ class SwanPhysics(RompyBaseModel):
 
     @validator("friction")
     def validate_friction(cls, v):
-        if v not in ["JON", "COLL", "MAD" "RIP"]:
+        if v not in ["JON", "COLL", "MAD", "RIP"]:
             raise ValueError(
                 "friction must be one of JON, COLL, MAD or RIP"
             )  # TODO Raf to add actual friction options
@@ -286,36 +274,52 @@ class SwanConfig(BaseConfig):
         return ret
 
 
-class SwanConfigPydantic(BaseConfig):
-    """SWAN config class.
+class SwanConfigComponents(BaseConfig):
+    """SWAN config class."""
 
-    Parameters
-    ----------
-    model_type: Literal["swan"]
-        Model type discriminator.
-    cgrid : CGRID
-        The computational grid SWAN component.
-    inpgrid: INPGRID
-        The input grid SWAN component.
-
-    Note
-    ----
-    - BaseComponent types render empty strings and can be used to skip a certain
-      component from rendering to the cmd file.
-
-    TODO: Implement discriminator for inpgrid which is a list of comopnents.
-
-    """
-
-    model_type: Literal["swan"] = "swan"
-    project: COMPONENTS.get("project") = Field(..., discriminator="model_type")
-    set: COMPONENTS.get("set") = Field(..., discriminator="model_type")
-    mode: COMPONENTS.get("mode") = Field(..., discriminator="model_type")
-    coordinates: COMPONENTS.get("coordinates") = Field(..., discriminator="model_type")
-    cgrid: COMPONENTS.get("cgrid") = Field(..., discriminator="model_type")
-    inpgrid: COMPONENTS.get("inpgrid")
-    boundary: COMPONENTS.get("boundary") = Field(..., discriminator="model_type")
-    initial: COMPONENTS.get("initial") = Field(..., discriminator="model_type")
+    model_type: Literal["swan"] = Field(
+        default="swan",
+        description="Model type discriminator",
+    )
+    template: str = Field(
+        default=str(Path(__file__).parent.parent / "templates" / "swan2"),
+        description="The template for SWAN.",
+    )
+    project: PROJECT_TYPES = Field(
+        default=None,
+        description="SWAN PROJECT component",
+    )
+    set: SET_TYPES = Field(
+        default=None,
+        description="SWAN SET component",
+    )
+    mode: MODE_TYPES = Field(
+        default=None,
+        description="SWAN MODE component",
+    )
+    coordinates: COORDINATES_TYPES = Field(
+        default=None,
+        description="SWAN COORDINATES component",
+    )
+    cgrid: CGRID_TYPES = Field(
+        default=None,
+        description="SWAN CGRID component",
+        discriminator="model_type",
+    )
+    inpgrid: INPGRID_TYPES = Field(default=None, description="SWAN INPGRID components")
+    boundary: BOUNDARY_TYPES = Field(
+        default=None,
+        description="SWAN BOUNDARY component",
+        discriminator="model_type",
+    )
+    initial: INITIAL_TYPES = Field(
+        default=None,
+        description="SWAN INITIAL component",
+    )
+    physics: PHYSICS_TYPES = Field(
+        default=None,
+        description="SWAN PHYSICS component",
+    )
 
     @root_validator
     def no_nor_if_spherical(cls, values):
@@ -330,4 +334,9 @@ class SwanConfigPydantic(BaseConfig):
     @root_validator
     def alp_is_zero_if_spherical(cls, values):
         """Ensure alp is zero when using spherical coordinates."""
+        return values
+
+    @root_validator
+    def cgrid_contain_inpgrids(cls, values):
+        """Ensure all inpgrids are inside the cgrid area."""
         return values

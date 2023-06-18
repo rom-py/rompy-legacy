@@ -1,7 +1,7 @@
 """Test swan_config class."""
 import pytest
 import logging
-from rompy.swan.config import SwanConfigPydantic as SwanConfig
+from rompy.swan.config import SwanConfigComponents as SwanConfig
 from rompy.swan.config import cgrid, inpgrid
 
 

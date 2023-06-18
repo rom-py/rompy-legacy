@@ -1,4 +1,4 @@
-project: # null
+project:
   model_type: project
   name: Test rompy setup
   nr: '0001'
@@ -26,6 +26,7 @@ coordinates:
 cgrid:
   model_type: regular
   spectrum:
+    model_type: spectrum
     mdc: 36
     flow: 0.04
     fhigh: 0.4
@@ -36,7 +37,8 @@ cgrid:
 
 inpgrid:
   inpgrids:
-  - model_type: regular
+  -
+    model_type: regular
     grid_type: bottom
     xpinp: 0.0
     ypinp: 0.0
@@ -49,7 +51,8 @@ inpgrid:
     readinp:
       model_type: readinp
       fname1: bottom.txt
-  - model_type: regular
+  -
+    model_type: regular
     grid_type: wind
     xpinp: 0.0
     ypinp: 0.0
@@ -96,16 +99,9 @@ physics:
   gen:
     model_type: gen3
     source_terms:
-      model_type: st6c1
-  # gen:
-  #   model_type: gen3
-  #   source_terms:
-  #     model_type: westhuysen
+      model_type: westhuysen
   sswell:
     model_type: zieger
-  negatinp:
-    model_type: negatinp
-    rdcoef: 0.1
   wcapping:
     model_type: wcapab
     cds2: 5.0e-5
@@ -122,4 +118,3 @@ physics:
   friction:
     model_type: collins
     cfw: 0.015
-  

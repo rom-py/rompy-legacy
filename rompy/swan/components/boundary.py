@@ -1,10 +1,10 @@
 """Boundary for SWAN."""
 from typing import Literal, Optional, Any
 from pathlib import Path
-from pydantic import root_validator, confloat, constr
+from pydantic import Field, constr
 
 from rompy.swan.components.base import BaseComponent
-from rompy.swan.subcomponents.shape import SHAPESPEC
+from rompy.swan.subcomponents.spectrum import SHAPESPEC
 from rompy.swan.subcomponents.boundary import (
     DEFAULT,
     ZERO,
@@ -25,16 +25,9 @@ HERE = Path(__file__).parent
 
 
 class INITIAL(BaseComponent):
-    """SWAN BOUNDSPEC boundary component.
+    """Initial conditions.
 
     `INITIAL DEFAULT|ZERO|PAR|HOTSTART`
-
-    Parameters
-    ----------
-    model_type: Literal["initial"]
-        Model type discriminator.
-    kind: DEFAULT | ZERO | PAR | HOTSINGLE | HOTMULTIPLE
-        Initial condition type.
 
     This command can be used to specify the initial values for a stationary (INITIAL HOTSTART
     only) or nonstationary computation. The initial values thus specified override the default
@@ -43,8 +36,13 @@ class INITIAL(BaseComponent):
 
     """
 
-    model_type: Literal["initial"] = "initial"
-    kind: DEFAULT | ZERO | PAR | HOTSINGLE | HOTMULTIPLE = DEFAULT()
+    model_type: Literal["initial"] = Field(
+        default="initial", description="Model type discriminator",
+    )
+    kind: DEFAULT | ZERO | PAR | HOTSINGLE | HOTMULTIPLE = Field(
+        default=DEFAULT(),
+        description="Initial condition type",
+    )
 
     def cmd(self) -> str:
         repr = f"INITIAL {self.kind.render()}"
@@ -52,7 +50,7 @@ class INITIAL(BaseComponent):
 
 
 class BOUNDSPEC(BaseComponent):
-    """SWAN BOUNDSPEC boundary component.
+    """Parametric or spectra boundary along sides or segments.
 
     `BOUNDSPEC SIDE|SEGMENT ... CONSTANT|VARIABLE PAR|FILE ...`
 
@@ -64,25 +62,24 @@ class BOUNDSPEC(BaseComponent):
     the spectral parameters should not be misinterpreted. Only the incoming components
     are effective in the computation.
 
-    Parameters
-    ----------
-    model_type: Literal["boundspec"]
-        Model type discriminator.
-    shapespec: Optional[SHAPESPEC]
-        Spectral shape specification.
-    location: SIDE | SEGMENTXY | SEGMENTIJ
-        Location to apply th boundary.
-    data: CONSTANTPAR | CONSTANTFILE | VARIABLEPAR | VARIABLEFILE
-        Spectral data.
-
     TODO: Add support for unstructured grid (k).
 
     """
 
-    model_type: Literal["boundspec"] = "boundspec"
-    shapespec: SHAPESPEC = SHAPESPEC()
-    location: SIDE | SEGMENTXY | SEGMENTIJ
-    data: CONSTANTPAR | CONSTANTFILE | VARIABLEPAR | VARIABLEFILE
+    model_type: Literal["boundspec"] = Field(
+        default="boundspec",
+        description="Model type discriminator",
+    )
+    shapespec: SHAPESPEC = Field(
+        default=SHAPESPEC(),
+        description="Spectral shape specification",
+    )
+    location: SIDE | SEGMENTXY | SEGMENTIJ = Field(
+        description="Location to apply the boundary",
+    )
+    data: CONSTANTPAR | CONSTANTFILE | VARIABLEPAR | VARIABLEFILE = Field(
+        description="Spectral data",
+    )
 
     def cmd(self) -> list:
         repr = [f"{self.shapespec.render()}"]
@@ -91,21 +88,9 @@ class BOUNDSPEC(BaseComponent):
 
 
 class BOUNDNEST1(BaseComponent):
-    """Boundary spectra from a coarser SWAN nest at all sides of computational domain.
+    """Boundary spectra from a coarser SWAN nest.
 
     `BOUNDNEST1 NEST 'fname' CLOSED|OPEN`
-
-    Parameters
-    ----------
-    model_type: Literal["boundnest1"]
-        Model type discriminator.
-    fname: str
-        Name of the file containing the boundary conditions for the present run,
-        created by the previous SWAN coarse grid run. This file is structured
-        according to the rules given in Appendix D for 2D spectra.
-    rectangle: Literal["closed", "open"]
-        Boundary is defined over a closed (default) or an open rectangle. Boundary
-        generated from the NESTOUT command is aways closed.
 
     With this optional command a nested SWAN run can be carried out with the boundary
     conditions obtained from a coarse grid SWAN run (generated in that previous SWAN
@@ -123,51 +108,33 @@ class BOUNDNEST1(BaseComponent):
 
     """
 
-    model_type: Literal["boundnest1"] = "boundnest1"
-    fname: constr(min_length=1, max_length=98)
-    rectangle: Literal["closed", "open"] = "closed"
+    model_type: Literal["boundnest1"] = Field(
+        default="boundnest1",
+        description="Model type discriminator",
+    )
+    fname: constr(min_length=1, max_length=98) = Field(
+        description=(
+            "Name of the file containing the boundary conditions for the present run, "
+            "created by the previous SWAN coarse grid run. This file is structured "
+            "according to the rules given in Appendix D for 2D spectra."
+        ),
+    )
+    rectangle: Literal["closed", "open"] = Field(
+        default="closed",
+        description=(
+            "Boundary is defined over a closed (default) or an open rectangle. "
+            "Boundary generated from the NESTOUT command is aways closed."
+        ),
+    )
 
     def cmd(self) -> str:
         return f"BOUNDNEST1 NEST fname='{self.fname}' {self.rectangle.upper()}"
 
 
 class BOUNDNEST2(BaseComponent):
-    """Boundary spectra from a coarser SWAN nest at all sides of computational domain.
+    """Boundary spectra from WAM.
 
     `BOUNDNEST2 WAMNEST 'fname' FREE|UNFORMATTED (CRAY|WKSTAT) [xgc] [ygc] [lwdate]`
-
-    Parameters
-    ----------
-    model_type: Literal["boundnest2"]
-        Model type discriminator.
-    fname: str
-        A file name that contains all the names of WAM files containing the nested
-        boundary conditions in time-sequence (usually one file per day). For example,
-        the contents of 'fname' can look like:
-            CBO9212010000
-            CBO9212020000
-            CBO9212030000
-    format: Literal["cray", "wkstat", "free"]
-        Format of the WAM file.
-        - cray: CRAY version of WAM.
-        - wkstat: WORKSTATION version of WAM.
-        - free: Free format (these files are not generated standard by WAM).
-    xgc: float
-        - If SWAN is used with Cartesian coordinates: longitude of south-west corner of
-          SWAN computational grid (in degrees); if the south-west corner of the nest in
-          the WAM computation is on land this value is required.
-        - If SWAN is used with spherical coordinates then [xgc] is ignored by SWAN.
-          Default: the location of the first spectrum encountered in the nest file.
-    ygc: float
-        - if SWAN is used with Cartesian coordinates: latitude of south-west corner of
-          SWAN computational grid (in degrees); if the south-west corner of the nest in
-          the WAM computation is on land this value is required.
-        - If SWAN is used with spherical coordinates then [ygc] is ignored by SWAN.
-          Default: the location of the first spectrum encountered in the nest file.
-    lwdate: str
-        Length of character string for date-time as used in the WAM files. Possible
-        values are: 10 (i.e. YYMMDDHHMM), 12 (i.e. YYMMDDHHMMSS) or
-        14 (i.e. YYYYMMDDHHMMSS). Default: `lwdate` = 12
 
     With this optional command (not fully tested) a nested SWAN run can be carried out
     with the boundary conditions obtained from a coarse grid WAM run (WAM Cycle 4.5,
@@ -191,14 +158,60 @@ class BOUNDNEST2(BaseComponent):
     it can make formatted output, must modify WAM such that the files made by WAM can
     be read in free format, i.e. with at least a blank or comma between numbers.
 
+    Notes
+    -----
+    the contents of 'fname' can look like:
+        CBO9212010000
+        CBO9212020000
+        CBO9212030000
+
     """
 
-    model_type: Literal["boundnest2"] = "boundnest2"
-    fname: constr(min_length=1, max_length=48)
-    format: Literal["cray", "wkstat", "free"]
-    xgc: Optional[float]
-    ygc: Optional[float]
-    lwdate: Literal[10, 12, 14] = 12
+    model_type: Literal["boundnest2"] = Field(
+        default="boundnest2",
+        description="Model type discriminator",
+    )
+    fname: constr(min_length=1, max_length=48) = Field(
+        description=(
+            "A file name that contains all the names of WAM files containing the "
+            "nested boundary conditions in time-sequence (usually one file per day)."
+        ),
+    )
+    format: Literal["cray", "wkstat", "free"] = Field(
+        description=(
+            "Format of the WAM file. `cray`: CRAY version of WAM, `wkstat`: "
+            "WORKSTATION version of WAM, `free`: Free format (these files are not "
+            "generated standard by WAM)."
+        ),
+    )
+    xgc: Optional[float] = Field(
+        description=(
+            "If SWAN is used with Cartesian coordinates: longitude of south-west "
+            "corner of SWAN computational grid (in degrees); if the south-west "
+            "corner of the nest in the WAM computation is on land this value is "
+            "required. If SWAN is used with spherical coordinates then `xgc` is "
+            "ignored by SWAN (SWAN default: the location of the first spectrum "
+            "encountered in the nest file. "
+        ),
+    )
+    ygc: Optional[float] = Field(
+        description=(
+            "If SWAN is used with Cartesian coordinates: latitude of south-west "
+            "corner of SWAN computational grid (in degrees); if the south-west "
+            "corner of the nest in the WAM computation is on land this value is "
+            "required. If SWAN is used with spherical coordinates then `ygc` is "
+            "ignored by SWAN (SWAN default: the location of the first spectrum "
+            "encountered in the nest file. "
+        ),
+    )
+    lwdate: Literal[10, 12, 14] = Field(
+        default=12,
+        description=(
+            "Length of character string for date-time as used in the WAM files. "
+            "Possible values are: 10 (i.e. YYMMDDHHMM), 12 (i.e. YYMMDDHHMMSS) "
+            "or 14 (i.e. YYYYMMDDHHMMSS) (SWAN default: `lwdate` = 12)."
+        ),
+    )
 
     @property
     def format_str(self):
@@ -222,35 +235,9 @@ class BOUNDNEST2(BaseComponent):
 
 
 class BOUNDNEST3(BaseComponent):
-    """Boundary spectra from a coarser SWAN nest at all sides of computational domain.
+    """Boundary spectra from WAVEWATCHIII.
 
     `BOUNDNEST3 WW3 'fname' FREE|UNFORMATTED CLOSED|OPEN [xgc] [ygc]`
-
-    Parameters
-    ----------
-    model_type: Literal["boundnest2"]
-        Model type discriminator.
-    fname: str
-        The name of the file that contains the spectra computed by WAVEWATCH III.
-    format: Literal["unformatted", "free"]
-        Format of the WW3 file.
-        - unformatted: The input WW3 files are binary.
-        - free: The input WW3 files are formatted.
-    rectangle: Literal["closed", "open"]
-        Boundary is defined over a closed (default) or an open rectangle. Boundary
-        generated from the NESTOUT command is aways closed.
-    xgc: float
-        - If SWAN is used with Cartesian coordinates: longitude of south-west corner of
-          SWAN computational grid (in degrees); if the south-west corner of the nest in
-          the WAM computation is on land this value is required.
-        - If SWAN is used with spherical coordinates then [xgc] is ignored by SWAN.
-          Default: the location of the first spectrum encountered in the nest file.
-    ygc: float
-        - if SWAN is used with Cartesian coordinates: latitude of south-west corner of
-          SWAN computational grid (in degrees); if the south-west corner of the nest in
-          the WAM computation is on land this value is required.
-        - If SWAN is used with spherical coordinates then [ygc] is ignored by SWAN.
-          Default: the location of the first spectrum encountered in the nest file.
 
     With this optional command a nested SWAN run can be carried out with the boundary
     conditions obtained from a coarse grid WAVEWATCH III run. The spectral frequencies
@@ -276,12 +263,48 @@ class BOUNDNEST3(BaseComponent):
 
     """
 
-    model_type: Literal["boundnest3"] = "boundnest3"
-    fname: constr(min_length=1, max_length=62)
-    format: Literal["unformatted", "free"]
-    rectangle: Literal["closed", "open"] = "closed"
-    xgc: Optional[float]
-    ygc: Optional[float]
+    model_type: Literal["boundnest3"] = Field(
+        default="boundnest3",
+        description="Model type discriminator",
+    )
+    fname: constr(min_length=1, max_length=62) = Field(
+        description=(
+            "The name of the file that contains the spectra computed by WAVEWATCH III."
+        ),
+    )
+    format: Literal["unformatted", "free"] = Field(
+        description=(
+            "Format of the WW3 file. `unformatted`: The input WW3 files are binary, "
+            "`free`: The input WW3 files are formatted."
+        ),
+    )
+    rectangle: Literal["closed", "open"] = Field(
+        default="closed",
+        description=(
+            "Boundary is defined over a closed (default) or an open rectangle. "
+            "Boundary generated from the NESTOUT command is aways closed."
+        ),
+    )
+    xgc: Optional[float] = Field(
+        description=(
+            "If SWAN is used with Cartesian coordinates: longitude of south-west "
+            "corner of SWAN computational grid (in degrees); if the south-west "
+            "corner of the nest in the WAM computation is on land this value is "
+            "required. If SWAN is used with spherical coordinates then `xgc` is "
+            "ignored by SWAN (SWAN default: the location of the first spectrum "
+            "encountered in the nest file. "
+        ),
+    )
+    ygc: Optional[float] = Field(
+        description=(
+            "If SWAN is used with Cartesian coordinates: latitude of south-west "
+            "corner of SWAN computational grid (in degrees); if the south-west "
+            "corner of the nest in the WAM computation is on land this value is "
+            "required. If SWAN is used with spherical coordinates then `ygc` is "
+            "ignored by SWAN (SWAN default: the location of the first spectrum "
+            "encountered in the nest file. "
+        ),
+    )
 
     def cmd(self) -> str:
         repr = f"BOUNDNEST3 WW3 fname='{self.fname}' {self.format.upper()} "

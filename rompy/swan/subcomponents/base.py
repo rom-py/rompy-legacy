@@ -1,16 +1,13 @@
 """Base class for SWAN sub-components."""
 from typing import Literal
 from abc import ABC
+from pydantic import Field
+
 from rompy.core import RompyBaseModel
 
 
 class BaseSubComponent(RompyBaseModel, ABC):
     """Base class for SWAN sub-components.
-
-    Parameters
-    ----------
-    model_type: Literal["subcomponent"]
-        Model type discriminator.
 
     Behaviour
     ---------
@@ -19,7 +16,7 @@ class BaseSubComponent(RompyBaseModel, ABC):
 
     """
 
-    model_type: Literal["subcomponent"]
+    model_type: Literal["subcomponent"] = Field(description="Model type discriminator")
 
     class Config:
         """Configure the model."""

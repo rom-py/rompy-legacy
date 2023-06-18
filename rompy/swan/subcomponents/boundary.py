@@ -1,7 +1,7 @@
 """Subcomponents to be rendered inside of components."""
 import logging
 from typing import Optional, Literal
-from pydantic import root_validator, confloat, constr, conint
+from pydantic import Field, root_validator, confloat, constr, conint
 
 from rompy.swan.subcomponents.base import BaseSubComponent
 
@@ -10,25 +10,25 @@ logger = logging.getLogger(__name__)
 
 
 class SIDE(BaseSubComponent):
-    """SWAN SIDE BOUNDSPEC subcomponent.
+    """Boundary over one side of computational domain.
 
     `SIDE NORTH|NW|WEST|SW|SOUTH|SE|E|NE CCW|CLOCKWISE`
 
     The boundary is one full side of the computational grid (in 1D cases either of the
     two ends of the 1D-grid). SHOULD NOT BE USED IN CASE OF CURVILINEAR GRIDS!
 
-    Parameters
-    ----------
-    model_type: Literal["side"]
-        Model type discriminator.
-    side: Literal["north", "nw", "west", "sw", "south", "se", "east", "ne"]
-        The side of the grid to apply the boundary to.
-
     """
 
-    model_type: Literal["side"] = "side"
-    side: Literal["north", "nw", "west", "sw", "south", "se", "east", "ne"]
-    direction: Literal["ccw", "clockwise"] = "ccw"
+    model_type: Literal["side"] = Field(
+        default="side", description="Model type discriminator",
+    )
+    side: Literal["north", "nw", "west", "sw", "south", "se", "east", "ne"] = Field(
+        description="The side of the grid to apply the boundary to",
+    )
+    direction: Literal["ccw", "clockwise"] = Field(
+        default="ccw",
+        description="The direction to apply the boundary in",
+    )
 
     def cmd(self) -> str:
         repr = f"SIDE {self.side.upper()} {self.direction.upper()} "
@@ -36,7 +36,7 @@ class SIDE(BaseSubComponent):
 
 
 class SEGMENTXY(BaseSubComponent):
-    """SWAN SEGMENT XY BOUNDSPEC subcomponent.
+    """Boundary over a segment defined from point coordinates.
 
     `SEGMENT XY < [x] [y] >`
 
@@ -45,20 +45,18 @@ class SEGMENTXY(BaseSubComponent):
     line connecting two points must be close to grid lines of the computational grid
     (the maximum distance is one hundredth of the length of the straight line).
 
-    Parameters
-    ----------
-    model_type: Literal["segmentxy"]
-        Model type discriminator.
-    points: list[tuple[float, float]]
-        Pairs of (x, y) values to define the segment.
-    float_format: str
-        The format to use for the floats in the points.
-
     """
 
-    model_type: Literal["segmentxy"] = "segmentxy"
-    points: list[tuple[float, float]]
-    float_format: str = "0.8f"
+    model_type: Literal["segmentxy"] = Field(
+        default="segmentxy", description="Model type discriminator",
+    )
+    points: list[tuple[float, float]] = Field(
+        description="Pairs of (x, y) values to define the segment",
+    )
+    float_format: str = Field(
+        default="0.8f",
+        description="The format to use for the floats in the points",
+    )
 
     def cmd(self) -> str:
         repr = f"SEGMENT XY &"
@@ -70,7 +68,7 @@ class SEGMENTXY(BaseSubComponent):
 
 
 class SEGMENTIJ(BaseSubComponent):
-    """SWAN SEGMENT IJ BOUNDSPEC subcomponent.
+    """Boundary over a segment defined from grid indices.
 
     `SEGMENT IJ < [i] [j] >`
 
@@ -79,17 +77,14 @@ class SEGMENTIJ(BaseSubComponent):
     be mentioned. If two points are on the same grid line, intermediate points are
     assumed to be on the segment as well.
 
-    Parameters
-    ----------
-    model_type: Literal["segmentij"]
-        Model type discriminator.
-    points: list[tuple[int, int]]
-        Pairs of (i, j) values to define the segment.
-
     """
 
-    model_type: Literal["segmentxy"] = "segmentxy"
-    points: list[tuple[int, int]]
+    model_type: Literal["segmentij"] = Field(
+        default="segmentij", description="Model type discriminator",
+    )
+    points: list[tuple[int, int]] = Field(
+        description="Pairs of (i, j) values to define the segment",
+    )
 
     def cmd(self) -> str:
         repr = f"SEGMENT IJ &"
@@ -99,37 +94,41 @@ class SEGMENTIJ(BaseSubComponent):
 
 
 class PAR(BaseSubComponent):
-    """Parameter subcomponent.
+    """Spectral parameters.
 
     `PAR [hs] [per] [dir] [dd]`
 
-    Parameters
-    ----------
-    model_type: Literal["par"]
-        Model type discriminator.
-    hs: float
-        The significant wave height (m).
-    per: float
-        The characteristic period (s) of the energy spectrum (relative frequency; which
-        is equal to absolute frequency in the absence of currents); `per` is the value
-        of the peak period if option PEAK is chosen in command BOUND SHAPE or `per` is
-        the value of the mean period, if option MEAN was chosen in command BOUND SHAPE.
-    dir: float
-        The peak wave direction θpeak (degrees), constant over frequencies.
-    dd: float
-        Coefficient of directional spreading; a $cos^m(θ)$ distribution is assumed.
-        `dd` is interpreted as the directional standard deviation in degrees, if the
-        option DEGREES is chosen in the command BOUND SHAPE. Default: `dd=30`.
-        `dd` is interpreted as the power `m`, if the option POWER is chosen in the
-        command BOUND SHAPE. Default: `dd=2`.
-
     """
 
-    model_type: Literal["par"] = "par"
-    hs: confloat(gt=0.0)
-    per: confloat(gt=0.0)
-    dir: confloat(ge=-360.0, le=360.0)
-    dd: confloat(ge=0.0, le=360.0)
+    model_type: Literal["par"] = Field(
+        default="par", description="Model type discriminator",
+    )
+    hs: confloat(gt=0.0) = Field(
+        description="The significant wave height (m)",
+    )
+    per: confloat(gt=0.0) = Field(
+        description=(
+            "The characteristic period (s) of the energy spectrum (relative "
+            "frequency; which is equal to absolute frequency in the absence of "
+            "currents); `per` is the value of the peak period if option PEAK is "
+            "chosen in command BOUND SHAPE or `per` is the value of the mean period, "
+            "if option MEAN was chosen in command BOUND SHAPE."
+        ),
+    )
+    dir: confloat(ge=-360.0, le=360.0) = Field(
+        description=(
+            "The peak wave direction θpeak (degrees), constant over frequencies"
+        ),
+    )
+    dd: confloat(ge=0.0, le=360.0) = Field(
+        description=(
+            "Coefficient of directional spreading; a $cos^m(θ)$ distribution is "
+            "assumed. `dd` is interpreted as the directional standard deviation in "
+            "degrees, if the option DEGREES is chosen in the command BOUND SHAPE. "
+            "Default: `dd=30`. `dd` is interpreted as the power `m`, if the option "
+            "POWER is chosen in the command BOUND SHAPE. Default: `dd=2`."
+        ),
+    )
 
     def cmd(self) -> str:
         """Render subcomponent cmd."""
@@ -137,13 +136,15 @@ class PAR(BaseSubComponent):
 
 
 class CONSTANTPAR(PAR):
-    """Constant parameter subcomponent.
+    """Constant spectral parameters.
 
     `CONSTANT PAR [hs] [per] [dir] [dd]`
 
     """
 
-    model_type: Literal["constantpar"] = "constantpar"
+    model_type: Literal["constantpar"] = Field(
+        default="constantpar", description="Model type discriminator",
+    )
 
     def cmd(self) -> str:
         """Render subcomponent cmd."""
@@ -151,48 +152,53 @@ class CONSTANTPAR(PAR):
 
 
 class VARIABLEPAR(BaseSubComponent):
-    """Variable parameter subcomponent.
+    """Variable spectral parameter.
 
     `VARIABLE PAR < [len] [hs] [per] [dir] [dd] >`
 
-    Parameters
-    ----------
-    model_type: Literal["variablepar"]
-        Model type discriminator.
-    hs: List[float]
-        The significant wave height (m).
-    per: List[float]
-        The characteristic period (s) of the energy spectrum (relative frequency; which
-        is equal to absolute frequency in the absence of currents); `per` is the value
-        of the peak period if option PEAK is chosen in command BOUND SHAPE or `per` is
-        the value of the mean period, if option MEAN was chosen in command BOUND SHAPE.
-    dir: List[float]
-        The peak wave direction θpeak (degrees), constant over frequencies.
-    dd: List[float]
-        Coefficient of directional spreading; a $cos^m(θ)$ distribution is assumed.
-        `dd` is interpreted as the directional standard deviation in degrees, if the
-        option DEGREES is chosen in the command BOUND SHAPE. Default: `dd=30`.
-        `dd` is interpreted as the power `m`, if the option POWER is chosen in the
-        command BOUND SHAPE. Default: `dd=2`.
-    dist: Optional[list[float]]
-        Is the distance from the first point of the side or segment to the point along
-        the side or segment for which the incident wave spectrum is prescribed.
-        Note: these points do no have to coincide with grid points of the computational
-        grid. `len` is the distance in m or degrees in the case of spherical
-        coordinates, not in grid steps. The values of `len` should be given
-        in ascending order. The length along a SIDE is measured in clockwise or
-        counterclockwise direction, depending on the options CCW or CLOCKWISE (see
-        above). The option CCW is default. In case of a SEGMENT the length is
-        measured from the indicated begin point of the segment.
-
     """
 
-    model_type: Literal["variablepar"] = "variablepar"
-    hs: list[confloat(ge=0.0)]
-    per: list[confloat(ge=0.0)]
-    dir: list[confloat(ge=-360.0, le=360.0)]
-    dd: list[confloat(ge=0.0, le=360.0)]
-    dist: list[confloat(ge=0)]
+    model_type: Literal["variablepar"] = Field(
+        default="variablepar", description="Model type discriminator",
+    )
+    hs: list[confloat(ge=0.0)] = Field(
+        description="The significant wave height (m)",
+    )
+    per: list[confloat(ge=0.0)] = Field(
+        description=(
+            "The characteristic period (s) of the energy spectrum (relative "
+            "frequency; which is equal to absolute frequency in the absence of "
+            "currents); `per` is the value of the peak period if option PEAK is "
+            "chosen in command BOUND SHAPE or `per` is the value of the mean period, "
+            "if option MEAN was chosen in command BOUND SHAPE."
+        ),
+    )
+    dir: list[confloat(ge=-360.0, le=360.0)] = Field(
+        description="The peak wave direction θpeak (degrees), constant over frequencies"
+    )
+    dd: list[confloat(ge=0.0, le=360.0)] = Field(
+        description=(
+            "Coefficient of directional spreading; a $cos^m(θ)$ distribution is "
+            "assumed. `dd` is interpreted as the directional standard deviation in "
+            "degrees, if the option DEGREES is chosen in the command BOUND SHAPE. "
+            "Default: `dd=30`. `dd` is interpreted as the power `m`, if the option "
+            "POWER is chosen in the command BOUND SHAPE (SWAN default: `dd=2`)."
+        ),
+    )
+    dist: list[confloat(ge=0)] = Field(
+        alias="len",
+        description=(
+            "Is the distance from the first point of the side or segment to the point "
+            "along the side or segment for which the incident wave spectrum is "
+            "prescribed. Note: these points do no have to coincide with grid points of "
+            "the computational grid. `len` is the distance in m or degrees in the case "
+            "of spherical coordinates, not in grid steps. The values of `len` should "
+            "be given in ascending order. The length along a SIDE is measured in "
+            "clockwise or counterclockwise direction, depending on the options CCW or "
+            "CLOCKWISE (see above). The option CCW is default. In case of a SEGMENT "
+            "the length is measured from the indicated begin point of the segment."
+        ),
+    )
 
     @root_validator
     def ensure_equal_size(cls, values):
@@ -212,21 +218,9 @@ class VARIABLEPAR(BaseSubComponent):
 
 
 class CONSTANTFILE(BaseSubComponent):
-    """Constant file subcomponent.
+    """Constant file specification.
 
     `CONSTANT FILE 'fname' [seq]`
-
-    Parameters
-    ----------
-    model_type: Literal["constantfile"]
-        Model type discriminator.
-    fname: str
-        Name of the file containing the boundary condition.
-    seq: float
-        sequence number of geographic location in the file (see Appendix D);
-        useful for files which contain spectra for more than one location.
-        Note: a TPAR file always contains only one location so in this case
-        [seq] must always be 1.
 
     Note
     ----
@@ -236,6 +230,7 @@ class CONSTANTFILE(BaseSubComponent):
       (usually from measurements).
     - files containing stationary or nonstationary 2D spectra
       (from other computer programs or other SWAN runs).
+
     A TPAR file is for only one location; it has the string TPAR on the first
     line of the file and a number of lines which each contain 5 numbers, i.e.:
     Time (ISO-notation), Hs, Period (average or peak period depending on the
@@ -254,9 +249,20 @@ class CONSTANTFILE(BaseSubComponent):
 
     """
 
-    model_type: Literal["constantfile"] = "constantfile"
-    fname: constr(max_length=40)
-    seq: Optional[conint(ge=1)]
+    model_type: Literal["constantfile"] = Field(
+        default="constantfile", description="Model type discriminator",
+    )
+    fname: constr(max_length=40) = Field(
+        description="Name of the file containing the boundary condition.",
+    )
+    seq: Optional[conint(ge=1)] = Field(
+        description=(
+            "sequence number of geographic location in the file (see Appendix D); "
+            "useful for files which contain spectra for more than one location. "
+            "Note: a TPAR file always contains only one location so in this case "
+            "[seq] must always be 1."
+        ),
+    )
 
     def cmd(self) -> str:
         """Render subcomponent cmd."""
@@ -267,31 +273,9 @@ class CONSTANTFILE(BaseSubComponent):
 
 
 class VARIABLEFILE(BaseSubComponent):
-    """Variable file subcomponent.
+    """Variable file specification.
 
     `VARIABLE FILE < [len] 'fname' [seq] >`
-
-    Parameters
-    ----------
-    model_type: Literal["variablefile"]
-        Model type discriminator.
-    fname: list
-        Names of the file containing the boundary condition.
-    seq: Optional[list]
-        sequences number of geographic location in the file (see Appendix D);
-        useful for files which contain spectra for more than one location.
-        Note: a TPAR file always contains only one location so in this case
-        `seq` must always be 1.
-    dist: Optional[list[float]]
-        Is the distance from the first point of the side or segment to the point along
-        the side or segment for which the incident wave spectrum is prescribed.
-        Note: these points do no have to coincide with grid points of the computational
-        grid. `len` is the distance in m or degrees in the case of spherical
-        coordinates, not in grid steps. The values of `len` should be given
-        in ascending order. The length along a SIDE is measured in clockwise or
-        counterclockwise direction, depending on the options CCW or CLOCKWISE (see
-        above). The option CCW is default. In case of a SEGMENT the length is
-        measured from the indicated begin point of the segment.
 
     Note
     ----
@@ -301,6 +285,7 @@ class VARIABLEFILE(BaseSubComponent):
       (usually from measurements).
     - files containing stationary or nonstationary 2D spectra
       (from other computer programs or other SWAN runs).
+
     A TPAR file is for only one location; it has the string TPAR on the first
     line of the file and a number of lines which each contain 5 numbers, i.e.:
     Time (ISO-notation), Hs, Period (average or peak period depending on the
@@ -319,10 +304,35 @@ class VARIABLEFILE(BaseSubComponent):
 
     """
 
-    model_type: Literal["variablefile"] = "variablefile"
-    fname: list[constr(max_length=40)]
-    seq: Optional[list[conint(ge=1)]]
-    dist: list[confloat(ge=0)]
+    model_type: Literal["variablefile"] = Field(
+        default="variablefile", description="Model type discriminator",
+    )
+    fname: list[constr(max_length=40)] = Field(
+        description="Names of the file containing the boundary condition",
+    )
+    seq: Optional[list[conint(ge=1)]] = Field(
+        description=(
+            "sequence number of geographic location in the file (see Appendix D); "
+            "useful for files which contain spectra for more than one location. "
+            "Note: a TPAR file always contains only one location so in this case "
+            "[seq] must always be 1."
+        ),
+    )
+    dist: list[confloat(ge=0)] = Field(
+        alias="len",
+        description=(
+            "Is the distance from the first point of the side or segment to the point "
+            "along the side or segment for which the incident wave spectrum is "
+            "prescribed. Note: these points do no have to coincide with grid points "
+            "of the computational grid. [len] is the distance in m or degrees in the "
+            "case of spherical coordinates, not in grid steps. The values of `len` "
+            "should be given in ascending order. The length along a SIDE is measured "
+            "in clockwise or counterclockwise direction, depending on the options CCW "
+            "or CLOCKWISE (see above). The option CCW is default. In case of a "
+            "SEGMENT the length is measured from the indicated begin point of the "
+            "segment."
+        ),
+    )
 
     @root_validator
     def ensure_equal_size(cls, values):
@@ -342,14 +352,9 @@ class VARIABLEFILE(BaseSubComponent):
 
 
 class DEFAULT(BaseSubComponent):
-    """Default initial conditions subcomponent.
+    """Default initial conditions.
 
     `DEFAULT`
-
-    Parameters
-    ----------
-    model_type: Literal["default"]
-        Model type discriminator.
 
     The initial spectra are computed from the local wind velocities, using the
     deep-water growth curve of Kahma and Calkoen (1992), cut off at values of
@@ -360,18 +365,15 @@ class DEFAULT(BaseSubComponent):
 
     """
 
-    model_type: Literal["default"] = "default"
+    model_type: Literal["default"] = Field(
+        default="default", description="Model type discriminator",
+    )
 
 
 class ZERO(BaseSubComponent):
-    """ZERO initial conditions subcomponent.
+    """Zero initial conditions.
 
     `ZERO`
-
-    Parameters
-    ----------
-    model_type: Literal["zero"]
-        Model type discriminator.
 
     The initial spectral densities are all 0; note that if waves are generated in the
     model only by wind, waves can become non-zero only by the presence of the
@@ -379,24 +381,15 @@ class ZERO(BaseSubComponent):
 
     """
 
-    model_type: Literal["zero"] = "zero"
+    model_type: Literal["zero"] = Field(
+        default="zero", description="Model type discriminator",
+    )
 
 
 class HOTSINGLE(BaseSubComponent):
-    """SWAN Hotstart single subcomponent.
+    """Hotstart single initial conditions.
 
     `HOTSTART SINGLE fname='fname' FREE|UNFORMATTED`
-
-    parameters
-    ----------
-    model_type: Literal["hotsingle"]
-        Model type discriminator.
-    fname: str
-        Name of the file containing the initial wave field.
-    format: Literal["free", "unformatted"]
-        Format of the file containing the initial wave field.
-        - FREE: free format.
-        - UNFORMATTED: binary format.
 
     Initial wave field is read from file; this file was generated in a previous SWAN
     run by means of the HOTFILE command. If the previous run was nonstationary,
@@ -411,9 +404,19 @@ class HOTSINGLE(BaseSubComponent):
 
     """
 
-    model_type: Literal["hotsingle"] = "hotsingle"
-    fname: constr(max_length=85)
-    format: Literal["free", "unformatted"] = "free"
+    model_type: Literal["hotsingle"] = Field(
+        default="hotsingle", description="Model type discriminator",
+    )
+    fname: constr(max_length=85) = Field(
+        description="Name of the file containing the initial wave field",
+    )
+    format: Literal["free", "unformatted"] = Field(
+        default="free",
+        description=(
+            "Format of the file containing the initial wave field. "
+            "FREE: free format, UNFORMATTED: binary format"
+        ),
+    )
 
     def cmd(self) -> str:
         """Render subcomponent cmd."""
@@ -421,18 +424,7 @@ class HOTSINGLE(BaseSubComponent):
 
 
 class HOTMULTIPLE(BaseSubComponent):
-    """SWAN Hotstart multiple subcomponent.
-
-    parameters
-    ----------
-    model_type: Literal["hotmultiple"]
-        Model type discriminator.
-    fname: str
-        Name of the file containing the boundary condition.
-    format: Literal["free", "unformatted"]
-        Format of the file containing the initial wave field.
-        - FREE: free format.
-        - UNFORMATTED: binary format.
+    """Hotstart multiple initial conditions.
 
     Initial wave field is read from file; this file was generated in a previous SWAN
     run by means of the HOTFILE command. If the previous run was nonstationary,
@@ -447,9 +439,19 @@ class HOTMULTIPLE(BaseSubComponent):
 
     """
 
-    model_type: Literal["hotmultiple"] = "hotmultiple"
-    fname: constr(max_length=85)
-    format: Literal["free", "unformatted"] = "free"
+    model_type: Literal["hotmultiple"] = Field(
+        default="hotmultiple", description="Model type discriminator",
+    )
+    fname: constr(max_length=85) = Field(
+        description="Name of the file containing the initial wave field",
+    )
+    format: Literal["free", "unformatted"] = Field(
+        default="free",
+        description=(
+            "Format of the file containing the initial wave field. "
+            "FREE: free format, UNFORMATTED: binary format"
+        ),
+    )
 
     def cmd(self) -> str:
         """Render subcomponent cmd."""

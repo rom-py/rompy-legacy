@@ -3,12 +3,13 @@ import pytest
 import logging
 from pydantic import ValidationError
 
+from rompy.swan.types import GridOptions
 from rompy.swan.components.inpgrid import (
     INPGRID,
+    INPGRIDS,
     REGULAR,
     CURVILINEAR,
     UNSTRUCTURED,
-    GridOptions,
     READINP,
 )
 from rompy.swan.subcomponents.time import NONSTATIONARY
@@ -36,8 +37,6 @@ def nonstat():
 def test_valid_inpgrid_options(readinp):
     for inpgrid in GridOptions:
         INPGRID(grid_type=inpgrid.value, readinp=readinp)
-        # INPGRID(grid_type=inpgrid.value.lower(), readinp=readinp)
-        # INPGRID(grid_type=inpgrid.value.upper(), readinp=readinp)
     with pytest.raises(ValidationError):
         INPGRID(grid_type="invalid", readinp=readinp)
 
@@ -56,7 +55,7 @@ def test_inpgrid_nonstationary(nonstat, readinp):
 
 def test_inpgrid_regular(nonstat, readinp):
     inpgrid = REGULAR(
-        grid_type=GridOptions.bottom,
+        grid_type=GridOptions.wind,
         xpinp=0.0,
         ypinp=0.0,
         alpinp=0.0,
@@ -73,7 +72,7 @@ def test_inpgrid_regular(nonstat, readinp):
 
 def test_inpgrid_curvilinear(nonstat, readinp):
     inpgrid = CURVILINEAR(
-        grid_type=GridOptions.bottom,
+        grid_type=GridOptions.wind,
         mxinp=10,
         myinp=10,
         excval=-999.0,
@@ -85,7 +84,7 @@ def test_inpgrid_curvilinear(nonstat, readinp):
 
 def test_inpgrid_curvilinear_render(nonstat, readinp):
     inpgrid = UNSTRUCTURED(
-        grid_type=GridOptions.bottom,
+        grid_type=GridOptions.wind,
         excval=-999.0,
         nonstationary=nonstat,
         readinp=readinp,
@@ -93,4 +92,34 @@ def test_inpgrid_curvilinear_render(nonstat, readinp):
     logger.info(inpgrid.render())
 
 
-# def test_inpgrid_case():
+def test_inpgrids(nonstat, readinp):
+    bottom = REGULAR(
+        grid_type=GridOptions.bottom,
+        xpinp=0.0,
+        ypinp=0.0,
+        alpinp=0.0,
+        mxinp=10,
+        myinp=10,
+        dxinp=0.1,
+        dyinp=0.1,
+        excval=-999.0,
+        readinp=readinp,
+    )
+    wind = REGULAR(
+        grid_type=GridOptions.wind,
+        xpinp=0.0,
+        ypinp=0.0,
+        alpinp=0.0,
+        mxinp=10,
+        myinp=10,
+        dxinp=0.1,
+        dyinp=0.1,
+        excval=-999.0,
+        nonstationary=nonstat,
+        readinp=readinp,
+    )
+
+    inpgrids = INPGRIDS(
+        inpgrids=[bottom, wind]
+    )
+    logger.info(inpgrids.render())

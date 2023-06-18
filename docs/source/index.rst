@@ -37,6 +37,7 @@ The final main component of the library is an intake driver that builds on the i
    
    api.rst
    demo.rst
+   components.rst
 
 Indices and tables
 ==================

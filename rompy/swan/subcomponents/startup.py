@@ -1,5 +1,6 @@
 """SWAN startup subcomponents."""
 from typing import Literal
+from pydantic import Field
 
 from rompy.swan.subcomponents.base import BaseSubComponent
 
@@ -9,17 +10,14 @@ class CARTESIAN(BaseSubComponent):
 
     `CARTESIAN`
 
-    Parameters
-    ----------
-    model_type: Literal["cartesian"]
-        Model type discriminator.
-
     All locations and distances are in m. Coordinates are given with respect
     to x- and y-axes chosen by the user in the various commands.
 
     """
 
-    model_type: Literal["cartesian"] = "cartesian"
+    model_type: Literal["cartesian"] = Field(
+        default="cartesian", description="Model type discriminator"
+    )
 
 
 class SPHERICAL(BaseSubComponent):
@@ -27,18 +25,15 @@ class SPHERICAL(BaseSubComponent):
 
     `SPHERICAL [CCM|QC]`
 
-    Parameters
-    ----------
-    model_type: Literal["spherical"]
-        Model type discriminator.
-    projection: Literal["ccm", "qc"]
-        Defines the projection method in case of spherical coordinates.
-        - CCM: central conformal Mercator. The horizontal and vertical scales are
-          uniform in terms of cm/degree over the area shown. In the centre of the scale
-          is identical to that of the conventional Mercator projection (but only at
-          that centre). The area in the projection centre is therefore exactly conformal.
-        - QC: the projection method is quasi-cartesian, i.e. the horizontal and vertical
-          scales are equal to one another in terms of cm/degree.
+    Notes
+    -----
+    projection options:
+    - CCM: central conformal Mercator. The horizontal and vertical scales are
+      uniform in terms of cm/degree over the area shown. In the centre of the scale
+      is identical to that of the conventional Mercator projection (but only at
+      that centre). The area in the projection centre is therefore exactly conformal.
+    - QC: the projection method is quasi-cartesian, i.e. the horizontal and vertical
+      scales are equal to one another in terms of cm/degree.
 
     All coordinates of locations and geographical grid sizes are given in degrees;`x`
     is longitude with `x = 0` being the Greenwich meridian and `x > 0` is East of this
@@ -55,8 +50,13 @@ class SPHERICAL(BaseSubComponent):
 
     """
 
-    model_type: Literal["spherical"] = "spherical"
-    projection: Literal["ccm", "qc"] = None
+    model_type: Literal["spherical"] = Field(
+        default="spherical", description="Model type discriminator"
+    )
+    projection: Literal["ccm", "qc"] = Field(
+        default="ccm",
+        description="Defines the projection method in case of spherical coordinates"
+    )
 
     def cmd(self) -> str:
         """Render subcomponent cmd."""

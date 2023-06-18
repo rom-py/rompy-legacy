@@ -8,7 +8,7 @@ from rompy.swan.components.boundary import (
     BOUNDNEST2,
     BOUNDNEST3,
 )
-from rompy.swan.subcomponents.shape import SHAPESPEC, JONSWAP
+from rompy.swan.subcomponents.spectrum import SHAPESPEC, JONSWAP
 from rompy.swan.subcomponents.boundary import (
     SIDE,
     PAR,
