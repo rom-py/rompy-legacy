@@ -6,20 +6,20 @@
 # The full license is in the LICENSE file, distributed with this software.
 # -----------------------------------------------------------------------------
 
+from ._version import get_versions
+import intake
 import logging
 import os
 import warnings
 
+from .model import ModelRun
+
 logger = logging.getLogger("rompy")
 
-import os
-
-import intake
 
 here = os.path.abspath(os.path.dirname(__file__))
 cat = intake.open_catalog(os.path.join(here, "catalogs", "master.yaml"))
 
-from ._version import get_versions
 
 __version__ = get_versions()["version"]
 del get_versions

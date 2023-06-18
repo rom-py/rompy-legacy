@@ -8,10 +8,9 @@ from typing import Optional
 
 from pydantic import Field
 
-from .config import BaseConfig
-from .render import render
-from .time import TimeRange
-from .types import RompyBaseModel
+from rompy.swan import SwanConfig
+
+from .core import BaseConfig, RompyBaseModel, TimeRange, render
 
 logger = logging.getLogger(__name__)
 
@@ -30,8 +29,9 @@ class ModelRun(RompyBaseModel):
     )
     output_dir: str = Field(
         "./simulations", description="The output directory")
-    config: BaseConfig = Field(
-        BaseConfig(), description="The configuration object")
+    config: BaseConfig | SwanConfig = Field(
+        BaseConfig(), description="The configuration object"
+    )
     _datefmt: str = "%Y%m%d.%H%M%S"
 
     @property
