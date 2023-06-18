@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Literal, Optional
 
 import numpy as np
-import wavespectra
+# import wavespectra
 import xarray as xr
 from pydantic import Field, confloat, root_validator
 
@@ -151,8 +151,7 @@ class DataBoundary(DataGrid):
         """Return the filtered xarray dataset instance."""
         dset = super().ds
         if dset.efth.size == 0:
-            raise ValueError(
-                f"Empty dataset after applying filter {self.filter}")
+            raise ValueError(f"Empty dataset after applying filter {self.filter}")
         return dset
 
     def _boundary_resolutions(self, grid):
