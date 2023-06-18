@@ -62,5 +62,5 @@ class SPHERICAL(BaseSubComponent):
         """Render subcomponent cmd."""
         repr = super().cmd()
         if self.projection is not None:
-            repr += f"{self.projection.upper()}"
+            repr += f" {self.projection.upper()}"
         return repr

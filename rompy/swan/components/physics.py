@@ -434,13 +434,14 @@ class QUADRUPL(BaseComponent):
         default="quadrupl", description="Model type discriminator"
     )
     iquad: Literal[1, 2, 3, 8, 4, 51, 52, 53] = Field(
-        default=2,
+        default=None,
         description=(
             "Numerical procedures for integrating the quadruplets: 1 = semi-implicit "
             "per sweep, 2 = explicit per sweep, 3 = explicit per iteration, "
             "8 = explicit per iteration, but with a more efficient implementation, "
             "4 = multiple DIA, 51 = XNL (deep water transfer), 52 = XNL (deep water "
-            "transfer with WAM depth scaling), 53  XNL (finite depth transfer)"
+            "transfer with WAM depth scaling), 53  XNL (finite depth transfer) (SWAN "
+            "default: 2)"
         ),
     )
     lambd: Optional[float] = Field(
@@ -460,7 +461,9 @@ class QUADRUPL(BaseComponent):
     )
 
     def cmd(self) -> str:
-        repr = f"QUADRUPL iquad={self.iquad}"
+        repr = f"QUADRUPL"
+        if self.iquad is not None:
+            repr += f" iquad={self.iquad}"
         if self.lambd is not None:
             repr += f" lambda={self.lambd}"
         if self.cn14 is not None:

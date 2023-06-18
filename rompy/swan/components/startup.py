@@ -67,11 +67,13 @@ class SET(BaseComponent):
     Notes
     -----
     The error level `maxerr` is coded as follows:
+
     1: warnings.
     2: errors (possibly automatically repaired or repairable by SWAN).
     3: severe errors.
     
     Default values for `pwtail` depend on formulations of physics:
+
     - command GEN1: `pwtail = 5`.
     - command GEN2: `pwtail = 5`.
     - command GEN3 KOMEN: `pwtail = 4`.

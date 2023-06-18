@@ -4,9 +4,9 @@ on:
   push:
     paths:
       - docker/**
+      - .github/workflows/swan-ci.yml
     branches:
       - "main"
-      - "docker"
 
 jobs:
   build:
@@ -22,7 +22,8 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       -
-        name: Run docker compose
-        uses: isbang/compose-action@v1.4.1
-        with:
-          compose-file: "./docker/docker-compose.yml"
+        name: Build the dockers
+        run: DOCKER_BUILDKIT=1 docker compose -f docker/compose.yaml build
+      -
+        name: Push the dockers
+        run: docker compose -f docker/compose.yaml push
