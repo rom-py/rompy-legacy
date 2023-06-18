@@ -4,7 +4,8 @@ from datetime import datetime
 import pytest
 from utils import compare_files
 
-from rompy.core import BaseConfig, ModelRun, TimeRange
+from rompy import ModelRun
+from rompy.core import BaseConfig, TimeRange
 
 here = os.path.dirname(os.path.abspath(__file__))
 
@@ -36,8 +37,7 @@ def test_datetime_parse():
         "%Y%m%dT%H%M%S",
         "%Y%m%dT%H%M",
     ]:
-        model = ModelRun(period=TimeRange(
-            end=end.strftime(format), duration="1d"))
+        model = ModelRun(period=TimeRange(end=end.strftime(format), duration="1d"))
         for period in ["year", "month", "day", "hour"]:
             assert getattr(model.period.end, period) == getattr(end, period)
 
@@ -49,8 +49,7 @@ def test_datetime_parse_fail():
         "%Y%m%dhello",
     ]:
         try:
-            model = ModelRun(period=TimeRange(
-                end=end.strftime(format), duration="1d"))
+            model = ModelRun(period=TimeRange(end=end.strftime(format), duration="1d"))
         except ValueError:
             pass
         else:

@@ -10,7 +10,8 @@ import pytest
 import xarray as xr
 from utils import compare_files
 
-from rompy.core import DatasetXarray, ModelRun, TimeRange
+from rompy import ModelRun
+from rompy.core import DatasetXarray, TimeRange
 from rompy.swan import DataBoundary, SwanConfig, SwanDataGrid, SwanGrid
 from rompy.swan.boundary import DatasetXarray  # This will likely get moved
 

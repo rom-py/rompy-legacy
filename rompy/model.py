@@ -10,7 +10,8 @@ from pydantic import Field
 
 from rompy.swan import SwanConfig
 
-from .core import BaseConfig, RompyBaseModel, TimeRange, render
+from .core import BaseConfig, RompyBaseModel, TimeRange
+from .core.render import render
 
 logger = logging.getLogger(__name__)
 

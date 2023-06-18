@@ -5,7 +5,7 @@ import logging
 import click
 import yaml
 
-from rompy.core import ModelRun
+from .model import ModelRun
 
 logging.basicConfig(level=logging.INFO)
 
@@ -48,12 +48,7 @@ def main(model, config, kwargs):
         kw.update({split[0]: split[1]})
         current = getattr(instance, split[0])
         setattr(instance, split[0], type(current)(split[1]))
-    config_args = args.pop("config")
-    if model == "base":
-        config = BaseConfig(**config_args)
-    if model == "swan":
-        config = SwanConfig(**config_args)
-    model = ModelRun(**args, config=config, **kw)
+    model = ModelRun(**args, **kw)
     model()
 
 

@@ -5,7 +5,8 @@ from datetime import datetime
 import pytest
 from utils import compare_files
 
-from rompy.core import BaseConfig, ModelRun, TimeRange
+from rompy import ModelRun
+from rompy.core import BaseConfig, TimeRange
 from rompy.swan import SwanConfig, SwanDataGrid, SwanGrid
 
 here = os.path.dirname(os.path.abspath(__file__))

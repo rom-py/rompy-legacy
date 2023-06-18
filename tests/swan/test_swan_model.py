@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from rompy.core.model import ModelRun
+from rompy import ModelRun
 from rompy.swan.config import SwanConfigComponents as SwanConfig
 
 logger = logging.getLogger(__name__)
