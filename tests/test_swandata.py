@@ -81,9 +81,9 @@ def test_swandata_write(nc_data_source):
     staging_dir = tempfile.mkdtemp()
     swangrid = SwanGrid(x0=0, y0=0, dx=1, dy=1, nx=10, ny=10)
     config_ref = (
-        "INPGRID WIND REG 0.0 0.0 0.0 9 9 1.0 1.0 NONSTATION 20000101.000000 24.0 HR\n"
+        "INPGRID WIND REG 0.0 0.0 0.0 9 9 1.0 1.0 EXC -99.0 NONSTATION 20000101.000000 24.0 HR\n"
     )
-    config_ref += "READINP WIND 1 'wind.grd' 3 0 1 0 FREE\n"
+    config_ref += "READINP WIND 1.0 'wind.grd' 3 0 1 0 FREE\n"
     config = nc_data_source.get(staging_dir, swangrid)
     assert config == config_ref
 
