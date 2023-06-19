@@ -9,7 +9,7 @@ class RompyBaseModel(BaseModel):
 class Latitude(BaseModel):
     """Latitude"""
 
-    lat: float = Field(description="Latitude", ge=-90, le=90)
+    lat: float = Field(..., description="Latitude", ge=-90, le=90)
 
     @validator("lat")
     def validate_lat(cls, v):
@@ -33,7 +33,7 @@ class Latitude(BaseModel):
 class Longitude(BaseModel):
     """Longitude"""
 
-    lon: float = Field(description="Longitude", ge=-180, le=180)
+    lon: float = Field(..., description="Longitude", ge=-180, le=180)
 
     @validator("lon")
     def validate_lon(cls, v):
@@ -55,17 +55,22 @@ class Longitude(BaseModel):
 
 
 class Coordinate(BaseModel):
-    """Coordinate
+    """Coordinate"""
 
-    Parameters
-    ----------
-    lon: Longitude
-    lat: Latitude
+    lon: float = Field(..., description="Longitude")
+    lat: float = Field(..., description="Latitude")
 
-    """ ""
+    @validator("lon")
+    def validate_lon(cls, v):
+        if not (-180 <= v <= 180):
+            raise ValueError("longitude must be between -180 and 180")
+        return v
 
-    lon: Longitude
-    lat: Latitude
+    @validator("lat")
+    def validate_lat(cls, v):
+        if not (-90 <= v <= 90):
+            raise ValueError("latitude must be between -90 and 90")
+        return v
 
     def __repr__(self):
         return f"Coordinate(lon={self.lon}, lat={self.lat})"

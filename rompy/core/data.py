@@ -171,14 +171,13 @@ class DataGrid(RompyBaseModel):
             ds = self.filter(ds)
         return ds
 
-    def plot(self, param, isel={}, model_grid=None, cmap="turbo", fscale=10):
+    def plot(self, param, isel={}, model_grid=None, cmap="turbo", fscale=10, **kwargs):
         """Plot the grid"""
 
         import cartopy.crs as ccrs
         import cartopy.feature as cfeature
         import matplotlib.pyplot as plt
-        from cartopy.mpl.gridliner import (LATITUDE_FORMATTER,
-                                           LONGITUDE_FORMATTER)
+        from cartopy.mpl.gridliner import LATITUDE_FORMATTER, LONGITUDE_FORMATTER
 
         ds = self.ds
         if param not in ds:
@@ -206,7 +205,7 @@ class DataGrid(RompyBaseModel):
             scale="auto", edgecolor="black", facecolor=cfeature.COLORS["land"]
         )
 
-        ds[param].isel(isel).plot(ax=ax, cmap=cmap)
+        ds[param].isel(isel).plot(ax=ax, cmap=cmap, **kwargs)
 
         ax.add_feature(coastline)
         ax.add_feature(cfeature.BORDERS, linewidth=2)

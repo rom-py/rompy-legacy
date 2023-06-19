@@ -4,11 +4,9 @@ from typing import Literal, Optional, Union
 
 from pydantic import Field, root_validator, validator
 
-from rompy.core import (BaseConfig, Coordinate, RompyBaseModel, Spectrum,
-                        TimeRange)
+from rompy.core import BaseConfig, Coordinate, RompyBaseModel, Spectrum, TimeRange
 from rompy.swan.boundary import DataBoundary
-from rompy.swan.components import (base, boundary, cgrid, inpgrid, physics,
-                                   startup)
+from rompy.swan.components import base, boundary, cgrid, inpgrid, physics, startup
 
 from .data import SwanDataGrid
 from .grid import SwanGrid
@@ -43,20 +41,19 @@ class OutputLocs(RompyBaseModel):
     def __repr__(self):
         ret = __class__.__name__ + "\n"
         for coord in self.coords:
-            ret += f"  {coord[0]} {coord[1]}\n"
+            ret += f"  {coord.lat} {coord.lon}\n"
         return ret
 
     def __str__(self):
         ret = ""
         for coord in self.coords:
-            ret += f"  {coord[0]} {coord[1]}\n"
+            ret += f"  {coord.lat} {coord.lon}\n"
         return ret
 
 
 class ForcingData(RompyBaseModel):
     bottom: SwanDataGrid | None = Field(
-        None, description="Bathymetry data for SWAN"
-    )  # TODO Raf should probably be required?
+        None, description="Bathymetry data for SWAN")
     wind: SwanDataGrid | None = Field(
         None, description="The wind data for SWAN.")
     current: SwanDataGrid | None = Field(

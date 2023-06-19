@@ -49,6 +49,7 @@ config:
         model_type: intake
         catalog_uri: ../rompy/catalogs/oceanum.yaml
         dataset_id: gebco_2022
+      fac: -1.0
       z1: elevation
       latname: lat
       lonname: lon
@@ -62,9 +63,9 @@ config:
       lonname: lon
       tolerance: 0.1
       sel_method: idw
-  # physics: 
-  #   friction: "MAD"
-  #   friction_coeff: 0.1
+  physics: 
+    friction: "MAD"
+    friction_coeff: 0.1
   outputs:
     grid:
       variables:
@@ -78,8 +79,11 @@ config:
       - WIND
     spec:
       locations:
-      - x: 115.68
-        y: -32.76
-      - x: 115.68
-        y: -32.76
+        coords:
+        - lon: 174.61
+          lat: -37.96
+        - lon: 174.62
+          lat: -37.96
+        - lon: 174.62
+          lat: -37.97
 

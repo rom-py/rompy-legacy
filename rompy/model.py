@@ -36,9 +36,12 @@ class ModelRun(RompyBaseModel):
         ),
         description="The time period to run the model",
     )
-    output_dir: str = Field("./simulations", description="The output directory")
+    output_dir: str = Field(
+        "./simulations", description="The output directory")
     config: BaseConfig | SwanConfig = Field(
-        BaseConfig(), description="The configuration object"
+        BaseConfig(),
+        description="The configuration object",
+        discriminator="model_type",
     )
     _datefmt: str = "%Y%m%d.%H%M%S"
 

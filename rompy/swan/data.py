@@ -28,6 +28,14 @@ class SwanDataGrid(DataGrid):
         description="SWAN variable name (WIND, BOTTOM, CURRENT)",
         default="WIND",
     )
+    fac: float = Field(
+        description=(
+            "SWAN multiplies all values that are read from file by `fac`. For instance "
+            "if the values are given in unit decimeter, one should make `fac=0.1` to "
+            "obtain values in m. To change sign use a negative `fac`."
+        ),
+        default=1.0,
+    )
 
     # root validator
     @root_validator
@@ -47,6 +55,28 @@ class SwanDataGrid(DataGrid):
         return v
 
     def get(self, staging_dir: str, grid: SwanGrid = None):
+        """Write the data to a SWAN grid file.
+
+        Parameters
+        ----------
+        staging_dir : str
+            The directory to write the grid file to.
+        grid: SwanGrid
+            The SwanGrid object representing the data, obsolete and may get removed.
+
+        Notes
+        -----
+        The data are assumed to not have been rotated. We cannot use the grid.rot attr
+        as this is the rotation from the model grid object which is not necessarily the
+        same as the rotation of the data.
+
+        Returns
+        -------
+        cmd: str
+            The command line string with the INPGRID/READINP commands ready to be
+            written to the SWAN input file.
+
+        """
         output_file = os.path.join(staging_dir, f"{self.id}.grd")
         logger.info(f"\tWriting {self.id} to {output_file}")
         if self.var == "BOTTOM":
@@ -56,14 +86,19 @@ class SwanDataGrid(DataGrid):
                 x=self.lonname,
                 y=self.latname,
                 z=self.z1,
+                fac=self.fac,
+                rot=0.0,
                 vmin=0.0,
             )
         else:
             inpgrid, readgrid = self.ds.swan.to_inpgrid(
                 output_file=output_file,
+                x=self.lonname,
+                y=self.latname,
                 z1=self.z1,
                 z2=self.z2,
-                grid=grid,
+                fac=self.fac,
+                rot=0.0,
                 var=self.var,
             )
         return f"{inpgrid}\n{readgrid}\n"
@@ -141,10 +176,30 @@ class Swan_accessor(object):
     def __init__(self, xarray_obj):
         self._obj = xarray_obj
 
-    def grid(self, x="lon", y="lat", exc=FILL_VALUE):
+    def grid(
+            self,
+            x: str = "lon",
+            y: str = "lat",
+            rot: float = 0.0,
+            exc: float = FILL_VALUE,
+        ):
         """SWAN Grid object for this dataset.
 
-        TODO: Perhaps we could assume y, x are the last 2 axes.
+        Parameters
+        ----------
+        x: str
+            Name of the x coordinate variable.
+        y: str
+            Name of the y coordinate variable.
+        rot: float
+            Rotation angle in degrees, required if the grid has been previously rotated.
+        exc: float
+            Exception value for missing data.
+
+        Returns
+        -------
+        grid: SwanGrid
+            SwanGrid object representing this dataset.
 
         """
         return SwanGrid(
@@ -155,7 +210,7 @@ class Swan_accessor(object):
             dy=float(np.diff(self._obj[y]).mean()),
             nx=len(self._obj[x]),
             ny=len(self._obj[y]),
-            rot=0,  # TODO Raf Why is this zero?
+            rot=rot,
             exc=exc,
         )
 
@@ -166,9 +221,10 @@ class Swan_accessor(object):
         x="lon",
         y="lat",
         z="depth",
+        fac=1.0,
+        rot=0.0,
         vmin=0.0,
         fill_value=FILL_VALUE,
-        fac=1.0,
     ):
         """Write SWAN inpgrid BOTTOM file.
 
@@ -184,12 +240,14 @@ class Swan_accessor(object):
             Name of the y-axis in the dataset.
         z: str
             Name of the bottom variable in the dataset.
+        rot: float
+            Rotation angle, required if the grid has been previously rotated.
         vmin: float
             Minimum value below which depths are masked.
         fill_value: float
             Fill value.
         fac: float
-            Multiplying factor, only necessary when the data are not in meters.
+            Multiplying factor in case data are not in m or should be reversed.
 
         Returns
         -------
@@ -199,7 +257,6 @@ class Swan_accessor(object):
             SWAN READinp command instruction.
 
         TODO: Merge this method with `to_inpgrid`.
-        TODO: Change cookiecutter so readinp is used.
 
         """
         dset_to_swan(
@@ -209,62 +266,66 @@ class Swan_accessor(object):
             variables=[z],
             fill_value=fill_value,
         )
-        grid = self.grid(x=x, y=y)
+        grid = self.grid(x=x, y=y, rot=rot)
         inpgrid = f"INPGRID BOTTOM {grid.inpgrid}"
         readinp = f"READINP BOTTOM {fac} '{Path(output_file).name}' 3 FREE"
         return inpgrid, readinp
 
     def to_inpgrid(
         self,
-        output_file,
-        grid=None,
-        var="WIND",
-        fmt="%.2f",
-        x="lon",
-        y="lat",
-        z1="u10",
-        z2=None,
-        time="time",
+        output_file: str,
+        var: str = "WIND",
+        fmt: str = "%.2f",
+        x: str = "lon",
+        y: str = "lat",
+        z1: str = "u10",
+        z2: str | None =None,
+        fac: float = 1.0,
+        rot: float = 0.0,
+        time: str = "time",
     ):
         """This function writes to a SWAN inpgrid format file (i.e. WIND)
 
-        Args:
-        TBD
+        Parameters
+        ----------
+        output_file: str
+            Local file name for the ascii output file.
+        var: str
+            Type of swan input, used to define the INPGRID/READGRID strings.
+        fmt: str
+            String float formatter.
+        x: str
+            Name of the x-axis in the dataset.
+        y: str
+            Name of the y-axis in the dataset.
+        z1: str
+            Name of the first variable in the dataset.
+        z2: str, optional
+            Name of the second variable in the dataset.
+        fac: float
+            Multiplying factor in case data are not in m or should be reversed.
+        rot: float
+            Rotation angle, required if the grid has been previously rotated.
+        time: str
+            Name of the time variable in the dataset
+
+        Returns
+        -------
+        inpgrid: str
+            SWAN INPgrid command instruction.
+        readinp: str
+            SWAN READinp command instruction.
+
         """
-        import os
-
-        import numpy as np
-        import pandas as pd
-
         ds = self._obj
 
-        if grid is None:
-            # If no grid passed in assume it is a REG grid
-            if len(ds[x].shape) == 1:
-                grid = SwanGrid(
-                    gridtype="REG",
-                    x0=float(ds[x].min()),
-                    y0=float(ds[y].min()),
-                    dx=float(np.diff(ds[x]).mean()),
-                    dy=float(np.diff(ds[y]).mean()),
-                    nx=len(ds[x]),
-                    ny=len(ds[y]),
-                    rot=0,
-                )
-            else:
-                raise ValueError(
-                    "No grid specified for output and number of dims for x-coordinate > 1"
-                )
-        # else:
-        #     raise NotImplementedError('Specifying an alternative output grid is currently not implemented. Only regular grids supported.')
-
         # ds = ds.transpose((time,) + ds[x].dims)
-        dt = np.diff(ds.time.values).mean() / pd.to_timedelta(1, "H")
+        dt = np.diff(ds[time].values).mean() / pd.to_timedelta(1, "H")
 
         inptimes = []
         with open(output_file, "wt") as f:
             # iterate through time
-            for ti, windtime in enumerate(ds.time.values):
+            for ti, windtime in enumerate(ds[time].values):
                 time_str = pd.to_datetime(windtime).strftime("%Y%m%d.%H%M%S")
                 logger.debug(time_str)
 
@@ -272,29 +333,28 @@ class Swan_accessor(object):
                 f.write(f"{time_str}\n")
 
                 # Write first component to file
-                z1t = np.squeeze(ds[z1].isel(time=ti).values)
+                z1t = np.squeeze(ds[z1].isel(dict(time=ti)).values)
                 np.savetxt(f, z1t, fmt=fmt)
 
                 if z2 is not None:
-                    z2t = np.squeeze(ds[z2].isel(time=ti).values)
+                    z2t = np.squeeze(ds[z2].isel(dict(time=ti)).values)
                     np.savetxt(f, z2t, fmt=fmt)
 
                 inptimes.append(time_str)
 
         if len(inptimes) < 1:
-            import os
-
             os.remove(output_file)
             raise ValueError(
                 f"***Error! No times written to {output_file}\n. Check the input data!"
             )
 
-        input_strings = (
-            f"INPGRID {var} {grid.inpgrid} NONSTATION {inptimes[0]} {dt} HR",
-            f"READINP {var} 1 '{os.path.basename(output_file)}' 3 0 1 0 FREE",
-        )
+        # Create grid object from this dataset
+        grid = self.grid(x=x, y=y, rot=rot)
 
-        return input_strings
+        inpgrid = f"INPGRID {var} {grid.inpgrid} NONSTATION {inptimes[0]} {dt} HR"
+        readinp =f"READINP {var} {fac} '{os.path.basename(output_file)}' 3 0 1 0 FREE"
+
+        return inpgrid, readinp
 
     def to_tpar_boundary(
         self,
