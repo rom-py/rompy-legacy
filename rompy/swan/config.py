@@ -273,12 +273,12 @@ class SwanConfig(BaseConfig):
 class SwanConfigComponents(BaseConfig):
     """SWAN config class."""
 
-    model_type: Literal["swan"] = Field(
+    model_type: Literal["swancomp"] = Field(
         default="swan",
         description="Model type discriminator",
     )
     template: str = Field(
-        default=str(Path(__file__).parent.parent / "templates" / "swan2"),
+        default=str(Path(__file__).parent.parent / "templates" / "swancomp"),
         description="The template for SWAN.",
     )
     project: PROJECT_TYPES = Field(
