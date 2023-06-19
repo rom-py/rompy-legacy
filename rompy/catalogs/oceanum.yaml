@@ -82,6 +82,29 @@ sources:
         token: null
       consolidated: True
 
+  oceanum_wave_nz_era5_v1_spec:
+    description: Oceanum SWAN 5km New Zealand wave hindcast forced with ERA5, wave spectra
+    metadata:
+      name: Oceanum New Zealand ERA5 wave hindcast spectra
+      tname: time
+      sname: site
+      url: "https://oceanum.science/"
+      tags:
+        - oceanum
+        - wave
+        - model
+        - hindcast
+        - swan
+        - new zealand
+        - spectra
+        - era5
+    driver: intake_xarray.xzarr.ZarrSource
+    args:
+      urlpath: gs://oceanum-wave/swan_nz_era5_v1/grid/spec.zarr
+      storage_options:
+        token: null
+      consolidated: True
+
   era5_wind10m:
     description: ECMWF ERA5 global 30km hindcast wind vectors at 10 m above ground level
     metadata:
