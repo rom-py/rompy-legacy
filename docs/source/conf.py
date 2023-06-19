@@ -35,6 +35,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinxcontrib.autodoc_pydantic",
     "nbsphinx",
+    "sphinx_exec_code",
 ]
 
 # Add any paths that contain templates here, relative to this directory.

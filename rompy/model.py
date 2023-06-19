@@ -17,7 +17,15 @@ logger = logging.getLogger(__name__)
 
 
 class ModelRun(RompyBaseModel):
-    """A base class for all models"""
+    """A model run.
+
+    It is intented to be model agnostic.
+    It deals primarily with how the model is to be run, i.e. the period of the run
+    and where the output is going. The actual configuration of the run is
+    provided by the config object.
+
+    Further explanation is given in the rompy.core.Baseconfig docstring.
+    """
 
     run_id: str = Field("run_id", description="The run id")
     period: TimeRange = Field(
@@ -28,8 +36,7 @@ class ModelRun(RompyBaseModel):
         ),
         description="The time period to run the model",
     )
-    output_dir: str = Field(
-        "./simulations", description="The output directory")
+    output_dir: str = Field("./simulations", description="The output directory")
     config: BaseConfig | SwanConfig = Field(
         BaseConfig(), description="The configuration object"
     )
