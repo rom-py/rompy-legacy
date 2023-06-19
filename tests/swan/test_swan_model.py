@@ -21,7 +21,7 @@ def config():
 
 def test_swan_model(tmpdir, config):
     config = SwanConfig(
-        template=os.path.join(HERE, "../../rompy/templates/swan2"),
+        template=os.path.join(HERE, "../../rompy/templates/swancomp"),
         project=config["project"],
         set=config["set"],
         mode=config["mode"],

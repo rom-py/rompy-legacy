@@ -274,7 +274,7 @@ class SwanConfigComponents(BaseConfig):
     """SWAN config class."""
 
     model_type: Literal["swancomp"] = Field(
-        default="swan",
+        default="swancomp",
         description="Model type discriminator",
     )
     template: str = Field(

@@ -9,6 +9,7 @@ from typing import Optional
 from pydantic import Field
 
 from rompy.swan import SwanConfig
+from rompy.swan.config import SwanConfigComponents
 
 from .core import BaseConfig, RompyBaseModel, TimeRange
 from .core.render import render
@@ -38,7 +39,7 @@ class ModelRun(RompyBaseModel):
     )
     output_dir: str = Field(
         "./simulations", description="The output directory")
-    config: BaseConfig | SwanConfig = Field(
+    config: BaseConfig | SwanConfig | SwanConfigComponents = Field(
         BaseConfig(),
         description="The configuration object",
         discriminator="model_type",
