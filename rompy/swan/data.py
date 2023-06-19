@@ -88,7 +88,7 @@ class SwanDataGrid(DataGrid):
                 z=self.z1,
                 fac=self.fac,
                 rot=0.0,
-                vmin=0.0,
+                vmin=float("-inf"),
             )
         else:
             inpgrid, readgrid = self.ds.swan.to_inpgrid(
@@ -223,7 +223,7 @@ class Swan_accessor(object):
         z="depth",
         fac=1.0,
         rot=0.0,
-        vmin=0.0,
+        vmin=float("-inf"),
         fill_value=FILL_VALUE,
     ):
         """Write SWAN inpgrid BOTTOM file.
