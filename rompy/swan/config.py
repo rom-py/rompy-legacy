@@ -57,24 +57,26 @@ class ForcingData(RompyBaseModel):
     bottom: SwanDataGrid | None = Field(
         None, description="Bathymetry data for SWAN"
     )  # TODO Raf should probably be required?
-    wind: SwanDataGrid | None = Field(None, description="The wind data for SWAN.")
-    current: SwanDataGrid | None = Field(None, description="The current data for SWAN.")
+    wind: SwanDataGrid | None = Field(
+        None, description="The wind data for SWAN.")
+    current: SwanDataGrid | None = Field(
+        None, description="The current data for SWAN.")
     boundary: DataBoundary | None = Field(
         None, description="The boundary data for SWAN."
     )
 
-    def get(self, grid, runtime):
+    def get(self, grid: SwanGrid, period: TimeRange, staging_dir: Path):
         forcing = []
         boundary = []
         for source in self:
             if source[1]:
                 logger.info(f"\t Processing {source[0]} forcing")
                 source[1]._filter_grid(grid)
-                source[1]._filter_time(runtime.period)
+                source[1]._filter_time(period)
                 if source[0] == "boundary":
-                    boundary.append(source[1].get(runtime.staging_dir, grid))
+                    boundary.append(source[1].get(staging_dir, grid))
                 else:
-                    forcing.append(source[1].get(runtime.staging_dir, grid))
+                    forcing.append(source[1].get(staging_dir, grid))
         return dict(forcing="\n".join(forcing), boundary="\n".join(boundary))
 
     def __str__(self):
@@ -220,7 +222,8 @@ class SwanConfig(BaseConfig):
     """SWAN configuration"""
 
     grid: SwanGrid = Field(description="The model grid for the SWAN run")
-    model_type: Literal["swan"] = Field("swan", description="The model type for SWAN.")
+    model_type: Literal["swan"] = Field(
+        "swan", description="The model type for SWAN.")
     spectral_resolution: SwanSpectrum = Field(
         SwanSpectrum(), description="The spectral resolution for SWAN."
     )
@@ -231,9 +234,12 @@ class SwanConfig(BaseConfig):
         SwanPhysics(), description="The physics options for SWAN."
     )
     outputs: Outputs = Field(Outputs(), description="The outputs for SWAN.")
-    spectra_file: str = Field("boundary.spec", description="The spectra file for SWAN.")
-    template: str = Field(DEFAULT_TEMPLATE, description="The template for SWAN.")
-    _datefmt: str = Field("%Y%m%d.%H%M%S", description="The date format for SWAN.")
+    spectra_file: str = Field(
+        "boundary.spec", description="The spectra file for SWAN.")
+    template: str = Field(
+        DEFAULT_TEMPLATE, description="The template for SWAN.")
+    _datefmt: str = Field(
+        "%Y%m%d.%H%M%S", description="The date format for SWAN.")
     # subnests: List[SwanConfig] = Field([], description="The subnests for SWAN.") # uncomment if needed
 
     @property
@@ -242,17 +248,6 @@ class SwanConfig(BaseConfig):
         output += f"{self.grid.cgrid_read}\n"
         return output
 
-    def _get_grid(self, key=None):
-        # TODO - Is this functionality needed?
-        from intake.source.utils import reverse_format
-
-        grid_spec = self.bottom_grid
-        fmt = "{gridtype} {x0:f} {y0:f} {rot:f} {nx:d} {ny:d} {dx:f} {dy:f}"
-        if "EXC" in grid_spec:  # append excluded value string
-            fmt += " EXC {exc:f}"
-        grid_params = reverse_format(fmt, grid_spec)
-        return SwanGrid(**grid_params)
-
     def __call__(self, runtime) -> str:
         ret = {}
         if not self.outputs.grid.period:
@@ -260,7 +255,9 @@ class SwanConfig(BaseConfig):
         if not self.outputs.spec.period:
             self.outputs.spec.period = runtime.period
         ret["grid"] = f"{self.domain}"
-        ret["forcing"] = self.forcing.get(self.grid, runtime)
+        ret["forcing"] = self.forcing.get(
+            self.grid, runtime.period, runtime.staging_dir
+        )
         ret["physics"] = f"{self.physics.cmd}"
         ret["outputs"] = self.outputs.cmd
         ret["output_locs"] = self.outputs.spec.locations
@@ -308,7 +305,8 @@ class SwanConfigComponents(BaseConfig):
         description="SWAN CGRID component",
         discriminator="model_type",
     )
-    inpgrid: INPGRID_TYPES = Field(default=None, description="SWAN INPGRID components")
+    inpgrid: INPGRID_TYPES = Field(
+        default=None, description="SWAN INPGRID components")
     boundary: BOUNDARY_TYPES = Field(
         default=None,
         description="SWAN BOUNDARY component",
