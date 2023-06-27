@@ -1,0 +1,71 @@
+
+# Regular example
+
+cgrid:
+  model_type: regular
+  mdc: 36
+  flow: 0.04
+  fhigh: 0.4
+  xlenc: 100.0
+  ylenc: 100.0
+  mxc: 10
+  myc: 10
+
+inpgrid:
+  - model_type: regular
+    grid_type: bottom
+    xpinp: 0.0
+    ypinp: 0.0
+    alpinp: 0.0
+    mxinp: 10
+    myinp: 10
+    dxinp: 0.1
+    dyinp: 0.1
+    excval: -999.0
+    readinp:
+      fname1: bottom.txt
+      idla: 3
+  - model_type: regular
+    grid_type: wind
+    xpinp: 0.0
+    ypinp: 0.0
+    alpinp: 0.0
+    mxinp: 10
+    myinp: 10
+    dxinp: 0.1
+    dyinp: 0.1
+    excval: -999.0
+    nonstationary:
+      tbeg: '2023-01-01T00:00:00'
+      delt: PT30M
+      tend: '2023-02-01T00:00:00'
+      deltfmt: hr
+    readinp:
+      fname1: wind.txt
+      idla: 3
+
+# Curvilinear example
+cgrid_curvilinear:
+  model_type: curvilinear
+  mdc: 36
+  flow: 0.04
+  fhigh: 0.4
+  mxc: 10
+  myc: 10
+  readcoord:
+    fname: grid_coord.txt
+
+inpgrid_curvilinear:
+  - model_type: curvilinear
+    grid_type: bottom
+    mxinp: 10
+    myinp: 10
+    excval: -999.0
+    nonstationary:
+      tbeg: '2023-01-01T00:00:00'
+      delt: PT30M
+      tend: '2023-02-01T00:00:00'
+      deltfmt: hr
+    readinp:
+      fname1: bottom.txt
+      idla: 3

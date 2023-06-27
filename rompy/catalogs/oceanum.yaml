@@ -1,0 +1,152 @@
+metadata:
+  version: 1
+
+sources:
+  # wave_glob05_gfs_v1:
+  #   args:
+  #     fmt_fields:
+  #       output: 
+  #       - 'spec'
+  #       type: 
+  #       - 'site'
+  #       grid: 
+  #       - 'glob'
+  #       fcdate:
+  #       - '20230119'
+  #       - '20230119'
+  #       hr:
+  #       - '00'
+  #     fn_fmt: '{grid}.{output}.{fcdate}T{hr}.nc'
+  #     urlpath: "gs://oceanum-prod-flush-1m/ww3/glob05_gfs/post/{type}/{grid}-{output}-{fcdate}T{hr}.zarr"
+  #   description: Oceanum Wavewatch III forecasts
+  #   driver: rompy.intake.ZarrFCStackSource
+  #   metadata:
+  #     catalog_dir: ''
+
+  oceanum_wave_glob05_era5_v1_spec:
+    description: Oceanum WAVEWATCHIII Global wave hindcast at 0.5-degree forced with ERA5, wave spectra
+    metadata:
+      name: Oceanum global ERA5 wave hindcast spectra
+      tname: time
+      sname: site
+      url: "https://oceanum.science/"
+      tags:
+        - oceanum
+        - wave
+        - model
+        - hindcast
+        - wavewatch
+        - global
+        - spectra
+        - era5
+    driver: intake_xarray.xzarr.ZarrSource
+    args:
+      urlpath: gs://oceanum-wave/ww3_glob05_era5_v1/grid/spec.zarr
+      storage_options:
+        token: null
+      consolidated: True
+
+  oceanum_wave_glob05_era5_v1_grid:
+    description: Oceanum WAVEWATCHIII global 0.5 degree wave hindcast forced with ERA5, gridded parameters
+    metadata:
+      name: Oceanum global ERA5 wave hindcast parameters
+      tname: time
+      yname: latitude
+      xname: longitude
+      url: "https://oceanum.science/"
+      tags:
+        - oceanum
+        - wave
+        - model
+        - hindcast
+        - wavewatch
+        - global
+        - era5
+      derived_variables:
+        - name: tp
+          input_variables: [fp]
+          code: |
+            def tp_from_fp(fp):
+              tp = 1 / fp
+              tp.attrs = {
+                "long_name": "peak wave period",
+                "standard_name": "sea_surface_wave_period_at_variance_spectral_density_maximum",
+                "units": "s"
+              }
+              return tp
+          function: tp_from_fp
+    driver: onzarr
+    args:
+      urlpath: gs://oceanum-wave/ww3_glob05_era5_v1/grid/grid.zarr
+      storage_options:
+        token: null
+      consolidated: True
+
+  oceanum_wave_nz_era5_v1_spec:
+    description: Oceanum SWAN 5km New Zealand wave hindcast forced with ERA5, wave spectra
+    metadata:
+      name: Oceanum New Zealand ERA5 wave hindcast spectra
+      tname: time
+      sname: site
+      url: "https://oceanum.science/"
+      tags:
+        - oceanum
+        - wave
+        - model
+        - hindcast
+        - swan
+        - new zealand
+        - spectra
+        - era5
+    driver: intake_xarray.xzarr.ZarrSource
+    args:
+      urlpath: gs://oceanum-wave/swan_nz_era5_v1/grid/spec.zarr
+      storage_options:
+        token: null
+      consolidated: True
+
+  era5_wind10m:
+    description: ECMWF ERA5 global 30km hindcast wind vectors at 10 m above ground level
+    metadata:
+      name: ECMWF ERA5 global 10m wind hindcast
+      tname: time
+      yname: latitude
+      xname: longitude
+      url: https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview
+      tags:
+        - wind
+        - model
+        - era5
+        - reanalysis
+        - hindcast
+        - ecmwf
+        - global
+    driver: intake_xarray.xzarr.ZarrSource
+    args:
+      urlpath: gs://oceanum-era5/grid/wind_10m.zarr
+      storage_options:
+        token: null
+      consolidated: True
+
+  gebco_2022:
+    description: The General Bathymetric Chart of the Oceans - GEBCO 2022 15-sec global bathymetry.
+    metadata:
+      name: gebco 2022
+      yname: lat
+      xname: lon
+      url: https://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_2022/
+      tags:
+        - bathymetry
+        - global
+        - gebco
+        - seabed
+        - seafoor
+        - land
+        - 2022
+        - 15-sec
+    driver: intake_xarray.xzarr.ZarrSource
+    args:
+      urlpath: gs://oceanum-bathy/gebco_2022.zarr
+      storage_options:
+        token: null
+      consolidated: True

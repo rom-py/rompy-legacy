@@ -1,0 +1,125 @@
+project: # null
+  model_type: project
+  name: Test rompy setup
+  nr: '0001'
+
+set:
+  model_type: set
+  level: 0.0
+  depmin: 0.05
+  maxerr: 1
+  grav: 9.81
+  rho: 1025.0
+  cdcap: 0.0025
+  direction_convention: nautical
+
+mode:
+  model_type: mode
+  kind: nonstationary
+  dim: twodimensional
+
+coordinates:
+  model_type: coordinates
+  kind:
+    model_type: spherical
+
+cgrid:
+  model_type: regular
+  spectrum:
+    mdc: 36
+    flow: 0.04
+    fhigh: 0.4
+  xlenc: 100.0
+  ylenc: 100.0
+  mxc: 10
+  myc: 10
+
+inpgrid:
+  inpgrids:
+  - model_type: regular
+    grid_type: bottom
+    xpinp: 0.0
+    ypinp: 0.0
+    alpinp: 0.0
+    mxinp: 10
+    myinp: 10
+    dxinp: 0.1
+    dyinp: 0.1
+    excval: -999.0
+    readinp:
+      model_type: readinp
+      fname1: bottom.txt
+  - model_type: regular
+    grid_type: wind
+    xpinp: 0.0
+    ypinp: 0.0
+    alpinp: 0.0
+    mxinp: 10
+    myinp: 10
+    dxinp: 0.1
+    dyinp: 0.1
+    excval: -999.0
+    readinp:
+      model_type: readinp
+      fname1: wind.txt
+    nonstationary:
+      tbeg: '2023-01-01T00:00:00'
+      delt: PT30M
+      tend: '2023-02-01T00:00:00'
+      deltfmt: hr
+
+boundary:
+  model_type: boundspec
+  shapespec:
+    model_type: shapespec
+    shape:
+      model_type: tma
+      d: 12.0
+  location:
+    model_type: side
+    side: west
+  data:
+    model_type: constantpar
+    hs: 1.0
+    per: 10.0
+    dir: 0.0
+    dd: 10.0
+
+initial:
+  model_type: initial
+  kind:
+    model_type: hotsingle
+    fname: hotfile.txt
+    format: free
+
+physics:
+  gen:
+    model_type: gen3
+    source_terms:
+      model_type: st6c1
+  # gen:
+  #   model_type: gen3
+  #   source_terms:
+  #     model_type: westhuysen
+  sswell:
+    model_type: zieger
+  negatinp:
+    model_type: negatinp
+    rdcoef: 0.1
+  wcapping:
+    model_type: wcapab
+    cds2: 5.0e-5
+    br: 1.75e-3
+    current: True
+    cds3: 0.8
+  quadrupl:
+    iquad: 2
+    lambd: 0.25
+  breaking:
+    model_type: constant
+    alpha: 1.0
+    gamma: 0.73
+  friction:
+    model_type: collins
+    cfw: 0.015
+  

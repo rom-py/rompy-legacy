@@ -1,0 +1,16 @@
+services:
+
+  swansrc:
+    image: oceanum/swan:${SWAN_VERSION}
+    build:
+      context: ./swan
+      dockerfile: Dockerfile
+      tags:
+        - oceanum/swan:latest
+      args:
+        SWAN_VERSION: $SWAN_VERSION
+        MPICH_VERSION: $MPICH_VERSION
+        HDF5_MAJOR_VERSION: $HDF5_MAJOR_VERSION
+        HDF5_MINOR_VERSION: $HDF5_MINOR_VERSION
+        NETCDF_C_VERSION: $NETCDF_C_VERSION
+        NETCDF_FORTRAN_VERSION: $NETCDF_FORTRAN_VERSION

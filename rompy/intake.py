@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-# Copyright (c) 2020 - 2021, CSIRO 
+# Copyright (c) 2020 - 2021, CSIRO
 #
 # All rights reserved.
 #
@@ -34,16 +34,16 @@ class NetCDFFCStackSource(DataSourceMixin):
         Example:
             - ``air_{month}.nc``
     fmt_fields: dict
-        Dictionary of keys corresponding to urlpath format entries. The product of 
-        all values is broadcast across urlpath to establish a finite set of locations 
+        Dictionary of keys corresponding to urlpath format entries. The product of
+        all values is broadcast across urlpath to establish a finite set of locations
         to look for source files.
     url_replace:
         Dictionary of string substitutions to be made on found urls.
         Example:
             - {'catalog':'dodsC'}
     ds_filters:
-        Dictionary of common dataset manipulations that are applied in order 
-        during dataset preprocessing. Configurable from catalog entry yaml. 
+        Dictionary of common dataset manipulations that are applied in order
+        during dataset preprocessing. Configurable from catalog entry yaml.
         Filters currently available are ['sort','subset','crop','timenorm','rename']
         Examples:
             - {'rename':{'dir':'mean_dir'},
@@ -52,13 +52,13 @@ class NetCDFFCStackSource(DataSourceMixin):
                'crop':{'lon':slice(-32.2,-33.2),
                        'lat':slice(114.,115.)}
                }
-        Additional documentation to follow - see source code for xarray 
+        Additional documentation to follow - see source code for xarray
         implementation details.
     startdt, enddt: datetime, optional
-        Start and end dates to crop final stacked dataset to. 
+        Start and end dates to crop final stacked dataset to.
     hindcast: bool, optional
-        Rather than return a stack of forecasts, return a dataset with a 
-        unique time dimension selecting the minimum lead time for each time point. 
+        Rather than return a stack of forecasts, return a dataset with a
+        unique time dimension selecting the minimum lead time for each time point.
         Useful for establishing a pseudo-reanalysis dataset from a stack of forecasts.
     chunks : int or dict, optional
         Chunks is used to load the new dataset into dask
@@ -76,7 +76,7 @@ class NetCDFFCStackSource(DataSourceMixin):
                  startdt = None, enddt = None, hindcast = False,
                  chunks=None, xarray_kwargs=None, metadata=None,
                  storage_options=None, **kwargs):
-        
+
         self.fn_fmt = fn_fmt
         self.url_replace = url_replace or {}
         self.fmt_fields = fmt_fields or {}
@@ -128,7 +128,7 @@ class NetCDFFCStackSource(DataSourceMixin):
         if isinstance(self.deterministic_pattern, bool):
             if isinstance(urlpath, str) and self._urlpath == urlpath:
                 self.deterministic_pattern = False
-    
+
     def _open_dataset(self):
         import xarray as xr
         from dask import delayed, compute
@@ -158,14 +158,14 @@ class NetCDFFCStackSource(DataSourceMixin):
                         ds_concat = xr.concat(subset,
                                               dim='lead',
                                               coords=['time'],
-                                              compat="override", 
+                                              compat="override",
                                               combine_attrs="override")
                         ds_concat['init'] = (('init',), [i,])
                         dsets_concat.append(ds_concat)
                     dsets = dsets_concat
-                ds = xr.concat(dsets, dim='init', 
-                                      coords=['time'], 
-                                      compat="override", 
+                ds = xr.concat(dsets, dim='init',
+                                      coords=['time'],
+                                      compat="override",
                                       combine_attrs="override")
         else:
             raise ValueError('Internal error. Expected urlpath path pattern string to have been expanded to a list')
@@ -189,7 +189,7 @@ class NetCDFFCStackSource(DataSourceMixin):
                 if self.enddt is not None:
                     inds = inds & (ds.time <= self.enddt)
                 ds = ds.where(inds,drop=True)
-            
+
         self._ds = ds
 
 
@@ -211,7 +211,7 @@ class NetCDFAODNStackSource(DataSourceMixin):
         Thredd prefix to be added to product of scanned urls.
         Some examples:
             - ``"http://thredds.aodn.org.au/thredds/dodsC/"``
-        Note that the final path uses startdt, enddt and geom parameters.    
+        Note that the final path uses startdt, enddt and geom parameters.
     startdt, enddt: datetime
         Start and end dates used to retrieve AODN data and crop final stacked dataset to.
     geom: str
@@ -219,8 +219,8 @@ class NetCDFAODNStackSource(DataSourceMixin):
         Some examples:
             - 'POLYGON ((111.0000000000000000 -33.0000000000000000, 111.0000000000000000 -31.5000000000000000, 115.8000030517578125 -31.5000000000000000, 115.8000030517578125 -33.0000000000000000, 111.0000000000000000 -33.0000000000000000))'
     ds_filters:
-        Dictionary of common dataset manipulations that are applied in order 
-        during dataset preprocessing. Configurable from catalog entry yaml. 
+        Dictionary of common dataset manipulations that are applied in order
+        during dataset preprocessing. Configurable from catalog entry yaml.
         Filters currently available are ['sort','subset','crop','timenorm','rename']
         Examples:
             - {'rename':{'dir':'mean_dir'},
@@ -229,7 +229,7 @@ class NetCDFAODNStackSource(DataSourceMixin):
                'crop':{'lon':slice(-32.2,-33.2),
                        'lat':slice(114.,115.)}
                }
-        Additional documentation to follow - see source code for xarray 
+        Additional documentation to follow - see source code for xarray
         implementation details.
     chunks : int or dict, optional
         Chunks is used to load the new dataset into dask
@@ -248,7 +248,7 @@ class NetCDFAODNStackSource(DataSourceMixin):
                  ds_filters=None,
                  chunks=None, xarray_kwargs=None, metadata=None,
                  storage_options=None, **kwargs):
-        
+
         self.thredds_prefix = thredds_prefix
         self.startdt = to_datetime(startdt)
         self.enddt = to_datetime(enddt)
@@ -278,7 +278,7 @@ class NetCDFAODNStackSource(DataSourceMixin):
         elif 'url' in df: df = df.url
         else: raise KeyError(f'No url field for AODN request')
         self._urlpath = [self.thredds_prefix+i for i in list(df)]
-    
+
     def _open_dataset(self):
         import xarray as xr
         from dask import delayed, compute
@@ -305,12 +305,12 @@ class NetCDFAODNStackSource(DataSourceMixin):
                 __open_preprocess=delayed(_open_preprocess)
                 futures = [__open_preprocess(url,self.chunks,self.ds_filters,self.xarray_kwargs) for url in self.urlpath]
                 dsets = compute(*futures,traverse=False)
-                ds = xr.concat(dsets, dim='TIME', 
-                                      coords=['TIME'], 
-                                      compat="override", 
+                ds = xr.concat(dsets, dim='TIME',
+                                      coords=['TIME'],
+                                      compat="override",
                                       combine_attrs="override")
                 if 'sort' in self.ds_filters.keys(): ds=ds.sortby(self.ds_filters['sort']['coords'])
         else:
             raise ValueError('Internal error. Expected urlpath path pattern string to have been expanded to a list')
-            
+
         self._ds = ds

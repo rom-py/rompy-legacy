@@ -1,0 +1,33 @@
+name: Build Sphinx Docs
+
+on:
+  push:
+    branches:
+      - docs
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          sudo apt install pandoc gfortran
+          python -m pip install --upgrade pip
+          pip install wavespectra # fix for bug in wavespectra if installed after rompy
+          pip install .
+          pip install -r docs/requirements.txt
+      - name: Build the docs
+        run: |
+          cd docs
+          make html
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/html

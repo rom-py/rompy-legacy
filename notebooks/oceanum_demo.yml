@@ -1,0 +1,92 @@
+# Note that this is config demonstrates a full model 
+# example running off the coast of Raglan. It uses
+# era5 wind forcing, and spectral boundaries from
+# oceanum's global hindcast. These datasets are 
+# read from the oceanum catalog
+
+run_id: oceanum 
+period:
+  start: 20230101T00
+  duration: 6h
+  interval: 1h
+output_dir: simulations
+config:
+  model_type: swan
+  grid:
+    x0: 174.60
+    y0: -37.95
+    rot: 10.0
+    dx: 0.02
+    dy: 0.02
+    nx: 20
+    ny: 20
+    gridtype: REG
+  spectral_resolution:
+    fmin: 0.0464
+    fmax: 1.0
+    nfreqs: 31
+    ndirs: 36
+  forcing:
+    wind:
+      model_type: swan
+      id: wind 
+      var: WIND 
+      dataset: 
+        model_type: intake
+        catalog_uri: ../rompy/catalogs/oceanum.yaml
+        dataset_id: era5_wind10m
+      filter:
+        sort: 
+          coords: [latitude]
+      z1: u10
+      z2: v10
+      latname: latitude
+      lonname: longitude
+    bottom: 
+      id: bottom
+      var: BOTTOM
+      dataset: 
+        model_type: intake
+        catalog_uri: ../rompy/catalogs/oceanum.yaml
+        dataset_id: gebco_2022
+      fac: -1.0
+      z1: elevation
+      latname: lat
+      lonname: lon
+    boundary:
+      id: bnd
+      dataset: 
+        model_type: intake
+        catalog_uri: ../rompy/catalogs/oceanum.yaml
+        dataset_id: oceanum_wave_nz_era5_v1_spec
+        # dataset_id: oceanum_wave_glob05_era5_v1_spec
+      latname: lat
+      lonname: lon
+      tolerance: 0.1
+      spacing: 0.01
+      sel_method: idw
+      rectangle: closed
+  physics: 
+    friction: "MAD"
+    friction_coeff: 0.1
+  outputs:
+    grid:
+      variables:
+      - DEPTH
+      - UBOT
+      - HSIGN
+      - HSWELL
+      - DIR
+      - TPS
+      - TM01
+      - WIND
+    spec:
+      locations:
+        coords:
+        - lon: 174.61
+          lat: -37.96
+        - lon: 174.62
+          lat: -37.96
+        - lon: 174.62
+          lat: -37.97
+

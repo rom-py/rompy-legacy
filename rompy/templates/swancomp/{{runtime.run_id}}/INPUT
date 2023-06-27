@@ -1,0 +1,28 @@
+!------------------------------------------------------------ Startup -------------------------------------------------------------
+
+{% if config.project %}{{config.project.render()}}{% endif %}
+{% if config.set != None %}{{config.set.render()}}{% endif %}
+{% if config.mode != None %}{{config.mode.render()}}{% endif %}
+{% if config.coordinates != None %}{{config.coordinates.render()}}{% endif %}
+
+
+!------------------------------------------------------- Computational Grid -------------------------------------------------------
+
+{% if config.cgrid %}{{config.cgrid.render()}}{% endif %}
+
+
+!----------------------------------------------------------- Input Grids ----------------------------------------------------------
+
+{% if config.inpgrid %}{{config.inpgrid.render()}}{% endif %}
+
+
+!------------------------------------------------- Boundary and Initial conditions ------------------------------------------------
+
+{% if config.boundary %}{{config.boundary.render()}}{% endif %}
+
+{% if config.initial %}{{config.initial.render()}}{% endif %}
+
+
+!------------------------------------------------------------ Physics -------------------------------------------------------------
+
+{% if config.physics %}{{config.physics.render()}}{% endif %}

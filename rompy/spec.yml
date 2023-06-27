@@ -1,0 +1,24 @@
+version: "1"
+spec:
+  id: parent
+  kind: swan
+  workdir: /tmp/test-swan/parent
+  children:
+    - id: child
+      kind: swan
+      workdir: /tmp/test-swan/child
+      children: []
+      grid: GridObject
+      time: TimeObject
+      static:
+        - BathyObject # Should it just be an input rather than static?
+      input:
+        - WindObject
+  grid: GridObject
+  time: TimeObject
+  static:
+    - SomeBathyObject
+    - SomeObstacleObject
+  input:
+    - SomeWindForcing
+    - SomeBoundaryForcing

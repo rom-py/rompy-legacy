@@ -1,0 +1,30 @@
+metadata:
+  version: 1 
+plugins:
+  source:
+    - module: intake_xarray
+sources:
+
+  gfs_glob05:
+    description: NOAA GFS global 0.5 degree atmospheric forecast
+    metadata:
+      name: NOAA GFS global meteo forecast
+      tname: time
+      yname: lat
+      xname: lon
+      url: "https://nomads.ncep.noaa.gov"
+      tags:
+        - noaa
+        - wind
+        - model
+        - gfs
+        - forecast
+        - global
+    driver: opendap
+    args:
+      urlpath: "https://nomads.ncep.noaa.gov/dods/gfs_0p50/gfs{{cycle.strftime('%Y%m%d')}}/gfs_0p50_{{cycle.strftime('%H')}}z"
+    parameters:
+      cycle:
+        description: model cycle
+        type: datetime
+        default: today

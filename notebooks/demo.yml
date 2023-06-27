@@ -1,0 +1,77 @@
+# Note that this is config fully replicates the config deomonstrated in the demo notebook,
+# however it requireds the datasets created in that notebook to work. 
+
+run_id: test_swantemplate 
+period:
+  start: 20230101T00
+  # end: 20200224T04
+  duration: 3d
+  interval: 1h
+output_dir: simulations
+config:
+  model_type: swan
+  grid:
+    x0: 115.68
+    y0: -32.76
+    rot: 77.0
+    dx: 0.001
+    dy: 0.001
+    nx: 390
+    ny: 150
+    gridtype: REG
+  spectral_resolution:
+    fmin: 0.0464
+    fmax: 1.0
+    nfreqs: 31
+    ndirs: 36
+  forcing:
+    wind:
+      model_type: swan
+      id: wind 
+      var: WIND 
+      dataset: 
+        uri: simulations/test_swantemplate/datasets/wind_inputs.nc
+        model_type: xarray
+      z1: u
+      z2: v
+      latname: lat
+      lonname: lon
+    bottom: 
+      id: bottom
+      var: BOTTOM
+      dataset: 
+        uri: simulations/test_swantemplate/datasets/bathy.nc
+        model_type: xarray
+      z1: depth
+      latname: lat
+      lonname: lon
+    boundary:
+      id: bnd
+      dataset: 
+        uri: ../tests/data/aus-20230101.nc
+        model_type: xarray
+      latname: lat
+      lonname: lon
+      tolerance: 0.1
+      sel_method: idw
+  physics': 
+    friction: MAD
+    friction_coeff: 0.1
+  outputs:
+    grid:
+      variables:
+      - DEPTH
+      - UBOT
+      - HSIGN
+      - HSWELL
+      - DIR
+      - TPS
+      - TM01
+      - WIND
+    spec:
+      locations:
+      - x: 115.68
+        y: -32.76
+      - x: 115.68
+        y: -32.76
+
