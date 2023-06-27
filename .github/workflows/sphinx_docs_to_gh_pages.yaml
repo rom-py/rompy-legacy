@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - docs
+      - main
 
 jobs:
   build:
@@ -18,6 +19,7 @@ jobs:
         run: |
           sudo apt install pandoc gfortran
           python -m pip install --upgrade pip
+          pip install wavespectra # fix for bug in wavespectra if installed after rompy
           pip install .
           pip install -r docs/requirements.txt
       - name: Build the docs
