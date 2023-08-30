@@ -1,0 +1,2037 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Basic demonstration &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="_static/documentation_options.js?v=38b66d78"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'demonb';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API  Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Model Components</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Basic demonstration</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="Basic-demonstration">
+<h1>Basic demonstration<a class="headerlink" href="#Basic-demonstration" title="Link to this heading">#</a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">SwanConfig</span><span class="p">,</span> <span class="n">SwanDataGrid</span><span class="p">,</span> <span class="n">SwanGrid</span><span class="p">,</span> <span class="n">SwanModel</span>
+<span class="kn">from</span> <span class="nn">rompy.core</span> <span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.data</span> <span class="kn">import</span> <span class="n">SwanDataGrid</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanModel<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanModel<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    run_id<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;run_id&#39;</span><span class="ansi-blue-fg">,</span>
+    period<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">.</span>TimeRange <span class="ansi-blue-fg">=</span> TimeRange<span class="ansi-blue-fg">(</span>start<span class="ansi-blue-fg">=</span>datetime<span class="ansi-blue-fg">.</span>datetime<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">2020</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">21</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> end<span class="ansi-blue-fg">=</span>datetime<span class="ansi-blue-fg">.</span>datetime<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">2020</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">24</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> duration<span class="ansi-blue-fg">=</span>datetime<span class="ansi-blue-fg">.</span>timedelta<span class="ansi-blue-fg">(</span>days<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> interval<span class="ansi-blue-fg">=</span>datetime<span class="ansi-blue-fg">.</span>timedelta<span class="ansi-blue-fg">(</span>seconds<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">900</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> include_end<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    output_dir<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;simulations&#39;</span><span class="ansi-blue-fg">,</span>
+    config<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>SwanConfig <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span>
+    template<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;/source/rompy/rompy/templates/swan&#39;</span><span class="ansi-blue-fg">,</span>
+    checkout<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;main&#39;</span><span class="ansi-blue-fg">,</span>
+    model<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;SWAN&#39;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+A base class for all models
+
+Parameters
+----------
+
+run_id : str
+    The run id
+period : TimeRange
+    The time period to run the model
+output_dir : str
+    The output directory
+config : BaseConfig
+    The configuration object
+<span class="ansi-red-fg">Source:</span>
+<span class="ansi-green-fg">class</span> SwanModel<span class="ansi-blue-fg">(</span>BaseModel<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+    config<span class="ansi-blue-fg">:</span> SwanConfig <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+    model<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;SWAN&#34;</span>
+    template<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;/source/rompy/rompy/templates/swan&#34;</span>
+
+    <span class="ansi-red-fg"># @property</span>
+    <span class="ansi-red-fg"># def subnests(self):</span>
+    <span class="ansi-red-fg">#     &#34;&#34;&#34;Process subnests for SWAN</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg">#     Just a proposal for now. Provides an elegant way of initilising subnests</span>
+    <span class="ansi-red-fg">#     &#34;&#34;&#34;</span>
+    <span class="ansi-red-fg">#     ii = 1</span>
+    <span class="ansi-red-fg">#     subnests = []</span>
+    <span class="ansi-red-fg">#     for config in self.config.subnests:</span>
+    <span class="ansi-red-fg">#         self.reinit(</span>
+    <span class="ansi-red-fg">#             instance=self, run_id=f&#34;{self.run_id}_subnest{ii}&#34;, config=config</span>
+    <span class="ansi-red-fg">#         )</span>
+    <span class="ansi-red-fg">#         ii += 1</span>
+    <span class="ansi-red-fg">#     return subnests</span>
+
+    <span class="ansi-blue-fg">@</span>classmethod
+    <span class="ansi-green-fg">def</span> reinit<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> instance<span class="ansi-blue-fg">,</span> run_id<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-blue-fg">&#34;&#34;&#34;Re-initialise a model with the same configuration</span>
+
+<span class="ansi-blue-fg">        Parameters</span>
+<span class="ansi-blue-fg">        ----------</span>
+<span class="ansi-blue-fg">        run_id : str</span>
+<span class="ansi-blue-fg">            run_id of the previous run</span>
+<span class="ansi-blue-fg">        **kwargs</span>
+<span class="ansi-blue-fg">            Any additional keyword arguments to pass to the model initialisation</span>
+
+<span class="ansi-blue-fg">        Returns</span>
+<span class="ansi-blue-fg">        -------</span>
+<span class="ansi-blue-fg">        SwanModel</span>
+<span class="ansi-blue-fg">            A new model instance</span>
+<span class="ansi-blue-fg">        &#34;&#34;&#34;</span>
+        kwg <span class="ansi-blue-fg">=</span> instance<span class="ansi-blue-fg">.</span>dict<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+        kwg<span class="ansi-blue-fg">.</span>pop<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;run_id&#34;</span><span class="ansi-blue-fg">)</span>
+        kwg<span class="ansi-blue-fg">.</span>update<span class="ansi-blue-fg">(</span>kwargs<span class="ansi-blue-fg">)</span>
+        model <span class="ansi-blue-fg">=</span> cls<span class="ansi-blue-fg">(</span>run_id<span class="ansi-blue-fg">=</span>run_id<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwg<span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> model
+
+    <span class="ansi-red-fg"># def generate(self):</span>
+    <span class="ansi-red-fg">#     &#34;&#34;&#34;Generate SWAN input files&#34;&#34;&#34;</span>
+    <span class="ansi-red-fg">#     super().generate()</span>
+    <span class="ansi-red-fg">#     for nest in self.subnests:</span>
+    <span class="ansi-red-fg">#         nest.generate()</span>
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/model.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>TimeRange<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+TimeRange<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    start<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>datetime<span class="ansi-blue-fg">.</span>datetime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    end<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>datetime<span class="ansi-blue-fg">.</span>datetime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    duration<span class="ansi-blue-fg">:</span> Union<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">,</span> datetime<span class="ansi-blue-fg">.</span>timedelta<span class="ansi-blue-fg">,</span> NoneType<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    interval<span class="ansi-blue-fg">:</span> Union<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">,</span> datetime<span class="ansi-blue-fg">.</span>timedelta<span class="ansi-blue-fg">,</span> NoneType<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;1h&#39;</span><span class="ansi-blue-fg">,</span>
+    include_end<span class="ansi-blue-fg">:</span> bool <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">True</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Source:</span>
+<span class="ansi-green-fg">class</span> TimeRange<span class="ansi-blue-fg">(</span>RompyBaseModel<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+    <span class="ansi-blue-fg">&#34;&#34;&#34;A time range object</span>
+
+<span class="ansi-blue-fg">    Parameters</span>
+<span class="ansi-blue-fg">    ----------</span>
+<span class="ansi-blue-fg">    start : datetime</span>
+<span class="ansi-blue-fg">        The start date of the time range</span>
+<span class="ansi-blue-fg">    end : datetime</span>
+<span class="ansi-blue-fg">        The end date of the time range</span>
+<span class="ansi-blue-fg">    duration : str, timedelta</span>
+<span class="ansi-blue-fg">        The duration of the time range</span>
+<span class="ansi-blue-fg">    interval : str, timedelta</span>
+<span class="ansi-blue-fg">        The frequency of the time range</span>
+<span class="ansi-blue-fg">    include_end : bool</span>
+
+<span class="ansi-blue-fg">    Examples</span>
+<span class="ansi-blue-fg">    --------</span>
+<span class="ansi-blue-fg">    &gt;&gt;&gt; from rompy import DateTimeRange</span>
+<span class="ansi-blue-fg">    &gt;&gt;&gt; DateTimeRange(start=&#34;2020-01-01&#34;, end=&#34;2020-01-02&#34;)</span>
+<span class="ansi-blue-fg">    DateTimeRange(start=datetime.datetime(2020, 1, 1, 0, 0), end=datetime.datetime(2020, 1, 2, 0, 0), duration=None, frequency=None)</span>
+<span class="ansi-blue-fg">    &gt;&gt;&gt; DateTimeRange(start=&#34;2020-01-01&#34;, duration=&#34;1d&#34;)</span>
+<span class="ansi-blue-fg">    DateTimeRange(start=datetime.datetime(2020, 1, 1, 0, 0), end=datetime.datetime(2020, 1, 2, 0, 0), duration=datetime.timedelta(days=1), frequency=None)</span>
+<span class="ansi-blue-fg">    &gt;&gt;&gt; DateTimeRange(start=&#34;2020-01-01&#34;, duration=&#34;1d&#34;, frequency=&#34;1h&#34;)</span>
+<span class="ansi-blue-fg">    &#34;&#34;&#34;</span>
+
+    start<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>datetime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+    end<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>datetime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+    duration<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>Union<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">,</span> timedelta<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+    interval<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>Union<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">,</span> timedelta<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;1h&#34;</span>
+    include_end<span class="ansi-blue-fg">:</span> bool <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">True</span>
+
+    <span class="ansi-green-fg">class</span> Config<span class="ansi-blue-fg">:</span>
+        validate_all <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">True</span>
+
+    <span class="ansi-blue-fg">@</span>validator<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;interval&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">,</span> pre<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+    <span class="ansi-green-fg">def</span> valid_duration_interval<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> v<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">if</span> v <span class="ansi-blue-fg">==</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">return</span> v
+        <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>v<span class="ansi-blue-fg">,</span> timedelta<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">return</span> v
+        <span class="ansi-green-fg">elif</span> isinstance<span class="ansi-blue-fg">(</span>v<span class="ansi-blue-fg">,</span> str<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">if</span> v<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">in</span> time_units<span class="ansi-blue-fg">:</span>
+                <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span>
+                    <span class="ansi-blue-fg">&#34;Invalid duration unit. Must be one of: h, m, s, d, w, y&#34;</span>
+                <span class="ansi-blue-fg">)</span>
+            time_delta_unit <span class="ansi-blue-fg">=</span> v<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+            time_delta_value <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>v<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+            <span class="ansi-green-fg">return</span> timedelta<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">**</span><span class="ansi-blue-fg">{</span>time_units<span class="ansi-blue-fg">[</span>time_delta_unit<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span> time_delta_value<span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span>
+
+    <span class="ansi-blue-fg">@</span>validator<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">,</span> pre<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+    <span class="ansi-green-fg">def</span> validate_start_end<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> v<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">if</span> v <span class="ansi-blue-fg">==</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">return</span> v
+        <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>v<span class="ansi-blue-fg">,</span> datetime<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">return</span> v
+        <span class="ansi-green-fg">for</span> fmt <span class="ansi-green-fg">in</span> <span class="ansi-blue-fg">[</span>
+            <span class="ansi-blue-fg">&#34;%Y%m%d.%H%M%S&#34;</span><span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">&#34;%Y%m%d.%H%M&#34;</span><span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">&#34;%Y%m%dT%H%M%S&#34;</span><span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">&#34;%Y%m%dT%H%M&#34;</span><span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">&#34;%Y%m%dT%H&#34;</span><span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">&#34;%Y%m%dT&#34;</span><span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">&#34;%Y-%m-%dT%H%M&#34;</span><span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">&#34;%Y-%m-%dT%H&#34;</span><span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">&#34;%Y-%m-%d&#34;</span><span class="ansi-blue-fg">,</span>
+        <span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+                ret <span class="ansi-blue-fg">=</span> datetime<span class="ansi-blue-fg">.</span>strptime<span class="ansi-blue-fg">(</span>v<span class="ansi-blue-fg">,</span> fmt<span class="ansi-blue-fg">)</span>
+                <span class="ansi-green-fg">return</span> ret
+            <span class="ansi-green-fg">except</span> ValueError<span class="ansi-blue-fg">:</span>
+                <span class="ansi-green-fg">pass</span>
+        <span class="ansi-green-fg">return</span> v
+
+    <span class="ansi-blue-fg">@</span>root_validator
+    <span class="ansi-green-fg">def</span> validate_start_end_duration<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> values<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-red-fg"># check two out of start, end, duration are provided</span>
+        <span class="ansi-green-fg">if</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+                <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;start provided, must provide either end or duration&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">if</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+                <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;end provided, must provide either start or duration&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">if</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+                <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;duration provided, must provide either start or end&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">if</span> <span class="ansi-blue-fg">(</span>
+            values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span>
+            <span class="ansi-green-fg">and</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span>
+            <span class="ansi-green-fg">and</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span>
+        <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Must provide two of start, end, duration&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">if</span> <span class="ansi-blue-fg">(</span>
+            values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span>
+            <span class="ansi-green-fg">and</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span>
+            <span class="ansi-green-fg">and</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span>
+        <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Must provide only two of start, end, duration&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">if</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span> <span class="ansi-green-fg">and</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+            values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">-</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">]</span>
+        <span class="ansi-green-fg">if</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span> <span class="ansi-green-fg">and</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+            values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">+</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">]</span>
+        <span class="ansi-green-fg">if</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span> <span class="ansi-green-fg">and</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+            values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;start&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;end&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">-</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;duration&#34;</span><span class="ansi-blue-fg">]</span>
+        <span class="ansi-green-fg">return</span> values
+
+    <span class="ansi-blue-fg">@</span>property
+    <span class="ansi-green-fg">def</span> date_range<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> List<span class="ansi-blue-fg">[</span>datetime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+        start <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>start
+        end <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>end
+        date_range <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+        <span class="ansi-green-fg">while</span> start <span class="ansi-blue-fg">&lt;</span> end<span class="ansi-blue-fg">:</span>
+            date_range<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>start<span class="ansi-blue-fg">)</span>
+            start <span class="ansi-blue-fg">+=</span> self<span class="ansi-blue-fg">.</span>interval
+            <span class="ansi-green-fg">if</span> start <span class="ansi-blue-fg">+</span> self<span class="ansi-blue-fg">.</span>interval <span class="ansi-blue-fg">&gt;</span> end<span class="ansi-blue-fg">:</span>
+                <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>include_end<span class="ansi-blue-fg">:</span>
+                    date_range<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>end<span class="ansi-blue-fg">)</span>
+                <span class="ansi-green-fg">break</span>
+        <span class="ansi-green-fg">return</span> date_range
+
+    <span class="ansi-green-fg">def</span> contains<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> date<span class="ansi-blue-fg">:</span> datetime<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> bool<span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>start <span class="ansi-blue-fg">&lt;=</span> date <span class="ansi-blue-fg">&lt;=</span> self<span class="ansi-blue-fg">.</span>end
+
+    <span class="ansi-green-fg">def</span> contains_range<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> date_range<span class="ansi-blue-fg">:</span> <span class="ansi-blue-fg">&#34;TimeRange&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> bool<span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>contains<span class="ansi-blue-fg">(</span>date_range<span class="ansi-blue-fg">.</span>start<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>contains<span class="ansi-blue-fg">(</span>date_range<span class="ansi-blue-fg">.</span>end<span class="ansi-blue-fg">)</span>
+
+    <span class="ansi-green-fg">def</span> common_times<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> date_range<span class="ansi-blue-fg">:</span> <span class="ansi-blue-fg">&#34;TimeRange&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> List<span class="ansi-blue-fg">[</span>datetime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+        common_times <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+        <span class="ansi-green-fg">for</span> date <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">.</span>date_range<span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">if</span> date_range<span class="ansi-blue-fg">.</span>contains<span class="ansi-blue-fg">(</span>date<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+                common_times<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>date<span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> common_times
+
+    <span class="ansi-green-fg">def</span> __str__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        ret <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;\n\tStart: {self.start}\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;\tEnd: {self.end}\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;\tDuration: {self.duration}\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;\tInterval: {self.interval}\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;\tInclude End: {self.include_end}\n&#34;</span>
+        <span class="ansi-green-fg">return</span> ret
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/core/time.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanConfig<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanConfig<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    arg1<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;foo&#39;</span><span class="ansi-blue-fg">,</span>
+    arg2<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;bar&#39;</span><span class="ansi-blue-fg">,</span>
+    grid<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">.</span>SwanGrid<span class="ansi-blue-fg">,</span>
+    spectral_resolution<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>SwanSpectrum <span class="ansi-blue-fg">=</span> SwanSpectrum<span class="ansi-blue-fg">(</span>fmin<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.0464</span><span class="ansi-blue-fg">,</span> fmax<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">,</span> nfreqs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">31</span><span class="ansi-blue-fg">,</span> ndirs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">36</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    forcing<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>ForcingData <span class="ansi-blue-fg">=</span> ForcingData<span class="ansi-blue-fg">(</span>bottom<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> wind<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> current<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> boundary<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    physics<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>SwanPhysics <span class="ansi-blue-fg">=</span> SwanPhysics<span class="ansi-blue-fg">(</span>friction<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;MAD&#39;</span><span class="ansi-blue-fg">,</span> friction_coeff<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    outputs<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>Outputs <span class="ansi-blue-fg">=</span> Outputs<span class="ansi-blue-fg">(</span>grid<span class="ansi-blue-fg">=</span>GridOutput<span class="ansi-blue-fg">(</span>period<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> variables<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;DEPTH&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;UBOT&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;HSIGN&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;HSWELL&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;DIR&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;TPS&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;TM01&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;WIND&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> spec<span class="ansi-blue-fg">=</span>SpecOutput<span class="ansi-blue-fg">(</span>period<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> locations<span class="ansi-blue-fg">=</span>OutputLocs
+  <span class="ansi-cyan-fg">115.61</span> <span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">32.618</span>
+  <span class="ansi-cyan-fg">115.686067</span> <span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">32.532381</span>
+<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    spectra_file<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;boundary.spec&#39;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Source:</span>
+<span class="ansi-green-fg">class</span> SwanConfig<span class="ansi-blue-fg">(</span>BaseConfig<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+    <span class="ansi-blue-fg">&#34;&#34;&#34;SWAN configuration</span>
+
+<span class="ansi-blue-fg">    Parameters</span>
+<span class="ansi-blue-fg">    ----------</span>
+<span class="ansi-blue-fg">    grid : SwanGrid</span>
+<span class="ansi-blue-fg">        Grid for SWAN</span>
+<span class="ansi-blue-fg">    spectral_resolution : SwanSpectrum</span>
+<span class="ansi-blue-fg">        Spectral resolution for SWAN</span>
+<span class="ansi-blue-fg">    forcing : ForcingData</span>
+<span class="ansi-blue-fg">        Forcing data for SWAN</span>
+<span class="ansi-blue-fg">    physics : SwanPhysics</span>
+<span class="ansi-blue-fg">        Physics options for SWAN</span>
+<span class="ansi-blue-fg">    outputs : Outputs</span>
+<span class="ansi-blue-fg">        Outputs for SWAN</span>
+<span class="ansi-blue-fg">    &#34;&#34;&#34;</span>
+
+    grid<span class="ansi-blue-fg">:</span> SwanGrid
+    spectral_resolution<span class="ansi-blue-fg">:</span> SwanSpectrum <span class="ansi-blue-fg">=</span> SwanSpectrum<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+    forcing<span class="ansi-blue-fg">:</span> ForcingData <span class="ansi-blue-fg">=</span> ForcingData<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+    physics<span class="ansi-blue-fg">:</span> SwanPhysics <span class="ansi-blue-fg">=</span> SwanPhysics<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+    outputs<span class="ansi-blue-fg">:</span> Outputs <span class="ansi-blue-fg">=</span> Outputs<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+    spectra_file<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;boundary.spec&#34;</span>
+    _datefmt<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;%Y%m%d.%H%M%S&#34;</span>
+    <span class="ansi-red-fg"># subnests: list[SwanConfig] = []</span>
+
+    <span class="ansi-blue-fg">@</span>property
+    <span class="ansi-green-fg">def</span> domain<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        output <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;CGRID {self.grid.cgrid} {self.spectral_resolution.cmd}\n&#34;</span>
+        output <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;{self.grid.cgrid_read}\n&#34;</span>
+        <span class="ansi-green-fg">return</span> output
+
+    <span class="ansi-green-fg">def</span> _get_grid<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> key<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-red-fg"># TODO - Is this functionality needed?</span>
+        <span class="ansi-green-fg">from</span> intake<span class="ansi-blue-fg">.</span>source<span class="ansi-blue-fg">.</span>utils <span class="ansi-green-fg">import</span> reverse_format
+
+        grid_spec <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>bottom_grid
+        fmt <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;{gridtype} {x0:f} {y0:f} {rot:f} {nx:d} {ny:d} {dx:f} {dy:f}&#34;</span>
+        <span class="ansi-green-fg">if</span> <span class="ansi-blue-fg">&#34;EXC&#34;</span> <span class="ansi-green-fg">in</span> grid_spec<span class="ansi-blue-fg">:</span>  <span class="ansi-red-fg"># append excluded value string</span>
+            fmt <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">&#34; EXC {exc:f}&#34;</span>
+        grid_params <span class="ansi-blue-fg">=</span> reverse_format<span class="ansi-blue-fg">(</span>fmt<span class="ansi-blue-fg">,</span> grid_spec<span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> SwanGrid<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">**</span>grid_params<span class="ansi-blue-fg">)</span>
+
+    <span class="ansi-green-fg">def</span> __call__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> runtime<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> str<span class="ansi-blue-fg">:</span>
+        ret <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+        <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">.</span>period<span class="ansi-blue-fg">:</span>
+            self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">.</span>period <span class="ansi-blue-fg">=</span> runtime<span class="ansi-blue-fg">.</span>period
+        <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>spec<span class="ansi-blue-fg">.</span>period<span class="ansi-blue-fg">:</span>
+            self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>spec<span class="ansi-blue-fg">.</span>period <span class="ansi-blue-fg">=</span> runtime<span class="ansi-blue-fg">.</span>period
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;grid&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;{self.domain}&#34;</span>
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;forcing&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>forcing<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">,</span> runtime<span class="ansi-blue-fg">)</span>
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;physics&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;{self.physics.cmd}&#34;</span>
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;remaining&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;BOUND NEST &#39;{self.spectra_file}&#39; CLOSED\n&#34;</span>
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;outputs&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>cmd
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;output_locs&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>spec<span class="ansi-blue-fg">.</span>locations
+        <span class="ansi-green-fg">return</span> ret
+
+    <span class="ansi-green-fg">def</span> __str__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        ret <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;grid: {self.grid}\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;spectral_resolution: {self.spectral_resolution}\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;forcing: {self.forcing}\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;physics: {self.physics}\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;outputs: {self.outputs}\n&#34;</span>
+        <span class="ansi-green-fg">return</span> ret
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rompy.swan.config</span> <span class="kn">import</span> <span class="n">SwanSpectrum</span><span class="p">,</span> <span class="n">ForcingData</span><span class="p">,</span> <span class="n">SwanPhysics</span><span class="p">,</span> <span class="n">Outputs</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanSpectrum<span class="o">??</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanSpectrum<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    fmin<span class="ansi-blue-fg">:</span> float <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0464</span><span class="ansi-blue-fg">,</span>
+    fmax<span class="ansi-blue-fg">:</span> float <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">,</span>
+    nfreqs<span class="ansi-blue-fg">:</span> int <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">31</span><span class="ansi-blue-fg">,</span>
+    ndirs<span class="ansi-blue-fg">:</span> int <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">36</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Source:</span>
+<span class="ansi-green-fg">class</span> SwanSpectrum<span class="ansi-blue-fg">(</span>Spectrum<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+    <span class="ansi-blue-fg">@</span>property
+    <span class="ansi-green-fg">def</span> cmd<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">f&#34;CIRCLE {self.ndirs} {self.fmin} {self.fmax} {self.nfreqs}&#34;</span>
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanPhysics<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span> SwanPhysics<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span> friction<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;MAD&#39;</span><span class="ansi-blue-fg">,</span> friction_coeff<span class="ansi-blue-fg">:</span> float <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.1</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Source:</span>
+<span class="ansi-green-fg">class</span> SwanPhysics<span class="ansi-blue-fg">(</span>RompyBaseModel<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+    friction<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;MAD&#34;</span>
+    friction_coeff<span class="ansi-blue-fg">:</span> float <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.1</span>
+
+    <span class="ansi-blue-fg">@</span>validator<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;friction&#34;</span><span class="ansi-blue-fg">)</span>
+    <span class="ansi-green-fg">def</span> validate_friction<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> v<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">if</span> v <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">in</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;MAD&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;OTHER&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;ANDANOTHER&#34;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span>
+                <span class="ansi-blue-fg">&#34;friction must be one of MAD, OTHER or ANDANOTHER&#34;</span>
+            <span class="ansi-blue-fg">)</span>  <span class="ansi-red-fg"># TODO Raf to add actual friction options</span>
+        <span class="ansi-green-fg">return</span> v
+
+    <span class="ansi-blue-fg">@</span>validator<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;friction_coeff&#34;</span><span class="ansi-blue-fg">)</span>
+    <span class="ansi-green-fg">def</span> validate_friction_coeff<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> v<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-red-fg"># TODO Raf to add sensible friction coeff range</span>
+        <span class="ansi-green-fg">if</span> float<span class="ansi-blue-fg">(</span>v<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;friction_coeff must be less than 1&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">if</span> float<span class="ansi-blue-fg">(</span>v<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">&lt;</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;friction_coeff must be greater than 0&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> v
+
+    <span class="ansi-blue-fg">@</span>property
+    <span class="ansi-green-fg">def</span> cmd<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        ret <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;GEN3 WESTH 0.000075 0.00175\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;BREAKING\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;FRICTION {self.friction} {self.friction_coeff}\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">&#34;\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;TRIADS\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">&#34;\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;PROP BSBT\n&#34;</span>
+        ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;NUM ACCUR 0.02 0.02 0.02 95 NONSTAT 20\n&#34;</span>
+        <span class="ansi-green-fg">return</span> ret
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ForcingData<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+ForcingData<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    bottom<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    wind<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    current<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    boundary<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Source:</span>
+<span class="ansi-green-fg">class</span> ForcingData<span class="ansi-blue-fg">(</span>RompyBaseModel<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+    bottom<span class="ansi-blue-fg">:</span> SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>  <span class="ansi-red-fg"># TODO Raf should probably be required?</span>
+    wind<span class="ansi-blue-fg">:</span> SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+    current<span class="ansi-blue-fg">:</span> SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+    boundary<span class="ansi-blue-fg">:</span> SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+
+    <span class="ansi-green-fg">def</span> get<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> grid<span class="ansi-blue-fg">,</span> runtime<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        ret <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+        <span class="ansi-green-fg">for</span> forcing <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">if</span> forcing<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+                logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;\t processing {forcing[0]} forcing&#34;</span><span class="ansi-blue-fg">)</span>
+                forcing<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>_filter_grid<span class="ansi-blue-fg">(</span>grid<span class="ansi-blue-fg">)</span>
+                forcing<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>_filter_time<span class="ansi-blue-fg">(</span>runtime<span class="ansi-blue-fg">.</span>period<span class="ansi-blue-fg">)</span>
+                ret<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>forcing<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>runtime<span class="ansi-blue-fg">.</span>staging_dir<span class="ansi-blue-fg">,</span> grid<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">&#34;\n&#34;</span><span class="ansi-blue-fg">.</span>join<span class="ansi-blue-fg">(</span>ret<span class="ansi-blue-fg">)</span>
+
+    <span class="ansi-green-fg">def</span> __str__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        ret <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;&#34;</span>
+        <span class="ansi-green-fg">for</span> forcing <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">if</span> forcing<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+                ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;{forcing[0]}:&#34;</span>
+                <span class="ansi-green-fg">if</span> forcing<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>url<span class="ansi-blue-fg">:</span>
+                    ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34; {forcing[1].url}\n&#34;</span>
+                <span class="ansi-green-fg">if</span> forcing<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">:</span>
+                    ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34; {forcing[1].path}\n&#34;</span>
+                <span class="ansi-green-fg">if</span> forcing<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>catalog<span class="ansi-blue-fg">:</span>
+                    ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34; {forcing[1].catalog}&#34;</span>
+                    ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34; {forcing[1].dataset}\n&#34;</span>
+        <span class="ansi-green-fg">return</span> ret
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanGrid<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanGrid<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    x<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    y<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    x0<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    y0<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    rot<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span>
+    dx<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    dy<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    nx<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>int<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    ny<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>int<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    gridtype<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;REG&#39;</span><span class="ansi-blue-fg">,</span>
+    exc<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    gridfile<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+An object which provides an abstract representation of a grid in some geographic space
+
+This is the base class for all Grid objects. The minimum representation of a grid are two
+NumPy array&#39;s representing the vertices or nodes of some structured or unstructured grid,
+its bounding box and a boundary polygon. No knowledge of the grid connectivity is expected.
+
+Parameters
+----------
+x : numpy.ndarray
+    A 1D array of x coordinates
+y : numpy.ndarray
+    A 1D array of y coordinates
+<span class="ansi-red-fg">Source:</span>
+<span class="ansi-green-fg">class</span> SwanGrid<span class="ansi-blue-fg">(</span>RegularGrid<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+    gridtype<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;REG&#34;</span>
+    exc<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+    gridfile<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+
+    <span class="ansi-blue-fg">@</span>validator<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;gridtype&#34;</span><span class="ansi-blue-fg">)</span>
+    <span class="ansi-green-fg">def</span> validate_gridtype<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> v<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">if</span> v <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">in</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;REG&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;CURV&#34;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;gridtype must be one of REG or CURV&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> v
+
+    <span class="ansi-blue-fg">@</span>root_validator
+    <span class="ansi-green-fg">def</span> validate_grid<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> values<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        gridtype <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;gridtype&#34;</span><span class="ansi-blue-fg">]</span>
+        x <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;x&#34;</span><span class="ansi-blue-fg">]</span>
+        y <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;y&#34;</span><span class="ansi-blue-fg">]</span>
+        x0 <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;x0&#34;</span><span class="ansi-blue-fg">]</span>
+        y0 <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;y0&#34;</span><span class="ansi-blue-fg">]</span>
+        dx <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;dx&#34;</span><span class="ansi-blue-fg">]</span>
+        dy <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;dy&#34;</span><span class="ansi-blue-fg">]</span>
+        nx <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;nx&#34;</span><span class="ansi-blue-fg">]</span>
+        ny <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;ny&#34;</span><span class="ansi-blue-fg">]</span>
+        gridfile <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;gridfile&#34;</span><span class="ansi-blue-fg">]</span>
+
+        <span class="ansi-green-fg">if</span> gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;REG&#34;</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-red-fg"># test if x is numpy array or None</span>
+            <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span> np<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">or</span> isinstance<span class="ansi-blue-fg">(</span>y<span class="ansi-blue-fg">,</span> np<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+                <span class="ansi-green-fg">if</span> any<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>x0<span class="ansi-blue-fg">,</span> y0<span class="ansi-blue-fg">,</span> dx<span class="ansi-blue-fg">,</span> dy<span class="ansi-blue-fg">,</span> nx<span class="ansi-blue-fg">,</span> ny<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+                    <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span>
+                        <span class="ansi-blue-fg">&#34;x, y provided explicitly, cant process x0, y0, dx, dy, nx, ny&#34;</span>
+                    <span class="ansi-blue-fg">)</span>
+                <span class="ansi-green-fg">return</span> values
+            <span class="ansi-green-fg">for</span> var <span class="ansi-green-fg">in</span> <span class="ansi-blue-fg">[</span>x0<span class="ansi-blue-fg">,</span> y0<span class="ansi-blue-fg">,</span> dx<span class="ansi-blue-fg">,</span> dy<span class="ansi-blue-fg">,</span> nx<span class="ansi-blue-fg">,</span> ny<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+                <span class="ansi-green-fg">if</span> var <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+                    <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span>
+                        <span class="ansi-blue-fg">&#34;x0, y0, dx, dy, nx, ny must be provided for REG grid&#34;</span>
+                    <span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">elif</span> gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;CURV&#34;</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> gridfile<span class="ansi-blue-fg">:</span>
+                <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;gridfile must be provided for CURV grid&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Unknown SwanGrid type = &#34;</span> <span class="ansi-blue-fg">+</span> str<span class="ansi-blue-fg">(</span>gridtype<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> values
+
+    <span class="ansi-green-fg">def</span> _regen_grid<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;REG&#34;</span><span class="ansi-blue-fg">:</span>
+            _x<span class="ansi-blue-fg">,</span> _y <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_gen_reg_cgrid<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">elif</span> self<span class="ansi-blue-fg">.</span>gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;CURV&#34;</span><span class="ansi-blue-fg">:</span>
+            _x<span class="ansi-blue-fg">,</span> _y <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_gen_curv_cgrid<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+        self<span class="ansi-blue-fg">.</span>x <span class="ansi-blue-fg">=</span> _x
+        self<span class="ansi-blue-fg">.</span>y <span class="ansi-blue-fg">=</span> _y
+
+    <span class="ansi-green-fg">def</span> _gen_curv_cgrid<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-blue-fg">&#34;&#34;&#34;loads a SWAN curvilinear grid and returns cgrid lat/lons and</span>
+<span class="ansi-blue-fg">        command to be used in SWAN contol file. The Default grid is one I made using</span>
+<span class="ansi-blue-fg">        Deltares&#39; RGFGrid tool and converted to a SWAN-friendly formate using Deltares</span>
+<span class="ansi-blue-fg">        OpenEarth code &#34;swan_io_grd.m&#34;</span>
+
+<span class="ansi-blue-fg">        &#34;&#34;&#34;</span>
+        <span class="ansi-red-fg"># number of grid cells in the &#39;x&#39; and &#39;y&#39; directions:</span>
+        <span class="ansi-red-fg"># (you can get this from d3d_qp.m or other Deltares OpenEarth code)</span>
+        nX <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>nx
+        nY <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>ny
+
+        grid_Data <span class="ansi-blue-fg">=</span> open<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>gridpath<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>readlines<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+        ix <span class="ansi-blue-fg">=</span> grid_Data<span class="ansi-blue-fg">.</span>index<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;x-coordinates\n&#34;</span><span class="ansi-blue-fg">)</span>
+        iy <span class="ansi-blue-fg">=</span> grid_Data<span class="ansi-blue-fg">.</span>index<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;y-coordinates\n&#34;</span><span class="ansi-blue-fg">)</span>
+        lons <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+        lats <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+        <span class="ansi-green-fg">for</span> idx <span class="ansi-green-fg">in</span> np<span class="ansi-blue-fg">.</span>arange<span class="ansi-blue-fg">(</span>ix <span class="ansi-blue-fg">+</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> iy<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            lons<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>re<span class="ansi-blue-fg">.</span>sub<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;\n&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;&#34;</span><span class="ansi-blue-fg">,</span> grid_Data<span class="ansi-blue-fg">[</span>idx<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>split<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">for</span> idx <span class="ansi-green-fg">in</span> np<span class="ansi-blue-fg">.</span>arange<span class="ansi-blue-fg">(</span>iy <span class="ansi-blue-fg">+</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> len<span class="ansi-blue-fg">(</span>grid_Data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            lats<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>re<span class="ansi-blue-fg">.</span>sub<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;\n&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;&#34;</span><span class="ansi-blue-fg">,</span> grid_Data<span class="ansi-blue-fg">[</span>idx<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>split<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+        flatten <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">lambda</span> l<span class="ansi-blue-fg">:</span> <span class="ansi-blue-fg">[</span>item <span class="ansi-green-fg">for</span> sublist <span class="ansi-green-fg">in</span> l <span class="ansi-green-fg">for</span> item <span class="ansi-green-fg">in</span> sublist<span class="ansi-blue-fg">]</span>
+        lons <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>flatten<span class="ansi-blue-fg">(</span>lons<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>astype<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>float<span class="ansi-blue-fg">)</span>
+        lats <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>flatten<span class="ansi-blue-fg">(</span>lats<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>astype<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>float<span class="ansi-blue-fg">)</span>
+
+        x <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>reshape<span class="ansi-blue-fg">(</span>lats<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>nX<span class="ansi-blue-fg">,</span> nY<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+        y <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>reshape<span class="ansi-blue-fg">(</span>lons<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>nX<span class="ansi-blue-fg">,</span> nY<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+        <span class="ansi-green-fg">return</span> x<span class="ansi-blue-fg">,</span> y
+
+    <span class="ansi-red-fg"># # The folling properties and setters are necessary</span>
+    <span class="ansi-red-fg"># # to ensure the grid is regnerated when any one of them changes</span>
+    <span class="ansi-red-fg"># TODO this needs ot be ported to a framework that works with pydantic</span>
+    <span class="ansi-red-fg"># @property</span>
+    <span class="ansi-red-fg"># def x0(self):</span>
+    <span class="ansi-red-fg">#     return self._x0</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @x0.setter</span>
+    <span class="ansi-red-fg"># def x0(self, x0):</span>
+    <span class="ansi-red-fg">#     self._x0 = x0</span>
+    <span class="ansi-red-fg">#     self._regen_grid()</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @property</span>
+    <span class="ansi-red-fg"># def y0(self):</span>
+    <span class="ansi-red-fg">#     return self._y0</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @y0.setter</span>
+    <span class="ansi-red-fg"># def y0(self, y0):</span>
+    <span class="ansi-red-fg">#     self._y0 = y0</span>
+    <span class="ansi-red-fg">#     self._regen_grid()</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @property</span>
+    <span class="ansi-red-fg"># def rot(self):</span>
+    <span class="ansi-red-fg">#     return self._rot</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @rot.setter</span>
+    <span class="ansi-red-fg"># def rot(self, rot):</span>
+    <span class="ansi-red-fg">#     self._rot = rot</span>
+    <span class="ansi-red-fg">#     self._regen_grid()</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @property</span>
+    <span class="ansi-red-fg"># def dx(self):</span>
+    <span class="ansi-red-fg">#     return self._dx</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @dx.setter</span>
+    <span class="ansi-red-fg"># def dx(self, dx):</span>
+    <span class="ansi-red-fg">#     self._dx = dx</span>
+    <span class="ansi-red-fg">#     self._regen_grid()</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @property</span>
+    <span class="ansi-red-fg"># def dy(self):</span>
+    <span class="ansi-red-fg">#     return self._dy</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @dy.setter</span>
+    <span class="ansi-red-fg"># def dy(self, dy):</span>
+    <span class="ansi-red-fg">#     self._dy = dy</span>
+    <span class="ansi-red-fg">#     self._regen_grid()</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @property</span>
+    <span class="ansi-red-fg"># def nx(self):</span>
+    <span class="ansi-red-fg">#     return self._nx</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @nx.setter</span>
+    <span class="ansi-red-fg"># def nx(self, nx):</span>
+    <span class="ansi-red-fg">#     self._nx = nx</span>
+    <span class="ansi-red-fg">#     self._regen_grid()</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @property</span>
+    <span class="ansi-red-fg"># def ny(self):</span>
+    <span class="ansi-red-fg">#     return self._ny</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @ny.setter</span>
+    <span class="ansi-red-fg"># def ny(self, ny):</span>
+    <span class="ansi-red-fg">#     self._ny = ny</span>
+    <span class="ansi-red-fg">#     self._regen_grid()</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @property</span>
+    <span class="ansi-red-fg"># def exc(self):</span>
+    <span class="ansi-red-fg">#     return self._exc</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-red-fg"># @exc.setter</span>
+    <span class="ansi-red-fg"># def exc(self, exc):</span>
+    <span class="ansi-red-fg">#     self._exc = exc</span>
+    <span class="ansi-red-fg">#</span>
+    <span class="ansi-blue-fg">@</span>property
+    <span class="ansi-green-fg">def</span> inpgrid<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;REG&#34;</span><span class="ansi-blue-fg">:</span>
+            inpstr <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;REG {self.x0} {self.y0} {self.rot} {self.nx-1:0.0f} {self.ny-1:0.0f} {self.dx} {self.dy}&#34;</span>
+            <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>exc <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+                inpstr <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34; EXC {self.exc}&#34;</span>
+            <span class="ansi-green-fg">return</span> inpstr
+        <span class="ansi-green-fg">elif</span> self<span class="ansi-blue-fg">.</span>gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;CURV&#34;</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> NotImplementedError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Curvilinear grids not supported yet&#34;</span><span class="ansi-blue-fg">)</span>
+            <span class="ansi-red-fg"># return f&#39;CURVilinear {self.nx-1:0.0f} {self.ny-1:0.0f} \nREADGRID COOR 1 \&#39;{os.path.basename(self.gridpath)}\&#39; 1 0 1 FREE&#39;</span>
+
+    <span class="ansi-blue-fg">@</span>property
+    <span class="ansi-green-fg">def</span> cgrid<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;REG&#34;</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">f&#34;REG {self.x0} {self.y0} {self.rot} {self.dx*self.nx} {self.dy*self.ny} {self.nx-1:0.0f} {self.ny-1:0.0f}&#34;</span>
+        <span class="ansi-green-fg">elif</span> self<span class="ansi-blue-fg">.</span>gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;CURV&#34;</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> NotImplementedError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Curvilinear grids not supported yet&#34;</span><span class="ansi-blue-fg">)</span>
+            <span class="ansi-red-fg"># return (f&#39;CURVilinear {self.nx-1:0.0f} {self.ny-1:0.0f}&#39;,f&#39;READGRID COOR 1 \&#39;{os.path.basename(self.gridpath)}\&#39; 1 0 1 FREE&#39;)</span>
+
+    <span class="ansi-blue-fg">@</span>property
+    <span class="ansi-green-fg">def</span> cgrid_read<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;REG&#34;</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">&#34;&#34;</span>
+        <span class="ansi-green-fg">elif</span> self<span class="ansi-blue-fg">.</span>gridtype <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;CURV&#34;</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">raise</span> NotImplementedError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Curvilinear grids not supported yet&#34;</span><span class="ansi-blue-fg">)</span>
+            <span class="ansi-red-fg"># return f&#39;READGRID COOR 1 \&#39;{os.path.basename(self.gridpath)}\&#39; 1 0 1 FREE&#39;</span>
+
+    <span class="ansi-green-fg">def</span> __call__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        output <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;CGRID {self.cgrid} CIRCLE 36 0.0464 1. 31\n&#34;</span>
+        output <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;{self.cgrid_read}\n&#34;</span>
+        <span class="ansi-green-fg">return</span> output
+
+    <span class="ansi-green-fg">def</span> nearby_spectra<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> ds_spec<span class="ansi-blue-fg">,</span> dist_thres<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.05</span><span class="ansi-blue-fg">,</span> plot<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-blue-fg">&#34;&#34;&#34;Find points nearby and project to the boundary</span>
+
+<span class="ansi-blue-fg">        Parameters</span>
+<span class="ansi-blue-fg">        ----------</span>
+<span class="ansi-blue-fg">        ds_spec: xarray.Dataset</span>
+<span class="ansi-blue-fg">            an XArray dataset of wave spectra at a number of points.</span>
+<span class="ansi-blue-fg">            Dataset variable names standardised using wavespectra.read_*</span>
+<span class="ansi-blue-fg">            functions.</span>
+
+<span class="ansi-blue-fg">            See https://wavespectra.readthedocs.io/en/latest/api.html#input-functions</span>
+<span class="ansi-blue-fg">        dist_thres: float, optional [Default: 0.05]</span>
+<span class="ansi-blue-fg">            Maximum distance to translate the input spectra to the grid boundary</span>
+<span class="ansi-blue-fg">        plot: boolean, optional [Default: True]</span>
+<span class="ansi-blue-fg">            Generate a plot that shows the applied projections</span>
+
+<span class="ansi-blue-fg">        Returns</span>
+<span class="ansi-blue-fg">        -------</span>
+<span class="ansi-blue-fg">        xarray.Dataset</span>
+<span class="ansi-blue-fg">            A subset of ds_spec with lat and lon coordinates projected to the boundary</span>
+<span class="ansi-blue-fg">        &#34;&#34;&#34;</span>
+
+        bbox <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>bbox<span class="ansi-blue-fg">(</span>buffer<span class="ansi-blue-fg">=</span>dist_thres<span class="ansi-blue-fg">)</span>
+        minLon<span class="ansi-blue-fg">,</span> minLat<span class="ansi-blue-fg">,</span> maxLon<span class="ansi-blue-fg">,</span> maxLat <span class="ansi-blue-fg">=</span> bbox
+
+        inds <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>where<span class="ansi-blue-fg">(</span>
+            <span class="ansi-blue-fg">(</span>ds_spec<span class="ansi-blue-fg">.</span>lon <span class="ansi-blue-fg">&gt;</span> minLon<span class="ansi-blue-fg">)</span>
+            <span class="ansi-blue-fg">&amp;</span> <span class="ansi-blue-fg">(</span>ds_spec<span class="ansi-blue-fg">.</span>lon <span class="ansi-blue-fg">&lt;</span> maxLon<span class="ansi-blue-fg">)</span>
+            <span class="ansi-blue-fg">&amp;</span> <span class="ansi-blue-fg">(</span>ds_spec<span class="ansi-blue-fg">.</span>lat <span class="ansi-blue-fg">&gt;</span> minLat<span class="ansi-blue-fg">)</span>
+            <span class="ansi-blue-fg">&amp;</span> <span class="ansi-blue-fg">(</span>ds_spec<span class="ansi-blue-fg">.</span>lat <span class="ansi-blue-fg">&lt;</span> maxLat<span class="ansi-blue-fg">)</span>
+        <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+        ds_spec <span class="ansi-blue-fg">=</span> ds_spec<span class="ansi-blue-fg">.</span>isel<span class="ansi-blue-fg">(</span>site<span class="ansi-blue-fg">=</span>inds<span class="ansi-blue-fg">)</span>
+
+        <span class="ansi-red-fg"># Work out the closest spectral points</span>
+        <span class="ansi-green-fg">def</span> _nearestPointOnLine<span class="ansi-blue-fg">(</span>p1<span class="ansi-blue-fg">,</span> p2<span class="ansi-blue-fg">,</span> p3<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-red-fg"># calculate the distance of p3 from the line between p1 and p2 and return</span>
+            <span class="ansi-red-fg"># the closest point on the line</span>
+
+            <span class="ansi-green-fg">from</span> math <span class="ansi-green-fg">import</span> fabs<span class="ansi-blue-fg">,</span> sqrt
+
+            a <span class="ansi-blue-fg">=</span> p2<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">-</span> p1<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+            b <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1.0</span> <span class="ansi-blue-fg">*</span> <span class="ansi-blue-fg">(</span>p2<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">-</span> p1<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+            c <span class="ansi-blue-fg">=</span> p2<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">*</span> p1<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">-</span> p2<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">*</span> p1<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+
+            dist <span class="ansi-blue-fg">=</span> fabs<span class="ansi-blue-fg">(</span>a <span class="ansi-blue-fg">*</span> p3<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">+</span> b <span class="ansi-blue-fg">*</span> p3<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">+</span> c<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">/</span> sqrt<span class="ansi-blue-fg">(</span>a<span class="ansi-blue-fg">**</span><span class="ansi-cyan-fg">2</span> <span class="ansi-blue-fg">+</span> b<span class="ansi-blue-fg">**</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">)</span>
+            x <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">(</span>b <span class="ansi-blue-fg">*</span> <span class="ansi-blue-fg">(</span>b <span class="ansi-blue-fg">*</span> p3<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">-</span> a <span class="ansi-blue-fg">*</span> p3<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> a <span class="ansi-blue-fg">*</span> c<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">/</span> <span class="ansi-blue-fg">(</span>a<span class="ansi-blue-fg">**</span><span class="ansi-cyan-fg">2</span> <span class="ansi-blue-fg">+</span> b<span class="ansi-blue-fg">**</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">)</span>
+            y <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">(</span>a <span class="ansi-blue-fg">*</span> <span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">-</span>b <span class="ansi-blue-fg">*</span> p3<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">+</span> a <span class="ansi-blue-fg">*</span> p3<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> b <span class="ansi-blue-fg">*</span> c<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">/</span> <span class="ansi-blue-fg">(</span>a<span class="ansi-blue-fg">**</span><span class="ansi-cyan-fg">2</span> <span class="ansi-blue-fg">+</span> b<span class="ansi-blue-fg">**</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">)</span>
+
+            <span class="ansi-green-fg">return</span> dist<span class="ansi-blue-fg">,</span> x<span class="ansi-blue-fg">,</span> y
+
+        bx<span class="ansi-blue-fg">,</span> by <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>boundary_points<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+        pol <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>stack<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>bx<span class="ansi-blue-fg">,</span> by<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+
+        <span class="ansi-red-fg"># Spectra points</span>
+        ds_spec<span class="ansi-blue-fg">.</span>lon<span class="ansi-blue-fg">.</span>load<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+        ds_spec<span class="ansi-blue-fg">.</span>lat<span class="ansi-blue-fg">.</span>load<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+        ds_spec<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;lon_original&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> ds_spec<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;lon&#34;</span><span class="ansi-blue-fg">]</span>
+        ds_spec<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;lat_original&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> ds_spec<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;lat&#34;</span><span class="ansi-blue-fg">]</span>
+        p3s <span class="ansi-blue-fg">=</span> list<span class="ansi-blue-fg">(</span>zip<span class="ansi-blue-fg">(</span>ds_spec<span class="ansi-blue-fg">.</span>lon<span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">,</span> ds_spec<span class="ansi-blue-fg">.</span>lat<span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+        <span class="ansi-green-fg">if</span> plot<span class="ansi-blue-fg">:</span>
+            fig<span class="ansi-blue-fg">,</span> ax <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>plot<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+            ax<span class="ansi-blue-fg">.</span>scatter<span class="ansi-blue-fg">(</span>ds_spec<span class="ansi-blue-fg">.</span>lon<span class="ansi-blue-fg">,</span> ds_spec<span class="ansi-blue-fg">.</span>lat<span class="ansi-blue-fg">)</span>
+
+        specPoints <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+        specPointCoords <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+        <span class="ansi-green-fg">for</span> i <span class="ansi-green-fg">in</span> range<span class="ansi-blue-fg">(</span>pol<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">-</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            p1 <span class="ansi-blue-fg">=</span> pol<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span> i<span class="ansi-blue-fg">]</span>
+            p2 <span class="ansi-blue-fg">=</span> pol<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span> i <span class="ansi-blue-fg">+</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+            line <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>stack<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>p1<span class="ansi-blue-fg">,</span> p2<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+            output <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>
+                list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span><span class="ansi-green-fg">lambda</span> xi<span class="ansi-blue-fg">:</span> _nearestPointOnLine<span class="ansi-blue-fg">(</span>p1<span class="ansi-blue-fg">,</span> p2<span class="ansi-blue-fg">,</span> xi<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> p3s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+            <span class="ansi-blue-fg">)</span>
+            dists <span class="ansi-blue-fg">=</span> output<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+            segmentPoints <span class="ansi-blue-fg">=</span> output<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">]</span>
+            inds <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>where<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>dists <span class="ansi-blue-fg">&lt;</span> dist_thres<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+
+            <span class="ansi-red-fg"># Loop through the points projected onto the line</span>
+            <span class="ansi-green-fg">for</span> ind <span class="ansi-green-fg">in</span> inds<span class="ansi-blue-fg">:</span>
+                specPoint <span class="ansi-blue-fg">=</span> ds_spec<span class="ansi-blue-fg">.</span>isel<span class="ansi-blue-fg">(</span>site<span class="ansi-blue-fg">=</span>ind<span class="ansi-blue-fg">)</span>
+
+                segLon <span class="ansi-blue-fg">=</span> segmentPoints<span class="ansi-blue-fg">[</span>ind<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+                segLat <span class="ansi-blue-fg">=</span> segmentPoints<span class="ansi-blue-fg">[</span>ind<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+
+                <span class="ansi-green-fg">if</span> plot<span class="ansi-blue-fg">:</span>
+                    ax<span class="ansi-blue-fg">.</span>plot<span class="ansi-blue-fg">(</span>
+                        <span class="ansi-blue-fg">[</span>segLon<span class="ansi-blue-fg">,</span> specPoint<span class="ansi-blue-fg">.</span>lon<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>
+                        <span class="ansi-blue-fg">[</span>segLat<span class="ansi-blue-fg">,</span> specPoint<span class="ansi-blue-fg">.</span>lat<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>
+                        color<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;r&#34;</span><span class="ansi-blue-fg">,</span>
+                        lw<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span>
+                    <span class="ansi-blue-fg">)</span>
+                    ax<span class="ansi-blue-fg">.</span>scatter<span class="ansi-blue-fg">(</span>specPoint<span class="ansi-blue-fg">.</span>lon<span class="ansi-blue-fg">,</span> specPoint<span class="ansi-blue-fg">.</span>lat<span class="ansi-blue-fg">,</span> marker<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;o&#34;</span><span class="ansi-blue-fg">,</span> color<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;b&#34;</span><span class="ansi-blue-fg">)</span>
+                    ax<span class="ansi-blue-fg">.</span>scatter<span class="ansi-blue-fg">(</span>segLon<span class="ansi-blue-fg">,</span> segLat<span class="ansi-blue-fg">,</span> marker<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;x&#34;</span><span class="ansi-blue-fg">,</span> color<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;g&#34;</span><span class="ansi-blue-fg">)</span>
+
+                specPoint<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;lon&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> segLon
+                specPoint<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;lat&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> segLat
+                specPoints<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>specPoint<span class="ansi-blue-fg">)</span>
+
+            logger<span class="ansi-blue-fg">.</span>debug<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;Segment {i} - Indices {inds}&#34;</span><span class="ansi-blue-fg">)</span>
+
+        <span class="ansi-green-fg">if</span> plot<span class="ansi-blue-fg">:</span>
+            fig<span class="ansi-blue-fg">.</span>show<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+        ds_boundary <span class="ansi-blue-fg">=</span> xr<span class="ansi-blue-fg">.</span>concat<span class="ansi-blue-fg">(</span>specPoints<span class="ansi-blue-fg">,</span> dim<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;site&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> ds_boundary
+
+    <span class="ansi-green-fg">def</span> __repr__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">f&#34;SwanGrid: {self.gridtype}, {self.nx}x{self.ny}&#34;</span>
+
+    <span class="ansi-green-fg">def</span> __str__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">f&#34;SwanGrid: {self.gridtype}, {self.nx}x{self.ny}&#34;</span>
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/grid.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">SwanGrid</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">115.68</span><span class="p">,</span> <span class="n">y0</span><span class="o">=-</span><span class="mf">32.76</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">390</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">77</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 1000x706.373 with 1 Axes&gt;, &lt;GeoAxes: &gt;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/demonb_11_1.png" src="_images/demonb_11_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanDataGrid<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanDataGrid<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    id<span class="ansi-blue-fg">:</span> str<span class="ansi-blue-fg">,</span>
+    path<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pathlib<span class="ansi-blue-fg">.</span>Path<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    url<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>cloudpathlib<span class="ansi-blue-fg">.</span>cloudpath<span class="ansi-blue-fg">.</span>CloudPath<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    catalog<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    dataset<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    args<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>dict<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span>
+    params<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>dict<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span>
+    filter<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>filters<span class="ansi-blue-fg">.</span>Filter<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> Filter<span class="ansi-blue-fg">(</span>sort<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> subset<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> crop<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> timenorm<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> rename<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> derived<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    latname<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;latitude&#39;</span><span class="ansi-blue-fg">,</span>
+    lonname<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;longitude&#39;</span><span class="ansi-blue-fg">,</span>
+    timename<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;time&#39;</span><span class="ansi-blue-fg">,</span>
+    xarray_kwargs<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>dict<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span>
+    netcdf_kwargs<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>dict<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#39;mode&#39;</span><span class="ansi-blue-fg">:</span> <span class="ansi-blue-fg">&#39;w&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;format&#39;</span><span class="ansi-blue-fg">:</span> <span class="ansi-blue-fg">&#39;NETCDF4&#39;</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span>
+    z1<span class="ansi-blue-fg">:</span> str<span class="ansi-blue-fg">,</span>
+    z2<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    var<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;WIND&#39;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Source:</span>
+<span class="ansi-green-fg">class</span> SwanDataGrid<span class="ansi-blue-fg">(</span>DataGrid<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+    <span class="ansi-blue-fg">&#34;&#34;&#34;This class is used to write SWAN data from a dataset.</span>
+
+<span class="ansi-blue-fg">    Parameters</span>
+<span class="ansi-blue-fg">    ----------</span>
+<span class="ansi-blue-fg">    path: str</span>
+<span class="ansi-blue-fg">            Optional local file path</span>
+<span class="ansi-blue-fg">    url: str</span>
+<span class="ansi-blue-fg">            Optional remote file url</span>
+<span class="ansi-blue-fg">    catalog: str</span>
+<span class="ansi-blue-fg">            Optional intake catalog</span>
+<span class="ansi-blue-fg">    dataset: str</span>
+<span class="ansi-blue-fg">            Optional intake dataset id</span>
+<span class="ansi-blue-fg">    params: dict</span>
+<span class="ansi-blue-fg">            Optional parameters to pass to the intake catalog</span>
+<span class="ansi-blue-fg">    filter: Filter</span>
+<span class="ansi-blue-fg">            Optional filter specification to apply to the dataset</span>
+<span class="ansi-blue-fg">    xarray_kwargs: dict</span>
+<span class="ansi-blue-fg">            Optional keyword arguments to pass to xarray.open_dataset</span>
+<span class="ansi-blue-fg">    netcdf_kwargs: dict</span>
+<span class="ansi-blue-fg">            Optional keyword arguments to pass to xarray.Dataset.to_netcdf</span>
+<span class="ansi-blue-fg">    var: str</span>
+<span class="ansi-blue-fg">            Variable name to write</span>
+
+
+<span class="ansi-blue-fg">    &#34;&#34;&#34;</span>
+
+    z1<span class="ansi-blue-fg">:</span> str
+    z2<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+    var<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;WIND&#34;</span>
+
+    <span class="ansi-red-fg"># root validator</span>
+    <span class="ansi-blue-fg">@</span>root_validator
+    <span class="ansi-green-fg">def</span> ensure_z1_in_data_vars<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> values<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        params <span class="ansi-blue-fg">=</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;params&#34;</span><span class="ansi-blue-fg">)</span>
+        data_vars <span class="ansi-blue-fg">=</span> params<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;data_vars&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">for</span> z <span class="ansi-green-fg">in</span> <span class="ansi-blue-fg">[</span>values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;z1&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> values<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;z2&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+            <span class="ansi-green-fg">if</span> z <span class="ansi-green-fg">and</span> z <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">in</span> data_vars<span class="ansi-blue-fg">:</span>
+                logger<span class="ansi-blue-fg">.</span>debug<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;Adding {z} to data_vars&#34;</span><span class="ansi-blue-fg">)</span>
+                data_vars<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>z<span class="ansi-blue-fg">)</span>
+        values<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;params&#34;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;data_vars&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> data_vars
+        <span class="ansi-green-fg">return</span> values
+
+    <span class="ansi-blue-fg">@</span>validator<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;var&#34;</span><span class="ansi-blue-fg">)</span>
+    <span class="ansi-green-fg">def</span> var_must_be_one_of_wind_bathy_current<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> v<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        <span class="ansi-green-fg">if</span> v <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">in</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;WIND&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;BOTTOM&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;CURRENT&#34;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>  <span class="ansi-red-fg"># Raf to add any others here</span>
+            <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;var must be one of WIND, BOTTOM, CURRENT&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> v
+
+    <span class="ansi-green-fg">def</span> get<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> staging_dir<span class="ansi-blue-fg">:</span> str<span class="ansi-blue-fg">,</span> grid<span class="ansi-blue-fg">:</span> SwanGrid <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        output_file <span class="ansi-blue-fg">=</span> os<span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">.</span>join<span class="ansi-blue-fg">(</span>staging_dir<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">f&#34;{self.id}.grd&#34;</span><span class="ansi-blue-fg">)</span>
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;\tWriting {self.id} to {output_file}&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>var <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#34;BOTTOM&#34;</span><span class="ansi-blue-fg">:</span>
+            inpgrid<span class="ansi-blue-fg">,</span> readgrid <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>ds<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>to_bottom_grid<span class="ansi-blue-fg">(</span>
+                output_file<span class="ansi-blue-fg">,</span>
+                fmt<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;%4.2f&#34;</span><span class="ansi-blue-fg">,</span>
+                x<span class="ansi-blue-fg">=</span>self<span class="ansi-blue-fg">.</span>lonname<span class="ansi-blue-fg">,</span>
+                y<span class="ansi-blue-fg">=</span>self<span class="ansi-blue-fg">.</span>latname<span class="ansi-blue-fg">,</span>
+                z<span class="ansi-blue-fg">=</span>self<span class="ansi-blue-fg">.</span>z1<span class="ansi-blue-fg">,</span>
+                vmin<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+            inpgrid<span class="ansi-blue-fg">,</span> readgrid <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>ds<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>to_inpgrid<span class="ansi-blue-fg">(</span>
+                output_file<span class="ansi-blue-fg">=</span>output_file<span class="ansi-blue-fg">,</span>
+                z1<span class="ansi-blue-fg">=</span>self<span class="ansi-blue-fg">.</span>z1<span class="ansi-blue-fg">,</span>
+                z2<span class="ansi-blue-fg">=</span>self<span class="ansi-blue-fg">.</span>z2<span class="ansi-blue-fg">,</span>
+                grid<span class="ansi-blue-fg">=</span>grid<span class="ansi-blue-fg">,</span>
+                var<span class="ansi-blue-fg">=</span>self<span class="ansi-blue-fg">.</span>var<span class="ansi-blue-fg">,</span>
+            <span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">f&#34;{inpgrid}\n{readgrid}\n&#34;</span>
+
+    <span class="ansi-green-fg">def</span> __str__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        ret <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;{self.id}\n&#34;</span>
+        <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>url<span class="ansi-blue-fg">:</span>
+            ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;\turl: {self.url}\n&#34;</span>
+        <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">:</span>
+            ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;\tpath: {self.path}\n&#34;</span>
+        <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>catalog<span class="ansi-blue-fg">:</span>
+            ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;\tcatalog: {self.catalog}\n&#34;</span>
+            ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;\tdataset: {self.dataset}\n&#34;</span>
+            ret <span class="ansi-blue-fg">+=</span> <span class="ansi-blue-fg">f&#34;\tparams: {self.params}\n&#34;</span>
+        <span class="ansi-green-fg">return</span> ret
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/data.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a dummy netcdf data</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;simulations/test_swantemplate/datasets&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">nc_bathy</span><span class="p">():</span>
+    <span class="c1"># touch temp netcdf file</span>
+    <span class="n">bottom</span> <span class="o">=</span> <span class="n">SwanGrid</span><span class="p">(</span>
+        <span class="n">x0</span><span class="o">=</span><span class="mf">115.68</span><span class="p">,</span> <span class="n">y0</span><span class="o">=-</span><span class="mf">32.76</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">77</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">391</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">151</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">exc</span><span class="o">=-</span><span class="mf">99.0</span>
+    <span class="p">)</span>
+    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span> <span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;bathy.nc&quot;</span><span class="p">)</span>
+    <span class="c1"># calculate lat/lon manually due to rounding errors in arange</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bottom</span><span class="o">.</span><span class="n">ny</span><span class="p">):</span>
+        <span class="n">lat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bottom</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">nn</span> <span class="o">*</span> <span class="n">bottom</span><span class="o">.</span><span class="n">dy</span><span class="p">))</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bottom</span><span class="o">.</span><span class="n">nx</span><span class="p">):</span>
+        <span class="n">lon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bottom</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">nn</span> <span class="o">*</span> <span class="n">bottom</span><span class="o">.</span><span class="n">dx</span><span class="p">))</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">bottom</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="n">bottom</span><span class="o">.</span><span class="n">nx</span><span class="p">),</span>
+                <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+                <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">},</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">SwanDataGrid</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">z1</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s2">&quot;BOTTOM&quot;</span><span class="p">,</span> <span class="n">latname</span><span class="o">=</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="n">lonname</span><span class="o">=</span><span class="s2">&quot;lon&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">nc_data_source</span><span class="p">():</span>
+    <span class="n">wind_grid</span> <span class="o">=</span> <span class="n">SwanGrid</span><span class="p">(</span>
+        <span class="n">x0</span><span class="o">=</span><span class="mf">115.68</span><span class="p">,</span> <span class="n">y0</span><span class="o">=-</span><span class="mf">32.76</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">77</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">391</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">151</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">exc</span><span class="o">=-</span><span class="mf">99.0</span>
+    <span class="p">)</span>
+    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span> <span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;wind_inputs.nc&quot;</span><span class="p">)</span>
+
+    <span class="c1"># calculate lat/lon manually due to rounding errors in arange</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">wind_grid</span><span class="o">.</span><span class="n">ny</span><span class="p">):</span>
+        <span class="n">lat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wind_grid</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">nn</span> <span class="o">*</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">dy</span><span class="p">))</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">wind_grid</span><span class="o">.</span><span class="n">nx</span><span class="p">):</span>
+        <span class="n">lon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wind_grid</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">nn</span> <span class="o">*</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">dx</span><span class="p">))</span>
+
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;u&quot;</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">nx</span><span class="p">),</span>
+                <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+                <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2000-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+                    <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
+                    <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">nx</span><span class="p">),</span>
+                <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+                <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2020-02-21&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+                    <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
+                    <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">SwanDataGrid</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;wind&quot;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s2">&quot;WIND&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">z1</span><span class="o">=</span><span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">z2</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bathy</span> <span class="o">=</span> <span class="n">nc_bathy</span><span class="p">()</span>
+<span class="n">bathy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="n">isel</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/backends/file_manager.py:210</span>, in <span class="ansi-cyan-fg">CachingFileManager._acquire_with_cache_info</span><span class="ansi-blue-fg">(self, needs_lock)</span>
+<span class="ansi-green-intense-fg ansi-bold">    209</span> try:
+<span class="ansi-green-fg">--&gt; 210</span>     file = self._cache[self._key]
+<span class="ansi-green-intense-fg ansi-bold">    211</span> except KeyError:
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/backends/lru_cache.py:56</span>, in <span class="ansi-cyan-fg">LRUCache.__getitem__</span><span class="ansi-blue-fg">(self, key)</span>
+<span class="ansi-green-intense-fg ansi-bold">     55</span> with self._lock:
+<span class="ansi-green-fg">---&gt; 56</span>     value = self._cache[key]
+<span class="ansi-green-intense-fg ansi-bold">     57</span>     self._cache.move_to_end(key)
+
+<span class="ansi-red-fg">KeyError</span>: [&lt;class &#39;netCDF4._netCDF4.Dataset&#39;&gt;, (&#39;/source/rompy/notebooks/simulations/test_swantemplate/datasets/bathy.nc&#39;,), &#39;a&#39;, ((&#39;clobber&#39;, True), (&#39;diskless&#39;, False), (&#39;format&#39;, &#39;NETCDF4&#39;), (&#39;persist&#39;, False)), &#39;0df8d4f2-e142-4ee0-bcdf-a053b6a74171&#39;]
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">PermissionError</span>                           Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[58], line 1</span>
+<span class="ansi-green-fg">----&gt; 1</span> bathy = nc_bathy()
+<span class="ansi-green-intense-fg ansi-bold">      2</span> bathy.plot(param=&#39;depth&#39;, isel={&#39;time&#39;: 0})
+
+Cell <span class="ansi-green-fg">In[57], line 26</span>, in <span class="ansi-cyan-fg">nc_bathy</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     16</span>     lon.append(bottom.x0 + (nn * bottom.dx))
+<span class="ansi-green-intense-fg ansi-bold">     17</span> ds = xr.Dataset(
+<span class="ansi-green-intense-fg ansi-bold">     18</span>     {
+<span class="ansi-green-intense-fg ansi-bold">     19</span>         &#34;depth&#34;: xr.DataArray(
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">     24</span>     }
+<span class="ansi-green-intense-fg ansi-bold">     25</span> )
+<span class="ansi-green-fg">---&gt; 26</span> ds.to_netcdf(source)
+<span class="ansi-green-intense-fg ansi-bold">     27</span> return SwanDataGrid(
+<span class="ansi-green-intense-fg ansi-bold">     28</span>     id=&#34;bottom&#34;, path=source, z1=&#34;depth&#34;, var=&#34;BOTTOM&#34;, latname=&#34;lat&#34;, lonname=&#34;lon&#34;
+<span class="ansi-green-intense-fg ansi-bold">     29</span> )
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/core/dataset.py:1917</span>, in <span class="ansi-cyan-fg">Dataset.to_netcdf</span><span class="ansi-blue-fg">(self, path, mode, format, group, engine, encoding, unlimited_dims, compute, invalid_netcdf)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1914</span>     encoding = {}
+<span class="ansi-green-intense-fg ansi-bold">   1915</span> from xarray.backends.api import to_netcdf
+<span class="ansi-green-fg">-&gt; 1917</span> return to_netcdf(  # type: ignore  # mypy cannot resolve the overloads:(
+<span class="ansi-green-intense-fg ansi-bold">   1918</span>     self,
+<span class="ansi-green-intense-fg ansi-bold">   1919</span>     path,
+<span class="ansi-green-intense-fg ansi-bold">   1920</span>     mode=mode,
+<span class="ansi-green-intense-fg ansi-bold">   1921</span>     format=format,
+<span class="ansi-green-intense-fg ansi-bold">   1922</span>     group=group,
+<span class="ansi-green-intense-fg ansi-bold">   1923</span>     engine=engine,
+<span class="ansi-green-intense-fg ansi-bold">   1924</span>     encoding=encoding,
+<span class="ansi-green-intense-fg ansi-bold">   1925</span>     unlimited_dims=unlimited_dims,
+<span class="ansi-green-intense-fg ansi-bold">   1926</span>     compute=compute,
+<span class="ansi-green-intense-fg ansi-bold">   1927</span>     multifile=False,
+<span class="ansi-green-intense-fg ansi-bold">   1928</span>     invalid_netcdf=invalid_netcdf,
+<span class="ansi-green-intense-fg ansi-bold">   1929</span> )
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/backends/api.py:1199</span>, in <span class="ansi-cyan-fg">to_netcdf</span><span class="ansi-blue-fg">(dataset, path_or_file, mode, format, group, engine, encoding, unlimited_dims, compute, multifile, invalid_netcdf)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1195</span>     else:
+<span class="ansi-green-intense-fg ansi-bold">   1196</span>         raise ValueError(
+<span class="ansi-green-intense-fg ansi-bold">   1197</span>             f&#34;unrecognized option &#39;invalid_netcdf&#39; for engine {engine}&#34;
+<span class="ansi-green-intense-fg ansi-bold">   1198</span>         )
+<span class="ansi-green-fg">-&gt; 1199</span> store = store_open(target, mode, format, group, **kwargs)
+<span class="ansi-green-intense-fg ansi-bold">   1201</span> if unlimited_dims is None:
+<span class="ansi-green-intense-fg ansi-bold">   1202</span>     unlimited_dims = dataset.encoding.get(&#34;unlimited_dims&#34;, None)
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/backends/netCDF4_.py:389</span>, in <span class="ansi-cyan-fg">NetCDF4DataStore.open</span><span class="ansi-blue-fg">(cls, filename, mode, format, group, clobber, diskless, persist, lock, lock_maker, autoclose)</span>
+<span class="ansi-green-intense-fg ansi-bold">    383</span> kwargs = dict(
+<span class="ansi-green-intense-fg ansi-bold">    384</span>     clobber=clobber, diskless=diskless, persist=persist, format=format
+<span class="ansi-green-intense-fg ansi-bold">    385</span> )
+<span class="ansi-green-intense-fg ansi-bold">    386</span> manager = CachingFileManager(
+<span class="ansi-green-intense-fg ansi-bold">    387</span>     netCDF4.Dataset, filename, mode=mode, kwargs=kwargs
+<span class="ansi-green-intense-fg ansi-bold">    388</span> )
+<span class="ansi-green-fg">--&gt; 389</span> return cls(manager, group=group, mode=mode, lock=lock, autoclose=autoclose)
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/backends/netCDF4_.py:336</span>, in <span class="ansi-cyan-fg">NetCDF4DataStore.__init__</span><span class="ansi-blue-fg">(self, manager, group, mode, lock, autoclose)</span>
+<span class="ansi-green-intense-fg ansi-bold">    334</span> self._group = group
+<span class="ansi-green-intense-fg ansi-bold">    335</span> self._mode = mode
+<span class="ansi-green-fg">--&gt; 336</span> self.format = self.ds.data_model
+<span class="ansi-green-intense-fg ansi-bold">    337</span> self._filename = self.ds.filepath()
+<span class="ansi-green-intense-fg ansi-bold">    338</span> self.is_remote = is_remote_uri(self._filename)
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/backends/netCDF4_.py:398</span>, in <span class="ansi-cyan-fg">NetCDF4DataStore.ds</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    396</span> @property
+<span class="ansi-green-intense-fg ansi-bold">    397</span> def ds(self):
+<span class="ansi-green-fg">--&gt; 398</span>     return self._acquire()
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/backends/netCDF4_.py:392</span>, in <span class="ansi-cyan-fg">NetCDF4DataStore._acquire</span><span class="ansi-blue-fg">(self, needs_lock)</span>
+<span class="ansi-green-intense-fg ansi-bold">    391</span> def _acquire(self, needs_lock=True):
+<span class="ansi-green-fg">--&gt; 392</span>     with self._manager.acquire_context(needs_lock) as root:
+<span class="ansi-green-intense-fg ansi-bold">    393</span>         ds = _nc4_require_group(root, self._group, self._mode)
+<span class="ansi-green-intense-fg ansi-bold">    394</span>     return ds
+
+File <span class="ansi-green-fg">/usr/lib/python3.10/contextlib.py:135</span>, in <span class="ansi-cyan-fg">_GeneratorContextManager.__enter__</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    133</span> del self.args, self.kwds, self.func
+<span class="ansi-green-intense-fg ansi-bold">    134</span> try:
+<span class="ansi-green-fg">--&gt; 135</span>     return next(self.gen)
+<span class="ansi-green-intense-fg ansi-bold">    136</span> except StopIteration:
+<span class="ansi-green-intense-fg ansi-bold">    137</span>     raise RuntimeError(&#34;generator didn&#39;t yield&#34;) from None
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/backends/file_manager.py:198</span>, in <span class="ansi-cyan-fg">CachingFileManager.acquire_context</span><span class="ansi-blue-fg">(self, needs_lock)</span>
+<span class="ansi-green-intense-fg ansi-bold">    195</span> @contextlib.contextmanager
+<span class="ansi-green-intense-fg ansi-bold">    196</span> def acquire_context(self, needs_lock=True):
+<span class="ansi-green-intense-fg ansi-bold">    197</span>     &#34;&#34;&#34;Context manager for acquiring a file.&#34;&#34;&#34;
+<span class="ansi-green-fg">--&gt; 198</span>     file, cached = self._acquire_with_cache_info(needs_lock)
+<span class="ansi-green-intense-fg ansi-bold">    199</span>     try:
+<span class="ansi-green-intense-fg ansi-bold">    200</span>         yield file
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/xarray/backends/file_manager.py:216</span>, in <span class="ansi-cyan-fg">CachingFileManager._acquire_with_cache_info</span><span class="ansi-blue-fg">(self, needs_lock)</span>
+<span class="ansi-green-intense-fg ansi-bold">    214</span>     kwargs = kwargs.copy()
+<span class="ansi-green-intense-fg ansi-bold">    215</span>     kwargs[&#34;mode&#34;] = self._mode
+<span class="ansi-green-fg">--&gt; 216</span> file = self._opener(*self._args, **kwargs)
+<span class="ansi-green-intense-fg ansi-bold">    217</span> if self._mode == &#34;w&#34;:
+<span class="ansi-green-intense-fg ansi-bold">    218</span>     # ensure file doesn&#39;t get overridden when opened again
+<span class="ansi-green-intense-fg ansi-bold">    219</span>     self._mode = &#34;a&#34;
+
+File <span class="ansi-green-fg">src/netCDF4/_netCDF4.pyx:2449</span>, in <span class="ansi-cyan-fg">netCDF4._netCDF4.Dataset.__init__</span><span class="ansi-blue-fg">()</span>
+
+File <span class="ansi-green-fg">src/netCDF4/_netCDF4.pyx:2012</span>, in <span class="ansi-cyan-fg">netCDF4._netCDF4._ensure_nc_success</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-red-fg">PermissionError</span>: [Errno 13] Permission denied: &#39;/source/rompy/notebooks/simulations/test_swantemplate/datasets/bathy.nc&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># retrive the bathy data</span>
+<span class="n">bathy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[12], line 2</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> # retrive the bathy data
+<span class="ansi-green-fg">----&gt; 2</span> bathy.get(&#39;./&#39;)
+
+<span class="ansi-red-fg">NameError</span>: name &#39;bathy&#39; is not defined
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># retive the wind data</span>
+<span class="n">wind</span> <span class="o">=</span> <span class="n">nc_data_source</span><span class="p">()</span>
+<span class="n">wind</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.swan.data:   Writing wind to ./wind.grd
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;INPGRID WIND REG 115.68 -32.76 0.0 390 150 0.0010000000000000015 0.0009999999999999905 NONSTATION 20000101.000000 9303.157894736842 HR\nREADINP WIND 1 &#39;wind.grd&#39; 3 0 1 0 FREE\n&#34;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">forcing</span> <span class="o">=</span> <span class="n">ForcingData</span><span class="p">(</span><span class="n">wind</span><span class="o">=</span><span class="n">wind</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bathy</span><span class="p">)</span>
+<span class="n">forcing</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[20], line 2</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> forcing = ForcingData(wind=wind, bottom=bathy)
+<span class="ansi-green-fg">----&gt; 2</span> forcing.get()
+
+<span class="ansi-red-fg">TypeError</span>: ForcingData.get() missing 2 required positional arguments: &#39;grid&#39; and &#39;runtime&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">physics</span> <span class="o">=</span> <span class="n">SwanPhysics</span><span class="p">(</span><span class="n">friction</span><span class="o">=</span><span class="s1">&#39;INVALID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValidationError</span>                           Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[21], line 1</span>
+<span class="ansi-green-fg">----&gt; 1</span> physics = SwanPhysics(friction=&#39;INVALID&#39;)
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/pydantic/main.py:341</span>, in <span class="ansi-cyan-fg">pydantic.main.BaseModel.__init__</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-red-fg">ValidationError</span>: 1 validation error for SwanPhysics
+friction
+  friction must be one of MAD, OTHER or ANDANOTHER (type=value_error)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">physics</span> <span class="o">=</span> <span class="n">SwanPhysics</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">physics</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 WESTH 0.000075 0.00175
+BREAKING
+FRICTION MAD 0.1
+
+TRIADS
+
+PROP BSBT
+NUM ACCUR 0.02 0.02 0.02 95 NONSTAT 20
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>outputs<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Object `outputs` not found.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">outputs</span> <span class="o">=</span> <span class="n">Outputs</span><span class="p">()</span>
+<span class="n">outputs</span>
+<span class="c1"># outputs.cmd</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Outputs(grid=GridOutput(period=None, variables=[&#39;DEPTH&#39;, &#39;UBOT&#39;, &#39;HSIGN&#39;, &#39;HSWELL&#39;, &#39;DIR&#39;, &#39;TPS&#39;, &#39;TM01&#39;, &#39;WIND&#39;]), spec=SpecOutput(period=None, locations=OutputLocs
+  115.61 -32.618
+  115.686067 -32.532381
+))
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">runtime</span> <span class="o">=</span> <span class="n">SwanModel</span><span class="p">(</span>
+        <span class="n">run_id</span><span class="o">=</span><span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span>
+        <span class="n">period</span><span class="o">=</span><span class="n">TimeRange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+        <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">SwanConfig</span><span class="p">(</span>
+            <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span>
+            <span class="n">physics</span><span class="o">=</span><span class="n">physics</span><span class="p">,</span>
+            <span class="n">forcing</span><span class="o">=</span><span class="n">forcing</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># runtime.config.grid.plot()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">runtime</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forcing</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="n">runtime</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">runtime</span><span class="o">=</span><span class="n">runtime</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.swan.config:  processing bottom forcing
+INFO:rompy.swan.data:   Writing bottom to simulations/test_swantemplate/bottom.grd
+INFO:rompy.swan.data:Writing SWAN ASCII file: simulations/test_swantemplate/bottom.grd
+INFO:rompy.swan.config:  processing wind forcing
+INFO:rompy.swan.data:   Writing wind to simulations/test_swantemplate/wind.grd
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INPGRID BOTTOM REG 115.68 -32.76 0.0 187 150 0.0009999999999999872 0.0009999999999999905 EXC -99.0
+READINP BOTTOM 1.0 &#39;bottom.grd&#39; 3 FREE
+
+INPGRID WIND REG 115.68 -32.76 77.0 389 149 0.001 0.001 NONSTATION 20200222.000000 24.0 HR
+READINP WIND 1 &#39;wind.grd&#39; 3 0 1 0 FREE
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">runtime</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">locations</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+OutputLocs
+  115.61 -32.618
+  115.686067 -32.532381
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">runtime</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.core.model:
+INFO:rompy.core.model:-----------------------------------------------------
+INFO:rompy.core.model:Model settings:
+INFO:rompy.core.model:period: self.period
+output_dir: self.output_dir
+config: grid: SwanGrid: REG, 390x150
+spectral_resolution: fmin=0.0464 fmax=1.0 nfreqs=31 ndirs=36
+forcing: bottom: simulations/test_swantemplate/datasets/bathy.nc
+wind: simulations/test_swantemplate/datasets/wind_inputs.nc
+
+physics: friction=&#39;MAD&#39; friction_coeff=0.1
+outputs: Outputs:
+        Grid:
+                variables: DEPTH UBOT HSIGN HSWELL DIR TPS TM01 WIND
+        Spec
+                locations:   115.61 -32.618
+  115.686067 -32.532381
+
+
+
+template: /source/rompy/rompy/templates/swan
+
+INFO:rompy.core.model:Template used to generate model: /source/rompy/rompy/templates/swan
+INFO:rompy.swan.config:  processing bottom forcing
+INFO:rompy.swan.data:   Writing bottom to simulations/test_swantemplate/bottom.grd
+INFO:rompy.swan.data:Writing SWAN ASCII file: simulations/test_swantemplate/bottom.grd
+INFO:rompy.swan.config:  processing wind forcing
+INFO:rompy.swan.data:   Writing wind to simulations/test_swantemplate/wind.grd
+INFO:rompy.core.model:
+INFO:rompy.core.model:Successfully generated project in simulations
+INFO:rompy.core.model:-----------------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;/source/rompy/notebooks/simulations/test_swantemplate&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">runtime</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forcing</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">path</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PosixPath(&#39;/tmp/tmpoo0h93ku/bathy.nc&#39;)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="_sources/demonb.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

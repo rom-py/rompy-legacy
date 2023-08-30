@@ -1,0 +1,980 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Templates demonstration &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/templates_demo';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working demonstration" href="oceanum_example.html" />
+    <link rel="prev" title="Basic demonstration" href="demo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API  Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components.html">Model Components</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../demo.html" class="nav-link">Demonstration notebooks</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Templates demonstration</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="Templates-demonstration">
+<h1>Templates demonstration<a class="headerlink" href="#Templates-demonstration" title="Link to this heading">#</a></h1>
+<p>The previous version of numpy used cookiecutter to contruct model execution environment from vanilla cookiecutter setup of a template that was rendered from a cookiecutter.json. This has the advantage of leveraging a lot of cookiecutter features out of the box, but caused some confusion with regards to how configuration was managed. The cookiecutter.json served the purpose as a config file for model configuration, as well as holding the state of the prodecually run wrapper.</p>
+<p>For this new iteration, we have retained the internal use of cookiecutter in an effort to retain some of the features is provides, but have abstracted it away from the user. All coniguration is now passed an model run instantiation time, all through standard arguments. These arguments then intiate pydantic objects that are used to to things like retrieving and interpolating data inputs if required and then used in a cookiecutter template to render the template. This has been deliberately set up
+to be general, and flexible, allowing users to either invest in writing high level objects that are quite smart, or to just use the templating engine at a lower level to provide a light python framework around existing configurations.</p>
+<p>This notebook will highlight some of the aspects of how this has been set up.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Helper functions to dump the contents of input and template</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="k">def</span> <span class="nf">dump_input</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">input_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">model</span><span class="o">.</span><span class="n">run_id</span> <span class="o">/</span> <span class="s2">&quot;INPUT&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">dump_template</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">template_file</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">template</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;INPUT&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">template_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We will start here with the basic example from the demo.ipynb notebook that you have hopefully already run.</span>
+<span class="c1"># Here we will just initialise the model using the config file and run it</span>
+<span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">SwanConfig</span>
+<span class="kn">from</span> <span class="nn">rompy</span> <span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;demo.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+<span class="n">run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+<span class="c1"># and then calling as before</span>
+<span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+period:
+
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-04 00:00:00
+        Duration: 3 days, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+
+output_dir:
+simulations
+
+config:
+grid:
+        SwanGrid: REG, 390x150
+spectral_resolution:
+        fmin=0.0464 fmax=1.0 nfreqs=31 ndirs=36
+forcing:
+        bottom: DatasetXarray(uri=simulations/test_swantemplate/datasets/bathy.nc
+        wind: DatasetXarray(uri=simulations/test_swantemplate/datasets/wind_inputs.nc
+        boundary: DatasetXarray(uri=../tests/data/aus-20230101.nc
+
+physics:
+        friction=&#39;MAD&#39; friction_coeff=0.1
+outputs:
+        Grid:
+        variables: DEPTH UBOT HSIGN HSWELL DIR TPS TM01 WIND
+        Spec
+                locations:
+
+template:
+        /source/rompy/rompy/templates/swan
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in simulations
+INFO:rompy.swan.config:  Processing bottom forcing
+INFO:rompy.swan.data:   Writing bottom to simulations/test_swantemplate/bottom.grd
+INFO:rompy.swan.config:  Processing wind forcing
+INFO:rompy.swan.data:   Writing wind to simulations/test_swantemplate/wind.grd
+INFO:rompy.swan.config:  Processing boundary forcing
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in simulations
+INFO:rompy.model:-----------------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;/source/rompy/notebooks/simulations/test_swantemplate&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># lets have a look at the contents of the template</span>
+<span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">template</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;/source/rompy/rompy/templates/swan&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># There are a few things there, but lets begin with the model control file</span>
+<span class="n">dump_template</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+$
+$ SWAN - Simple example template used by rompy
+$ Template: {{_template}}
+$ Generated: {{runtime._generated_at}} on {{runtime._generated_on}} by {{runtime._generated_by}}
+$ projection: wgs84
+$
+
+MODE NONSTATIONARY TWODIMENSIONAL
+COORDINATES SPHERICAL
+SET NAUTICAL
+
+{{config.grid}}
+{{config.forcing[&#39;forcing&#39;]}}
+{{config.physics}}
+{{config.forcing[&#39;boundary&#39;]}}
+{{config.outputs}}
+COMPUTE NONST {{runtime.period.start.strftime(runtime._datefmt)}} {{runtime.frequency}} {{runtime.period.end.strftime(runtime._datefmt)}}
+
+STOP
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Of note here is that there are two namespaces, runtime, and config. To explore the differneces, lets look at the generate method of the run</span>
+run.generate<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Signature:</span> run<span class="ansi-blue-fg">.</span>generate<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> str
+<span class="ansi-red-fg">Source:</span>
+    <span class="ansi-green-fg">def</span> generate<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> str<span class="ansi-blue-fg">:</span>
+        <span class="ansi-blue-fg">&#34;&#34;&#34;Generate the model input files</span>
+
+<span class="ansi-blue-fg">        returns</span>
+<span class="ansi-blue-fg">        -------</span>
+<span class="ansi-blue-fg">        staging_dir : str</span>
+<span class="ansi-blue-fg">        &#34;&#34;&#34;</span>
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;&#34;</span><span class="ansi-blue-fg">)</span>
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;-----------------------------------------------------&#34;</span><span class="ansi-blue-fg">)</span>
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Model settings:&#34;</span><span class="ansi-blue-fg">)</span>
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span>
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;-----------------------------------------------------&#34;</span><span class="ansi-blue-fg">)</span>
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;Generating model input files in {self.output_dir}&#34;</span><span class="ansi-blue-fg">)</span>
+
+        cc_full <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+        cc_full<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;runtime&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>dict<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+        cc_full<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;runtime&#34;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>update<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>_generation_medatadata<span class="ansi-blue-fg">)</span>
+        cc_full<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;runtime&#34;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>update<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#34;_datefmt&#34;</span><span class="ansi-blue-fg">:</span> self<span class="ansi-blue-fg">.</span>_datefmt<span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-red-fg"># TODO calculate from period</span>
+        cc_full<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;runtime&#34;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;frequency&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;0.25 HR&#34;</span>
+
+        <span class="ansi-green-fg">if</span> callable<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+            cc_full<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;config&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+            cc_full<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;config&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>config
+
+        staging_dir <span class="ansi-blue-fg">=</span> render<span class="ansi-blue-fg">(</span>
+            cc_full<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>template<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>output_dir<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>checkout
+        <span class="ansi-blue-fg">)</span>
+
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;&#34;</span><span class="ansi-blue-fg">)</span>
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;Successfully generated project in {self.output_dir}&#34;</span><span class="ansi-blue-fg">)</span>
+        logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;-----------------------------------------------------&#34;</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">return</span> staging_dir
+<span class="ansi-red-fg">File:</span>      /source/rompy/rompy/model.py
+<span class="ansi-red-fg">Type:</span>      method
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The cc_full dictionary is the full context used to render the template. The runtime values are populated from the ModelRun object, while the</span>
+<span class="c1"># config values are populated from either the config input. This separation between a model configuration and how it is run means that this config</span>
+<span class="c1"># can be implemneted at varying degrees of complexity.</span>
+
+<span class="c1"># Lets look at teh current swan implementation as an example. This object is callable, so lets look at the __call__ function to see what it is doing</span>
+run.config.__call__<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Signature:</span> run<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>__call__<span class="ansi-blue-fg">(</span>runtime<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> str
+<span class="ansi-red-fg">Docstring:</span> Call self as a function.
+<span class="ansi-red-fg">Source:</span>
+    <span class="ansi-green-fg">def</span> __call__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> runtime<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> str<span class="ansi-blue-fg">:</span>
+        ret <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+        <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">.</span>period<span class="ansi-blue-fg">:</span>
+            self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">.</span>period <span class="ansi-blue-fg">=</span> runtime<span class="ansi-blue-fg">.</span>period
+        <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>spec<span class="ansi-blue-fg">.</span>period<span class="ansi-blue-fg">:</span>
+            self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>spec<span class="ansi-blue-fg">.</span>period <span class="ansi-blue-fg">=</span> runtime<span class="ansi-blue-fg">.</span>period
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;grid&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;{self.domain}&#34;</span>
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;forcing&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>forcing<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>
+            self<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">,</span> runtime<span class="ansi-blue-fg">.</span>period<span class="ansi-blue-fg">,</span> runtime<span class="ansi-blue-fg">.</span>staging_dir
+        <span class="ansi-blue-fg">)</span>
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;physics&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">f&#34;{self.physics.cmd}&#34;</span>
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;outputs&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>cmd
+        ret<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;output_locs&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>outputs<span class="ansi-blue-fg">.</span>spec<span class="ansi-blue-fg">.</span>locations
+        <span class="ansi-green-fg">return</span> ret
+<span class="ansi-red-fg">File:</span>      /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>      method
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># So it is calling the various pydantic components that make up the config which do any work required and return the</span>
+<span class="c1"># relavent values to fill in the template. We have looked at these in a bit more detail in the demo.ipynb notebook, but we can see</span>
+<span class="c1"># populated dictionary by calling the config object directly</span>
+<span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">runtime</span><span class="o">=</span><span class="n">run</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.swan.config:  Processing bottom forcing
+INFO:rompy.swan.data:   Writing bottom to simulations/test_swantemplate/bottom.grd
+INFO:rompy.swan.config:  Processing wind forcing
+INFO:rompy.swan.data:   Writing wind to simulations/test_swantemplate/wind.grd
+INFO:rompy.swan.config:  Processing boundary forcing
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;grid&#39;: &#39;CGRID REG 115.68 -32.76 77.0 0.39 0.15 389 149 CIRCLE 36 0.0464 1.0 31\n\n&#39;,
+ &#39;forcing&#39;: {&#39;forcing&#39;: &#34;INPGRID BOTTOM REG 115.43844490282329 -32.85000000000018 0.0 42 60 0.010000000000005116 0.00999999999999801 EXC -99.0\nREADINP BOTTOM 1.0 &#39;bottom.grd&#39; 3 FREE\n\nINPGRID WIND REG 115.68 -32.76 77.0 389 149 0.001 0.001 NONSTATION 20230101.000000 24.0 HR\nREADINP WIND 1 &#39;wind.grd&#39; 3 0 1 0 FREE\n&#34;,
+  &#39;boundary&#39;: &#34;BOUNDNEST1 NEST &#39;bnd.bnd&#39; CLOSED&#34;},
+ &#39;physics&#39;: &#39;GEN3 WESTH 0.000075 0.00175\nBREAKING\nFRICTION MAD 0.1\n\nTRIADS\n\nPROP BSBT\nNUM ACCUR 0.02 0.02 0.02 95 NONSTAT 20\n&#39;,
+ &#39;outputs&#39;: &#34;OUTPUT OPTIONS BLOCK 8\nBLOCK &#39;COMPGRID&#39; HEADER &#39;outputs/swan_out.nc&#39; LAYOUT 1 DEPTH UBOT HSIGN HSWELL DIR TPS TM01 WIND OUT 20230101.000000 1.0 HR\n\nPOINTs &#39;pts&#39; FILE &#39;out.loc&#39;\nSPECout &#39;pts&#39; SPEC2D ABS &#39;outputs/spec_out.nc&#39; OUTPUT 20230101.000000 1.0 HR\nTABle &#39;pts&#39; HEADer &#39;outputs/tab_out.nc&#39; TIME XP YP HS TPS TM01 DIR DSPR WIND OUTPUT 20230101.000000 1.0 HR\n&#34;,
+ &#39;output_locs&#39;: OutputLocs}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now this is an example of a medium complexity config object. It is made up of a number of sub componponents grouped into components such as</span>
+<span class="c1"># grid, data, physics etc. Howeever the config and template can be both simpler, and more complex.</span>
+
+<span class="c1"># As an example. lets consider a simpler case. The repo contains a similar configuration, where much of hte configuration is hard coded.</span>
+
+<span class="o">!</span>cat<span class="w"> </span>../rompy/templates/swanbasic/<span class="se">\{\{</span>runtime.run_id<span class="se">\}\}</span>/INPUT
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+$
+$ SWAN - Simple example template used by rompy
+$ Template: {{_template}}
+$ Generated: {{runtime._generated_at}} on {{runtime._generated_on}} by {{runtime._generated_by}}
+$ projection: wgs84
+$
+
+MODE NONSTATIONARY TWODIMENSIONAL
+COORDINATES SPHERICAL
+SET NAUTICAL
+
+CGRID REG 115.68 -32.76 77.0 0.39 0.15 389 149 CIRCLE 36 0.0464 1.0 31
+
+
+INPGRID BOTTOM REG 115.68 -32.76 0.0 187 150 0.0009999999999999872 0.0009999999999999905 EXC -99.0
+READINP BOTTOM 1.0 &#39;bottom.grd&#39; 3 FREE
+
+INPGRID WIND REG 115.68 -32.76 77.0 389 149 0.001 0.001 NONSTATION {{runtime.period.start.strftime(runtime._datefmt)}} {{runtime.frequency}}
+READINP WIND 1 &#39;wind.grd&#39; 3 0 1 0 FREE
+
+GEN3 WESTH 0.000075 0.00175
+BREAKING
+FRICTION MAD {{config.friction_coefficient}}
+
+TRIADS
+
+PROP BSBT
+NUM ACCUR 0.02 0.02 0.02 95 NONSTAT 20
+
+BOUNDNEST1 NEST &#39;boundary.bnd&#39; CLOSED
+OUTPUT OPTIONS BLOCK 8
+BLOCK &#39;COMPGRID&#39; HEADER &#39;outputs/swan_out.nc&#39; LAYOUT 1 DEPTH UBOT HSIGN HSWELL DIR TPS TM01 WIND OUT 20200221.040000 1.0 HR
+
+POINTs &#39;pts&#39; FILE &#39;out.loc&#39;
+SPECout &#39;pts&#39; SPEC2D ABS &#39;outputs/spec_out.nc&#39; OUTPUT 20200221.040000 1.0 HR
+TABle &#39;pts&#39; HEADer &#39;outputs/tab_out.nc&#39; TIME XP YP HS TPS TM01 DIR DSPR WIND OUTPUT 20200221.040000 1.0 HR
+
+COMPUTE NONST {{runtime.period.start.strftime(runtime._datefmt)}} {{runtime.frequency}} {{runtime.period.end.strftime(runtime._datefmt)}}
+
+STOP
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># So in this case, nothing only a single value is rendered from the config object, only runtime object is used. This demonstrates how an existing configuration can be</span>
+<span class="c1"># utilised in Rompy with basic template changes so it could be used to run a hindcast with multiple montthly submissions for example. e.g. to run this</span>
+<span class="c1"># simple case, we just initialise the model with the config pointing to this template</span>
+
+<span class="n">basic</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span><span class="n">run_id</span><span class="o">=</span><span class="s1">&#39;basic&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s2">&quot;../rompy/templates/swanbasic/&quot;</span><span class="p">,</span><span class="n">friction_coefficient</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">model_type</span><span class="o">=</span><span class="s1">&#39;base&#39;</span><span class="p">))</span>
+
+<span class="c1"># an run it</span>
+<span class="n">basic</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+period:
+
+        Start: 2020-02-21 04:00:00
+        End: 2020-02-24 04:00:00
+        Duration: 3 days, 0:00:00
+        Interval: 0:15:00
+        Include End: True
+
+
+output_dir:
+./simulations
+
+config:
+model_type=&#39;base&#39; template=&#39;../rompy/templates/swanbasic/&#39; checkout=&#39;main&#39; friction_coefficient=0.2
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in ./simulations
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in ./simulations
+INFO:rompy.model:-----------------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;/source/rompy/notebooks/simulations/basic&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># If we inspect the control file, we should see the run times have been popoluated by the runtime, and the friction coefficient has been set to 0.2.</span>
+<span class="c1"># No python code was required to do this, just a template and a dictionary or required arguments.</span>
+<span class="n">dump_input</span><span class="p">(</span><span class="n">basic</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+$
+$ SWAN - Simple example template used by rompy
+$ Template: ../rompy/templates/swanbasic/
+$ Generated: 2023-06-19 06:15:51.237042 on tom-xps by tdurrant
+$ projection: wgs84
+$
+
+MODE NONSTATIONARY TWODIMENSIONAL
+COORDINATES SPHERICAL
+SET NAUTICAL
+
+CGRID REG 115.68 -32.76 77.0 0.39 0.15 389 149 CIRCLE 36 0.0464 1.0 31
+
+
+INPGRID BOTTOM REG 115.68 -32.76 0.0 187 150 0.0009999999999999872 0.0009999999999999905 EXC -99.0
+READINP BOTTOM 1.0 &#39;bottom.grd&#39; 3 FREE
+
+INPGRID WIND REG 115.68 -32.76 77.0 389 149 0.001 0.001 NONSTATION 20200221.040000 0.25 HR
+READINP WIND 1 &#39;wind.grd&#39; 3 0 1 0 FREE
+
+GEN3 WESTH 0.000075 0.00175
+BREAKING
+FRICTION MAD 0.2
+
+TRIADS
+
+PROP BSBT
+NUM ACCUR 0.02 0.02 0.02 95 NONSTAT 20
+
+BOUNDNEST1 NEST &#39;boundary.bnd&#39; CLOSED
+OUTPUT OPTIONS BLOCK 8
+BLOCK &#39;COMPGRID&#39; HEADER &#39;outputs/swan_out.nc&#39; LAYOUT 1 DEPTH UBOT HSIGN HSWELL DIR TPS TM01 WIND OUT 20200221.040000 1.0 HR
+
+POINTs &#39;pts&#39; FILE &#39;out.loc&#39;
+SPECout &#39;pts&#39; SPEC2D ABS &#39;outputs/spec_out.nc&#39; OUTPUT 20200221.040000 1.0 HR
+TABle &#39;pts&#39; HEADer &#39;outputs/tab_out.nc&#39; TIME XP YP HS TPS TM01 DIR DSPR WIND OUTPUT 20200221.040000 1.0 HR
+
+COMPUTE NONST 20200221.040000 0.25 HR 20200224.040000
+
+STOP
+
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Config objects can also go the other way. At the moment, only a subset of the SWAN configuration is implemented in Rompy. However, it is possible to</span>
+<span class="c1"># create pydantic objects similar to those on teh SwanConfig object, but mirroring the entire functionaly of the SWAN model. This is a work in progress,</span>
+<span class="c1"># and will be demonstrated in a this notebook components/swan-config-components.ipynb.</span>
+
+<span class="c1"># Hopefully this shows that the model config object can be as simple or as complex as requuired. This also provided a soft on ramp to developiong</span>
+<span class="c1"># support for other models as you are not required to write do weeks of development before you can even start.</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="demo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Basic demonstration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="oceanum_example.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Working demonstration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/notebooks/templates_demo.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

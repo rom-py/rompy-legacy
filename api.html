@@ -1,0 +1,1713 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>API Documentation &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="_static/documentation_options.js?v=38b66d78"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="rompy.core" href="classes/rompy/rompy.core.html" />
+    <link rel="prev" title="rompy.core.data.DataGrid" href="_generated/rompy.core.data.DataGrid.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API  Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Model Components</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">API  Documentation</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="api-documentation">
+<h1>API  Documentation<a class="headerlink" href="#api-documentation" title="Link to this heading">#</a></h1>
+<section id="base-classes">
+<h2>Base Classes<a class="headerlink" href="#base-classes" title="Link to this heading">#</a></h2>
+<p>This is a reference API class listing.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="classes/rompy/rompy.core.html#module-rompy.core" title="rompy.core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.core</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.model.ModelRun">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.model.</span></span><span class="sig-name descname"><span class="pre">ModelRun</span></span><a class="reference internal" href="_modules/rompy/model.html#ModelRun"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.model.ModelRun" title="Link to this definition">#</a></dt>
+<dd><p>A model run.</p>
+<p>It is intented to be model agnostic.
+It deals primarily with how the model is to be run, i.e. the period of the run
+and where the output is going. The actual configuration of the run is
+provided by the config object.</p>
+<p>Further explanation is given in the rompy.core.Baseconfig docstring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.model.ModelRun.config" title="rompy.model.ModelRun.config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config</span> <span class="pre">(rompy.core.config.BaseConfig</span> <span class="pre">|</span> <span class="pre">rompy.swan.config.SwanConfig</span> <span class="pre">|</span> <span class="pre">rompy.swan.config.SwanConfigComponents)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.model.ModelRun.output_dir" title="rompy.model.ModelRun.output_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">output_dir</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.model.ModelRun.period" title="rompy.model.ModelRun.period"><code class="xref py py-obj docutils literal notranslate"><span class="pre">period</span> <span class="pre">(rompy.core.time.TimeRange)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.model.ModelRun.run_id" title="rompy.model.ModelRun.run_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_id</span> <span class="pre">(str)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.model.ModelRun.config">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.core.config.BaseConfig" title="rompy.core.config.BaseConfig"><span class="pre">BaseConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#rompy.swan.config.SwanConfig" title="rompy.swan.config.SwanConfig"><span class="pre">SwanConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SwanConfigComponents</span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#rompy.model.ModelRun.config" title="Link to this definition">#</a></dt>
+<dd><p>The configuration object</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.model.ModelRun.output_dir">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'./simulations'</span></em><a class="headerlink" href="#rompy.model.ModelRun.output_dir" title="Link to this definition">#</a></dt>
+<dd><p>The output directory</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.model.ModelRun.period">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">period</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.core.time.TimeRange" title="rompy.core.time.TimeRange"><span class="pre">TimeRange</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TimeRange(start=datetime.datetime(2020,</span> <span class="pre">2,</span> <span class="pre">21,</span> <span class="pre">4,</span> <span class="pre">0),</span> <span class="pre">end=datetime.datetime(2020,</span> <span class="pre">2,</span> <span class="pre">24,</span> <span class="pre">4,</span> <span class="pre">0),</span> <span class="pre">duration=datetime.timedelta(days=3),</span> <span class="pre">interval=datetime.timedelta(seconds=900),</span> <span class="pre">include_end=True)</span></em><a class="headerlink" href="#rompy.model.ModelRun.period" title="Link to this definition">#</a></dt>
+<dd><p>The time period to run the model</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.model.ModelRun.run_id">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'run_id'</span></em><a class="headerlink" href="#rompy.model.ModelRun.run_id" title="Link to this definition">#</a></dt>
+<dd><p>The run id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.model.ModelRun.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/rompy/model.html#ModelRun.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.model.ModelRun.generate" title="Link to this definition">#</a></dt>
+<dd><p>Generate the model input files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>staging_dir</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.model.ModelRun.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#rompy.model.ModelRun.model_post_init" title="Link to this definition">#</a></dt>
+<dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
+<p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> – The BaseModel instance.</p></li>
+<li><p><strong>__context</strong> – The context.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.model.ModelRun.zip">
+<span class="sig-name descname"><span class="pre">zip</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/rompy/model.html#ModelRun.zip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.model.ModelRun.zip" title="Link to this definition">#</a></dt>
+<dd><p>Zip the input files for the model run</p>
+<p>This function zips the input files for the model run and returns the
+name of the zip file. It also cleans up the staging directory leaving
+only the settings.json file that can be used to repoducte the run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>zip_fn</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.model.ModelRun.staging_dir">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">staging_dir</span></span><a class="headerlink" href="#rompy.model.ModelRun.staging_dir" title="Link to this definition">#</a></dt>
+<dd><p>The directory where the model is staged for execution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>staging_dir</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.core.time.</span></span><span class="sig-name descname"><span class="pre">TimeRange</span></span><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.time.TimeRange" title="Link to this definition">#</a></dt>
+<dd><p>A time range object</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">rompy</span> <span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span> <span class="o">=</span> <span class="n">TimeRange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;2020-01-02&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span>
+<span class="go">TimeRange(start=datetime.datetime(2020, 1, 1, 0, 0), end=datetime.datetime(2020, 1, 2, 0, 0), duration=None, interval=None, include_end=True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span> <span class="o">=</span> <span class="n">TimeRange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="s2">&quot;1d&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span>
+<span class="go">TimeRange(start=datetime.datetime(2020, 1, 1, 0, 0), end=datetime.datetime(2020, 1, 2, 0, 0), duration=timedelta(days=1), interval=None, include_end=True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span> <span class="o">=</span> <span class="n">TimeRange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="s2">&quot;1d&quot;</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;1h&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span>
+<span class="go">TimeRange(start=datetime.datetime(2020, 1, 1, 0, 0), end=None, duration=timedelta(days=1), interval=timedelta(hours=1), include_end=True)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.duration" title="rompy.core.time.TimeRange.duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">duration</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">datetime.timedelta</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.end" title="rompy.core.time.TimeRange.end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end</span> <span class="pre">(datetime.datetime</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.include_end" title="rompy.core.time.TimeRange.include_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">include_end</span> <span class="pre">(bool)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.interval" title="rompy.core.time.TimeRange.interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">datetime.timedelta</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.start" title="rompy.core.time.TimeRange.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span> <span class="pre">(datetime.datetime</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.parse_start_end_duration" title="rompy.core.time.TimeRange.parse_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_start_end_duration</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.valid_duration_interval" title="rompy.core.time.TimeRange.valid_duration_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_duration_interval</span></code></a> » <a class="reference internal" href="#rompy.core.time.TimeRange.duration" title="rompy.core.time.TimeRange.duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">duration</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.valid_duration_interval" title="rompy.core.time.TimeRange.valid_duration_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_duration_interval</span></code></a> » <a class="reference internal" href="#rompy.core.time.TimeRange.interval" title="rompy.core.time.TimeRange.interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end" title="rompy.core.time.TimeRange.validate_start_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end</span></code></a> » <a class="reference internal" href="#rompy.core.time.TimeRange.end" title="rompy.core.time.TimeRange.end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end" title="rompy.core.time.TimeRange.validate_start_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end</span></code></a> » <a class="reference internal" href="#rompy.core.time.TimeRange.start" title="rompy.core.time.TimeRange.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end_duration" title="rompy.core.time.TimeRange.validate_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end_duration</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.duration">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">timedelta</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.core.time.TimeRange.duration" title="Link to this definition">#</a></dt>
+<dd><p>The duration of the time range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.parse_start_end_duration" title="rompy.core.time.TimeRange.parse_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_start_end_duration</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.valid_duration_interval" title="rompy.core.time.TimeRange.valid_duration_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_duration_interval</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end_duration" title="rompy.core.time.TimeRange.validate_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end_duration</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.end">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">end</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.core.time.TimeRange.end" title="Link to this definition">#</a></dt>
+<dd><p>The end date of the time range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.parse_start_end_duration" title="rompy.core.time.TimeRange.parse_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_start_end_duration</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end" title="rompy.core.time.TimeRange.validate_start_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end_duration" title="rompy.core.time.TimeRange.validate_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end_duration</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.include_end">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">include_end</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#rompy.core.time.TimeRange.include_end" title="Link to this definition">#</a></dt>
+<dd><p>Determines if the end date should be included in the range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.parse_start_end_duration" title="rompy.core.time.TimeRange.parse_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_start_end_duration</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end_duration" title="rompy.core.time.TimeRange.validate_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end_duration</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.interval">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">timedelta</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'1h'</span></em><a class="headerlink" href="#rompy.core.time.TimeRange.interval" title="Link to this definition">#</a></dt>
+<dd><p>The frequency of the time range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.parse_start_end_duration" title="rompy.core.time.TimeRange.parse_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_start_end_duration</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.valid_duration_interval" title="rompy.core.time.TimeRange.valid_duration_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_duration_interval</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end_duration" title="rompy.core.time.TimeRange.validate_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end_duration</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.start">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.core.time.TimeRange.start" title="Link to this definition">#</a></dt>
+<dd><p>The start date of the time range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.parse_start_end_duration" title="rompy.core.time.TimeRange.parse_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_start_end_duration</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end" title="rompy.core.time.TimeRange.validate_start_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.time.TimeRange.validate_start_end_duration" title="rompy.core.time.TimeRange.validate_start_end_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_start_end_duration</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.common_times">
+<span class="sig-name descname"><span class="pre">common_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rompy.core.time.TimeRange" title="rompy.core.time.TimeRange"><span class="pre">TimeRange</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.common_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.time.TimeRange.common_times" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.contains">
+<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.contains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.time.TimeRange.contains" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.contains_range">
+<span class="sig-name descname"><span class="pre">contains_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rompy.core.time.TimeRange" title="rompy.core.time.TimeRange"><span class="pre">TimeRange</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.contains_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.time.TimeRange.contains_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.parse_start_end_duration">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_start_end_duration</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.parse_start_end_duration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.time.TimeRange.parse_start_end_duration" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.valid_duration_interval">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_duration_interval</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.core.time.TimeRange.interval" title="rompy.core.time.TimeRange.interval"><em class="xref py py-obj"><span class="pre">interval</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.core.time.TimeRange.duration" title="rompy.core.time.TimeRange.duration"><em class="xref py py-obj"><span class="pre">duration</span></em></a><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.valid_duration_interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.time.TimeRange.valid_duration_interval" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.validate_start_end">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_start_end</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.core.time.TimeRange.start" title="rompy.core.time.TimeRange.start"><em class="xref py py-obj"><span class="pre">start</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.core.time.TimeRange.end" title="rompy.core.time.TimeRange.end"><em class="xref py py-obj"><span class="pre">end</span></em></a><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.validate_start_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.time.TimeRange.validate_start_end" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.validate_start_end_duration">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_start_end_duration</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.validate_start_end_duration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.time.TimeRange.validate_start_end_duration" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.core.time.TimeRange.date_range">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">date_range</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#rompy.core.time.TimeRange.date_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.core.config.BaseConfig">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.core.config.</span></span><span class="sig-name descname"><span class="pre">BaseConfig</span></span><a class="reference internal" href="_modules/rompy/core/config.html#BaseConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.config.BaseConfig" title="Link to this definition">#</a></dt>
+<dd><p>Base class for model templates.</p>
+<p>The template class provides the object that is used to set up the model configuration.
+When implemented for a given model, can move along a scale of complexity
+to suit the application.</p>
+<p>In its most basic form, as implemented in this base object, it consists of path to a cookiecutter template
+with the class providing the context for the {{config}} values in that template. Note that any
+{{runtime}} values are filled from the ModelRun object.</p>
+<p>If the template is a git repo, the checkout parameter can be used to specify a branch or tag and it
+will be cloned and used.</p>
+<p>If the object is callable, it will be colled prior to rendering the template. This mechanism can be
+used to perform tasks such as fetching exteral data, or providing additional context to the template
+beyond the arguments provided by the user..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.config.BaseConfig.checkout" title="rompy.core.config.BaseConfig.checkout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkout</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.config.BaseConfig.model_type" title="rompy.core.config.BaseConfig.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['base'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.config.BaseConfig.template" title="rompy.core.config.BaseConfig.template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.config.BaseConfig.checkout">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">checkout</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'main'</span></em><a class="headerlink" href="#rompy.core.config.BaseConfig.checkout" title="Link to this definition">#</a></dt>
+<dd><p>The git branch to use if the template is a git repo</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.config.BaseConfig.model_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'base'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'base'</span></em><a class="headerlink" href="#rompy.core.config.BaseConfig.model_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.config.BaseConfig.template">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages/rompy/templates/base'</span></em><a class="headerlink" href="#rompy.core.config.BaseConfig.template" title="Link to this definition">#</a></dt>
+<dd><p>The path to the model template</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.core.grid.</span></span><span class="sig-name descname"><span class="pre">BaseGrid</span></span><a class="reference internal" href="_modules/rompy/core/grid.html#BaseGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.grid.BaseGrid" title="Link to this definition">#</a></dt>
+<dd><p>An object which provides an abstract representation of a grid in some geographic space</p>
+<p>This is the base class for all Grid objects. The minimum representation of a grid are two
+NumPy array’s representing the vertices or nodes of some structured or unstructured grid,
+its bounding box and a boundary polygon. No knowledge of the grid connectivity is expected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.grid.BaseGrid.grid_type" title="rompy.core.grid.BaseGrid.grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span> <span class="pre">(Literal['base'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.grid.BaseGrid.x" title="rompy.core.grid.BaseGrid.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span> <span class="pre">(pathlib.Path</span> <span class="pre">|</span> <span class="pre">pydantic_numpy.model.multi_array.MultiArrayNumpyFile</span> <span class="pre">|</span> <span class="pre">numpy.ndarray[tuple[int],</span> <span class="pre">None]</span> <span class="pre">|</span> <span class="pre">pathlib.Path</span> <span class="pre">|</span> <span class="pre">pydantic_numpy.model.multi_array.MultiArrayNumpyFile</span> <span class="pre">|</span> <span class="pre">numpy.ndarray[tuple[int,</span> <span class="pre">int],</span> <span class="pre">None]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.grid.BaseGrid.y" title="rompy.core.grid.BaseGrid.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span> <span class="pre">(pathlib.Path</span> <span class="pre">|</span> <span class="pre">pydantic_numpy.model.multi_array.MultiArrayNumpyFile</span> <span class="pre">|</span> <span class="pre">numpy.ndarray[tuple[int],</span> <span class="pre">None]</span> <span class="pre">|</span> <span class="pre">pathlib.Path</span> <span class="pre">|</span> <span class="pre">pydantic_numpy.model.multi_array.MultiArrayNumpyFile</span> <span class="pre">|</span> <span class="pre">numpy.ndarray[tuple[int,</span> <span class="pre">int],</span> <span class="pre">None]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.grid_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'base'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'base'</span></em><a class="headerlink" href="#rompy.core.grid.BaseGrid.grid_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.x">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiArrayNumpyFile</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiArrayNumpyFile</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.core.grid.BaseGrid.x" title="Link to this definition">#</a></dt>
+<dd><p>The x coordinates</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.y">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiArrayNumpyFile</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiArrayNumpyFile</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.core.grid.BaseGrid.y" title="Link to this definition">#</a></dt>
+<dd><p>The y coordinates</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.bbox">
+<span class="sig-name descname"><span class="pre">bbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Bbox</span></span></span><a class="reference internal" href="_modules/rompy/core/grid.html#BaseGrid.bbox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.grid.BaseGrid.bbox" title="Link to this definition">#</a></dt>
+<dd><p>Returns a bounding box for the spatial grid</p>
+<p>This function returns a list [ll_x, ll_y, ur_x, ur_y]
+where ll_x, ll_y (ur_x, ur_y) are the lower left (upper right)
+x and y coordinates bounding box of the model domain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.boundary">
+<span class="sig-name descname"><span class="pre">boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/core/grid.html#BaseGrid.boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.grid.BaseGrid.boundary" title="Link to this definition">#</a></dt>
+<dd><p>Returns a boundary polygon as a Shapely Polygon object. Sub-classes can override the private method Grid._get_boundary() but must return a Shapely polygon object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tolerance</strong> (<em>float</em>) – See <a class="reference external" href="https://shapely.readthedocs.io/en/stable/manual.html#object.simplify">https://shapely.readthedocs.io/en/stable/manual.html#object.simplify</a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>polygon</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>shapely.Polygon see <a class="reference external" href="https://shapely.readthedocs.io/en/stable/manual.html#Polygon">https://shapely.readthedocs.io/en/stable/manual.html#Polygon</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.boundary_points">
+<span class="sig-name descname"><span class="pre">boundary_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/core/grid.html#BaseGrid.boundary_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.grid.BaseGrid.boundary_points" title="Link to this definition">#</a></dt>
+<dd><p>Convenience function to convert boundary Shapely Polygon
+to arrays of coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tolerance</strong> (<em>float</em>) – Passed to Grid.boundary
+See <a class="reference external" href="https://shapely.readthedocs.io/en/stable/manual.html#object.simplify">https://shapely.readthedocs.io/en/stable/manual.html#object.simplify</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/core/grid.html#BaseGrid.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.grid.BaseGrid.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the grid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.points_along_boundary">
+<span class="sig-name descname"><span class="pre">points_along_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spacing</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/core/grid.html#BaseGrid.points_along_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.grid.BaseGrid.points_along_boundary" title="Link to this definition">#</a></dt>
+<dd><p>Points evenly spaced along the grid boundary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spacing</strong> (<em>float</em>) – The spacing between points along the boundary</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>points</strong> – A Shapely MultiPoint object containing the points along the boundary.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MultiPoint</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.maxx">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">maxx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#rompy.core.grid.BaseGrid.maxx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.maxy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">maxy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#rompy.core.grid.BaseGrid.maxy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.minx">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">minx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#rompy.core.grid.BaseGrid.minx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.core.grid.BaseGrid.miny">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">miny</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#rompy.core.grid.BaseGrid.miny" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.core.data.DataBlob">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.core.data.</span></span><span class="sig-name descname"><span class="pre">DataBlob</span></span><a class="reference internal" href="_modules/rompy/core/data.html#DataBlob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.data.DataBlob" title="Link to this definition">#</a></dt>
+<dd><p>Data source for model ingestion.</p>
+<p>Generic data source for files that simply need to be copied to the model directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.data.DataBlob.id" title="rompy.core.data.DataBlob.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.data.DataBlob.model_type" title="rompy.core.data.DataBlob.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['data_blob'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.data.DataBlob.source" title="rompy.core.data.DataBlob.source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span> <span class="pre">(cloudpathlib.anypath.AnyPath)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataBlob.id">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.core.data.DataBlob.id" title="Link to this definition">#</a></dt>
+<dd><p>Unique identifier for this data source</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataBlob.model_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'data_blob'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data_blob'</span></em><a class="headerlink" href="#rompy.core.data.DataBlob.model_type" title="Link to this definition">#</a></dt>
+<dd><p>Model type discriminator</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataBlob.source">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">AnyPath</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.core.data.DataBlob.source" title="Link to this definition">#</a></dt>
+<dd><p>URI of the data source, either a local file path or a remote uri</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.data.DataBlob.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/rompy/core/data.html#DataBlob.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.data.DataBlob.get" title="Link to this definition">#</a></dt>
+<dd><p>Copy the data source to a new directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>destdir</strong> (<em>str</em><em> | </em><em>Path</em>) – The destination directory to copy the data source to.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>outfile</strong> – The path to the copied file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.core.data.</span></span><span class="sig-name descname"><span class="pre">DataGrid</span></span><a class="reference internal" href="_modules/rompy/core/data.html#DataGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.data.DataGrid" title="Link to this definition">#</a></dt>
+<dd><p>Data object for model ingestion.</p>
+<p>Generic data object for xarray datasets that need to be filtered and written to
+netcdf.</p>
+<p>TODO: Is there anything griddy about this class? Should it be renamed?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.core.data.DataGrid.coords" title="rompy.core.data.DataGrid.coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coords</span> <span class="pre">(rompy.core.types.DatasetCoords</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.data.DataGrid.filter" title="rompy.core.data.DataGrid.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">(rompy.core.filters.Filter</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.data.DataGrid.id" title="rompy.core.data.DataGrid.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.data.DataGrid.model_type" title="rompy.core.data.DataGrid.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['data_grid'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.data.DataGrid.source" title="rompy.core.data.DataGrid.source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span> <span class="pre">(rompy.core.data.SourceDataset</span> <span class="pre">|</span> <span class="pre">rompy.core.data.SourceFile</span> <span class="pre">|</span> <span class="pre">rompy.core.data.SourceIntake</span> <span class="pre">|</span> <span class="pre">rompy.core.data.SourceDatamesh)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.data.DataGrid.variables" title="rompy.core.data.DataGrid.variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variables</span> <span class="pre">(list[str]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid.coords">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DatasetCoords</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatasetCoords(t='time',</span> <span class="pre">x='longitude',</span> <span class="pre">y='latitude',</span> <span class="pre">z='depth')</span></em><a class="headerlink" href="#rompy.core.data.DataGrid.coords" title="Link to this definition">#</a></dt>
+<dd><p>Names of the coordinates in the dataset</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid.filter">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Filter</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Filter(sort={},</span> <span class="pre">subset={},</span> <span class="pre">crop={},</span> <span class="pre">timenorm={},</span> <span class="pre">rename={},</span> <span class="pre">derived={})</span></em><a class="headerlink" href="#rompy.core.data.DataGrid.filter" title="Link to this definition">#</a></dt>
+<dd><p>Optional filter specification to apply to the dataset</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid.id">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.core.data.DataGrid.id" title="Link to this definition">#</a></dt>
+<dd><p>Unique identifier for this data source</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid.model_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'data_grid'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data_grid'</span></em><a class="headerlink" href="#rompy.core.data.DataGrid.model_type" title="Link to this definition">#</a></dt>
+<dd><p>Model type discriminator</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid.source">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">SourceDataset</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SourceFile</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SourceIntake</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SourceDatamesh</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.core.data.DataGrid.source" title="Link to this definition">#</a></dt>
+<dd><p>Source reader, must return an xarray dataset in the open method</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid.variables">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">variables</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#rompy.core.data.DataGrid.variables" title="Link to this definition">#</a></dt>
+<dd><p>Subset of variables to extract from the dataset</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/rompy/core/data.html#DataGrid.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.data.DataGrid.get" title="Link to this definition">#</a></dt>
+<dd><p>Write the data source to a new location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>destdir</strong> (<em>str</em><em> | </em><em>Path</em>) – The destination directory to write the netcdf data to.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>outfile</strong> (<em>Path</em>) – The path to the written file.</p></li>
+<li><p><strong>TODO</strong> (<em>Discuss whether this method should be called something more obvious</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'turbo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/core/data.html#DataGrid.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.data.DataGrid.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the grid.</p>
+<p>TODO: Plotting is a bit slow, optimise this.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.core.data.DataGrid.ds">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ds</span></span><a class="headerlink" href="#rompy.core.data.DataGrid.ds" title="Link to this definition">#</a></dt>
+<dd><p>Return the xarray dataset for this data source.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="swan-classes">
+<h2>Swan Classes<a class="headerlink" href="#swan-classes" title="Link to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="classes/swan/rompy.swan.html#module-rompy.swan" title="rompy.swan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.config.</span></span><span class="sig-name descname"><span class="pre">SwanConfig</span></span><a class="reference internal" href="_modules/rompy/swan/config.html#SwanConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.config.SwanConfig" title="Link to this definition">#</a></dt>
+<dd><p>SWAN configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanConfig.forcing" title="rompy.swan.config.SwanConfig.forcing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forcing</span> <span class="pre">(rompy.swan.config.ForcingData)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanConfig.grid" title="rompy.swan.config.SwanConfig.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span> <span class="pre">(rompy.swan.grid.SwanGrid)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanConfig.model_type" title="rompy.swan.config.SwanConfig.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['swan'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanConfig.outputs" title="rompy.swan.config.SwanConfig.outputs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outputs</span> <span class="pre">(rompy.swan.config.Outputs)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanConfig.physics" title="rompy.swan.config.SwanConfig.physics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">physics</span> <span class="pre">(rompy.swan.config.SwanPhysics)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanConfig.spectra_file" title="rompy.swan.config.SwanConfig.spectra_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectra_file</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanConfig.spectral_resolution" title="rompy.swan.config.SwanConfig.spectral_resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectral_resolution</span> <span class="pre">(rompy.swan.config.SwanSpectrum)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanConfig.template" title="rompy.swan.config.SwanConfig.template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span> <span class="pre">(str)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.forcing">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forcing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.swan.config.ForcingData" title="rompy.swan.config.ForcingData"><span class="pre">ForcingData</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ForcingData(bottom=None,</span> <span class="pre">wind=None,</span> <span class="pre">current=None,</span> <span class="pre">boundary=None)</span></em><a class="headerlink" href="#rompy.swan.config.SwanConfig.forcing" title="Link to this definition">#</a></dt>
+<dd><p>The forcing data for SWAN.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.grid">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.swan.grid.SwanGrid" title="rompy.swan.grid.SwanGrid"><span class="pre">SwanGrid</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.config.SwanConfig.grid" title="Link to this definition">#</a></dt>
+<dd><p>The model grid for the SWAN run</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.model_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'swan'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'swan'</span></em><a class="headerlink" href="#rompy.swan.config.SwanConfig.model_type" title="Link to this definition">#</a></dt>
+<dd><p>The model type for SWAN.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.outputs">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Outputs</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Outputs(grid=GridOutput(period=None,</span> <span class="pre">variables=['DEPTH',</span> <span class="pre">'UBOT',</span> <span class="pre">'HSIGN',</span> <span class="pre">'HSWELL',</span> <span class="pre">'DIR',</span> <span class="pre">'TPS',</span> <span class="pre">'TM01',</span> <span class="pre">'WIND']),</span> <span class="pre">spec=SpecOutput(period=None,</span> <span class="pre">locations=OutputLocs</span> <span class="pre">))</span></em><a class="headerlink" href="#rompy.swan.config.SwanConfig.outputs" title="Link to this definition">#</a></dt>
+<dd><p>The outputs for SWAN.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.physics">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">physics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.swan.config.SwanPhysics" title="rompy.swan.config.SwanPhysics"><span class="pre">SwanPhysics</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">SwanPhysics(friction='MAD',</span> <span class="pre">friction_coeff=0.1)</span></em><a class="headerlink" href="#rompy.swan.config.SwanConfig.physics" title="Link to this definition">#</a></dt>
+<dd><p>The physics options for SWAN.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.spectra_file">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spectra_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'boundary.spec'</span></em><a class="headerlink" href="#rompy.swan.config.SwanConfig.spectra_file" title="Link to this definition">#</a></dt>
+<dd><p>The spectra file for SWAN.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.spectral_resolution">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spectral_resolution</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.swan.config.SwanSpectrum" title="rompy.swan.config.SwanSpectrum"><span class="pre">SwanSpectrum</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">SwanSpectrum(fmin=0.0464,</span> <span class="pre">fmax=1.0,</span> <span class="pre">nfreqs=31,</span> <span class="pre">ndirs=36)</span></em><a class="headerlink" href="#rompy.swan.config.SwanConfig.spectral_resolution" title="Link to this definition">#</a></dt>
+<dd><p>The spectral resolution for SWAN.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.template">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages/rompy/templates/swan'</span></em><a class="headerlink" href="#rompy.swan.config.SwanConfig.template" title="Link to this definition">#</a></dt>
+<dd><p>The template for SWAN.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#rompy.swan.config.SwanConfig.model_post_init" title="Link to this definition">#</a></dt>
+<dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
+<p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> – The BaseModel instance.</p></li>
+<li><p><strong>__context</strong> – The context.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanConfig.domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">domain</span></span><a class="headerlink" href="#rompy.swan.config.SwanConfig.domain" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.grid.</span></span><span class="sig-name descname"><span class="pre">SwanGrid</span></span><a class="reference internal" href="_modules/rompy/swan/grid.html#SwanGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.grid.SwanGrid" title="Link to this definition">#</a></dt>
+<dd><p>An object which provides an abstract representation of a regular SWAN
+grid in some geographic space</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.exc" title="rompy.swan.grid.SwanGrid.exc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exc</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.grid_type" title="rompy.swan.grid.SwanGrid.grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span> <span class="pre">(Literal['REG',</span> <span class="pre">'CURV'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.gridfile" title="rompy.swan.grid.SwanGrid.gridfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridfile</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_grid_type" title="rompy.swan.grid.SwanGrid.validate_grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid_type</span></code></a> » <a class="reference internal" href="#rompy.swan.grid.SwanGrid.grid_type" title="rompy.swan.grid.SwanGrid.grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.exc">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.exc" title="Link to this definition">#</a></dt>
+<dd><p>Missing value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.grid_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'REG'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'CURV'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REG'</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.grid_type" title="Link to this definition">#</a></dt>
+<dd><p>Type of grid (REG=regular, CURV=curvilinear)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_grid_type" title="rompy.swan.grid.SwanGrid.validate_grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid_type</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.gridfile">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gridfile</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.gridfile" title="Link to this definition">#</a></dt>
+<dd><p>Name of grid file to load</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_length</strong> = 100</p></li>
+</ul>
+</dd>
+<dt class="field-even">Validated by<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.nearby_spectra">
+<span class="sig-name descname"><span class="pre">nearby_spectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_thres</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/swan/grid.html#SwanGrid.nearby_spectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.grid.SwanGrid.nearby_spectra" title="Link to this definition">#</a></dt>
+<dd><p>Find points nearby and project to the boundary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ds_spec</strong> (<em>xarray.Dataset</em>) – <p>an XArray dataset of wave spectra at a number of points.
+Dataset variable names standardised using wavespectra.read_*
+functions.</p>
+<p>See <a class="reference external" href="https://wavespectra.readthedocs.io/en/latest/api.html#input-functions">https://wavespectra.readthedocs.io/en/latest/api.html#input-functions</a></p>
+</p></li>
+<li><p><strong>dist_thres</strong> (<em>float</em><em>, </em><em>optional</em><em> [</em><em>Default: 0.05</em><em>]</em>) – Maximum distance to translate the input spectra to the grid boundary</p></li>
+<li><p><strong>plot</strong> (<em>boolean</em><em>, </em><em>optional</em><em> [</em><em>Default: True</em><em>]</em>) – Generate a plot that shows the applied projections</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A subset of ds_spec with lat and lon coordinates projected to the boundary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xarray.Dataset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.validate_curvilinear_grid">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_curvilinear_grid</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="_modules/rompy/swan/grid.html#SwanGrid.validate_curvilinear_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.validate_grid_type">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_grid_type</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.grid.SwanGrid.grid_type" title="rompy.swan.grid.SwanGrid.grid_type"><em class="xref py py-obj"><span class="pre">grid_type</span></em></a><a class="reference internal" href="_modules/rompy/swan/grid.html#SwanGrid.validate_grid_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.grid.SwanGrid.validate_grid_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.cgrid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cgrid</span></span><a class="headerlink" href="#rompy.swan.grid.SwanGrid.cgrid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.cgrid_read">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cgrid_read</span></span><a class="headerlink" href="#rompy.swan.grid.SwanGrid.cgrid_read" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.inpgrid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inpgrid</span></span><a class="headerlink" href="#rompy.swan.grid.SwanGrid.inpgrid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.config.ForcingData">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.config.</span></span><span class="sig-name descname"><span class="pre">ForcingData</span></span><a class="reference internal" href="_modules/rompy/swan/config.html#ForcingData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.config.ForcingData" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.config.ForcingData.bottom" title="rompy.swan.config.ForcingData.bottom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bottom</span> <span class="pre">(rompy.swan.data.SwanDataGrid</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.ForcingData.boundary" title="rompy.swan.config.ForcingData.boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary</span> <span class="pre">(rompy.swan.boundary.DataBoundary</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.ForcingData.current" title="rompy.swan.config.ForcingData.current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current</span> <span class="pre">(rompy.swan.data.SwanDataGrid</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.ForcingData.wind" title="rompy.swan.config.ForcingData.wind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind</span> <span class="pre">(rompy.swan.data.SwanDataGrid</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.ForcingData.bottom">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bottom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.swan.data.SwanDataGrid" title="rompy.swan.data.SwanDataGrid"><span class="pre">SwanDataGrid</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.config.ForcingData.bottom" title="Link to this definition">#</a></dt>
+<dd><p>Bathymetry data for SWAN</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.ForcingData.boundary">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">boundary</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataBoundary</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.config.ForcingData.boundary" title="Link to this definition">#</a></dt>
+<dd><p>The boundary data for SWAN.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.ForcingData.current">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.swan.data.SwanDataGrid" title="rompy.swan.data.SwanDataGrid"><span class="pre">SwanDataGrid</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.config.ForcingData.current" title="Link to this definition">#</a></dt>
+<dd><p>The current data for SWAN.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.ForcingData.wind">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wind</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.swan.data.SwanDataGrid" title="rompy.swan.data.SwanDataGrid"><span class="pre">SwanDataGrid</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.config.ForcingData.wind" title="Link to this definition">#</a></dt>
+<dd><p>The wind data for SWAN.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.swan.config.ForcingData.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rompy.swan.grid.SwanGrid" title="rompy.swan.grid.SwanGrid"><span class="pre">SwanGrid</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rompy.core.time.TimeRange" title="rompy.core.time.TimeRange"><span class="pre">TimeRange</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">staging_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/swan/config.html#ForcingData.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.config.ForcingData.get" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.data.SwanDataGrid">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.data.</span></span><span class="sig-name descname"><span class="pre">SwanDataGrid</span></span><a class="reference internal" href="_modules/rompy/swan/data.html#SwanDataGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.data.SwanDataGrid" title="Link to this definition">#</a></dt>
+<dd><p>This class is used to write SWAN data from a dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.fac" title="rompy.swan.data.SwanDataGrid.fac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fac</span> <span class="pre">(float)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.var" title="rompy.swan.data.SwanDataGrid.var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.z1" title="rompy.swan.data.SwanDataGrid.z1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z1</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.z2" title="rompy.swan.data.SwanDataGrid.z2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z2</span> <span class="pre">(str)</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars" title="rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_z1_in_data_vars</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.var_must_be_one_of_wind_bathy_current" title="rompy.swan.data.SwanDataGrid.var_must_be_one_of_wind_bathy_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_must_be_one_of_wind_bathy_current</span></code></a> » <a class="reference internal" href="#rompy.swan.data.SwanDataGrid.var" title="rompy.swan.data.SwanDataGrid.var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.data.SwanDataGrid.fac">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fac</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></em><a class="headerlink" href="#rompy.swan.data.SwanDataGrid.fac" title="Link to this definition">#</a></dt>
+<dd><p>SWAN multiplies all values that are read from file by <cite>fac</cite>. For instance if the values are given in unit decimeter, one should make <cite>fac=0.1</cite> to obtain values in m. To change sign use a negative <cite>fac</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars" title="rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_z1_in_data_vars</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.data.SwanDataGrid.var">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">var</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WIND'</span></em><a class="headerlink" href="#rompy.swan.data.SwanDataGrid.var" title="Link to this definition">#</a></dt>
+<dd><p>SWAN variable name (WIND, BOTTOM, CURRENT)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars" title="rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_z1_in_data_vars</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.var_must_be_one_of_wind_bathy_current" title="rompy.swan.data.SwanDataGrid.var_must_be_one_of_wind_bathy_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_must_be_one_of_wind_bathy_current</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.data.SwanDataGrid.z1">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.data.SwanDataGrid.z1" title="Link to this definition">#</a></dt>
+<dd><p>Scaler paramater or u componet of vector field</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars" title="rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_z1_in_data_vars</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.data.SwanDataGrid.z2">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z2</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.data.SwanDataGrid.z2" title="Link to this definition">#</a></dt>
+<dd><p>v componet of vector field</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars" title="rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_z1_in_data_vars</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ensure_z1_in_data_vars</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="_modules/rompy/swan/data.html#SwanDataGrid.ensure_z1_in_data_vars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.swan.data.SwanDataGrid.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">staging_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rompy.swan.grid.SwanGrid" title="rompy.swan.grid.SwanGrid"><span class="pre">SwanGrid</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/swan/data.html#SwanDataGrid.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.data.SwanDataGrid.get" title="Link to this definition">#</a></dt>
+<dd><p>Write the data to a SWAN grid file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>staging_dir</strong> (<em>str</em>) – The directory to write the grid file to.</p></li>
+<li><p><strong>grid</strong> (<a class="reference internal" href="#rompy.swan.grid.SwanGrid" title="rompy.swan.grid.SwanGrid"><em>SwanGrid</em></a>) – The SwanGrid object representing the data, obsolete and may get removed.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The data are assumed to not have been rotated. We cannot use the grid.rot attr
+as this is the rotation from the model grid object which is not necessarily the
+same as the rotation of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cmd</strong> – The command line string with the INPGRID/READINP commands ready to be
+written to the SWAN input file.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.data.SwanDataGrid.var_must_be_one_of_wind_bathy_current">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">var_must_be_one_of_wind_bathy_current</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.data.SwanDataGrid.var" title="rompy.swan.data.SwanDataGrid.var"><em class="xref py py-obj"><span class="pre">var</span></em></a><a class="reference internal" href="_modules/rompy/swan/data.html#SwanDataGrid.var_must_be_one_of_wind_bathy_current"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.data.SwanDataGrid.var_must_be_one_of_wind_bathy_current" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanSpectrum">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.config.</span></span><span class="sig-name descname"><span class="pre">SwanSpectrum</span></span><a class="reference internal" href="_modules/rompy/swan/config.html#SwanSpectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.config.SwanSpectrum" title="Link to this definition">#</a></dt>
+<dd><p>SWAN Spectrum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanSpectrum.cmd">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cmd</span></span><a class="headerlink" href="#rompy.swan.config.SwanSpectrum.cmd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanPhysics">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.config.</span></span><span class="sig-name descname"><span class="pre">SwanPhysics</span></span><a class="reference internal" href="_modules/rompy/swan/config.html#SwanPhysics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.config.SwanPhysics" title="Link to this definition">#</a></dt>
+<dd><p>Container class represting configuraable SWAN physics options</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanPhysics.friction" title="rompy.swan.config.SwanPhysics.friction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friction</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanPhysics.friction_coeff" title="rompy.swan.config.SwanPhysics.friction_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friction_coeff</span> <span class="pre">(float)</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanPhysics.validate_friction" title="rompy.swan.config.SwanPhysics.validate_friction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_friction</span></code></a> » <a class="reference internal" href="#rompy.swan.config.SwanPhysics.friction" title="rompy.swan.config.SwanPhysics.friction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friction</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanPhysics.validate_friction_coeff" title="rompy.swan.config.SwanPhysics.validate_friction_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_friction_coeff</span></code></a> » <a class="reference internal" href="#rompy.swan.config.SwanPhysics.friction_coeff" title="rompy.swan.config.SwanPhysics.friction_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friction_coeff</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanPhysics.friction">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">friction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MAD'</span></em><a class="headerlink" href="#rompy.swan.config.SwanPhysics.friction" title="Link to this definition">#</a></dt>
+<dd><p>The type of friction, either MAD, COLL, JON or RIP</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanPhysics.validate_friction" title="rompy.swan.config.SwanPhysics.validate_friction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_friction</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanPhysics.friction_coeff">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">friction_coeff</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></em><a class="headerlink" href="#rompy.swan.config.SwanPhysics.friction_coeff" title="Link to this definition">#</a></dt>
+<dd><p>The coefficient of friction for the given surface and object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.config.SwanPhysics.validate_friction_coeff" title="rompy.swan.config.SwanPhysics.validate_friction_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_friction_coeff</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanPhysics.validate_friction">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_friction</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.config.SwanPhysics.friction" title="rompy.swan.config.SwanPhysics.friction"><em class="xref py py-obj"><span class="pre">friction</span></em></a><a class="reference internal" href="_modules/rompy/swan/config.html#SwanPhysics.validate_friction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.config.SwanPhysics.validate_friction" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanPhysics.validate_friction_coeff">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_friction_coeff</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.config.SwanPhysics.friction_coeff" title="rompy.swan.config.SwanPhysics.friction_coeff"><em class="xref py py-obj"><span class="pre">friction_coeff</span></em></a><a class="reference internal" href="_modules/rompy/swan/config.html#SwanPhysics.validate_friction_coeff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.config.SwanPhysics.validate_friction_coeff" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.swan.config.SwanPhysics.cmd">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cmd</span></span><a class="headerlink" href="#rompy.swan.config.SwanPhysics.cmd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.config.GridOutput">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.config.</span></span><span class="sig-name descname"><span class="pre">GridOutput</span></span><a class="reference internal" href="_modules/rompy/swan/config.html#GridOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.config.GridOutput" title="Link to this definition">#</a></dt>
+<dd><p>Gridded outputs for SWAN</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.config.GridOutput.period" title="rompy.swan.config.GridOutput.period"><code class="xref py py-obj docutils literal notranslate"><span class="pre">period</span> <span class="pre">(rompy.core.time.TimeRange</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.GridOutput.variables" title="rompy.swan.config.GridOutput.variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variables</span> <span class="pre">(list[str])</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.GridOutput.period">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">period</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.core.time.TimeRange" title="rompy.core.time.TimeRange"><span class="pre">TimeRange</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.config.GridOutput.period" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.GridOutput.variables">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">variables</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['DEPTH',</span> <span class="pre">'UBOT',</span> <span class="pre">'HSIGN',</span> <span class="pre">'HSWELL',</span> <span class="pre">'DIR',</span> <span class="pre">'TPS',</span> <span class="pre">'TM01',</span> <span class="pre">'WIND']</span></em><a class="headerlink" href="#rompy.swan.config.GridOutput.variables" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.config.SpecOutput">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.config.</span></span><span class="sig-name descname"><span class="pre">SpecOutput</span></span><a class="reference internal" href="_modules/rompy/swan/config.html#SpecOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.config.SpecOutput" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.config.SpecOutput.locations" title="rompy.swan.config.SpecOutput.locations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locations</span> <span class="pre">(rompy.swan.config.OutputLocs</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.config.SpecOutput.period" title="rompy.swan.config.SpecOutput.period"><code class="xref py py-obj docutils literal notranslate"><span class="pre">period</span> <span class="pre">(rompy.core.time.TimeRange</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SpecOutput.locations">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">locations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">OutputLocs</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">OutputLocs</span> </em><a class="headerlink" href="#rompy.swan.config.SpecOutput.locations" title="Link to this definition">#</a></dt>
+<dd><p>Output locations for which the spectral outputs are requested</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.config.SpecOutput.period">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">period</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#rompy.core.time.TimeRange" title="rompy.core.time.TimeRange"><span class="pre">TimeRange</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.config.SpecOutput.period" title="Link to this definition">#</a></dt>
+<dd><p>Time range for which the spectral outputs are requested</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="_generated/rompy.core.data.DataGrid.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">rompy.core.data.DataGrid</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="classes/rompy/rompy.core.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">rompy.core</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-classes">Base Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.model.ModelRun"><code class="docutils literal notranslate"><span class="pre">ModelRun</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.model.ModelRun.config"><code class="docutils literal notranslate"><span class="pre">ModelRun.config</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.model.ModelRun.output_dir"><code class="docutils literal notranslate"><span class="pre">ModelRun.output_dir</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.model.ModelRun.period"><code class="docutils literal notranslate"><span class="pre">ModelRun.period</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.model.ModelRun.run_id"><code class="docutils literal notranslate"><span class="pre">ModelRun.run_id</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.model.ModelRun.generate"><code class="docutils literal notranslate"><span class="pre">ModelRun.generate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.model.ModelRun.model_post_init"><code class="docutils literal notranslate"><span class="pre">ModelRun.model_post_init()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.model.ModelRun.zip"><code class="docutils literal notranslate"><span class="pre">ModelRun.zip()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.model.ModelRun.staging_dir"><code class="docutils literal notranslate"><span class="pre">ModelRun.staging_dir</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange"><code class="docutils literal notranslate"><span class="pre">TimeRange</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.duration"><code class="docutils literal notranslate"><span class="pre">TimeRange.duration</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.end"><code class="docutils literal notranslate"><span class="pre">TimeRange.end</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.include_end"><code class="docutils literal notranslate"><span class="pre">TimeRange.include_end</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.interval"><code class="docutils literal notranslate"><span class="pre">TimeRange.interval</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.start"><code class="docutils literal notranslate"><span class="pre">TimeRange.start</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.common_times"><code class="docutils literal notranslate"><span class="pre">TimeRange.common_times()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.contains"><code class="docutils literal notranslate"><span class="pre">TimeRange.contains()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.contains_range"><code class="docutils literal notranslate"><span class="pre">TimeRange.contains_range()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.parse_start_end_duration"><code class="docutils literal notranslate"><span class="pre">TimeRange.parse_start_end_duration</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.valid_duration_interval"><code class="docutils literal notranslate"><span class="pre">TimeRange.valid_duration_interval</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.validate_start_end"><code class="docutils literal notranslate"><span class="pre">TimeRange.validate_start_end</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.validate_start_end_duration"><code class="docutils literal notranslate"><span class="pre">TimeRange.validate_start_end_duration</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.time.TimeRange.date_range"><code class="docutils literal notranslate"><span class="pre">TimeRange.date_range</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.config.BaseConfig"><code class="docutils literal notranslate"><span class="pre">BaseConfig</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.config.BaseConfig.checkout"><code class="docutils literal notranslate"><span class="pre">BaseConfig.checkout</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.config.BaseConfig.model_type"><code class="docutils literal notranslate"><span class="pre">BaseConfig.model_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.config.BaseConfig.template"><code class="docutils literal notranslate"><span class="pre">BaseConfig.template</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid"><code class="docutils literal notranslate"><span class="pre">BaseGrid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.grid_type"><code class="docutils literal notranslate"><span class="pre">BaseGrid.grid_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.x"><code class="docutils literal notranslate"><span class="pre">BaseGrid.x</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.y"><code class="docutils literal notranslate"><span class="pre">BaseGrid.y</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.bbox"><code class="docutils literal notranslate"><span class="pre">BaseGrid.bbox()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.boundary"><code class="docutils literal notranslate"><span class="pre">BaseGrid.boundary()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.boundary_points"><code class="docutils literal notranslate"><span class="pre">BaseGrid.boundary_points()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.plot"><code class="docutils literal notranslate"><span class="pre">BaseGrid.plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.points_along_boundary"><code class="docutils literal notranslate"><span class="pre">BaseGrid.points_along_boundary()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.maxx"><code class="docutils literal notranslate"><span class="pre">BaseGrid.maxx</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.maxy"><code class="docutils literal notranslate"><span class="pre">BaseGrid.maxy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.minx"><code class="docutils literal notranslate"><span class="pre">BaseGrid.minx</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.grid.BaseGrid.miny"><code class="docutils literal notranslate"><span class="pre">BaseGrid.miny</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob"><code class="docutils literal notranslate"><span class="pre">DataBlob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob.id"><code class="docutils literal notranslate"><span class="pre">DataBlob.id</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob.model_type"><code class="docutils literal notranslate"><span class="pre">DataBlob.model_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob.source"><code class="docutils literal notranslate"><span class="pre">DataBlob.source</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob.get"><code class="docutils literal notranslate"><span class="pre">DataBlob.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid"><code class="docutils literal notranslate"><span class="pre">DataGrid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid.coords"><code class="docutils literal notranslate"><span class="pre">DataGrid.coords</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid.filter"><code class="docutils literal notranslate"><span class="pre">DataGrid.filter</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid.id"><code class="docutils literal notranslate"><span class="pre">DataGrid.id</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid.model_type"><code class="docutils literal notranslate"><span class="pre">DataGrid.model_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid.source"><code class="docutils literal notranslate"><span class="pre">DataGrid.source</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid.variables"><code class="docutils literal notranslate"><span class="pre">DataGrid.variables</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid.get"><code class="docutils literal notranslate"><span class="pre">DataGrid.get()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid.plot"><code class="docutils literal notranslate"><span class="pre">DataGrid.plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataGrid.ds"><code class="docutils literal notranslate"><span class="pre">DataGrid.ds</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swan-classes">Swan Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig"><code class="docutils literal notranslate"><span class="pre">SwanConfig</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.forcing"><code class="docutils literal notranslate"><span class="pre">SwanConfig.forcing</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.grid"><code class="docutils literal notranslate"><span class="pre">SwanConfig.grid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.model_type"><code class="docutils literal notranslate"><span class="pre">SwanConfig.model_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.outputs"><code class="docutils literal notranslate"><span class="pre">SwanConfig.outputs</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.physics"><code class="docutils literal notranslate"><span class="pre">SwanConfig.physics</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.spectra_file"><code class="docutils literal notranslate"><span class="pre">SwanConfig.spectra_file</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.spectral_resolution"><code class="docutils literal notranslate"><span class="pre">SwanConfig.spectral_resolution</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.template"><code class="docutils literal notranslate"><span class="pre">SwanConfig.template</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.model_post_init"><code class="docutils literal notranslate"><span class="pre">SwanConfig.model_post_init()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanConfig.domain"><code class="docutils literal notranslate"><span class="pre">SwanConfig.domain</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid"><code class="docutils literal notranslate"><span class="pre">SwanGrid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.exc"><code class="docutils literal notranslate"><span class="pre">SwanGrid.exc</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.grid_type"><code class="docutils literal notranslate"><span class="pre">SwanGrid.grid_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.gridfile"><code class="docutils literal notranslate"><span class="pre">SwanGrid.gridfile</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.nearby_spectra"><code class="docutils literal notranslate"><span class="pre">SwanGrid.nearby_spectra()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="docutils literal notranslate"><span class="pre">SwanGrid.validate_curvilinear_grid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.validate_grid_type"><code class="docutils literal notranslate"><span class="pre">SwanGrid.validate_grid_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.cgrid"><code class="docutils literal notranslate"><span class="pre">SwanGrid.cgrid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.cgrid_read"><code class="docutils literal notranslate"><span class="pre">SwanGrid.cgrid_read</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.inpgrid"><code class="docutils literal notranslate"><span class="pre">SwanGrid.inpgrid</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.ForcingData"><code class="docutils literal notranslate"><span class="pre">ForcingData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.ForcingData.bottom"><code class="docutils literal notranslate"><span class="pre">ForcingData.bottom</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.ForcingData.boundary"><code class="docutils literal notranslate"><span class="pre">ForcingData.boundary</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.ForcingData.current"><code class="docutils literal notranslate"><span class="pre">ForcingData.current</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.ForcingData.wind"><code class="docutils literal notranslate"><span class="pre">ForcingData.wind</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.ForcingData.get"><code class="docutils literal notranslate"><span class="pre">ForcingData.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.data.SwanDataGrid"><code class="docutils literal notranslate"><span class="pre">SwanDataGrid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.data.SwanDataGrid.fac"><code class="docutils literal notranslate"><span class="pre">SwanDataGrid.fac</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.data.SwanDataGrid.var"><code class="docutils literal notranslate"><span class="pre">SwanDataGrid.var</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.data.SwanDataGrid.z1"><code class="docutils literal notranslate"><span class="pre">SwanDataGrid.z1</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.data.SwanDataGrid.z2"><code class="docutils literal notranslate"><span class="pre">SwanDataGrid.z2</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars"><code class="docutils literal notranslate"><span class="pre">SwanDataGrid.ensure_z1_in_data_vars</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.data.SwanDataGrid.get"><code class="docutils literal notranslate"><span class="pre">SwanDataGrid.get()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.data.SwanDataGrid.var_must_be_one_of_wind_bathy_current"><code class="docutils literal notranslate"><span class="pre">SwanDataGrid.var_must_be_one_of_wind_bathy_current</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanSpectrum"><code class="docutils literal notranslate"><span class="pre">SwanSpectrum</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanSpectrum.cmd"><code class="docutils literal notranslate"><span class="pre">SwanSpectrum.cmd</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanPhysics"><code class="docutils literal notranslate"><span class="pre">SwanPhysics</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanPhysics.friction"><code class="docutils literal notranslate"><span class="pre">SwanPhysics.friction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanPhysics.friction_coeff"><code class="docutils literal notranslate"><span class="pre">SwanPhysics.friction_coeff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanPhysics.validate_friction"><code class="docutils literal notranslate"><span class="pre">SwanPhysics.validate_friction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanPhysics.validate_friction_coeff"><code class="docutils literal notranslate"><span class="pre">SwanPhysics.validate_friction_coeff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SwanPhysics.cmd"><code class="docutils literal notranslate"><span class="pre">SwanPhysics.cmd</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.GridOutput"><code class="docutils literal notranslate"><span class="pre">GridOutput</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.GridOutput.period"><code class="docutils literal notranslate"><span class="pre">GridOutput.period</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.GridOutput.variables"><code class="docutils literal notranslate"><span class="pre">GridOutput.variables</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SpecOutput"><code class="docutils literal notranslate"><span class="pre">SpecOutput</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SpecOutput.locations"><code class="docutils literal notranslate"><span class="pre">SpecOutput.locations</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.config.SpecOutput.period"><code class="docutils literal notranslate"><span class="pre">SpecOutput.period</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="_sources/api.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,776 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "f282e073-4210-4cc0-a22a-e2acf95f0ece",
+   "metadata": {},
+   "source": [
+    "# SWAN Physics Components"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "6c7aae0b-a773-4f17-8d2f-a51a8d7c43b4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from rompy.swan.config import SwanConfigComponents\n",
+    "from rompy.swan.components.physics import (\n",
+    "    PHYSICS,\n",
+    "    GEN3,\n",
+    "    SSWELL,\n",
+    "    ARDHUIN,\n",
+    "    ZIEGER,\n",
+    "    ROGERS,\n",
+    "    NEGATINP,\n",
+    "    WCAPKOMEN,\n",
+    "    WCAPAB,\n",
+    "    QUADRUPL,\n",
+    "    BREAKCONSTANT,\n",
+    "    BREAKBKD,\n",
+    "    JONSWAP,\n",
+    "    COLLINS,\n",
+    "    MADSEN,\n",
+    "    RIPPLES,\n",
+    ")\n",
+    "from rompy.swan.subcomponents.physics import (\n",
+    "    JANSSEN,\n",
+    "    KOMEN,\n",
+    "    WESTHUYSEN,\n",
+    "    ST6,\n",
+    "    ST6C1,\n",
+    "    ST6C2,\n",
+    "    ST6C3,\n",
+    "    ST6C4,\n",
+    "    ST6C5,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "526786a3-e758-4449-9cd2-6e5770515c8e",
+   "metadata": {},
+   "source": [
+    "## Wave generation component\n",
+    "\n",
+    "Three wave generation components are available: GEN1, GEN2 and GEN3. Below we demonstrate different uses for the third generation component **GEN3**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "47cd1a9e-8d1f-49a2-be31-218f6ef18cf4",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "\u001b[0;31mInit signature:\u001b[0m\n",
+       "\u001b[0mGEN3\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;34m*\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mmodel_type\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mLiteral\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'gen3'\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'gen3'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0msource_terms\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mUnion\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msubcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mJANSSEN\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msubcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mKOMEN\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msubcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mWESTHUYSEN\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msubcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mST6\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msubcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mST6C1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msubcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mST6C2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msubcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mST6C3\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msubcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mST6C4\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msubcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mST6C5\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mWESTHUYSEN\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mmodel_type\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m'westhuysen'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mwind_drag\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m'wu'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0magrow\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mFalse\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0ma\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m0.0015\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcds2\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbr\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m->\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+       "\u001b[0;31mDocstring:\u001b[0m     \n",
+       "Third generation source terms GEN3.\n",
+       "\n",
+       "`GEN3 JANSSEN|KOMEN|WESTHUYSEN|ST6 (...) AGROW [a]`\n",
+       "\n",
+       "With this command the user indicates that SWAN should run in third-generation mode\n",
+       "for wind input, quadruplet interactions and whitecapping.\n",
+       "\u001b[0;31mInit docstring:\u001b[0m\n",
+       "Create a new model by parsing and validating input data from keyword arguments.\n",
+       "\n",
+       "Raises ValidationError if the input data cannot be parsed to form a valid model.\n",
+       "\u001b[0;31mFile:\u001b[0m           /source/csiro/rompy/rompy/swan/components/physics.py\n",
+       "\u001b[0;31mType:\u001b[0m           ModelMetaclass\n",
+       "\u001b[0;31mSubclasses:\u001b[0m     \n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Check the signature of GEN3 (use double question mark GEN3??\n",
+    "# to view all fields info including description and default values)\n",
+    "\n",
+    "GEN3?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "5059af97-295d-4348-baf0-845588076c2b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "\u001b[0;31mInit signature:\u001b[0m\n",
+       "\u001b[0mWESTHUYSEN\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;34m*\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mmodel_type\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mLiteral\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'westhuysen'\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'westhuysen'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mwind_drag\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mLiteral\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'wu'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'fit'\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'wu'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0magrow\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mbool\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mFalse\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0ma\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mOptional\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mfloat\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m0.0015\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mcds2\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mOptional\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mfloat\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mbr\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mOptional\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mfloat\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m->\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+       "\u001b[0;31mDocstring:\u001b[0m     \n",
+       "Westhuysen source terms subcomponent.\n",
+       "\n",
+       "`WESTHUYSEN [cds2] [br]`\n",
+       "\n",
+       "Nonlinear saturation-based whitecapping combined with wind input of Yan (1987).\n",
+       "\n",
+       "Notes\n",
+       "-----\n",
+       "The two arguments are specified in the Appendix C of the User manual but not in the\n",
+       "command description for WESTH in Section 4.5.4. They are also options in the\n",
+       "WCAPPING command. It is not entirely clear if they should/could be specified here.\n",
+       "\n",
+       "References\n",
+       "----------\n",
+       "Van der Westhuysen, A.J., M. Zijlema and J.A. Battjes, 2007: Nonlinear\n",
+       "saturation-based whitecapping dissipation in SWAN for deep and shallow water,\n",
+       "Coast. Engng, 54:2, 151-170.\n",
+       "\u001b[0;31mInit docstring:\u001b[0m\n",
+       "Create a new model by parsing and validating input data from keyword arguments.\n",
+       "\n",
+       "Raises ValidationError if the input data cannot be parsed to form a valid model.\n",
+       "\u001b[0;31mFile:\u001b[0m           /source/csiro/rompy/rompy/swan/subcomponents/physics.py\n",
+       "\u001b[0;31mType:\u001b[0m           ModelMetaclass\n",
+       "\u001b[0;31mSubclasses:\u001b[0m     \n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# GEN3 requires the source_terms field, defined by a subcomponent\n",
+    "# Let's start off by prescribing the WESTHuysen option with default values\n",
+    "\n",
+    "WESTHUYSEN?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "f5959fe2-5bbb-4944-8b50-effc3bcc8539",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "GEN3 WESTHUYSEN DRAG WU\n"
+     ]
+    }
+   ],
+   "source": [
+    "gen = GEN3(\n",
+    "    source_terms=WESTHUYSEN(),\n",
+    ")\n",
+    "print(gen.render())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "077e2600-297b-4ae8-9c11-56594224efbf",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "GEN3 WESTHUYSEN cds2=5e-05 br=0.00175 DRAG WU AGROW a=0.0015\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Options are rendered if specified\n",
+    "\n",
+    "gen = GEN3(\n",
+    "    source_terms=WESTHUYSEN(\n",
+    "        wind_drag=\"wu\",\n",
+    "        agrow=True,\n",
+    "        a=0.0015,\n",
+    "        cds2=5.0e-5,\n",
+    "        br=1.75e-3\n",
+    "    ),\n",
+    ")\n",
+    "\n",
+    "print(gen.render())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "7706ba63-b6ef-4612-82e2-b9ce716dee53",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "GEN3 WESTHUYSEN cds2=3e-05 DRAG WU\n"
+     ]
+    }
+   ],
+   "source": [
+    "# The model_type argument must be specified when using a dict / config\n",
+    "\n",
+    "gen = GEN3(\n",
+    "    source_terms={\n",
+    "        \"model_type\": \"westhuysen\",\n",
+    "        \"cds2\": 3.0e-5,\n",
+    "    },\n",
+    ")\n",
+    "\n",
+    "print(gen.render())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "4edc992e-ebff-4104-ac64-75bcc88caff8",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ValidationError",
+     "evalue": "1 validation error for GEN3\nsource_terms\n  Discriminator 'model_type' is missing in value (type=value_error.discriminated_union.missing_discriminator; discriminator_key=model_type)",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mValidationError\u001b[0m                           Traceback (most recent call last)",
+      "Cell \u001b[0;32mIn[7], line 3\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[38;5;66;03m# Otherwise an exception is raised\u001b[39;00m\n\u001b[0;32m----> 3\u001b[0m gen \u001b[38;5;241m=\u001b[39m \u001b[43mGEN3\u001b[49m\u001b[43m(\u001b[49m\n\u001b[1;32m      4\u001b[0m \u001b[43m    \u001b[49m\u001b[43msource_terms\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43m{\u001b[49m\n\u001b[1;32m      5\u001b[0m \u001b[43m        \u001b[49m\u001b[38;5;124;43m\"\u001b[39;49m\u001b[38;5;124;43mcds2\u001b[39;49m\u001b[38;5;124;43m\"\u001b[39;49m\u001b[43m:\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;241;43m3.0e-5\u001b[39;49m\u001b[43m,\u001b[49m\n\u001b[1;32m      6\u001b[0m \u001b[43m    \u001b[49m\u001b[43m}\u001b[49m\u001b[43m,\u001b[49m\n\u001b[1;32m      7\u001b[0m \u001b[43m)\u001b[49m\n",
+      "File \u001b[0;32m~/.virtualenvs/rompy/lib/python3.10/site-packages/pydantic/main.py:342\u001b[0m, in \u001b[0;36mpydantic.main.BaseModel.__init__\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;31mValidationError\u001b[0m: 1 validation error for GEN3\nsource_terms\n  Discriminator 'model_type' is missing in value (type=value_error.discriminated_union.missing_discriminator; discriminator_key=model_type)"
+     ]
+    }
+   ],
+   "source": [
+    "# Otherwise an exception is raised\n",
+    "\n",
+    "gen = GEN3(\n",
+    "    source_terms={\n",
+    "        \"cds2\": 3.0e-5,\n",
+    "    },\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "22e88032-6c20-4c2c-8a4b-03d73c43ae67",
+   "metadata": {},
+   "source": [
+    "### Available source terms"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "6043fa77-c270-45cc-80c5-d3cefeec52a0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "GEN3 JANSSEN cds1=4.5 DRAG WU\n",
+      "GEN3 KOMEN cds2=2.36e-05 DRAG WU\n",
+      "GEN3 ST6 a1sds=4.7e-07 a2sds=6.6e-06 UP HWANG VECTAU U10PROXY windscaling=32.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "# JANSSEN\n",
+    "gen = GEN3(\n",
+    "    source_terms=JANSSEN(\n",
+    "        cds1=4.5,\n",
+    "    )\n",
+    ")\n",
+    "print(gen.render())\n",
+    "\n",
+    "# KOMEN\n",
+    "gen = GEN3(\n",
+    "    source_terms=KOMEN(\n",
+    "        cds2=2.36e-5,\n",
+    "    )\n",
+    ")\n",
+    "print(gen.render())\n",
+    "\n",
+    "# ST6\n",
+    "gen = GEN3(\n",
+    "    source_terms=ST6(\n",
+    "        a1sds=4.7e-7,\n",
+    "        a2sds=6.6e-6,\n",
+    "    )\n",
+    ")\n",
+    "print(gen.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "58078661-fcc0-4ec2-a576-7ceab629522d",
+   "metadata": {},
+   "source": [
+    "### ST6 presets\n",
+    "\n",
+    "ST6 is defined by several tuning coefficients. The SWAN manual provides calibration combinations that are represented by preset subcomponents ST6Cn, `n=1,2,3,4,5`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "ef7b388a-e7de-469e-950b-255bf6c46a1b",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "GEN3 ST6 a1sds=4.7e-07 a2sds=6.6e-06 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=28.0 AGROW a=0.0015\n",
+      "GEN3 ST6 a1sds=4.7e-07 a2sds=6.6e-06 p1sds=4.0 p2sds=4.0 UP FAN VECTAU U10PROXY windscaling=28.0 AGROW a=0.0015\n",
+      "GEN3 ST6 a1sds=2.8e-06 a2sds=3.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=32.0 AGROW a=0.0015\n",
+      "GEN3 ST6 a1sds=2.8e-06 a2sds=3.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=32.0 DEBIAS cdfac=0.89 AGROW a=0.0015\n",
+      "GEN3 ST6 a1sds=6.5e-06 a2sds=8.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=35.0 DEBIAS cdfac=0.89 AGROW a=0.0015\n"
+     ]
+    }
+   ],
+   "source": [
+    "for phys in [ST6C1, ST6C2, ST6C3, ST6C4, ST6C5]: \n",
+    "    gen = GEN3(source_terms=phys())\n",
+    "    print(gen.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "454667ec-80a5-4591-9379-c314d736ccec",
+   "metadata": {},
+   "source": [
+    "## Swell dissipation and negative wind component\n",
+    "\n",
+    "Three components are available to define swell dissipation *SSWELL*: **ZIEGER**, **ARDHUIN** and **ROGERS**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "012fd0b7-dc43-4e8e-9b2c-1789b5926aa0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "SSWELL ZIEGER b1=0.00025\n",
+      "SSWELL ARDHUIN cdsv=1.2\n",
+      "SSWELL ROGERS cdsv=1.2 feswell=0.01\n"
+     ]
+    }
+   ],
+   "source": [
+    "sswell = ZIEGER(b1=0.00025)\n",
+    "print(sswell.render())\n",
+    "\n",
+    "sswell = ARDHUIN(cdsv=1.2)\n",
+    "print(sswell.render())\n",
+    "\n",
+    "sswell = ROGERS(cdsv=1.2, feswell=0.01)\n",
+    "print(sswell.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "73dd6743-1202-45a4-bdd3-ab1a63466be0",
+   "metadata": {},
+   "source": [
+    "The negative wind input can be prescribed using **NEGATINP** (note it is only intended to use in conjuction with **SSWELL ZIEGER**)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "e54cabf5-3996-4bb8-8c13-17cad2a5816e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "NEGATINP rdcoef=0.1\n"
+     ]
+    }
+   ],
+   "source": [
+    "negatinp = NEGATINP(rdcoef=0.1)\n",
+    "print(negatinp.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5dc9b25c-7ce6-4612-9831-0bdc497345d7",
+   "metadata": {},
+   "source": [
+    "## Whitecapping components\n",
+    "\n",
+    "Two options available: Komen's whitecapping **WCAPKOMEN** and Alves and Banner's whitecapping **WCAPAB**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "b08a86c5-9fbb-4c47-bc62-f216a6523a61",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "WCAPPING KOMEN cds2=2.36e-05 stpm=0.00302 powst=2.0 delta=1.0 powk=1.0\n",
+      "WCAPPING AB cds2=5e-05 br=0.00175 CURRENT cds3=0.8\n"
+     ]
+    }
+   ],
+   "source": [
+    "wcap = WCAPKOMEN(\n",
+    "    cds2=2.36e-5,\n",
+    "    stpm=3.02e-3,\n",
+    "    powst=2,\n",
+    "    delta=1,\n",
+    "    powk=1,\n",
+    ")\n",
+    "print(wcap.render())\n",
+    "\n",
+    "wcap = WCAPAB(\n",
+    "    cds2=5.0e-5,\n",
+    "    br=1.75e-3,\n",
+    "    current=True,\n",
+    "    cds3=0.8,\n",
+    ")\n",
+    "print(wcap.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "07a40c1d-85ad-44fb-bfb4-2db40a53e247",
+   "metadata": {},
+   "source": [
+    "## Quadruplets component\n",
+    "\n",
+    "Use the **QUADRUPL** component"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "43df98de-b1bc-4dca-ab99-bac742ceafe0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "QUADRUPL\n",
+      "QUADRUPL iquad=2 lambda=0.25 Cn14=30000000.0 Csh1=5.5 Csh2=0.833333 Csh3=-1.25\n"
+     ]
+    }
+   ],
+   "source": [
+    "quadrupl = QUADRUPL()\n",
+    "print(quadrupl.render())\n",
+    "\n",
+    "quadrupl = QUADRUPL(\n",
+    "    iquad=2,\n",
+    "    lambd=0.25,\n",
+    "    cn14=3.0e7,\n",
+    "    csh1=5.5,\n",
+    "    csh2=0.833333,\n",
+    "    csh3=-1.25,\n",
+    ")\n",
+    "print(quadrupl.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "47cfd091-9398-47c1-b723-16cbd66da324",
+   "metadata": {},
+   "source": [
+    "## Wave breaking components\n",
+    "\n",
+    "Two options are currently available: constant breaking **BREAKCONSTANT** and variable breaking **BREAKBKD**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "e1f32b9a-d35a-4695-b5f8-3fb2b55665a5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "BREAKING CONSTANT alpha=1.0 gamma=0.73\n",
+      "BREAKING BKD alpha=1.0 gamma0=0.54 a1=7.59 a2=-8.06 a3=8.09\n"
+     ]
+    }
+   ],
+   "source": [
+    "breaking = BREAKCONSTANT(\n",
+    "    alpha=1.0,\n",
+    "    gamma=0.73,\n",
+    ")\n",
+    "print(breaking.render())\n",
+    "\n",
+    "breaking = BREAKBKD(\n",
+    "    alpha=1.0,\n",
+    "    gamma0=0.54,\n",
+    "    a1=7.59,\n",
+    "    a2=-8.06,\n",
+    "    a3=8.09\n",
+    ")\n",
+    "print(breaking.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7b289e44-5c51-46f3-94aa-3677a36e52ce",
+   "metadata": {},
+   "source": [
+    "## Bottom friction components\n",
+    "\n",
+    "The following formulations are supported: **JONSWAP**, **COLINS**, **MADSEN**, **RIPPLES**."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "ea7881b0-fe80-4e31-bc49-0294197f5539",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "FRICTION JONSWAP CONSTANT cfjon=0.38\n",
+      "FRICTION COLLINS cfw=0.015\n",
+      "FRICTION MADSEN kn=0.05\n",
+      "FRICTION RIPPLES S=2.65 D=0.0001\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Jonswap\n",
+    "fric = JONSWAP(cfjon=0.38)\n",
+    "print(fric.render())\n",
+    "\n",
+    "# Collins\n",
+    "fric = COLLINS(cfw=0.015)\n",
+    "print(fric.render())\n",
+    "\n",
+    "# Madsen\n",
+    "fric = MADSEN(kn=0.05)\n",
+    "print(fric.render())\n",
+    "\n",
+    "fric = RIPPLES(s=2.65, d=0.0001)\n",
+    "print(fric.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "96557057-824e-4476-bb26-309ded274df3",
+   "metadata": {},
+   "source": [
+    "## PHYSICS group component\n",
+    "\n",
+    "Defining physics settings in SWAN is somewhat complex in that some options can be intrinsically related. For example, the negative wind input **NEGATINP** is only intended to use with **SSWELL ZIEGER** and the swell dissipation **SSWELL** is expected to be defined alongside the **ST6** source terms.\n",
+    "\n",
+    "The **PHYSICS** group component is a convenience to allow prescribing all physics commands as a group and validate them to ensure the inputs are sound. The **SwanConfigComponents** config class uses the **PHYSICS** group components to define the model config."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "67199370-8d23-4a30-a1f2-df4635a1368d",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "\u001b[0;31mInit signature:\u001b[0m\n",
+       "\u001b[0mPHYSICS\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;34m*\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mmodel_type\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mLiteral\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'physics'\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'physics'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mgen\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mGEN1\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mGEN2\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mGEN3\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mGEN3\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mmodel_type\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m'gen3'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msource_terms\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mWESTHUYSEN\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mmodel_type\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m'westhuysen'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mwind_drag\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m'wu'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0magrow\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mFalse\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0ma\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m0.0015\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcds2\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbr\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0msswell\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mROGERS\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mARDHUIN\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mZIEGER\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0;32mNone\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mnegatinp\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mOptional\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mNEGATINP\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mwcapping\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mWCAPKOMEN\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mWCAPAB\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0;32mNone\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mquadrupl\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mOptional\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mQUADRUPL\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mbreaking\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mBREAKCONSTANT\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mBREAKBKD\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0;32mNone\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mfriction\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mJONSWAP\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mCOLLINS\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mMADSEN\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0mrompy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mswan\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomponents\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mphysics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mRIPPLES\u001b[0m \u001b[0;34m|\u001b[0m \u001b[0;32mNone\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m->\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+       "\u001b[0;31mDocstring:\u001b[0m     \n",
+       "Physics group component.\n",
+       "\n",
+       "The physics group component is a convenience to allow specifying several individual\n",
+       "components in a single command and check for consistency between them.\n",
+       "\n",
+       "TODO: Implement OFF command\n",
+       "\u001b[0;31mInit docstring:\u001b[0m\n",
+       "Create a new model by parsing and validating input data from keyword arguments.\n",
+       "\n",
+       "Raises ValidationError if the input data cannot be parsed to form a valid model.\n",
+       "\u001b[0;31mFile:\u001b[0m           /source/csiro/rompy/rompy/swan/components/physics.py\n",
+       "\u001b[0;31mType:\u001b[0m           ModelMetaclass\n",
+       "\u001b[0;31mSubclasses:\u001b[0m     \n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "PHYSICS?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "7aa5be43-926d-40bd-9f24-305fe0834b4f",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "WARNING:rompy.swan.components.physics:The negative wind input NEGATINP is only intended to use with the swell dissipation SSWELL ZIEGER but SSWELL ROGERS has been specified.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "GEN3 ST6 a1sds=6.5e-06 a2sds=8.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=35.0 DEBIAS cdfac=0.89 AGROW a=0.0015\n",
+      "SSWELL ROGERS cdsv=1.2 feswell=0.01\n",
+      "NEGATINP rdcoef=0.1\n",
+      "WCAPPING AB cds2=5e-05 br=0.00175 CURRENT cds3=0.8\n",
+      "QUADRUPL iquad=2 lambda=0.25 Cn14=30000000.0 Csh1=5.5 Csh2=0.833333 Csh3=-1.25\n",
+      "BREAKING BKD alpha=1.0 gamma0=0.54 a1=7.59 a2=-8.06 a3=8.09\n",
+      "FRICTION RIPPLES S=2.65 D=0.0001\n"
+     ]
+    }
+   ],
+   "source": [
+    "phys = PHYSICS(\n",
+    "    gen=gen,\n",
+    "    sswell=sswell,\n",
+    "    negatinp=negatinp,\n",
+    "    wcapping=wcap,\n",
+    "    quadrupl=quadrupl,\n",
+    "    breaking=breaking,\n",
+    "    friction=fric,\n",
+    ")\n",
+    "print(phys.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a9ebc521-4761-4617-8ad0-433fce9014c5",
+   "metadata": {},
+   "source": [
+    "Inconsistent definitions in the PHYSICS group component raise **WARNING** rather than exceptions given the user may intend to configure the model that way. The warning above goes away by setting **SSWELL ZIEGER**:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "55329c2a-2b88-4b3c-aaf0-9e03c21445d1",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "GEN3 ST6 a1sds=6.5e-06 a2sds=8.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=35.0 DEBIAS cdfac=0.89 AGROW a=0.0015\n",
+      "SSWELL ZIEGER\n",
+      "NEGATINP rdcoef=0.1\n",
+      "WCAPPING AB cds2=5e-05 br=0.00175 CURRENT cds3=0.8\n",
+      "QUADRUPL iquad=2 lambda=0.25 Cn14=30000000.0 Csh1=5.5 Csh2=0.833333 Csh3=-1.25\n",
+      "BREAKING BKD alpha=1.0 gamma0=0.54 a1=7.59 a2=-8.06 a3=8.09\n",
+      "FRICTION RIPPLES S=2.65 D=0.0001\n"
+     ]
+    }
+   ],
+   "source": [
+    "phys = PHYSICS(\n",
+    "    gen=gen,\n",
+    "    sswell=ZIEGER(),\n",
+    "    negatinp=negatinp,\n",
+    "    wcapping=wcap,\n",
+    "    quadrupl=quadrupl,\n",
+    "    breaking=breaking,\n",
+    "    friction=fric,\n",
+    ")\n",
+    "print(phys.render())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ac79b2ff-0a68-4720-83d9-177280a01720",
+   "metadata": {},
+   "source": [
+    "Individual physics components default to `None` in the **PHYSICS** group component. They need to be explicitly prescribed in order to be rendered:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "3bfe7a2f-c7af-428b-96ec-31ced5d633b9",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "GEN3 WESTHUYSEN DRAG WU\n",
+      "FRICTION MADSEN\n"
+     ]
+    }
+   ],
+   "source": [
+    "phys = PHYSICS(\n",
+    "    gen=GEN3(),\n",
+    "    friction=MADSEN(),\n",
+    ")\n",
+    "print(phys.render())"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "rompy",
+   "language": "python",
+   "name": "rompy"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

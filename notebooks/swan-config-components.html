@@ -1,0 +1,1100 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Model components &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/swan-config-components';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SWAN Physics Components" href="physics.html" />
+    <link rel="prev" title="Working demonstration" href="oceanum_example.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API  Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components.html">Model Components</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../demo.html" class="nav-link">Demonstration notebooks</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Model components</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="Model-components">
+<h1>Model components<a class="headerlink" href="#Model-components" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>SWAN config components to fully prescribe the INPUT command file</p></li>
+<li><p>Components are modular subclasses of <code class="docutils literal notranslate"><span class="pre">rompy.swan.components.base.BaseComponent</span></code></p></li>
+<li><p>Arguments to each component are pydantic types or SWAN subcomponents</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">model_type</span></code> attribute defines unique values to help parsing components from configs</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">rompy.model</span> <span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.config</span> <span class="kn">import</span> <span class="n">SwanConfigComponents</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanConfigComponents<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanConfigComponents<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    model_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;swan&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;swan&#39;</span><span class="ansi-blue-fg">,</span>
+    template<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;/source/csiro/rompy/rompy/templates/swan2&#39;</span><span class="ansi-blue-fg">,</span>
+    checkout<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;main&#39;</span><span class="ansi-blue-fg">,</span>
+    project<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>startup<span class="ansi-blue-fg">.</span>PROJECT <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    set<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>startup<span class="ansi-blue-fg">.</span>SET <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    mode<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>startup<span class="ansi-blue-fg">.</span>MODE <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    coordinates<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>startup<span class="ansi-blue-fg">.</span>COORDINATES <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    cgrid<span class="ansi-blue-fg">:</span> Union<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>cgrid<span class="ansi-blue-fg">.</span>REGULAR<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>cgrid<span class="ansi-blue-fg">.</span>CURVILINEAR<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>cgrid<span class="ansi-blue-fg">.</span>UNSTRUCTURED<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    inpgrid<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>inpgrid<span class="ansi-blue-fg">.</span>INPGRIDS <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    boundary<span class="ansi-blue-fg">:</span> Union<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>boundary<span class="ansi-blue-fg">.</span>BOUNDSPEC<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>boundary<span class="ansi-blue-fg">.</span>BOUNDNEST1<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>boundary<span class="ansi-blue-fg">.</span>BOUNDNEST2<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>boundary<span class="ansi-blue-fg">.</span>BOUNDNEST3<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    initial<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>boundary<span class="ansi-blue-fg">.</span>INITIAL <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    physics<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>PHYSICS <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    <span class="ansi-blue-fg">**</span>extra_data<span class="ansi-blue-fg">:</span> Any<span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>      SWAN config class.
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/csiro/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+
+</pre></div></div>
+</div>
+<section id="Yaml-config-example">
+<h2>Yaml config example<a class="headerlink" href="#Yaml-config-example" title="Link to this heading">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;swan-config-components.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">config_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">)</span>
+<span class="n">config_dict</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;project&#39;: {&#39;model_type&#39;: &#39;project&#39;,
+  &#39;name&#39;: &#39;Test rompy setup&#39;,
+  &#39;nr&#39;: &#39;0001&#39;},
+ &#39;set&#39;: {&#39;model_type&#39;: &#39;set&#39;,
+  &#39;level&#39;: 0.0,
+  &#39;depmin&#39;: 0.05,
+  &#39;maxerr&#39;: 1,
+  &#39;grav&#39;: 9.81,
+  &#39;rho&#39;: 1025.0,
+  &#39;cdcap&#39;: 0.0025,
+  &#39;direction_convention&#39;: &#39;nautical&#39;},
+ &#39;mode&#39;: {&#39;model_type&#39;: &#39;mode&#39;,
+  &#39;kind&#39;: &#39;nonstationary&#39;,
+  &#39;dim&#39;: &#39;twodimensional&#39;},
+ &#39;coordinates&#39;: {&#39;model_type&#39;: &#39;coordinates&#39;,
+  &#39;kind&#39;: {&#39;model_type&#39;: &#39;spherical&#39;}},
+ &#39;cgrid&#39;: {&#39;model_type&#39;: &#39;regular&#39;,
+  &#39;spectrum&#39;: {&#39;model_type&#39;: &#39;spectrum&#39;,
+   &#39;mdc&#39;: 36,
+   &#39;flow&#39;: 0.04,
+   &#39;fhigh&#39;: 0.4},
+  &#39;xlenc&#39;: 100.0,
+  &#39;ylenc&#39;: 100.0,
+  &#39;mxc&#39;: 10,
+  &#39;myc&#39;: 10},
+ &#39;inpgrid&#39;: {&#39;inpgrids&#39;: [{&#39;model_type&#39;: &#39;regular&#39;,
+    &#39;grid_type&#39;: &#39;bottom&#39;,
+    &#39;xpinp&#39;: 0.0,
+    &#39;ypinp&#39;: 0.0,
+    &#39;alpinp&#39;: 0.0,
+    &#39;mxinp&#39;: 10,
+    &#39;myinp&#39;: 10,
+    &#39;dxinp&#39;: 0.1,
+    &#39;dyinp&#39;: 0.1,
+    &#39;excval&#39;: -999.0,
+    &#39;readinp&#39;: {&#39;model_type&#39;: &#39;readinp&#39;, &#39;fname1&#39;: &#39;bottom.txt&#39;}},
+   {&#39;model_type&#39;: &#39;regular&#39;,
+    &#39;grid_type&#39;: &#39;wind&#39;,
+    &#39;xpinp&#39;: 0.0,
+    &#39;ypinp&#39;: 0.0,
+    &#39;alpinp&#39;: 0.0,
+    &#39;mxinp&#39;: 10,
+    &#39;myinp&#39;: 10,
+    &#39;dxinp&#39;: 0.1,
+    &#39;dyinp&#39;: 0.1,
+    &#39;excval&#39;: -999.0,
+    &#39;readinp&#39;: {&#39;model_type&#39;: &#39;readinp&#39;, &#39;fname1&#39;: &#39;wind.txt&#39;},
+    &#39;nonstationary&#39;: {&#39;tbeg&#39;: &#39;2023-01-01T00:00:00&#39;,
+     &#39;delt&#39;: &#39;PT30M&#39;,
+     &#39;tend&#39;: &#39;2023-02-01T00:00:00&#39;,
+     &#39;deltfmt&#39;: &#39;hr&#39;}}]},
+ &#39;boundary&#39;: {&#39;model_type&#39;: &#39;boundspec&#39;,
+  &#39;shapespec&#39;: {&#39;model_type&#39;: &#39;shapespec&#39;,
+   &#39;shape&#39;: {&#39;model_type&#39;: &#39;tma&#39;, &#39;d&#39;: 12.0}},
+  &#39;location&#39;: {&#39;model_type&#39;: &#39;side&#39;, &#39;side&#39;: &#39;west&#39;},
+  &#39;data&#39;: {&#39;model_type&#39;: &#39;constantpar&#39;,
+   &#39;hs&#39;: 1.0,
+   &#39;per&#39;: 10.0,
+   &#39;dir&#39;: 0.0,
+   &#39;dd&#39;: 10.0}},
+ &#39;initial&#39;: {&#39;model_type&#39;: &#39;initial&#39;,
+  &#39;kind&#39;: {&#39;model_type&#39;: &#39;hotsingle&#39;,
+   &#39;fname&#39;: &#39;hotfile.txt&#39;,
+   &#39;format&#39;: &#39;free&#39;}},
+ &#39;physics&#39;: {&#39;gen&#39;: {&#39;model_type&#39;: &#39;gen3&#39;,
+   &#39;source_terms&#39;: {&#39;model_type&#39;: &#39;westhuysen&#39;}},
+  &#39;sswell&#39;: {&#39;model_type&#39;: &#39;zieger&#39;},
+  &#39;wcapping&#39;: {&#39;model_type&#39;: &#39;wcapab&#39;,
+   &#39;cds2&#39;: 5e-05,
+   &#39;br&#39;: 0.00175,
+   &#39;current&#39;: True,
+   &#39;cds3&#39;: 0.8},
+  &#39;quadrupl&#39;: {&#39;iquad&#39;: 2, &#39;lambd&#39;: 0.25},
+  &#39;breaking&#39;: {&#39;model_type&#39;: &#39;constant&#39;, &#39;alpha&#39;: 1.0, &#39;gamma&#39;: 0.73},
+  &#39;friction&#39;: {&#39;model_type&#39;: &#39;collins&#39;, &#39;cfw&#39;: 0.015}}}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">swan_config</span> <span class="o">=</span> <span class="n">SwanConfigComponents</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">)</span>
+<span class="n">swan_config</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SwanConfigComponents(model_type=&#39;swan&#39;, template=&#39;/source/csiro/rompy/rompy/templates/swan2&#39;, checkout=&#39;main&#39;, project=PROJECT(model_type=&#39;project&#39;, name=&#39;Test rompy setup&#39;, nr=&#39;0001&#39;, title1=None, title2=None, title3=None), set=SET(model_type=&#39;set&#39;, level=0.0, nor=None, depmin=0.05, maxmes=None, maxerr=1, grav=9.81, rho=1025.0, cdcap=0.0025, inrhog=None, hsrerr=None, direction_convention=&#39;nautical&#39;, pwtail=None, froudmax=None, icewind=None), mode=MODE(model_type=&#39;mode&#39;, kind=&#39;nonstationary&#39;, dim=&#39;twodimensional&#39;), coordinates=COORDINATES(model_type=&#39;coordinates&#39;, kind=SPHERICAL(model_type=&#39;spherical&#39;, projection=&#39;ccm&#39;), reapeating=False), cgrid=REGULAR(model_type=&#39;regular&#39;, spectrum=SPECTRUM(model_type=&#39;spectrum&#39;, mdc=36, flow=0.04, fhigh=0.4, msc=None, dir1=None, dir2=None), xpc=0.0, ypc=0.0, alpc=0.0, xlenc=100.0, ylenc=100.0, mxc=10, myc=10), inpgrid=INPGRIDS(model_type=&#39;inpgrids&#39;, inpgrids=[REGULAR(model_type=&#39;regular&#39;, grid_type=&lt;GridOptions.bottom: &#39;bottom&#39;&gt;, excval=-999.0, nonstationary=None, readinp=READINP(model_type=&#39;readinp&#39;, grid_type=&lt;GridOptions.bottom: &#39;bottom&#39;&gt;, fac=1.0, idla=1, nhedf=0, nhedvec=0, format=&#39;free&#39;, form=None, idfm=None, fname1=&#39;bottom.txt&#39;, fname2=None, nhedt=0), xpinp=0.0, ypinp=0.0, alpinp=0.0, mxinp=10, myinp=10, dxinp=0.1, dyinp=0.1), REGULAR(model_type=&#39;regular&#39;, grid_type=&lt;GridOptions.wind: &#39;wind&#39;&gt;, excval=-999.0, nonstationary=NONSTATIONARY(model_type=&#39;nonstationary&#39;, tbeg=datetime.datetime(2023, 1, 1, 0, 0), delt=datetime.timedelta(seconds=1800), tend=datetime.datetime(2023, 2, 1, 0, 0), tfmt=&#39;%Y%m%d.%H%M%S&#39;, deltfmt=&#39;hr&#39;, suffix=&#39;inp&#39;), readinp=READINP(model_type=&#39;readinp&#39;, grid_type=&lt;GridOptions.wind: &#39;wind&#39;&gt;, fac=1.0, idla=1, nhedf=0, nhedvec=0, format=&#39;free&#39;, form=None, idfm=None, fname1=&#39;wind.txt&#39;, fname2=None, nhedt=0), xpinp=0.0, ypinp=0.0, alpinp=0.0, mxinp=10, myinp=10, dxinp=0.1, dyinp=0.1)]), boundary=BOUNDSPEC(model_type=&#39;boundspec&#39;, shapespec=SHAPESPEC(model_type=&#39;shapespec&#39;, shape=TMA(model_type=&#39;tma&#39;, gamma=3.3, d=12.0), per_type=&#39;peak&#39;, dspr_type=&#39;power&#39;), location=SIDE(model_type=&#39;side&#39;, side=&#39;west&#39;, direction=&#39;ccw&#39;), data=CONSTANTPAR(model_type=&#39;constantpar&#39;, hs=1.0, per=10.0, dir=0.0, dd=10.0)), initial=INITIAL(model_type=&#39;initial&#39;, kind=HOTSINGLE(model_type=&#39;hotsingle&#39;, fname=&#39;hotfile.txt&#39;, format=&#39;free&#39;)), physics=PHYSICS(model_type=&#39;physics&#39;, gen=GEN3(model_type=&#39;gen3&#39;, source_terms=WESTHUYSEN(model_type=&#39;westhuysen&#39;, wind_drag=&#39;wu&#39;, agrow=False, a=0.0015, cds2=None, br=None)), sswell=ZIEGER(model_type=&#39;zieger&#39;, b1=None), negatinp=None, wcapping=WCAPAB(model_type=&#39;wcapab&#39;, cds2=5e-05, br=0.00175, current=True, cds3=0.8), quadrupl=QUADRUPL(model_type=&#39;quadrupl&#39;, iquad=2, lambd=0.25, cn14=None, csh1=None, csh2=None, csh3=None), breaking=BREAKCONSTANT(model_type=&#39;constant&#39;, alpha=1.0, gamma=0.73), friction=COLLINS(model_type=&#39;collins&#39;, cfw=0.015)))
+</pre></div></div>
+</div>
+<section id="The-render-component-method:">
+<h3>The render component method:<a class="headerlink" href="#The-render-component-method:" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Renders the component into the SWAN CMD string</p></li>
+<li><p>Uses the <code class="docutils literal notranslate"><span class="pre">key=value</span></code> convention so the order of parameters is not important</p></li>
+<li><p>Splits long commands to avoid exceeding Fortran maximum length</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">swan_config</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;PROJECT name=&#39;Test rompy setup&#39; nr=&#39;0001&#39;&#34;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">swan_config</span><span class="p">,</span> <span class="n">component</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PROJECT name=&#39;Test rompy setup&#39; nr=&#39;0001&#39;
+
+SET level=0.0 depmin=0.05 maxerr=1 grav=9.81 rho=1025.0 cdcap=0.0025 NAUTICAL
+
+MODE NONSTATIONARY TWODIMENSIONAL
+
+COORDINATES SPHERICAL CCM
+
+CGRID REGULAR xpc=0.0 ypc=0.0 alpc=0.0 xlenc=100.0 ylenc=100.0 mxc=10 myc=10 CIRCLE mdc=36 flow=0.04 fhigh=0.4
+
+INPGRID BOTTOM REGULAR xpinp=0.0 ypinp=0.0 alpinp=0.0 mxinp=10 myinp=10 dxinp=0.1 dyinp=0.1 EXCEPTION excval=-999.0
+READINP BOTTOM fac=1.0 fname1=&#39;bottom.txt&#39; idla=1 nhedf=0 nhedt=0 nhedvec=0 FREE
+
+INPGRID WIND REGULAR xpinp=0.0 ypinp=0.0 alpinp=0.0 mxinp=10 myinp=10 dxinp=0.1 dyinp=0.1 EXCEPTION excval=-999.0 &amp;
+    NONSTATIONARY tbeginp=20230101.000000 deltinp=0.5 HR tendinp=20230201.000000
+READINP WIND fac=1.0 fname1=&#39;wind.txt&#39; idla=1 nhedf=0 nhedt=0 nhedvec=0 FREE
+
+BOUND SHAPESPEC TMA gamma=3.3 d=12.0 PEAK DSPR POWER
+BOUNDSPEC SIDE WEST CCW CONSTANT PAR hs=1.0 per=10.0 dir=0.0 dd=10.0
+
+INITIAL HOTSTART SINGLE fname=&#39;hotfile.txt&#39; FREE
+
+GEN3 WESTHUYSEN DRAG WU
+SSWELL ZIEGER
+WCAPPING AB cds2=5e-05 br=0.00175 CURRENT cds3=0.8
+QUADRUPL iquad=2 lambda=0.25
+BREAKING CONSTANT alpha=1.0 gamma=0.73
+FRICTION COLLINS cfw=0.015
+
+</pre></div></div>
+</div>
+</section>
+<section id="Generating-the-INPUT-file">
+<h3>Generating the INPUT file<a class="headerlink" href="#Generating-the-INPUT-file" title="Link to this heading">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Helper functions to dump the contents of input and template</span>
+
+<span class="k">def</span> <span class="nf">dump_input</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">input_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">model</span><span class="o">.</span><span class="n">run_id</span> <span class="o">/</span> <span class="s2">&quot;INPUT&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">dump_template</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">template_file</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">template</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;INPUT&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">template_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Instantiate ModelRun with swan_config and the default template</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span>
+    <span class="n">run_id</span><span class="o">=</span><span class="s2">&quot;tmp/test1&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">swan_config</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Generate the INPUT file</span>
+<span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.core.model:
+INFO:rompy.core.model:-----------------------------------------------------
+INFO:rompy.core.model:Model settings:
+INFO:rompy.core.model:
+period:
+
+        Start: 2020-02-21 04:00:00
+        End: 2020-02-24 04:00:00
+        Duration: 3 days, 0:00:00
+        Interval: 0:15:00
+        Include End: True
+
+
+output_dir:
+./
+
+config:
+model_type=&#39;swan&#39; template=&#39;/source/csiro/rompy/rompy/templates/swan2&#39; checkout=&#39;main&#39; project=PROJECT(model_type=&#39;project&#39;, name=&#39;Test rompy setup&#39;, nr=&#39;0001&#39;, title1=None, title2=None, title3=None) set=SET(model_type=&#39;set&#39;, level=0.0, nor=None, depmin=0.05, maxmes=None, maxerr=1, grav=9.81, rho=1025.0, cdcap=0.0025, inrhog=None, hsrerr=None, direction_convention=&#39;nautical&#39;, pwtail=None, froudmax=None, icewind=None) mode=MODE(model_type=&#39;mode&#39;, kind=&#39;nonstationary&#39;, dim=&#39;twodimensional&#39;) coordinates=COORDINATES(model_type=&#39;coordinates&#39;, kind=SPHERICAL(model_type=&#39;spherical&#39;, projection=&#39;ccm&#39;), reapeating=False) cgrid=REGULAR(model_type=&#39;regular&#39;, spectrum=SPECTRUM(model_type=&#39;spectrum&#39;, mdc=36, flow=0.04, fhigh=0.4, msc=None, dir1=None, dir2=None), xpc=0.0, ypc=0.0, alpc=0.0, xlenc=100.0, ylenc=100.0, mxc=10, myc=10) inpgrid=INPGRIDS(model_type=&#39;inpgrids&#39;, inpgrids=[REGULAR(model_type=&#39;regular&#39;, grid_type=&lt;GridOptions.bottom: &#39;bottom&#39;&gt;, excval=-999.0, nonstationary=None, readinp=READINP(model_type=&#39;readinp&#39;, grid_type=&lt;GridOptions.bottom: &#39;bottom&#39;&gt;, fac=1.0, idla=1, nhedf=0, nhedvec=0, format=&#39;free&#39;, form=None, idfm=None, fname1=&#39;bottom.txt&#39;, fname2=None, nhedt=0), xpinp=0.0, ypinp=0.0, alpinp=0.0, mxinp=10, myinp=10, dxinp=0.1, dyinp=0.1), REGULAR(model_type=&#39;regular&#39;, grid_type=&lt;GridOptions.wind: &#39;wind&#39;&gt;, excval=-999.0, nonstationary=NONSTATIONARY(model_type=&#39;nonstationary&#39;, tbeg=datetime.datetime(2023, 1, 1, 0, 0), delt=datetime.timedelta(seconds=1800), tend=datetime.datetime(2023, 2, 1, 0, 0), tfmt=&#39;%Y%m%d.%H%M%S&#39;, deltfmt=&#39;hr&#39;, suffix=&#39;inp&#39;), readinp=READINP(model_type=&#39;readinp&#39;, grid_type=&lt;GridOptions.wind: &#39;wind&#39;&gt;, fac=1.0, idla=1, nhedf=0, nhedvec=0, format=&#39;free&#39;, form=None, idfm=None, fname1=&#39;wind.txt&#39;, fname2=None, nhedt=0), xpinp=0.0, ypinp=0.0, alpinp=0.0, mxinp=10, myinp=10, dxinp=0.1, dyinp=0.1)]) boundary=BOUNDSPEC(model_type=&#39;boundspec&#39;, shapespec=SHAPESPEC(model_type=&#39;shapespec&#39;, shape=TMA(model_type=&#39;tma&#39;, gamma=3.3, d=12.0), per_type=&#39;peak&#39;, dspr_type=&#39;power&#39;), location=SIDE(model_type=&#39;side&#39;, side=&#39;west&#39;, direction=&#39;ccw&#39;), data=CONSTANTPAR(model_type=&#39;constantpar&#39;, hs=1.0, per=10.0, dir=0.0, dd=10.0)) initial=INITIAL(model_type=&#39;initial&#39;, kind=HOTSINGLE(model_type=&#39;hotsingle&#39;, fname=&#39;hotfile.txt&#39;, format=&#39;free&#39;)) physics=PHYSICS(model_type=&#39;physics&#39;, gen=GEN3(model_type=&#39;gen3&#39;, source_terms=WESTHUYSEN(model_type=&#39;westhuysen&#39;, wind_drag=&#39;wu&#39;, agrow=False, a=0.0015, cds2=None, br=None)), sswell=ZIEGER(model_type=&#39;zieger&#39;, b1=None), negatinp=None, wcapping=WCAPAB(model_type=&#39;wcapab&#39;, cds2=5e-05, br=0.00175, current=True, cds3=0.8), quadrupl=QUADRUPL(model_type=&#39;quadrupl&#39;, iquad=2, lambd=0.25, cn14=None, csh1=None, csh2=None, csh3=None), breaking=BREAKCONSTANT(model_type=&#39;constant&#39;, alpha=1.0, gamma=0.73), friction=COLLINS(model_type=&#39;collins&#39;, cfw=0.015))
+INFO:rompy.core.model:-----------------------------------------------------
+INFO:rompy.core.model:Generating model input files in ./
+INFO:rompy.core.model:
+INFO:rompy.core.model:Successfully generated project in ./
+INFO:rompy.core.model:-----------------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;/source/csiro/rompy/notebooks/components/tmp/test1&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Examine the default template</span>
+
+<span class="n">dump_template</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+!------------------------------------------------------------ Startup -------------------------------------------------------------
+
+{% if config.project %}{{config.project.render()}}{% endif %}
+{% if config.set != None %}{{config.set.render()}}{% endif %}
+{% if config.mode != None %}{{config.mode.render()}}{% endif %}
+{% if config.coordinates != None %}{{config.coordinates.render()}}{% endif %}
+
+
+!------------------------------------------------------- Computational Grid -------------------------------------------------------
+
+{% if config.cgrid %}{{config.cgrid.render()}}{% endif %}
+
+
+!----------------------------------------------------------- Input Grids ----------------------------------------------------------
+
+{% if config.inpgrid %}{{config.inpgrid.render()}}{% endif %}
+
+
+!------------------------------------------------- Boundary and Initial conditions ------------------------------------------------
+
+{% if config.boundary %}{{config.boundary.render()}}{% endif %}
+
+{% if config.initial %}{{config.initial.render()}}{% endif %}
+
+
+!------------------------------------------------------------ Physics -------------------------------------------------------------
+
+{% if config.physics %}{{config.physics.render()}}{% endif %}
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Examine the generated input</span>
+
+<span class="n">dump_input</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+!------------------------------------------------------------ Startup -------------------------------------------------------------
+
+PROJECT name=&#39;Test rompy setup&#39; nr=&#39;0001&#39;
+SET level=0.0 depmin=0.05 maxerr=1 grav=9.81 rho=1025.0 cdcap=0.0025 NAUTICAL
+MODE NONSTATIONARY TWODIMENSIONAL
+COORDINATES SPHERICAL CCM
+
+
+!------------------------------------------------------- Computational Grid -------------------------------------------------------
+
+CGRID REGULAR xpc=0.0 ypc=0.0 alpc=0.0 xlenc=100.0 ylenc=100.0 mxc=10 myc=10 CIRCLE mdc=36 flow=0.04 fhigh=0.4
+
+
+!----------------------------------------------------------- Input Grids ----------------------------------------------------------
+
+INPGRID BOTTOM REGULAR xpinp=0.0 ypinp=0.0 alpinp=0.0 mxinp=10 myinp=10 dxinp=0.1 dyinp=0.1 EXCEPTION excval=-999.0
+READINP BOTTOM fac=1.0 fname1=&#39;bottom.txt&#39; idla=1 nhedf=0 nhedt=0 nhedvec=0 FREE
+
+INPGRID WIND REGULAR xpinp=0.0 ypinp=0.0 alpinp=0.0 mxinp=10 myinp=10 dxinp=0.1 dyinp=0.1 EXCEPTION excval=-999.0 &amp;
+    NONSTATIONARY tbeginp=20230101.000000 deltinp=0.5 HR tendinp=20230201.000000
+READINP WIND fac=1.0 fname1=&#39;wind.txt&#39; idla=1 nhedf=0 nhedt=0 nhedvec=0 FREE
+
+
+!------------------------------------------------- Boundary and Initial conditions ------------------------------------------------
+
+BOUND SHAPESPEC TMA gamma=3.3 d=12.0 PEAK DSPR POWER
+BOUNDSPEC SIDE WEST CCW CONSTANT PAR hs=1.0 per=10.0 dir=0.0 dd=10.0
+
+INITIAL HOTSTART SINGLE fname=&#39;hotfile.txt&#39; FREE
+
+
+!------------------------------------------------------------ Physics -------------------------------------------------------------
+
+GEN3 WESTHUYSEN DRAG WU
+SSWELL ZIEGER
+WCAPPING AB cds2=5e-05 br=0.00175 CURRENT cds3=0.8
+QUADRUPL iquad=2 lambda=0.25
+BREAKING CONSTANT alpha=1.0 gamma=0.73
+FRICTION COLLINS cfw=0.015
+
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Mix-up-hardcoded-and-rendered-commands">
+<h2>Mix up hardcoded and rendered commands<a class="headerlink" href="#Mix-up-hardcoded-and-rendered-commands" title="Link to this heading">#</a></h2>
+<p>Use the same SWAN config object onto a modified template with the physics component hardcoded</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">swan_config</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;./templates/swan-physics-predefined&quot;</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span>
+    <span class="n">run_id</span><span class="o">=</span><span class="s2">&quot;test2&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">swan_config</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;./tmp&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.core.model:
+INFO:rompy.core.model:-----------------------------------------------------
+INFO:rompy.core.model:Model settings:
+INFO:rompy.core.model:
+period:
+
+        Start: 2020-02-21 04:00:00
+        End: 2020-02-24 04:00:00
+        Duration: 3 days, 0:00:00
+        Interval: 0:15:00
+        Include End: True
+
+
+output_dir:
+./tmp
+
+config:
+model_type=&#39;swan&#39; template=&#39;./templates/swan-physics-predefined&#39; checkout=&#39;main&#39; project=PROJECT(model_type=&#39;project&#39;, name=&#39;Test rompy setup&#39;, nr=&#39;0001&#39;, title1=None, title2=None, title3=None) set=SET(model_type=&#39;set&#39;, level=0.0, nor=None, depmin=0.05, maxmes=None, maxerr=1, grav=9.81, rho=1025.0, cdcap=0.0025, inrhog=None, hsrerr=None, direction_convention=&#39;nautical&#39;, pwtail=None, froudmax=None, icewind=None) mode=MODE(model_type=&#39;mode&#39;, kind=&#39;nonstationary&#39;, dim=&#39;twodimensional&#39;) coordinates=COORDINATES(model_type=&#39;coordinates&#39;, kind=SPHERICAL(model_type=&#39;spherical&#39;, projection=&#39;ccm&#39;), reapeating=False) cgrid=REGULAR(model_type=&#39;regular&#39;, spectrum=SPECTRUM(model_type=&#39;spectrum&#39;, mdc=36, flow=0.04, fhigh=0.4, msc=None, dir1=None, dir2=None), xpc=0.0, ypc=0.0, alpc=0.0, xlenc=100.0, ylenc=100.0, mxc=10, myc=10) inpgrid=INPGRIDS(model_type=&#39;inpgrids&#39;, inpgrids=[REGULAR(model_type=&#39;regular&#39;, grid_type=&lt;GridOptions.bottom: &#39;bottom&#39;&gt;, excval=-999.0, nonstationary=None, readinp=READINP(model_type=&#39;readinp&#39;, grid_type=&lt;GridOptions.bottom: &#39;bottom&#39;&gt;, fac=1.0, idla=1, nhedf=0, nhedvec=0, format=&#39;free&#39;, form=None, idfm=None, fname1=&#39;bottom.txt&#39;, fname2=None, nhedt=0), xpinp=0.0, ypinp=0.0, alpinp=0.0, mxinp=10, myinp=10, dxinp=0.1, dyinp=0.1), REGULAR(model_type=&#39;regular&#39;, grid_type=&lt;GridOptions.wind: &#39;wind&#39;&gt;, excval=-999.0, nonstationary=NONSTATIONARY(model_type=&#39;nonstationary&#39;, tbeg=datetime.datetime(2023, 1, 1, 0, 0), delt=datetime.timedelta(seconds=1800), tend=datetime.datetime(2023, 2, 1, 0, 0), tfmt=&#39;%Y%m%d.%H%M%S&#39;, deltfmt=&#39;hr&#39;, suffix=&#39;inp&#39;), readinp=READINP(model_type=&#39;readinp&#39;, grid_type=&lt;GridOptions.wind: &#39;wind&#39;&gt;, fac=1.0, idla=1, nhedf=0, nhedvec=0, format=&#39;free&#39;, form=None, idfm=None, fname1=&#39;wind.txt&#39;, fname2=None, nhedt=0), xpinp=0.0, ypinp=0.0, alpinp=0.0, mxinp=10, myinp=10, dxinp=0.1, dyinp=0.1)]) boundary=BOUNDSPEC(model_type=&#39;boundspec&#39;, shapespec=SHAPESPEC(model_type=&#39;shapespec&#39;, shape=TMA(model_type=&#39;tma&#39;, gamma=3.3, d=12.0), per_type=&#39;peak&#39;, dspr_type=&#39;power&#39;), location=SIDE(model_type=&#39;side&#39;, side=&#39;west&#39;, direction=&#39;ccw&#39;), data=CONSTANTPAR(model_type=&#39;constantpar&#39;, hs=1.0, per=10.0, dir=0.0, dd=10.0)) initial=INITIAL(model_type=&#39;initial&#39;, kind=HOTSINGLE(model_type=&#39;hotsingle&#39;, fname=&#39;hotfile.txt&#39;, format=&#39;free&#39;)) physics=PHYSICS(model_type=&#39;physics&#39;, gen=GEN3(model_type=&#39;gen3&#39;, source_terms=WESTHUYSEN(model_type=&#39;westhuysen&#39;, wind_drag=&#39;wu&#39;, agrow=False, a=0.0015, cds2=None, br=None)), sswell=ZIEGER(model_type=&#39;zieger&#39;, b1=None), negatinp=None, wcapping=WCAPAB(model_type=&#39;wcapab&#39;, cds2=5e-05, br=0.00175, current=True, cds3=0.8), quadrupl=QUADRUPL(model_type=&#39;quadrupl&#39;, iquad=2, lambd=0.25, cn14=None, csh1=None, csh2=None, csh3=None), breaking=BREAKCONSTANT(model_type=&#39;constant&#39;, alpha=1.0, gamma=0.73), friction=COLLINS(model_type=&#39;collins&#39;, cfw=0.015))
+INFO:rompy.core.model:-----------------------------------------------------
+INFO:rompy.core.model:Generating model input files in ./tmp
+INFO:rompy.core.model:
+INFO:rompy.core.model:Successfully generated project in ./tmp
+INFO:rompy.core.model:-----------------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;/source/csiro/rompy/notebooks/components/tmp/test2&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Examine the template</span>
+
+<span class="n">dump_template</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+!------------------------------------------------------------ Startup -------------------------------------------------------------
+
+{% if config.project %}{{config.project.render()}}{% endif %}
+{% if config.set != None %}{{config.set.render()}}{% endif %}
+{% if config.mode != None %}{{config.mode.render()}}{% endif %}
+{% if config.coordinates != None %}{{config.coordinates.render()}}{% endif %}
+
+
+!------------------------------------------------------- Computational Grid -------------------------------------------------------
+
+{% if config.cgrid %}{{config.cgrid.render()}}{% endif %}
+
+
+!----------------------------------------------------------- Input Grids ----------------------------------------------------------
+
+{% if config.inpgrid %}{{config.inpgrid.render()}}{% endif %}
+
+
+!------------------------------------------------- Boundary and Initial conditions ------------------------------------------------
+
+{% if config.boundary %}{{config.boundary.render()}}{% endif %}
+
+{% if config.initial %}{{config.initial.render()}}{% endif %}
+
+
+!------------------------------------------------------------ Physics -------------------------------------------------------------
+
+GEN3 WESTH
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># And the generated INPUT</span>
+
+<span class="n">dump_input</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+!------------------------------------------------------------ Startup -------------------------------------------------------------
+
+PROJECT name=&#39;Test rompy setup&#39; nr=&#39;0001&#39;
+SET level=0.0 depmin=0.05 maxerr=1 grav=9.81 rho=1025.0 cdcap=0.0025 NAUTICAL
+MODE NONSTATIONARY TWODIMENSIONAL
+COORDINATES SPHERICAL CCM
+
+
+!------------------------------------------------------- Computational Grid -------------------------------------------------------
+
+CGRID REGULAR xpc=0.0 ypc=0.0 alpc=0.0 xlenc=100.0 ylenc=100.0 mxc=10 myc=10 CIRCLE mdc=36 flow=0.04 fhigh=0.4
+
+
+!----------------------------------------------------------- Input Grids ----------------------------------------------------------
+
+INPGRID BOTTOM REGULAR xpinp=0.0 ypinp=0.0 alpinp=0.0 mxinp=10 myinp=10 dxinp=0.1 dyinp=0.1 EXCEPTION excval=-999.0
+READINP BOTTOM fac=1.0 fname1=&#39;bottom.txt&#39; idla=1 nhedf=0 nhedt=0 nhedvec=0 FREE
+
+INPGRID WIND REGULAR xpinp=0.0 ypinp=0.0 alpinp=0.0 mxinp=10 myinp=10 dxinp=0.1 dyinp=0.1 EXCEPTION excval=-999.0 &amp;
+    NONSTATIONARY tbeginp=20230101.000000 deltinp=0.5 HR tendinp=20230201.000000
+READINP WIND fac=1.0 fname1=&#39;wind.txt&#39; idla=1 nhedf=0 nhedt=0 nhedvec=0 FREE
+
+
+!------------------------------------------------- Boundary and Initial conditions ------------------------------------------------
+
+BOUND SHAPESPEC TMA gamma=3.3 d=12.0 PEAK DSPR POWER
+BOUNDSPEC SIDE WEST CCW CONSTANT PAR hs=1.0 per=10.0 dir=0.0 dd=10.0
+
+INITIAL HOTSTART SINGLE fname=&#39;hotfile.txt&#39; FREE
+
+
+!------------------------------------------------------------ Physics -------------------------------------------------------------
+
+GEN3 WESTH
+
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="oceanum_example.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Working demonstration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="physics.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">SWAN Physics Components</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Yaml-config-example">Yaml config example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#The-render-component-method:">The render component method:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Generating-the-INPUT-file">Generating the INPUT file</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Mix-up-hardcoded-and-rendered-commands">Mix up hardcoded and rendered commands</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/notebooks/swan-config-components.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

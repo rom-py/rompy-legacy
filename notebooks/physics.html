@@ -1,0 +1,1160 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SWAN Physics Components &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/physics';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Model Components" href="../components.html" />
+    <link rel="prev" title="Model components" href="swan-config-components.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API  Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components.html">Model Components</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../demo.html" class="nav-link">Demonstration notebooks</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">SWAN Physics Components</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="SWAN-Physics-Components">
+<h1>SWAN Physics Components<a class="headerlink" href="#SWAN-Physics-Components" title="Link to this heading">#</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rompy.swan.config</span> <span class="kn">import</span> <span class="n">SwanConfigComponents</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PHYSICS</span><span class="p">,</span>
+    <span class="n">GEN3</span><span class="p">,</span>
+    <span class="n">SSWELL</span><span class="p">,</span>
+    <span class="n">ARDHUIN</span><span class="p">,</span>
+    <span class="n">ZIEGER</span><span class="p">,</span>
+    <span class="n">ROGERS</span><span class="p">,</span>
+    <span class="n">NEGATINP</span><span class="p">,</span>
+    <span class="n">WCAPKOMEN</span><span class="p">,</span>
+    <span class="n">WCAPAB</span><span class="p">,</span>
+    <span class="n">QUADRUPL</span><span class="p">,</span>
+    <span class="n">BREAKCONSTANT</span><span class="p">,</span>
+    <span class="n">BREAKBKD</span><span class="p">,</span>
+    <span class="n">JONSWAP</span><span class="p">,</span>
+    <span class="n">COLLINS</span><span class="p">,</span>
+    <span class="n">MADSEN</span><span class="p">,</span>
+    <span class="n">RIPPLES</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.physics</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">JANSSEN</span><span class="p">,</span>
+    <span class="n">KOMEN</span><span class="p">,</span>
+    <span class="n">WESTHUYSEN</span><span class="p">,</span>
+    <span class="n">ST6</span><span class="p">,</span>
+    <span class="n">ST6C1</span><span class="p">,</span>
+    <span class="n">ST6C2</span><span class="p">,</span>
+    <span class="n">ST6C3</span><span class="p">,</span>
+    <span class="n">ST6C4</span><span class="p">,</span>
+    <span class="n">ST6C5</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Wave-generation-component">
+<h2>Wave generation component<a class="headerlink" href="#Wave-generation-component" title="Link to this heading">#</a></h2>
+<p>Three wave generation components are available: GEN1, GEN2 and GEN3. Below we demonstrate different uses for the third generation component <strong>GEN3</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the signature of GEN3 (use double question mark GEN3??</span>
+<span class="c1"># to view all fields info including description and default values)</span>
+
+GEN3<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+GEN3<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    model_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;gen3&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;gen3&#39;</span><span class="ansi-blue-fg">,</span>
+    source_terms<span class="ansi-blue-fg">:</span> Union<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>subcomponents<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>JANSSEN<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>subcomponents<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>KOMEN<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>subcomponents<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>WESTHUYSEN<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>subcomponents<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>ST6<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>subcomponents<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>ST6C1<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>subcomponents<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>ST6C2<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>subcomponents<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>ST6C3<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>subcomponents<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>ST6C4<span class="ansi-blue-fg">,</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>subcomponents<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>ST6C5<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> WESTHUYSEN<span class="ansi-blue-fg">(</span>model_type<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;westhuysen&#39;</span><span class="ansi-blue-fg">,</span> wind_drag<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;wu&#39;</span><span class="ansi-blue-fg">,</span> agrow<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span> a<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.0015</span><span class="ansi-blue-fg">,</span> cds2<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> br<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+Third generation source terms GEN3.
+
+`GEN3 JANSSEN|KOMEN|WESTHUYSEN|ST6 (...) AGROW [a]`
+
+With this command the user indicates that SWAN should run in third-generation mode
+for wind input, quadruplet interactions and whitecapping.
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/csiro/rompy/rompy/swan/components/physics.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># GEN3 requires the source_terms field, defined by a subcomponent</span>
+<span class="c1"># Let&#39;s start off by prescribing the WESTHuysen option with default values</span>
+
+WESTHUYSEN<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+WESTHUYSEN<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    model_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;westhuysen&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;westhuysen&#39;</span><span class="ansi-blue-fg">,</span>
+    wind_drag<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;wu&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;fit&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;wu&#39;</span><span class="ansi-blue-fg">,</span>
+    agrow<span class="ansi-blue-fg">:</span> bool <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>
+    a<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0015</span><span class="ansi-blue-fg">,</span>
+    cds2<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    br<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+Westhuysen source terms subcomponent.
+
+`WESTHUYSEN [cds2] [br]`
+
+Nonlinear saturation-based whitecapping combined with wind input of Yan (1987).
+
+Notes
+-----
+The two arguments are specified in the Appendix C of the User manual but not in the
+command description for WESTH in Section 4.5.4. They are also options in the
+WCAPPING command. It is not entirely clear if they should/could be specified here.
+
+References
+----------
+Van der Westhuysen, A.J., M. Zijlema and J.A. Battjes, 2007: Nonlinear
+saturation-based whitecapping dissipation in SWAN for deep and shallow water,
+Coast. Engng, 54:2, 151-170.
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/csiro/rompy/rompy/swan/subcomponents/physics.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span>
+    <span class="n">source_terms</span><span class="o">=</span><span class="n">WESTHUYSEN</span><span class="p">(),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 WESTHUYSEN DRAG WU
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Options are rendered if specified</span>
+
+<span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span>
+    <span class="n">source_terms</span><span class="o">=</span><span class="n">WESTHUYSEN</span><span class="p">(</span>
+        <span class="n">wind_drag</span><span class="o">=</span><span class="s2">&quot;wu&quot;</span><span class="p">,</span>
+        <span class="n">agrow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">a</span><span class="o">=</span><span class="mf">0.0015</span><span class="p">,</span>
+        <span class="n">cds2</span><span class="o">=</span><span class="mf">5.0e-5</span><span class="p">,</span>
+        <span class="n">br</span><span class="o">=</span><span class="mf">1.75e-3</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 WESTHUYSEN cds2=5e-05 br=0.00175 DRAG WU AGROW a=0.0015
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The model_type argument must be specified when using a dict / config</span>
+
+<span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span>
+    <span class="n">source_terms</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;westhuysen&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cds2&quot;</span><span class="p">:</span> <span class="mf">3.0e-5</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 WESTHUYSEN cds2=3e-05 DRAG WU
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Otherwise an exception is raised</span>
+
+<span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span>
+    <span class="n">source_terms</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;cds2&quot;</span><span class="p">:</span> <span class="mf">3.0e-5</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValidationError</span>                           Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[7], line 3</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span style="color: rgb(95,135,135)"># Otherwise an exception is raised</span>
+<span class="ansi-green-fg">----&gt; 3</span> gen <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">GEN3</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">source_terms</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">{</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">cds2</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg">:</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">3.0e-5</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">}</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-fg">~/.virtualenvs/rompy/lib/python3.10/site-packages/pydantic/main.py:342</span>, in <span class="ansi-cyan-fg">pydantic.main.BaseModel.__init__</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-red-fg">ValidationError</span>: 1 validation error for GEN3
+source_terms
+  Discriminator &#39;model_type&#39; is missing in value (type=value_error.discriminated_union.missing_discriminator; discriminator_key=model_type)
+</pre></div></div>
+</div>
+<section id="Available-source-terms">
+<h3>Available source terms<a class="headerlink" href="#Available-source-terms" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># JANSSEN</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span>
+    <span class="n">source_terms</span><span class="o">=</span><span class="n">JANSSEN</span><span class="p">(</span>
+        <span class="n">cds1</span><span class="o">=</span><span class="mf">4.5</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="c1"># KOMEN</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span>
+    <span class="n">source_terms</span><span class="o">=</span><span class="n">KOMEN</span><span class="p">(</span>
+        <span class="n">cds2</span><span class="o">=</span><span class="mf">2.36e-5</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="c1"># ST6</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span>
+    <span class="n">source_terms</span><span class="o">=</span><span class="n">ST6</span><span class="p">(</span>
+        <span class="n">a1sds</span><span class="o">=</span><span class="mf">4.7e-7</span><span class="p">,</span>
+        <span class="n">a2sds</span><span class="o">=</span><span class="mf">6.6e-6</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 JANSSEN cds1=4.5 DRAG WU
+GEN3 KOMEN cds2=2.36e-05 DRAG WU
+GEN3 ST6 a1sds=4.7e-07 a2sds=6.6e-06 UP HWANG VECTAU U10PROXY windscaling=32.0
+</pre></div></div>
+</div>
+</section>
+<section id="ST6-presets">
+<h3>ST6 presets<a class="headerlink" href="#ST6-presets" title="Link to this heading">#</a></h3>
+<p>ST6 is defined by several tuning coefficients. The SWAN manual provides calibration combinations that are represented by preset subcomponents ST6Cn, <code class="docutils literal notranslate"><span class="pre">n=1,2,3,4,5</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">phys</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ST6C1</span><span class="p">,</span> <span class="n">ST6C2</span><span class="p">,</span> <span class="n">ST6C3</span><span class="p">,</span> <span class="n">ST6C4</span><span class="p">,</span> <span class="n">ST6C5</span><span class="p">]:</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span><span class="n">source_terms</span><span class="o">=</span><span class="n">phys</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 ST6 a1sds=4.7e-07 a2sds=6.6e-06 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=28.0 AGROW a=0.0015
+GEN3 ST6 a1sds=4.7e-07 a2sds=6.6e-06 p1sds=4.0 p2sds=4.0 UP FAN VECTAU U10PROXY windscaling=28.0 AGROW a=0.0015
+GEN3 ST6 a1sds=2.8e-06 a2sds=3.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=32.0 AGROW a=0.0015
+GEN3 ST6 a1sds=2.8e-06 a2sds=3.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=32.0 DEBIAS cdfac=0.89 AGROW a=0.0015
+GEN3 ST6 a1sds=6.5e-06 a2sds=8.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=35.0 DEBIAS cdfac=0.89 AGROW a=0.0015
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Swell-dissipation-and-negative-wind-component">
+<h2>Swell dissipation and negative wind component<a class="headerlink" href="#Swell-dissipation-and-negative-wind-component" title="Link to this heading">#</a></h2>
+<p>Three components are available to define swell dissipation <em>SSWELL</em>: <strong>ZIEGER</strong>, <strong>ARDHUIN</strong> and <strong>ROGERS</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sswell</span> <span class="o">=</span> <span class="n">ZIEGER</span><span class="p">(</span><span class="n">b1</span><span class="o">=</span><span class="mf">0.00025</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sswell</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="n">sswell</span> <span class="o">=</span> <span class="n">ARDHUIN</span><span class="p">(</span><span class="n">cdsv</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sswell</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="n">sswell</span> <span class="o">=</span> <span class="n">ROGERS</span><span class="p">(</span><span class="n">cdsv</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">feswell</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sswell</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SSWELL ZIEGER b1=0.00025
+SSWELL ARDHUIN cdsv=1.2
+SSWELL ROGERS cdsv=1.2 feswell=0.01
+</pre></div></div>
+</div>
+<p>The negative wind input can be prescribed using <strong>NEGATINP</strong> (note it is only intended to use in conjuction with <strong>SSWELL ZIEGER</strong>)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">negatinp</span> <span class="o">=</span> <span class="n">NEGATINP</span><span class="p">(</span><span class="n">rdcoef</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">negatinp</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+NEGATINP rdcoef=0.1
+</pre></div></div>
+</div>
+</section>
+<section id="Whitecapping-components">
+<h2>Whitecapping components<a class="headerlink" href="#Whitecapping-components" title="Link to this heading">#</a></h2>
+<p>Two options available: Komen’s whitecapping <strong>WCAPKOMEN</strong> and Alves and Banner’s whitecapping <strong>WCAPAB</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wcap</span> <span class="o">=</span> <span class="n">WCAPKOMEN</span><span class="p">(</span>
+    <span class="n">cds2</span><span class="o">=</span><span class="mf">2.36e-5</span><span class="p">,</span>
+    <span class="n">stpm</span><span class="o">=</span><span class="mf">3.02e-3</span><span class="p">,</span>
+    <span class="n">powst</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">powk</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">wcap</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="n">wcap</span> <span class="o">=</span> <span class="n">WCAPAB</span><span class="p">(</span>
+    <span class="n">cds2</span><span class="o">=</span><span class="mf">5.0e-5</span><span class="p">,</span>
+    <span class="n">br</span><span class="o">=</span><span class="mf">1.75e-3</span><span class="p">,</span>
+    <span class="n">current</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cds3</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">wcap</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+WCAPPING KOMEN cds2=2.36e-05 stpm=0.00302 powst=2.0 delta=1.0 powk=1.0
+WCAPPING AB cds2=5e-05 br=0.00175 CURRENT cds3=0.8
+</pre></div></div>
+</div>
+</section>
+<section id="Quadruplets-component">
+<h2>Quadruplets component<a class="headerlink" href="#Quadruplets-component" title="Link to this heading">#</a></h2>
+<p>Use the <strong>QUADRUPL</strong> component</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quadrupl</span> <span class="o">=</span> <span class="n">QUADRUPL</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quadrupl</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="n">quadrupl</span> <span class="o">=</span> <span class="n">QUADRUPL</span><span class="p">(</span>
+    <span class="n">iquad</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">lambd</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">cn14</span><span class="o">=</span><span class="mf">3.0e7</span><span class="p">,</span>
+    <span class="n">csh1</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span>
+    <span class="n">csh2</span><span class="o">=</span><span class="mf">0.833333</span><span class="p">,</span>
+    <span class="n">csh3</span><span class="o">=-</span><span class="mf">1.25</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quadrupl</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+QUADRUPL
+QUADRUPL iquad=2 lambda=0.25 Cn14=30000000.0 Csh1=5.5 Csh2=0.833333 Csh3=-1.25
+</pre></div></div>
+</div>
+</section>
+<section id="Wave-breaking-components">
+<h2>Wave breaking components<a class="headerlink" href="#Wave-breaking-components" title="Link to this heading">#</a></h2>
+<p>Two options are currently available: constant breaking <strong>BREAKCONSTANT</strong> and variable breaking <strong>BREAKBKD</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">breaking</span> <span class="o">=</span> <span class="n">BREAKCONSTANT</span><span class="p">(</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="o">=</span><span class="mf">0.73</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">breaking</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="n">breaking</span> <span class="o">=</span> <span class="n">BREAKBKD</span><span class="p">(</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">gamma0</span><span class="o">=</span><span class="mf">0.54</span><span class="p">,</span>
+    <span class="n">a1</span><span class="o">=</span><span class="mf">7.59</span><span class="p">,</span>
+    <span class="n">a2</span><span class="o">=-</span><span class="mf">8.06</span><span class="p">,</span>
+    <span class="n">a3</span><span class="o">=</span><span class="mf">8.09</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">breaking</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BREAKING CONSTANT alpha=1.0 gamma=0.73
+BREAKING BKD alpha=1.0 gamma0=0.54 a1=7.59 a2=-8.06 a3=8.09
+</pre></div></div>
+</div>
+</section>
+<section id="Bottom-friction-components">
+<h2>Bottom friction components<a class="headerlink" href="#Bottom-friction-components" title="Link to this heading">#</a></h2>
+<p>The following formulations are supported: <strong>JONSWAP</strong>, <strong>COLINS</strong>, <strong>MADSEN</strong>, <strong>RIPPLES</strong>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Jonswap</span>
+<span class="n">fric</span> <span class="o">=</span> <span class="n">JONSWAP</span><span class="p">(</span><span class="n">cfjon</span><span class="o">=</span><span class="mf">0.38</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fric</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="c1"># Collins</span>
+<span class="n">fric</span> <span class="o">=</span> <span class="n">COLLINS</span><span class="p">(</span><span class="n">cfw</span><span class="o">=</span><span class="mf">0.015</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fric</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="c1"># Madsen</span>
+<span class="n">fric</span> <span class="o">=</span> <span class="n">MADSEN</span><span class="p">(</span><span class="n">kn</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fric</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+
+<span class="n">fric</span> <span class="o">=</span> <span class="n">RIPPLES</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mf">2.65</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fric</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+FRICTION JONSWAP CONSTANT cfjon=0.38
+FRICTION COLLINS cfw=0.015
+FRICTION MADSEN kn=0.05
+FRICTION RIPPLES S=2.65 D=0.0001
+</pre></div></div>
+</div>
+</section>
+<section id="PHYSICS-group-component">
+<h2>PHYSICS group component<a class="headerlink" href="#PHYSICS-group-component" title="Link to this heading">#</a></h2>
+<p>Defining physics settings in SWAN is somewhat complex in that some options can be intrinsically related. For example, the negative wind input <strong>NEGATINP</strong> is only intended to use with <strong>SSWELL ZIEGER</strong> and the swell dissipation <strong>SSWELL</strong> is expected to be defined alongside the <strong>ST6</strong> source terms.</p>
+<p>The <strong>PHYSICS</strong> group component is a convenience to allow prescribing all physics commands as a group and validate them to ensure the inputs are sound. The <strong>SwanConfigComponents</strong> config class uses the <strong>PHYSICS</strong> group components to define the model config.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>PHYSICS<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+PHYSICS<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    model_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;physics&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;physics&#39;</span><span class="ansi-blue-fg">,</span>
+    gen<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>GEN1 <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>GEN2 <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>GEN3 <span class="ansi-blue-fg">=</span> GEN3<span class="ansi-blue-fg">(</span>model_type<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;gen3&#39;</span><span class="ansi-blue-fg">,</span> source_terms<span class="ansi-blue-fg">=</span>WESTHUYSEN<span class="ansi-blue-fg">(</span>model_type<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;westhuysen&#39;</span><span class="ansi-blue-fg">,</span> wind_drag<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;wu&#39;</span><span class="ansi-blue-fg">,</span> agrow<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span> a<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.0015</span><span class="ansi-blue-fg">,</span> cds2<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> br<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    sswell<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>ROGERS <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>ARDHUIN <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>ZIEGER <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    negatinp<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>NEGATINP<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    wcapping<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>WCAPKOMEN <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>WCAPAB <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    quadrupl<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>QUADRUPL<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    breaking<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>BREAKCONSTANT <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>BREAKBKD <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    friction<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>JONSWAP <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>COLLINS <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>MADSEN <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>components<span class="ansi-blue-fg">.</span>physics<span class="ansi-blue-fg">.</span>RIPPLES <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+Physics group component.
+
+The physics group component is a convenience to allow specifying several individual
+components in a single command and check for consistency between them.
+
+TODO: Implement OFF command
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/csiro/rompy/rompy/swan/components/physics.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phys</span> <span class="o">=</span> <span class="n">PHYSICS</span><span class="p">(</span>
+    <span class="n">gen</span><span class="o">=</span><span class="n">gen</span><span class="p">,</span>
+    <span class="n">sswell</span><span class="o">=</span><span class="n">sswell</span><span class="p">,</span>
+    <span class="n">negatinp</span><span class="o">=</span><span class="n">negatinp</span><span class="p">,</span>
+    <span class="n">wcapping</span><span class="o">=</span><span class="n">wcap</span><span class="p">,</span>
+    <span class="n">quadrupl</span><span class="o">=</span><span class="n">quadrupl</span><span class="p">,</span>
+    <span class="n">breaking</span><span class="o">=</span><span class="n">breaking</span><span class="p">,</span>
+    <span class="n">friction</span><span class="o">=</span><span class="n">fric</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">phys</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+WARNING:rompy.swan.components.physics:The negative wind input NEGATINP is only intended to use with the swell dissipation SSWELL ZIEGER but SSWELL ROGERS has been specified.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 ST6 a1sds=6.5e-06 a2sds=8.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=35.0 DEBIAS cdfac=0.89 AGROW a=0.0015
+SSWELL ROGERS cdsv=1.2 feswell=0.01
+NEGATINP rdcoef=0.1
+WCAPPING AB cds2=5e-05 br=0.00175 CURRENT cds3=0.8
+QUADRUPL iquad=2 lambda=0.25 Cn14=30000000.0 Csh1=5.5 Csh2=0.833333 Csh3=-1.25
+BREAKING BKD alpha=1.0 gamma0=0.54 a1=7.59 a2=-8.06 a3=8.09
+FRICTION RIPPLES S=2.65 D=0.0001
+</pre></div></div>
+</div>
+<p>Inconsistent definitions in the PHYSICS group component raise <strong>WARNING</strong> rather than exceptions given the user may intend to configure the model that way. The warning above goes away by setting <strong>SSWELL ZIEGER</strong>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phys</span> <span class="o">=</span> <span class="n">PHYSICS</span><span class="p">(</span>
+    <span class="n">gen</span><span class="o">=</span><span class="n">gen</span><span class="p">,</span>
+    <span class="n">sswell</span><span class="o">=</span><span class="n">ZIEGER</span><span class="p">(),</span>
+    <span class="n">negatinp</span><span class="o">=</span><span class="n">negatinp</span><span class="p">,</span>
+    <span class="n">wcapping</span><span class="o">=</span><span class="n">wcap</span><span class="p">,</span>
+    <span class="n">quadrupl</span><span class="o">=</span><span class="n">quadrupl</span><span class="p">,</span>
+    <span class="n">breaking</span><span class="o">=</span><span class="n">breaking</span><span class="p">,</span>
+    <span class="n">friction</span><span class="o">=</span><span class="n">fric</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">phys</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 ST6 a1sds=6.5e-06 a2sds=8.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=35.0 DEBIAS cdfac=0.89 AGROW a=0.0015
+SSWELL ZIEGER
+NEGATINP rdcoef=0.1
+WCAPPING AB cds2=5e-05 br=0.00175 CURRENT cds3=0.8
+QUADRUPL iquad=2 lambda=0.25 Cn14=30000000.0 Csh1=5.5 Csh2=0.833333 Csh3=-1.25
+BREAKING BKD alpha=1.0 gamma0=0.54 a1=7.59 a2=-8.06 a3=8.09
+FRICTION RIPPLES S=2.65 D=0.0001
+</pre></div></div>
+</div>
+<p>Individual physics components default to <code class="docutils literal notranslate"><span class="pre">None</span></code> in the <strong>PHYSICS</strong> group component. They need to be explicitly prescribed in order to be rendered:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phys</span> <span class="o">=</span> <span class="n">PHYSICS</span><span class="p">(</span>
+    <span class="n">gen</span><span class="o">=</span><span class="n">GEN3</span><span class="p">(),</span>
+    <span class="n">friction</span><span class="o">=</span><span class="n">MADSEN</span><span class="p">(),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">phys</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 WESTHUYSEN DRAG WU
+FRICTION MADSEN
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="swan-config-components.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Model components</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../components.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Model Components</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Wave-generation-component">Wave generation component</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Available-source-terms">Available source terms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ST6-presets">ST6 presets</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Swell-dissipation-and-negative-wind-component">Swell dissipation and negative wind component</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Whitecapping-components">Whitecapping components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Quadruplets-component">Quadruplets component</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Wave-breaking-components">Wave breaking components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Bottom-friction-components">Bottom friction components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PHYSICS-group-component">PHYSICS group component</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/notebooks/physics.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1744 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rompy.swan.subcomponents.physics &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../../../../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/rompy/swan/subcomponents/physics';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API  Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components.html">Model Components</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">rompy.swan.subcomponents.physics</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for rompy.swan.subcomponents.physics</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;SWAN physics subcomponents.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span> <span class="nn">pydantic_numpy.typing</span> <span class="kn">import</span> <span class="n">Np2DArray</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.base</span> <span class="kn">import</span> <span class="n">BaseSubComponent</span>
+
+
+<span class="n">JSON_ENCODERS</span> <span class="o">=</span> <span class="p">{</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">arr</span><span class="p">:</span> <span class="n">arr</span><span class="o">.</span><span class="n">tolist</span><span class="p">()}</span>
+
+
+<span class="c1"># ======================================================================================</span>
+<span class="c1"># Source terms</span>
+<span class="c1"># ======================================================================================</span>
+<span class="k">class</span> <span class="nc">SourceTerms</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Source term subcomponent base class.&quot;&quot;&quot;</span>
+
+    <span class="n">wind_drag</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;wu&quot;</span><span class="p">,</span> <span class="s2">&quot;fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;wu&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Indicates the wind drag formulation&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">agrow</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Activate the Cavaleri and Malanotte (1981) wave growth term&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">a</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Proportionality coefficient when activating the Cavaleri and Malanotte &quot;</span>
+            <span class="s2">&quot;(1981) wave growth term (SWAN default: 0.0015)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="JANSSEN">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.JANSSEN.html#rompy.swan.subcomponents.physics.JANSSEN">[docs]</a>
+<span class="k">class</span> <span class="nc">JANSSEN</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Janssen source terms subcomponent.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        JANSSEN [cds1] [delta] (AGROW [a])</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Janssen, P.A., 1989. Wave-induced stress and the drag of air flow over sea waves.</span>
+<span class="sd">    Journal of Physical Oceanography, 19(6), pp.745-754.</span>
+
+<span class="sd">    Janssen, P.A.E.M., Lionello, P. and Zambresky, L., 1989. On the interaction of wind</span>
+<span class="sd">    and waves. Philosophical transactions of the royal society of London. Series A,</span>
+<span class="sd">    Mathematical and Physical Sciences, 329(1604), pp.289-301.</span>
+
+<span class="sd">    Janssen, P.A., 1991. Quasi-linear theory of wind-wave generation applied to wave</span>
+<span class="sd">    forecasting. Journal of physical oceanography, 21(11), pp.1631-1642.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import JANSSEN</span>
+
+<span class="sd">        janssen = JANSSEN()</span>
+<span class="sd">        print(janssen.render())</span>
+<span class="sd">        janssen = JANSSEN(cds1=4.5, delta=0.5, agrow=True)</span>
+<span class="sd">        print(janssen.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;janssen&quot;</span><span class="p">,</span> <span class="s2">&quot;JANSSEN&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;janssen&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">cds1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Coefficient for determining the rate of whitecapping dissipation &quot;</span>
+            <span class="s2">&quot;($Cds / s^4_</span><span class="si">{PM}</span><span class="s2">$) (SWAN default: 4.5)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">delta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Coefficient which determines the dependency of the whitecapping on wave &quot;</span>
+            <span class="s2">&quot;number (mix with Komen et al. formulation) (SWAN default: 0.5)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="JANSSEN.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.JANSSEN.html#rompy.swan.subcomponents.physics.JANSSEN.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;JANSSEN&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cds1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cds1=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cds1</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; delta=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; DRAG </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wind_drag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agrow</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; AGROW&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">agrow</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; a=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="KOMEN">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.KOMEN.html#rompy.swan.subcomponents.physics.KOMEN">[docs]</a>
+<span class="k">class</span> <span class="nc">KOMEN</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Komen source terms subcomponent.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        KOMEN [cds2] [stpm] (AGROW [a])</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Komen, G.J., Hasselmann, S. and Hasselmann, K., 1984. On the existence of a fully</span>
+<span class="sd">    developed wind-sea spectrum. Journal of physical oceanography, 14(8), pp.1271-1285.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import KOMEN</span>
+
+<span class="sd">        komen = KOMEN()</span>
+<span class="sd">        print(komen.render())</span>
+<span class="sd">        komen = KOMEN(cds2=2.36e-5, stpm=3.02e-3, agrow=True, a=0.0015)</span>
+<span class="sd">        print(komen.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;komen&quot;</span><span class="p">,</span> <span class="s2">&quot;KOMEN&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;komen&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">cds2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Coefficient for determining the rate of whitecapping dissipation &quot;</span>
+            <span class="s2">&quot;(`Cds`) (SWAN default: 2.36e-5)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">stpm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Value of the wave steepness for a Pierson-Moskowitz spectrum &quot;</span>
+            <span class="s2">&quot;(`s^2_PM`) (SWAN default: 3.02e-3)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="KOMEN.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.KOMEN.html#rompy.swan.subcomponents.physics.KOMEN.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;KOMEN&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cds2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cds2=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cds2</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stpm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; stpm=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">stpm</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; DRAG </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wind_drag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agrow</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; AGROW&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">agrow</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; a=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="WESTHUYSEN">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.WESTHUYSEN.html#rompy.swan.subcomponents.physics.WESTHUYSEN">[docs]</a>
+<span class="k">class</span> <span class="nc">WESTHUYSEN</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Westhuysen source terms subcomponent.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        WESTHUYSEN [cds2] [br] (AGROW [a])</span>
+
+<span class="sd">    Nonlinear saturation-based whitecapping combined with wind input of Yan (1987).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The two arguments are specified in the Appendix C of the User manual but not in the</span>
+<span class="sd">    command description for WESTH in Section 4.5.4. They are also options in the</span>
+<span class="sd">    WCAPPING command. It is not entirely clear if they should/could be specified here.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    van der Westhuysen, A.J., Zijlema, M. and Battjes, J.A., 2007. Nonlinear</span>
+<span class="sd">    saturation-based whitecapping dissipation in SWAN for deep and shallow water.</span>
+<span class="sd">    Coastal Engineering, 54(2), pp.151-170.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import WESTHUYSEN</span>
+
+<span class="sd">        westhuysen = WESTHUYSEN()</span>
+<span class="sd">        print(westhuysen.render())</span>
+<span class="sd">        westhuysen = WESTHUYSEN(cds2=5.0e-5, br=1.75e-3)</span>
+<span class="sd">        print(westhuysen.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;westhuysen&quot;</span><span class="p">,</span> <span class="s2">&quot;WESTHUYSEN&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;westhuysen&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">cds2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;proportionality coefficient due to Alves and Banner (2003) &quot;</span>
+            <span class="s2">&quot;(SWAN default: 5.0e-5).&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">br</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Threshold saturation level	(SWAN default: 1.75e-3)&quot;</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="WESTHUYSEN.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.WESTHUYSEN.html#rompy.swan.subcomponents.physics.WESTHUYSEN.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;WESTHUYSEN&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cds2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cds2=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cds2</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">br</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; br=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">br</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; DRAG </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wind_drag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agrow</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; AGROW&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">agrow</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; a=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ST6">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ST6.html#rompy.swan.subcomponents.physics.ST6">[docs]</a>
+<span class="k">class</span> <span class="nc">ST6</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;St6 source terms subcomponent.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        ST6 [a1sds] [a2sds] [p1sds] [p2sds] UP|DOWN HWANG|FAN|ECMWF VECTAU|SCATAU &amp;</span>
+<span class="sd">            TRUE10|U10PROXY [windscaling] DEBIAS [cdfac] (AGROW [a])</span>
+
+<span class="sd">    wind input and whitecapping from Rogers et al. (2012) (RBW12).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The two arguments are specified in the Appendix C of the User manual but not in the</span>
+<span class="sd">    command description for WESTH in Section 4.5.4. They are also options in the</span>
+<span class="sd">    WCAPPING command. It is not entirely clear if they should/could be specified here.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Fan, Y., Lin, S.J., Held, I.M., Yu, Z. and Tolman, H.L., 2012. Global ocean surface</span>
+<span class="sd">    wave simulation using a coupled atmosphere–wave model. Journal of Climate, 25(18),</span>
+<span class="sd">    pp.6233-6252.</span>
+
+<span class="sd">    Rogers, W.E., Babanin, A.V. and Wang, D.W., 2012. Observation-consistent input and</span>
+<span class="sd">    whitecapping dissipation in a model for wind-generated surface waves: Description</span>
+<span class="sd">    and simple calculations. Journal of Atmospheric and Oceanic Technology, 29(9),</span>
+<span class="sd">    pp.1329-1346.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import ST6</span>
+
+<span class="sd">        st6 = ST6(a1sds=4.7e-7, a2sds=6.6e-6)</span>
+<span class="sd">        print(st6.render())</span>
+<span class="sd">        kwargs = dict(</span>
+<span class="sd">            a1sds=2.8e-6,</span>
+<span class="sd">            a2sds=3.5e-5,</span>
+<span class="sd">            normalization=&quot;up&quot;,</span>
+<span class="sd">            wind_drag=&quot;hwang&quot;,</span>
+<span class="sd">            tau=&quot;vectau&quot;,</span>
+<span class="sd">            u10=&quot;u10proxy&quot;,</span>
+<span class="sd">            windscaling=32.0,</span>
+<span class="sd">            cdfac=0.89,</span>
+<span class="sd">            agrow=True,</span>
+<span class="sd">            a=0.0015,</span>
+<span class="sd">        )</span>
+<span class="sd">        st6 = ST6(**kwargs)</span>
+<span class="sd">        print(st6.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;st6&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;st6&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">a1sds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Coefficient related to local dissipation term T1 (a1 in RBW12)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">a2sds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Coefficient related to local dissipation term T2 (a2 in RBW12)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">p1sds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Power coefficient controlling strength of dissipation term T1 &quot;</span>
+            <span class="s2">&quot;(L in RBW12, SWAN default: 4)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">p2sds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Power coefficient controlling strength of dissipation term T2 &quot;</span>
+            <span class="s2">&quot;(M in RBW12, SWAN default: 4)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">normalization</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="s2">&quot;down&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;up&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Selection of normalization of exceedance level by ET(f) (`up`) or E(f) &quot;</span>
+            <span class="s2">&quot;(`down`) as in RBW12 (right column, page 1333), `up` is default and &quot;</span>
+            <span class="s2">&quot;strongly recommended&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">wind_drag</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;hwang&quot;</span><span class="p">,</span> <span class="s2">&quot;fan&quot;</span><span class="p">,</span> <span class="s2">&quot;ecmwf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;hwang&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Wind drag formula, `hwang` is the default and is unchanged from RBW12, &quot;</span>
+            <span class="s2">&quot;`fan` is from Fan et al. (2012), `ecmwf` follows WAM Cycle 4 methodology&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">tau</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;vectau&quot;</span><span class="p">,</span> <span class="s2">&quot;scatau&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;vectau&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Use vector (vectau) or scalar (scatau) calculation for the wind strerss &quot;</span>
+            <span class="s2">&quot;(Eq. 12 in RBW12), `vectau` is the default and strongly recommended&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">u10</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;u10proxy&quot;</span><span class="p">,</span> <span class="s2">&quot;true10&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;u10proxy&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wind velocity definition&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">windscaling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">32.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Factor to scale U10 with U* when using U10PROXY&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">cdfac</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Counter bias in the input wind fields by providing a multiplier &quot;</span>
+            <span class="s2">&quot;on the drag coefficient&quot;</span>
+        <span class="p">),</span>
+        <span class="n">gt</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="ST6.debias_only_with_hwang">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ST6.html#rompy.swan.subcomponents.physics.ST6.debias_only_with_hwang">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">debias_only_with_hwang</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ST6&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdfac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">wind_drag</span> <span class="o">!=</span> <span class="s2">&quot;hwang&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Debias is only supported with hwang wind drag, not </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wind_drag</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">u10_cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">u10</span> <span class="o">==</span> <span class="s2">&quot;true10&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;TRUE10&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;U10PROXY windscaling=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">windscaling</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="ST6.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ST6.html#rompy.swan.subcomponents.physics.ST6.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ST6 a1sds=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a1sds</span><span class="si">}</span><span class="s2"> a2sds=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a2sds</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p1sds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; p1sds=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p1sds</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p2sds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; p2sds=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p2sds</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">normalization</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wind_drag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">u10_cmd</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdfac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; DEBIAS cdfac=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cdfac</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agrow</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; AGROW&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">agrow</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; a=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ST6C1">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C1.html#rompy.swan.subcomponents.physics.ST6C1">[docs]</a>
+<span class="k">class</span> <span class="nc">ST6C1</span><span class="p">(</span><span class="n">ST6</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;First ST6 calibration in the SWAN user manual.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        ST6 4.7e-7 6.6e-6 4.0 4.0 UP HWANG VECTAU U10PROXY 28.0 AGROW</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import ST6C1</span>
+
+<span class="sd">        st6 = ST6C1()</span>
+<span class="sd">        print(st6.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;st6c1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;st6c1&quot;</span><span class="p">)</span>
+    <span class="n">a1sds</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">4.7e-7</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">4.7e-7</span><span class="p">)</span>
+    <span class="n">a2sds</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">6.6e-6</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">6.6e-6</span><span class="p">)</span>
+    <span class="n">p1sds</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">4.0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">4.0</span><span class="p">)</span>
+    <span class="n">p2sds</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">4.0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">4.0</span><span class="p">)</span>
+    <span class="n">windscaling</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">28.0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">28.0</span><span class="p">)</span>
+    <span class="n">agrow</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ST6C2">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C2.html#rompy.swan.subcomponents.physics.ST6C2">[docs]</a>
+<span class="k">class</span> <span class="nc">ST6C2</span><span class="p">(</span><span class="n">ST6C1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Second ST6 calibration in the SWAN user manual.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        ST6 4.7e-7 6.6e-6 4.0 4.0 UP FAN VECTAU U10PROXY 28.0 AGROW</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import ST6C2</span>
+
+<span class="sd">        st6 = ST6C2()</span>
+<span class="sd">        print(st6.render())</span>
+
+<span class="sd">    TODO: Ensure validator is reused here so fan and debias are not used together.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;st6c2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;st6c2&quot;</span><span class="p">)</span>
+    <span class="n">wind_drag</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;fan&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;fan&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ST6C3">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C3.html#rompy.swan.subcomponents.physics.ST6C3">[docs]</a>
+<span class="k">class</span> <span class="nc">ST6C3</span><span class="p">(</span><span class="n">ST6C1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Third ST6 calibration in the SWAN user manual.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        ST6 2.8e-6 3.5e-5 4.0 4.0 UP HWANG VECTAU U10PROXY 32.0 AGROW</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import ST6C3</span>
+
+<span class="sd">        st6 = ST6C3()</span>
+<span class="sd">        print(st6.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;st6c3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;st6c3&quot;</span><span class="p">)</span>
+    <span class="n">a1sds</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">2.8e-6</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">2.8e-6</span><span class="p">)</span>
+    <span class="n">a2sds</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">3.5e-5</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">3.5e-5</span><span class="p">)</span>
+    <span class="n">windscaling</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">32.0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">32.0</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ST6C4">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C4.html#rompy.swan.subcomponents.physics.ST6C4">[docs]</a>
+<span class="k">class</span> <span class="nc">ST6C4</span><span class="p">(</span><span class="n">ST6C3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fourth ST6 calibration in the SWAN user manual.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        ST6 2.8e-6 3.5e-5 4.0 4.0 UP HWANG VECTAU U10PROXY 32.0 DEBIAS 0.89 AGROW</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import ST6C4</span>
+
+<span class="sd">        st6 = ST6C4()</span>
+<span class="sd">        print(st6.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;st6c4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;st6c4&quot;</span><span class="p">)</span>
+    <span class="n">cdfac</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">0.89</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">0.89</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ST6C5">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C5.html#rompy.swan.subcomponents.physics.ST6C5">[docs]</a>
+<span class="k">class</span> <span class="nc">ST6C5</span><span class="p">(</span><span class="n">ST6C1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fifth ST6 calibration in the SWAN user manual.</span>
+
+<span class="sd">    .. code-block:: text</span>
+<span class="sd">        ST6 4.7e-7 6.6e-6 4.0 4.0 UP HWANG VECTAU U10PROXY 28.0 AGROW</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import ST6C5</span>
+
+<span class="sd">        st6 = ST6C5()</span>
+<span class="sd">        print(st6.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;st6c5&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;st6c5&quot;</span><span class="p">)</span>
+    <span class="n">cdfac</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">0.89</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">0.89</span><span class="p">)</span>
+    <span class="n">a1sds</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">6.5e-6</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">6.5e-6</span><span class="p">)</span>
+    <span class="n">a2sds</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">8.5e-5</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">8.5e-5</span><span class="p">)</span>
+    <span class="n">windscaling</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mf">35.0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">35.0</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># =====================================================================================</span>
+<span class="c1"># Biphase</span>
+<span class="c1"># =====================================================================================</span>
+<div class="viewcode-block" id="ELDEBERKY">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ELDEBERKY.html#rompy.swan.subcomponents.physics.ELDEBERKY">[docs]</a>
+<span class="k">class</span> <span class="nc">ELDEBERKY</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Biphase of Eldeberky (1999).</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        BIPHASE ELDEBERKY [urcrit]</span>
+
+<span class="sd">    Biphase parameterisation as a funtion of the Ursell number of Eldeberky (1999).</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Eldeberky, Y., Polnikov, V. and Battjes, J.A., 1996. A statistical approach for</span>
+<span class="sd">    modeling triad interactions in dispersive waves. In Coastal Engineering 1996</span>
+<span class="sd">    (pp. 1088-1101).</span>
+
+<span class="sd">    Eldeberky, Y. and Madsen, P.A., 1999. Deterministic and stochastic evolution</span>
+<span class="sd">    equations for fully dispersive and weakly nonlinear waves. Coastal Engineering,</span>
+<span class="sd">    38(1), pp.1-24.</span>
+
+<span class="sd">    Doering, J.C. and Bowen, A.J., 1995. Parametrization of orbital velocity</span>
+<span class="sd">    asymmetries of shoaling and breaking waves using bispectral analysis. Coastal</span>
+<span class="sd">    engineering, 26(1-2), pp.15-33.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import ELDEBERKY</span>
+
+<span class="sd">        biphase = ELDEBERKY()</span>
+<span class="sd">        print(biphase.render())</span>
+<span class="sd">        biphase = ELDEBERKY(urcrit=0.63)</span>
+<span class="sd">        print(biphase.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;eldeberky&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;eldeberky&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">urcrit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;The critical Ursell number appearing in the parametrization. Note: the &quot;</span>
+            <span class="s2">&quot;value of `urcrit` is setted by Eldeberky (1996) at 0.2 based on a &quot;</span>
+            <span class="s2">&quot;laboratory experiment, whereas Doering and Bowen (1995) employed the &quot;</span>
+            <span class="s2">&quot;value of 0.63 based on the field experiment data (SWAN default: 0.63)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="ELDEBERKY.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.ELDEBERKY.html#rompy.swan.subcomponents.physics.ELDEBERKY.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;BIPHASE ELDEBERKY&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">urcrit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; urcrit=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">urcrit</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DEWIT">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.DEWIT.html#rompy.swan.subcomponents.physics.DEWIT">[docs]</a>
+<span class="k">class</span> <span class="nc">DEWIT</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Biphase of De Wit (2022).</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        BIPHASE DEWIT [lpar]</span>
+
+<span class="sd">    Biphase parameterization based on bed slope and peak period of De Wit (2022).</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    De Wit, F.P., 2022. Wave shape prediction in complex coastal systems (Doctoral</span>
+<span class="sd">    dissertation, PhD. thesis. Delft University of Technology. https://repository.</span>
+<span class="sd">    tudelft. nl/islandora/object/uuid% 3A0fb850a4-4294-4181-9d74-857de21265c2).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import DEWIT</span>
+
+<span class="sd">        biphase = DEWIT()</span>
+<span class="sd">        print(biphase.render())</span>
+<span class="sd">        biphase = DEWIT(lpar=0.0)</span>
+<span class="sd">        print(biphase.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dewit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;dewit&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">lpar</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Scales spatial averaging of the De Wit&#39;s biphase in terms of a multiple &quot;</span>
+            <span class="s2">&quot;of peak wave length of the incident wave field. Note: `lpar` = 0` means &quot;</span>
+            <span class="s2">&quot;no averaging (SWAN default: 0)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="DEWIT.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.DEWIT.html#rompy.swan.subcomponents.physics.DEWIT.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;BIPHASE DEWIT&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lpar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; lpar=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lpar</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<span class="c1"># =====================================================================================</span>
+<span class="c1"># Transmission and reflection</span>
+<span class="c1"># =====================================================================================</span>
+<div class="viewcode-block" id="TRANSM">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.TRANSM.html#rompy.swan.subcomponents.physics.TRANSM">[docs]</a>
+<span class="k">class</span> <span class="nc">TRANSM</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Constant transmission coefficient.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        TRANSM [trcoef]</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import TRANSM</span>
+
+<span class="sd">        transm = TRANSM()</span>
+<span class="sd">        print(transm.render())</span>
+<span class="sd">        transm = TRANSM(trcoef=0.5)</span>
+<span class="sd">        print(transm.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;transm&quot;</span><span class="p">,</span> <span class="s2">&quot;TRANSM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;transm&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">trcoef</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Constant transmission coefficient (ratio of transmitted over incoming &quot;</span>
+            <span class="s2">&quot;significant wave height) (SWAN default: 0.0) (no transmission = complete &quot;</span>
+            <span class="s2">&quot;blockage)&quot;</span>
+        <span class="p">),</span>
+        <span class="n">ge</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">le</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="TRANSM.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.TRANSM.html#rompy.swan.subcomponents.physics.TRANSM.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;TRANSM&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trcoef</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; trcoef=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">trcoef</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TRANS1D">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS1D.html#rompy.swan.subcomponents.physics.TRANS1D">[docs]</a>
+<span class="k">class</span> <span class="nc">TRANS1D</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Frequency dependent transmission.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        TRANS1D &lt; [trcoef] &gt;</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import TRANS1D</span>
+
+<span class="sd">        transm = TRANS1D(trcoef=[0.0, 0.0, 0.2, 0.5, 0.2, 0.0, 0.0])</span>
+<span class="sd">        print(transm.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;trans1d&quot;</span><span class="p">,</span> <span class="s2">&quot;TRANS1D&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;trans1d&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">trcoef</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Transmission coefficient (ratio of transmitted over incoming significant &quot;</span>
+            <span class="s2">&quot;wave height) per frequency. The number of these transmission values must &quot;</span>
+            <span class="s2">&quot;be equal to the number of frequencies, i.e. `msc` + 1&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="TRANS1D.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS1D.html#rompy.swan.subcomponents.physics.TRANS1D.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;TRANS1D </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">trcoef</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TRANS2D">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS2D.html#rompy.swan.subcomponents.physics.TRANS2D">[docs]</a>
+<span class="k">class</span> <span class="nc">TRANS2D</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Frequency-direction dependent transmission.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        TRANS2D &lt; [trcoef] &gt;</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import TRANS2D</span>
+
+<span class="sd">        trcoef = np.array([[0.0, 0.0], [0.1, 0.1], [0.2, 0.2]])</span>
+<span class="sd">        transm = TRANS2D(trcoef=trcoef)</span>
+<span class="sd">        print(transm.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;trans2d&quot;</span><span class="p">,</span> <span class="s2">&quot;TRANS2D&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;trans2d&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">trcoef</span><span class="p">:</span> <span class="n">Np2DArray</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Transmission coefficient (ratio of transmitted over incoming significant &quot;</span>
+            <span class="s2">&quot;wave height) per frequency and direction, rows represent directions and &quot;</span>
+            <span class="s2">&quot;columns represent frequencies&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="TRANS2D.constrained_0_1">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS2D.html#rompy.swan.subcomponents.physics.TRANS2D.constrained_0_1">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;trcoef&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">constrained_0_1</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure all directions have the same number of frequencies.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">value</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transmission coefficients must be between 0.0 and 1.0&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="TRANS2D.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS2D.html#rompy.swan.subcomponents.physics.TRANS2D.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;TRANS2D&quot;</span>
+        <span class="k">for</span> <span class="n">coef</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trcoef</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; &amp;</span><span class="se">\n\t</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">coef</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">repr</span><span class="si">}</span><span class="s2"> &amp;</span><span class="se">\n\t</span><span class="s2">&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="GODA">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.GODA.html#rompy.swan.subcomponents.physics.GODA">[docs]</a>
+<span class="k">class</span> <span class="nc">GODA</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;DAM transmission of Goda/Seelig (1979).</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        DAM GODA [hgt] [alpha] [beta]</span>
+
+<span class="sd">    This option specified transmission coefficients dependent on the incident wave</span>
+<span class="sd">    conditions at the obstacle and on the obstacle height (which may be submerged).</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Goda, Y. and Suzuki, Y., 1976. Estimation of incident and reflected waves in random</span>
+<span class="sd">    wave experiments. In Coastal Engineering 1976 (pp. 828-845).</span>
+
+<span class="sd">    Seelig, W.N., 1979. Effects of breakwaters on waves: Laboratory test of wave</span>
+<span class="sd">    transmission by overtopping. In Proc. Conf. Coastal Structures, 1979</span>
+<span class="sd">    (Vol. 79, No. 2, pp. 941-961).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import GODA</span>
+
+<span class="sd">        transm = GODA(hgt=3.0)</span>
+<span class="sd">        print(transm.render())</span>
+<span class="sd">        transm = GODA(hgt=3.0, alpha=2.6, beta=0.15)</span>
+<span class="sd">        print(transm.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;goda&quot;</span><span class="p">,</span> <span class="s2">&quot;GODA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;goda&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">hgt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;The elevation of the top of the obstacle above reference level (same &quot;</span>
+            <span class="s2">&quot;reference level as for bottom etc.); use a negative value if the top is &quot;</span>
+            <span class="s2">&quot;below that reference level&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">alpha</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;coefficient determining the transmission coefficient for Goda&#39;s &quot;</span>
+            <span class="s2">&quot;transmission formula (SWAN default: 2.6)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">beta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Another coefficient determining the transmission coefficient for Goda&#39;s &quot;</span>
+            <span class="s2">&quot;transmission formula (SWAN default: 0.15)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="GODA.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.GODA.html#rompy.swan.subcomponents.physics.GODA.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DAM </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> hgt=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hgt</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; alpha=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; beta=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DANGREMOND">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.DANGREMOND.html#rompy.swan.subcomponents.physics.DANGREMOND">[docs]</a>
+<span class="k">class</span> <span class="nc">DANGREMOND</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;DAM transmission of d&#39;Angremond et al. (1996).</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        DAM DANGREMOND [hgt] [slope] [Bk]</span>
+
+<span class="sd">    This option specifies transmission coefficients dependent on the incident wave</span>
+<span class="sd">    conditions at the obstacle and on the obstacle height (which may be submerged).</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d&#39;Angremond, K., Van Der Meer, J.W. and De Jong, R.J., 1996. Wave transmission at</span>
+<span class="sd">    low-crested structures. In Coastal Engineering 1996 (pp. 2418-2427).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import DANGREMOND</span>
+
+<span class="sd">        transm = DANGREMOND(hgt=3.0, slope=60, Bk=10.0)</span>
+<span class="sd">        print(transm.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dangremond&quot;</span><span class="p">,</span> <span class="s2">&quot;DANGREMOND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;dangremond&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">hgt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;The elevation of the top of the obstacle above reference level (same &quot;</span>
+            <span class="s2">&quot;reference level as for bottom etc.); use a negative value if the top is &quot;</span>
+            <span class="s2">&quot;below that reference level&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">slope</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The slope of the obstacle (in degrees)&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mf">90.0</span>
+    <span class="p">)</span>
+    <span class="n">Bk</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The crest width of the obstacle&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DANGREMOND.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.DANGREMOND.html#rompy.swan.subcomponents.physics.DANGREMOND.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DAM </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; hgt=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hgt</span><span class="si">}</span><span class="s2"> slope=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slope</span><span class="si">}</span><span class="s2"> Bk=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Bk</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="REFL">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.REFL.html#rompy.swan.subcomponents.physics.REFL">[docs]</a>
+<span class="k">class</span> <span class="nc">REFL</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Obstacle reflections.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        REFL [reflc]</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import REFL</span>
+
+<span class="sd">        refl = REFL()</span>
+<span class="sd">        print(refl.render())</span>
+<span class="sd">        refl = REFL(reflc=0.5)</span>
+<span class="sd">        print(refl.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;refl&quot;</span><span class="p">,</span> <span class="s2">&quot;REFL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;refl&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">reflc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Constant reflection coefficient (ratio of reflected over incoming &quot;</span>
+            <span class="s2">&quot;significant wave height) (SWAN default: 1.0)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="REFL.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.REFL.html#rompy.swan.subcomponents.physics.REFL.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;REFL&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reflc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; reflc=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">reflc</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="RSPEC">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.RSPEC.html#rompy.swan.subcomponents.physics.RSPEC">[docs]</a>
+<span class="k">class</span> <span class="nc">RSPEC</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Specular reflection.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        RSPEC</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import RSPEC</span>
+
+<span class="sd">        refl = RSPEC()</span>
+<span class="sd">        print(refl.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;rspec&quot;</span><span class="p">,</span> <span class="s2">&quot;RSPEC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;rspec&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="RSPEC.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.RSPEC.html#rompy.swan.subcomponents.physics.RSPEC.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;RSPEC&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="RDIFF">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.RDIFF.html#rompy.swan.subcomponents.physics.RDIFF">[docs]</a>
+<span class="k">class</span> <span class="nc">RDIFF</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Diffuse reflection.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        RDIFF [pown]</span>
+
+<span class="sd">    Specular reflection where incident waves are scattered over reflected direction.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import RDIFF</span>
+
+<span class="sd">        refl = RDIFF()</span>
+<span class="sd">        print(refl.render())</span>
+<span class="sd">        refl = RDIFF(pown=1.0)</span>
+<span class="sd">        print(refl.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;rdiff&quot;</span><span class="p">,</span> <span class="s2">&quot;RDIFF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;rdiff&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">pown</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Each incoming direction θ is scattered over reflected direction θ_refl &quot;</span>
+            <span class="s2">&quot;according to cos^pown(θ-θ_refl). The parameter `pown` indicates the width&quot;</span>
+            <span class="s2">&quot;of the redistribution function (SWAN default: 1.0)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="RDIFF.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.RDIFF.html#rompy.swan.subcomponents.physics.RDIFF.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;RDIFF&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pown</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; pown=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pown</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="FREEBOARD">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.FREEBOARD.html#rompy.swan.subcomponents.physics.FREEBOARD">[docs]</a>
+<span class="k">class</span> <span class="nc">FREEBOARD</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Freeboard dependent transmission and reflection.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        FREEBOARD [hgt] [gammat] [gammar] [QUAY]</span>
+
+<span class="sd">    With this option the user indicates that the fixed transmission `trcoef` and</span>
+<span class="sd">    reflection `reflc` coefficients are freeboard dependent. The freeboard dependency</span>
+<span class="sd">    has no effect on the transmission coefficient as computed using the DAM option.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See the Scientific/Technical documentation for background information on the</span>
+<span class="sd">    `gammat` and `gammar` shape parameters.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import FREEBOARD</span>
+
+<span class="sd">        freeboard = FREEBOARD(hgt=2.0)</span>
+<span class="sd">        print(freeboard.render())</span>
+<span class="sd">        freeboard = FREEBOARD(hgt=2.0, gammat=1.0, gammar=1.0, quay=True)</span>
+<span class="sd">        print(freeboard.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;freeboard&quot;</span><span class="p">,</span> <span class="s2">&quot;FREEBOARD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;freeboard&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">hgt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;The elevation of the top of the obstacle or height of the quay above the &quot;</span>
+            <span class="s2">&quot;reference level (same reference level as for the bottom). Use a negative &quot;</span>
+            <span class="s2">&quot;value if the top is below that reference level. In case `hgt` is also &quot;</span>
+            <span class="s2">&quot;specified in the DAM option, both values of `hgt` should be equal for &quot;</span>
+            <span class="s2">&quot;consistency&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">gammat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Shape parameter of relative freeboard dependency of transmission &quot;</span>
+            <span class="s2">&quot;coefficient. This parameter should be higher than zero (SWAN default 1.0)&quot;</span>
+        <span class="p">),</span>
+        <span class="n">gt</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">gammar</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Shape parameter of relative freeboard dependency of reflection &quot;</span>
+            <span class="s2">&quot;coefficient. This parameter should be higher than zero (SWAN default 1.0)&quot;</span>
+        <span class="p">),</span>
+        <span class="n">gt</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">quay</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;With this option the user indicates that the freeboard dependency of the &quot;</span>
+            <span class="s2">&quot;transmission and reflection coefficients also depends on the relative &quot;</span>
+            <span class="s2">&quot;position of an obstacle-linked grid point with respect to the position &quot;</span>
+            <span class="s2">&quot;of the obstacle line representing the edge of a quay. In case the active &quot;</span>
+            <span class="s2">&quot;grid point is on the deeper side of the obstacle, then the correction &quot;</span>
+            <span class="s2">&quot;factors are applied using the parameters `hgt`, `gammat` and `gammar`.&quot;</span>
+            <span class="s2">&quot;In case the active grid point is on the shallower side of the obstacle, &quot;</span>
+            <span class="s2">&quot;the reflection coefficient is set to 0 and the transmission coefficient &quot;</span>
+            <span class="s2">&quot;to 1.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="FREEBOARD.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.FREEBOARD.html#rompy.swan.subcomponents.physics.FREEBOARD.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;FREEBOARD&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hgt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; hgt=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hgt</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gammat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; gammat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gammat</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gammar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; gammar=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gammar</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">quay</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="s2">&quot; QUAY&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="LINE">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.LINE.html#rompy.swan.subcomponents.physics.LINE">[docs]</a>
+<span class="k">class</span> <span class="nc">LINE</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Line of points to define obstacle location.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        LINE &lt; [xp] [yp] &gt;</span>
+
+<span class="sd">    With this option the user indicates that the fixed transmission `trcoef` and</span>
+<span class="sd">    reflection `reflc` coefficients are freeboard dependent. The freeboard dependency</span>
+<span class="sd">    has no effect on the transmission coefficient as computed using the DAM option.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Points coordinates should be provided in m If Cartesian coordinates are used or in</span>
+<span class="sd">    degrees if spherical coordinates are used (see command `COORD`). At least two</span>
+<span class="sd">    corner points must be provided.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        @suppress</span>
+<span class="sd">        from rompy.swan.subcomponents.physics import LINE</span>
+
+<span class="sd">        line = LINE(xp=[174.1, 174.2, 174.3], yp=[-39.1, -39.1, -39.1])</span>
+<span class="sd">        print(line.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="s2">&quot;LINE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">xp</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The x-coordinates of the points defining the line&quot;</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="n">yp</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The y-coordinates of the points defining the line&quot;</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="LINE.check_length">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.LINE.html#rompy.swan.subcomponents.physics.LINE.check_length">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LINE&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the length of xp and yp are the same.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xp</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yp</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;xp and yp must be the same length&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="LINE.cmd">
+<a class="viewcode-back" href="../../../../subcomponents/_generated/rompy.swan.subcomponents.physics.LINE.html#rompy.swan.subcomponents.physics.LINE.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;LINE&quot;</span>
+        <span class="k">for</span> <span class="n">xp</span><span class="p">,</span> <span class="n">yp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yp</span><span class="p">):</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">xp</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">yp</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

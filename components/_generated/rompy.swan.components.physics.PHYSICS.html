@@ -1,0 +1,844 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>rompy.swan.components.physics.PHYSICS &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'components/_generated/rompy.swan.components.physics.PHYSICS';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components.html">Model Components</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">rompy.swan.components.physics.PHYSICS</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="rompy-swan-components-physics-physics">
+<h1>rompy.swan.components.physics.PHYSICS<a class="headerlink" href="#rompy-swan-components-physics-physics" title="Link to this heading">#</a></h1>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.components.physics.</span></span><span class="sig-name descname"><span class="pre">PHYSICS</span></span><a class="reference internal" href="../../_modules/rompy/swan/components/physics.html#PHYSICS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS" title="Link to this definition">#</a></dt>
+<dd><p>Physics group component.</p>
+<p>The physics group component is a convenience to allow specifying several individual
+components in a single command and check for consistency between them.</p>
+<section id="exemples">
+<h2>Exemples<a class="headerlink" href="#exemples" title="Link to this heading">#</a></h2>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="n">gen</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;gen3&quot;</span><span class="p">,</span> <span class="s2">&quot;source_terms&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;komen&quot;</span><span class="p">}}</span>
+
+<span class="gp">In [2]: </span><span class="n">phys</span> <span class="o">=</span> <span class="n">PHYSICS</span><span class="p">(</span><span class="n">gen</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
+
+<span class="gp">In [3]: </span><span class="nb">print</span><span class="p">(</span><span class="n">phys</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">GEN3 KOMEN DRAG WU</span>
+
+<span class="gp">In [4]: </span><span class="n">phys</span> <span class="o">=</span> <span class="n">PHYSICS</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">gen</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;gen3&quot;</span><span class="p">,</span> <span class="n">source_terms</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;st6c1&quot;</span><span class="p">}),</span>
+<span class="gp">   ...: </span>    <span class="n">negatinp</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;negatinp&quot;</span><span class="p">,</span> <span class="s2">&quot;rdcoef&quot;</span><span class="p">:</span> <span class="mf">0.04</span><span class="p">},</span>
+<span class="gp">   ...: </span>    <span class="n">sswell</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;zieger&quot;</span><span class="p">},</span>
+<span class="gp">   ...: </span>    <span class="n">breaking</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="mf">0.73</span><span class="p">},</span>
+<span class="gp">   ...: </span>    <span class="n">friction</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;jonswap&quot;</span><span class="p">,</span> <span class="s2">&quot;cfjon&quot;</span><span class="p">:</span> <span class="mf">0.038</span><span class="p">},</span>
+<span class="gp">   ...: </span><span class="p">)</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [5]: </span><span class="nb">print</span><span class="p">(</span><span class="n">phys</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">GEN3 ST6 a1sds=4.7e-07 a2sds=6.6e-06 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=28.0 AGROW</span>
+<span class="go">SSWELL ZIEGER</span>
+<span class="go">NEGATINP rdcoef=0.04</span>
+<span class="go">BREAKING CONSTANT alpha=1.0 gamma=0.73</span>
+<span class="go">FRICTION JONSWAP CONSTANT cfjon=0.038</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.bragg" title="rompy.swan.components.physics.PHYSICS.bragg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bragg</span> <span class="pre">(rompy.swan.components.physics.BRAGG</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.BRAGG_FT</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.BRAGG_FILE</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.breaking" title="rompy.swan.components.physics.PHYSICS.breaking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">breaking</span> <span class="pre">(rompy.swan.components.physics.BREAKING_CONSTANT</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.BREAKING_BKD</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.deactivate" title="rompy.swan.components.physics.PHYSICS.deactivate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deactivate</span> <span class="pre">(rompy.swan.components.physics.DEACTIVATE</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.diffraction" title="rompy.swan.components.physics.PHYSICS.diffraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffraction</span> <span class="pre">(rompy.swan.components.physics.DIFFRACTION</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.friction" title="rompy.swan.components.physics.PHYSICS.friction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friction</span> <span class="pre">(rompy.swan.components.physics.FRICTION_JONSWAP</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.FRICTION_COLLINS</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.FRICTION_MADSEN</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.FRICTION_RIPPLES</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.gen" title="rompy.swan.components.physics.PHYSICS.gen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen</span> <span class="pre">(rompy.swan.components.physics.GEN1</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.GEN2</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.GEN3</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.limiter" title="rompy.swan.components.physics.PHYSICS.limiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">limiter</span> <span class="pre">(rompy.swan.components.physics.LIMITER</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.model_type" title="rompy.swan.components.physics.PHYSICS.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['physics',</span> <span class="pre">'PHYSICS'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.mud" title="rompy.swan.components.physics.PHYSICS.mud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mud</span> <span class="pre">(rompy.swan.components.physics.MUD</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp" title="rompy.swan.components.physics.PHYSICS.negatinp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp</span> <span class="pre">(rompy.swan.components.physics.NEGATINP</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.obstacle" title="rompy.swan.components.physics.PHYSICS.obstacle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obstacle</span> <span class="pre">(rompy.swan.components.physics.OBSTACLES</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.quadrupl" title="rompy.swan.components.physics.PHYSICS.quadrupl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quadrupl</span> <span class="pre">(rompy.swan.components.physics.QUADRUPL</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.scat" title="rompy.swan.components.physics.PHYSICS.scat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scat</span> <span class="pre">(rompy.swan.components.physics.SCAT</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.setup" title="rompy.swan.components.physics.PHYSICS.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup</span> <span class="pre">(rompy.swan.components.physics.SETUP</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.sice" title="rompy.swan.components.physics.PHYSICS.sice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sice</span> <span class="pre">(rompy.swan.components.physics.SICE</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.SICE_R19</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.SICE_D15</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.SICE_M18</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.SICE_R21B</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.sswell" title="rompy.swan.components.physics.PHYSICS.sswell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sswell</span> <span class="pre">(rompy.swan.components.physics.SSWELL_ROGERS</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.SSWELL_ARDHUIN</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.SSWELL_ZIEGER</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.surfbeat" title="rompy.swan.components.physics.PHYSICS.surfbeat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surfbeat</span> <span class="pre">(rompy.swan.components.physics.SURFBEAT</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.triad" title="rompy.swan.components.physics.PHYSICS.triad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">triad</span> <span class="pre">(rompy.swan.components.physics.TRIAD</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.TRIAD_DCTA</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.TRIAD_LTA</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.TRIAD_SPB</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.turbulence" title="rompy.swan.components.physics.PHYSICS.turbulence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">turbulence</span> <span class="pre">(rompy.swan.components.physics.TURBULENCE</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.vegetation" title="rompy.swan.components.physics.PHYSICS.vegetation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vegetation</span> <span class="pre">(rompy.swan.components.physics.VEGETATION</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.wcapping" title="rompy.swan.components.physics.PHYSICS.wcapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wcapping</span> <span class="pre">(rompy.swan.components.physics.WCAPPING_KOMEN</span> <span class="pre">|</span> <span class="pre">rompy.swan.components.physics.WCAPPING_AB</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.bragg">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bragg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.BRAGG.html#rompy.swan.components.physics.BRAGG" title="rompy.swan.components.physics.BRAGG"><span class="pre">BRAGG</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.BRAGG_FT.html#rompy.swan.components.physics.BRAGG_FT" title="rompy.swan.components.physics.BRAGG_FT"><span class="pre">BRAGG_FT</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.BRAGG_FILE.html#rompy.swan.components.physics.BRAGG_FILE" title="rompy.swan.components.physics.BRAGG_FILE"><span class="pre">BRAGG_FILE</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.bragg" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.breaking">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">breaking</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.BREAKING_CONSTANT.html#rompy.swan.components.physics.BREAKING_CONSTANT" title="rompy.swan.components.physics.BREAKING_CONSTANT"><span class="pre">BREAKING_CONSTANT</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.BREAKING_BKD.html#rompy.swan.components.physics.BREAKING_BKD" title="rompy.swan.components.physics.BREAKING_BKD"><span class="pre">BREAKING_BKD</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.breaking" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.deactivate">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deactivate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.DEACTIVATE.html#rompy.swan.components.physics.DEACTIVATE" title="rompy.swan.components.physics.DEACTIVATE"><span class="pre">DEACTIVATE</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.deactivate" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.diffraction">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diffraction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.DIFFRACTION.html#rompy.swan.components.physics.DIFFRACTION" title="rompy.swan.components.physics.DIFFRACTION"><span class="pre">DIFFRACTION</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.diffraction" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.friction">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">friction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.FRICTION_JONSWAP.html#rompy.swan.components.physics.FRICTION_JONSWAP" title="rompy.swan.components.physics.FRICTION_JONSWAP"><span class="pre">FRICTION_JONSWAP</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.FRICTION_COLLINS.html#rompy.swan.components.physics.FRICTION_COLLINS" title="rompy.swan.components.physics.FRICTION_COLLINS"><span class="pre">FRICTION_COLLINS</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.FRICTION_MADSEN.html#rompy.swan.components.physics.FRICTION_MADSEN" title="rompy.swan.components.physics.FRICTION_MADSEN"><span class="pre">FRICTION_MADSEN</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.FRICTION_RIPPLES.html#rompy.swan.components.physics.FRICTION_RIPPLES" title="rompy.swan.components.physics.FRICTION_RIPPLES"><span class="pre">FRICTION_RIPPLES</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.friction" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.gen">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.GEN1.html#rompy.swan.components.physics.GEN1" title="rompy.swan.components.physics.GEN1"><span class="pre">GEN1</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.GEN2.html#rompy.swan.components.physics.GEN2" title="rompy.swan.components.physics.GEN2"><span class="pre">GEN2</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.GEN3.html#rompy.swan.components.physics.GEN3" title="rompy.swan.components.physics.GEN3"><span class="pre">GEN3</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.gen" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.limiter">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">limiter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.LIMITER.html#rompy.swan.components.physics.LIMITER" title="rompy.swan.components.physics.LIMITER"><span class="pre">LIMITER</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.limiter" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.model_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'physics'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'PHYSICS'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'physics'</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.model_type" title="Link to this definition">#</a></dt>
+<dd><p>Model type discriminator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.mud">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mud</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.MUD.html#rompy.swan.components.physics.MUD" title="rompy.swan.components.physics.MUD"><span class="pre">MUD</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.mud" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.negatinp">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">negatinp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.NEGATINP.html#rompy.swan.components.physics.NEGATINP" title="rompy.swan.components.physics.NEGATINP"><span class="pre">NEGATINP</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.negatinp" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.obstacle">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">obstacle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.OBSTACLES.html#rompy.swan.components.physics.OBSTACLES" title="rompy.swan.components.physics.OBSTACLES"><span class="pre">OBSTACLES</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.obstacle" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.quadrupl">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">quadrupl</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.QUADRUPL.html#rompy.swan.components.physics.QUADRUPL" title="rompy.swan.components.physics.QUADRUPL"><span class="pre">QUADRUPL</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.quadrupl" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.scat">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scat</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SCAT.html#rompy.swan.components.physics.SCAT" title="rompy.swan.components.physics.SCAT"><span class="pre">SCAT</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.scat" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.setup">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SETUP.html#rompy.swan.components.physics.SETUP" title="rompy.swan.components.physics.SETUP"><span class="pre">SETUP</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.setup" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.sice">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sice</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SICE.html#rompy.swan.components.physics.SICE" title="rompy.swan.components.physics.SICE"><span class="pre">SICE</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SICE_R19.html#rompy.swan.components.physics.SICE_R19" title="rompy.swan.components.physics.SICE_R19"><span class="pre">SICE_R19</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SICE_D15.html#rompy.swan.components.physics.SICE_D15" title="rompy.swan.components.physics.SICE_D15"><span class="pre">SICE_D15</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SICE_M18.html#rompy.swan.components.physics.SICE_M18" title="rompy.swan.components.physics.SICE_M18"><span class="pre">SICE_M18</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SICE_R21B.html#rompy.swan.components.physics.SICE_R21B" title="rompy.swan.components.physics.SICE_R21B"><span class="pre">SICE_R21B</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.sice" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.sswell">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sswell</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SSWELL_ROGERS.html#rompy.swan.components.physics.SSWELL_ROGERS" title="rompy.swan.components.physics.SSWELL_ROGERS"><span class="pre">SSWELL_ROGERS</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SSWELL_ARDHUIN.html#rompy.swan.components.physics.SSWELL_ARDHUIN" title="rompy.swan.components.physics.SSWELL_ARDHUIN"><span class="pre">SSWELL_ARDHUIN</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SSWELL_ZIEGER.html#rompy.swan.components.physics.SSWELL_ZIEGER" title="rompy.swan.components.physics.SSWELL_ZIEGER"><span class="pre">SSWELL_ZIEGER</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.sswell" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.surfbeat">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">surfbeat</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.SURFBEAT.html#rompy.swan.components.physics.SURFBEAT" title="rompy.swan.components.physics.SURFBEAT"><span class="pre">SURFBEAT</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.surfbeat" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.triad">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">triad</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD" title="rompy.swan.components.physics.TRIAD"><span class="pre">TRIAD</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.TRIAD_DCTA.html#rompy.swan.components.physics.TRIAD_DCTA" title="rompy.swan.components.physics.TRIAD_DCTA"><span class="pre">TRIAD_DCTA</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.TRIAD_LTA.html#rompy.swan.components.physics.TRIAD_LTA" title="rompy.swan.components.physics.TRIAD_LTA"><span class="pre">TRIAD_LTA</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.TRIAD_SPB.html#rompy.swan.components.physics.TRIAD_SPB" title="rompy.swan.components.physics.TRIAD_SPB"><span class="pre">TRIAD_SPB</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.triad" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.turbulence">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">turbulence</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.TURBULENCE.html#rompy.swan.components.physics.TURBULENCE" title="rompy.swan.components.physics.TURBULENCE"><span class="pre">TURBULENCE</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.turbulence" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.vegetation">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vegetation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION" title="rompy.swan.components.physics.VEGETATION"><span class="pre">VEGETATION</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.vegetation" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.wcapping">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wcapping</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.WCAPPING_KOMEN.html#rompy.swan.components.physics.WCAPPING_KOMEN" title="rompy.swan.components.physics.WCAPPING_KOMEN"><span class="pre">WCAPPING_KOMEN</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.components.physics.WCAPPING_AB.html#rompy.swan.components.physics.WCAPPING_AB" title="rompy.swan.components.physics.WCAPPING_AB"><span class="pre">WCAPPING_AB</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.wcapping" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">negatinp_only_with_zieger</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.cmd">
+<span class="sig-name descname"><span class="pre">cmd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/swan/components/physics.html#PHYSICS.cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.cmd" title="Link to this definition">#</a></dt>
+<dd><p>Return the string or list of strings to render the component to the CMD.</p>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">negatinp_only_with_zieger</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../../_modules/rompy/swan/components/physics.html#PHYSICS.negatinp_only_with_zieger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger" title="Link to this definition">#</a></dt>
+<dd><p>Log a warning if NEGATINP is used with a non-ZIEGER SSWELL.</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS"><code class="docutils literal notranslate"><span class="pre">PHYSICS</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.bragg"><code class="docutils literal notranslate"><span class="pre">PHYSICS.bragg</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.breaking"><code class="docutils literal notranslate"><span class="pre">PHYSICS.breaking</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.deactivate"><code class="docutils literal notranslate"><span class="pre">PHYSICS.deactivate</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.diffraction"><code class="docutils literal notranslate"><span class="pre">PHYSICS.diffraction</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.friction"><code class="docutils literal notranslate"><span class="pre">PHYSICS.friction</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.gen"><code class="docutils literal notranslate"><span class="pre">PHYSICS.gen</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.limiter"><code class="docutils literal notranslate"><span class="pre">PHYSICS.limiter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.model_type"><code class="docutils literal notranslate"><span class="pre">PHYSICS.model_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.mud"><code class="docutils literal notranslate"><span class="pre">PHYSICS.mud</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.negatinp"><code class="docutils literal notranslate"><span class="pre">PHYSICS.negatinp</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.obstacle"><code class="docutils literal notranslate"><span class="pre">PHYSICS.obstacle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.quadrupl"><code class="docutils literal notranslate"><span class="pre">PHYSICS.quadrupl</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.scat"><code class="docutils literal notranslate"><span class="pre">PHYSICS.scat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.setup"><code class="docutils literal notranslate"><span class="pre">PHYSICS.setup</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.sice"><code class="docutils literal notranslate"><span class="pre">PHYSICS.sice</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.sswell"><code class="docutils literal notranslate"><span class="pre">PHYSICS.sswell</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.surfbeat"><code class="docutils literal notranslate"><span class="pre">PHYSICS.surfbeat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.triad"><code class="docutils literal notranslate"><span class="pre">PHYSICS.triad</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.turbulence"><code class="docutils literal notranslate"><span class="pre">PHYSICS.turbulence</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.vegetation"><code class="docutils literal notranslate"><span class="pre">PHYSICS.vegetation</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.wcapping"><code class="docutils literal notranslate"><span class="pre">PHYSICS.wcapping</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.cmd"><code class="docutils literal notranslate"><span class="pre">PHYSICS.cmd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.PHYSICS.negatinp_only_with_zieger"><code class="docutils literal notranslate"><span class="pre">PHYSICS.negatinp_only_with_zieger</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/components/_generated/rompy.swan.components.physics.PHYSICS.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

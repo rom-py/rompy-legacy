@@ -1,0 +1,1991 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Basic demonstration &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/demo';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Templates demonstration" href="templates_demo.html" />
+    <link rel="prev" title="Demonstration notebooks" href="../demo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API  Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components.html">Model Components</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../demo.html" class="nav-link">Demonstration notebooks</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Basic demonstration</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="Basic-demonstration">
+<h1>Basic demonstration<a class="headerlink" href="#Basic-demonstration" title="Link to this heading">#</a></h1>
+<p>This notebook it intended to demonstrate some of the basic concepts in the new version of of the rompy code</p>
+<ul class="simple">
+<li><p>Separation of ‘runtime’ from ‘config’ - more on this later</p></li>
+<li><p>Modular</p>
+<ul>
+<li><p>There are a number of core objects</p></li>
+</ul>
+</li>
+<li><p>Pydantic throughout</p>
+<ul>
+<li><p>Strong typing</p></li>
+<li><p>Clearly defined APIs</p></li>
+<li><p>Built in validators</p></li>
+</ul>
+</li>
+<li><p>Declaritive</p>
+<ul>
+<li><p>The entire configuration to run the model is passed at intantiation.</p></li>
+<li><p>The core wrapper is a pycallable, making it play nicely with downstream workflow packages (e.g. airflow)</p></li>
+<li><p>Can still be run proceduraly.</p></li>
+</ul>
+</li>
+<li><p>Separation of intake components.</p>
+<ul>
+<li><p>Common filters now available as a separate import.</p></li>
+<li><p>Data is provdided to the wrapper as large lazy datasets, and data selection is done based on runtime period and grid spatial extents</p></li>
+<li><p>Substantially reduced the fricton to hook up a different dataset</p></li>
+<li><p>Filters are still available to use in intake drivers where appropriate (e.g. where constructing nowcasts from many forecasts becomes memory prohibitive to do lazily)</p></li>
+</ul>
+</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up notebook</span>
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import some core objects</span>
+<span class="kn">from</span> <span class="nn">rompy</span> <span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">from</span> <span class="nn">rompy.core</span> <span class="kn">import</span> <span class="n">TimeRange</span><span class="p">,</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">BaseGrid</span><span class="p">,</span> <span class="n">RegularGrid</span><span class="p">,</span> <span class="n">DatasetXarray</span>
+<span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">SwanConfig</span><span class="p">,</span> <span class="n">SwanDataGrid</span><span class="p">,</span> <span class="n">SwanGrid</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.data</span> <span class="kn">import</span> <span class="n">SwanDataGrid</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The highest level object is the ModelRun which is a generic class to run any model type.</span>
+<span class="c1"># Lets start by looking at the ModelRun api</span>
+
+ModelRun<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+ModelRun<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    run_id<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;run_id&#39;</span><span class="ansi-blue-fg">,</span>
+    period<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">.</span>TimeRange <span class="ansi-blue-fg">=</span> TimeRange<span class="ansi-blue-fg">(</span>start<span class="ansi-blue-fg">=</span>datetime<span class="ansi-blue-fg">.</span>datetime<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">2020</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">21</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> end<span class="ansi-blue-fg">=</span>datetime<span class="ansi-blue-fg">.</span>datetime<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">2020</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">24</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> duration<span class="ansi-blue-fg">=</span>datetime<span class="ansi-blue-fg">.</span>timedelta<span class="ansi-blue-fg">(</span>days<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> interval<span class="ansi-blue-fg">=</span>datetime<span class="ansi-blue-fg">.</span>timedelta<span class="ansi-blue-fg">(</span>seconds<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">900</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> include_end<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    output_dir<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;./simulations&#39;</span><span class="ansi-blue-fg">,</span>
+    config<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>BaseConfig <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>SwanConfig <span class="ansi-blue-fg">=</span> BaseConfig<span class="ansi-blue-fg">(</span>model_type<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;base&#39;</span><span class="ansi-blue-fg">,</span> template<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;/source/rompy/rompy/templates/base&#39;</span><span class="ansi-blue-fg">,</span> checkout<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;main&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+A model run.
+
+It is intented to be model agnostic.
+It deals primarily with how the model is to be run, i.e. the period of the run
+and where the output is going. The actual configuration of the run is
+provided by the config object.
+
+Further explanation is given in the rompy.core.Baseconfig docstring.
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/model.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># So we can see that the ModelRun takes an id, a time run period, an output directort and a model configuration.</span>
+ <span class="c1"># TimeRange is a simple class that calculates run dates based on combinations of start, end, and interval.</span>
+
+TimeRange<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+TimeRange<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    start<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>datetime<span class="ansi-blue-fg">.</span>datetime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    end<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>datetime<span class="ansi-blue-fg">.</span>datetime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    duration<span class="ansi-blue-fg">:</span> Union<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">,</span> datetime<span class="ansi-blue-fg">.</span>timedelta<span class="ansi-blue-fg">,</span> NoneType<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    interval<span class="ansi-blue-fg">:</span> Union<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">,</span> datetime<span class="ansi-blue-fg">.</span>timedelta<span class="ansi-blue-fg">,</span> NoneType<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;1h&#39;</span><span class="ansi-blue-fg">,</span>
+    include_end<span class="ansi-blue-fg">:</span> bool <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">True</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+A time range object
+
+Examples
+--------
+&gt;&gt;&gt; from rompy import TimeRange
+&gt;&gt;&gt; tr = TimeRange(start=&#34;2020-01-01&#34;, end=&#34;2020-01-02&#34;)
+&gt;&gt;&gt; tr
+TimeRange(start=datetime.datetime(2020, 1, 1, 0, 0), end=datetime.datetime(2020, 1, 2, 0, 0), duration=None, interval=None, include_end=True)
+&gt;&gt;&gt; tr = TimeRange(start=&#34;2020-01-01&#34;, duration=&#34;1d&#34;)
+&gt;&gt;&gt; tr
+TimeRange(start=datetime.datetime(2020, 1, 1, 0, 0), end=datetime.datetime(2020, 1, 2, 0, 0), duration=timedelta(days=1), interval=None, include_end=True)
+&gt;&gt;&gt; tr = TimeRange(start=&#34;2020-01-01&#34;, duration=&#34;1d&#34;, interval=&#34;1h&#34;)
+&gt;&gt;&gt; tr
+TimeRange(start=datetime.datetime(2020, 1, 1, 0, 0), end=None, duration=timedelta(days=1), interval=timedelta(hours=1), include_end=True)
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/core/time.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The model configuration is a generic object that can be used to configure any model type.</span>
+
+<span class="c1"># The simplest model configuration is the BaseConfig on which all model configurations are based.</span>
+
+BaseConfig<span class="o">??</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+BaseConfig<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    model_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;base&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;base&#39;</span><span class="ansi-blue-fg">,</span>
+    template<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;/source/rompy/rompy/templates/base&#39;</span><span class="ansi-blue-fg">,</span>
+    checkout<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;main&#39;</span><span class="ansi-blue-fg">,</span>
+    <span class="ansi-blue-fg">**</span>extra_data<span class="ansi-blue-fg">:</span> Any<span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Source:</span>
+<span class="ansi-green-fg">class</span> BaseConfig<span class="ansi-blue-fg">(</span>RompyBaseModel<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+    <span class="ansi-blue-fg">&#34;&#34;&#34;Base class for model templates.</span>
+
+<span class="ansi-blue-fg">    The template class provides the object that is used to set up the model configuration.</span>
+<span class="ansi-blue-fg">    When implemented for a given model, can move along a scale of complexity</span>
+<span class="ansi-blue-fg">    to suit the application.</span>
+
+<span class="ansi-blue-fg">    In its most basic form, as implemented in this base object, it consists of path to a cookiecutter template</span>
+<span class="ansi-blue-fg">    with the class providing the context for the {{config}} values in that template. Note that any</span>
+<span class="ansi-blue-fg">    {{runtime}} values are filled from the ModelRun object.</span>
+
+<span class="ansi-blue-fg">    If the template is a git repo, the checkout parameter can be used to specify a branch or tag and it</span>
+<span class="ansi-blue-fg">    will be cloned and used.</span>
+
+<span class="ansi-blue-fg">    If the object is callable, it will be colled prior to rendering the template. This mechanism can be</span>
+<span class="ansi-blue-fg">    used to perform tasks such as fetching exteral data, or providing additional context to the template</span>
+<span class="ansi-blue-fg">    beyond the arguments provided by the user..</span>
+<span class="ansi-blue-fg">    &#34;&#34;&#34;</span>
+
+    model_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;base&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;base&#34;</span>
+    template<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> Field<span class="ansi-blue-fg">(</span>
+        description<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;The path to the model template&#34;</span><span class="ansi-blue-fg">,</span>
+        default<span class="ansi-blue-fg">=</span>DEFAULT_TEMPLATE<span class="ansi-blue-fg">,</span>
+    <span class="ansi-blue-fg">)</span>
+    checkout<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> Field<span class="ansi-blue-fg">(</span>
+        description<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;The git branch to use if the template is a git repo&#34;</span><span class="ansi-blue-fg">,</span>
+        default<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;main&#34;</span><span class="ansi-blue-fg">,</span>
+    <span class="ansi-blue-fg">)</span>
+
+    <span class="ansi-green-fg">class</span> Config<span class="ansi-blue-fg">:</span>
+        extra <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;allow&#34;</span>
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/core/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>     SwanConfig, SwanConfigComponents
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># So a configuraton is just a dictionary of key value pairs coupled with a path to a template to used to render these arguments (more on this later).</span>
+<span class="c1"># If the path to the template is a local file, this is used directly, if it points to a remote repository, that will be cloned locally using the</span>
+<span class="c1"># cookiecutter mechanics and the path to the local copy will be used.</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before we start to look at the derived swan classes, lets look at a couple of other important base classes.</span>
+<span class="c1"># First, a generic model grid</span>
+BaseGrid<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+BaseGrid<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    x<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    y<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    grid_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;base&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;base&#39;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+An object which provides an abstract representation of a grid in some geographic space
+
+This is the base class for all Grid objects. The minimum representation of a grid are two
+NumPy array&#39;s representing the vertices or nodes of some structured or unstructured grid,
+its bounding box and a boundary polygon. No knowledge of the grid connectivity is expected.
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/core/grid.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>     RegularGrid
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Regular grids inherit from this base grid class, but can be defined by some simple paramaters due to their regular nature.</span>
+RegularGrid<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+RegularGrid<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    x<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    y<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    grid_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;regular&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;regular&#39;</span><span class="ansi-blue-fg">,</span>
+    x0<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    y0<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    rot<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span>
+    dx<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    dy<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    nx<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>int<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    ny<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>int<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+An object which provides an abstract representation of a regular grid in
+some geographic space
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/core/grid.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>     SwanGrid
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now lets look at some on the the swan specific classes that inherit from these base classes</span>
+<span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">SwanDataGrid</span><span class="p">,</span> <span class="n">SwanGrid</span><span class="p">,</span> <span class="n">SwanConfig</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Swan grid inherits from regular grid (for now) and adds some swan specific parameters such as</span>
+<span class="c1"># exc and implements swan grid inpgrid and cgrid methods</span>
+SwanGrid<span class="o">?</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanGrid<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    x<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    y<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    grid_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;REG&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;REG&#39;</span><span class="ansi-blue-fg">,</span>
+    x0<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    y0<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    rot<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span>
+    dx<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    dy<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    nx<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>int<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    ny<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>int<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    exc<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    gridfile<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">.</span>ConstrainedStrValue<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+An object which provides an abstract representation of a regular SWAN
+grid in some geographic space
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/grid.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanConfig<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanConfig<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    model_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;swan&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;swan&#39;</span><span class="ansi-blue-fg">,</span>
+    template<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;/source/rompy/rompy/templates/swan&#39;</span><span class="ansi-blue-fg">,</span>
+    checkout<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;main&#39;</span><span class="ansi-blue-fg">,</span>
+    grid<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">.</span>SwanGrid<span class="ansi-blue-fg">,</span>
+    spectral_resolution<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>SwanSpectrum <span class="ansi-blue-fg">=</span> SwanSpectrum<span class="ansi-blue-fg">(</span>fmin<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.0464</span><span class="ansi-blue-fg">,</span> fmax<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">,</span> nfreqs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">31</span><span class="ansi-blue-fg">,</span> ndirs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">36</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    forcing<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>ForcingData <span class="ansi-blue-fg">=</span> ForcingData<span class="ansi-blue-fg">(</span>bottom<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> wind<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> current<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> boundary<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    physics<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>SwanPhysics <span class="ansi-blue-fg">=</span> SwanPhysics<span class="ansi-blue-fg">(</span>friction<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;MAD&#39;</span><span class="ansi-blue-fg">,</span> friction_coeff<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    outputs<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>Outputs <span class="ansi-blue-fg">=</span> Outputs<span class="ansi-blue-fg">(</span>grid<span class="ansi-blue-fg">=</span>GridOutput<span class="ansi-blue-fg">(</span>period<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> variables<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;DEPTH&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;UBOT&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;HSIGN&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;HSWELL&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;DIR&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;TPS&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;TM01&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;WIND&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> spec<span class="ansi-blue-fg">=</span>SpecOutput<span class="ansi-blue-fg">(</span>period<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> locations<span class="ansi-blue-fg">=</span>OutputLocs
+<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    spectra_file<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;boundary.spec&#39;</span><span class="ansi-blue-fg">,</span>
+    <span class="ansi-blue-fg">**</span>extra_data<span class="ansi-blue-fg">:</span> Any<span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>      SWAN configuration
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># So we can see that the SwanConfig is a BaseConfig with some additional arguments.</span>
+<span class="c1"># These arguments are broken up into several compoents, lets examine these individually.</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.config</span> <span class="kn">import</span> <span class="n">SwanSpectrum</span><span class="p">,</span> <span class="n">ForcingData</span><span class="p">,</span> <span class="n">SwanPhysics</span><span class="p">,</span> <span class="n">Outputs</span><span class="p">,</span> <span class="n">SwanDataGrid</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanSpectrum<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanSpectrum<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    fmin<span class="ansi-blue-fg">:</span> float <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0464</span><span class="ansi-blue-fg">,</span>
+    fmax<span class="ansi-blue-fg">:</span> float <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">,</span>
+    nfreqs<span class="ansi-blue-fg">:</span> int <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">31</span><span class="ansi-blue-fg">,</span>
+    ndirs<span class="ansi-blue-fg">:</span> int <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">36</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>      SWAN Spectrum
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanDataGrid<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanDataGrid<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    id<span class="ansi-blue-fg">:</span> str<span class="ansi-blue-fg">,</span>
+    dataset<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>DatasetXarray <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>DatasetIntake<span class="ansi-blue-fg">,</span>
+    filter<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>filters<span class="ansi-blue-fg">.</span>Filter<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> Filter<span class="ansi-blue-fg">(</span>sort<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> subset<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> crop<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> timenorm<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> rename<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> derived<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    variables<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>list<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>
+    latname<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;latitude&#39;</span><span class="ansi-blue-fg">,</span>
+    lonname<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;longitude&#39;</span><span class="ansi-blue-fg">,</span>
+    timename<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;time&#39;</span><span class="ansi-blue-fg">,</span>
+    z1<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    z2<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    var<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;WIND&#39;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>      This class is used to write SWAN data from a dataset.
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/data.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanPhysics<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span> SwanPhysics<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span> friction<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;MAD&#39;</span><span class="ansi-blue-fg">,</span> friction_coeff<span class="ansi-blue-fg">:</span> float <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.1</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>      Container class represting configuraable SWAN physics options
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ForcingData<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+ForcingData<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    bottom<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    wind<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    current<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>SwanDataGrid <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    boundary<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>boundary<span class="ansi-blue-fg">.</span>DataBoundary <span class="ansi-blue-fg">|</span> <span class="ansi-green-fg">None</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>SwanGrid<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanGrid<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    x<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    y<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>pydantic_numpy<span class="ansi-blue-fg">.</span>ndarray<span class="ansi-blue-fg">.</span>PydanticNDArray<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    grid_type<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;REG&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;REG&#39;</span><span class="ansi-blue-fg">,</span>
+    x0<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    y0<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    rot<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span>
+    dx<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    dy<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    nx<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>int<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    ny<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>int<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    exc<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    gridfile<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">.</span>ConstrainedStrValue<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+An object which provides an abstract representation of a regular SWAN
+grid in some geographic space
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/grid.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lets start by intantiaing a Swan grid</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">SwanGrid</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">115.68</span><span class="p">,</span> <span class="n">y0</span><span class="o">=-</span><span class="mf">32.76</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">390</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">77</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 1000x706.373 with 1 Axes&gt;, &lt;GeoAxes: &gt;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_demo_19_1.png" src="../_images/notebooks_demo_19_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now lets look at how we might use that grid to define some data inputs</span>
+SwanDataGrid<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+SwanDataGrid<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    id<span class="ansi-blue-fg">:</span> str<span class="ansi-blue-fg">,</span>
+    dataset<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>DatasetXarray <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>DatasetIntake<span class="ansi-blue-fg">,</span>
+    filter<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>filters<span class="ansi-blue-fg">.</span>Filter<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> Filter<span class="ansi-blue-fg">(</span>sort<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> subset<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> crop<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> timenorm<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> rename<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> derived<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    variables<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>list<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>
+    latname<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;latitude&#39;</span><span class="ansi-blue-fg">,</span>
+    lonname<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;longitude&#39;</span><span class="ansi-blue-fg">,</span>
+    timename<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;time&#39;</span><span class="ansi-blue-fg">,</span>
+    z1<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    z2<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    var<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;WIND&#39;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>      This class is used to write SWAN data from a dataset.
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/data.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here we are creating some dummy data here to use as a bathymetry input</span>
+<span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">SwanDataGrid</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;simulations/test_swantemplate/datasets&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">datagrid</span> <span class="o">=</span> <span class="n">SwanGrid</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">115.68</span><span class="p">,</span> <span class="n">y0</span><span class="o">=-</span><span class="mf">32.76</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">77</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">391</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">151</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">exc</span><span class="o">=-</span><span class="mf">99.0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">nc_bathy</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">datagrid</span><span class="p">):</span>
+    <span class="c1"># touch temp netcdf file</span>
+    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span> <span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;bathy.nc&quot;</span><span class="p">)</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">bottom</span><span class="o">.</span><span class="n">bbox</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">bottom</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">bottom</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
+                <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+                <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">},</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">source</span>
+
+<span class="c1"># and same again for wind</span>
+<span class="k">def</span> <span class="nf">nc_data_source</span><span class="p">(</span><span class="n">wind_grid</span><span class="o">=</span><span class="n">datagrid</span><span class="p">):</span>
+    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span> <span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;wind_inputs.nc&quot;</span><span class="p">)</span>
+
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">bbox</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2023-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;u&quot;</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
+                <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+                <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+                    <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
+                    <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
+                <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+                <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+                    <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
+                    <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">source</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create dummy data</span>
+<span class="n">bathy_source</span> <span class="o">=</span> <span class="n">nc_bathy</span><span class="p">()</span>
+
+<span class="c1"># Intantiate a swan data object using this dummy data as input</span>
+<span class="n">bathy</span> <span class="o">=</span> <span class="n">SwanDataGrid</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">DatasetXarray</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">bathy_source</span><span class="p">),</span> <span class="n">z1</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s2">&quot;BOTTOM&quot;</span><span class="p">,</span> <span class="n">latname</span><span class="o">=</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="n">lonname</span><span class="o">=</span><span class="s2">&quot;lon&quot;</span>
+    <span class="p">)</span>
+
+<span class="c1"># Plot the full dataset</span>
+<span class="n">bathy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">model_grid</span><span class="o">=</span><span class="n">datagrid</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 800x1132.56 with 2 Axes&gt;, &lt;GeoAxes: xlabel=&#39;lon&#39;, ylabel=&#39;lat&#39;&gt;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_demo_22_1.png" src="../_images/notebooks_demo_22_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># If we run the bathy get method, this will write the data in swan format to the stage directory ready for ingestion into the model.</span>
+<span class="c1"># At the moment, this is the full dataset, but we will look at subsetting options later</span>
+<span class="c1"># Note that running this method retuns the required control file commands to read the data</span>
+<span class="c1"># from the control file</span>
+
+<span class="n">bathy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.swan.data:   Writing bottom to ./bottom.grd
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;INPGRID BOTTOM REG 113.21844490282216 -33.76 0.0 433 613 0.010000000000005116 0.00999999999999801 EXC -99.0\nREADINP BOTTOM 1.0 &#39;bottom.grd&#39; 3 FREE\n&#34;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># But instead of just using the data as is, we can use filters to subset it. There are a number of filters available.</span>
+<span class="c1"># Here we just demonstrate some hidden convenience functions which use a model grid to subset space.</span>
+
+<span class="n">bathy</span><span class="o">.</span><span class="n">_filter_grid</span><span class="p">(</span><span class="n">datagrid</span><span class="p">)</span>
+<span class="n">bathy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+<span class="n">bathy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">model_grid</span><span class="o">=</span><span class="n">datagrid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.swan.data:   Writing bottom to ./bottom.grd
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 700x1195.26 with 2 Axes&gt;, &lt;GeoAxes: xlabel=&#39;lon&#39;, ylabel=&#39;lat&#39;&gt;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_demo_24_2.png" src="../_images/notebooks_demo_24_2.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="c1"># This has now extracted only what it needs based on the grid extents.</span>
+<span class="c1"># This is what is done internally in the wrapper (in addition to a analogous time filtering function) allowing us to use lazy grids without doing any pre-filtering,</span>
+<span class="c1"># and have the wrapper use only what it needs</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Wind data works the same way. Note the control file input commands are different as it now applied to wind data</span>
+<span class="n">wind_source</span> <span class="o">=</span> <span class="n">nc_data_source</span><span class="p">()</span>
+<span class="n">wind</span> <span class="o">=</span> <span class="n">SwanDataGrid</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;wind&quot;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s2">&quot;WIND&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">DatasetXarray</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">wind_source</span><span class="p">),</span> <span class="n">z1</span><span class="o">=</span><span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">z2</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+<span class="n">wind</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.swan.data:   Writing wind to ./wind.grd
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;INPGRID WIND REG 113.21844490282216 -33.76 0.0 433 613 0.010000000000005116 0.00999999999999801 NONSTATION 20230101.000000 24.0 HR\nREADINP WIND 1 &#39;wind.grd&#39; 3 0 1 0 FREE\n&#34;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The boundary object work in a similar way but is a little more complex as it must determine points around the boundary of the model domain.</span>
+<span class="c1"># First lets have a look at the boundary object</span>
+<span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">DataBoundary</span>
+DataBoundary<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+DataBoundary<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    id<span class="ansi-blue-fg">:</span> str<span class="ansi-blue-fg">,</span>
+    dataset<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>DatasetXarray <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>DatasetIntake <span class="ansi-blue-fg">|</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>boundary<span class="ansi-blue-fg">.</span>DatasetWavespectra<span class="ansi-blue-fg">,</span>
+    filter<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>filters<span class="ansi-blue-fg">.</span>Filter<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> Filter<span class="ansi-blue-fg">(</span>sort<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> subset<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> crop<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> timenorm<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> rename<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> derived<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    variables<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>list<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>
+    latname<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;latitude&#39;</span><span class="ansi-blue-fg">,</span>
+    lonname<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;longitude&#39;</span><span class="ansi-blue-fg">,</span>
+    timename<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;time&#39;</span><span class="ansi-blue-fg">,</span>
+    spacing<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>float<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+    sel_method<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;idw&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;nearest&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;idw&#39;</span><span class="ansi-blue-fg">,</span>
+    tolerance<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>boundary<span class="ansi-blue-fg">.</span>ConstrainedFloatValue <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">,</span>
+    rectangle<span class="ansi-blue-fg">:</span> Literal<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;closed&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;open&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;closed&#39;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>
+SWAN BOUNDNEST1 NEST data class.
+
+Notes
+-----
+The `tolerance` behaves differently with sel_methods `idw` and `nearest`; in `idw`
+sites with no enough neighbours within `tolerance` are masked whereas in `nearest`
+an exception is raised (see wavespectra documentation for more details).
+
+Be aware that when using `idw` missing values will be returned for sites with less
+than 2 neighbours within `tolerance` in the original dataset. This is okay for land
+mask areas but could cause boundary issues when on an open boundary location. To
+avoid this either use `nearest` or increase `tolerance` to include more neighbours.
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/boundary.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here we use a test boundary dataset</span>
+
+<span class="c1"># Instantiate the boundary object</span>
+<span class="n">bnd</span> <span class="o">=</span> <span class="n">DataBoundary</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;bnd&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">DatasetXarray</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="s2">&quot;../tests/data/aus-20230101.nc&quot;</span><span class="p">),</span> <span class="n">latname</span><span class="o">=</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">lonname</span><span class="o">=</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">sel_method</span><span class="o">=</span><span class="s1">&#39;idw&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot the unfiltered data locations</span>
+<span class="n">bnd</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model_grid</span><span class="o">=</span><span class="n">grid</span><span class="p">)</span>
+<span class="c1">#bnd.ds</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_demo_28_0.png" src="../_images/notebooks_demo_28_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now we can filter the boundary data to the model grid. Here we just use a convenience function to plot the results of this effort</span>
+<span class="c1"># TODO - a bit more exlanation needed here</span>
+
+<span class="n">bnd</span><span class="o">.</span><span class="n">plot_boundary</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_demo_29_0.png" src="../_images/notebooks_demo_29_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Putting these together we can create a swan forcing object When used in a model run, this object will loop over all the data source, filter in time and space to match the model run,</span>
+<span class="c1"># write the data to the scratch space, and produce the required control file inputs for swan</span>
+<span class="n">forcing</span> <span class="o">=</span> <span class="n">ForcingData</span><span class="p">(</span><span class="n">wind</span><span class="o">=</span><span class="n">wind</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bathy</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="n">bnd</span><span class="p">)</span>
+forcing.get<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Signature:</span>
+forcing<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>
+    grid<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>grid<span class="ansi-blue-fg">.</span>SwanGrid<span class="ansi-blue-fg">,</span>
+    period<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>core<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">.</span>TimeRange<span class="ansi-blue-fg">,</span>
+    staging_dir<span class="ansi-blue-fg">:</span> pathlib<span class="ansi-blue-fg">.</span>Path<span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span>
+<span class="ansi-red-fg">Docstring:</span> &lt;no docstring&gt;
+<span class="ansi-red-fg">File:</span>      /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>      method
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Next, lets look at the physics object. At the moment, this is very simple and only</span>
+<span class="c1"># templates friction in line with the old rompy, but this is now very easy to</span>
+<span class="c1"># extend to other physics options</span>
+SwanPhysics<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span> SwanPhysics<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span> friction<span class="ansi-blue-fg">:</span> str <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;MAD&#39;</span><span class="ansi-blue-fg">,</span> friction_coeff<span class="ansi-blue-fg">:</span> float <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.1</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>      Container class represting configuraable SWAN physics options
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Just as a demonstration of a custom validation error, lets try to instantiate a physics object with an invalid friction option</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">physics</span> <span class="o">=</span> <span class="n">SwanPhysics</span><span class="p">(</span><span class="n">friction</span><span class="o">=</span><span class="s1">&#39;INVALID&#39;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+WARNING:__main__:1 validation error for SwanPhysics
+friction
+  friction must be one of JON, COLL, MAD or RIP (type=value_error)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now lets instantiate a valid physics object</span>
+<span class="n">physics</span> <span class="o">=</span> <span class="n">SwanPhysics</span><span class="p">()</span>
+
+<span class="c1"># And render its cmd file method</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">physics</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GEN3 WESTH 0.000075 0.00175
+BREAKING
+FRICTION MAD 0.1
+
+TRIADS
+
+PROP BSBT
+NUM ACCUR 0.02 0.02 0.02 95 NONSTAT 20
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Finally, the outputs object is used to define the outputs of the model run.</span>
+<span class="c1"># These specify grid variables and spectral locations to be outputted.</span>
+<span class="c1"># They also define a period for output, which defaults to the full model run</span>
+Outputs<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Init signature:</span>
+Outputs<span class="ansi-blue-fg">(</span>
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+    grid<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>GridOutput <span class="ansi-blue-fg">=</span> GridOutput<span class="ansi-blue-fg">(</span>period<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> variables<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;DEPTH&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;UBOT&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;HSIGN&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;HSWELL&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;DIR&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;TPS&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;TM01&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;WIND&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+    spec<span class="ansi-blue-fg">:</span> rompy<span class="ansi-blue-fg">.</span>swan<span class="ansi-blue-fg">.</span>config<span class="ansi-blue-fg">.</span>SpecOutput <span class="ansi-blue-fg">=</span> SpecOutput<span class="ansi-blue-fg">(</span>period<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> locations<span class="ansi-blue-fg">=</span>OutputLocs
+<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-&gt;</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-red-fg">Docstring:</span>      Outputs for SWAN
+<span class="ansi-red-fg">Init docstring:</span>
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises ValidationError if the input data cannot be parsed to form a valid model.
+<span class="ansi-red-fg">File:</span>           /source/rompy/rompy/swan/config.py
+<span class="ansi-red-fg">Type:</span>           ModelMetaclass
+<span class="ansi-red-fg">Subclasses:</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO fix below</span>
+<span class="c1">#outputs = Outputs(spec=SpecOutput(locations=[[115.68, -32.76]]), period=TimeRange(start=datetime(2020, 2, 21), end=datetime(2020, 2, 22)))</span>
+
+<span class="c1"># Instantiate default model output</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">Outputs</span><span class="p">()</span>
+<span class="n">outputs</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Outputs(grid=GridOutput(period=None, variables=[&#39;DEPTH&#39;, &#39;UBOT&#39;, &#39;HSIGN&#39;, &#39;HSWELL&#39;, &#39;DIR&#39;, &#39;TPS&#39;, &#39;TM01&#39;, &#39;WIND&#39;]), spec=SpecOutput(period=None, locations=OutputLocs
+))
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lets now put those components into a swan config object and instantiate a model run</span>
+
+<span class="n">run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span>
+        <span class="n">run_id</span><span class="o">=</span><span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span>
+        <span class="n">period</span><span class="o">=</span><span class="n">TimeRange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+        <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">SwanConfig</span><span class="p">(</span>
+            <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span>
+            <span class="n">physics</span><span class="o">=</span><span class="n">physics</span><span class="p">,</span>
+            <span class="n">forcing</span><span class="o">=</span><span class="n">forcing</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This grid object is still accessible as before, but the path has changed slightly</span>
+<span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 1000x706.373 with 1 Axes&gt;, &lt;GeoAxes: &gt;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_demo_37_1.png" src="../_images/notebooks_demo_37_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># And we can also run individual components and look at the control file inputs</span>
+<span class="n">cmd</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forcing</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">runtime</span><span class="o">=</span><span class="n">run</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cmd</span><span class="p">[</span><span class="s1">&#39;forcing&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cmd</span><span class="p">[</span><span class="s1">&#39;boundary&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[37], line 2</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> # And we can also run individual components and look at the control file inputs
+<span class="ansi-green-fg">----&gt; 2</span> cmd = run.config.forcing.get(grid=run.config.grid, runtime=run)
+<span class="ansi-green-intense-fg ansi-bold">      3</span> print(cmd[&#39;forcing&#39;])
+<span class="ansi-green-intense-fg ansi-bold">      4</span> print(cmd[&#39;boundary&#39;])
+
+<span class="ansi-red-fg">TypeError</span>: ForcingData.get() got an unexpected keyword argument &#39;runtime&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">locations</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+OutputLocs
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+period:
+
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-04 04:00:00
+        Duration: 3 days, 4:00:00
+        Interval: 1:00:00
+        Include End: True
+
+
+output_dir:
+simulations
+
+config:
+grid:
+        SwanGrid: REG, 390x150
+spectral_resolution:
+        fmin=0.0464 fmax=1.0 nfreqs=31 ndirs=36
+forcing:
+        bottom: DatasetXarray(uri=simulations/test_swantemplate/datasets/bathy.nc
+        wind: DatasetXarray(uri=simulations/test_swantemplate/datasets/wind_inputs.nc
+        boundary: DatasetXarray(uri=../tests/data/aus-20230101.nc
+
+physics:
+        friction=&#39;MAD&#39; friction_coeff=0.1
+outputs:
+        Grid:
+        variables: DEPTH UBOT HSIGN HSWELL DIR TPS TM01 WIND
+        Spec
+                locations:
+
+template:
+        /source/rompy/rompy/templates/swan
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in simulations
+INFO:rompy.swan.config:  Processing bottom forcing
+INFO:rompy.swan.data:   Writing bottom to simulations/test_swantemplate/bottom.grd
+INFO:rompy.swan.config:  Processing wind forcing
+INFO:rompy.swan.data:   Writing wind to simulations/test_swantemplate/wind.grd
+INFO:rompy.swan.config:  Processing boundary forcing
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in simulations
+INFO:rompy.model:-----------------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;/source/rompy/notebooks/simulations/test_swantemplate&#39;
+</pre></div></div>
+</div>
+</section>
+<section id="Command-line-interface">
+<h1>Command line interface<a class="headerlink" href="#Command-line-interface" title="Link to this heading">#</a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Another advantage of using a declaritive model is that configuration becomes much easier to manage.</span>
+<span class="c1"># We have steped through each object separately, but the whole model run can be described with simple</span>
+<span class="c1"># arguments. To illustrate this, lets load a simple configuration file to describes the full model run above.</span>
+
+<span class="o">!</span>cat<span class="w"> </span>demo.yml
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+# Note that this is config fully replicates the config deomonstrated in the demo notebook,
+# however it requireds the datasets created in that notebook to work.
+
+run_id: test_swantemplate
+period:
+  start: 20230101T00
+  # end: 20200224T04
+  duration: 3d
+  interval: 1h
+output_dir: simulations
+config:
+  model_type: swan
+  grid:
+    x0: 115.68
+    y0: -32.76
+    rot: 77.0
+    dx: 0.001
+    dy: 0.001
+    nx: 390
+    ny: 150
+    gridtype: REG
+  spectral_resolution:
+    fmin: 0.0464
+    fmax: 1.0
+    nfreqs: 31
+    ndirs: 36
+  forcing:
+    wind:
+      model_type: swan
+      id: wind
+      var: WIND
+      dataset:
+        uri: simulations/test_swantemplate/datasets/wind_inputs.nc
+        model_type: xarray
+      z1: u
+      z2: v
+      latname: lat
+      lonname: lon
+    bottom:
+      id: bottom
+      var: BOTTOM
+      dataset:
+        uri: simulations/test_swantemplate/datasets/bathy.nc
+        model_type: xarray
+      z1: depth
+      latname: lat
+      lonname: lon
+    boundary:
+      id: bnd
+      dataset:
+        uri: ../tests/data/aus-20230101.nc
+        model_type: xarray
+      latname: lat
+      lonname: lon
+      tolerance: 0.1
+      sel_method: idw
+  physics&#39;:
+    friction: MAD
+    friction_coeff: 0.1
+  outputs:
+    grid:
+      variables:
+      - DEPTH
+      - UBOT
+      - HSIGN
+      - HSWELL
+      - DIR
+      - TPS
+      - TM01
+      - WIND
+    spec:
+      locations:
+      - x: 115.68
+        y: -32.76
+      - x: 115.68
+        y: -32.76
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initantiating a model run using this config</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;demo.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">wavespectra</span>
+<span class="n">run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+<span class="c1"># and then calling as before</span>
+<span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValidationError</span>                           Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[80], line 5</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> args = yaml.load(open(&#39;demo.yml&#39;, &#39;r&#39;), Loader=yaml.FullLoader)
+<span class="ansi-green-intense-fg ansi-bold">      4</span> import wavespectra
+<span class="ansi-green-fg">----&gt; 5</span> run = ModelRun(**args)
+<span class="ansi-green-intense-fg ansi-bold">      7</span> # and then calling as before
+<span class="ansi-green-intense-fg ansi-bold">      8</span> run()
+
+File <span class="ansi-green-fg">/source/rompy/venv/lib/python3.10/site-packages/pydantic/main.py:341</span>, in <span class="ansi-cyan-fg">pydantic.main.BaseModel.__init__</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-red-fg">ValidationError</span>: 1 validation error for ModelRun
+config -&gt; SwanConfig
+  descriptor &#39;_datefmt&#39; for &#39;SwanConfig&#39; objects doesn&#39;t apply to a &#39;SwanConfig&#39; object (type=type_error)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># There is also a command line interface to run defined model configuration</span>
+
+<span class="o">!</span>rompy<span class="w"> </span>--help
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Usage: rompy [OPTIONS] {base|swan} CONFIG
+
+  Run model Usage: rompy &lt;model&gt; config.yml Args:     model(str): model type
+  config(str): yaml config file
+
+Options:
+  -k, --kwargs TEXT  additional key value pairs in the format key:value
+  --help             Show this message and exit.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>rompy<span class="w"> </span>swan<span class="w"> </span>demo.yml
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+period:
+
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-04 00:00:00
+        Duration: 3 days, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+
+output_dir:
+simulations
+
+config:
+grid:
+        SwanGrid: REG, 390x150
+spectral_resolution:
+        fmin=0.0464 fmax=1.0 nfreqs=31 ndirs=36
+forcing:
+        bottom: DatasetXarray(uri=simulations/test_swantemplate/datasets/bathy.nc
+        wind: DatasetXarray(uri=simulations/test_swantemplate/datasets/wind_inputs.nc
+        boundary: DatasetXarray(uri=../tests/data/aus-20230101.nc
+
+physics:
+        friction=&#39;MAD&#39; friction_coeff=0.1
+outputs:
+        Grid:
+        variables: DEPTH UBOT HSIGN HSWELL DIR TPS TM01 WIND
+        Spec
+                locations:
+
+template:
+        /source/rompy/rompy/templates/swan
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in simulations
+INFO:rompy.swan.config:  Processing bottom forcing
+INFO:rompy.swan.data:   Writing bottom to simulations/test_swantemplate/bottom.grd
+INFO:rompy.swan.config:  Processing wind forcing
+INFO:rompy.swan.data:   Writing wind to simulations/test_swantemplate/wind.grd
+INFO:rompy.swan.config:  Processing boundary forcing
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in simulations
+INFO:rompy.model:-----------------------------------------------------
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># So hopefully that gives a the basic functionality. A bit more detail on templates is given in template_demo.ipynb</span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../demo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Demonstration notebooks</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="templates_demo.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Templates demonstration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Basic demonstration</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#Command-line-interface">Command line interface</a></li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/notebooks/demo.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

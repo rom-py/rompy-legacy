@@ -1,0 +1,703 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>rompy.swan.components.physics.VEGETATION &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'components/_generated/rompy.swan.components.physics.VEGETATION';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../components.html">
+                        Model Components
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components.html">Model Components</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">rompy.swan.components.physics.VEGETATION</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="rompy-swan-components-physics-vegetation">
+<h1>rompy.swan.components.physics.VEGETATION<a class="headerlink" href="#rompy-swan-components-physics-vegetation" title="Link to this heading">#</a></h1>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.components.physics.</span></span><span class="sig-name descname"><span class="pre">VEGETATION</span></span><a class="reference internal" href="../../_modules/rompy/swan/components/physics.html#VEGETATION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION" title="Link to this definition">#</a></dt>
+<dd><p>Vegetation dumping.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>VEGETATION [iveg] &lt; [height] [diamtr] [nstems] [drag] &gt;
+</pre></div>
+</div>
+<p>With this command the user can activate wave damping due to vegetation based on the
+Dalrymple’s formula (1984) as implemented by Suzuki et al. (2011). This damping is
+uniform over the wave frequencies. An alternative is the frequency-dependent
+(canopy) dissipation model of Jacobsen et al. (2019). If this command is not used,
+SWAN will not account for vegetation effects.</p>
+<p>The vegetation (rigid plants) can be divided over a number of vertical segments and
+so, the possibility to vary the vegetation vertically is included. Each vertical
+layer represents some characteristics of the plants. These variables as indicated
+below can be repeated as many vertical layers to be chosen.</p>
+<p class="rubric">References</p>
+<p>Dalrymple, R.A., Kirby, J.T. and Hwang, P.A., 1984. Wave diffraction due to areas
+of energy dissipation. Journal of waterway, port, coastal, and ocean engineering,
+110(1), pp.67-79.</p>
+<p>Jacobsen, N.G., Bakker, W., Uijttewaal, W.S. and Uittenbogaard, R., 2019.
+Experimental investigation of the wave-induced motion of and force distribution
+along a flexible stem. Journal of Fluid Mechanics, 880, pp.1036-1069.</p>
+<p>Suzuki, T., Zijlema, M., Burger, B., Meijer, M.C. and Narayan, S., 2012. Wave
+dissipation by vegetation with layer schematization in SWAN. Coastal Engineering,
+59(1), pp.64-71.</p>
+<p class="rubric">Notes</p>
+<p>Vertical layering of the vegetation is not yet implemented for the
+Jacobsen et al. (2019) method.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="go"># Single layer</span>
+<span class="gp">In [1]: </span><span class="n">vegetation</span> <span class="o">=</span> <span class="n">VEGETATION</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">height</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">diamtr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">drag</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">nstems</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">   ...: </span><span class="p">)</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [2]: </span><span class="nb">print</span><span class="p">(</span><span class="n">vegetation</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">VEGETATION iveg=1 height=1.2 diamtr=0.1 nstems=10 drag=0.5</span>
+
+<span class="go"># 2 vertical layers</span>
+<span class="gp">In [3]: </span><span class="n">vegetation</span> <span class="o">=</span> <span class="n">VEGETATION</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">iveg</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">height</span><span class="o">=</span><span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span>
+<span class="gp">   ...: </span>    <span class="n">diamtr</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+<span class="gp">   ...: </span>    <span class="n">drag</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+<span class="gp">   ...: </span>    <span class="n">nstems</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="gp">   ...: </span><span class="p">)</span>
+<span class="gp">   ...: </span>
+<span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NotImplementedError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">vegetation</span> <span class="o">=</span> <span class="n">VEGETATION</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">iveg</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">height</span><span class="o">=</span><span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">diamtr</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">drag</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">nstems</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="p">)</span>
+
+    <span class="p">[</span><span class="o">...</span> <span class="n">skipping</span> <span class="n">hidden</span> <span class="mi">1</span> <span class="n">frame</span><span class="p">]</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages/rompy/swan/components/physics.py:1530,</span> in <span class="ni">VEGETATION.jacomsen_layering_not_implemented</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1527</span> <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1528</span> <span class="k">def</span> <span class="nf">jacomsen_layering_not_implemented</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;VEGETATION&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1529</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iveg</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nstems</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1530</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1531</span>             <span class="s2">&quot;Vertical layering of the vegetation is not yet implemented for the &quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1532</span>             <span class="s2">&quot;Jacobsen et al. (2019) method, please define single layer&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1533</span>         <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1534</span>     <span class="k">return</span> <span class="bp">self</span>
+
+<span class="ne">NotImplementedError</span>: Vertical layering of the vegetation is not yet implemented for the Jacobsen et al. (2019) method, please define single layer
+
+<span class="gp">In [4]: </span><span class="nb">print</span><span class="p">(</span><span class="n">vegetation</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">VEGETATION iveg=1 height=1.2 diamtr=0.1 nstems=10 drag=0.5</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.diamtr" title="rompy.swan.components.physics.VEGETATION.diamtr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diamtr</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">list[float])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.drag" title="rompy.swan.components.physics.VEGETATION.drag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drag</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">list[float])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.height" title="rompy.swan.components.physics.VEGETATION.height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">list[float])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.iveg" title="rompy.swan.components.physics.VEGETATION.iveg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iveg</span> <span class="pre">(Literal[1,</span> <span class="pre">2])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.model_type" title="rompy.swan.components.physics.VEGETATION.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['vegetation',</span> <span class="pre">'VEGETATION'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.nstems" title="rompy.swan.components.physics.VEGETATION.nstems"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nstems</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">list[int])</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented" title="rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacomsen_layering_not_implemented</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="rompy.swan.components.physics.VEGETATION.number_of_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_layers</span></code></a> » <a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.diamtr" title="rompy.swan.components.physics.VEGETATION.diamtr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diamtr</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="rompy.swan.components.physics.VEGETATION.number_of_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_layers</span></code></a> » <a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.drag" title="rompy.swan.components.physics.VEGETATION.drag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drag</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="rompy.swan.components.physics.VEGETATION.number_of_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_layers</span></code></a> » <a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.height" title="rompy.swan.components.physics.VEGETATION.height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="rompy.swan.components.physics.VEGETATION.number_of_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_layers</span></code></a> » <a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.nstems" title="rompy.swan.components.physics.VEGETATION.nstems"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nstems</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.diamtr">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diamtr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.diamtr" title="Link to this definition">#</a></dt>
+<dd><p>The diameter of each plant stand per layer (in m)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented" title="rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacomsen_layering_not_implemented</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="rompy.swan.components.physics.VEGETATION.number_of_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_layers</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.drag">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">drag</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.drag" title="Link to this definition">#</a></dt>
+<dd><p>The drag coefficient per layer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented" title="rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacomsen_layering_not_implemented</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="rompy.swan.components.physics.VEGETATION.number_of_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_layers</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.height">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.height" title="Link to this definition">#</a></dt>
+<dd><p>The plant height per layer (in m)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented" title="rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacomsen_layering_not_implemented</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="rompy.swan.components.physics.VEGETATION.number_of_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_layers</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.iveg">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">iveg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.iveg" title="Link to this definition">#</a></dt>
+<dd><p>Indicates the method for the vegetation computation (SWAN default: 1):</p>
+<ul class="simple">
+<li><p>1: Suzuki et al. (2011)</p></li>
+<li><p>2: Jacobsen et al. (2019)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented" title="rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacomsen_layering_not_implemented</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.model_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'vegetation'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'VEGETATION'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vegetation'</span></em><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.model_type" title="Link to this definition">#</a></dt>
+<dd><p>Model type discriminator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented" title="rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacomsen_layering_not_implemented</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.nstems">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nstems</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.nstems" title="Link to this definition">#</a></dt>
+<dd><p>The number of plant stands per square meter for each layer. Note that <cite>nstems</cite> is allowed to vary over the computational region to account for the zonation of vegetation. In that case use the commands <cite>IMPGRID NPLANTS</cite> and <cite>READINP NPLANTS</cite> to define and read the vegetation density. The (vertically varying) value of <cite>nstems</cite> in this command will be multiplied by this horizontally varying plant density (SWAN default: 1)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented" title="rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacomsen_layering_not_implemented</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="rompy.swan.components.physics.VEGETATION.number_of_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_layers</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.cmd">
+<span class="sig-name descname"><span class="pre">cmd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/rompy/swan/components/physics.html#VEGETATION.cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.cmd" title="Link to this definition">#</a></dt>
+<dd><p>Command file string for this component.</p>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jacomsen_layering_not_implemented</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../../_modules/rompy/swan/components/physics.html#VEGETATION.jacomsen_layering_not_implemented"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.number_of_layers">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_layers</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.diamtr" title="rompy.swan.components.physics.VEGETATION.diamtr"><em class="xref py py-obj"><span class="pre">diamtr</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.nstems" title="rompy.swan.components.physics.VEGETATION.nstems"><em class="xref py py-obj"><span class="pre">nstems</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.drag" title="rompy.swan.components.physics.VEGETATION.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.height" title="rompy.swan.components.physics.VEGETATION.height"><em class="xref py py-obj"><span class="pre">height</span></em></a><a class="reference internal" href="../../_modules/rompy/swan/components/physics.html#VEGETATION.number_of_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION"><code class="docutils literal notranslate"><span class="pre">VEGETATION</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION.diamtr"><code class="docutils literal notranslate"><span class="pre">VEGETATION.diamtr</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION.drag"><code class="docutils literal notranslate"><span class="pre">VEGETATION.drag</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION.height"><code class="docutils literal notranslate"><span class="pre">VEGETATION.height</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION.iveg"><code class="docutils literal notranslate"><span class="pre">VEGETATION.iveg</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION.model_type"><code class="docutils literal notranslate"><span class="pre">VEGETATION.model_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION.nstems"><code class="docutils literal notranslate"><span class="pre">VEGETATION.nstems</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION.cmd"><code class="docutils literal notranslate"><span class="pre">VEGETATION.cmd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION.jacomsen_layering_not_implemented"><code class="docutils literal notranslate"><span class="pre">VEGETATION.jacomsen_layering_not_implemented</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.VEGETATION.number_of_layers"><code class="docutils literal notranslate"><span class="pre">VEGETATION.number_of_layers</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/components/_generated/rompy.swan.components.physics.VEGETATION.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
