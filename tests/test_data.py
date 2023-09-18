@@ -8,7 +8,7 @@ import xarray as xr
 
 from rompy.core.filters import Filter
 from rompy.core.types import DatasetCoords
-from rompy.core.data import SourceDataset, SourceFile, SourceIntake, SourceDatamesh
+from rompy.core.data import SourceDataset, SourceFile, SourceIntake, SourceDatamesh, SourceFiles
 from rompy.core import BaseGrid, DataBlob, DataGrid, TimeRange
 
 
@@ -130,6 +130,12 @@ def test_time_filter(nc_data_source):
 def test_source_dataset():
     dset = xr.open_dataset(HERE / "data" / "aus-20230101.nc")
     dataset = SourceDataset(obj=dset)
+    assert isinstance(dataset.open(), xr.Dataset)
+
+
+def test_source_open_datasets():
+    dset_path = HERE / "data" / "synthetic_australia_energy_data_*.zip"
+    dataset = SourceFiles(fileglob=str(dset_path), kwargs={'engine': 'zarr'})
     assert isinstance(dataset.open(), xr.Dataset)
 
 

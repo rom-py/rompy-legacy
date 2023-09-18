@@ -4,6 +4,7 @@ from .data import (
     DataGrid,
     SourceDataset,
     SourceFile,
+    SourceFiles,
     SourceIntake,
     SourceDatamesh,
 )

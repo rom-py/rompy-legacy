@@ -4,6 +4,7 @@ from pathlib import Path
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Literal, Optional, Union
+from glob import glob
 
 from cloudpathlib import AnyPath
 import intake
@@ -93,6 +94,26 @@ class SourceFile(SourceBase):
 
     def _open(self) -> xr.Dataset:
         return xr.open_dataset(self.uri, **self.kwargs)
+
+
+class SourceFiles(SourceBase):
+    """Source dataset from multiple files to open with xarray.open_mfdataset."""
+
+    model_type: Literal["open_datasets"] = Field(
+        default="open_datasets",
+        description="Model type discriminator",
+    )
+    fileglob: str | Path = Field(description="Glob to the datasets")
+    kwargs: dict = Field(
+        default={},
+        description="Keyword arguments to pass to xarray.open_mfdataset",
+    )
+
+    def __str__(self) -> str:
+        return f"SourceFiles(uris={self.uris})"
+
+    def _open(self) -> xr.Dataset:
+        return xr.open_mfdataset(glob(self.fileglob), **self.kwargs)
 
 
 class SourceIntake(SourceBase):
@@ -267,6 +288,7 @@ DATA_SOURCE_TYPES = Union[
     SourceFile,
     SourceIntake,
     SourceDatamesh,
+    SourceFiles,
 ]
 
 
