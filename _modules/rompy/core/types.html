@@ -1,0 +1,898 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rompy.core.types &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script src="../../../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/rompy/core/types';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">rompy.core.types</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for rompy.core.types</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Rompy types.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">field_validator</span><span class="p">,</span>
+    <span class="n">model_validator</span><span class="p">,</span>
+    <span class="n">ConfigDict</span><span class="p">,</span>
+    <span class="n">BaseModel</span><span class="p">,</span>
+    <span class="n">Field</span><span class="p">,</span>
+    <span class="n">validator</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="RompyBaseModel">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.RompyBaseModel">[docs]</a>
+<span class="k">class</span> <span class="nc">RompyBaseModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+
+    <span class="c1"># The config below prevents https://github.com/pydantic/pydantic/discussions/7121</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">protected_namespaces</span><span class="o">=</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="Latitude">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Latitude">[docs]</a>
+<span class="k">class</span> <span class="nc">Latitude</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Latitude&quot;&quot;&quot;</span>
+
+    <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Latitude&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Latitude.validate_lat">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Latitude.validate_lat">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate_lat</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="o">-</span><span class="mi">90</span> <span class="o">&lt;=</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;latitude must be between -90 and 90&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Latitude(lat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lat</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,))</span></div>
+
+
+
+<div class="viewcode-block" id="Longitude">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Longitude">[docs]</a>
+<span class="k">class</span> <span class="nc">Longitude</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Longitude&quot;&quot;&quot;</span>
+
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Longitude&quot;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=-</span><span class="mi">180</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Longitude.validate_lon">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Longitude.validate_lon">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate_lon</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="o">-</span><span class="mi">180</span> <span class="o">&lt;=</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">180</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;longitude must be between -180 and 180&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Longitude(lon=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lon</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,))</span></div>
+
+
+
+<div class="viewcode-block" id="Coordinate">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Coordinate">[docs]</a>
+<span class="k">class</span> <span class="nc">Coordinate</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coordinate&quot;&quot;&quot;</span>
+
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Longitude&quot;</span><span class="p">)</span>
+    <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Latitude&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Coordinate.validate_lon">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Coordinate.validate_lon">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate_lon</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="o">-</span><span class="mi">180</span> <span class="o">&lt;=</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">180</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;longitude must be between -180 and 180&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+
+
+<div class="viewcode-block" id="Coordinate.validate_lat">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Coordinate.validate_lat">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate_lat</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="o">-</span><span class="mi">90</span> <span class="o">&lt;=</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;latitude must be between -90 and 90&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Coordinate(lon=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="si">}</span><span class="s2">, lat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lon</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lat</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="Bbox">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox">[docs]</a>
+<span class="k">class</span> <span class="nc">Bbox</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Bounding box&quot;&quot;&quot;</span>
+
+    <span class="n">minlon</span><span class="p">:</span> <span class="n">Longitude</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Minimum longitude&quot;</span><span class="p">)</span>
+    <span class="n">minlat</span><span class="p">:</span> <span class="n">Latitude</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Minimum latitude&quot;</span><span class="p">)</span>
+    <span class="n">maxlon</span><span class="p">:</span> <span class="n">Longitude</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Maximum longitude&quot;</span><span class="p">)</span>
+    <span class="n">maxlat</span><span class="p">:</span> <span class="n">Latitude</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Maximum latitude&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Bbox(minlon=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="si">}</span><span class="s2">, minlat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="si">}</span><span class="s2">, maxlon=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="si">}</span><span class="s2">, maxlat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">minlon</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">minlat</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlon</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlat</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Bbox.validate_coords">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.validate_coords">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Bbox&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;minlon must be less than maxlon&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;minlat must be less than maxlon&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlon</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span>
+            <span class="n">lon</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span>
+
+<div class="viewcode-block" id="Bbox.contains">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.contains">[docs]</a>
+    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Bbox</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">minlon</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">minlat</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlon</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlat</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">lon</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">lat</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">lon</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">lat</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;other must be a Bbox or a Coordinate&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Bbox.intersects">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.intersects">[docs]</a>
+    <span class="k">def</span> <span class="nf">intersects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Bbox</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlon</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlat</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">minlon</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">minlat</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">lon</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">lat</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">lon</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">lat</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;other must be a Bbox or a Coordinate&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Bbox.union">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.union">[docs]</a>
+    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Bbox</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Bbox</span><span class="p">(</span>
+                <span class="n">minlon</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">minlon</span><span class="p">),</span>
+                <span class="n">minlat</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">minlat</span><span class="p">),</span>
+                <span class="n">maxlon</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlon</span><span class="p">),</span>
+                <span class="n">maxlat</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlat</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Bbox</span><span class="p">(</span>
+                <span class="n">minlon</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">lon</span><span class="p">),</span>
+                <span class="n">minlat</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span>
+                <span class="n">maxlon</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">lon</span><span class="p">),</span>
+                <span class="n">maxlat</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;other must be a Bbox or a Coordinate&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Bbox.intersection">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.intersection">[docs]</a>
+    <span class="k">def</span> <span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Bbox</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Bbox</span><span class="p">(</span>
+                <span class="n">minlon</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">minlon</span><span class="p">),</span>
+                <span class="n">minlat</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">minlat</span><span class="p">),</span>
+                <span class="n">maxlon</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlon</span><span class="p">),</span>
+                <span class="n">maxlat</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">maxlat</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">other</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;other must be a Bbox or a Coordinate&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Bbox.expand">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.expand">[docs]</a>
+    <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Bbox</span><span class="p">(</span>
+            <span class="n">minlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">-</span> <span class="n">amount</span><span class="p">,</span>
+            <span class="n">minlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">-</span> <span class="n">amount</span><span class="p">,</span>
+            <span class="n">maxlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">+</span> <span class="n">amount</span><span class="p">,</span>
+            <span class="n">maxlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">+</span> <span class="n">amount</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Bbox.shrink">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.shrink">[docs]</a>
+    <span class="k">def</span> <span class="nf">shrink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Bbox</span><span class="p">(</span>
+            <span class="n">minlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">+</span> <span class="n">amount</span><span class="p">,</span>
+            <span class="n">minlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">+</span> <span class="n">amount</span><span class="p">,</span>
+            <span class="n">maxlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">-</span> <span class="n">amount</span><span class="p">,</span>
+            <span class="n">maxlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">-</span> <span class="n">amount</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Bbox.scale">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.scale">[docs]</a>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Bbox</span><span class="p">(</span>
+            <span class="n">minlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">*</span> <span class="n">amount</span><span class="p">,</span>
+            <span class="n">minlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">*</span> <span class="n">amount</span><span class="p">,</span>
+            <span class="n">maxlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">*</span> <span class="n">amount</span><span class="p">,</span>
+            <span class="n">maxlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">*</span> <span class="n">amount</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Bbox.translate">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.translate">[docs]</a>
+    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Bbox</span><span class="p">(</span>
+            <span class="n">minlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span> <span class="o">+</span> <span class="n">amount</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
+            <span class="n">minlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span> <span class="o">+</span> <span class="n">amount</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
+            <span class="n">maxlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span> <span class="o">+</span> <span class="n">amount</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
+            <span class="n">maxlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span> <span class="o">+</span> <span class="n">amount</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Bbox.to_geojson">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.to_geojson">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_geojson</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Polygon&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">[</span>
+                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="p">],</span>
+                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="p">],</span>
+                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="p">],</span>
+                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="p">],</span>
+                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="p">],</span>
+                <span class="p">]</span>
+            <span class="p">],</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Bbox.to_wkt">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.to_wkt">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_wkt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;POLYGON((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlat</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maxlon</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlon</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minlat</span><span class="si">}</span><span class="s2">))&quot;</span></div>
+
+
+<div class="viewcode-block" id="Bbox.to_wkb">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.to_wkb">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_wkb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">wkb</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_geojson</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Bbox.from_geojson">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.from_geojson">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_geojson</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">geojson</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">geojson</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Polygon&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_polygon</span><span class="p">(</span><span class="n">geojson</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">geojson</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;MultiPolygon&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_multipolygon</span><span class="p">(</span><span class="n">geojson</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;geojson must be a Polygon or a MultiPolygon&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Bbox.from_wkt">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.from_wkt">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_wkt</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">wkt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_geojson</span><span class="p">(</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">wkt</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Bbox.from_wkb">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.from_wkb">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_wkb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">wkb</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_geojson</span><span class="p">(</span><span class="n">wkb</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">wkb</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Bbox.from_polygon">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Bbox.from_polygon">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_polygon</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">polygon</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;polygon must have exactly one ring&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_ring</span><span class="p">(</span><span class="n">polygon</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Spectrum">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.Spectrum">[docs]</a>
+<span class="k">class</span> <span class="nc">Spectrum</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to represent a wave spectrum.&quot;&quot;&quot;</span>
+
+    <span class="n">fmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">0.0464</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Minimum frequency in Hz&quot;</span><span class="p">)</span>
+    <span class="n">fmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Maximum frequency in Hz&quot;</span><span class="p">)</span>
+    <span class="n">nfreqs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of frequency components&quot;</span><span class="p">)</span>
+    <span class="n">ndirs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of directional components&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># TODO make more flexible.</span>
+
+
+<div class="viewcode-block" id="DatasetCoords">
+<a class="viewcode-back" href="../../../api.html#rompy.core.types.DatasetCoords">[docs]</a>
+<span class="k">class</span> <span class="nc">DatasetCoords</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coordinates representation.&quot;&quot;&quot;</span>
+
+    <span class="n">t</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the time coordinate&quot;</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the x coordinate&quot;</span><span class="p">)</span>
+    <span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the y coordinate&quot;</span><span class="p">)</span>
+    <span class="n">z</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the z coordinate&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -17,12 +17,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../../../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -31,8 +31,9 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
     <script src="../../../../_static/documentation_options.js?v=38b66d78"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
@@ -51,6 +52,15 @@
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -91,7 +101,8 @@
     <span class="fa-solid fa-bars"></span>
   </label>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
   
@@ -108,7 +119,6 @@
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
@@ -122,6 +132,13 @@
   </p>
   <ul class="bd-navbar-elements navbar-nav">
     
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../../../quickstart.html">
                         Quickstart
@@ -137,8 +154,8 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../../api.html">
-                        API  Documentation
+                      <a class="nav-link nav-internal" href="../../../../models.html">
+                        Models
                       </a>
                     </li>
                 
@@ -149,13 +166,21 @@
                       </a>
                     </li>
                 
-
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../../components.html">
-                        Model Components
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../api.html">
+                        API  Documentation
                       </a>
                     </li>
                 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -166,23 +191,25 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -198,8 +225,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -209,13 +236,15 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
@@ -246,6 +275,13 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../../../quickstart.html">
                         Quickstart
                       </a>
@@ -260,8 +296,8 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../../api.html">
-                        API  Documentation
+                      <a class="nav-link nav-internal" href="../../../../models.html">
+                        Models
                       </a>
                     </li>
                 
@@ -272,13 +308,21 @@ document.write(`
                       </a>
                     </li>
                 
-
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../../components.html">
-                        Model Components
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../api.html">
+                        API  Documentation
                       </a>
                     </li>
                 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
         
@@ -291,10 +335,10 @@ document.write(`
           <div class="navbar-item">
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -310,8 +354,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -322,13 +366,13 @@ document.write(`
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 <h3><a href="../../../../index.html">Table of Contents</a></h3>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core_concepts.html">Core Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API  Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../demo.html">Demonstration notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../components.html">Model Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API  Documentation</a></li>
 </ul>
 </div>
     </div>
@@ -357,8 +401,8 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../../../index.html" class="nav-link" aria-label="Home">
@@ -368,7 +412,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">rompy.swan.components.inpgrid</li>
+    <li class="breadcrumb-item active" aria-current="page">rompy.swan.c...</li>
   </ul>
 </nav>
 </div>
@@ -401,14 +445,21 @@ document.write(`
 <span class="n">HERE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 
 
+<div class="viewcode-block" id="INPGRID">
+<a class="viewcode-back" href="../../../../api.html#rompy.swan.components.inpgrid.INPGRID">[docs]</a>
 <span class="k">class</span> <span class="nc">INPGRID</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN input grid.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        INPGRID [grid_type] -&gt;REGULAR|CURVILINEAR|UNSTRUCTURED (EXCEPTION [excval]) &amp;</span>
+<span class="sd">            (NONSTATIONARY [tbeginp] [deltinp] -&gt;SEC|MIN|HR|DAY [tendinp])</span>
 
 <span class="sd">    This is the base class for all input grids. It is not meant to be used directly.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;inpgrid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;inpgrid&quot;</span><span class="p">,</span> <span class="s2">&quot;INPGRID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;inpgrid&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -431,6 +482,8 @@ document.write(`
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN input grid file reader specification&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
+<div class="viewcode-block" id="INPGRID.set_nonstat_suffix">
+<a class="viewcode-back" href="../../../../api.html#rompy.swan.components.inpgrid.INPGRID.set_nonstat_suffix">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">set_nonstat_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;INPGRID&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the nonstationary suffix.&quot;&quot;&quot;</span>
@@ -438,22 +491,76 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">nonstationary</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;inp&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">readinp</span><span class="o">.</span><span class="n">grid_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_type</span>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
+
+<div class="viewcode-block" id="INPGRID.cmd">
+<a class="viewcode-back" href="../../../../api.html#rompy.swan.components.inpgrid.INPGRID.cmd">[docs]</a>
     <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;INPGRID </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;INPGRID </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
+</div>
+
 
 
 <div class="viewcode-block" id="REGULAR">
-<a class="viewcode-back" href="../../../../components/_generated/rompy.swan.components.inpgrid.REGULAR.html#rompy.swan.components.inpgrid.REGULAR">[docs]</a>
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.REGULAR.html#rompy.swan.components.inpgrid.REGULAR">[docs]</a>
 <span class="k">class</span> <span class="nc">REGULAR</span><span class="p">(</span><span class="n">INPGRID</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN regular input grid.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN regular input grid group component.</span>
 
-<span class="sd">    `INPGRID REGULAR [grid_type] [xpinp] [ypinp] [alpinp] [mxinp] [myinp] [dxinp] [dyinp]`</span>
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        INPGRID [grid_type] REGULAR [xpinp] [ypinp] [alpinp] [mxinp] [myinp] &amp;</span>
+<span class="sd">            [dxinp] [dyinp] (EXCEPTION [excval]) &amp;</span>
+<span class="sd">            (NONSTATIONARY [tbeginp] [deltinp] -&gt;SEC|MIN|HR|DAY [tendinp])</span>
+<span class="sd">        READGRID [grid_type] [fac] &#39;fname1&#39; [idla] [nhedf] ([nhedt]) ([nhedvec]) &amp;</span>
+<span class="sd">            -&gt;FREE|FORMAT|UNFORMATTED (&#39;form&#39;|[idfm])</span>
+
+<span class="sd">    This is a group component that includes an `INPGRID` and a `READGRID` component.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.components.inpgrid import REGULAR</span>
+<span class="sd">        inpgrid = REGULAR(</span>
+<span class="sd">            grid_type=&quot;bottom&quot;,</span>
+<span class="sd">            excval=-99.0,</span>
+<span class="sd">            xpinp=172.0,</span>
+<span class="sd">            ypinp=-41.0,</span>
+<span class="sd">            alpinp=0.0,</span>
+<span class="sd">            mxinp=99,</span>
+<span class="sd">            myinp=99,</span>
+<span class="sd">            dxinp=0.005,</span>
+<span class="sd">            dyinp=0.005,</span>
+<span class="sd">            readinp=dict(fname1=&quot;bottom.txt&quot;),</span>
+<span class="sd">        )</span>
+<span class="sd">        print(inpgrid.render())</span>
+<span class="sd">        inpgrid = REGULAR(</span>
+<span class="sd">            grid_type=&quot;wind&quot;,</span>
+<span class="sd">            excval=-99.0,</span>
+<span class="sd">            xpinp=172.0,</span>
+<span class="sd">            ypinp=-41.0,</span>
+<span class="sd">            alpinp=0.0,</span>
+<span class="sd">            mxinp=99,</span>
+<span class="sd">            myinp=99,</span>
+<span class="sd">            dxinp=0.005,</span>
+<span class="sd">            dyinp=0.005,</span>
+<span class="sd">            readinp=dict(fname1=&quot;wind.txt&quot;),</span>
+<span class="sd">            nonstationary=dict(</span>
+<span class="sd">                tbeg=&quot;2019-01-01T00:00:00&quot;,</span>
+<span class="sd">                tend=&quot;2019-01-07 00:00:00&quot;,</span>
+<span class="sd">                delt=3600,</span>
+<span class="sd">                deltfmt=&quot;hr&quot;,</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
+<span class="sd">        print(inpgrid.render())</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;regular&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;regular&quot;</span><span class="p">,</span> <span class="s2">&quot;REGULAR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;regular&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -508,7 +615,7 @@ document.write(`
     <span class="p">)</span>
 
 <div class="viewcode-block" id="REGULAR.cmd">
-<a class="viewcode-back" href="../../../../components/_generated/rompy.swan.components.inpgrid.REGULAR.html#rompy.swan.components.inpgrid.REGULAR.cmd">[docs]</a>
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.REGULAR.html#rompy.swan.components.inpgrid.REGULAR.cmd">[docs]</a>
     <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2"> REGULAR xpinp=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xpinp</span><span class="si">}</span><span class="s2"> ypinp=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ypinp</span><span class="si">}</span><span class="s2"> &quot;</span>
@@ -526,17 +633,50 @@ document.write(`
 
 
 <div class="viewcode-block" id="CURVILINEAR">
-<a class="viewcode-back" href="../../../../components/_generated/rompy.swan.components.inpgrid.CURVILINEAR.html#rompy.swan.components.inpgrid.CURVILINEAR">[docs]</a>
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.CURVILINEAR.html#rompy.swan.components.inpgrid.CURVILINEAR">[docs]</a>
 <span class="k">class</span> <span class="nc">CURVILINEAR</span><span class="p">(</span><span class="n">INPGRID</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN curvilinear input grid.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN curvilinear input grid group component.</span>
 
-<span class="sd">    `INPGRID CURVILINEAR [stagrx] [stagry] [mxinp] [myinp]`</span>
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        INPGRID [grid_type] CURVILINEAR [stagrx] [stagry] [mxinp] [myinp] &amp;</span>
+<span class="sd">            (EXCEPTION [excval]) &amp;</span>
+<span class="sd">            (NONSTATIONARY [tbeginp] [deltinp] -&gt;SEC|MIN|HR|DAY [tendinp])</span>
+<span class="sd">        READGRID [grid_type] [fac] &#39;fname1&#39; [idla] [nhedf] ([nhedt]) ([nhedvec]) &amp;</span>
+<span class="sd">            -&gt;FREE|FORMAT|UNFORMATTED (&#39;form&#39;|[idfm])</span>
+
+<span class="sd">    This is a group component that includes an `INPGRID` and a `READGRID` component.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.components.inpgrid import CURVILINEAR</span>
+<span class="sd">        inpgrid = CURVILINEAR(</span>
+<span class="sd">            grid_type=&quot;wind&quot;,</span>
+<span class="sd">            stagrx=0.0,</span>
+<span class="sd">            stagry=0.0,</span>
+<span class="sd">            mxinp=199,</span>
+<span class="sd">            myinp=199,</span>
+<span class="sd">            excval=-99.0,</span>
+<span class="sd">            readinp=dict(fname1=&quot;wind.txt&quot;),</span>
+<span class="sd">            nonstationary=dict(</span>
+<span class="sd">                tbeg=&quot;2019-01-01T00:00:00&quot;,</span>
+<span class="sd">                tend=&quot;2019-01-07 00:00:00&quot;,</span>
+<span class="sd">                delt=3600,</span>
+<span class="sd">                deltfmt=&quot;hr&quot;,</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
+<span class="sd">        print(inpgrid.render())</span>
 
 <span class="sd">    TODO: Handle (or not) setting default values for mxinp and myinp from cgrid.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;curvilinear&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;curvilinear&quot;</span><span class="p">,</span> <span class="s2">&quot;CURVILINEAR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;curvilinear&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
     <span class="n">stagrx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -571,7 +711,7 @@ document.write(`
     <span class="p">)</span>
 
 <div class="viewcode-block" id="CURVILINEAR.cmd">
-<a class="viewcode-back" href="../../../../components/_generated/rompy.swan.components.inpgrid.CURVILINEAR.html#rompy.swan.components.inpgrid.CURVILINEAR.cmd">[docs]</a>
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.CURVILINEAR.html#rompy.swan.components.inpgrid.CURVILINEAR.cmd">[docs]</a>
     <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2"> CURVILINEAR stagrx=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">stagrx</span><span class="si">}</span><span class="s2"> &quot;</span>
@@ -588,20 +728,48 @@ document.write(`
 
 
 <div class="viewcode-block" id="UNSTRUCTURED">
-<a class="viewcode-back" href="../../../../components/_generated/rompy.swan.components.inpgrid.UNSTRUCTURED.html#rompy.swan.components.inpgrid.UNSTRUCTURED">[docs]</a>
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.UNSTRUCTURED.html#rompy.swan.components.inpgrid.UNSTRUCTURED">[docs]</a>
 <span class="k">class</span> <span class="nc">UNSTRUCTURED</span><span class="p">(</span><span class="n">INPGRID</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN unstructured input grid.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN unstructured input grid group component.</span>
 
-<span class="sd">    `INPGRID UNSTRUCTURED`</span>
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        INPGRID [grid_type] UNSTRUCTURED EXCEPTION [excval]) &amp;</span>
+<span class="sd">            (NONSTATIONARY [tbeginp] [deltinp] -&gt;SEC|MIN|HR|DAY [tendinp])</span>
+<span class="sd">        READGRID [grid_type] [fac] &#39;fname1&#39; [idla] [nhedf] ([nhedt]) ([nhedvec]) &amp;</span>
+<span class="sd">            -&gt;FREE|FORMAT|UNFORMATTED (&#39;form&#39;|[idfm])</span>
+
+<span class="sd">    This is a group component that includes an `INPGRID` and a `READGRID` component.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.components.inpgrid import UNSTRUCTURED</span>
+<span class="sd">        inpgrid = UNSTRUCTURED(</span>
+<span class="sd">            grid_type=&quot;bottom&quot;,</span>
+<span class="sd">            excval=-99.0,</span>
+<span class="sd">            readinp=dict(fname1=&quot;bottom.txt&quot;),</span>
+<span class="sd">            nonstationary=dict(</span>
+<span class="sd">                tbeg=&quot;2019-01-01T00:00:00&quot;,</span>
+<span class="sd">                tend=&quot;2019-01-07 00:00:00&quot;,</span>
+<span class="sd">                delt=3600,</span>
+<span class="sd">                deltfmt=&quot;hr&quot;,</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
+<span class="sd">        print(inpgrid.render())</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;unstructured&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;unstructured&quot;</span><span class="p">,</span> <span class="s2">&quot;UNSTRUCTURED&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;unstructured&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="UNSTRUCTURED.cmd">
-<a class="viewcode-back" href="../../../../components/_generated/rompy.swan.components.inpgrid.UNSTRUCTURED.html#rompy.swan.components.inpgrid.UNSTRUCTURED.cmd">[docs]</a>
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.UNSTRUCTURED.html#rompy.swan.components.inpgrid.UNSTRUCTURED.cmd">[docs]</a>
     <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2"> UNSTRUCTURED&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">excval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -621,12 +789,63 @@ document.write(`
 
 
 <div class="viewcode-block" id="INPGRIDS">
-<a class="viewcode-back" href="../../../../components/_generated/rompy.swan.components.inpgrid.INPGRIDS.html#rompy.swan.components.inpgrid.INPGRIDS">[docs]</a>
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.INPGRIDS.html#rompy.swan.components.inpgrid.INPGRIDS">[docs]</a>
 <span class="k">class</span> <span class="nc">INPGRIDS</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN input grids group component.</span>
 
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        INPGRID ...</span>
+<span class="sd">        READGRID ...</span>
+
+<span class="sd">        INPGRID ...</span>
+<span class="sd">        READGRID ...</span>
+
+<span class="sd">        ...</span>
+
 <span class="sd">    This group component is a convenience to allow defining and rendering</span>
 <span class="sd">    a list of input grid components.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.components.inpgrid import REGULAR, INPGRIDS</span>
+<span class="sd">        inpgrid_bottom = REGULAR(</span>
+<span class="sd">            grid_type=&quot;bottom&quot;,</span>
+<span class="sd">            excval=-99.0,</span>
+<span class="sd">            xpinp=172.0,</span>
+<span class="sd">            ypinp=-41.0,</span>
+<span class="sd">            alpinp=0.0,</span>
+<span class="sd">            mxinp=99,</span>
+<span class="sd">            myinp=99,</span>
+<span class="sd">            dxinp=0.005,</span>
+<span class="sd">            dyinp=0.005,</span>
+<span class="sd">            readinp=dict(fname1=&quot;bottom.txt&quot;),</span>
+<span class="sd">        )</span>
+<span class="sd">        inpgrid_wind = REGULAR(</span>
+<span class="sd">            grid_type=&quot;wind&quot;,</span>
+<span class="sd">            excval=-99.0,</span>
+<span class="sd">            xpinp=172.0,</span>
+<span class="sd">            ypinp=-41.0,</span>
+<span class="sd">            alpinp=0.0,</span>
+<span class="sd">            mxinp=99,</span>
+<span class="sd">            myinp=99,</span>
+<span class="sd">            dxinp=0.005,</span>
+<span class="sd">            dyinp=0.005,</span>
+<span class="sd">            readinp=dict(fname1=&quot;wind.txt&quot;),</span>
+<span class="sd">            nonstationary=dict(</span>
+<span class="sd">                tbeg=&quot;2019-01-01T00:00:00&quot;,</span>
+<span class="sd">                tend=&quot;2019-01-07 00:00:00&quot;,</span>
+<span class="sd">                delt=3600,</span>
+<span class="sd">                deltfmt=&quot;hr&quot;,</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
+<span class="sd">        inpgrids = INPGRIDS(inpgrids=[inpgrid_bottom, inpgrid_wind])</span>
+<span class="sd">        print(inpgrids.render())</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -639,7 +858,7 @@ document.write(`
     <span class="p">)</span>
 
 <div class="viewcode-block" id="INPGRIDS.cmd">
-<a class="viewcode-back" href="../../../../components/_generated/rompy.swan.components.inpgrid.INPGRIDS.html#rompy.swan.components.inpgrid.INPGRIDS.cmd">[docs]</a>
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.INPGRIDS.html#rompy.swan.components.inpgrid.INPGRIDS.cmd">[docs]</a>
     <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">inpgrid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inpgrids</span><span class="p">:</span>
@@ -648,7 +867,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="INPGRIDS.render">
-<a class="viewcode-back" href="../../../../components/_generated/rompy.swan.components.inpgrid.INPGRIDS.html#rompy.swan.components.inpgrid.INPGRIDS.render">[docs]</a>
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.INPGRIDS.html#rompy.swan.components.inpgrid.INPGRIDS.render">[docs]</a>
     <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Override base class to allow rendering list of components.&quot;&quot;&quot;</span>
         <span class="n">cmds</span> <span class="o">=</span> <span class="p">[]</span>
@@ -663,16 +882,12 @@ document.write(`
               
               
               
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
 <div class="prev-next-area">
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -690,8 +905,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="../../../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -717,10 +932,11 @@ document.write(`
     </div>
   
   
+  
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
 </p></div>
       
     </div>

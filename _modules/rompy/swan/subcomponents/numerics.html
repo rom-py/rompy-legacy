@@ -1,0 +1,1117 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rompy.swan.subcomponents.numerics &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/rompy/swan/subcomponents/numerics';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">rompy.swan.s...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for rompy.swan.subcomponents.numerics</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;SWAN numerics subcomponents.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span> <span class="nn">pydantic_numpy.typing</span> <span class="kn">import</span> <span class="n">Np2DArray</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.base</span> <span class="kn">import</span> <span class="n">BaseSubComponent</span>
+
+
+<div class="viewcode-block" id="BSBT">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.BSBT.html#rompy.swan.subcomponents.numerics.BSBT">[docs]</a>
+<span class="k">class</span> <span class="nc">BSBT</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;BSBT first order propagation scheme.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        BSTB</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import BSBT</span>
+<span class="sd">        scheme = BSBT()</span>
+<span class="sd">        print(scheme.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;bsbt&quot;</span><span class="p">,</span> <span class="s2">&quot;BSBT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;bsbt&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="BSBT.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.BSBT.html#rompy.swan.subcomponents.numerics.BSBT.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;BSBT&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="GSE">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.GSE.html#rompy.swan.subcomponents.numerics.GSE">[docs]</a>
+<span class="k">class</span> <span class="nc">GSE</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Garden-sprinkler effect.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        GSE [waveage] Sec|MIn|HR|DAy</span>
+
+<span class="sd">    Garden-sprinkler effect is to be counteracted in the S&amp;L propagation scheme</span>
+<span class="sd">    (default for nonstationary regular grid computations) or in the propagation</span>
+<span class="sd">    scheme for unstructured grids by adding a diffusion term to the basic equation.</span>
+<span class="sd">    This may affect the numerical stability of SWAN.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import GSE</span>
+<span class="sd">        scheme = GSE(waveage=1, units=&quot;day&quot;)</span>
+<span class="sd">        print(scheme.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;gse&quot;</span><span class="p">,</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;gse&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">waveage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;The time interval used to determine the diffusion which counteracts the &quot;</span>
+            <span class="s2">&quot;so-called garden-sprinkler effect. The default value of `waveage` is &quot;</span>
+            <span class="s2">&quot;zero, i.e. no added diffusion. The value of `waveage` should correspond &quot;</span>
+            <span class="s2">&quot;to the travel time of the waves over the computational region.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">units</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sec&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;hr&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;hr&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Units for waveage&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="GSE.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.GSE.html#rompy.swan.subcomponents.numerics.GSE.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;GSE&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">waveage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; waveage=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">waveage</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="STAT">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.STAT.html#rompy.swan.subcomponents.numerics.STAT">[docs]</a>
+<span class="k">class</span> <span class="nc">STAT</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iteration termination for stationary computations.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        STAT [mxitst] [alfa]</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import STAT</span>
+<span class="sd">        stat = STAT()</span>
+<span class="sd">        print(stat.render())</span>
+<span class="sd">        stat = STAT(mxitst=10, alfa=0.1)</span>
+<span class="sd">        print(stat.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;stat&quot;</span><span class="p">,</span> <span class="s2">&quot;STAT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;stat&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">mxitst</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Maximum number of iterations for stationary computations, the &quot;</span>
+            <span class="s2">&quot;computation stops when this number is exceeded (SWAN default: 50)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">alfa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Proportionality constant used in the frequency-dependent under-&quot;</span>
+            <span class="s2">&quot;relaxation technique. Based on experiences, a suggestion for this &quot;</span>
+            <span class="s2">&quot;parameter is `alfa = 0.01`. In case of diffraction computations, the use &quot;</span>
+            <span class="s2">&quot;of this parameter is recommended (SWAN default: 0.00)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="STAT.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.STAT.html#rompy.swan.subcomponents.numerics.STAT.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;STAT&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mxitst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; mxitst=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mxitst</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alfa</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; alfa=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">alfa</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="NONSTAT">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.NONSTAT.html#rompy.swan.subcomponents.numerics.NONSTAT">[docs]</a>
+<span class="k">class</span> <span class="nc">NONSTAT</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iteration termination for nonstationary computations.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        NONSTAT [mxitst]</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import NONSTAT</span>
+<span class="sd">        nonstat = NONSTAT()</span>
+<span class="sd">        print(nonstat.render())</span>
+<span class="sd">        nonstat = NONSTAT(mxitst=3)</span>
+<span class="sd">        print(nonstat.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;nonstat&quot;</span><span class="p">,</span> <span class="s2">&quot;NONSTAT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;nonstat&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">mxitst</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Maximum number of iterations for stationary computations, the &quot;</span>
+            <span class="s2">&quot;computation moves to the next time step when this number is exceeded &quot;</span>
+            <span class="s2">&quot;(SWAN default: 1)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="NONSTAT.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.NONSTAT.html#rompy.swan.subcomponents.numerics.NONSTAT.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;NONSTAT&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mxitst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; mxitst=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mxitst</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="STOPC">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.STOPC.html#rompy.swan.subcomponents.numerics.STOPC">[docs]</a>
+<span class="k">class</span> <span class="nc">STOPC</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop the iterative procedure.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        STOPC [dabs] [drel] [curvat] [npnts] -&gt;STAT|NONSTAT [limiter]</span>
+
+<span class="sd">    With this option the user can influence the criterion for terminating the iterative</span>
+<span class="sd">    procedure in the SWAN computations (both stationary and nonstationary). The</span>
+<span class="sd">    criterion makes use of the second derivative, or curvature, of the iteration curve</span>
+<span class="sd">    of the significant wave height. As the solution of a simulation approaches full</span>
+<span class="sd">    convergence, the curvature of the iteration curve will tend to zero. SWAN stops the</span>
+<span class="sd">    process if the relative change in Hs from one iteration to the next is less than</span>
+<span class="sd">    `drel` and the curvature of the iteration curve of Hs normalized with Hs is less</span>
+<span class="sd">    than `curvat` or the absolute change in Hs from one iteration to the next is less</span>
+<span class="sd">    than `dabs`. Both conditions need to be fulfilled in more than fraction `npnts`</span>
+<span class="sd">    percent of all wet grid points.</span>
+
+<span class="sd">    With respect to the QC modelling, another stopping criteria will be employed.</span>
+<span class="sd">    Namely, SWAN stops the iteration process if the absolute change in Hs from one</span>
+<span class="sd">    iterate to another is less than `dabs` * Hinc, where Hinc is the representative</span>
+<span class="sd">    incident wave height, or the relative change in Hs from one to the next iteration</span>
+<span class="sd">    is less than `drel`. These criteria must be fulfilled in more than `npnts`</span>
+<span class="sd">    percent of all active, well-defined points.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import STOPC</span>
+<span class="sd">        stop = STOPC()</span>
+<span class="sd">        print(stop.render())</span>
+<span class="sd">        stop=STOPC(</span>
+<span class="sd">            dabs=0.005,</span>
+<span class="sd">            drel=0.01,</span>
+<span class="sd">            curvat=0.005,</span>
+<span class="sd">            npnts=99.5,</span>
+<span class="sd">            mode=dict(model_type=&quot;nonstat&quot;, mxitst=1),</span>
+<span class="sd">        )</span>
+<span class="sd">        print(stop.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;stopc&quot;</span><span class="p">,</span> <span class="s2">&quot;STOPC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;stopc&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">dabs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Maximum absolute change in Hs from one iteration to the next &quot;</span>
+            <span class="s2">&quot;(SWAN default: 0.005 [m] or 0.05 [-] in case of QC model)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">drel</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Maximum relative change in Hs from one iteration to the next &quot;</span>
+            <span class="s2">&quot;(SWAN default: 0.01 [-])&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">curvat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Maximum curvature of the iteration curve of Hs normalised with Hs &quot;</span>
+            <span class="s2">&quot;(SWAN default: 0.005 [-] (not used in the QC model))&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">npnts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Percentage of points in the computational grid above which the stopping &quot;</span>
+            <span class="s2">&quot;criteria needs to be satisfied (SWAN default: 99.5 [-])&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">STAT</span><span class="p">,</span> <span class="n">NONSTAT</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Iteration termination criteria for stationary or nonstationary runs&quot;</span>
+        <span class="p">),</span>
+        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">limiter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Determines the maximum change per iteration of the energy density per &quot;</span>
+            <span class="s2">&quot;spectral-bin given in terms of a fraction of the omni-directional &quot;</span>
+            <span class="s2">&quot;Phillips level (SWAN default: 0.1)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="STOPC.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.STOPC.html#rompy.swan.subcomponents.numerics.STOPC.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;STOPC&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dabs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; dabs=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dabs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; drel=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">drel</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">curvat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; curvat=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">curvat</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">npnts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; npnts=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">npnts</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">limiter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; limiter=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">limiter</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DIRIMPL">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.DIRIMPL.html#rompy.swan.subcomponents.numerics.DIRIMPL">[docs]</a>
+<span class="k">class</span> <span class="nc">DIRIMPL</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Numerical scheme for refraction.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        DIRIMPL [cdd]</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import DIRIMPL</span>
+<span class="sd">        dirimpl = DIRIMPL()</span>
+<span class="sd">        print(dirimpl.render())</span>
+<span class="sd">        dirimpl = DIRIMPL(cdd=0.5)</span>
+<span class="sd">        print(dirimpl.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dirimpl&quot;</span><span class="p">,</span> <span class="s2">&quot;DIRIMPL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;dirimpl&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">cdd</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;A value of `cdd=0` corresponds to a central scheme and has the largest &quot;</span>
+            <span class="s2">&quot;accuracy (diffusion ≈ 0) but the computation may more easily generate&quot;</span>
+            <span class="s2">&quot;spurious fluctuations. A value of `cdd=1` corresponds to a first order&quot;</span>
+            <span class="s2">&quot;upwind scheme and it is more diffusive and therefore preferable if &quot;</span>
+            <span class="s2">&quot;(strong) gradients in depth or current are present (SWAN default: 0.5)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="DIRIMPL.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.DIRIMPL.html#rompy.swan.subcomponents.numerics.DIRIMPL.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;DIRIMPL&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cdd=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cdd</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SIGIMPL">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.SIGIMPL.html#rompy.swan.subcomponents.numerics.SIGIMPL">[docs]</a>
+<span class="k">class</span> <span class="nc">SIGIMPL</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Frequency shifting accuracy.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        SIGIMpl [cfl] [eps2] [outp] [niter]</span>
+
+<span class="sd">    Controls the accuracy of computing the frequency shifting and the stopping</span>
+<span class="sd">    criterion and amount of output for the SIP solver (used in the computations in the</span>
+<span class="sd">    presence of currents or time varying depth)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import SIGIMPL</span>
+<span class="sd">        sigimpl = SIGIMPL()</span>
+<span class="sd">        print(sigimpl.render())</span>
+<span class="sd">        sigimpl = SIGIMPL(css=0.5, eps2=1e-4, outp=0, niter=20)</span>
+<span class="sd">        print(sigimpl.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sigimpl&quot;</span><span class="p">,</span> <span class="s2">&quot;SIGIMPL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sigimpl&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">css</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;A value of `css=0` corresponds to a central scheme and has the largest &quot;</span>
+            <span class="s2">&quot;accuracy (diffusion ≈ 0) but the computation may more easily generate &quot;</span>
+            <span class="s2">&quot;spurious fluctuations. A value of `css=1` corresponds to a first order &quot;</span>
+            <span class="s2">&quot;upwind scheme and it is more diffusive and therefore preferable if &quot;</span>
+            <span class="s2">&quot;(strong) gradients in depth or current are present (SWAN default: 0.5)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">eps2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Relative stopping criterion to terminate the linear solver (SIP or SOR). &quot;</span>
+            <span class="s2">&quot;(SWAN default: 1.e-4 in case of SIP and 1.e-6 in case of SOR)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">outp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Output for the iterative solver:</span><span class="se">\n\n</span><span class="s2">* 0 = no output</span><span class="se">\n</span><span class="s2">* 1 = additional &quot;</span>
+            <span class="s2">&quot;information about the iteration process is written to the PRINT file &quot;</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">* 2 = gives a maximal amount of output concerning the iteration &quot;</span>
+            <span class="s2">&quot;process</span><span class="se">\n</span><span class="s2">* 3 = summary of the iteration process</span><span class="se">\n\n</span><span class="s2">(SWAN default: 0)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">niter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Maximum number of iterations for the linear solver (SWAN default: 20 in &quot;</span>
+            <span class="s2">&quot;case of SIP and 1000 in case of SOR)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="SIGIMPL.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.SIGIMPL.html#rompy.swan.subcomponents.numerics.SIGIMPL.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;SIGIMPL&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">css</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; css=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">css</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; eps2=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eps2</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; outp=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">outp</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">niter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; niter=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">niter</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CTHETA">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.CTHETA.html#rompy.swan.subcomponents.numerics.CTHETA">[docs]</a>
+<span class="k">class</span> <span class="nc">CTHETA</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prevents excessive directional turning.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        CTheta [cfl]</span>
+
+<span class="sd">    This option prevents an excessive directional turning at a single grid point or</span>
+<span class="sd">    vertex due to a very coarse bathymetry or current locally. This option limits the</span>
+<span class="sd">    directional turning rate cθ based on the CFL restriction. (See Eq. 3.41 of</span>
+<span class="sd">    Scientific/Technical documentation). See also the final remark in Section 2.6.3.</span>
+<span class="sd">    Note that if this command is not specified, then the limiter is not activated.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import CTHETA</span>
+<span class="sd">        ctheta = CTHETA()</span>
+<span class="sd">        print(ctheta.render())</span>
+<span class="sd">        ctheta = CTHETA(cfl=0.9)</span>
+<span class="sd">        print(ctheta.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;ctheta&quot;</span><span class="p">,</span> <span class="s2">&quot;CTHETA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;ctheta&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">cfl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Upper limit for the CFL restriction for ctheta. A suggestion for this &quot;</span>
+            <span class="s2">&quot;parameter is `cfl = 0.9` (SWAN default: 0.9 when CTHETA is activated)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="CTHETA.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.CTHETA.html#rompy.swan.subcomponents.numerics.CTHETA.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;CTHETA&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cfl=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cfl</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CSIGMA">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.CSIGMA.html#rompy.swan.subcomponents.numerics.CSIGMA">[docs]</a>
+<span class="k">class</span> <span class="nc">CSIGMA</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prevents excessive directional turning.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        CSigma [cfl]</span>
+
+<span class="sd">    This option prevents an excessive frequency shifting at a single grid point or</span>
+<span class="sd">    vertex due to a very coarse bathymetry or current locally. This option limits the</span>
+<span class="sd">    frequency shifting rate csigma based on the CFL restriction. See also the final</span>
+<span class="sd">    remark in Section 2.6.3. Note that if this command is not specified, then the</span>
+<span class="sd">    limiter is not activated.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import CSIGMA</span>
+<span class="sd">        csigma = CSIGMA()</span>
+<span class="sd">        print(csigma.render())</span>
+<span class="sd">        csigma = CSIGMA(cfl=0.9)</span>
+<span class="sd">        print(csigma.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;ctheta&quot;</span><span class="p">,</span> <span class="s2">&quot;CTHETA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;ctheta&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">cfl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Upper limit for the CFL restriction for csigma. A suggestion for this &quot;</span>
+            <span class="s2">&quot;parameter is `cfl = 0.9` (SWAN default: 0.9 when CSIGMA is activated)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="CSIGMA.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.CSIGMA.html#rompy.swan.subcomponents.numerics.CSIGMA.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;CSIGMA&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cfl=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cfl</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SETUP">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.SETUP.html#rompy.swan.subcomponents.numerics.SETUP">[docs]</a>
+<span class="k">class</span> <span class="nc">SETUP</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop criteria in the computation of wave setup.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        SETUP [eps2] [outp] [niter]</span>
+
+<span class="sd">    Controls the stopping criterion and amount of output for the SOR solver in the</span>
+<span class="sd">    computation of the wave-induced set-up.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.numerics import SETUP</span>
+<span class="sd">        setup = SETUP()</span>
+<span class="sd">        print(setup.render())</span>
+<span class="sd">        setup = SETUP(eps2=1e-4, outp=0, niter=20)</span>
+<span class="sd">        print(setup.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;setup&quot;</span><span class="p">,</span> <span class="s2">&quot;SETUP&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;setup&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">eps2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Relative stopping criterion to terminate the linear solver (SIP or SOR). &quot;</span>
+            <span class="s2">&quot;(SWAN default: 1.e-4 in case of SIP and 1.e-6 in case of SOR)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">outp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Output for the iterative solver:</span><span class="se">\n\n</span><span class="s2">* 0 = no output</span><span class="se">\n</span><span class="s2">* 1 = additional &quot;</span>
+            <span class="s2">&quot;information about the iteration process is written to the PRINT file &quot;</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">* 2 = gives a maximal amount of output concerning the iteration process &quot;</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">* 3 = summary of the iteration process</span><span class="se">\n\n</span><span class="s2">(SWAN default: 0)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">niter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Maximum number of iterations for the linear solver (SWAN default: 20 in &quot;</span>
+            <span class="s2">&quot;case of SIP and 1000 in case of SOR)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="SETUP.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.SETUP.html#rompy.swan.subcomponents.numerics.SETUP.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;SETUP&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; eps2=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eps2</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; outp=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">outp</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">niter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; niter=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">niter</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
