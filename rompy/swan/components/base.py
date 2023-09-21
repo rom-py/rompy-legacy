@@ -3,9 +3,8 @@
 How to subclass
 ---------------
 
-- Define a new `model_type` Literal for the subclass (set the default value to avoid
-  having to set it when instantiating the object)
-- Overwrite the cmd method to return the SWAN input file string
+* Define a new `model_type` Literal for the subclass
+* Overwrite the `cmd` method to return the SWAN input file string
 
 """
 import logging
@@ -36,8 +35,8 @@ def split_string(cmd: str, max_length: int = MAX_LENGTH, spaces: int = 4) -> lis
 
     Returns
     -------
-    list
-        Split string.
+    split_cmd: list
+        List of split CMD strings.
 
     """
     if len(cmd) <= max_length:
@@ -54,15 +53,12 @@ def split_string(cmd: str, max_length: int = MAX_LENGTH, spaces: int = 4) -> lis
 class BaseComponent(RompyBaseModel):
     """Base class for SWAN components.
 
-    Parameters
-    ----------
-    model_type: Literal["component"]
-        Model type discriminator.
+    This class is not intended to be used directly, but to be subclassed by other
+    SWAN components to implement the following common behaviour:
 
-    Behaviour
-    ---------
-    - Define a render method to render the component to a cmd string.
-    - Restrict arguments to the defined ones.
+    * Define a `render()` method to render a CMD string from the component
+    * Split the rendered CMD if longer than 132 characters
+    * Forbid extra arguments so only implemented fields must be specified
 
     """
 

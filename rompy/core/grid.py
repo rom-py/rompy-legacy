@@ -14,11 +14,12 @@ logger = logging.getLogger(__name__)
 
 class BaseGrid(RompyBaseModel):
     """
-    An object which provides an abstract representation of a grid in some geographic space
+    Abstract representation of a grid in geographic space
 
-    This is the base class for all Grid objects. The minimum representation of a grid are two
-    NumPy array's representing the vertices or nodes of some structured or unstructured grid,
-    its bounding box and a boundary polygon. No knowledge of the grid connectivity is expected.
+    This is the base class for all Grid objects. The minimum representation of a grid
+    are two NumPy array's representing the vertices or nodes of some structured or
+    unstructured grid, its bounding box and a boundary polygon. No knowledge of the
+    grid connectivity is expected.
 
     """
 

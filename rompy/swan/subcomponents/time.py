@@ -23,11 +23,15 @@ TIME_FORMATS = {
 class NONSTATIONARY(BaseSubComponent):
     """SWAN Nonstationary specification.
 
-    `NONSTATIONARY [tbeg] [delt] SEC|MIN|HR|DAY [tend]`
+    .. code-block:: text
+
+        NONSTATIONARY [tbeg] [delt] SEC|MIN|HR|DAY [tend]
 
     Notes
     -----
-    Format to render time specification:
+
+    Format to render time specification
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     * 1: ISO-notation 19870530.153000
     * 2: (as in HP compiler) '30-May-87 15:30:00'
@@ -36,25 +40,51 @@ class NONSTATIONARY(BaseSubComponent):
     * 5: 87/05/30 15:30:00'
     * 6: as in WAM 8705301530
 
-    The datetime types can be specified as:
+    The datetime types can be specified as
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     * existing datetime object
     * int or float, assumed as Unix time, i.e. seconds (if >= -2e10 or <= 2e10) or
       milliseconds (if < -2e10 or > 2e10) since 1 January 1970.
     * ISO 8601 time string.
 
-    The timedelta type can be specified as:
+    The timedelta type can be specified as
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     * existing timedelta object
     * int or float, assumed as seconds
     * ISO 8601 duration string, following formats work:
 
-      - `[-][DD ][HH:MM]SS[.ffffff]`
-      - `[±]P[DD]DT[HH]H[MM]M[SS]S` (ISO 8601 format for timedelta)
+      * `[-][DD ][HH:MM]SS[.ffffff]`
+      * `[±]P[DD]DT[HH]H[MM]M[SS]S` (ISO 8601 format for timedelta)
+
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.subcomponents.time import NONSTATIONARY
+        nonstat = NONSTATIONARY(
+            tbeg="2012-01-01T00:00:00",
+            tend="2012-02-01T00:00:00",
+            delt="PT1H",
+            deltfmt="hr",
+        )
+        print(nonstat.render())
+        import datetime
+        nonstat = NONSTATIONARY(
+            tbeg=datetime.datetime(1990, 1, 1),
+            tend=datetime.datetime(1990, 1, 7),
+            delt=datetime.timedelta(minutes=30),
+            deltfmt="min",
+        )
+        print(nonstat.render())
 
     """
 
-    model_type: Literal["nonstationary"] = Field(
+    model_type: Literal["nonstationary", "NONSTATIONARY"] = Field(
         default="nonstationary", description="Model type discriminator"
     )
     tbeg: datetime = Field(description="Begin time of the first field of the variable")

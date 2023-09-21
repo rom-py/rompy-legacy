@@ -66,9 +66,7 @@ class GEN1(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import GEN1
-
         gen = GEN1()
         print(gen.render())
         kwargs = dict(
@@ -172,9 +170,7 @@ class GEN2(GEN1):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import GEN2
-
         gen = GEN2()
         print(gen.render())
         kwargs = dict(
@@ -255,9 +251,7 @@ class GEN3(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import GEN3
-
         gen = GEN3(
             source_terms=dict(
                 model_type="westhuysen",
@@ -321,9 +315,7 @@ class NEGATINP(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import NEGATINP
-
         negatinp = NEGATINP()
         print(negatinp.render())
         negatinp = NEGATINP(rdcoef=0.04)
@@ -370,9 +362,7 @@ class SSWELL_ROGERS(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import SSWELL_ROGERS
-
         sswell = SSWELL_ROGERS()
         print(sswell.render())
         sswell = SSWELL_ROGERS(cdsv=1.2, feswell=0.5)
@@ -426,9 +416,7 @@ class SSWELL_ARDHUIN(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import SSWELL_ARDHUIN
-
         sswell = SSWELL_ARDHUIN()
         print(sswell.render())
         sswell = SSWELL_ARDHUIN(cdsv=1.2)
@@ -484,9 +472,7 @@ class SSWELL_ZIEGER(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import SSWELL_ZIEGER
-
         sswell = SSWELL_ZIEGER()
         print(sswell.render())
         sswell = SSWELL_ZIEGER(b1=0.00025)
@@ -540,9 +526,7 @@ class WCAPPING_KOMEN(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import WCAPPING_KOMEN
-
         wcapping = WCAPPING_KOMEN()
         print(wcapping.render())
         wcapping = WCAPPING_KOMEN(cds2=2.36e-5, stpm=3.02e-3, powst=2, delta=1, powk=2)
@@ -625,9 +609,7 @@ class WCAPPING_AB(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import WCAPPING_AB
-
         wcapping = WCAPPING_AB()
         print(wcapping.render())
         wcapping = WCAPPING_AB(cds2=5.0e-5, br=1.75e-3, current=True, cds3=0.8)
@@ -704,9 +686,7 @@ class QUADRUPL(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import QUADRUPL
-
         quadrupl = QUADRUPL()
         print(quadrupl.render())
         kwargs = dict(
@@ -803,9 +783,7 @@ class BREAKING_CONSTANT(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import BREAKING_CONSTANT
-
         breaking = BREAKING_CONSTANT()
         print(breaking.render())
         breaking = BREAKING_CONSTANT(alpha=1.0, gamma=0.73)
@@ -858,9 +836,7 @@ class BREAKING_BKD(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import BREAKING_BKD
-
         breaking = BREAKING_BKD()
         print(breaking.render())
         breaking = BREAKING_BKD(alpha=1.0, gamma0=0.54, a1=7.59, a2=-8.06, a3=8.09)
@@ -946,9 +922,7 @@ class FRICTION_JONSWAP(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import FRICTION_JONSWAP
-
         friction = FRICTION_JONSWAP()
         print(friction.render())
         friction = FRICTION_JONSWAP(cfjon=0.038)
@@ -999,9 +973,7 @@ class FRICTION_COLLINS(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import FRICTION_COLLINS
-
         friction = FRICTION_COLLINS()
         print(friction.render())
         friction = FRICTION_COLLINS(cfw=0.038)
@@ -1053,9 +1025,7 @@ class FRICTION_MADSEN(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import FRICTION_MADSEN
-
         friction = FRICTION_MADSEN()
         print(friction.render())
         friction = FRICTION_MADSEN(kn=0.038)
@@ -1106,9 +1076,7 @@ class FRICTION_RIPPLES(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import FRICTION_RIPPLES
-
         friction = FRICTION_RIPPLES()
         print(friction.render())
         friction = FRICTION_RIPPLES(s=2.65, d=0.0001)
@@ -1157,9 +1125,7 @@ class TRIAD(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import TRIAD
-
         triad = TRIAD()
         print(triad.render())
         triad = TRIAD(biphase=dict(model_type="eldeberky", urcrit=0.63))
@@ -1206,9 +1172,7 @@ class TRIAD_DCTA(TRIAD):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import TRIAD_DCTA
-
         triad = TRIAD_DCTA()
         print(triad.render())
         triad = TRIAD_DCTA(
@@ -1281,9 +1245,7 @@ class TRIAD_LTA(TRIAD):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import TRIAD_LTA
-
         triad = TRIAD_LTA()
         print(triad.render())
         triad = TRIAD_LTA(
@@ -1346,9 +1308,7 @@ class TRIAD_SPB(TRIAD):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import TRIAD_SPB
-
         triad = TRIAD_SPB()
         print(triad.render())
         triad = TRIAD_SPB(
@@ -1453,9 +1413,7 @@ class VEGETATION(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import VEGETATION
-
         # Single layer
         vegetation = VEGETATION(
             height=1.2,
@@ -1466,7 +1424,7 @@ class VEGETATION(BaseComponent):
         print(vegetation.render())
         # 2 vertical layers
         vegetation = VEGETATION(
-            iveg=2,
+            iveg=1,
             height=[1.2, 0.8],
             diamtr=[0.1, 0.1],
             drag=[0.5, 0.5],
@@ -1567,9 +1525,7 @@ class MUD(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import MUD
-
         mud = MUD()
         print(mud.render())
         mud = MUD(
@@ -1665,9 +1621,7 @@ class SICE(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import SICE
-
         sice = SICE()
         print(sice.render())
         sice = SICE(aice=0.5)
@@ -1731,9 +1685,7 @@ class SICE_R19(SICE):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import SICE_R19
-
         sice = SICE_R19()
         print(sice.render())
         kwargs = dict(
@@ -1844,9 +1796,7 @@ class SICE_D15(SICE):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import SICE_D15
-
         sice = SICE_D15()
         print(sice.render())
         sice = SICE_D15(aice=0.2, chf=0.1)
@@ -1890,9 +1840,7 @@ class SICE_M18(SICE):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import SICE_M18
-
         sice = SICE_M18()
         print(sice.render())
         sice = SICE_M18(aice=0.8, chf=0.059)
@@ -1936,9 +1884,7 @@ class SICE_R21B(SICE):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import SICE_R21B
-
         sice = SICE_R21B()
         print(sice.render())
         sice = SICE_R21B(aice=0.8, chf=2.9, npf=4.5)
@@ -1994,9 +1940,7 @@ class TURBULENCE(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import TURBULENCE
-
         turbulence = TURBULENCE(current=False)
         print(turbulence.render())
         turbulence = TURBULENCE(ctb=0.01, current=True, tbcur=0.004)
@@ -2099,9 +2043,7 @@ class BRAGG(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import BRAGG
-
         bragg = BRAGG(nreg=200)
         print(bragg.render())
         bragg = BRAGG(ibrag=1, nreg=200, cutoff=5.0)
@@ -2121,7 +2063,7 @@ class BRAGG(BaseComponent):
             "term is calculated per sweep and bottom spectrum is interpolated at the "
             "difference wave number per sweep (no storage)\n* 3: source term is "
             "calculated per iteration and bottom spectrum is interpolated at the "
-            "difference wave number per iteration (no storage)\n(SWAN default: 1)"
+            "difference wave number per iteration (no storage)\n\n(SWAN default: 1)"
         ),
     )
     nreg: int = Field(
@@ -2174,9 +2116,7 @@ class BRAGG_FT(BRAGG):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import BRAGG_FT
-
         bragg = BRAGG_FT(nreg=350)
         print(bragg.render())
         bragg = BRAGG_FT(ibrag=2, nreg=350, cutoff=5.0)
@@ -2213,9 +2153,7 @@ class BRAGG_FILE(BRAGG):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import BRAGG_FILE
-
         bragg = BRAGG_FILE(fname="bottom_spectrum.txt", nreg=500, mkx=99, dkx=0.1)
         print(bragg.render())
         kwargs = dict(
@@ -2308,9 +2246,7 @@ class LIMITER(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import LIMITER
-
         limiter = LIMITER()
         print(limiter.render())
         limiter = LIMITER(ursell=10.0, qb=1.0)
@@ -2388,9 +2324,7 @@ class OBSTACLE(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import OBSTACLE
-
         obs = OBSTACLE(
             transmission=dict(model_type="transm", trcoef=0.5),
             reflection=dict(reflc=0.5),
@@ -2420,7 +2354,7 @@ class OBSTACLE(BaseComponent):
 
     def cmd(self) -> str:
         """Command file string for this component."""
-        repr = f"OBSTACLE"
+        repr = "OBSTACLE"
         if self.transmission is not None:
             repr += f" {self.transmission.render()}"
         if self.reflection:
@@ -2481,9 +2415,7 @@ class OBSTACLE_FIG(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import OBSTACLE_FIG
-
         obs = OBSTACLE_FIG(
             alpha1=5e-4,
             hss=2.5,
@@ -2561,9 +2493,7 @@ class OBSTACLES(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
-        from rompy.swan.components.physics import OBSTACLES
-        from rompy.swan.components.physics import OBSTACLE, OBSTACLE_FIG
+        from rompy.swan.components.physics import OBSTACLES, OBSTACLE, OBSTACLE_FIG
         obst1 = dict(
             model_type="obstacle",
             reflection=dict(reflc=1.0),
@@ -2636,9 +2566,7 @@ class SETUP(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import SETUP
-
         setup = SETUP()
         print(setup.render())
         setup = SETUP(supcor=0.5)
@@ -2705,9 +2633,7 @@ class DIFFRACTION(BaseComponent):
 
     .. ipython:: python
 
-        @suppress
         from rompy.swan.components.physics import DIFFRACTION
-
         diffraction = DIFFRACTION()
         print(diffraction.render())
         diffraction = DIFFRACTION(idiffr=True, smpar=0.0, smnum=1.0)
@@ -2790,9 +2716,7 @@ class SURFBEAT(BaseComponent):
 
     .. ipython:: python
 
-        @suppress
         from rompy.swan.components.physics import SURFBEAT
-
         surfbeat = SURFBEAT()
         print(surfbeat.render())
         surfbeat = SURFBEAT(df=0.01, nmax=50000, emin=0.05, spacing="logarithmic")
@@ -2895,9 +2819,7 @@ class SCAT(BaseComponent):
 
     .. ipython:: python
 
-        @suppress
         from rompy.swan.components.physics import SCAT
-
         scat = SCAT()
         print(scat.render())
         scat = SCAT(iqcm=2, rfac=1.0, alpha=1.0)
@@ -2911,11 +2833,11 @@ class SCAT(BaseComponent):
     iqcm: Optional[Literal[0, 1, 2]] = Field(
         default=None,
         description=(
-            "Indicates the modelling and computation of QC scattering:\n\n*0: no "
-            "scattering\n*1: scattering due to non-uniform bathymetry and currents "
-            "(the latter only if applicable; see command `INPGRID CURRENT`)\*2: "
+            "Indicates the modelling and computation of QC scattering:\n\n* 0: no "
+            "scattering\n* 1: scattering due to non-uniform bathymetry and currents "
+            "(the latter only if applicable; see command `INPGRID CURRENT`)\n* 2: "
             "wave-current interaction under the assumption of a slowly varying "
-            "bathymetry\n(SWAN default: 1)"
+            "bathymetry\n\n(SWAN default: 1)"
         ),
     )
     rfac: Optional[float] = Field(
@@ -2982,9 +2904,7 @@ class OFF(BaseComponent):
 
     .. ipython:: python
 
-        @suppress
         from rompy.swan.components.physics import OFF
-
         off = OFF(physics="windgrowth")
         print(off.render())
 
@@ -3022,7 +2942,6 @@ class DEACTIVATE(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import DEACTIVATE
         off1 = dict(physics="windgrowth")
         off2 = dict(physics="wcapping")
@@ -3120,9 +3039,7 @@ class PHYSICS(BaseComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.components.physics import PHYSICS
-
         gen = {"model_type": "gen3", "source_terms": {"model_type": "komen"}}
         phys = PHYSICS(gen=gen)
         print(phys.render())

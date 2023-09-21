@@ -3,7 +3,7 @@ from enum import Enum, IntEnum
 
 
 class IDLA(IntEnum):
-    """Prescribes the order in which the values should be given in the input files.
+    """Order of values in the input files.
 
     Attributes
     ----------

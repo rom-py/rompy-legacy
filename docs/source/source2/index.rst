@@ -1,8 +1,4 @@
-.. rompy documentation master file, created by
-   sphinx-quickstart on Tue Feb  9 21:11:02 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
+=================================
 Welcome to rompy's documentation!
 =================================
 
@@ -32,14 +28,15 @@ The final main component of the library is an intake driver that builds on the i
 
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Contents:
-   
-   quickstart.rst
-   core_concepts.rst
-   api.rst
-   demo.rst
-   components.rst
+    :hidden:
+    :maxdepth: 4
+
+    Home <self>
+    quickstart
+    core_concepts
+    models
+    demo
+    api
 
 Indices and tables
 ==================

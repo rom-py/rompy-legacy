@@ -1,8 +1,6 @@
-.. currentmodule:: rompy
-
-================
-Model Components
-================
+====
+SWAN
+====
 
 The SWAN command instructions are described in Rompy by a set of pydantic models
 defined as `components`. Each component defines a full command instruction such
@@ -31,11 +29,24 @@ TODO: Ensure the `model_type` is shown next to each class in the autosummaries.
 
 TODO: Fix broken links to classes and modules.
 
+
 Components
 ----------
 
 Components are defined within the :py:mod:`rompy.swan.components` subpackage and
 render an entire SWAN command line specification. The following modules are available:
+
+.. toctree::
+    :hidden:
+
+    components/startup
+    components/cgrid
+    components/inpgrid
+    components/boundary
+    components/physics
+    components/numerics
+    components/output
+    components/lockup
 
 * :doc:`components/startup`
 * :doc:`components/cgrid`
@@ -54,20 +65,39 @@ Subcomponents are defined within the :py:mod:`rompy.swan.subcomponents` subpacka
 and render part of a SWAN command line specification. They typically define specific
 arguments to one or more component. The following modules are available:
 
+.. toctree::
+    :hidden:
+
+    subcomponents/startup
+    subcomponents/spectrum
+    subcomponents/time
+    subcomponents/cgrid
+    subcomponents/readgrid
+    subcomponents/boundary
+    subcomponents/physics
+    subcomponents/numerics
+
 * :doc:`subcomponents/startup`
 * :doc:`subcomponents/spectrum`
-* :doc:`subcomponents/cgrid`
 * :doc:`subcomponents/time`
+* :doc:`subcomponents/cgrid`
 * :doc:`subcomponents/readgrid`
 * :doc:`subcomponents/boundary`
 * :doc:`subcomponents/physics`
+* :doc:`subcomponents/numerics`
 
 
-SWAN Types
-----------
+Types
+-----
 
 SWAN types provide valid values for a specific SWAN command line argument.
 
-* :doc:`swan/types`
+.. toctree::
+    :hidden:
+
+    types
+
+* :doc:`types`
+
 
 .. _`Literal`: https://docs.python.org/3/library/typing.html#typing.Literal

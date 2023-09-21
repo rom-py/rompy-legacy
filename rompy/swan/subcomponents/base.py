@@ -9,10 +9,11 @@ from rompy.core import RompyBaseModel
 class BaseSubComponent(RompyBaseModel, ABC):
     """Base class for SWAN sub-components.
 
-    Behaviour
-    ---------
-    - Define a render method to render the component to a cmd string.
-    - Restrict arguments to the defined ones.
+    This class is not intended to be used directly, but to be subclassed by other
+    SWAN sub-components to implement the following common behaviour:
+
+    * Define a `render()` method to render a CMD string from the subcomponent
+    * Forbid extra arguments so only implemented fields must be specified
 
     """
 

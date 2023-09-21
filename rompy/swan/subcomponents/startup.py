@@ -8,14 +8,27 @@ from rompy.swan.subcomponents.base import BaseSubComponent
 class CARTESIAN(BaseSubComponent):
     """Cartesian coordinates.
 
-    `CARTESIAN`
+    .. code-block:: text
+
+        CARTESIAN
 
     All locations and distances are in m. Coordinates are given with respect
     to x- and y-axes chosen by the user in the various commands.
 
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.startup import CARTESIAN
+        coords = CARTESIAN()
+        print(coords.render())
+
     """
 
-    model_type: Literal["cartesian"] = Field(
+    model_type: Literal["cartesian", "CARTESIAN"] = Field(
         default="cartesian", description="Model type discriminator"
     )
 
@@ -23,17 +36,20 @@ class CARTESIAN(BaseSubComponent):
 class SPHERICAL(BaseSubComponent):
     """Spherical coordinates.
 
-    `SPHERICAL [CCM|QC]`
+    .. code-block:: text
+
+        SPHERICAL [->CCM|QC]
 
     Notes
     -----
+
     projection options:
 
-    - CCM: central conformal Mercator. The horizontal and vertical scales are
+    * CCM: central conformal Mercator. The horizontal and vertical scales are
       uniform in terms of cm/degree over the area shown. In the centre of the scale
       is identical to that of the conventional Mercator projection (but only at
       that centre). The area in the projection centre is therefore exactly conformal.
-    - QC: the projection method is quasi-cartesian, i.e. the horizontal and vertical
+    * QC: the projection method is quasi-cartesian, i.e. the horizontal and vertical
       scales are equal to one another in terms of cm/degree.
 
     All coordinates of locations and geographical grid sizes are given in degrees;`x`
@@ -46,17 +62,33 @@ class SPHERICAL(BaseSubComponent):
     or 20 km horizontal dimension. This may be useful if one obtains the boundary
     conditions by nesting in an oceanic model which is naturally formulated in
     spherical coordinates. Note that in case of spherical coordinates regular grids
-    must always be oriented E-W, N-S, i.e. `alpc`=0`, `alpinp`=0`, `alpfr`=0`
+    must always be oriented E-W, N-S, i.e. `alpc=0`, `alpinp=0`, `alpfr=0`
     (see commands CGRID, INPUT GRID and FRAME, respectively).
+
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.startup import SPHERICAL
+        coords = SPHERICAL()
+        print(coords.render())
+        coords = SPHERICAL(projection="qc")
+        print(coords.render())
 
     """
 
-    model_type: Literal["spherical"] = Field(
+    model_type: Literal["spherical", "SPHERICAL"] = Field(
         default="spherical", description="Model type discriminator"
     )
     projection: Literal["ccm", "qc"] = Field(
         default="ccm",
-        description="Defines the projection method in case of spherical coordinates",
+        description=(
+            "Defines the projection method in case of spherical coordinates, `ccm` "
+            "Central Conformal Mercator, `qc` means Quasi-cartesian"
+        ),
     )
 
     def cmd(self) -> str:

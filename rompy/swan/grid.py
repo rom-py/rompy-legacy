@@ -7,10 +7,7 @@ from rompy.core.grid import RegularGrid
 
 
 class SwanGrid(RegularGrid):
-    """
-    An object which provides an abstract representation of a regular SWAN
-    grid in some geographic space
-    """
+    """Abstract representation of a regular SWAN spatial grid."""
 
     grid_type: Literal["REG", "CURV"] = Field(
         "REG", description="Type of grid (REG=regular, CURV=curvilinear)"

@@ -13,9 +13,18 @@ logger = logging.getLogger(__name__)
 
 
 class CGRID(BaseComponent, ABC):
-    """SWAN computational grid base component."""
+    """SWAN computational grid abstract component.
 
-    model_type: Literal["cgrid"] = Field(
+    .. code-block:: text
+
+        CGRID ->REGULAR|CURVILINEAR|UNSTRUCTURED &
+            CIRCLE|SECTOR [mdc] [flow] [fhigh] [msc]
+
+    This class should not be used directly.
+
+    """
+
+    model_type: Literal["cgrid", "CGRID"] = Field(
         default="cgrid", description="Model type discriminator"
     )
     spectrum: SPECTRUM = Field(description="Spectrum subcomponent")
@@ -28,25 +37,50 @@ class CGRID(BaseComponent, ABC):
 class REGULAR(CGRID):
     """SWAN regular computational grid.
 
-    `CGRID REGULAR [xpc] [ypc] [alpc] [xlenc] [ylenc] [mxc] [myc] CIRCLE|SECTOR ([dir1] [dir2]) [mdc] [flow] [fhigh] [msc]`
+    .. code-block:: text
+
+        CGRID REGULAR [xpc] [ypc] [alpc] [xlenc] [ylenc] [mxc] [myc] &
+            ->CIRCLE|SECTOR [mdc] [flow] [fhigh] [msc]
+
+    This is a group component that includes a `CGRID` and a `READGRID` component.
+
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.cgrid import REGULAR
+        cgrid = REGULAR(
+            xpc=0.0,
+            ypc=0.0,
+            alpc=0.0,
+            xlenc=2000.0,
+            ylenc=1300.0,
+            mxc=100,
+            myc=100,
+            spectrum=dict(mdc=36, flow=0.04, fhigh=1.0),
+        )
+        print(cgrid.render())
 
     """
 
-    model_type: Literal["regular"] = Field(
+    model_type: Literal["regular", "REGULAR"] = Field(
         default="regular", description="Model type discriminator"
     )
     xpc: float = Field(
         default=0.0,
         description=(
             "Geographic location of the origin of the computational grid in the "
-            "problem coordinate system (x-coordinate, in m)."
+            "problem coordinate system (x-coordinate, in m)"
         ),
     )
     ypc: float = Field(
         default=0.0,
         description=(
             "Geographic location of the origin of the computational grid in the "
-            "problem coordinate system (y-coordinate, in m)."
+            "problem coordinate system (y-coordinate, in m)"
         ),
     )
     alpc: float = Field(
@@ -54,33 +88,33 @@ class REGULAR(CGRID):
         description=(
             "Direction of the positive x-axis of the computational grid (in degrees, "
             "Cartesian convention). In 1D-mode, `alpc` should be equal to the "
-            "direction `alpinp`."
+            "direction `alpinp`"
         ),
     )
     xlenc: float = Field(
         description=(
             "Length of the computational grid in x-direction (in m). In case of "
-            "spherical coordinates `xlenc` is in degrees."
+            "spherical coordinates `xlenc` is in degrees"
         ),
     )
     ylenc: float = Field(
         description=(
             "Length of the computational grid in y-direction (in m). In 1D-mode, "
             "`ylenc` should be 0. In case of spherical coordinates `ylenc` is in "
-            "degrees."
+            "degrees"
         ),
     )
     mxc: int = Field(
         description=(
             "Number of meshes in computational grid in x-direction (this number is "
-            "one less than the number of grid points in this domain)."
+            "one less than the number of grid points in this domain)"
         ),
     )
     myc: int = Field(
         description=(
             "Number of meshes in computational grid in y-direction (this number is "
             "one less than the number of grid points in this domain). In 1D-mode, "
-            "`myc` should be 0."
+            "`myc` should be 0"
         ),
     )
 
@@ -96,12 +130,34 @@ class REGULAR(CGRID):
 class CURVILINEAR(CGRID):
     """SWAN curvilinear computational grid.
 
-    `CGRID CURVILINEAR [mxc] [myc] (EXCEPTION [xexc] [yexc]) CIRCLE|SECTOR ([dir1] [dir2]) [mdc] [flow] [fhigh] [msc]`
-    `READGRID COORDINATES [fac] 'fname' [idla] [nhedf] [nhedvec] FREE|FORMAT ('form'|[idfm])`
+    .. code-block:: text
+
+        CGRID CURVILINEAR [mxc] [myc] (EXCEPTION [xexc] [yexc])
+            ->CIRCLE|SECTOR [mdc] [flow] [fhigh] [msc]
+        READGRID COORDINATES [fac] 'fname' [idla] [nhedf] [nhedvec] &
+            FREE|FORMAT ('form'|[idfm])
+
+    This is a group component that includes a `CGRID` and a `READGRID` component.
+
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.cgrid import CURVILINEAR
+        cgrid = CURVILINEAR(
+            mxc=199,
+            myc=199,
+            readcoord=dict(fname="./coords.txt"),
+            spectrum=dict(mdc=36, flow=0.04, fhigh=1.0),
+        )
+        print(cgrid.render())
 
     """
 
-    model_type: Literal["curvilinear"] = Field(
+    model_type: Literal["curvilinear", "CURVILINEAR"] = Field(
         default="curvilinear", description="Model type discriminator"
     )
     mxc: int = Field(
@@ -175,8 +231,26 @@ class CURVILINEAR(CGRID):
 class UNSTRUCTURED(CGRID):
     """SWAN unstructured computational grid.
 
-    `CGRID UNSTRUCTURED CIRCLE|SECTOR ([dir1] [dir2]) [mdc] [flow] [fhigh] [msc]`
-    `READGRID UNSTRUCTURED [grid_type] ('fname')`
+    .. code-block:: text
+
+        CGRID UNSTRUCTURED CIRCLE|SECTOR [mdc] [flow] [fhigh] [msc]
+        READGRID UNSTRUCTURED [grid_type] ('fname')
+
+    This is a group component that includes a `CGRID` and a `READGRID` component.
+
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.cgrid import UNSTRUCTURED
+        cgrid = UNSTRUCTURED(
+            grid_type="adcirc",
+            spectrum=dict(mdc=36, flow=0.04, fhigh=1.0),
+        )
+        print(cgrid.render())
 
     """
 
@@ -203,8 +277,8 @@ class UNSTRUCTURED(CGRID):
         return self
 
     def cmd(self) -> str:
-        repr = f"CGRID UNSTRUCTURED {self.spectrum.cmd()}"
-        repr += f"\nREADGRID UNSTRUCTURED {self.grid_type.upper()}"
+        repr = [f"CGRID UNSTRUCTURED {self.spectrum.cmd()}"]
+        repr += [f"READGRID UNSTRUCTURED {self.grid_type.upper()}"]
         if self.grid_type in ["triangle", "easymesh"]:
-            repr += f" fname='{self.fname}'"
+            repr[-1] += f" fname='{self.fname}'"
         return repr

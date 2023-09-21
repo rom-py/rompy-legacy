@@ -52,6 +52,7 @@ class OutputLocs(RompyBaseModel):
 
 
 class ForcingData(RompyBaseModel):
+    """SWAN forcing data."""
     bottom: SwanDataGrid | None = Field(None, description="Bathymetry data for SWAN")
     wind: SwanDataGrid | None = Field(None, description="The wind data for SWAN.")
     current: SwanDataGrid | None = Field(None, description="The current data for SWAN.")
@@ -159,19 +160,6 @@ class GridOutput(RompyBaseModel):
 
 class SpecOutput(RompyBaseModel):
     """Spectral outputs for SWAN"""
-
-    period: TimeRange | None = None
-    locations: OutputLocs = OutputLocs(coords=[])  # TODO change to None
-
-    def __str__(self):
-        ret = "\tSpec\n"
-        if self.period:
-            ret += f"\tperiod: {self.period}\n"
-        ret += f"\tlocations: {self.locations}\n"
-        return ret
-
-
-class SpecOutput(RompyBaseModel):
     period: Optional[TimeRange] = Field(
         None, description="Time range for which the spectral outputs are requested"
     )

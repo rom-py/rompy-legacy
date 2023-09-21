@@ -8,9 +8,6 @@ import numpy as np
 from rompy.swan.subcomponents.base import BaseSubComponent
 
 
-JSON_ENCODERS = {np.ndarray: lambda arr: arr.tolist()}
-
-
 # ======================================================================================
 # Source terms
 # ======================================================================================
@@ -60,9 +57,7 @@ class JANSSEN(SourceTerms):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import JANSSEN
-
         janssen = JANSSEN()
         print(janssen.render())
         janssen = JANSSEN(cds1=4.5, delta=0.5, agrow=True)
@@ -121,9 +116,7 @@ class KOMEN(SourceTerms):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import KOMEN
-
         komen = KOMEN()
         print(komen.render())
         komen = KOMEN(cds2=2.36e-5, stpm=3.02e-3, agrow=True, a=0.0015)
@@ -191,9 +184,7 @@ class WESTHUYSEN(SourceTerms):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import WESTHUYSEN
-
         westhuysen = WESTHUYSEN()
         print(westhuysen.render())
         westhuysen = WESTHUYSEN(cds2=5.0e-5, br=1.75e-3)
@@ -263,9 +254,7 @@ class ST6(SourceTerms):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import ST6
-
         st6 = ST6(a1sds=4.7e-7, a2sds=6.6e-6)
         print(st6.render())
         kwargs = dict(
@@ -395,9 +384,7 @@ class ST6C1(ST6):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import ST6C1
-
         st6 = ST6C1()
         print(st6.render())
 
@@ -426,9 +413,7 @@ class ST6C2(ST6C1):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import ST6C2
-
         st6 = ST6C2()
         print(st6.render())
 
@@ -454,9 +439,7 @@ class ST6C3(ST6C1):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import ST6C3
-
         st6 = ST6C3()
         print(st6.render())
 
@@ -482,9 +465,7 @@ class ST6C4(ST6C3):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import ST6C4
-
         st6 = ST6C4()
         print(st6.render())
 
@@ -498,6 +479,7 @@ class ST6C5(ST6C1):
     """Fifth ST6 calibration in the SWAN user manual.
 
     .. code-block:: text
+
         ST6 4.7e-7 6.6e-6 4.0 4.0 UP HWANG VECTAU U10PROXY 28.0 AGROW
 
     Examples
@@ -507,9 +489,7 @@ class ST6C5(ST6C1):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import ST6C5
-
         st6 = ST6C5()
         print(st6.render())
 
@@ -555,9 +535,7 @@ class ELDEBERKY(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import ELDEBERKY
-
         biphase = ELDEBERKY()
         print(biphase.render())
         biphase = ELDEBERKY(urcrit=0.63)
@@ -607,9 +585,7 @@ class DEWIT(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import DEWIT
-
         biphase = DEWIT()
         print(biphase.render())
         biphase = DEWIT(lpar=0.0)
@@ -653,9 +629,7 @@ class TRANSM(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import TRANSM
-
         transm = TRANSM()
         print(transm.render())
         transm = TRANSM(trcoef=0.5)
@@ -699,9 +673,7 @@ class TRANS1D(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import TRANS1D
-
         transm = TRANS1D(trcoef=[0.0, 0.0, 0.2, 0.5, 0.2, 0.0, 0.0])
         print(transm.render())
 
@@ -737,9 +709,7 @@ class TRANS2D(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import TRANS2D
-
         trcoef = np.array([[0.0, 0.0], [0.1, 0.1], [0.2, 0.2]])
         transm = TRANS2D(trcoef=trcoef)
         print(transm.render())
@@ -799,9 +769,7 @@ class GODA(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import GODA
-
         transm = GODA(hgt=3.0)
         print(transm.render())
         transm = GODA(hgt=3.0, alpha=2.6, beta=0.15)
@@ -866,9 +834,7 @@ class DANGREMOND(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import DANGREMOND
-
         transm = DANGREMOND(hgt=3.0, slope=60, Bk=10.0)
         print(transm.render())
 
@@ -910,9 +876,7 @@ class REFL(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import REFL
-
         refl = REFL()
         print(refl.render())
         refl = REFL(reflc=0.5)
@@ -953,9 +917,7 @@ class RSPEC(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import RSPEC
-
         refl = RSPEC()
         print(refl.render())
 
@@ -986,9 +948,7 @@ class RDIFF(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import RDIFF
-
         refl = RDIFF()
         print(refl.render())
         refl = RDIFF(pown=1.0)
@@ -1039,9 +999,7 @@ class FREEBOARD(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import FREEBOARD
-
         freeboard = FREEBOARD(hgt=2.0)
         print(freeboard.render())
         freeboard = FREEBOARD(hgt=2.0, gammat=1.0, gammar=1.0, quay=True)
@@ -1130,9 +1088,7 @@ class LINE(BaseSubComponent):
         :okwarning:
         :okexcept:
 
-        @suppress
         from rompy.swan.subcomponents.physics import LINE
-
         line = LINE(xp=[174.1, 174.2, 174.3], yp=[-39.1, -39.1, -39.1])
         print(line.render())
 

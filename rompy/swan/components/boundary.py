@@ -27,22 +27,38 @@ HERE = Path(__file__).parent
 class INITIAL(BaseComponent):
     """Initial conditions.
 
-    `INITIAL DEFAULT|ZERO|PAR|HOTSTART`
+    .. code-block:: text
 
-    This command can be used to specify the initial values for a stationary (INITIAL HOTSTART
-    only) or nonstationary computation. The initial values thus specified override the default
-    initialization (see Section 2.6.3). Note that it is possible to obtain an initial state by
-    carrying out a previous stationary or nonstationary computation.
+        INITIAL -> DEFAULT|ZERO|PAR|HOTSTART
+
+    This command can be used to specify the initial values for a stationary (INITIAL
+    HOTSTART only) or nonstationary computation. The initial values thus specified
+    override the default initialization (see Section 2.6.3). Note that it is possible
+    to obtain an initial state by carrying out a previous stationary or nonstationary
+    computation.
+
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.boundary import INITIAL
+        init = INITIAL()
+        print(init.render())
+        init = INITIAL(
+            kind=dict(model_type="hotmultiple", fname="hotstart.swn", format="free")
+        )
+        print(init.render())
 
     """
 
-    model_type: Literal["initial"] = Field(
-        default="initial",
-        description="Model type discriminator",
+    model_type: Literal["initial", "INITIAL"] = Field(
+        default="initial", description="Model type discriminator",
     )
     kind: DEFAULT | ZERO | PAR | HOTSINGLE | HOTMULTIPLE = Field(
-        default=DEFAULT(),
-        description="Initial condition type",
+        default_factory=DEFAULT, description="Initial condition type",
     )
 
     def cmd(self) -> str:
@@ -53,7 +69,9 @@ class INITIAL(BaseComponent):
 class BOUNDSPEC(BaseComponent):
     """Parametric or spectra boundary along sides or segments.
 
-    `BOUNDSPEC SIDE|SEGMENT ... CONSTANT|VARIABLE PAR|FILE ...`
+    .. code-block:: text
+
+        BOUNDSPEC ->SIDE|SEGMENT CONSTANT|VARIABLE PAR|FILE
 
     This command BOUNDSPEC defines parametric spectra at the boundary. It consists of
     two parts, the first part defines the boundary side or segment where the spectra
@@ -65,15 +83,28 @@ class BOUNDSPEC(BaseComponent):
 
     TODO: Add support for unstructured grid (k).
 
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.boundary import BOUNDSPEC
+        boundary = BOUNDSPEC(
+            shapespec=dict(model_type="shapespec", shape=dict(model_type="pm")),
+            location=dict(model_type="side", side="west", direction="ccw"),
+            data=dict(model_type="constantpar", hs=2, per=8, dir=270, dd=30),
+        )
+        print(boundary.render())
+
     """
 
-    model_type: Literal["boundspec"] = Field(
-        default="boundspec",
-        description="Model type discriminator",
+    model_type: Literal["boundspec", "BOUNDSPEC"] = Field(
+        default="boundspec", description="Model type discriminator",
     )
     shapespec: SHAPESPEC = Field(
-        default=SHAPESPEC(),
-        description="Spectral shape specification",
+        default_factory=SHAPESPEC, description="Spectral shape specification",
     )
     location: SIDE | SEGMENTXY | SEGMENTIJ = Field(
         description="Location to apply the boundary",
@@ -91,7 +122,9 @@ class BOUNDSPEC(BaseComponent):
 class BOUNDNEST1(BaseComponent):
     """Boundary spectra from a coarser SWAN nest.
 
-    `BOUNDNEST1 NEST 'fname' CLOSED|OPEN`
+    .. code-block:: text
+
+        BOUNDNEST1 NEST 'fname' ->CLOSED|OPEN
 
     With this optional command a nested SWAN run can be carried out with the boundary
     conditions obtained from a coarse grid SWAN run (generated in that previous SWAN
@@ -107,17 +140,27 @@ class BOUNDNEST1(BaseComponent):
     For a curvilinear grid, it is advised to use the commands POINTS or CURVE and
     SPECOUT instead of NGRID and NESTOUT.
 
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.boundary import BOUNDNEST1
+        boundary = BOUNDNEST1(fname="boundary.swn", rectangle="closed")
+        print(boundary.render())
+
     """
 
-    model_type: Literal["boundnest1"] = Field(
-        default="boundnest1",
-        description="Model type discriminator",
+    model_type: Literal["boundnest1", "BOUNDNEST1"] = Field(
+        default="boundnest1", description="Model type discriminator",
     )
     fname: str = Field(
         description=(
             "Name of the file containing the boundary conditions for the present run, "
             "created by the previous SWAN coarse grid run. This file is structured "
-            "according to the rules given in Appendix D for 2D spectra."
+            "according to the rules given in Appendix D for 2D spectra"
         ),
         min_length=1,
         max_length=98,
@@ -126,7 +169,7 @@ class BOUNDNEST1(BaseComponent):
         default="closed",
         description=(
             "Boundary is defined over a closed (default) or an open rectangle. "
-            "Boundary generated from the NESTOUT command is aways closed."
+            "Boundary generated from the NESTOUT command is aways closed"
         ),
     )
 
@@ -137,7 +180,9 @@ class BOUNDNEST1(BaseComponent):
 class BOUNDNEST2(BaseComponent):
     """Boundary spectra from WAM.
 
-    `BOUNDNEST2 WAMNEST 'fname' FREE|UNFORMATTED (CRAY|WKSTAT) [xgc] [ygc] [lwdate]`
+    .. code-block:: text
+
+        BOUNDNEST2 WAMNEST 'fname' FREE|UNFORMATTED ->CRAY|WKSTAT [xgc] [ygc] [lwdate]
 
     With this optional command (not fully tested) a nested SWAN run can be carried out
     with the boundary conditions obtained from a coarse grid WAM run (WAM Cycle 4.5,
@@ -161,23 +206,36 @@ class BOUNDNEST2(BaseComponent):
     it can make formatted output, must modify WAM such that the files made by WAM can
     be read in free format, i.e. with at least a blank or comma between numbers.
 
-    Notes
-    -----
-    the contents of 'fname' can look like:
+    Note
+    ----
+    the contents of 'fname' file could look like:
+
+    .. code-block:: text
+
         CBO9212010000
         CBO9212020000
         CBO9212030000
 
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.boundary import BOUNDNEST2
+        boundary = BOUNDNEST2(fname="boundary.wam", format="cray", lwdate=12)
+        print(boundary.render())
+
     """
 
-    model_type: Literal["boundnest2"] = Field(
-        default="boundnest2",
-        description="Model type discriminator",
+    model_type: Literal["boundnest2", "BOUNDNEST2"] = Field(
+        default="boundnest2", description="Model type discriminator",
     )
     fname: str = Field(
         description=(
             "A file name that contains all the names of WAM files containing the "
-            "nested boundary conditions in time-sequence (usually one file per day)."
+            "nested boundary conditions in time-sequence (usually one file per day)"
         ),
         min_length=1,
         max_length=48,
@@ -186,7 +244,7 @@ class BOUNDNEST2(BaseComponent):
         description=(
             "Format of the WAM file. `cray`: CRAY version of WAM, `wkstat`: "
             "WORKSTATION version of WAM, `free`: Free format (these files are not "
-            "generated standard by WAM)."
+            "generated standard by WAM)"
         ),
     )
     xgc: Optional[float] = Field(
@@ -197,7 +255,7 @@ class BOUNDNEST2(BaseComponent):
             "corner of the nest in the WAM computation is on land this value is "
             "required. If SWAN is used with spherical coordinates then `xgc` is "
             "ignored by SWAN (SWAN default: the location of the first spectrum "
-            "encountered in the nest file. "
+            "encountered in the nest file"
         ),
     )
     ygc: Optional[float] = Field(
@@ -208,7 +266,7 @@ class BOUNDNEST2(BaseComponent):
             "corner of the nest in the WAM computation is on land this value is "
             "required. If SWAN is used with spherical coordinates then `ygc` is "
             "ignored by SWAN (SWAN default: the location of the first spectrum "
-            "encountered in the nest file. "
+            "encountered in the nest file"
         ),
     )
     lwdate: Literal[10, 12, 14] = Field(
@@ -216,7 +274,7 @@ class BOUNDNEST2(BaseComponent):
         description=(
             "Length of character string for date-time as used in the WAM files. "
             "Possible values are: 10 (i.e. YYMMDDHHMM), 12 (i.e. YYMMDDHHMMSS) "
-            "or 14 (i.e. YYYYMMDDHHMMSS) (SWAN default: `lwdate` = 12)."
+            "or 14 (i.e. YYYYMMDDHHMMSS) (SWAN default: `lwdate` = 12)"
         ),
     )
 
@@ -244,7 +302,9 @@ class BOUNDNEST2(BaseComponent):
 class BOUNDNEST3(BaseComponent):
     """Boundary spectra from WAVEWATCHIII.
 
-    `BOUNDNEST3 WW3 'fname' FREE|UNFORMATTED CLOSED|OPEN [xgc] [ygc]`
+    .. code-block:: text
+
+        BOUNDNEST3 WW3 'fname' FREE|UNFORMATTED ->CLOSED|OPEN [xgc] [ygc]
 
     With this optional command a nested SWAN run can be carried out with the boundary
     conditions obtained from a coarse grid WAVEWATCH III run. The spectral frequencies
@@ -268,15 +328,29 @@ class BOUNDNEST3(BaseComponent):
     the nested grid but the boundaries of this nest should conform to the rectangular
     course grid nest boundaries.
 
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.boundary import BOUNDNEST3
+        boundary = BOUNDNEST3(
+            fname="boundary.ww3",
+            format="free",
+            rectangle="closed",
+        )
+        print(boundary.render())
+
     """
 
-    model_type: Literal["boundnest3"] = Field(
-        default="boundnest3",
-        description="Model type discriminator",
+    model_type: Literal["boundnest3", "BOUNDNEST3"] = Field(
+        default="boundnest3", description="Model type discriminator",
     )
     fname: str = Field(
         description=(
-            "The name of the file that contains the spectra computed by WAVEWATCH III."
+            "The name of the file that contains the spectra computed by WAVEWATCH III"
         ),
         min_length=1,
         max_length=62,
@@ -284,14 +358,14 @@ class BOUNDNEST3(BaseComponent):
     format: Literal["unformatted", "free"] = Field(
         description=(
             "Format of the WW3 file. `unformatted`: The input WW3 files are binary, "
-            "`free`: The input WW3 files are formatted."
+            "`free`: The input WW3 files are formatted"
         ),
     )
     rectangle: Literal["closed", "open"] = Field(
         default="closed",
         description=(
             "Boundary is defined over a closed (default) or an open rectangle. "
-            "Boundary generated from the NESTOUT command is aways closed."
+            "Boundary generated from the NESTOUT command is aways closed"
         ),
     )
     xgc: Optional[float] = Field(

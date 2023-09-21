@@ -13,16 +13,35 @@ logger = logging.getLogger(__name__)
 class PROJECT(BaseComponent):
     """SWAN Project.
 
-    `PROJECT 'name' 'nr' 'title' 'title2 'title3'`
+    .. code-block:: text
+
+        PROJECT 'name' 'nr' 'title' 'title2 'title3'
 
     With this required command the user defines a number of strings to identify the
     SWAN run (project name e.g., an engineering project) in the print and plot file.
 
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.startup import PROJECT
+        proj = PROJECT(nr="01")
+        print(proj.render())
+        proj = PROJECT(
+            name="waus",
+            nr="001",
+            title1="Western Australia",
+            title2="Perth Nest"
+        )
+        print(proj.render())
+
     """
 
-    model_type: Literal["project"] = Field(
-        default="project",
-        description="Model type discriminator",
+    model_type: Literal["project", "PROJECT"] = Field(
+        default="project", description="Model type discriminator",
     )
     name: Optional[str] = Field(
         default=None,
@@ -41,8 +60,8 @@ class PROJECT(BaseComponent):
     title1: Optional[str] = Field(
         default=None,
         description=(
-            "Is a string of at most 72 characters provided by the user to appear in "
-            "the output of the program for the user's convenience. Default: blanks."
+            "A string of at most 72 characters provided by the user to appear in the "
+            "output of the program for the user's convenience (SWAN default: blanks)"
         ),
         max_length=72,
     )
@@ -68,10 +87,12 @@ class PROJECT(BaseComponent):
 
 
 class SET(BaseComponent):
-    """SWAN set.
+    """SWAN setting commands.
 
-    `SET [level] [nor] [depmin] [maxmes] [maxerr] [grav] [rho] [cdcap] &`
-        `[inrhog] [hsrerr] NAUTICAL|CARTESIAN [pwtail] [froudmax] [icewind]`
+    .. code-block:: text
+
+        SET [level] [nor] [depmin] [maxmes] [maxerr] [grav] [rho] [cdcap] &
+            [inrhog] [hsrerr] NAUTICAL|->CARTESIAN [pwtail] [froudmax] [icewind]
 
     With this optional command the user assigns values to various general parameters.
 
@@ -79,21 +100,45 @@ class SET(BaseComponent):
     -----
     The error level `maxerr` is coded as follows:
 
-    1: warnings.
-    2: errors (possibly automatically repaired or repairable by SWAN).
-    3: severe errors.
+    * 1: warnings
+    * 2: errors (possibly automatically repaired or repairable by SWAN)
+    * 3: severe errors
 
     Default values for `pwtail` depend on formulations of physics:
 
-    - command GEN1: `pwtail = 5`.
-    - command GEN2: `pwtail = 5`.
-    - command GEN3 KOMEN: `pwtail = 4`.
-    - command GEN3 WESTH: pwtail = 4`.
-    - command GEN3 JANSSEN: `pwtail = 5`.
+    * command GEN1: `pwtail = 5`
+    * command GEN2: `pwtail = 5`
+    * command GEN3 KOMEN: `pwtail = 4`
+    * command GEN3 WESTH: `pwtail = 4`
+    * command GEN3 JANSSEN: `pwtail = 5`
+
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.startup import SET
+        set = SET(level=0.5, direction_convention="nautical")
+        print(set.render())
+        set = SET(
+            level=-1.0,
+            nor=90,
+            depmin=0.01,
+            maxerr=3,
+            grav=9.81,
+            rho=1025,
+            cdcap=2.5e-3,
+            inrhog=0,
+            hsrerr=0.1,
+            direction_convention="nautical",
+        )
+        print(set.render())
 
     """
 
-    model_type: Literal["set"] = Field(
+    model_type: Literal["set", "SET"] = Field(
         default="set", description="Model type discriminator"
     )
     level: Optional[float] = Field(
@@ -102,9 +147,8 @@ class SET(BaseComponent):
             "Increase in water level that is constant in space and time can be given "
             "with this option, `level` is the value of this increase (in m). For a "
             "variable water level reference is made to the commands "
-            "INPGRID and READINP (SWAN default: `level = 0`)"
+            "INPGRID and READINP (SWAN default: 0)"
         ),
-        ge=0.0,
     )
     nor: Optional[float] = Field(
         default=None,
@@ -112,7 +156,7 @@ class SET(BaseComponent):
             "Direction of North with respect to the x-axis (measured "
             "counterclockwise); default `nor = 90`, i.e. x-axis of the problem "
             "coordinate system points East. When spherical coordinates are used "
-            "(see command COORD) the value of `nor` may not be modified."
+            "(see command COORD) the value of `nor` may not be modified"
         ),
         ge=-360.0,
         le=360.0,
@@ -121,7 +165,7 @@ class SET(BaseComponent):
         default=None,
         description=(
             "Threshold depth (in m). In the computation any positive depth smaller "
-            "than `depmin` is made equal to `depmin` (SWAN default: `depmin = 0.05`)."
+            "than `depmin` is made equal to `depmin` (SWAN default: 0.05)"
         ),
         ge=0.0,
     )
@@ -130,7 +174,7 @@ class SET(BaseComponent):
         description=(
             "Maximum number of error messages during the computation at which the "
             "computation is terminated. During the computational process messages are "
-            "written to the print file (SWAN default: `maxmes = 200`)."
+            "written to the print file (SWAN default: 200)"
         ),
         ge=0,
     )
@@ -141,25 +185,25 @@ class SET(BaseComponent):
             "of the errors encountered during this pre-processing, SWAN does not "
             "start computations. The user can influence the error level above which "
             "SWAN will  not start computations (at the level indicated the "
-            "computations will continue). (SWAN default: `maxerr = 1`)."
+            "computations will continue) (SWAN default: 1)"
         ),
     )
     grav: Optional[float] = Field(
         default=None,
-        description="The gravitational acceleration (in m/s2) (SWAN default: 9.81) ",
+        description="The gravitational acceleration (in m/s2) (SWAN default: 9.81)",
         ge=0.0,
     )
     rho: Optional[float] = Field(
         default=None,
-        description="The water density (in kg/m3) *=(SWAN default: `rho = 1025`).",
+        description="The water density (in kg/m3) (SWAN default: 1025)",
         ge=0.0,
     )
     cdcap: Optional[float] = Field(
         default=None,
         description=(
-            "The maximum value for the wind drag coefficient. A value of "
-            "`cdcap = 99999` means no cutting off the drag coefficient. A suggestion "
-            "for this parameter is `cdcap = 2.5x 10-3` (SWAN default: `cdcap = 99999`). "
+            "The maximum value for the wind drag coefficient. A value of 99999 means"
+            "no cutting off the drag coefficient. A suggestion for this parameter is "
+            "`cdcap = 2.5x 10-3` (SWAN default: 99999) "
         ),
         ge=0.0,
     )
@@ -168,7 +212,7 @@ class SET(BaseComponent):
         description=(
             "To indicate whether the user requires output based on variance or based "
             "on true energy (see Section 2.5). `inrhog` = 0: output based on variance, "
-            "`inrhog` = 1: output based on true energy (SWAN default: `inrhog=0`). "
+            "`inrhog` = 1: output based on true energy (SWAN default: 0)"
         ),
     )
     hsrerr: Optional[float] = Field(
@@ -183,8 +227,7 @@ class SET(BaseComponent):
             "the computational grid). The cause of the difference is explained in "
             "Section 2.6.3. To suppress these warnings (in particular for "
             "nonstationary computations), set `hsrerr` at a very high value or use "
-            "command OFF BNDCHK (SWAN default: `hsrerr = 0.10`). "
-            "ONLY MEANT FOR STRUCTURED GRIDS. "
+            "command OFF BNDCHK (SWAN default: 0.10) (ONLY MEANT FOR STRUCTURED GRIDS)"
         ),
         ge=0.0,
     )
@@ -193,8 +236,8 @@ class SET(BaseComponent):
             "Direction convention: `nautical` indicates that the Nautical convention "
             "for wind and wave direction (SWAN input and output) will be used, "
             "`cartesian` indicates that the Cartesian convention for wind and wave "
-            "direction will be used. For definition, see Section 2.5 or Appendix A. "
-            "SWAN default: `cartesian`."
+            "direction will be used. For definition, see Section 2.5 or Appendix A "
+            "(SWAN default: `cartesian`)"
         ),
     )
     pwtail: Optional[int] = Field(
@@ -204,8 +247,8 @@ class SET(BaseComponent):
             "above the highest prognostic frequency `fhigh` (see command CGRID). "
             "The energy density is assumed to be proportional to frequency to the "
             "power `pwtail`. If the user wishes to use another value, then this SET "
-            "command should be located in the command file after the GEN1, GEN2 or "
-            "GEN3 command (these will override the SET command with respect to `pwtail`)."
+            "command should be located in the command file after GEN1, GEN2 or GEN3 "
+            "command (these will override the SET command with respect to `pwtail`)"
         ),
         ge=0,
     )
@@ -216,7 +259,7 @@ class SET(BaseComponent):
             "water depth). The currents taken from a circulation model may mismatch "
             "with given water depth `d` in the sense that the Froude number becomes "
             "larger than 1. For this, the current velocities will be maximized by "
-            "Froude number times `√gd` (SWAN default: `froudmax = 0.8`)."
+            "Froude number times `sqrt(gh)` (SWAN default: 0.8)"
         ),
         ge=0.0,
     )
@@ -227,7 +270,7 @@ class SET(BaseComponent):
             "of zero corresponds to the case where wind input is scaled by the open "
             "water fraction. If `icewind = 1` then sea ice does not affect wind input "
             "directly. (Though there is still indirect effect via the sea ice sink "
-            "term; see command SICE.) (SWAN default: `icewind = 0`)."
+            "term; see command SICE) (SWAN default: 0)"
         ),
     )
 
@@ -274,29 +317,45 @@ class SET(BaseComponent):
 class MODE(BaseComponent):
     """SWAN Mode.
 
-    `MODE STATIONARY|NONSTATIONARY TWODIMENSIONAL|ONEDIMENSIONAL`
+    .. code-block:: text
 
-    With this optional command the user indicates that the run will be either stationary
-    or nonstationary and one-dimensional (1D-mode) or two-dimensional (2D-mode). Non-
-    stationary means either (see command COMPUTE):
-    (a) one nonstationary computations or
-    (b) a sequence of stationary computations or
-    (c) a mix of (a) and (b).
+        MODE ->STATIONARY|NONSTATIONARY ->TWODIMENSIONAL|ONEDIMENSIONAL
+
+    With this optional command the user indicates that the run will be either
+    stationary or nonstationary and one-dimensional (1D-mode) or two-dimensional
+    (2D-mode). Nonstationary means either (see command COMPUTE):
+
+    * (a) one nonstationary computations or
+    * (b) a sequence of stationary computations or
+    * (c) a mix of (a) and (b)
+
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.startup import MODE
+        mode = MODE()
+        print(mode.render())
+        mode = MODE(kind="nonstationary", dim="twodimensional")
+        print(mode.render())
 
     """
 
-    model_type: Literal["mode"] = Field(
+    model_type: Literal["mode", "MODE"] = Field(
         default="mode", description="Model type discriminator."
     )
     kind: Literal["stationary", "nonstationary"] = Field(
         default="stationary",
-        description="Indicates if run will be stationary or nonstationary.",
+        description="Indicates if run will be stationary or nonstationary",
     )
     dim: Literal["onedimensional", "twodimensional"] = Field(
         default="twodimensional",
         description=(
             "Indicates that the run will be either one-dimensional (1D-mode) or "
-            "two-dimensional (2D-mode)."
+            "two-dimensional (2D-mode)"
         ),
     )
 
@@ -307,30 +366,46 @@ class MODE(BaseComponent):
 class COORDINATES(BaseComponent):
     """SWAN Coordinates.
 
-    `COORDINATES CARTESIAN|SPHERICAL REPEATING`
+    .. code-block:: text
+
+        COORDINATES ->CARTESIAN|SPHERICAL REPEATING
 
     Command to choose between Cartesian and spherical coordinates (see Section 2.5).
     A nested SWAN run must use the same coordinate system as the coarse grid SWAN run.
 
+    Examples
+    --------
+
+    .. ipython:: python
+        :okwarning:
+        :okexcept:
+
+        from rompy.swan.components.startup import COORDINATES
+        coords = COORDINATES()
+        print(coords.render())
+        coords = COORDINATES(
+            kind=dict(model_type="spherical", projection="ccm"),
+            reapeating=True,
+        )
+        print(coords.render())
+
     """
 
-    model_type: Literal["coordinates"] = Field(
-        default="coordinates",
-        description="Model type discriminator",
+    model_type: Literal["coordinates", "COORDINATES"] = Field(
+        default="coordinates", description="Model type discriminator",
     )
     kind: CARTESIAN | SPHERICAL = Field(
-        default_factory=CARTESIAN,
-        description="Coordinates kind",
+        default_factory=CARTESIAN, description="Coordinates kind",
     )
     reapeating: bool = Field(
         default=False,
         description=(
-            "This option is only for academic cases. It means that wave energy leaving "
-            "at one end of the domain (in computational x-direction) enter at the "
-            "other side; it is as if the wave field repeats itself in x-direction "
+            "This option is only for academic cases. It means that wave energy "
+            "leaving at one end of the domain (in computational x-direction) enter at "
+            "the other side; it is as if the wave field repeats itself in x-direction "
             "with the length of the domain in x-direction. This option cannot be used "
             "in combination with computation of set-up (see command SETUP). This "
-            "option is available only with regular grids."
+            "option is available only with regular grids"
         ),
     )
 
