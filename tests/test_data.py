@@ -129,21 +129,30 @@ def test_time_filter(nc_data_source):
 
 def test_source_dataset():
     dset = xr.open_dataset(HERE / "data" / "aus-20230101.nc")
-    dataset = SourceDataset(obj=dset)
-    assert isinstance(dataset.open(), xr.Dataset)
+    source = SourceDataset(obj=dset)
+    assert isinstance(source.open(), xr.Dataset)
 
 
-def test_source_open_dataset():
-    dataset = SourceFile(uri=HERE / "data" / "aus-20230101.nc")
-    assert isinstance(dataset.open(), xr.Dataset)
+def test_source_file():
+    source = SourceFile(uri=HERE / "data" / "aus-20230101.nc")
+    assert isinstance(source.open(), xr.Dataset)
 
 
-def test_dataset_intake():
-    dataset = SourceIntake(
+def test_source_file_open_mfdataset():
+    source = SourceFile(
+        uri=HERE / "data" / "aus-20230101.nc",
+        reader="xarray.open_mfdataset",
+        kwargs={"chunks": {"time": 2}},
+    )
+    assert source.open().chunks["time"][0] == 2
+
+
+def test_source_intake():
+    source = SourceIntake(
         dataset_id="ausspec",
         catalog_uri=HERE / "data" / "catalog.yaml",
     )
-    assert isinstance(dataset.open(), xr.Dataset)
+    assert isinstance(source.open(), xr.Dataset)
 
 
 def test_intake_grid_plot(grid_data_source):
@@ -151,15 +160,18 @@ def test_intake_grid_plot(grid_data_source):
     data.plot(param='u10', isel={'time': 0})
 
 
-@pytest.mark.skip(reason="This won't work with pydantic<2, fix once migrated")
 @pytest.mark.skipif(DATAMESH_TOKEN is None, reason="Datamesh token required")
-def test_dataset_datamesh():
-    dataset = SourceDatamesh(datasource="era5_wind10m", token=DATAMESH_TOKEN)
+def test_source_datamesh():
+    source = SourceDatamesh(datasource="era5_wind10m", token=DATAMESH_TOKEN)
     filters = Filter()
     filters.crop.update(dict(time=slice("2000-01-01T00:00:00", "2000-01-01T03:00:00")))
     filters.crop.update(
         dict(longitude=slice(115.5, 116.0), latitude=slice(-33.0, -32.5))
     )
-    dset = dataset.open(variables=["u10"], filters=filters, coords=DatasetCoords(x="longitude", y="latitude"))
+    dset = source.open(
+        variables=["u10"],
+        filters=filters,
+        coords=DatasetCoords(x="longitude", y="latitude"),
+    )
     assert(isinstance(dset, xr.Dataset))
 
