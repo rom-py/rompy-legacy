@@ -9,6 +9,7 @@
 import logging
 from datetime import datetime
 from importlib import import_module
+from typing import Callable
 
 import numpy as np
 import pandas as pd
@@ -18,14 +19,15 @@ from scipy.spatial import KDTree
 logger = logging.getLogger("rompy.util")
 
 
-def import_function(func_str: str | object) -> object:
+def import_function(func_str: str | Callable) -> Callable:
     """Import function defined from string.
 
     Parameters
     ----------
-    func_str: str | object
+    func_str: str | Callable
         The absolute import path of the function to import if a string, e.g.,
-        'xarray.open_dataset', if an object the same object is returned.
+        'xarray.open_dataset', or the function callable itself in which case the
+        callable object is returned.
 
     Returns
     -------
