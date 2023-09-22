@@ -3,18 +3,19 @@ import logging
 from pathlib import Path
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union, Callable
 
 from cloudpathlib import AnyPath
 import intake
 from intake.catalog import Catalog
 import xarray as xr
-from pydantic import ConfigDict, Field, root_validator
+from pydantic import ConfigDict, Field, field_validator
 from oceanum.datamesh import Connector
 
 from .filters import Filter
 from .time import TimeRange
 from .types import RompyBaseModel, DatasetCoords
+from rompy.utils import import_function
 
 
 logger = logging.getLogger(__name__)
@@ -83,16 +84,30 @@ class SourceFile(SourceBase):
         description="Model type discriminator",
     )
     uri: str | Path = Field(description="Path to the dataset")
+    reader: Optional[Union[str, Callable]] = Field(
+        default="xarray.open_dataset",
+        validate_default=True,
+        description=(
+            "Name of the reader function to open the uri as an xarray dataset, e.g., "
+            "'xarray.open_dataset', 'xarray.open_mfdataset, or alternatively the "
+            "reader function callable itself."
+        ),
+    )
     kwargs: dict = Field(
         default={},
         description="Keyword arguments to pass to xarray.open_dataset",
     )
 
+    @field_validator("reader")
+    @classmethod
+    def import_func(cls, v: str | Callable) -> Callable:
+        return import_function(v)
+
     def __str__(self) -> str:
-        return f"SourceFile(uri={self.uri})"
+        return f"SourceFile(uri={self.uri} reader={self.reader})"
 
     def _open(self) -> xr.Dataset:
-        return xr.open_dataset(self.uri, **self.kwargs)
+        return self.reader(self.uri, **self.kwargs)
 
 
 class SourceIntake(SourceBase):
@@ -276,8 +291,6 @@ class DataGrid(DataBlob):
     Generic data object for xarray datasets that need to be filtered and written to
     netcdf.
 
-    TODO: Is there anything griddy about this class? Should it be renamed?
-
     """
 
     model_type: Literal["data_grid"] = Field(
@@ -289,7 +302,8 @@ class DataGrid(DataBlob):
         discriminator="model_type",
     )
     filter: Optional[Filter] = Field(
-        Filter(), description="Optional filter specification to apply to the dataset"
+        default_factory=Filter,
+        description="Optional filter specification to apply to the dataset"
     )
     variables: Optional[list[str]] = Field(
         [], description="Subset of variables to extract from the dataset"
@@ -393,8 +407,6 @@ class DataGrid(DataBlob):
         -------
         outfile: Path
             The path to the written file.
-
-        TODO: Discuss whether this method should be called something more obvious
 
         """
         outfile = Path(destdir) / f"{self.id}.nc"
