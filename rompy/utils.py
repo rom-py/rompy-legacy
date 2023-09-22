@@ -8,6 +8,7 @@
 
 import logging
 from datetime import datetime
+from importlib import import_module
 
 import numpy as np
 import pandas as pd
@@ -15,6 +16,33 @@ import xarray as xr
 from scipy.spatial import KDTree
 
 logger = logging.getLogger("rompy.util")
+
+
+def import_function(func_str: str | object) -> object:
+    """Import function defined from string.
+
+    Parameters
+    ----------
+    func_str: str | object
+        The absolute import path of the function to import if a string, e.g.,
+        'xarray.open_dataset', if an object the same object is returned.
+
+    Returns
+    -------
+    func: object
+        The function imported from func_str
+
+    """
+    module_name = ".".join(func_str.split(".")[:-1])
+    func_name = func_str.split(".")[-1]
+    try:
+        module = import_module(module_name)
+    except ValueError:
+        if module_name == "":
+            raise ValueError(
+                "The full module.func name must be provided rather than only the func"
+            )
+    return getattr(module, func_name)
 
 
 def dict_product(d):
