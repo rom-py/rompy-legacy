@@ -140,7 +140,7 @@ def test_source_file():
 
 def test_source_file_open_mfdataset():
     source = SourceFile(
-        uri=HERE / "data" / "aus-20230101.nc",
+        uri=[HERE / "data" / "aus-20230101.nc"],
         reader="xarray.open_mfdataset",
         kwargs={"chunks": {"time": 2}},
     )

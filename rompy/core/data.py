@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Literal, Optional, Union, Callable
+from typing import Literal, Optional, Union, Callable, Any
 
 from cloudpathlib import AnyPath
 import intake
@@ -83,7 +83,7 @@ class SourceFile(SourceBase):
         default="open_dataset",
         description="Model type discriminator",
     )
-    uri: str | Path = Field(description="Path to the dataset")
+    uri: str | Path | list | Any = Field(description="Path to the dataset")
     reader: Optional[Union[str, Callable]] = Field(
         default="xarray.open_dataset",
         validate_default=True,
