@@ -33,6 +33,10 @@ def import_function(func_str: str | object) -> object:
         The function imported from func_str
 
     """
+    if not isinstance(func_str, str):
+        logger.debug(f"func_str {func_str} is not a str, returning as is")
+        return func_str
+
     module_name = ".".join(func_str.split(".")[:-1])
     func_name = func_str.split(".")[-1]
     try:
