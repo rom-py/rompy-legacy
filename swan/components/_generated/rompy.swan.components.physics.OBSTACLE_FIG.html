@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -500,9 +504,9 @@ period, or vice versa. The command <cite>OBST FIG</cite> is still required to de
 obstacles. The values of <cite>hss</cite> and/or <cite>tss</cite> in this command are then not required
 (they will be ignored).</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [158]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">OBSTACLE_FIG</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [100]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">OBSTACLE_FIG</span>
 
-<span class="gp">In [159]: </span><span class="n">obs</span> <span class="o">=</span> <span class="n">OBSTACLE_FIG</span><span class="p">(</span>
+<span class="gp">In [101]: </span><span class="n">obs</span> <span class="o">=</span> <span class="n">OBSTACLE_FIG</span><span class="p">(</span>
 <span class="gp">   .....: </span>    <span class="n">alpha1</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">hss</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">tss</span><span class="o">=</span><span class="mf">10.3</span><span class="p">,</span>
@@ -510,10 +514,10 @@ obstacles. The values of <cite>hss</cite> and/or <cite>tss</cite> in this comman
 <span class="gp">   .....: </span><span class="p">)</span>
 <span class="gp">   .....: </span>
 
-<span class="gp">In [160]: </span><span class="nb">print</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [102]: </span><span class="nb">print</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">OBSTACLE FIG alpha1=0.0005 hss=2.5 tss=10.3 LINE 174.1 -39.1 174.2 -39.1 174.3 -39.1</span>
 
-<span class="gp">In [161]: </span><span class="n">obs</span> <span class="o">=</span> <span class="n">OBSTACLE_FIG</span><span class="p">(</span>
+<span class="gp">In [103]: </span><span class="n">obs</span> <span class="o">=</span> <span class="n">OBSTACLE_FIG</span><span class="p">(</span>
 <span class="gp">   .....: </span>    <span class="n">alpha1</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">hss</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">tss</span><span class="o">=</span><span class="mf">10.3</span><span class="p">,</span>
@@ -522,7 +526,7 @@ obstacles. The values of <cite>hss</cite> and/or <cite>tss</cite> in this comman
 <span class="gp">   .....: </span><span class="p">)</span>
 <span class="gp">   .....: </span>
 
-<span class="gp">In [162]: </span><span class="nb">print</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [104]: </span><span class="nb">print</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">OBSTACLE FIG alpha1=0.0005 hss=2.5 tss=10.3 REFL reflc=0.5 LINE 174.1 -39.1 174.2 -39.1 174.3 -39.1</span>
 </pre></div>
 </div>

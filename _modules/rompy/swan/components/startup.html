@@ -459,7 +459,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.startup import PROJECT</span>
 <span class="sd">        proj = PROJECT(nr=&quot;01&quot;)</span>
@@ -475,7 +474,8 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">,</span> <span class="s2">&quot;PROJECT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;project&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;project&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -557,7 +557,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.startup import SET</span>
 <span class="sd">        set = SET(level=0.5, direction_convention=&quot;nautical&quot;)</span>
@@ -783,7 +782,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.startup import MODE</span>
 <span class="sd">        mode = MODE()</span>
@@ -833,7 +831,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.startup import COORDINATES</span>
 <span class="sd">        coords = COORDINATES()</span>
@@ -847,10 +844,12 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">,</span> <span class="s2">&quot;COORDINATES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;coordinates&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;coordinates&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">kind</span><span class="p">:</span> <span class="n">CARTESIAN</span> <span class="o">|</span> <span class="n">SPHERICAL</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default_factory</span><span class="o">=</span><span class="n">CARTESIAN</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Coordinates kind&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">CARTESIAN</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Coordinates kind&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">reapeating</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>

@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="rompy.swan.components.physics.GEN2" href="rompy.swan.components.physics.GEN2.html" />
-    <link rel="prev" title="rompy.swan.components.physics.PHYSICS" href="rompy.swan.components.physics.PHYSICS.html" />
+    <link rel="prev" title="Physics" href="../physics.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -475,28 +479,28 @@ document.write(`
 <p>With this command the user indicates that SWAN should run in first-generation mode
 (see Scientific/Technical documentation).</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [116]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">GEN1</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [58]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">GEN1</span>
 
-<span class="gp">In [117]: </span><span class="n">gen</span> <span class="o">=</span> <span class="n">GEN1</span><span class="p">()</span>
+<span class="gp">In [59]: </span><span class="n">gen</span> <span class="o">=</span> <span class="n">GEN1</span><span class="p">()</span>
 
-<span class="gp">In [118]: </span><span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [60]: </span><span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">GEN1</span>
 
-<span class="gp">In [119]: </span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-<span class="gp">   .....: </span>    <span class="n">cf10</span><span class="o">=</span><span class="mf">188.0</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">cf20</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">cf30</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">cf40</span><span class="o">=</span><span class="mf">250.0</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">edmlpm</span><span class="o">=</span><span class="mf">0.0036</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">cdrag</span><span class="o">=</span><span class="mf">0.0012</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">umin</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">cfpm</span><span class="o">=</span><span class="mf">0.13</span>
-<span class="gp">   .....: </span><span class="p">)</span>
-<span class="gp">   .....: </span>
+<span class="gp">In [61]: </span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+<span class="gp">   ....: </span>    <span class="n">cf10</span><span class="o">=</span><span class="mf">188.0</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">cf20</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">cf30</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">cf40</span><span class="o">=</span><span class="mf">250.0</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">edmlpm</span><span class="o">=</span><span class="mf">0.0036</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">cdrag</span><span class="o">=</span><span class="mf">0.0012</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">umin</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">cfpm</span><span class="o">=</span><span class="mf">0.13</span>
+<span class="gp">   ....: </span><span class="p">)</span>
+<span class="gp">   ....: </span>
 
-<span class="gp">In [120]: </span><span class="n">gen</span> <span class="o">=</span> <span class="n">GEN1</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">In [62]: </span><span class="n">gen</span> <span class="o">=</span> <span class="n">GEN1</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="gp">In [121]: </span><span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [63]: </span><span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">GEN1 cf10=188.0 cf20=0.59 cf30=0.12 cf40=250.0 edmlpm=0.0036 cdrag=0.0012 umin=1.0 cfpm=0.13</span>
 </pre></div>
 </div>
@@ -590,12 +594,12 @@ document.write(`
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="rompy.swan.components.physics.PHYSICS.html"
+       href="../physics.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">rompy.swan.components.physics.PHYSICS</p>
+        <p class="prev-next-title">Physics</p>
       </div>
     </a>
     <a class="right-next"

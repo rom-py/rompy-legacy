@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -474,98 +478,86 @@ document.write(`
 </pre></div>
 </div>
 <p>This is a group component that includes a <cite>CGRID</cite> and a <cite>READGRID</cite> component.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In 1D-mode, <cite>alpc</cite> should be equal to the direction <cite>alpinp</cite>.</p>
+</div>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [26]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.cgrid</span> <span class="kn">import</span> <span class="n">REGULAR</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [24]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.cgrid</span> <span class="kn">import</span> <span class="n">REGULAR</span>
 
-<span class="gp">In [27]: </span><span class="n">cgrid</span> <span class="o">=</span> <span class="n">REGULAR</span><span class="p">(</span>
-<span class="gp">   ....: </span>    <span class="n">xpc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-<span class="gp">   ....: </span>    <span class="n">ypc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-<span class="gp">   ....: </span>    <span class="n">alpc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-<span class="gp">   ....: </span>    <span class="n">xlenc</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">,</span>
-<span class="gp">   ....: </span>    <span class="n">ylenc</span><span class="o">=</span><span class="mf">1300.0</span><span class="p">,</span>
-<span class="gp">   ....: </span>    <span class="n">mxc</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">   ....: </span>    <span class="n">myc</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="gp">In [25]: </span><span class="n">cgrid</span> <span class="o">=</span> <span class="n">REGULAR</span><span class="p">(</span>
+<span class="gp">   ....: </span>    <span class="n">grid</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">yp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xlen</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">ylen</span><span class="o">=</span><span class="mi">1300</span><span class="p">,</span> <span class="n">mx</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">my</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
 <span class="gp">   ....: </span>    <span class="n">spectrum</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">mdc</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">flow</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">fhigh</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
 <span class="gp">   ....: </span><span class="p">)</span>
 <span class="gp">   ....: </span>
 
-<span class="gp">In [28]: </span><span class="nb">print</span><span class="p">(</span><span class="n">cgrid</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [26]: </span><span class="nb">print</span><span class="p">(</span><span class="n">cgrid</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">CGRID REGULAR xpc=0.0 ypc=0.0 alpc=0.0 xlenc=2000.0 ylenc=1300.0 mxc=100 myc=100 CIRCLE mdc=36 flow=0.04 fhigh=1.0</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.alpc" title="rompy.swan.components.cgrid.REGULAR.alpc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpc</span> <span class="pre">(float)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.grid" title="rompy.swan.components.cgrid.REGULAR.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span> <span class="pre">(rompy.swan.subcomponents.readgrid.GRIDREGULAR)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.model_type" title="rompy.swan.components.cgrid.REGULAR.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['regular',</span> <span class="pre">'REGULAR'])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.mxc" title="rompy.swan.components.cgrid.REGULAR.mxc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mxc</span> <span class="pre">(int)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.myc" title="rompy.swan.components.cgrid.REGULAR.myc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">myc</span> <span class="pre">(int)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.spectrum" title="rompy.swan.components.cgrid.REGULAR.spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectrum</span> <span class="pre">(SPECTRUM)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.xlenc" title="rompy.swan.components.cgrid.REGULAR.xlenc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xlenc</span> <span class="pre">(float)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.xpc" title="rompy.swan.components.cgrid.REGULAR.xpc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xpc</span> <span class="pre">(float)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.ylenc" title="rompy.swan.components.cgrid.REGULAR.ylenc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ylenc</span> <span class="pre">(float)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.ypc" title="rompy.swan.components.cgrid.REGULAR.ypc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ypc</span> <span class="pre">(float)</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.grid_suffix" title="rompy.swan.components.cgrid.REGULAR.grid_suffix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_suffix</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.alpc">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.alpc" title="Link to this definition">#</a></dt>
-<dd><p>Direction of the positive x-axis of the computational grid (in degrees, Cartesian convention). In 1D-mode, <cite>alpc</cite> should be equal to the direction <cite>alpinp</cite></p>
+<dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.grid">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../subcomponents/_generated/rompy.swan.subcomponents.readgrid.GRIDREGULAR.html#rompy.swan.subcomponents.readgrid.GRIDREGULAR" title="rompy.swan.subcomponents.readgrid.GRIDREGULAR"><span class="pre">GRIDREGULAR</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.grid" title="Link to this definition">#</a></dt>
+<dd><p>Computational grid definition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.grid_suffix" title="rompy.swan.components.cgrid.REGULAR.grid_suffix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_suffix</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.model_type">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'regular'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'REGULAR'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'regular'</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.model_type" title="Link to this definition">#</a></dt>
 <dd><p>Model type discriminator</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.mxc">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mxc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.mxc" title="Link to this definition">#</a></dt>
-<dd><p>Number of meshes in computational grid in x-direction (this number is one less than the number of grid points in this domain)</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.myc">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">myc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.myc" title="Link to this definition">#</a></dt>
-<dd><p>Number of meshes in computational grid in y-direction (this number is one less than the number of grid points in this domain). In 1D-mode, <cite>myc</cite> should be 0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.grid_suffix" title="rompy.swan.components.cgrid.REGULAR.grid_suffix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_suffix</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.spectrum">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spectrum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../subcomponents/_generated/rompy.swan.subcomponents.spectrum.SPECTRUM.html#rompy.swan.subcomponents.spectrum.SPECTRUM" title="rompy.swan.subcomponents.spectrum.SPECTRUM"><span class="pre">SPECTRUM</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.spectrum" title="Link to this definition">#</a></dt>
 <dd><p>Spectrum subcomponent</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.xlenc">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xlenc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.xlenc" title="Link to this definition">#</a></dt>
-<dd><p>Length of the computational grid in x-direction (in m). In case of spherical coordinates <cite>xlenc</cite> is in degrees</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.xpc">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xpc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.xpc" title="Link to this definition">#</a></dt>
-<dd><p>Geographic location of the origin of the computational grid in the problem coordinate system (x-coordinate, in m)</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.ylenc">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ylenc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.ylenc" title="Link to this definition">#</a></dt>
-<dd><p>Length of the computational grid in y-direction (in m). In 1D-mode, <cite>ylenc</cite> should be 0. In case of spherical coordinates <cite>ylenc</cite> is in degrees</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.ypc">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ypc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.ypc" title="Link to this definition">#</a></dt>
-<dd><p>Geographic location of the origin of the computational grid in the problem coordinate system (y-coordinate, in m)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.components.cgrid.REGULAR.grid_suffix" title="rompy.swan.components.cgrid.REGULAR.grid_suffix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_suffix</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.cmd">
 <span class="sig-name descname"><span class="pre">cmd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/rompy/swan/components/cgrid.html#REGULAR.cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.cmd" title="Link to this definition">#</a></dt>
 <dd><p>Return the string or list of strings to render the component to the CMD.</p>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.components.cgrid.REGULAR.grid_suffix">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid_suffix</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../../../_modules/rompy/swan/components/cgrid.html#REGULAR.grid_suffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.cgrid.REGULAR.grid_suffix" title="Link to this definition">#</a></dt>
+<dd><p>Set expected grid suffix.</p>
 </dd></dl>
 
 </dd></dl>
@@ -616,16 +608,11 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR"><code class="docutils literal notranslate"><span class="pre">REGULAR</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.alpc"><code class="docutils literal notranslate"><span class="pre">REGULAR.alpc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.grid"><code class="docutils literal notranslate"><span class="pre">REGULAR.grid</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.model_type"><code class="docutils literal notranslate"><span class="pre">REGULAR.model_type</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.mxc"><code class="docutils literal notranslate"><span class="pre">REGULAR.mxc</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.myc"><code class="docutils literal notranslate"><span class="pre">REGULAR.myc</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.spectrum"><code class="docutils literal notranslate"><span class="pre">REGULAR.spectrum</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.xlenc"><code class="docutils literal notranslate"><span class="pre">REGULAR.xlenc</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.xpc"><code class="docutils literal notranslate"><span class="pre">REGULAR.xpc</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.ylenc"><code class="docutils literal notranslate"><span class="pre">REGULAR.ylenc</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.ypc"><code class="docutils literal notranslate"><span class="pre">REGULAR.ypc</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.cmd"><code class="docutils literal notranslate"><span class="pre">REGULAR.cmd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.cgrid.REGULAR.grid_suffix"><code class="docutils literal notranslate"><span class="pre">REGULAR.grid_suffix</span></code></a></li>
 </ul>
 </li>
 </ul>

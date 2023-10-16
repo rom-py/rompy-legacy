@@ -432,7 +432,7 @@ document.write(`
   <h1>Source code for rompy.swan.subcomponents.readgrid</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Readgrid subcomponents.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
 
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span><span class="p">,</span> <span class="n">field_validator</span>
@@ -442,6 +442,100 @@ document.write(`
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GRIDREGULAR">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.readgrid.GRIDREGULAR.html#rompy.swan.subcomponents.readgrid.GRIDREGULAR">[docs]</a>
+<span class="k">class</span> <span class="nc">GRIDREGULAR</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN Regular Grid subcomponent.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        xp yp alp xlen ylen mx my</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The direction of the x-axis `alp` must be 0 in case of spherical coordinates</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    All coordinates and distances should be given in m when Cartesian coordinates are</span>
+<span class="sd">    used or degrees when Spherical coordinates are used (see command COORD).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.readgrid import GRIDREGULAR</span>
+<span class="sd">        kwargs = dict(xp=173, yp=-40, alp=0, xlen=2, ylen=2, mx=199, my=199)</span>
+<span class="sd">        grid = GRIDREGULAR(suffix=&quot;c&quot;, **kwargs)</span>
+<span class="sd">        print(grid.render())</span>
+<span class="sd">        grid = GRIDREGULAR(suffix=&quot;inp&quot;, **kwargs)</span>
+<span class="sd">        print(grid.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;gridregular&quot;</span><span class="p">,</span> <span class="s2">&quot;GRIDREGULAR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;gridregular&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">xp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The x-coordinate of the origin in problem coordinates&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">yp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The y-coordinate of the origin in problem coordinates&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">alp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Direction of the xaxis in degrees&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">xlen</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Length of the computational grid in the x-direction&quot;</span>
+    <span class="p">)</span>
+    <span class="n">ylen</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Length of the computational grid in the y-direction&quot;</span>
+    <span class="p">)</span>
+    <span class="n">mx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Number of meshes in computational grid in x-direction (this number is &quot;</span>
+            <span class="s2">&quot;one less than the number of grid points in this domain)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">my</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Number of meshes in computational grid in y-direction (this number is &quot;</span>
+            <span class="s2">&quot;one less than the number of grid points in this domain)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">suffix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Suffix for rendering with each output grid parameter.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Grid spacing in x-direction.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xlen</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Grid spacing in y-direction.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ylen</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GRIDREGULAR.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.readgrid.GRIDREGULAR.html#rompy.swan.subcomponents.readgrid.GRIDREGULAR.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;xp</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xp</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; yp</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">yp</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; alp</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">alp</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; xlen</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xlen</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; ylen</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ylen</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; mx</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mx</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; my</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">my</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
 
 
 <div class="viewcode-block" id="READGRID">
@@ -456,11 +550,10 @@ document.write(`
 
 <span class="sd">    This is the base class for all input grids. It is not meant to be used directly.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 
-<span class="sd">    File format identifier</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    File format identifier:</span>
 
 <span class="sd">    * 1: Format according to BODKAR convention (a standard of the Ministry of</span>
 <span class="sd">      Transport and Public Works in the Netherlands). Format string: (10X,12F5.0)</span>
@@ -473,7 +566,7 @@ document.write(`
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;readgrid&quot;</span><span class="p">,</span> <span class="s2">&quot;READGRID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;readgrid&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
-    <span class="n">grid_type</span><span class="p">:</span> <span class="n">GridOptions</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">grid_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">GridOptions</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Type of the SWAN grid file&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fac</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -582,7 +675,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.readgrid import READCOORD</span>
 <span class="sd">        readcoord = READCOORD(</span>
@@ -631,7 +723,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.readgrid import READINP</span>
 <span class="sd">        readinp = READINP(</span>

@@ -432,10 +432,10 @@ document.write(`
   <h1>Source code for rompy.swan.subcomponents.boundary</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;SWAN boundary subcomponents.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
 
-<span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.base</span> <span class="kn">import</span> <span class="n">BaseSubComponent</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.base</span> <span class="kn">import</span> <span class="n">BaseSubComponent</span><span class="p">,</span> <span class="n">XY</span><span class="p">,</span> <span class="n">IJ</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -462,7 +462,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import SIDE</span>
 <span class="sd">        side = SIDE(side=&quot;west&quot;, direction=&quot;ccw&quot;)</span>
@@ -471,13 +470,15 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;side&quot;</span><span class="p">,</span> <span class="s2">&quot;SIDE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;side&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;side&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">side</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;north&quot;</span><span class="p">,</span> <span class="s2">&quot;nw&quot;</span><span class="p">,</span> <span class="s2">&quot;west&quot;</span><span class="p">,</span> <span class="s2">&quot;sw&quot;</span><span class="p">,</span> <span class="s2">&quot;south&quot;</span><span class="p">,</span> <span class="s2">&quot;se&quot;</span><span class="p">,</span> <span class="s2">&quot;east&quot;</span><span class="p">,</span> <span class="s2">&quot;ne&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The side of the grid to apply the boundary to&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">direction</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;ccw&quot;</span><span class="p">,</span> <span class="s2">&quot;clockwise&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The direction to apply the boundary in&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The direction to apply the boundary in&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="SIDE.cmd">
@@ -489,100 +490,60 @@ document.write(`
 
 
 
-<div class="viewcode-block" id="SEGMENTXY">
-<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.boundary.SEGMENTXY.html#rompy.swan.subcomponents.boundary.SEGMENTXY">[docs]</a>
-<span class="k">class</span> <span class="nc">SEGMENTXY</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Boundary over a segment defined from point coordinates.</span>
+<div class="viewcode-block" id="SEGMENT">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.boundary.SEGMENT.html#rompy.swan.subcomponents.boundary.SEGMENT">[docs]</a>
+<span class="k">class</span> <span class="nc">SEGMENT</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Boundary over a segment defined from points.</span>
 
 <span class="sd">    .. code-block:: text</span>
 
 <span class="sd">        SEGMENT XY &lt; [x] [y] &gt;</span>
+<span class="sd">        SEGMENT IJ &lt; [i] [j] &gt;</span>
 
-<span class="sd">    The segment is defined by means of a series of points in terms of problem</span>
-<span class="sd">    coordinates; these points do not have to coincide with grid points. The (straight)</span>
-<span class="sd">    line connecting two points must be close to grid lines of the computational grid</span>
-<span class="sd">    (the maximum distance is one hundredth of the length of the straight line).</span>
+<span class="sd">    The segment is defined either by means of a series of points in terms of problem</span>
+<span class="sd">    coordinates (`XY`) or by means of a series of points in terms of grid indices</span>
+<span class="sd">    (`IJ`). The points do not have to include all or coincide with actual grid points.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
-<span class="sd">        from rompy.swan.subcomponents.boundary import SEGMENTXY</span>
-<span class="sd">        seg = SEGMENTXY(</span>
-<span class="sd">            points=[(172, -41), (172, -40.5), (172, -40), (172.5, -40), (173, -40)],</span>
-<span class="sd">            float_format=&quot;0.2f&quot;,</span>
+<span class="sd">        from rompy.swan.subcomponents.boundary import SEGMENT</span>
+<span class="sd">        seg = SEGMENT(</span>
+<span class="sd">            points=dict(</span>
+<span class="sd">                model_type=&quot;xy&quot;,</span>
+<span class="sd">                x=[172, 172, 172, 172.5, 173],</span>
+<span class="sd">                y=[-41, -40.5, -40, -40, -40],</span>
+<span class="sd">                fmt=&quot;0.2f&quot;,</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
+<span class="sd">        print(seg.render())</span>
+<span class="sd">        seg = SEGMENT(</span>
+<span class="sd">            points=dict(</span>
+<span class="sd">                model_type=&quot;ij&quot;,</span>
+<span class="sd">                i=[0, 0, 5],</span>
+<span class="sd">                j=[0, 19, 19],</span>
+<span class="sd">            ),</span>
 <span class="sd">        )</span>
 <span class="sd">        print(seg.render())</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;segmentxy&quot;</span><span class="p">,</span> <span class="s2">&quot;SEGMENTXY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;segmentxy&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;segment&quot;</span><span class="p">,</span> <span class="s2">&quot;SEGMENT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;segment&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">points</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Pairs of (x, y) values to define the segment&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">float_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;0.8f&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The format to use for the floats in the points&quot;</span><span class="p">,</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">XY</span><span class="p">,</span> <span class="n">IJ</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Points to define the segment&quot;</span><span class="p">,</span>
+        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-<div class="viewcode-block" id="SEGMENTXY.cmd">
-<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.boundary.SEGMENTXY.html#rompy.swan.subcomponents.boundary.SEGMENTXY.cmd">[docs]</a>
+<div class="viewcode-block" id="SEGMENT.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.boundary.SEGMENT.html#rompy.swan.subcomponents.boundary.SEGMENT.cmd">[docs]</a>
     <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SEGMENT XY &amp;&quot;</span>
-        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="si">{</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:{</span><span class="bp">self</span><span class="o">.</span><span class="n">float_format</span><span class="si">}}</span><span class="s2"> </span><span class="si">{</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:{</span><span class="bp">self</span><span class="o">.</span><span class="n">float_format</span><span class="si">}}</span><span class="s2"> &amp;&quot;</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="nb">repr</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">&quot;</span></div>
-</div>
-
-
-
-<div class="viewcode-block" id="SEGMENTIJ">
-<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.boundary.SEGMENTIJ.html#rompy.swan.subcomponents.boundary.SEGMENTIJ">[docs]</a>
-<span class="k">class</span> <span class="nc">SEGMENTIJ</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Boundary over a segment defined from grid indices.</span>
-
-<span class="sd">    .. code-block:: text</span>
-
-<span class="sd">        SEGMENT IJ &lt; [i] [j] &gt;</span>
-
-<span class="sd">    The segment is defined by means of a series of computational grid points given in</span>
-<span class="sd">    terms of grid indices (origin at 0,0); not all grid points on the segment have to</span>
-<span class="sd">    be mentioned. If two points are on the same grid line, intermediate points are</span>
-<span class="sd">    assumed to be on the segment as well.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    .. ipython:: python</span>
-<span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
-
-<span class="sd">        from rompy.swan.subcomponents.boundary import SEGMENTIJ</span>
-<span class="sd">        seg = SEGMENTIJ(points=[(0, 0), (0, 19), (5, 19)])</span>
-<span class="sd">        print(seg.render())</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;segmentij&quot;</span><span class="p">,</span> <span class="s2">&quot;SEGMENTIJ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;segmentij&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">points</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Pairs of (i, j) values to define the segment&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-<div class="viewcode-block" id="SEGMENTIJ.cmd">
-<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.boundary.SEGMENTIJ.html#rompy.swan.subcomponents.boundary.SEGMENTIJ.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SEGMENT IJ &amp;&quot;</span>
-        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="si">{</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> &amp;&quot;</span>
-        <span class="k">return</span> <span class="nb">repr</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SEGMENT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
 </div>
 
 
@@ -601,7 +562,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import PAR</span>
 <span class="sd">        par = PAR(hs=1.5, per=8.1, dir=225)</span>
@@ -673,7 +633,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import CONSTANTPAR</span>
 <span class="sd">        par = CONSTANTPAR(hs=1.5, per=8.1, dir=225)</span>
@@ -682,7 +641,8 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;constantpar&quot;</span><span class="p">,</span> <span class="s2">&quot;CONSTANTPAR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;constantpar&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;constantpar&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="CONSTANTPAR.cmd">
@@ -708,7 +668,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import VARIABLEPAR</span>
 <span class="sd">        par = VARIABLEPAR(</span>
@@ -723,7 +682,8 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;variablepar&quot;</span><span class="p">,</span> <span class="s2">&quot;VARIABLEPAR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;variablepar&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;variablepar&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">hs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The significant wave height (m)&quot;</span><span class="p">,</span>
@@ -832,7 +792,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import CONSTANTFILE</span>
 <span class="sd">        par = CONSTANTFILE(fname=&quot;tpar.txt&quot;)</span>
@@ -841,11 +800,12 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;constantfile&quot;</span><span class="p">,</span> <span class="s2">&quot;CONSTANTFILE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;constantfile&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;constantfile&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the file containing the boundary condition.&quot;</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">seq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -912,7 +872,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import VARIABLEFILE</span>
 <span class="sd">        par = VARIABLEFILE(</span>
@@ -927,7 +886,7 @@ document.write(`
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;variablefile&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">fname</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">fname</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">)]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Names of the files containing the boundary condition&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">seq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">)]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -1001,7 +960,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import DEFAULT</span>
 <span class="sd">        init = DEFAULT()</span>
@@ -1010,7 +968,8 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;DEFAULT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
@@ -1033,7 +992,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import ZERO</span>
 <span class="sd">        init = ZERO()</span>
@@ -1042,7 +1000,8 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;zero&quot;</span><span class="p">,</span> <span class="s2">&quot;ZERO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;zero&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;zero&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
@@ -1072,7 +1031,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import HOTSINGLE</span>
 <span class="sd">        init = HOTSINGLE(fname=&quot;hotstart.swn&quot;, format=&quot;free&quot;)</span>
@@ -1081,11 +1039,12 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;hotsingle&quot;</span><span class="p">,</span> <span class="s2">&quot;HOTSINGLE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;hotsingle&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;hotsingle&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the file containing the initial wave field&quot;</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">85</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="nb">format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="s2">&quot;unformatted&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">,</span>
@@ -1129,7 +1088,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.boundary import HOTMULTIPLE</span>
 <span class="sd">        init = HOTMULTIPLE(fname=&quot;hotstart.swn&quot;, format=&quot;free&quot;)</span>
@@ -1138,11 +1096,12 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;hotmultiple&quot;</span><span class="p">,</span> <span class="s2">&quot;HOTMULTIPLE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;hotmultiple&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;hotmultiple&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the file containing the initial wave field&quot;</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">85</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="nb">format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="s2">&quot;unformatted&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;free&quot;</span><span class="p">,</span>

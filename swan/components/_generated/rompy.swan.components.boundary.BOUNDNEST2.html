@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -503,11 +507,11 @@ CBO9212030000
 </div>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [9]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.boundary</span> <span class="kn">import</span> <span class="n">BOUNDNEST2</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [5]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.boundary</span> <span class="kn">import</span> <span class="n">BOUNDNEST2</span>
 
-<span class="gp">In [10]: </span><span class="n">boundary</span> <span class="o">=</span> <span class="n">BOUNDNEST2</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s2">&quot;boundary.wam&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;cray&quot;</span><span class="p">,</span> <span class="n">lwdate</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">In [6]: </span><span class="n">boundary</span> <span class="o">=</span> <span class="n">BOUNDNEST2</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s2">&quot;boundary.wam&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;cray&quot;</span><span class="p">,</span> <span class="n">lwdate</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
-<span class="gp">In [11]: </span><span class="nb">print</span><span class="p">(</span><span class="n">boundary</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [7]: </span><span class="nb">print</span><span class="p">(</span><span class="n">boundary</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">BOUNDNEST2 WAMNEST fname=&#39;boundary.wam&#39; UNFORMATTED CRAY lwdate=12</span>
 </pre></div>
 </div>
@@ -531,7 +535,7 @@ CBO9212030000
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>min_length</strong> = 1</p></li>
-<li><p><strong>max_length</strong> = 48</p></li>
+<li><p><strong>max_length</strong> = 36</p></li>
 </ul>
 </dd>
 </dl>

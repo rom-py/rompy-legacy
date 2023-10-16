@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -475,15 +479,15 @@ READGRID UNSTRUCTURED [grid_type] (&#39;fname&#39;)
 </div>
 <p>This is a group component that includes a <cite>CGRID</cite> and a <cite>READGRID</cite> component.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [29]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.cgrid</span> <span class="kn">import</span> <span class="n">UNSTRUCTURED</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [27]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.cgrid</span> <span class="kn">import</span> <span class="n">UNSTRUCTURED</span>
 
-<span class="gp">In [30]: </span><span class="n">cgrid</span> <span class="o">=</span> <span class="n">UNSTRUCTURED</span><span class="p">(</span>
+<span class="gp">In [28]: </span><span class="n">cgrid</span> <span class="o">=</span> <span class="n">UNSTRUCTURED</span><span class="p">(</span>
 <span class="gp">   ....: </span>    <span class="n">grid_type</span><span class="o">=</span><span class="s2">&quot;adcirc&quot;</span><span class="p">,</span>
 <span class="gp">   ....: </span>    <span class="n">spectrum</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">mdc</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">flow</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">fhigh</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
 <span class="gp">   ....: </span><span class="p">)</span>
 <span class="gp">   ....: </span>
 
-<span class="gp">In [31]: </span><span class="nb">print</span><span class="p">(</span><span class="n">cgrid</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [29]: </span><span class="nb">print</span><span class="p">(</span><span class="n">cgrid</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">CGRID UNSTRUCTURED CIRCLE mdc=36 flow=0.04 fhigh=1.0</span>
 <span class="go">READGRID UNSTRUCTURED ADCIRC</span>
 </pre></div>
@@ -510,7 +514,7 @@ READGRID UNSTRUCTURED [grid_type] (&#39;fname&#39;)
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>max_length</strong> = 80</p></li>
+<li><p><strong>max_length</strong> = 36</p></li>
 </ul>
 </dd>
 <dt class="field-even">Validated by<span class="colon">:</span></dt>

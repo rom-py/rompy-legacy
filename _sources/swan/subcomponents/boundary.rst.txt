@@ -12,8 +12,7 @@ Boundary
     :toctree: _generated/
 
     rompy.swan.subcomponents.boundary.SIDE
-    rompy.swan.subcomponents.boundary.SEGMENTXY
-    rompy.swan.subcomponents.boundary.SEGMENTIJ
+    rompy.swan.subcomponents.boundary.SEGMENT
     rompy.swan.subcomponents.boundary.PAR
     rompy.swan.subcomponents.boundary.CONSTANTPAR
     rompy.swan.subcomponents.boundary.VARIABLEPAR

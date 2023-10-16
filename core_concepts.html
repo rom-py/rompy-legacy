@@ -380,14 +380,18 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="_generated/rompy.model.ModelRun.html">rompy.model.ModelRun</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_generated/rompy.core.BaseConfig.html">rompy.core.BaseConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#core-objects">Core objects</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#grids">Grids</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#grid">Grid</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="_generated/rompy.core.grid.BaseGrid.html">rompy.core.grid.BaseGrid</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_generated/rompy.core.grid.RegularGrid.html">rompy.core.grid.RegularGrid</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#data-objects">Data Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#data">Data</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="_generated/rompy.core.data.DataBlob.html">rompy.core.data.DataBlob</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_generated/rompy.core.data.DataGrid.html">rompy.core.data.DataGrid</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#spectrum">Spectrum</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.core.spectrum.LogFrequency.html">rompy.core.spectrum.LogFrequency</a></li>
 </ul>
 </li>
 </ul>
@@ -456,8 +460,9 @@ document.write(`
                   
   <section id="core-concepts">
 <h1>Core Concepts<a class="headerlink" href="#core-concepts" title="Link to this heading">#</a></h1>
-<p>Rompy is a Python library for generating ocean model control files and required input data ready for ingestion into the model.
-The framework is separated into two broad concepts:</p>
+<p>Rompy is a Python library for generating ocean model control files and required input
+data ready for ingestion into the model. The framework is separated into two broad
+concepts:</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.model.ModelRun.html#rompy.model.ModelRun" title="rompy.model.ModelRun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.model.ModelRun</span></code></a></p></td>
@@ -468,31 +473,34 @@ The framework is separated into two broad concepts:</p>
 </tr>
 </tbody>
 </table>
-<p>There is information about each of these in the documentation of each object, but at a hight leve, is the high level framework
-that renders the config object and controls the period of which the model is run, and the config object is responsible for producing
+<p>There is information about each of these in the documentation of each object, but at a
+high level, is the high level framework that renders the config object and controls the
+period of which the model is run, and the config object is responsible for producing
 model configuration.</p>
-<p>If we consider a very simple case using the BaseConfig class. This is not inteded to do anything except provide a bass class on which to implement
-a specific model, however, is is functional and can be used to demonstrate core concepts.</p>
+<p>If we consider a very simple case using the <cite>BaseConfig</cite> class. This is not inteded to
+do anything except provide a bass class on which to implement a specific model,
+however, is is functional and can be used to demonstrate core concepts.</p>
 <section id="core-objects">
 <h2>Core objects<a class="headerlink" href="#core-objects" title="Link to this heading">#</a></h2>
-<section id="grids">
-<h3>Grids<a class="headerlink" href="#grids" title="Link to this heading">#</a></h3>
-<p>Grids form a core component of any model. Rompy provides a base class for grids, and a regular grid class.
-Support for other grid types will be added in the future.</p>
+<section id="grid">
+<h3>Grid<a class="headerlink" href="#grid" title="Link to this heading">#</a></h3>
+<p>Grids form a core component of any model. Rompy provides a base class for grids, and a
+regular grid class. Support for other grid types will be added in the future.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.core.grid.BaseGrid.html#rompy.core.grid.BaseGrid" title="rompy.core.grid.BaseGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.core.grid.BaseGrid</span></code></a></p></td>
-<td><p>Abstract representation of a grid in geographic space</p></td>
+<td><p>Representation of a grid in geographic space.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid" title="rompy.core.grid.RegularGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.core.grid.RegularGrid</span></code></a></p></td>
-<td><p>An object which provides an abstract representation of a regular grid in some geographic space</p></td>
+<td><p>Regular grid in geographic space.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="data-objects">
-<h3>Data Objects<a class="headerlink" href="#data-objects" title="Link to this heading">#</a></h3>
-<p>Data objects are used to represent data inputs into the model. Rompy provides a base class for data objects, and a data object for</p>
+<section id="data">
+<h3>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h3>
+<p>Data objects are used to represent data inputs into the model. Rompy provides the
+following base classes for data objects:</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.core.data.DataBlob</span></code></a></p></td>
@@ -500,6 +508,16 @@ Support for other grid types will be added in the future.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.core.data.DataGrid.html#rompy.core.data.DataGrid" title="rompy.core.data.DataGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.core.data.DataGrid</span></code></a></p></td>
 <td><p>Data object for model ingestion.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spectrum">
+<h3>Spectrum<a class="headerlink" href="#spectrum" title="Link to this heading">#</a></h3>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.core.spectrum.LogFrequency.html#rompy.core.spectrum.LogFrequency" title="rompy.core.spectrum.LogFrequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.core.spectrum.LogFrequency</span></code></a></p></td>
+<td><p>Logarithmic wave frequencies.</p></td>
 </tr>
 </tbody>
 </table>
@@ -561,8 +579,9 @@ Support for other grid types will be added in the future.</p>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-objects">Core objects</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grids">Grids</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-objects">Data Objects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grid">Grid</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectrum">Spectrum</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-run">Model Run</a></li>

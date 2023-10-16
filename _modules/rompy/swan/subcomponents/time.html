@@ -433,16 +433,19 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;Time subcomponents.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.base</span> <span class="kn">import</span> <span class="n">BaseSubComponent</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-
-<span class="n">TIME_FORMATS</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">DEFAULT_TIME</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1970</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">DEFAULT_TEND</span> <span class="o">=</span> <span class="n">DEFAULT_TIME</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">DEFAULT_DELT</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">TIME_FORMAT</span> <span class="o">=</span> <span class="p">{</span>
     <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">.%H%M%S&quot;</span><span class="p">,</span>
     <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;&#39;</span><span class="si">%d</span><span class="s2">-%b-%y %H:%M:%S&#39;&quot;</span><span class="p">,</span>
     <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%y.%H:%M:%S&quot;</span><span class="p">,</span>
@@ -452,20 +455,16 @@ document.write(`
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="NONSTATIONARY">
-<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.NONSTATIONARY.html#rompy.swan.subcomponents.time.NONSTATIONARY">[docs]</a>
-<span class="k">class</span> <span class="nc">NONSTATIONARY</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN Nonstationary specification.</span>
+<div class="viewcode-block" id="Time">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.Time.html#rompy.swan.subcomponents.time.Time">[docs]</a>
+<span class="k">class</span> <span class="nc">Time</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Time specification in SWAN.</span>
 
 <span class="sd">    .. code-block:: text</span>
 
-<span class="sd">        NONSTATIONARY [tbeg] [delt] SEC|MIN|HR|DAY [tend]</span>
+<span class="sd">        [time]</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-
-<span class="sd">    Format to render time specification</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    Time is rendered in one of the following formats:</span>
 
 <span class="sd">    * 1: ISO-notation 19870530.153000</span>
 <span class="sd">    * 2: (as in HP compiler) &#39;30-May-87 15:30:00&#39;</span>
@@ -474,16 +473,72 @@ document.write(`
 <span class="sd">    * 5: 87/05/30 15:30:00&#39;</span>
 <span class="sd">    * 6: as in WAM 8705301530</span>
 
-<span class="sd">    The datetime types can be specified as</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The `time` field can be specified as:</span>
 
 <span class="sd">    * existing datetime object</span>
 <span class="sd">    * int or float, assumed as Unix time, i.e. seconds (if &gt;= -2e10 or &lt;= 2e10) or</span>
 <span class="sd">      milliseconds (if &lt; -2e10 or &gt; 2e10) since 1 January 1970.</span>
 <span class="sd">    * ISO 8601 time string.</span>
 
-<span class="sd">    The timedelta type can be specified as</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.time import Time</span>
+<span class="sd">        from datetime import datetime</span>
+<span class="sd">        time = Time(time=datetime(1990, 1, 1))</span>
+<span class="sd">        print(time.render())</span>
+<span class="sd">        time = Time(time=&quot;2012-01-01T00:00:00&quot;, tfmt=2)</span>
+<span class="sd">        print(time.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="s2">&quot;TIME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">time</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Datetime specification&quot;</span><span class="p">)</span>
+    <span class="n">tfmt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Format to render time specification&quot;</span><span class="p">,</span>
+        <span class="n">validate_default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="Time.set_time_format">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.Time.html#rompy.swan.subcomponents.time.Time.set_time_format">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;tfmt&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">set_time_format</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the time format to render.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">TIME_FORMAT</span><span class="p">[</span><span class="n">v</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Time.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.Time.html#rompy.swan.subcomponents.time.Time.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render subcomponent cmd.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Delt">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.Delt.html#rompy.swan.subcomponents.time.Delt">[docs]</a>
+<span class="k">class</span> <span class="nc">Delt</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Time interval specification in SWAN.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        [delt] SEC|MIN|HR|DAY</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The `tdelta` field can be specified as:</span>
 
 <span class="sd">    * existing timedelta object</span>
 <span class="sd">    * int or float, assumed as seconds</span>
@@ -497,22 +552,236 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.time import Delt</span>
+<span class="sd">        from datetime import timedelta</span>
+<span class="sd">        delt = Delt(delt=timedelta(minutes=30))</span>
+<span class="sd">        print(delt.render())</span>
+<span class="sd">        delt = Delt(delt=&quot;PT1H&quot;, dfmt=&quot;hr&quot;)</span>
+<span class="sd">        print(delt.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;delt&quot;</span><span class="p">,</span> <span class="s2">&quot;Delt&quot;</span><span class="p">,</span> <span class="s2">&quot;DELT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;tdelt&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">delt</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time interval&quot;</span><span class="p">)</span>
+    <span class="n">dfmt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sec&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;hr&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sec&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Format to render time interval specification&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">delt_float</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">delt_scaling</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s2">&quot;hr&quot;</span><span class="p">:</span> <span class="mi">3600</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">86400</span><span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">delt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="n">delt_scaling</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dfmt</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Delt.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.Delt.html#rompy.swan.subcomponents.time.Delt.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render subcomponent cmd.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">delt_float</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dfmt</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TimeRangeOpen">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.TimeRangeOpen.html#rompy.swan.subcomponents.time.TimeRangeOpen">[docs]</a>
+<span class="k">class</span> <span class="nc">TimeRangeOpen</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Regular times with an open boundary.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        [tbeg] [delt] SEC|MIN|HR|DAY</span>
+
+<span class="sd">    Time is rendered in one of the following formats:</span>
+
+<span class="sd">    * 1: ISO-notation 19870530.153000</span>
+<span class="sd">    * 2: (as in HP compiler) &#39;30-May-87 15:30:00&#39;</span>
+<span class="sd">    * 3: (as in Lahey compiler) 05/30/87.15:30:00</span>
+<span class="sd">    * 4: 15:30:00</span>
+<span class="sd">    * 5: 87/05/30 15:30:00&#39;</span>
+<span class="sd">    * 6: as in WAM 8705301530</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The `tbeg` field can be specified as:</span>
+
+<span class="sd">    * existing datetime object</span>
+<span class="sd">    * int or float, assumed as Unix time, i.e. seconds (if &gt;= -2e10 or &lt;= 2e10) or</span>
+<span class="sd">      milliseconds (if &lt; -2e10 or &gt; 2e10) since 1 January 1970.</span>
+<span class="sd">    * ISO 8601 time string.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The `tdelta` field can be specified as:</span>
+
+<span class="sd">    * existing timedelta object</span>
+<span class="sd">    * int or float, assumed as seconds</span>
+<span class="sd">    * ISO 8601 duration string, following formats work:</span>
+
+<span class="sd">        * `[-][DD ][HH:MM]SS[.ffffff]`</span>
+<span class="sd">        * `[±]P[DD]DT[HH]H[MM]M[SS]S` (ISO 8601 format for timedelta)</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    Default values for the time specification fields are provided for the case where</span>
+<span class="sd">    the user wants to set times dynamically after instantiating this subcomponent.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.time import TimeRangeOpen</span>
+<span class="sd">        from datetime import datetime, timedelta</span>
+<span class="sd">        times = TimeRangeOpen(</span>
+<span class="sd">            tbeg=datetime(1990, 1, 1), delt=timedelta(minutes=30), dfmt=&quot;min&quot;</span>
+<span class="sd">        )</span>
+<span class="sd">        print(times.render())</span>
+<span class="sd">        times = TimeRangeOpen(</span>
+<span class="sd">            tbeg=&quot;2012-01-01T00:00:00&quot;, delt=&quot;PT1H&quot;, tfmt=2, dfmt=&quot;hr&quot;, suffix=&quot;blk&quot;</span>
+<span class="sd">        )</span>
+<span class="sd">        print(times.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;open&quot;</span><span class="p">,</span> <span class="s2">&quot;OPEN&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">tbeg</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_TIME</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Start time&quot;</span><span class="p">)</span>
+    <span class="n">delt</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_DELT</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time interval&quot;</span><span class="p">)</span>
+    <span class="n">tfmt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Format to render time specification&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">dfmt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sec&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;hr&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sec&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Format to render time interval specification&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Suffix to prepend to argument names when rendering&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="TimeRangeOpen.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.TimeRangeOpen.html#rompy.swan.subcomponents.time.TimeRangeOpen.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render subcomponent cmd.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;tbeg</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">Time</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tbeg</span><span class="p">,</span><span class="w"> </span><span class="n">tfmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; delt</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">Delt</span><span class="p">(</span><span class="n">delt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delt</span><span class="p">,</span><span class="w"> </span><span class="n">dfmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dfmt</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TimeRangeClosed">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.TimeRangeClosed.html#rompy.swan.subcomponents.time.TimeRangeClosed">[docs]</a>
+<span class="k">class</span> <span class="nc">TimeRangeClosed</span><span class="p">(</span><span class="n">TimeRangeOpen</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Regular times with a closed boundary.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        [tbeg] [delt] SEC|MIN|HR|DAY [tend]</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    Default values for the time specification fields are provided for the case where</span>
+<span class="sd">    the user wants to set times dynamically after instantiating this subcomponent.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.time import TimeRangeClosed</span>
+<span class="sd">        from datetime import datetime, timedelta</span>
+<span class="sd">        times = TimeRangeClosed(</span>
+<span class="sd">            tbeg=datetime(1990, 1, 1),</span>
+<span class="sd">            tend=datetime(1990, 1, 7),</span>
+<span class="sd">            delt=timedelta(minutes=30),</span>
+<span class="sd">            dfmt=&quot;min&quot;,</span>
+<span class="sd">        )</span>
+<span class="sd">        print(times.render())</span>
+<span class="sd">        times = TimeRangeClosed(</span>
+<span class="sd">            tbeg=&quot;2012-01-01T00:00:00&quot;,</span>
+<span class="sd">            tend=&quot;2012-02-01T00:00:00&quot;,</span>
+<span class="sd">            delt=&quot;PT1H&quot;,</span>
+<span class="sd">            tfmt=2,</span>
+<span class="sd">            dfmt=&quot;hr&quot;,</span>
+<span class="sd">            suffix=&quot;blk&quot;,</span>
+<span class="sd">        )</span>
+<span class="sd">        print(times.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;closed&quot;</span><span class="p">,</span> <span class="s2">&quot;CLOSED&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;closed&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">tend</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_TEND</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;End time&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Time</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the list of Time objects.&quot;&quot;&quot;</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tbeg</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tend</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">time</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">()</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">times</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Slicing from the times array.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">()[</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the length of the times array.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">())</span>
+
+<div class="viewcode-block" id="TimeRangeClosed.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.TimeRangeClosed.html#rompy.swan.subcomponents.time.TimeRangeClosed.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render subcomponent cmd.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span>
+        <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; tend</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">Time</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tend</span><span class="p">,</span><span class="w"> </span><span class="n">tfmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="NONSTATIONARY">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.NONSTATIONARY.html#rompy.swan.subcomponents.time.NONSTATIONARY">[docs]</a>
+<span class="k">class</span> <span class="nc">NONSTATIONARY</span><span class="p">(</span><span class="n">TimeRangeClosed</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Nonstationary time specification.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        NONSTATIONARY [tbeg] [delt] SEC|MIN|HR|DAY [tend]</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    Default values for the time specification fields are provided for the case where</span>
+<span class="sd">    the user wants to set times dynamically after instantiating this subcomponent.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.time import NONSTATIONARY</span>
 <span class="sd">        nonstat = NONSTATIONARY(</span>
 <span class="sd">            tbeg=&quot;2012-01-01T00:00:00&quot;,</span>
 <span class="sd">            tend=&quot;2012-02-01T00:00:00&quot;,</span>
 <span class="sd">            delt=&quot;PT1H&quot;,</span>
-<span class="sd">            deltfmt=&quot;hr&quot;,</span>
+<span class="sd">            dfmt=&quot;hr&quot;,</span>
 <span class="sd">        )</span>
 <span class="sd">        print(nonstat.render())</span>
-<span class="sd">        import datetime</span>
+<span class="sd">        from datetime import datetime, timedelta</span>
 <span class="sd">        nonstat = NONSTATIONARY(</span>
-<span class="sd">            tbeg=datetime.datetime(1990, 1, 1),</span>
-<span class="sd">            tend=datetime.datetime(1990, 1, 7),</span>
-<span class="sd">            delt=datetime.timedelta(minutes=30),</span>
-<span class="sd">            deltfmt=&quot;min&quot;,</span>
+<span class="sd">            tbeg=datetime(1990, 1, 1),</span>
+<span class="sd">            tend=datetime(1990, 1, 7),</span>
+<span class="sd">            delt=timedelta(minutes=30),</span>
+<span class="sd">            tfmt=1,</span>
+<span class="sd">            dfmt=&quot;min&quot;,</span>
+<span class="sd">            suffix=&quot;tbl&quot;,</span>
 <span class="sd">        )</span>
 <span class="sd">        print(nonstat.render())</span>
 
@@ -521,57 +790,72 @@ document.write(`
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;nonstationary&quot;</span><span class="p">,</span> <span class="s2">&quot;NONSTATIONARY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;nonstationary&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
-    <span class="n">tbeg</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Begin time of the first field of the variable&quot;</span><span class="p">)</span>
-    <span class="n">delt</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time interval between fields&quot;</span><span class="p">)</span>
-    <span class="n">tend</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;End time of the last field of the variable&quot;</span><span class="p">)</span>
-    <span class="n">tfmt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Format to render time specification&quot;</span><span class="p">,</span>
-        <span class="n">validate_default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">deltfmt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sec&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;hr&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sec&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Format to render time interval specification&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">suffix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Suffix to append to the variable name when rendering&quot;</span>
-    <span class="p">)</span>
-
-<div class="viewcode-block" id="NONSTATIONARY.set_time_format">
-<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.NONSTATIONARY.html#rompy.swan.subcomponents.time.NONSTATIONARY.set_time_format">[docs]</a>
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;tfmt&quot;</span><span class="p">)</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">set_time_format</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the time format.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">TIME_FORMATS</span><span class="p">[</span><span class="n">v</span><span class="p">]</span></div>
-
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">delt_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the timedelta as a string.&quot;&quot;&quot;</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltfmt</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span>
-            <span class="n">dt</span> <span class="o">/=</span> <span class="mi">60</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltfmt</span> <span class="o">==</span> <span class="s2">&quot;hr&quot;</span><span class="p">:</span>
-            <span class="n">dt</span> <span class="o">/=</span> <span class="mi">3600</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltfmt</span> <span class="o">==</span> <span class="s2">&quot;day&quot;</span><span class="p">:</span>
-            <span class="n">dt</span> <span class="o">/=</span> <span class="mi">86400</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dt</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">deltfmt</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">tbeg</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_TIME</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Start time&quot;</span><span class="p">)</span>
+    <span class="n">tend</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_TEND</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;End time&quot;</span><span class="p">)</span>
+    <span class="n">delt</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_DELT</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time interval&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="NONSTATIONARY.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.NONSTATIONARY.html#rompy.swan.subcomponents.time.NONSTATIONARY.cmd">[docs]</a>
     <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render NONSTATIONARY string.&quot;&quot;&quot;</span>
-        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;NONSTATIONARY&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; tbeg</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tbeg</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; delt</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">delt_string</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; tend</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tend</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tbeg</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">delt_string</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tend</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render subcomponent cmd.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;NONSTATIONARY </span><span class="si">{</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="STATIONARY">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.STATIONARY.html#rompy.swan.subcomponents.time.STATIONARY">[docs]</a>
+<span class="k">class</span> <span class="nc">STATIONARY</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stationary time specification.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        STATIONARY [time]</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The field `time` is optional to allow for the case where the user wants to set the</span>
+<span class="sd">    time dynamically after instantiating this component.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.time import STATIONARY</span>
+<span class="sd">        stat = STATIONARY(time=&quot;2012-01-01T00:00:00&quot;)</span>
+<span class="sd">        print(stat.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;stationary&quot;</span><span class="p">,</span> <span class="s2">&quot;STATIONARY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;stationary&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">time</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_TIME</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Stationary time&quot;</span><span class="p">)</span>
+    <span class="n">tfmt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Format to render time specification&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Time</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the list of Time object for consistency with NONSTATIONARY.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Time</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Time</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Slicing from the times array.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">()[</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the length of the times array.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">())</span>
+
+<div class="viewcode-block" id="STATIONARY.cmd">
+<a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.time.STATIONARY.html#rompy.swan.subcomponents.time.STATIONARY.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render subcomponent cmd.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;STATIONARY time=</span><span class="si">{</span><span class="n">Time</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">tfmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
 </div>
 
 </pre></div>

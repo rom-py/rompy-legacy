@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -468,7 +472,7 @@ document.write(`
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="rompy.swan.components.boundary.BOUNDSPEC">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.components.boundary.</span></span><span class="sig-name descname"><span class="pre">BOUNDSPEC</span></span><a class="reference internal" href="../../../_modules/rompy/swan/components/boundary.html#BOUNDSPEC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.boundary.BOUNDSPEC" title="Link to this definition">#</a></dt>
-<dd><p>Parametric or spectra boundary along sides or segments.</p>
+<dd><p>Boundary along sides or segment.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>BOUNDSPEC -&gt;SIDE|SEGMENT CONSTANT|VARIABLE PAR|FILE
 </pre></div>
 </div>
@@ -481,25 +485,42 @@ the spectral parameters should not be misinterpreted. Only the incoming componen
 are effective in the computation.</p>
 <p>TODO: Add support for unstructured grid (k).</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [15]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.boundary</span> <span class="kn">import</span> <span class="n">BOUNDSPEC</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.boundary</span> <span class="kn">import</span> <span class="n">BOUNDSPEC</span>
 
-<span class="gp">In [16]: </span><span class="n">boundary</span> <span class="o">=</span> <span class="n">BOUNDSPEC</span><span class="p">(</span>
+<span class="gp">In [12]: </span><span class="n">boundary</span> <span class="o">=</span> <span class="n">BOUNDSPEC</span><span class="p">(</span>
 <span class="gp">   ....: </span>    <span class="n">shapespec</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;shapespec&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;pm&quot;</span><span class="p">)),</span>
 <span class="gp">   ....: </span>    <span class="n">location</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;side&quot;</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;west&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">),</span>
 <span class="gp">   ....: </span>    <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;constantpar&quot;</span><span class="p">,</span> <span class="n">hs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">per</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">dd</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
 <span class="gp">   ....: </span><span class="p">)</span>
 <span class="gp">   ....: </span>
 
-<span class="gp">In [17]: </span><span class="nb">print</span><span class="p">(</span><span class="n">boundary</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [13]: </span><span class="nb">print</span><span class="p">(</span><span class="n">boundary</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">BOUND SHAPESPEC PM PEAK DSPR POWER</span>
 <span class="go">BOUNDSPEC SIDE WEST CCW CONSTANT PAR hs=2.0 per=8.0 dir=270.0 dd=30.0</span>
+
+<span class="gp">In [14]: </span><span class="n">boundary</span> <span class="o">=</span> <span class="n">BOUNDSPEC</span><span class="p">(</span>
+<span class="gp">   ....: </span>    <span class="n">shapespec</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;shapespec&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;pm&quot;</span><span class="p">)),</span>
+<span class="gp">   ....: </span>    <span class="n">location</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+<span class="gp">   ....: </span>        <span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;segment&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>        <span class="n">points</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">j</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">   ....: </span>    <span class="p">),</span>
+<span class="gp">   ....: </span>    <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;constantpar&quot;</span><span class="p">,</span> <span class="n">hs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">per</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">dd</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+<span class="gp">   ....: </span><span class="p">)</span>
+<span class="gp">   ....: </span>
+
+<span class="gp">In [15]: </span><span class="nb">print</span><span class="p">(</span><span class="n">boundary</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">BOUND SHAPESPEC PM PEAK DSPR POWER</span>
+<span class="go">BOUNDSPEC SEGMENT IJ  &amp;</span>
+<span class="go">    i=0 j=0 &amp;</span>
+<span class="go">    i=0 j=3 &amp;</span>
+<span class="go">    CONSTANT PAR hs=2.0 per=8.0 dir=270.0 dd=30.0</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="#rompy.swan.components.boundary.BOUNDSPEC.data" title="rompy.swan.components.boundary.BOUNDSPEC.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span> <span class="pre">(rompy.swan.subcomponents.boundary.CONSTANTPAR</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.boundary.CONSTANTFILE</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.boundary.VARIABLEPAR</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.boundary.VARIABLEFILE)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.boundary.BOUNDSPEC.location" title="rompy.swan.components.boundary.BOUNDSPEC.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span> <span class="pre">(rompy.swan.subcomponents.boundary.SIDE</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.boundary.SEGMENTXY</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.boundary.SEGMENTIJ)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.components.boundary.BOUNDSPEC.location" title="rompy.swan.components.boundary.BOUNDSPEC.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span> <span class="pre">(rompy.swan.subcomponents.boundary.SIDE</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.boundary.SEGMENT)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.components.boundary.BOUNDSPEC.model_type" title="rompy.swan.components.boundary.BOUNDSPEC.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['boundspec',</span> <span class="pre">'BOUNDSPEC'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.components.boundary.BOUNDSPEC.shapespec" title="rompy.swan.components.boundary.BOUNDSPEC.shapespec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shapespec</span> <span class="pre">(rompy.swan.subcomponents.spectrum.SHAPESPEC)</span></code></a></p></li>
 </ul>
@@ -513,7 +534,7 @@ are effective in the computation.</p>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.components.boundary.BOUNDSPEC.location">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../subcomponents/_generated/rompy.swan.subcomponents.boundary.SIDE.html#rompy.swan.subcomponents.boundary.SIDE" title="rompy.swan.subcomponents.boundary.SIDE"><span class="pre">SIDE</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../subcomponents/_generated/rompy.swan.subcomponents.boundary.SEGMENTXY.html#rompy.swan.subcomponents.boundary.SEGMENTXY" title="rompy.swan.subcomponents.boundary.SEGMENTXY"><span class="pre">SEGMENTXY</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../subcomponents/_generated/rompy.swan.subcomponents.boundary.SEGMENTIJ.html#rompy.swan.subcomponents.boundary.SEGMENTIJ" title="rompy.swan.subcomponents.boundary.SEGMENTIJ"><span class="pre">SEGMENTIJ</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.boundary.BOUNDSPEC.location" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../subcomponents/_generated/rompy.swan.subcomponents.boundary.SIDE.html#rompy.swan.subcomponents.boundary.SIDE" title="rompy.swan.subcomponents.boundary.SIDE"><span class="pre">SIDE</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../subcomponents/_generated/rompy.swan.subcomponents.boundary.SEGMENT.html#rompy.swan.subcomponents.boundary.SEGMENT" title="rompy.swan.subcomponents.boundary.SEGMENT"><span class="pre">SEGMENT</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.components.boundary.BOUNDSPEC.location" title="Link to this definition">#</a></dt>
 <dd><p>Location to apply the boundary</p>
 </dd></dl>
 

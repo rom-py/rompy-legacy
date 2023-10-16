@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -490,14 +494,14 @@ document.write(`
 <li><p>command GEN3 JANSSEN: <cite>pwtail = 5</cite></p></li>
 </ul>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [289]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.startup</span> <span class="kn">import</span> <span class="n">SET</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [230]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.startup</span> <span class="kn">import</span> <span class="n">SET</span>
 
-<span class="gp">In [290]: </span><span class="nb">set</span> <span class="o">=</span> <span class="n">SET</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">direction_convention</span><span class="o">=</span><span class="s2">&quot;nautical&quot;</span><span class="p">)</span>
+<span class="gp">In [231]: </span><span class="nb">set</span> <span class="o">=</span> <span class="n">SET</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">direction_convention</span><span class="o">=</span><span class="s2">&quot;nautical&quot;</span><span class="p">)</span>
 
-<span class="gp">In [291]: </span><span class="nb">print</span><span class="p">(</span><span class="nb">set</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [232]: </span><span class="nb">print</span><span class="p">(</span><span class="nb">set</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">SET level=0.5 NAUTICAL</span>
 
-<span class="gp">In [292]: </span><span class="nb">set</span> <span class="o">=</span> <span class="n">SET</span><span class="p">(</span>
+<span class="gp">In [233]: </span><span class="nb">set</span> <span class="o">=</span> <span class="n">SET</span><span class="p">(</span>
 <span class="gp">   .....: </span>    <span class="n">level</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">nor</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">depmin</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
@@ -511,7 +515,7 @@ document.write(`
 <span class="gp">   .....: </span><span class="p">)</span>
 <span class="gp">   .....: </span>
 
-<span class="gp">In [293]: </span><span class="nb">print</span><span class="p">(</span><span class="nb">set</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [234]: </span><span class="nb">print</span><span class="p">(</span><span class="nb">set</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">SET level=-1.0 nor=90.0 depmin=0.01 maxerr=3 grav=9.81 rho=1025.0 cdcap=0.0025 inrhog=0 hsrerr=0.1 NAUTICAL</span>
 </pre></div>
 </div>

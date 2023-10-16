@@ -466,7 +466,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.spectrum import SPECTRUM</span>
 <span class="sd">        spec = SPECTRUM(mdc=36, flow=0.04, fhigh=1.0)</span>
@@ -591,7 +590,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.spectrum import JONSWAP</span>
 <span class="sd">        shape = JONSWAP(gamma=3.3)</span>
@@ -630,7 +628,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.spectrum import TMA</span>
 <span class="sd">        shape = TMA(gamma=2.0, d=18)</span>
@@ -668,7 +665,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.spectrum import GAUSS</span>
 <span class="sd">        shape = GAUSS(sigfr=0.02)</span>
@@ -709,7 +705,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.spectrum import PM</span>
 <span class="sd">        shape = PM()</span>
@@ -737,7 +732,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.spectrum import BIN</span>
 <span class="sd">        shape = BIN()</span>
@@ -774,7 +768,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.subcomponents.spectrum import SHAPESPEC</span>
 <span class="sd">        shapespec = SHAPESPEC()</span>
@@ -792,13 +785,16 @@ document.write(`
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;shapespec&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
     <span class="n">shape</span><span class="p">:</span> <span class="n">JONSWAP</span> <span class="o">|</span> <span class="n">PM</span> <span class="o">|</span> <span class="n">GAUSS</span> <span class="o">|</span> <span class="n">BIN</span> <span class="o">|</span> <span class="n">TMA</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default_factory</span><span class="o">=</span><span class="n">JONSWAP</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The spectral shape&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">JONSWAP</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The spectral shape&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">per_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;peak&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;peak&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of characteristic wave period&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;peak&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of characteristic wave period&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">dspr_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">,</span> <span class="s2">&quot;degrees&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;power&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of directional spreading&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;power&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of directional spreading&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="SHAPESPEC.cmd">

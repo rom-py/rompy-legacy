@@ -1,0 +1,987 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rompy.swan.components.lockup &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/rompy/swan/components/lockup';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">rompy.swan.c...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for rompy.swan.components.lockup</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Model lockup components.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">Timestamp</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">inf</span>
+
+<span class="kn">from</span> <span class="nn">rompy.swan.components.base</span> <span class="kn">import</span> <span class="n">BaseComponent</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.time</span> <span class="kn">import</span> <span class="n">STATIONARY</span><span class="p">,</span> <span class="n">NONSTATIONARY</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">TIMES_TYPE</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">STATIONARY</span><span class="p">,</span> <span class="n">NONSTATIONARY</span><span class="p">]</span>
+<span class="n">HOTTIMES_TYPE</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">datetime</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="COMPUTE">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE.html#rompy.swan.components.lockup.COMPUTE">[docs]</a>
+<span class="k">class</span> <span class="nc">COMPUTE</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start SWAN computation.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        COMPUTE STATIONARY|NONSTATIONARY</span>
+
+<span class="sd">    If the SWAN mode is stationary (see command `MODE`), then only the command</span>
+<span class="sd">    `COMPUTE` should be given here.</span>
+
+<span class="sd">    If the SWAN mode is nonstationary (see command `MODE`), then the computation can</span>
+<span class="sd">    be:</span>
+
+<span class="sd">    * stationary (at the specified time: option STATIONARY here).</span>
+<span class="sd">    * nonstationary (over the specified period of time.</span>
+
+<span class="sd">    To verify input to SWAN (e.g., all input fields such as water depth, wind fields,</span>
+<span class="sd">    etc), SWAN can be run without computations (that is: zero iterations by using</span>
+<span class="sd">    command `NUM ACCUR MXITST=0`).</span>
+
+<span class="sd">    In the case `MODE NONSTATIONARY` several commands COMPUTE can appear, where the</span>
+<span class="sd">    wave state at the end of one computation is used as initial state for the next one,</span>
+<span class="sd">    unless a command `INIT` appears in between the two COMPUTE commands. This enables</span>
+<span class="sd">    the user to make a stationary computation to obtain the initial state for a</span>
+<span class="sd">    nonstationary computation and/or to change the computational time step during a</span>
+<span class="sd">    computation, to change a boundary condition etc. This also has the advantage of not</span>
+<span class="sd">    using a hotfile since, it can be very large in size.</span>
+
+<span class="sd">    For small domains, i.e. less than 100 km or 1 deg, a stationary computation is</span>
+<span class="sd">    recommended. Otherwise, a nonstationary computation is advised.</span>
+
+<span class="sd">    For a nonstationary computation, a time step of at most 10 minutes is advised (when</span>
+<span class="sd">    you are choosing a time step larger than 10 minutes, the action density limiter</span>
+<span class="sd">    (see command `NUM`) becomes probably a part of the physics).</span>
+
+<span class="sd">    Also, the time step should be chosen such that the Courant number is smaller than</span>
+<span class="sd">    10 for the fastest (or dominant) wave. Otherwise, a first order upwind scheme is</span>
+<span class="sd">    recommended in that case; see command `PROP BSBT`. If you want to run a high</span>
+<span class="sd">    resolution model with a very large time step, e.g. 1 hour, you may apply multiple</span>
+<span class="sd">    COMPUT STAT commands. For a small time step (&lt;= 10 minutes), no more than 1</span>
+<span class="sd">    iteration per time step is recommended (see command `NUM ... NONSTAT mxitns`).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.components.lockup import COMPUTE</span>
+<span class="sd">        comp = COMPUTE()</span>
+<span class="sd">        print(comp.render())</span>
+<span class="sd">        comp = COMPUTE(</span>
+<span class="sd">            times=dict(model_type=&quot;stationary&quot;, time=&quot;1990-01-01T00:00:00&quot;, tfmt=2)</span>
+<span class="sd">        )</span>
+<span class="sd">        print(comp.render())</span>
+<span class="sd">        comp = COMPUTE(</span>
+<span class="sd">            times=dict(</span>
+<span class="sd">                model_type=&quot;nonstationary&quot;,</span>
+<span class="sd">                tbeg=&quot;1990-01-01T00:00:00&quot;,</span>
+<span class="sd">                tend=&quot;1990-02-01T00:00:00&quot;,</span>
+<span class="sd">                delt=&quot;PT1H&quot;,</span>
+<span class="sd">                tfmt=1,</span>
+<span class="sd">                dfmt=&quot;hr&quot;,</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
+<span class="sd">        print(comp.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;compute&quot;</span><span class="p">,</span> <span class="s2">&quot;COMPUTE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;compute&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">times</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TIMES_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Times for the stationary or nonstationary computation&quot;</span><span class="p">,</span>
+        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">i0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time index of the initial time step&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">i1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time index of the final time step&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="COMPUTE.times_suffix">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE.html#rompy.swan.components.lockup.COMPUTE.times_suffix">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;times&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">times_suffix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="n">TIMES_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TIMES_TYPE</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">NONSTATIONARY</span><span class="p">):</span>
+            <span class="n">times</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;c&quot;</span>
+        <span class="k">return</span> <span class="n">times</span></div>
+
+
+<div class="viewcode-block" id="COMPUTE.cmd">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE.html#rompy.swan.components.lockup.COMPUTE.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;COMPUTE&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="HOTFILE">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.HOTFILE.html#rompy.swan.components.lockup.HOTFILE">[docs]</a>
+<span class="k">class</span> <span class="nc">HOTFILE</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write intermediate results.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        HOTFILE &#39;fname&#39; -&gt;FREE|UNFORMATTED</span>
+
+<span class="sd">    This command can be used to write the entire wave field at the end of a computation</span>
+<span class="sd">    to a so-called hotfile, to be used as initial condition in a subsequent SWAN run</span>
+<span class="sd">    (see command `INITIAL HOTSTART`). This command must be entered immediately after a</span>
+<span class="sd">    `COMPUTE` command.</span>
+
+<span class="sd">    The user may choose the format of the hotfile to be written either as free or</span>
+<span class="sd">    unformatted. If the free format is chosen, then this format is identical to the</span>
+<span class="sd">    format of the files written by the `SPECOUT` command (option `SPEC2D`). This</span>
+<span class="sd">    hotfile is therefore an ASCII file which is human readable.</span>
+
+<span class="sd">    An unformatted (or binary) file usually requires less space on your computer than</span>
+<span class="sd">    an ASCII file. Moreover, it can be readed by a subsequent SWAN run much faster than</span>
+<span class="sd">    an ASCII file. Especially, when the hotfile might become a big file, the choice for</span>
+<span class="sd">    unformatted is preferable. Note that your compiler and OS should follow the same</span>
+<span class="sd">    ABI (Application Binary Interface) conventions (e.g. word size, endianness), so</span>
+<span class="sd">    that unformatted hotfiles may transfer properly between different OS or platforms.</span>
+<span class="sd">    This implies that the present and subsequent SWAN runs do not have to be carried</span>
+<span class="sd">    out on the same operating system (e.g. Windows, Linux) or on the same computer,</span>
+<span class="sd">    provided that distinct ABI conventions have been followed.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    For parallel MPI runs, more than one hotfile will be generated depending on the</span>
+<span class="sd">    number of processors (`fname-001`, `fname-002`, etc).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.components.lockup import HOTFILE</span>
+<span class="sd">        hotfile = HOTFILE(fname=&quot;hotfile.swn&quot;)</span>
+<span class="sd">        print(hotfile.render())</span>
+<span class="sd">        hotfile = HOTFILE(fname=&quot;hotfile.dat&quot;, format=&quot;unformatted&quot;)</span>
+<span class="sd">        print(hotfile.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;hotfile&quot;</span><span class="p">,</span> <span class="s2">&quot;HOTFILE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;hotfile&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">fname</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the file to which the wave field is written&quot;</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="s2">&quot;unformatted&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Choose between free (SWAN ASCII) or unformatted (binary) format&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="HOTFILE.cmd">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.HOTFILE.html#rompy.swan.components.lockup.HOTFILE.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;HOTFILE fname=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fname</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="COMPUTE_STAT">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE_STAT.html#rompy.swan.components.lockup.COMPUTE_STAT">[docs]</a>
+<span class="k">class</span> <span class="nc">COMPUTE_STAT</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multiple SWAN stationary computations.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        COMPUTE STATIONARY [time]</span>
+<span class="sd">        HOTFILE &#39;fname&#39; -&gt;FREE|UNFORMATTED</span>
+<span class="sd">        COMPUTE STATIONARY [time]</span>
+<span class="sd">        COMPUTE STATIONARY [time]</span>
+<span class="sd">        HOTFILE &#39;fname&#39; -&gt;FREE|UNFORMATTED</span>
+<span class="sd">        .</span>
+<span class="sd">        .</span>
+
+<span class="sd">    This component can be used to define multiple stationary compute commands and</span>
+<span class="sd">    write intermediate results as hotfiles between then.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The field `times` is optional to allow for the case where the user wants to set</span>
+<span class="sd">    times dynamically after instantiating this component.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.time import STATIONARY, NONSTATIONARY</span>
+<span class="sd">        from rompy.swan.components.lockup import COMPUTE_STAT</span>
+<span class="sd">        time = STATIONARY(time=&quot;1990-01-01T00:00:00&quot;)</span>
+<span class="sd">        comp = COMPUTE_STAT(times=time)</span>
+<span class="sd">        print(comp.render())</span>
+<span class="sd">        times = NONSTATIONARY(</span>
+<span class="sd">            tbeg=&quot;1990-01-01T00:00:00&quot;,</span>
+<span class="sd">            tend=&quot;1990-01-01T03:00:00&quot;,</span>
+<span class="sd">            delt=&quot;PT1H&quot;,</span>
+<span class="sd">        )</span>
+<span class="sd">        comp = COMPUTE_STAT(times=times)</span>
+<span class="sd">        print(comp.render())</span>
+<span class="sd">        hotfile = dict(fname=&quot;./hotfile.swn&quot;)</span>
+<span class="sd">        hottimes=[&quot;1990-01-01T03:00:00&quot;]</span>
+<span class="sd">        comp = COMPUTE_STAT(times=times, hotfile=hotfile, hottimes=hottimes)</span>
+<span class="sd">        print(comp.render())</span>
+<span class="sd">        comp = COMPUTE_STAT(times=times, hotfile=hotfile, hottimes=[2, -1])</span>
+<span class="sd">        print(comp.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;stat&quot;</span><span class="p">,</span> <span class="s2">&quot;STAT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;stat&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">times</span><span class="p">:</span> <span class="n">TIMES_TYPE</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">STATIONARY</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Compute times&quot;</span><span class="p">,</span>
+        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">hotfile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">HOTFILE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Write results to restart files&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">hottimes</span><span class="p">:</span> <span class="n">HOTTIMES_TYPE</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Times to write hotfiles, can be a list of datetimes or times indices&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;_%Y%m</span><span class="si">%d</span><span class="s2">T%H%M%S&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Time-template suffix to add to hotfile fname&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="COMPUTE_STAT.timestamp_to_datetime">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE_STAT.html#rompy.swan.components.lockup.COMPUTE_STAT.timestamp_to_datetime">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;hottimes&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">timestamp_to_datetime</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">hottimes</span><span class="p">:</span> <span class="n">TIMES_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TIMES_TYPE</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure pandas.Timestamp entries are coerced into datatime.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">hottimes</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hottimes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Timestamp</span><span class="p">):</span>
+            <span class="n">hottimes</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">hottimes</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">hottimes</span></div>
+
+
+<div class="viewcode-block" id="COMPUTE_STAT.hotfile_with_hottimes">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE_STAT.html#rompy.swan.components.lockup.COMPUTE_STAT.hotfile_with_hottimes">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">hotfile_with_hottimes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;COMPUTE_NONSTAT&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hottimes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;hotfile not specified, hottimes will be ignored&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hottimes</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;hottimes not specified, hotfile will be ignored&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">hotids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List time ids at which to write hotfiles.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hottimes</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hottimes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">datetime</span><span class="p">):</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hottimes</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;hottime </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> not in times </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">i</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hottimes</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Hotfile requested for time </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> but times have &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;only </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">)</span><span class="si">}</span><span class="s2"> values: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ids</span>
+
+    <span class="k">def</span> <span class="nf">_hotfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set timestamp to hotfile fname.&quot;&quot;&quot;</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="p">)</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotfile</span><span class="o">.</span><span class="n">fname</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hotfile</span><span class="o">.</span><span class="n">fname</span><span class="o">.</span><span class="n">stem</span><span class="si">}{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">&quot;</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hotfile</span><span class="o">.</span><span class="n">fname</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">HOTFILE</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="n">fname</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hotfile</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+
+<div class="viewcode-block" id="COMPUTE_STAT.cmd">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE_STAT.html#rompy.swan.components.lockup.COMPUTE_STAT.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">()):</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;COMPUTE </span><span class="si">{</span><span class="n">STATIONARY</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">tfmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">ind</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotids</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hotfile</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="COMPUTE_NONSTAT">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE_NONSTAT.html#rompy.swan.components.lockup.COMPUTE_NONSTAT">[docs]</a>
+<span class="k">class</span> <span class="nc">COMPUTE_NONSTAT</span><span class="p">(</span><span class="n">COMPUTE_STAT</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multiple SWAN nonstationary computations.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        COMPUTE NONSTATIONARY [tbegc] [deltc] SEC|MIN|HR|DAY [tendc]</span>
+<span class="sd">        HOTFILE &#39;fname&#39; -&gt;FREE|UNFORMATTED</span>
+<span class="sd">        COMPUTE NONSTATIONARY [tbegc] [deltc] SEC|MIN|HR|DAY [tendc]</span>
+<span class="sd">        HOTFILE &#39;fname&#39; -&gt;FREE|UNFORMATTED</span>
+<span class="sd">        .</span>
+<span class="sd">        .</span>
+
+<span class="sd">    This component can be used to define multiple nonstationary compute commands and</span>
+<span class="sd">    write intermediate results as hotfiles between then.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The field `times` is optional to allow for the case where the user wants to set</span>
+<span class="sd">    times dynamically after instantiating this component.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.subcomponents.time import NONSTATIONARY</span>
+<span class="sd">        from rompy.swan.components.lockup import COMPUTE_NONSTAT</span>
+<span class="sd">        times = NONSTATIONARY(</span>
+<span class="sd">            tbeg=&quot;1990-01-01T00:00:00&quot;,</span>
+<span class="sd">            tend=&quot;1990-02-01T00:00:00&quot;,</span>
+<span class="sd">            delt=&quot;PT1H&quot;,</span>
+<span class="sd">            dfmt=&quot;hr&quot;,</span>
+<span class="sd">        )</span>
+<span class="sd">        comp = COMPUTE_NONSTAT(times=times)</span>
+<span class="sd">        print(comp.render())</span>
+<span class="sd">        comp = COMPUTE_NONSTAT(</span>
+<span class="sd">            times=times,</span>
+<span class="sd">            hotfile=dict(fname=&quot;hotfile.swn&quot;, format=&quot;free&quot;),</span>
+<span class="sd">            hottimes=[&quot;1990-02-01T00:00:00&quot;],</span>
+<span class="sd">        )</span>
+<span class="sd">        print(comp.render())</span>
+<span class="sd">        comp = COMPUTE_NONSTAT(</span>
+<span class="sd">            times=times,</span>
+<span class="sd">            initstat=True,</span>
+<span class="sd">            hotfile=dict(fname=&quot;hotfile&quot;, format=&quot;free&quot;),</span>
+<span class="sd">            hottimes=[6, 12, 18, -1],</span>
+<span class="sd">        )</span>
+<span class="sd">        print(comp.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;nonstat&quot;</span><span class="p">,</span> <span class="s2">&quot;NONSTAT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;nonstat&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+    <span class="n">times</span><span class="p">:</span> <span class="n">NONSTATIONARY</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">NONSTATIONARY</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Compute times&quot;</span>
+    <span class="p">)</span>
+    <span class="n">initstat</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Run a STATIONARY computation at the initial time prior to the &quot;</span>
+            <span class="s2">&quot;NONSTATIONARY computation(s) to prescribe initial conditions&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="COMPUTE_NONSTAT.times_suffix">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE_NONSTAT.html#rompy.swan.components.lockup.COMPUTE_NONSTAT.times_suffix">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;times&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">times_suffix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="n">NONSTATIONARY</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NONSTATIONARY</span><span class="p">:</span>
+        <span class="n">times</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;c&quot;</span>
+        <span class="k">return</span> <span class="n">times</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tbeg</span><span class="p">,</span> <span class="n">tend</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">NONSTATIONARY</span><span class="p">(</span>
+            <span class="n">tbeg</span><span class="o">=</span><span class="n">tbeg</span><span class="p">,</span>
+            <span class="n">tend</span><span class="o">=</span><span class="n">tend</span><span class="p">,</span>
+            <span class="n">delt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">delt</span><span class="p">,</span>
+            <span class="n">tfmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">tfmt</span><span class="p">,</span>
+            <span class="n">dfmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">dfmt</span><span class="p">,</span>
+            <span class="n">suffix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">suffix</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="COMPUTE_NONSTAT.cmd">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.COMPUTE_NONSTAT.html#rompy.swan.components.lockup.COMPUTE_NONSTAT.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="nb">repr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="o">-</span><span class="n">inf</span>
+        <span class="n">tbeg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">tbeg</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initstat</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;COMPUTE </span><span class="si">{</span><span class="n">STATIONARY</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">tbeg</span><span class="p">,</span><span class="w"> </span><span class="n">tfmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">tfmt</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotids</span><span class="p">:</span>
+            <span class="n">tend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">()[</span><span class="n">ind</span><span class="p">]</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_times</span><span class="p">(</span><span class="n">tbeg</span><span class="p">,</span> <span class="n">tend</span><span class="p">)</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;COMPUTE </span><span class="si">{</span><span class="n">times</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hotfile</span><span class="p">(</span><span class="n">tend</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+            <span class="n">tbeg</span> <span class="o">=</span> <span class="n">tend</span>
+        <span class="k">if</span> <span class="n">ind</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_times</span><span class="p">(</span><span class="n">tbeg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">tend</span><span class="p">)</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;COMPUTE </span><span class="si">{</span><span class="n">times</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">repr</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="STOP">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.STOP.html#rompy.swan.components.lockup.STOP">[docs]</a>
+<span class="k">class</span> <span class="nc">STOP</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;End of commands.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        STOP</span>
+
+<span class="sd">    This required command marks the end of the commands in the command file. Note that</span>
+<span class="sd">    the command `STOP` may be the last command in the input file; any information in</span>
+<span class="sd">    the input file beyond this command is ignored.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    .. ipython:: python</span>
+<span class="sd">        :okwarning:</span>
+
+<span class="sd">        from rompy.swan.components.lockup import STOP</span>
+<span class="sd">        stop = STOP()</span>
+<span class="sd">        print(stop.render())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;stop&quot;</span><span class="p">,</span> <span class="s2">&quot;STOP&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;stop&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="STOP.cmd">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.STOP.html#rompy.swan.components.lockup.STOP.cmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;STOP&quot;</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -43,7 +43,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'swan/components/output';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Lock-up" href="lockup.html" />
+    <link rel="next" title="rompy.swan.components.output.BaseLocation" href="_generated/rompy.swan.components.output.BaseLocation.html" />
     <link rel="prev" title="rompy.swan.components.numerics.NUMERIC" href="_generated/rompy.swan.components.numerics.NUMERIC.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="numerics.html">Numerics</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -461,7 +465,87 @@ document.write(`
   <section id="output">
 <h1>Output<a class="headerlink" href="#output" title="Link to this heading">#</a></h1>
 <p>SWAN output commands</p>
-<p>Not implemented.</p>
+<section id="locations">
+<h2>Locations<a class="headerlink" href="#locations" title="Link to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.BaseLocation.html#rompy.swan.components.output.BaseLocation" title="rompy.swan.components.output.BaseLocation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.BaseLocation</span></code></a></p></td>
+<td><p>Base class for SWAN output locations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.FRAME.html#rompy.swan.components.output.FRAME" title="rompy.swan.components.output.FRAME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.FRAME</span></code></a></p></td>
+<td><p>Output locations on a regular grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.GROUP.html#rompy.swan.components.output.GROUP" title="rompy.swan.components.output.GROUP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.GROUP</span></code></a></p></td>
+<td><p>Output locations on subset of a grid.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.CURVE.html#rompy.swan.components.output.CURVE" title="rompy.swan.components.output.CURVE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.CURVE</span></code></a></p></td>
+<td><p>Output locations along a curve.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.CURVES.html#rompy.swan.components.output.CURVES" title="rompy.swan.components.output.CURVES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.CURVES</span></code></a></p></td>
+<td><p>Output locations along multiple curves.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.RAY.html#rompy.swan.components.output.RAY" title="rompy.swan.components.output.RAY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.RAY</span></code></a></p></td>
+<td><p>Output locations along a depth contour.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.ISOLINE.html#rompy.swan.components.output.ISOLINE" title="rompy.swan.components.output.ISOLINE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.ISOLINE</span></code></a></p></td>
+<td><p>Output locations along a depth contour.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.POINTS.html#rompy.swan.components.output.POINTS" title="rompy.swan.components.output.POINTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.POINTS</span></code></a></p></td>
+<td><p>Isolated output locations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.POINTS_FILE.html#rompy.swan.components.output.POINTS_FILE" title="rompy.swan.components.output.POINTS_FILE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.POINTS_FILE</span></code></a></p></td>
+<td><p>Isolated output locations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.NGRID.html#rompy.swan.components.output.NGRID" title="rompy.swan.components.output.NGRID"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.NGRID</span></code></a></p></td>
+<td><p>Output locations for a nested grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.NGRID_UNSTRUCTURED.html#rompy.swan.components.output.NGRID_UNSTRUCTURED" title="rompy.swan.components.output.NGRID_UNSTRUCTURED"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.NGRID_UNSTRUCTURED</span></code></a></p></td>
+<td><p>Output locations for a nested grid.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="settings">
+<h2>Settings<a class="headerlink" href="#settings" title="Link to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.QUANTITY.html#rompy.swan.components.output.QUANTITY" title="rompy.swan.components.output.QUANTITY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.QUANTITY</span></code></a></p></td>
+<td><p>Define output settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.QUANTITIES.html#rompy.swan.components.output.QUANTITIES" title="rompy.swan.components.output.QUANTITIES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.QUANTITIES</span></code></a></p></td>
+<td><p>Define output settings for multiple output.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.OUTPUT_OPTIONS.html#rompy.swan.components.output.OUTPUT_OPTIONS" title="rompy.swan.components.output.OUTPUT_OPTIONS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.OUTPUT_OPTIONS</span></code></a></p></td>
+<td><p>Set format of output.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="write">
+<h2>Write<a class="headerlink" href="#write" title="Link to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.BaseWrite.html#rompy.swan.components.output.BaseWrite" title="rompy.swan.components.output.BaseWrite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.BaseWrite</span></code></a></p></td>
+<td><p>Base class for SWAN output writing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.BLOCK.html#rompy.swan.components.output.BLOCK" title="rompy.swan.components.output.BLOCK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.BLOCK</span></code></a></p></td>
+<td><p>Write spatial distributions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.TABLE.html#rompy.swan.components.output.TABLE" title="rompy.swan.components.output.TABLE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.TABLE</span></code></a></p></td>
+<td><p>Write spatial distributions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.SPECOUT.html#rompy.swan.components.output.SPECOUT" title="rompy.swan.components.output.SPECOUT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.SPECOUT</span></code></a></p></td>
+<td><p>Write to data file the wave spectra.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.NESTOUT.html#rompy.swan.components.output.NESTOUT" title="rompy.swan.components.output.NESTOUT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.NESTOUT</span></code></a></p></td>
+<td><p>Write to 2D boundary spectra.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.components.output.TEST.html#rompy.swan.components.output.TEST" title="rompy.swan.components.output.TEST"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.components.output.TEST</span></code></a></p></td>
+<td><p>Write intermediate results.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 
 
@@ -484,11 +568,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="lockup.html"
+       href="_generated/rompy.swan.components.output.BaseLocation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Lock-up</p>
+        <p class="prev-next-title">rompy.swan.components.output.BaseLocation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -500,6 +584,18 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#locations">Locations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#settings">Settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write">Write</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   <div class="tocsection sourcelink">

@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -494,16 +498,16 @@ and Technology, 182, p.103198.</p>
 <p>Iis also necessary to describe the ice, using the <cite>ICE</cite> command (for uniform and
 stationary ice) or <cite>INPGRID</cite>/<cite>READINP</cite> commands (for variable ice).</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [188]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">SICE</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [129]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">SICE</span>
 
-<span class="gp">In [189]: </span><span class="n">sice</span> <span class="o">=</span> <span class="n">SICE</span><span class="p">()</span>
+<span class="gp">In [130]: </span><span class="n">sice</span> <span class="o">=</span> <span class="n">SICE</span><span class="p">()</span>
 
-<span class="gp">In [190]: </span><span class="nb">print</span><span class="p">(</span><span class="n">sice</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [131]: </span><span class="nb">print</span><span class="p">(</span><span class="n">sice</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">SICE</span>
 
-<span class="gp">In [191]: </span><span class="n">sice</span> <span class="o">=</span> <span class="n">SICE</span><span class="p">(</span><span class="n">aice</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">In [132]: </span><span class="n">sice</span> <span class="o">=</span> <span class="n">SICE</span><span class="p">(</span><span class="n">aice</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
-<span class="gp">In [192]: </span><span class="nb">print</span><span class="p">(</span><span class="n">sice</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [133]: </span><span class="nb">print</span><span class="p">(</span><span class="n">sice</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">SICE aice=0.5</span>
 </pre></div>
 </div>

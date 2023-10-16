@@ -4,12 +4,6 @@ Physics
 
 SWAN physics commands
 
-.. autosummary::
-   :nosignatures:
-   :toctree: _generated/
-
-   rompy.swan.components.physics.PHYSICS
-
 Generation
 ~~~~~~~~~~
 
@@ -201,4 +195,4 @@ Off
    :toctree: _generated/
 
    rompy.swan.components.physics.OFF
-   rompy.swan.components.physics.DEACTIVATE
+   rompy.swan.components.physics.OFFS

@@ -1,0 +1,844 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>rompy.swan.grid.SwanGrid &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script src="../../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'swan/_generated/rompy.swan.grid.SwanGrid';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="rompy.swan.data.SwanDataGrid" href="rompy.swan.data.SwanDataGrid.html" />
+    <link rel="prev" title="SWAN" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-header-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-header-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../models.html">Models</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#grid">Grid</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rompy.swan.grid.SwanGrid</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data">Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#components">Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#interface">Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#types">Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../schism/index.html">SCHISM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../models.html" class="nav-link">Models</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SWAN</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">rompy.swan.g...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="rompy-swan-grid-swangrid">
+<h1>rompy.swan.grid.SwanGrid<a class="headerlink" href="#rompy-swan-grid-swangrid" title="Link to this heading">#</a></h1>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.grid.</span></span><span class="sig-name descname"><span class="pre">SwanGrid</span></span><a class="reference internal" href="../../_modules/rompy/swan/grid.html#SwanGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.grid.SwanGrid" title="Link to this definition">#</a></dt>
+<dd><p>Regular SWAN grid in geographic space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.dx" title="rompy.swan.grid.SwanGrid.dx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dx</span> <span class="pre">(Optional[float])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.dy" title="rompy.swan.grid.SwanGrid.dy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dy</span> <span class="pre">(Optional[float])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.exc" title="rompy.swan.grid.SwanGrid.exc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exc</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.grid_type" title="rompy.swan.grid.SwanGrid.grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span> <span class="pre">(Literal['REG',</span> <span class="pre">'CURV'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.gridfile" title="rompy.swan.grid.SwanGrid.gridfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridfile</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.nx" title="rompy.swan.grid.SwanGrid.nx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nx</span> <span class="pre">(Optional[int])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.ny" title="rompy.swan.grid.SwanGrid.ny"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ny</span> <span class="pre">(Optional[int])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.rot" title="rompy.swan.grid.SwanGrid.rot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rot</span> <span class="pre">(Optional[float])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.x" title="rompy.swan.grid.SwanGrid.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span> <span class="pre">(Optional[Union[Np1DArray,</span> <span class="pre">Np2DArray]])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.x0" title="rompy.swan.grid.SwanGrid.x0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x0</span> <span class="pre">(Optional[float])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.y" title="rompy.swan.grid.SwanGrid.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span> <span class="pre">(Optional[Union[Np1DArray,</span> <span class="pre">Np2DArray]])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.y0" title="rompy.swan.grid.SwanGrid.y0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y0</span> <span class="pre">(Optional[float])</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_grid_type" title="rompy.swan.grid.SwanGrid.validate_grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid_type</span></code></a> » <a class="reference internal" href="#rompy.swan.grid.SwanGrid.grid_type" title="rompy.swan.grid.SwanGrid.grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.dx">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.dx" title="Link to this definition">#</a></dt>
+<dd><p>Spacing between grid points in the x direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.dy">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.dy" title="Link to this definition">#</a></dt>
+<dd><p>Spacing between grid points in the y direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.exc">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.exc" title="Link to this definition">#</a></dt>
+<dd><p>Missing value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.grid_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'REG'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'CURV'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REG'</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.grid_type" title="Link to this definition">#</a></dt>
+<dd><p>Type of grid (REG=regular, CURV=curvilinear)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_grid_type" title="rompy.swan.grid.SwanGrid.validate_grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid_type</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.gridfile">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gridfile</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.gridfile" title="Link to this definition">#</a></dt>
+<dd><p>Name of grid file to load</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_length</strong> = 36</p></li>
+</ul>
+</dd>
+<dt class="field-even">Validated by<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.nx">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.nx" title="Link to this definition">#</a></dt>
+<dd><p>Number of grid points in the x direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.ny">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ny</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.ny" title="Link to this definition">#</a></dt>
+<dd><p>Number of grid points in the y direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.rot">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rot</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.rot" title="Link to this definition">#</a></dt>
+<dd><p>Rotation angle of the grid in degrees</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.x">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Np1DArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Np2DArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.x" title="Link to this definition">#</a></dt>
+<dd><p>The x coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.x0">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.x0" title="Link to this definition">#</a></dt>
+<dd><p>X coordinate of the grid origin</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.y">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Np1DArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Np2DArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.y" title="Link to this definition">#</a></dt>
+<dd><p>The y coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.y0">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.grid.SwanGrid.y0" title="Link to this definition">#</a></dt>
+<dd><p>Y coordinate of the grid origin</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_curvilinear_grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid.validate_grid" title="rompy.core.grid.RegularGrid.validate_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_grid</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.nearby_spectra">
+<span class="sig-name descname"><span class="pre">nearby_spectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_thres</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/swan/grid.html#SwanGrid.nearby_spectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.grid.SwanGrid.nearby_spectra" title="Link to this definition">#</a></dt>
+<dd><p>Find points nearby and project to the boundary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ds_spec</strong> (<em>xarray.Dataset</em>) – <p>an XArray dataset of wave spectra at a number of points.
+Dataset variable names standardised using wavespectra.read_*
+functions.</p>
+<p>See <a class="reference external" href="https://wavespectra.readthedocs.io/en/latest/api.html#input-functions">https://wavespectra.readthedocs.io/en/latest/api.html#input-functions</a></p>
+</p></li>
+<li><p><strong>dist_thres</strong> (<em>float</em><em>, </em><em>optional</em><em> [</em><em>Default: 0.05</em><em>]</em>) – Maximum distance to translate the input spectra to the grid boundary</p></li>
+<li><p><strong>plot</strong> (<em>boolean</em><em>, </em><em>optional</em><em> [</em><em>Default: True</em><em>]</em>) – Generate a plot that shows the applied projections</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A subset of ds_spec with lat and lon coordinates projected to the boundary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>xarray.Dataset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.validate_curvilinear_grid">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_curvilinear_grid</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../../_modules/rompy/swan/grid.html#SwanGrid.validate_curvilinear_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.validate_grid_type">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_grid_type</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.grid.SwanGrid.grid_type" title="rompy.swan.grid.SwanGrid.grid_type"><em class="xref py py-obj"><span class="pre">grid_type</span></em></a><a class="reference internal" href="../../_modules/rompy/swan/grid.html#SwanGrid.validate_grid_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.grid.SwanGrid.validate_grid_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.cgrid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cgrid</span></span><a class="headerlink" href="#rompy.swan.grid.SwanGrid.cgrid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.cgrid_read">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cgrid_read</span></span><a class="headerlink" href="#rompy.swan.grid.SwanGrid.cgrid_read" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.swan.grid.SwanGrid.inpgrid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inpgrid</span></span><a class="headerlink" href="#rompy.swan.grid.SwanGrid.inpgrid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SWAN</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rompy.swan.data.SwanDataGrid.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">rompy.swan.data.SwanDataGrid</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid"><code class="docutils literal notranslate"><span class="pre">SwanGrid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.dx"><code class="docutils literal notranslate"><span class="pre">SwanGrid.dx</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.dy"><code class="docutils literal notranslate"><span class="pre">SwanGrid.dy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.exc"><code class="docutils literal notranslate"><span class="pre">SwanGrid.exc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.grid_type"><code class="docutils literal notranslate"><span class="pre">SwanGrid.grid_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.gridfile"><code class="docutils literal notranslate"><span class="pre">SwanGrid.gridfile</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.nx"><code class="docutils literal notranslate"><span class="pre">SwanGrid.nx</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.ny"><code class="docutils literal notranslate"><span class="pre">SwanGrid.ny</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.rot"><code class="docutils literal notranslate"><span class="pre">SwanGrid.rot</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.x"><code class="docutils literal notranslate"><span class="pre">SwanGrid.x</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.x0"><code class="docutils literal notranslate"><span class="pre">SwanGrid.x0</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.y"><code class="docutils literal notranslate"><span class="pre">SwanGrid.y</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.y0"><code class="docutils literal notranslate"><span class="pre">SwanGrid.y0</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.nearby_spectra"><code class="docutils literal notranslate"><span class="pre">SwanGrid.nearby_spectra()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.validate_curvilinear_grid"><code class="docutils literal notranslate"><span class="pre">SwanGrid.validate_curvilinear_grid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.validate_grid_type"><code class="docutils literal notranslate"><span class="pre">SwanGrid.validate_grid_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.cgrid"><code class="docutils literal notranslate"><span class="pre">SwanGrid.cgrid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.cgrid_read"><code class="docutils literal notranslate"><span class="pre">SwanGrid.cgrid_read</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.grid.SwanGrid.inpgrid"><code class="docutils literal notranslate"><span class="pre">SwanGrid.inpgrid</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/swan/_generated/rompy.swan.grid.SwanGrid.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

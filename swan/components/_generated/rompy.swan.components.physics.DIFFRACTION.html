@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -488,16 +492,16 @@ experience suggests <cite>alpha = 0.01</cite>.</p>
 computation of the diffraction parameter (the wave field remains intact for all
 other computations and output). This is done with a repeated convolution filtering.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [91]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">DIFFRACTION</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [33]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">DIFFRACTION</span>
 
-<span class="gp">In [92]: </span><span class="n">diffraction</span> <span class="o">=</span> <span class="n">DIFFRACTION</span><span class="p">()</span>
+<span class="gp">In [34]: </span><span class="n">diffraction</span> <span class="o">=</span> <span class="n">DIFFRACTION</span><span class="p">()</span>
 
-<span class="gp">In [93]: </span><span class="nb">print</span><span class="p">(</span><span class="n">diffraction</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [35]: </span><span class="nb">print</span><span class="p">(</span><span class="n">diffraction</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">DIFFRACTION</span>
 
-<span class="gp">In [94]: </span><span class="n">diffraction</span> <span class="o">=</span> <span class="n">DIFFRACTION</span><span class="p">(</span><span class="n">idiffr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">smpar</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">smnum</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">In [36]: </span><span class="n">diffraction</span> <span class="o">=</span> <span class="n">DIFFRACTION</span><span class="p">(</span><span class="n">idiffr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">smpar</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">smnum</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
-<span class="gp">In [95]: </span><span class="nb">print</span><span class="p">(</span><span class="n">diffraction</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [37]: </span><span class="nb">print</span><span class="p">(</span><span class="n">diffraction</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">DIFFRACTION idiffr=1 smpar=0.0 smnum=1</span>
 </pre></div>
 </div>

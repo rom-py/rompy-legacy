@@ -433,6 +433,7 @@ document.write(`
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -440,8 +441,11 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
 
 <span class="kn">from</span> <span class="nn">rompy.core</span> <span class="kn">import</span> <span class="n">DataGrid</span>
+<span class="kn">from</span> <span class="nn">rompy.core.time</span> <span class="kn">import</span> <span class="n">TimeRange</span>
 
-<span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">SwanGrid</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.grid</span> <span class="kn">import</span> <span class="n">SwanGrid</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.types</span> <span class="kn">import</span> <span class="n">GridOptions</span>
+
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -449,31 +453,36 @@ document.write(`
 
 
 <div class="viewcode-block" id="SwanDataGrid">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.data.SwanDataGrid">[docs]</a>
+<a class="viewcode-back" href="../../../swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid">[docs]</a>
 <span class="k">class</span> <span class="nc">SwanDataGrid</span><span class="p">(</span><span class="n">DataGrid</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class is used to write SWAN data from a dataset.&quot;&quot;&quot;</span>
 
-    <span class="n">z1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Scaler paramater or u componet of vector field&quot;</span><span class="p">,</span>
+    <span class="n">z1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Name of the data variable in dataset representing either a scaler &quot;</span>
+            <span class="s2">&quot;parameter or the u-componet of a vector field&quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">z2</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;v componet of vector field&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">var</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN variable name (WIND, BOTTOM, CURRENT)&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;WIND&quot;</span><span class="p">,</span>
+    <span class="n">z2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Name of the data variable in dataset representing &quot;</span>
+            <span class="s2">&quot;the v-componet of a vector field&quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
+    <span class="n">var</span><span class="p">:</span> <span class="n">GridOptions</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN input grid name&quot;</span><span class="p">)</span>
     <span class="n">fac</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;SWAN multiplies all values that are read from file by `fac`. For instance &quot;</span>
-            <span class="s2">&quot;if the values are given in unit decimeter, one should make `fac=0.1` to &quot;</span>
-            <span class="s2">&quot;obtain values in m. To change sign use a negative `fac`.&quot;</span>
+            <span class="s2">&quot;SWAN multiplies all values that are read from file by `fac`. For &quot;</span>
+            <span class="s2">&quot;instance if the values are given in unit decimeter, one should make &quot;</span>
+            <span class="s2">&quot;`fac=0.1` to obtain values in m. To change sign use a negative `fac`&quot;</span>
         <span class="p">),</span>
         <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="c1"># root validator</span>
 <div class="viewcode-block" id="SwanDataGrid.ensure_z1_in_data_vars">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars">[docs]</a>
+<a class="viewcode-back" href="../../../swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">ensure_z1_in_data_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SwanDataGrid&quot;</span><span class="p">:</span>
         <span class="n">data_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
@@ -485,33 +494,24 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
-<div class="viewcode-block" id="SwanDataGrid.var_must_be_one_of_wind_bathy_current">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.data.SwanDataGrid.var_must_be_one_of_wind_bathy_current">[docs]</a>
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;var&quot;</span><span class="p">)</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">var_must_be_one_of_wind_bathy_current</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;WIND&quot;</span><span class="p">,</span> <span class="s2">&quot;BOTTOM&quot;</span><span class="p">,</span> <span class="s2">&quot;CURRENT&quot;</span><span class="p">]:</span>  <span class="c1"># Raf to add any others here</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;var must be one of WIND, BOTTOM, CURRENT&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span></div>
-
-
 <div class="viewcode-block" id="SwanDataGrid.get">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.data.SwanDataGrid.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">staging_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">SwanGrid</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the data to a SWAN grid file.</span>
+<a class="viewcode-back" href="../../../swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">grid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SwanGrid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeRange</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the data source to a new location.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        staging_dir : str</span>
-<span class="sd">            The directory to write the grid file to.</span>
-<span class="sd">        grid: SwanGrid</span>
-<span class="sd">            The SwanGrid object representing the data, obsolete and may get removed.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        The data are assumed to not have been rotated. We cannot use the grid.rot attr</span>
-<span class="sd">        as this is the rotation from the model grid object which is not necessarily the</span>
-<span class="sd">        same as the rotation of the data.</span>
+<span class="sd">        destdir : str | Path</span>
+<span class="sd">            The destination directory to write the netcdf data to.</span>
+<span class="sd">        grid: SwanGrid, optional</span>
+<span class="sd">            The grid to filter the data to, only used if `self.filter_grid` is True.</span>
+<span class="sd">        time: TimeRange, optional</span>
+<span class="sd">            The times to filter the data to, only used if `self.filter_time` is True.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -519,10 +519,22 @@ document.write(`
 <span class="sd">            The command line string with the INPGRID/READINP commands ready to be</span>
 <span class="sd">            written to the SWAN input file.</span>
 
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The data are assumed to not have been rotated. We cannot use the grid.rot attr</span>
+<span class="sd">        as this is the rotation from the model grid object which is not necessarily the</span>
+<span class="sd">        same as the rotation of the data.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">output_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">staging_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.grd&quot;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Writing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">==</span> <span class="s2">&quot;BOTTOM&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filter_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filter_time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+
+        <span class="n">output_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">destdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">.grd&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Writing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;bottom&quot;</span><span class="p">:</span>
             <span class="n">inpgrid</span><span class="p">,</span> <span class="n">readgrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ds</span><span class="o">.</span><span class="n">swan</span><span class="o">.</span><span class="n">to_bottom_grid</span><span class="p">(</span>
                 <span class="n">output_file</span><span class="p">,</span>
                 <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%4.2f</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -542,13 +554,13 @@ document.write(`
                 <span class="n">z2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z2</span><span class="p">,</span>
                 <span class="n">fac</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fac</span><span class="p">,</span>
                 <span class="n">rot</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                <span class="n">var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="p">,</span>
+                <span class="n">var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">inpgrid</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">readgrid</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span></div>
 
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SWANDataGrid </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SWANDataGrid </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
 
@@ -791,7 +803,7 @@ document.write(`
         <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="n">rot</span><span class="p">)</span>
 
         <span class="n">inpgrid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;INPGRID </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">grid</span><span class="o">.</span><span class="n">inpgrid</span><span class="si">}</span><span class="s2"> NONSTATION </span><span class="si">{</span><span class="n">inptimes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">dt</span><span class="si">}</span><span class="s2"> HR&quot;</span>
-        <span class="n">readinp</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;READINP </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">fac</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; 3 0 1 0 FREE&quot;</span>
+        <span class="n">readinp</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;READINP </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">fac</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; 3 0 1 0 FREE&quot;</span>
 
         <span class="k">return</span> <span class="n">inpgrid</span><span class="p">,</span> <span class="n">readinp</span>
 

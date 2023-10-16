@@ -442,6 +442,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">rompy.swan.types</span> <span class="kn">import</span> <span class="n">GridOptions</span>
 
 
+<span class="c1"># TODO: Components are a bit mixed up here, define them a bit better.</span>
+
 <span class="n">HERE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 
 
@@ -522,7 +524,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.inpgrid import REGULAR</span>
 <span class="sd">        inpgrid = REGULAR(</span>
@@ -553,10 +554,12 @@ document.write(`
 <span class="sd">                tbeg=&quot;2019-01-01T00:00:00&quot;,</span>
 <span class="sd">                tend=&quot;2019-01-07 00:00:00&quot;,</span>
 <span class="sd">                delt=3600,</span>
-<span class="sd">                deltfmt=&quot;hr&quot;,</span>
+<span class="sd">                dfmt=&quot;hr&quot;,</span>
 <span class="sd">            ),</span>
 <span class="sd">        )</span>
 <span class="sd">        print(inpgrid.render())</span>
+
+<span class="sd">    TODO: Use grid object, requires different grid parameters to be allowed.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -652,7 +655,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.inpgrid import CURVILINEAR</span>
 <span class="sd">        inpgrid = CURVILINEAR(</span>
@@ -667,7 +669,7 @@ document.write(`
 <span class="sd">                tbeg=&quot;2019-01-01T00:00:00&quot;,</span>
 <span class="sd">                tend=&quot;2019-01-07 00:00:00&quot;,</span>
 <span class="sd">                delt=3600,</span>
-<span class="sd">                deltfmt=&quot;hr&quot;,</span>
+<span class="sd">                dfmt=&quot;hr&quot;,</span>
 <span class="sd">            ),</span>
 <span class="sd">        )</span>
 <span class="sd">        print(inpgrid.render())</span>
@@ -746,7 +748,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.inpgrid import UNSTRUCTURED</span>
 <span class="sd">        inpgrid = UNSTRUCTURED(</span>
@@ -757,7 +758,7 @@ document.write(`
 <span class="sd">                tbeg=&quot;2019-01-01T00:00:00&quot;,</span>
 <span class="sd">                tend=&quot;2019-01-07 00:00:00&quot;,</span>
 <span class="sd">                delt=3600,</span>
-<span class="sd">                deltfmt=&quot;hr&quot;,</span>
+<span class="sd">                dfmt=&quot;hr&quot;,</span>
 <span class="sd">            ),</span>
 <span class="sd">        )</span>
 <span class="sd">        print(inpgrid.render())</span>
@@ -778,102 +779,6 @@ document.write(`
             <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nonstationary</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="p">[</span><span class="nb">repr</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">readinp</span><span class="o">.</span><span class="n">render</span><span class="p">()]</span>
         <span class="k">return</span> <span class="nb">repr</span></div>
-</div>
-
-
-
-<span class="n">INPGRID_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
-    <span class="n">Union</span><span class="p">[</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">CURVILINEAR</span><span class="p">,</span> <span class="n">UNSTRUCTURED</span><span class="p">],</span>
-    <span class="n">Field</span><span class="p">(</span><span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
-<span class="p">]</span>
-
-
-<div class="viewcode-block" id="INPGRIDS">
-<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.INPGRIDS.html#rompy.swan.components.inpgrid.INPGRIDS">[docs]</a>
-<span class="k">class</span> <span class="nc">INPGRIDS</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN input grids group component.</span>
-
-<span class="sd">    .. code-block:: text</span>
-
-<span class="sd">        INPGRID ...</span>
-<span class="sd">        READGRID ...</span>
-
-<span class="sd">        INPGRID ...</span>
-<span class="sd">        READGRID ...</span>
-
-<span class="sd">        ...</span>
-
-<span class="sd">    This group component is a convenience to allow defining and rendering</span>
-<span class="sd">    a list of input grid components.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    .. ipython:: python</span>
-<span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
-
-<span class="sd">        from rompy.swan.components.inpgrid import REGULAR, INPGRIDS</span>
-<span class="sd">        inpgrid_bottom = REGULAR(</span>
-<span class="sd">            grid_type=&quot;bottom&quot;,</span>
-<span class="sd">            excval=-99.0,</span>
-<span class="sd">            xpinp=172.0,</span>
-<span class="sd">            ypinp=-41.0,</span>
-<span class="sd">            alpinp=0.0,</span>
-<span class="sd">            mxinp=99,</span>
-<span class="sd">            myinp=99,</span>
-<span class="sd">            dxinp=0.005,</span>
-<span class="sd">            dyinp=0.005,</span>
-<span class="sd">            readinp=dict(fname1=&quot;bottom.txt&quot;),</span>
-<span class="sd">        )</span>
-<span class="sd">        inpgrid_wind = REGULAR(</span>
-<span class="sd">            grid_type=&quot;wind&quot;,</span>
-<span class="sd">            excval=-99.0,</span>
-<span class="sd">            xpinp=172.0,</span>
-<span class="sd">            ypinp=-41.0,</span>
-<span class="sd">            alpinp=0.0,</span>
-<span class="sd">            mxinp=99,</span>
-<span class="sd">            myinp=99,</span>
-<span class="sd">            dxinp=0.005,</span>
-<span class="sd">            dyinp=0.005,</span>
-<span class="sd">            readinp=dict(fname1=&quot;wind.txt&quot;),</span>
-<span class="sd">            nonstationary=dict(</span>
-<span class="sd">                tbeg=&quot;2019-01-01T00:00:00&quot;,</span>
-<span class="sd">                tend=&quot;2019-01-07 00:00:00&quot;,</span>
-<span class="sd">                delt=3600,</span>
-<span class="sd">                deltfmt=&quot;hr&quot;,</span>
-<span class="sd">            ),</span>
-<span class="sd">        )</span>
-<span class="sd">        inpgrids = INPGRIDS(inpgrids=[inpgrid_bottom, inpgrid_wind])</span>
-<span class="sd">        print(inpgrids.render())</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;inpgrids&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;inpgrids&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
-    <span class="p">)</span>
-    <span class="n">inpgrids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">INPGRID_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of input grid components&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-<div class="viewcode-block" id="INPGRIDS.cmd">
-<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.INPGRIDS.html#rompy.swan.components.inpgrid.INPGRIDS.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="nb">repr</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">inpgrid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inpgrids</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">cmd</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="nb">repr</span></div>
-
-
-<div class="viewcode-block" id="INPGRIDS.render">
-<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.inpgrid.INPGRIDS.html#rompy.swan.components.inpgrid.INPGRIDS.render">[docs]</a>
-    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override base class to allow rendering list of components.&quot;&quot;&quot;</span>
-        <span class="n">cmds</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">():</span>
-            <span class="n">cmds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmds</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

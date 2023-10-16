@@ -439,20 +439,20 @@ document.write(`
 
 
 <div class="viewcode-block" id="SwanGrid">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.grid.SwanGrid">[docs]</a>
+<a class="viewcode-back" href="../../../swan/_generated/rompy.swan.grid.SwanGrid.html#rompy.swan.grid.SwanGrid">[docs]</a>
 <span class="k">class</span> <span class="nc">SwanGrid</span><span class="p">(</span><span class="n">RegularGrid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract representation of a regular SWAN spatial grid.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Regular SWAN grid in geographic space.&quot;&quot;&quot;</span>
 
     <span class="n">grid_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;REG&quot;</span><span class="p">,</span> <span class="s2">&quot;CURV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="s2">&quot;REG&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Type of grid (REG=regular, CURV=curvilinear)&quot;</span>
     <span class="p">)</span>
     <span class="n">exc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Missing value&quot;</span><span class="p">)</span>
     <span class="n">gridfile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of grid file to load&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of grid file to load&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="SwanGrid.validate_grid_type">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.grid.SwanGrid.validate_grid_type">[docs]</a>
+<a class="viewcode-back" href="../../../swan/_generated/rompy.swan.grid.SwanGrid.html#rompy.swan.grid.SwanGrid.validate_grid_type">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;grid_type&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">validate_grid_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
@@ -462,7 +462,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="SwanGrid.validate_curvilinear_grid">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.grid.SwanGrid.validate_curvilinear_grid">[docs]</a>
+<a class="viewcode-back" href="../../../swan/_generated/rompy.swan.grid.SwanGrid.html#rompy.swan.grid.SwanGrid.validate_curvilinear_grid">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">validate_curvilinear_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SwanGrid&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_type</span> <span class="o">==</span> <span class="s2">&quot;CURV&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -525,7 +525,7 @@ document.write(`
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cgrid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_type</span> <span class="o">==</span> <span class="s2">&quot;REG&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;REG </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rot</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dy</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="si">:</span><span class="s2">0.0f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="si">:</span><span class="s2">0.0f</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;REG </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rot</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xlen</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ylen</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="si">:</span><span class="s2">0.0f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="si">:</span><span class="s2">0.0f</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_type</span> <span class="o">==</span> <span class="s2">&quot;CURV&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Curvilinear grids not supported yet&quot;</span><span class="p">)</span>
             <span class="c1"># return (f&#39;CURVilinear {self.nx-1:0.0f} {self.ny-1:0.0f}&#39;,f&#39;READGRID COOR 1 \&#39;{os.path.basename(self.gridpath)}\&#39; 1 0 1 FREE&#39;)</span>
@@ -544,7 +544,7 @@ document.write(`
         <span class="k">return</span> <span class="n">output</span>
 
 <div class="viewcode-block" id="SwanGrid.nearby_spectra">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.grid.SwanGrid.nearby_spectra">[docs]</a>
+<a class="viewcode-back" href="../../../swan/_generated/rompy.swan.grid.SwanGrid.html#rompy.swan.grid.SwanGrid.nearby_spectra">[docs]</a>
     <span class="k">def</span> <span class="nf">nearby_spectra</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds_spec</span><span class="p">,</span> <span class="n">dist_thres</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find points nearby and project to the boundary</span>
 

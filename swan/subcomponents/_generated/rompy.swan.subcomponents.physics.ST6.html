@@ -379,8 +379,11 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#components">Components</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../spectrum.html">Spectrum</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../time.html">Time</a></li>
@@ -389,8 +392,10 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../boundary.html">Boundary and initial conditions</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../physics.html">Physics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -487,30 +492,30 @@ whitecapping dissipation in a model for wind-generated surface waves: Descriptio
 and simple calculations. Journal of Atmospheric and Oceanic Technology, 29(9),
 pp.1329-1346.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [425]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.physics</span> <span class="kn">import</span> <span class="n">ST6</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [53]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.physics</span> <span class="kn">import</span> <span class="n">ST6</span>
 
-<span class="gp">In [426]: </span><span class="n">st6</span> <span class="o">=</span> <span class="n">ST6</span><span class="p">(</span><span class="n">a1sds</span><span class="o">=</span><span class="mf">4.7e-7</span><span class="p">,</span> <span class="n">a2sds</span><span class="o">=</span><span class="mf">6.6e-6</span><span class="p">)</span>
+<span class="gp">In [54]: </span><span class="n">st6</span> <span class="o">=</span> <span class="n">ST6</span><span class="p">(</span><span class="n">a1sds</span><span class="o">=</span><span class="mf">4.7e-7</span><span class="p">,</span> <span class="n">a2sds</span><span class="o">=</span><span class="mf">6.6e-6</span><span class="p">)</span>
 
-<span class="gp">In [427]: </span><span class="nb">print</span><span class="p">(</span><span class="n">st6</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [55]: </span><span class="nb">print</span><span class="p">(</span><span class="n">st6</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">ST6 a1sds=4.7e-07 a2sds=6.6e-06 UP HWANG VECTAU U10PROXY windscaling=32.0</span>
 
-<span class="gp">In [428]: </span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-<span class="gp">   .....: </span>    <span class="n">a1sds</span><span class="o">=</span><span class="mf">2.8e-6</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">a2sds</span><span class="o">=</span><span class="mf">3.5e-5</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">normalization</span><span class="o">=</span><span class="s2">&quot;up&quot;</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">wind_drag</span><span class="o">=</span><span class="s2">&quot;hwang&quot;</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">tau</span><span class="o">=</span><span class="s2">&quot;vectau&quot;</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">u10</span><span class="o">=</span><span class="s2">&quot;u10proxy&quot;</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">windscaling</span><span class="o">=</span><span class="mf">32.0</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">cdfac</span><span class="o">=</span><span class="mf">0.89</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">agrow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">a</span><span class="o">=</span><span class="mf">0.0015</span><span class="p">,</span>
-<span class="gp">   .....: </span><span class="p">)</span>
-<span class="gp">   .....: </span>
+<span class="gp">In [56]: </span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+<span class="gp">   ....: </span>    <span class="n">a1sds</span><span class="o">=</span><span class="mf">2.8e-6</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">a2sds</span><span class="o">=</span><span class="mf">3.5e-5</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">normalization</span><span class="o">=</span><span class="s2">&quot;up&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">wind_drag</span><span class="o">=</span><span class="s2">&quot;hwang&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">tau</span><span class="o">=</span><span class="s2">&quot;vectau&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">u10</span><span class="o">=</span><span class="s2">&quot;u10proxy&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">windscaling</span><span class="o">=</span><span class="mf">32.0</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">cdfac</span><span class="o">=</span><span class="mf">0.89</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">agrow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">a</span><span class="o">=</span><span class="mf">0.0015</span><span class="p">,</span>
+<span class="gp">   ....: </span><span class="p">)</span>
+<span class="gp">   ....: </span>
 
-<span class="gp">In [429]: </span><span class="n">st6</span> <span class="o">=</span> <span class="n">ST6</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">In [57]: </span><span class="n">st6</span> <span class="o">=</span> <span class="n">ST6</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="gp">In [430]: </span><span class="nb">print</span><span class="p">(</span><span class="n">st6</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [58]: </span><span class="nb">print</span><span class="p">(</span><span class="n">st6</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">ST6 a1sds=2.8e-06 a2sds=3.5e-05 UP HWANG VECTAU U10PROXY windscaling=32.0 DEBIAS cdfac=0.89 AGROW a=0.0015</span>
 </pre></div>
 </div>

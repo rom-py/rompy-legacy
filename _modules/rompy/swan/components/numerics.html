@@ -432,11 +432,10 @@ document.write(`
   <h1>Source code for rompy.swan.components.numerics</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Model numerics components.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Annotated</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">FieldValidationInfo</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Annotated</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span>
 
 <span class="kn">from</span> <span class="nn">rompy.swan.components.base</span> <span class="kn">import</span> <span class="n">BaseComponent</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.types</span> <span class="kn">import</span> <span class="n">IDLA</span><span class="p">,</span> <span class="n">PhysicsOff</span>
 <span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.numerics</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">BSBT</span><span class="p">,</span>
     <span class="n">GSE</span><span class="p">,</span>
@@ -491,17 +490,22 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.numerics import PROP</span>
 <span class="sd">        prop = PROP()</span>
 <span class="sd">        print(prop.render())</span>
 <span class="sd">        prop = PROP(scheme=dict(model_type=&quot;bsbt&quot;))</span>
 <span class="sd">        print(prop.render())</span>
-<span class="sd">        prop = PROP(scheme=dict(model_type=&quot;gse&quot;, waveage=5, units=&quot;hr&quot;))</span>
+<span class="sd">        prop = PROP(</span>
+<span class="sd">            scheme=dict(</span>
+<span class="sd">                model_type=&quot;gse&quot;,</span>
+<span class="sd">                waveage=dict(delt=&quot;PT5H&quot;, dfmt=&quot;hr&quot;),</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
 <span class="sd">        print(prop.render())</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;prop&quot;</span><span class="p">,</span> <span class="s2">&quot;PROP&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;prop&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
@@ -540,7 +544,6 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.numerics import NUMERIC</span>
 <span class="sd">        numeric = NUMERIC()</span>
@@ -556,26 +559,33 @@ document.write(`
 <span class="sd">        print(numeric.render())</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;numeric&quot;</span><span class="p">,</span> <span class="s2">&quot;NUMERIC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;numeric&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
     <span class="n">stopc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">STOPC</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Iteration termination criteria&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Iteration termination criteria&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">dirimpl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DIRIMPL</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Numerical scheme for refraction&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Numerical scheme for refraction&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">sigimpl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SIGIMPL</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Frequency shifting accuracy&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Frequency shifting accuracy&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">ctheta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CTHETA</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Prevents excessive directional turning&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Prevents excessive directional turning&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">csigma</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CSIGMA</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Prevents excessive frequency shifting&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Prevents excessive frequency shifting&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">setup</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SETUP</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Stop criteria in the computation of wave setup&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Stop criteria in the computation of wave setup&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="NUMERIC.cmd">

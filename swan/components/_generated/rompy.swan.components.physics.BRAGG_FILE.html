@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -476,14 +480,14 @@ document.write(`
 <p class="rubric">Notes</p>
 <p>This spectrum is taken to be uniform over the entire computational domain.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [65]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">BRAGG_FILE</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [12]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">BRAGG_FILE</span>
 
-<span class="gp">In [66]: </span><span class="n">bragg</span> <span class="o">=</span> <span class="n">BRAGG_FILE</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s2">&quot;bottom_spectrum.txt&quot;</span><span class="p">,</span> <span class="n">nreg</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">mkx</span><span class="o">=</span><span class="mi">99</span><span class="p">,</span> <span class="n">dkx</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">In [13]: </span><span class="n">bragg</span> <span class="o">=</span> <span class="n">BRAGG_FILE</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s2">&quot;bottom_spectrum.txt&quot;</span><span class="p">,</span> <span class="n">nreg</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">mkx</span><span class="o">=</span><span class="mi">99</span><span class="p">,</span> <span class="n">dkx</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
-<span class="gp">In [67]: </span><span class="nb">print</span><span class="p">(</span><span class="n">bragg</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [14]: </span><span class="nb">print</span><span class="p">(</span><span class="n">bragg</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">BRAGG nreg=500 FILE fname=&#39;bottom_spectrum.txt&#39; mkx=99 dkx=0.1</span>
 
-<span class="gp">In [68]: </span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+<span class="gp">In [15]: </span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
 <span class="gp">   ....: </span>    <span class="n">ibrag</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">   ....: </span>    <span class="n">nreg</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
 <span class="gp">   ....: </span>    <span class="n">cutoff</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
@@ -495,9 +499,9 @@ document.write(`
 <span class="gp">   ....: </span><span class="p">)</span>
 <span class="gp">   ....: </span>
 
-<span class="gp">In [69]: </span><span class="n">bragg</span> <span class="o">=</span> <span class="n">BRAGG_FILE</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">In [16]: </span><span class="n">bragg</span> <span class="o">=</span> <span class="n">BRAGG_FILE</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="gp">In [70]: </span><span class="nb">print</span><span class="p">(</span><span class="n">bragg</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [17]: </span><span class="nb">print</span><span class="p">(</span><span class="n">bragg</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">BRAGG ibrag=3 nreg=500 cutoff=5.0 FILE fname=&#39;bottom_spectrum.txt&#39; mkx=99 mky=149 dkx=0.1 dky=0.1</span>
 </pre></div>
 </div>
@@ -542,7 +546,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>max_length</strong> = 40</p></li>
+<li><p><strong>max_length</strong> = 36</p></li>
 </ul>
 </dd>
 </dl>

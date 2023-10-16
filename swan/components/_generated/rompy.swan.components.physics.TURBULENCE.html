@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -478,16 +482,16 @@ effect is also activated by reading values of the turbulent viscosity using the
 <cite>READGRID TURB</cite> is necessary if this command <cite>TURB</cite> is used since the value of the
 viscosity is assumed to vary over space.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [254]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">TURBULENCE</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [195]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">TURBULENCE</span>
 
-<span class="gp">In [255]: </span><span class="n">turbulence</span> <span class="o">=</span> <span class="n">TURBULENCE</span><span class="p">(</span><span class="n">current</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">In [196]: </span><span class="n">turbulence</span> <span class="o">=</span> <span class="n">TURBULENCE</span><span class="p">(</span><span class="n">current</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="gp">In [256]: </span><span class="nb">print</span><span class="p">(</span><span class="n">turbulence</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [197]: </span><span class="nb">print</span><span class="p">(</span><span class="n">turbulence</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">TURBULENCE</span>
 
-<span class="gp">In [257]: </span><span class="n">turbulence</span> <span class="o">=</span> <span class="n">TURBULENCE</span><span class="p">(</span><span class="n">ctb</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">current</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tbcur</span><span class="o">=</span><span class="mf">0.004</span><span class="p">)</span>
+<span class="gp">In [198]: </span><span class="n">turbulence</span> <span class="o">=</span> <span class="n">TURBULENCE</span><span class="p">(</span><span class="n">ctb</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">current</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tbcur</span><span class="o">=</span><span class="mf">0.004</span><span class="p">)</span>
 
-<span class="gp">In [258]: </span><span class="nb">print</span><span class="p">(</span><span class="n">turbulence</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [199]: </span><span class="nb">print</span><span class="p">(</span><span class="n">turbulence</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">TURBULENCE ctb=0.01 CURRENT tbcur=0.004</span>
 </pre></div>
 </div>

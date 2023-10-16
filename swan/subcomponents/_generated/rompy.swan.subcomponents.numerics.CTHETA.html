@@ -379,8 +379,11 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#components">Components</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../spectrum.html">Spectrum</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../time.html">Time</a></li>
@@ -389,8 +392,10 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../boundary.html">Boundary and initial conditions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../physics.html">Physics</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../numerics.html">Numerics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -478,16 +483,16 @@ directional turning rate cθ based on the CFL restriction. (See Eq. 3.41 of
 Scientific/Technical documentation). See also the final remark in Section 2.6.3.
 Note that if this command is not specified, then the limiter is not activated.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [338]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.numerics</span> <span class="kn">import</span> <span class="n">CTHETA</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [284]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.numerics</span> <span class="kn">import</span> <span class="n">CTHETA</span>
 
-<span class="gp">In [339]: </span><span class="n">ctheta</span> <span class="o">=</span> <span class="n">CTHETA</span><span class="p">()</span>
+<span class="gp">In [285]: </span><span class="n">ctheta</span> <span class="o">=</span> <span class="n">CTHETA</span><span class="p">()</span>
 
-<span class="gp">In [340]: </span><span class="nb">print</span><span class="p">(</span><span class="n">ctheta</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [286]: </span><span class="nb">print</span><span class="p">(</span><span class="n">ctheta</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">CTHETA</span>
 
-<span class="gp">In [341]: </span><span class="n">ctheta</span> <span class="o">=</span> <span class="n">CTHETA</span><span class="p">(</span><span class="n">cfl</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="gp">In [287]: </span><span class="n">ctheta</span> <span class="o">=</span> <span class="n">CTHETA</span><span class="p">(</span><span class="n">cfl</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
 
-<span class="gp">In [342]: </span><span class="nb">print</span><span class="p">(</span><span class="n">ctheta</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [288]: </span><span class="nb">print</span><span class="p">(</span><span class="n">ctheta</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">CTHETA cfl=0.9</span>
 </pre></div>
 </div>

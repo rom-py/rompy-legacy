@@ -12,3 +12,4 @@ Enum Types
     rompy.swan.types.BoundShapeOptions
     rompy.swan.types.SideOptions
     rompy.swan.types.PhysicsOff
+    rompy.swan.types.BlockOptions

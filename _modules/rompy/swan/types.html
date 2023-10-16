@@ -631,6 +631,244 @@ document.write(`
     <span class="n">FSHIFT</span> <span class="o">=</span> <span class="s2">&quot;fshift&quot;</span>
     <span class="n">BNDCHK</span> <span class="o">=</span> <span class="s2">&quot;bndchk&quot;</span></div>
 
+
+
+<div class="viewcode-block" id="BlockOptions">
+<a class="viewcode-back" href="../../../swan/_generated/rompy.swan.types.BlockOptions.html#rompy.swan.types.BlockOptions">[docs]</a>
+<span class="k">class</span> <span class="nc">BlockOptions</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Valid options for block output parameters.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    HSIGN: &quot;hsign&quot;</span>
+<span class="sd">        Significant wave height (in m).</span>
+<span class="sd">    HSWELL: &quot;hswell&quot;</span>
+<span class="sd">        Swell wave height (in m).</span>
+<span class="sd">    DIR: &quot;dir&quot;</span>
+<span class="sd">        Mean wave direction (in degrees).</span>
+<span class="sd">    PDIR: &quot;pdir&quot;</span>
+<span class="sd">        Peak wave direction (in degrees).</span>
+<span class="sd">    TDIR: &quot;tdir&quot;</span>
+<span class="sd">        Direction of energy transport (in degrees).</span>
+<span class="sd">    TM01: &quot;tm01&quot;</span>
+<span class="sd">        Mean absolute wave period (in s).</span>
+<span class="sd">    RTM01: &quot;rtm01&quot;</span>
+<span class="sd">        Mean relative wave period (in s).</span>
+<span class="sd">    RTP: &quot;rtp&quot;</span>
+<span class="sd">        Peak period of the (relative frequency) variance density spectrum (in s).</span>
+<span class="sd">    TPS: &quot;tps&quot;</span>
+<span class="sd">        Smoothed peak period (in s).</span>
+<span class="sd">    PER: &quot;per&quot;</span>
+<span class="sd">        Mean absolute wave period (in s).</span>
+<span class="sd">    RPER: &quot;rper&quot;</span>
+<span class="sd">        Mean relative wave period (in s).</span>
+<span class="sd">    TMM10: &quot;tmm10&quot;</span>
+<span class="sd">        Mean absolute wave period (in s).</span>
+<span class="sd">    RTMM10: &quot;rtmm10&quot;</span>
+<span class="sd">        Mean relative wave period (in s).</span>
+<span class="sd">    TM02: &quot;tm02&quot;</span>
+<span class="sd">        Mean absolute zero-crossing period (in s).</span>
+<span class="sd">    FSPR: &quot;fspr&quot;</span>
+<span class="sd">        The normalised width of the frequency spectrum.</span>
+<span class="sd">    DSPR: &quot;dspr&quot;</span>
+<span class="sd">        Directional spreading of the waves (in degrees).</span>
+<span class="sd">    QP: &quot;qp&quot;</span>
+<span class="sd">        Peakedness of the wave spectrum (dimensionless).</span>
+<span class="sd">    DEPTH: &quot;depth&quot;</span>
+<span class="sd">        Water depth (in m).</span>
+<span class="sd">    WATLEV: &quot;watlev&quot;</span>
+<span class="sd">        Water level (in m).</span>
+<span class="sd">    BOTLEV: &quot;botlev&quot;</span>
+<span class="sd">        Bottom level (in m).</span>
+<span class="sd">    VEL: &quot;vel&quot;</span>
+<span class="sd">        Current velocity (vector; in m/s).</span>
+<span class="sd">    FRCOEF: &quot;frcoef&quot;</span>
+<span class="sd">        Friction coefficient (equal to `cfw` or `kn` in command `FRICTION`).</span>
+<span class="sd">    WIND: &quot;wind&quot;</span>
+<span class="sd">        Wind velocity (vector; in m/s).</span>
+<span class="sd">    AICE: &quot;aice&quot;</span>
+<span class="sd">        Ice concentration (as a fraction from 0 to 1).</span>
+<span class="sd">    PROPAGAT: &quot;propagat&quot;</span>
+<span class="sd">        Sum of PROPXY, PROPTHETA and PROPSIGMA (in W/m2 or m2/s).</span>
+<span class="sd">    PROPXY: &quot;propxy&quot;</span>
+<span class="sd">        Energy propagation in geographic space; sum of x- and y-direction</span>
+<span class="sd">        (in W/m2 or m2/s).</span>
+<span class="sd">    PROPTHETA: &quot;proptheta&quot;</span>
+<span class="sd">        Energy propagation in theta space (in W/m2 or m2/s).</span>
+<span class="sd">    PROPSIGMA: &quot;propsigma&quot;</span>
+<span class="sd">        Energy propagation in sigma space (in W/m2 or m2/s).</span>
+<span class="sd">    GENERAT: &quot;generat&quot;</span>
+<span class="sd">        Total energy generation (in W/m2 or m2/s).</span>
+<span class="sd">    GENWIND: &quot;genwind&quot;</span>
+<span class="sd">        Energy generation due to wind (in W/m2 or m2/s).</span>
+<span class="sd">    REDIST: &quot;redist&quot;</span>
+<span class="sd">        Total energy redistribution (in W/m2 or m2/s).</span>
+<span class="sd">    REDQUAD: &quot;redquad&quot;</span>
+<span class="sd">        Energy redistribution due to quadruplets (in W/m2 or m2/s).</span>
+<span class="sd">    REDTRIAD: &quot;redtriad&quot;</span>
+<span class="sd">        Energy redistribution due to triads (in W/m2 or m2/s).</span>
+<span class="sd">    DISSIP: &quot;dissip&quot;</span>
+<span class="sd">        Total energy dissipation (in W/m2 or m2/s).</span>
+<span class="sd">    DISBOT: &quot;disbot&quot;</span>
+<span class="sd">        Energy dissipation due to bottom friction (in W/m2 or m2/s).</span>
+<span class="sd">    DISSURF: &quot;dissurf&quot;</span>
+<span class="sd">        Energy dissipation due to surf breaking (in W/m2 or m2/s).</span>
+<span class="sd">    DISWCAP: &quot;diswcap&quot;</span>
+<span class="sd">        Energy dissipation due to whitecapping (in W/m2 or m2/s).</span>
+<span class="sd">    DISSWELL: &quot;disswell&quot;</span>
+<span class="sd">        Energy dissipation due to swell dissipation (in W/m2 or m2/s).</span>
+<span class="sd">    DISVEG: &quot;disveg&quot;</span>
+<span class="sd">        Energy dissipation due to vegetation (in W/m2 or m2/s).</span>
+<span class="sd">    DISMUD: &quot;dismud&quot;</span>
+<span class="sd">        Energy dissipation due to mud (in W/m2 or m2/s).</span>
+<span class="sd">    DISICE: &quot;disice&quot;</span>
+<span class="sd">        Energy dissipation due to sea ice (in W/m2 or m2/s).</span>
+<span class="sd">    RADSTR: &quot;radstr&quot;</span>
+<span class="sd">        Energy transfer between waves and currents due to radiation stress</span>
+<span class="sd">        (in W/m2 or m2/s).</span>
+<span class="sd">    QB: &quot;qb&quot;</span>
+<span class="sd">        Fraction of breaking waves due to depth-induced breaking.</span>
+<span class="sd">    TRANSP: &quot;transp&quot;</span>
+<span class="sd">        Transport of energy (vector; in W/m2 or m2/s).</span>
+<span class="sd">    FORCE: &quot;force&quot;</span>
+<span class="sd">        Wave-induced force per unit surface area (vector; in N/m2).</span>
+<span class="sd">    UBOT: &quot;ubot&quot;</span>
+<span class="sd">        The rms-value of the maxima of the orbital velocity near the bottom (in m/s).</span>
+<span class="sd">    URMS: &quot;urms&quot;</span>
+<span class="sd">        The rms-value of the orbital velocity near the bottom (in m/s).</span>
+<span class="sd">    TMBOT: &quot;tmbot&quot;</span>
+<span class="sd">        The bottom wave period (in s).</span>
+<span class="sd">    WLENGTH: &quot;wlength&quot;</span>
+<span class="sd">        Average wave length (in m).</span>
+<span class="sd">    LWAVP: &quot;lwavp&quot;</span>
+<span class="sd">        Peak wave length (in m).</span>
+<span class="sd">    STEEPNESS: &quot;steepness&quot;</span>
+<span class="sd">        Average wave steepness (dimensionless).</span>
+<span class="sd">    BFI: &quot;bfi&quot;</span>
+<span class="sd">        Benjamin-Feir index (dimensionless).</span>
+<span class="sd">    NPLANTS: &quot;nplants&quot;</span>
+<span class="sd">        Number of plants per square meter.</span>
+<span class="sd">    DHSIGN: &quot;dhsign&quot;</span>
+<span class="sd">        Difference in significant wave height from the last two iterations (in m).</span>
+<span class="sd">    DRTM01: &quot;drtm01&quot;</span>
+<span class="sd">        Difference in average wave period (RTM01) from the last two iterations (in s).</span>
+<span class="sd">    LEAK: &quot;leak&quot;</span>
+<span class="sd">        Numerical loss of energy equal to `cthetaE(omega,theta)` across boundaries.</span>
+<span class="sd">    TIME: &quot;time&quot;</span>
+<span class="sd">        Full date-time string as part of line used in TABLE only.</span>
+<span class="sd">    TSEC: &quot;tsec&quot;</span>
+<span class="sd">        Time in seconds with respect to a reference time (see command QUANTITY).</span>
+<span class="sd">    XP: &quot;xp&quot;</span>
+<span class="sd">        The x-coordinate in the problem coordinate system of the output location.</span>
+<span class="sd">    YP: &quot;yp&quot;</span>
+<span class="sd">        The y-coordinate in the problem coordinate system of the output location.</span>
+<span class="sd">    DIST: &quot;dist&quot;</span>
+<span class="sd">        If output has been requested along a curve then the distance along the curve</span>
+<span class="sd">        can be obtained with the command TABLE. DIST is the distance along the curve</span>
+<span class="sd">        measured from teh first point on the curve to the output location on the curve</span>
+<span class="sd">        in meters (also in the case of spherical coordinates).</span>
+<span class="sd">    SETUP: &quot;setup&quot;</span>
+<span class="sd">        Set-up due to waves (in m).</span>
+<span class="sd">    PTHSIGN: &quot;pthsign&quot;</span>
+<span class="sd">        Watershed partitions of the significant wave height (in m).</span>
+<span class="sd">    PTRTP: &quot;ptrtp&quot;</span>
+<span class="sd">        Watershed partitions of the relative peak period (in s).</span>
+<span class="sd">    PTWLEN: &quot;ptwlen&quot;</span>
+<span class="sd">        Watershed partitions of the average wave length (in m).</span>
+<span class="sd">    PTDIR: &quot;ptdir&quot;</span>
+<span class="sd">        Watershed partitions of the peak wave direction (in degrees).</span>
+<span class="sd">    PTDSPR: &quot;ptdspr&quot;</span>
+<span class="sd">        Watershed partitions of the directional spreading (in degrees).</span>
+<span class="sd">    PTWFRAC: &quot;ptwfrac&quot;</span>
+<span class="sd">        Watershed partitions of the wind fraction (dimensionless).</span>
+<span class="sd">    PTSTEEPNE: &quot;ptsteepne&quot;</span>
+<span class="sd">        Watershed partition of the wave steepness (dimensionless).</span>
+<span class="sd">    PARTITION: &quot;partition&quot;</span>
+<span class="sd">        The raw spectral partition for wave system tracking post-processing.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    Energy given in W/m2 or m2/s depending on command SET.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    UBOT and URMS required command `FRICTION` to be used. If friction is ignored in the</span>
+<span class="sd">    computation, then one should use the command `FRICTION` with the value of the</span>
+<span class="sd">    friction set to zero (e.g., `FRICTION COLLINS 0`).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">HSIGN</span> <span class="o">=</span> <span class="s2">&quot;hsign&quot;</span>
+    <span class="n">HSWELL</span> <span class="o">=</span> <span class="s2">&quot;hswell&quot;</span>
+    <span class="n">DIR</span> <span class="o">=</span> <span class="s2">&quot;dir&quot;</span>
+    <span class="n">PDIR</span> <span class="o">=</span> <span class="s2">&quot;pdir&quot;</span>
+    <span class="n">TDIR</span> <span class="o">=</span> <span class="s2">&quot;tdir&quot;</span>
+    <span class="n">TM01</span> <span class="o">=</span> <span class="s2">&quot;tm01&quot;</span>
+    <span class="n">RTM01</span> <span class="o">=</span> <span class="s2">&quot;rtm01&quot;</span>
+    <span class="n">RTP</span> <span class="o">=</span> <span class="s2">&quot;rtp&quot;</span>
+    <span class="n">TPS</span> <span class="o">=</span> <span class="s2">&quot;tps&quot;</span>
+    <span class="n">PER</span> <span class="o">=</span> <span class="s2">&quot;per&quot;</span>
+    <span class="n">RPER</span> <span class="o">=</span> <span class="s2">&quot;rper&quot;</span>
+    <span class="n">TMM10</span> <span class="o">=</span> <span class="s2">&quot;tmm10&quot;</span>
+    <span class="n">RTMM10</span> <span class="o">=</span> <span class="s2">&quot;rtmm10&quot;</span>
+    <span class="n">TM02</span> <span class="o">=</span> <span class="s2">&quot;tm02&quot;</span>
+    <span class="n">FSPR</span> <span class="o">=</span> <span class="s2">&quot;fspr&quot;</span>
+    <span class="n">DSPR</span> <span class="o">=</span> <span class="s2">&quot;dspr&quot;</span>
+    <span class="n">QP</span> <span class="o">=</span> <span class="s2">&quot;qp&quot;</span>
+    <span class="n">DEPTH</span> <span class="o">=</span> <span class="s2">&quot;depth&quot;</span>
+    <span class="n">WATLEV</span> <span class="o">=</span> <span class="s2">&quot;watlev&quot;</span>
+    <span class="n">BOTLEV</span> <span class="o">=</span> <span class="s2">&quot;botlev&quot;</span>
+    <span class="n">VEL</span> <span class="o">=</span> <span class="s2">&quot;vel&quot;</span>
+    <span class="n">FRCOEF</span> <span class="o">=</span> <span class="s2">&quot;frcoef&quot;</span>
+    <span class="n">WIND</span> <span class="o">=</span> <span class="s2">&quot;wind&quot;</span>
+    <span class="n">AICE</span> <span class="o">=</span> <span class="s2">&quot;aice&quot;</span>
+    <span class="n">PROPAGAT</span> <span class="o">=</span> <span class="s2">&quot;propagat&quot;</span>
+    <span class="n">PROPXY</span> <span class="o">=</span> <span class="s2">&quot;propxy&quot;</span>
+    <span class="n">PROPTHETA</span> <span class="o">=</span> <span class="s2">&quot;proptheta&quot;</span>
+    <span class="n">PROPSIGMA</span> <span class="o">=</span> <span class="s2">&quot;propsigma&quot;</span>
+    <span class="n">GENERAT</span> <span class="o">=</span> <span class="s2">&quot;generat&quot;</span>
+    <span class="n">GENWIND</span> <span class="o">=</span> <span class="s2">&quot;genwind&quot;</span>
+    <span class="n">REDIST</span> <span class="o">=</span> <span class="s2">&quot;redist&quot;</span>
+    <span class="n">REDQUAD</span> <span class="o">=</span> <span class="s2">&quot;redquad&quot;</span>
+    <span class="n">REDTRIAD</span> <span class="o">=</span> <span class="s2">&quot;redtriad&quot;</span>
+    <span class="n">DISSIP</span> <span class="o">=</span> <span class="s2">&quot;dissip&quot;</span>
+    <span class="n">DISBOT</span> <span class="o">=</span> <span class="s2">&quot;disbot&quot;</span>
+    <span class="n">DISSURF</span> <span class="o">=</span> <span class="s2">&quot;dissurf&quot;</span>
+    <span class="n">DISWCAP</span> <span class="o">=</span> <span class="s2">&quot;diswcap&quot;</span>
+    <span class="n">DISSWELL</span> <span class="o">=</span> <span class="s2">&quot;disswell&quot;</span>
+    <span class="n">DISVEG</span> <span class="o">=</span> <span class="s2">&quot;disveg&quot;</span>
+    <span class="n">DISMUD</span> <span class="o">=</span> <span class="s2">&quot;dismud&quot;</span>
+    <span class="n">DISICE</span> <span class="o">=</span> <span class="s2">&quot;disice&quot;</span>
+    <span class="n">RADSTR</span> <span class="o">=</span> <span class="s2">&quot;radstr&quot;</span>
+    <span class="n">QB</span> <span class="o">=</span> <span class="s2">&quot;qb&quot;</span>
+    <span class="n">TRANSP</span> <span class="o">=</span> <span class="s2">&quot;transp&quot;</span>
+    <span class="n">FORCE</span> <span class="o">=</span> <span class="s2">&quot;force&quot;</span>
+    <span class="n">UBOT</span> <span class="o">=</span> <span class="s2">&quot;ubot&quot;</span>
+    <span class="n">URMS</span> <span class="o">=</span> <span class="s2">&quot;urms&quot;</span>
+    <span class="n">TMBOT</span> <span class="o">=</span> <span class="s2">&quot;tmbot&quot;</span>
+    <span class="n">WLENGTH</span> <span class="o">=</span> <span class="s2">&quot;wlength&quot;</span>
+    <span class="n">LWAVP</span> <span class="o">=</span> <span class="s2">&quot;lwavp&quot;</span>
+    <span class="n">STEEPNESS</span> <span class="o">=</span> <span class="s2">&quot;steepness&quot;</span>
+    <span class="n">BFI</span> <span class="o">=</span> <span class="s2">&quot;bfi&quot;</span>
+    <span class="n">NPLANTS</span> <span class="o">=</span> <span class="s2">&quot;nplants&quot;</span>
+    <span class="n">DHSIGN</span> <span class="o">=</span> <span class="s2">&quot;dhsign&quot;</span>
+    <span class="n">DRTM01</span> <span class="o">=</span> <span class="s2">&quot;drtm01&quot;</span>
+    <span class="n">LEAK</span> <span class="o">=</span> <span class="s2">&quot;leak&quot;</span>
+    <span class="n">TIME</span> <span class="o">=</span> <span class="s2">&quot;time&quot;</span>
+    <span class="n">TSEC</span> <span class="o">=</span> <span class="s2">&quot;tsec&quot;</span>
+    <span class="n">XP</span> <span class="o">=</span> <span class="s2">&quot;xp&quot;</span>
+    <span class="n">YP</span> <span class="o">=</span> <span class="s2">&quot;yp&quot;</span>
+    <span class="n">DIST</span> <span class="o">=</span> <span class="s2">&quot;dist&quot;</span>
+    <span class="n">SETUP</span> <span class="o">=</span> <span class="s2">&quot;setup&quot;</span>
+    <span class="n">PTHSIGN</span> <span class="o">=</span> <span class="s2">&quot;pthsign&quot;</span>
+    <span class="n">PTRTP</span> <span class="o">=</span> <span class="s2">&quot;ptrtp&quot;</span>
+    <span class="n">PTWLEN</span> <span class="o">=</span> <span class="s2">&quot;ptwlen&quot;</span>
+    <span class="n">PTDIR</span> <span class="o">=</span> <span class="s2">&quot;ptdir&quot;</span>
+    <span class="n">PTDSPR</span> <span class="o">=</span> <span class="s2">&quot;ptdspr&quot;</span>
+    <span class="n">PTWFRAC</span> <span class="o">=</span> <span class="s2">&quot;ptwfrac&quot;</span>
+    <span class="n">PTSTEEPNE</span> <span class="o">=</span> <span class="s2">&quot;ptsteepne&quot;</span>
+    <span class="n">PARTITION</span> <span class="o">=</span> <span class="s2">&quot;partition&quot;</span></div>
+
 </pre></div>
 
                 </article>

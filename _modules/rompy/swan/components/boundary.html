@@ -443,8 +443,7 @@ document.write(`
     <span class="n">HOTSINGLE</span><span class="p">,</span>
     <span class="n">HOTMULTIPLE</span><span class="p">,</span>
     <span class="n">SIDE</span><span class="p">,</span>
-    <span class="n">SEGMENTXY</span><span class="p">,</span>
-    <span class="n">SEGMENTIJ</span><span class="p">,</span>
+    <span class="n">SEGMENT</span><span class="p">,</span>
     <span class="n">PAR</span><span class="p">,</span>
     <span class="n">CONSTANTPAR</span><span class="p">,</span>
     <span class="n">VARIABLEPAR</span><span class="p">,</span>
@@ -476,7 +475,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.boundary import INITIAL</span>
 <span class="sd">        init = INITIAL()</span>
@@ -489,10 +487,12 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;initial&quot;</span><span class="p">,</span> <span class="s2">&quot;INITIAL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;initial&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;initial&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">kind</span><span class="p">:</span> <span class="n">DEFAULT</span> <span class="o">|</span> <span class="n">ZERO</span> <span class="o">|</span> <span class="n">PAR</span> <span class="o">|</span> <span class="n">HOTSINGLE</span> <span class="o">|</span> <span class="n">HOTMULTIPLE</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default_factory</span><span class="o">=</span><span class="n">DEFAULT</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Initial condition type&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Initial condition type&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="INITIAL.cmd">
@@ -507,7 +507,7 @@ document.write(`
 <div class="viewcode-block" id="BOUNDSPEC">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.boundary.BOUNDSPEC.html#rompy.swan.components.boundary.BOUNDSPEC">[docs]</a>
 <span class="k">class</span> <span class="nc">BOUNDSPEC</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parametric or spectra boundary along sides or segments.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Boundary along sides or segment.</span>
 
 <span class="sd">    .. code-block:: text</span>
 
@@ -528,7 +528,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.boundary import BOUNDSPEC</span>
 <span class="sd">        boundary = BOUNDSPEC(</span>
@@ -537,16 +536,27 @@ document.write(`
 <span class="sd">            data=dict(model_type=&quot;constantpar&quot;, hs=2, per=8, dir=270, dd=30),</span>
 <span class="sd">        )</span>
 <span class="sd">        print(boundary.render())</span>
+<span class="sd">        boundary = BOUNDSPEC(</span>
+<span class="sd">            shapespec=dict(model_type=&quot;shapespec&quot;, shape=dict(model_type=&quot;pm&quot;)),</span>
+<span class="sd">            location=dict(</span>
+<span class="sd">                model_type=&quot;segment&quot;,</span>
+<span class="sd">                points=dict(model_type=&quot;ij&quot;, i=[0, 0], j=[0, 3])</span>
+<span class="sd">            ),</span>
+<span class="sd">            data=dict(model_type=&quot;constantpar&quot;, hs=2, per=8, dir=270, dd=30),</span>
+<span class="sd">        )</span>
+<span class="sd">        print(boundary.render())</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;boundspec&quot;</span><span class="p">,</span> <span class="s2">&quot;BOUNDSPEC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;boundspec&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;boundspec&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">shapespec</span><span class="p">:</span> <span class="n">SHAPESPEC</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default_factory</span><span class="o">=</span><span class="n">SHAPESPEC</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Spectral shape specification&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">SHAPESPEC</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Spectral shape specification&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">location</span><span class="p">:</span> <span class="n">SIDE</span> <span class="o">|</span> <span class="n">SEGMENTXY</span> <span class="o">|</span> <span class="n">SEGMENTIJ</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">location</span><span class="p">:</span> <span class="n">SIDE</span> <span class="o">|</span> <span class="n">SEGMENT</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Location to apply the boundary&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">CONSTANTPAR</span> <span class="o">|</span> <span class="n">CONSTANTFILE</span> <span class="o">|</span> <span class="n">VARIABLEPAR</span> <span class="o">|</span> <span class="n">VARIABLEFILE</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -591,7 +601,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.boundary import BOUNDNEST1</span>
 <span class="sd">        boundary = BOUNDNEST1(fname=&quot;boundary.swn&quot;, rectangle=&quot;closed&quot;)</span>
@@ -600,7 +609,8 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;boundnest1&quot;</span><span class="p">,</span> <span class="s2">&quot;BOUNDNEST1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;boundnest1&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;boundnest1&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
@@ -609,7 +619,7 @@ document.write(`
             <span class="s2">&quot;according to the rules given in Appendix D for 2D spectra&quot;</span>
         <span class="p">),</span>
         <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">98</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">rectangle</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;closed&quot;</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;closed&quot;</span><span class="p">,</span>
@@ -673,7 +683,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.boundary import BOUNDNEST2</span>
 <span class="sd">        boundary = BOUNDNEST2(fname=&quot;boundary.wam&quot;, format=&quot;cray&quot;, lwdate=12)</span>
@@ -682,7 +691,8 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;boundnest2&quot;</span><span class="p">,</span> <span class="s2">&quot;BOUNDNEST2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;boundnest2&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;boundnest2&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
@@ -690,7 +700,7 @@ document.write(`
             <span class="s2">&quot;nested boundary conditions in time-sequence (usually one file per day)&quot;</span>
         <span class="p">),</span>
         <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">48</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="nb">format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;cray&quot;</span><span class="p">,</span> <span class="s2">&quot;wkstat&quot;</span><span class="p">,</span> <span class="s2">&quot;free&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
@@ -791,7 +801,6 @@ document.write(`
 
 <span class="sd">    .. ipython:: python</span>
 <span class="sd">        :okwarning:</span>
-<span class="sd">        :okexcept:</span>
 
 <span class="sd">        from rompy.swan.components.boundary import BOUNDNEST3</span>
 <span class="sd">        boundary = BOUNDNEST3(</span>
@@ -804,14 +813,15 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;boundnest3&quot;</span><span class="p">,</span> <span class="s2">&quot;BOUNDNEST3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;boundnest3&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;boundnest3&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
             <span class="s2">&quot;The name of the file that contains the spectra computed by WAVEWATCH III&quot;</span>
         <span class="p">),</span>
         <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">62</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="nb">format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;unformatted&quot;</span><span class="p">,</span> <span class="s2">&quot;free&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>

@@ -10,5 +10,6 @@ as sub-components of CGRID and INPGRID commands.
    :nosignatures:
    :toctree: _generated/
 
+   rompy.swan.subcomponents.readgrid.GRIDREGULAR
    rompy.swan.subcomponents.readgrid.READCOORD
    rompy.swan.subcomponents.readgrid.READINP

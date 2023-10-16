@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="rompy.swan.components.inpgrid.CURVILINEAR" href="rompy.swan.components.inpgrid.CURVILINEAR.html" />
-    <link rel="prev" title="rompy.swan.components.inpgrid.INPGRIDS" href="rompy.swan.components.inpgrid.INPGRIDS.html" />
+    <link rel="prev" title="Input grids" href="../inpgrid.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -478,9 +482,9 @@ READGRID [grid_type] [fac] &#39;fname1&#39; [idla] [nhedf] ([nhedt]) ([nhedvec])
 </div>
 <p>This is a group component that includes an <cite>INPGRID</cite> and a <cite>READGRID</cite> component.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [40]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.inpgrid</span> <span class="kn">import</span> <span class="n">REGULAR</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [12]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.inpgrid</span> <span class="kn">import</span> <span class="n">REGULAR</span>
 
-<span class="gp">In [41]: </span><span class="n">inpgrid</span> <span class="o">=</span> <span class="n">REGULAR</span><span class="p">(</span>
+<span class="gp">In [13]: </span><span class="n">inpgrid</span> <span class="o">=</span> <span class="n">REGULAR</span><span class="p">(</span>
 <span class="gp">   ....: </span>    <span class="n">grid_type</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
 <span class="gp">   ....: </span>    <span class="n">excval</span><span class="o">=-</span><span class="mf">99.0</span><span class="p">,</span>
 <span class="gp">   ....: </span>    <span class="n">xpinp</span><span class="o">=</span><span class="mf">172.0</span><span class="p">,</span>
@@ -494,11 +498,11 @@ READGRID [grid_type] [fac] &#39;fname1&#39; [idla] [nhedf] ([nhedt]) ([nhedvec])
 <span class="gp">   ....: </span><span class="p">)</span>
 <span class="gp">   ....: </span>
 
-<span class="gp">In [42]: </span><span class="nb">print</span><span class="p">(</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [14]: </span><span class="nb">print</span><span class="p">(</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">INPGRID BOTTOM REGULAR xpinp=172.0 ypinp=-41.0 alpinp=0.0 mxinp=99 myinp=99 dxinp=0.005 dyinp=0.005 EXCEPTION excval=-99.0</span>
 <span class="go">READINP BOTTOM fac=1.0 fname1=&#39;bottom.txt&#39; idla=1 nhedf=0 nhedt=0 nhedvec=0 FREE</span>
 
-<span class="gp">In [43]: </span><span class="n">inpgrid</span> <span class="o">=</span> <span class="n">REGULAR</span><span class="p">(</span>
+<span class="gp">In [15]: </span><span class="n">inpgrid</span> <span class="o">=</span> <span class="n">REGULAR</span><span class="p">(</span>
 <span class="gp">   ....: </span>    <span class="n">grid_type</span><span class="o">=</span><span class="s2">&quot;wind&quot;</span><span class="p">,</span>
 <span class="gp">   ....: </span>    <span class="n">excval</span><span class="o">=-</span><span class="mf">99.0</span><span class="p">,</span>
 <span class="gp">   ....: </span>    <span class="n">xpinp</span><span class="o">=</span><span class="mf">172.0</span><span class="p">,</span>
@@ -513,17 +517,18 @@ READGRID [grid_type] [fac] &#39;fname1&#39; [idla] [nhedf] ([nhedt]) ([nhedvec])
 <span class="gp">   ....: </span>        <span class="n">tbeg</span><span class="o">=</span><span class="s2">&quot;2019-01-01T00:00:00&quot;</span><span class="p">,</span>
 <span class="gp">   ....: </span>        <span class="n">tend</span><span class="o">=</span><span class="s2">&quot;2019-01-07 00:00:00&quot;</span><span class="p">,</span>
 <span class="gp">   ....: </span>        <span class="n">delt</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>
-<span class="gp">   ....: </span>        <span class="n">deltfmt</span><span class="o">=</span><span class="s2">&quot;hr&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>        <span class="n">dfmt</span><span class="o">=</span><span class="s2">&quot;hr&quot;</span><span class="p">,</span>
 <span class="gp">   ....: </span>    <span class="p">),</span>
 <span class="gp">   ....: </span><span class="p">)</span>
 <span class="gp">   ....: </span>
 
-<span class="gp">In [44]: </span><span class="nb">print</span><span class="p">(</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
-<span class="go">INPGRID WIND REGULAR xpinp=172.0 ypinp=-41.0 alpinp=0.0 mxinp=99 myinp=99 dxinp=0.005 dyinp=0.005 EXCEPTION excval=-99.0 &amp;</span>
-<span class="go">    NONSTATIONARY tbeginp=20190101.000000 deltinp=1.0 HR tendinp=20190107.000000</span>
+<span class="gp">In [16]: </span><span class="nb">print</span><span class="p">(</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">INPGRID WIND REGULAR xpinp=172.0 ypinp=-41.0 alpinp=0.0 mxinp=99 myinp=99 dxinp=0.005 dyinp=0.005 EXCEPTION excval=-99.0 NONSTATIONARY tbeginp=20190101.000000 deltinp=1.0 HR &amp;</span>
+<span class="go">    tendinp=20190107.000000</span>
 <span class="go">READINP WIND fac=1.0 fname1=&#39;wind.txt&#39; idla=1 nhedf=0 nhedt=0 nhedvec=0 FREE</span>
 </pre></div>
 </div>
+<p>TODO: Use grid object, requires different grid parameters to be allowed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -724,12 +729,12 @@ READGRID [grid_type] [fac] &#39;fname1&#39; [idla] [nhedf] ([nhedt]) ([nhedvec])
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="rompy.swan.components.inpgrid.INPGRIDS.html"
+       href="../inpgrid.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">rompy.swan.components.inpgrid.INPGRIDS</p>
+        <p class="prev-next-title">Input grids</p>
       </div>
     </a>
     <a class="right-next"

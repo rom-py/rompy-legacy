@@ -379,8 +379,11 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#components">Components</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../spectrum.html">Spectrum</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../time.html">Time</a></li>
@@ -389,8 +392,10 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../boundary.html">Boundary and initial conditions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../physics.html">Physics</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../numerics.html">Numerics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -477,11 +482,11 @@ document.write(`
 scheme for unstructured grids by adding a diffusion term to the basic equation.
 This may affect the numerical stability of SWAN.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [348]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.numerics</span> <span class="kn">import</span> <span class="n">GSE</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [294]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.numerics</span> <span class="kn">import</span> <span class="n">GSE</span>
 
-<span class="gp">In [349]: </span><span class="n">scheme</span> <span class="o">=</span> <span class="n">GSE</span><span class="p">(</span><span class="n">waveage</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">)</span>
+<span class="gp">In [295]: </span><span class="n">scheme</span> <span class="o">=</span> <span class="n">GSE</span><span class="p">(</span><span class="n">waveage</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">delt</span><span class="o">=</span><span class="mi">86400</span><span class="p">,</span> <span class="n">dfmt</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">))</span>
 
-<span class="gp">In [350]: </span><span class="nb">print</span><span class="p">(</span><span class="n">scheme</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [296]: </span><span class="nb">print</span><span class="p">(</span><span class="n">scheme</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">GSE waveage=1.0 DAY</span>
 </pre></div>
 </div>
@@ -489,8 +494,7 @@ This may affect the numerical stability of SWAN.</p>
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.GSE.model_type" title="rompy.swan.subcomponents.numerics.GSE.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['gse',</span> <span class="pre">'GSE'])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.GSE.units" title="rompy.swan.subcomponents.numerics.GSE.units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">units</span> <span class="pre">(Literal['sec',</span> <span class="pre">'min',</span> <span class="pre">'hr',</span> <span class="pre">'day'])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.GSE.waveage" title="rompy.swan.subcomponents.numerics.GSE.waveage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">waveage</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.GSE.waveage" title="rompy.swan.subcomponents.numerics.GSE.waveage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">waveage</span> <span class="pre">(rompy.swan.subcomponents.time.Delt</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
@@ -501,14 +505,8 @@ This may affect the numerical stability of SWAN.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.GSE.units">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">units</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'sec'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'min'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'hr'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'day'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'hr'</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.GSE.units" title="Link to this definition">#</a></dt>
-<dd><p>Units for waveage</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.GSE.waveage">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">waveage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.GSE.waveage" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">waveage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.subcomponents.time.Delt.html#rompy.swan.subcomponents.time.Delt" title="rompy.swan.subcomponents.time.Delt"><span class="pre">Delt</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.GSE.waveage" title="Link to this definition">#</a></dt>
 <dd><p>The time interval used to determine the diffusion which counteracts the so-called garden-sprinkler effect. The default value of <cite>waveage</cite> is zero, i.e. no added diffusion. The value of <cite>waveage</cite> should correspond to the travel time of the waves over the computational region.</p>
 </dd></dl>
 
@@ -567,7 +565,6 @@ This may affect the numerical stability of SWAN.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.GSE"><code class="docutils literal notranslate"><span class="pre">GSE</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.GSE.model_type"><code class="docutils literal notranslate"><span class="pre">GSE.model_type</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.GSE.units"><code class="docutils literal notranslate"><span class="pre">GSE.units</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.GSE.waveage"><code class="docutils literal notranslate"><span class="pre">GSE.waveage</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.GSE.cmd"><code class="docutils literal notranslate"><span class="pre">GSE.cmd()</span></code></a></li>
 </ul>

@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -475,25 +479,25 @@ document.write(`
 <p>With this command the user indicates that SWAN should run in third-generation mode
 for wind input, quadruplet interactions and whitecapping.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [128]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">GEN3</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [70]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">GEN3</span>
 
-<span class="gp">In [129]: </span><span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span>
-<span class="gp">   .....: </span>    <span class="n">source_terms</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-<span class="gp">   .....: </span>        <span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;westhuysen&quot;</span><span class="p">,</span>
-<span class="gp">   .....: </span>        <span class="n">wind_drag</span><span class="o">=</span><span class="s2">&quot;wu&quot;</span><span class="p">,</span>
-<span class="gp">   .....: </span>        <span class="n">agrow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="p">),</span>
-<span class="gp">   .....: </span><span class="p">)</span>
-<span class="gp">   .....: </span>
+<span class="gp">In [71]: </span><span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span>
+<span class="gp">   ....: </span>    <span class="n">source_terms</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+<span class="gp">   ....: </span>        <span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;westhuysen&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>        <span class="n">wind_drag</span><span class="o">=</span><span class="s2">&quot;wu&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>        <span class="n">agrow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="p">),</span>
+<span class="gp">   ....: </span><span class="p">)</span>
+<span class="gp">   ....: </span>
 
-<span class="gp">In [130]: </span><span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [72]: </span><span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">GEN3 WESTHUYSEN DRAG WU AGROW</span>
 
-<span class="gp">In [131]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.physics</span> <span class="kn">import</span> <span class="n">ST6C1</span>
+<span class="gp">In [73]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.physics</span> <span class="kn">import</span> <span class="n">ST6C1</span>
 
-<span class="gp">In [132]: </span><span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span><span class="n">source_terms</span><span class="o">=</span><span class="n">ST6C1</span><span class="p">())</span>
+<span class="gp">In [74]: </span><span class="n">gen</span> <span class="o">=</span> <span class="n">GEN3</span><span class="p">(</span><span class="n">source_terms</span><span class="o">=</span><span class="n">ST6C1</span><span class="p">())</span>
 
-<span class="gp">In [133]: </span><span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [75]: </span><span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">GEN3 ST6 a1sds=4.7e-07 a2sds=6.6e-06 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=28.0 AGROW</span>
 </pre></div>
 </div>

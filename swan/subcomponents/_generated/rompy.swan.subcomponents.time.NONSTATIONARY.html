@@ -43,8 +43,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'swan/subcomponents/_generated/rompy.swan.subcomponents.time.NONSTATIONARY';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Computational grid" href="../cgrid.html" />
-    <link rel="prev" title="Time" href="../time.html" />
+    <link rel="next" title="rompy.swan.subcomponents.time.STATIONARY" href="rompy.swan.subcomponents.time.STATIONARY.html" />
+    <link rel="prev" title="rompy.swan.subcomponents.time.TimeRangeClosed" href="rompy.swan.subcomponents.time.TimeRangeClosed.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -379,8 +379,11 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#components">Components</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../spectrum.html">Spectrum</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../time.html">Time</a></li>
@@ -389,8 +392,10 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../boundary.html">Boundary and initial conditions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../physics.html">Physics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -468,98 +473,67 @@ document.write(`
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.subcomponents.time.</span></span><span class="sig-name descname"><span class="pre">NONSTATIONARY</span></span><a class="reference internal" href="../../../_modules/rompy/swan/subcomponents/time.html#NONSTATIONARY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY" title="Link to this definition">#</a></dt>
-<dd><p>SWAN Nonstationary specification.</p>
+<dd><p>Nonstationary time specification.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>NONSTATIONARY [tbeg] [delt] SEC|MIN|HR|DAY [tend]
 </pre></div>
 </div>
-<p class="rubric">Notes</p>
-<section id="format-to-render-time-specification">
-<h2>Format to render time specification<a class="headerlink" href="#format-to-render-time-specification" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>1: ISO-notation 19870530.153000</p></li>
-<li><p>2: (as in HP compiler) ‘30-May-87 15:30:00’</p></li>
-<li><p>3: (as in Lahey compiler) 05/30/87.15:30:00</p></li>
-<li><p>4: 15:30:00</p></li>
-<li><p>5: 87/05/30 15:30:00’</p></li>
-<li><p>6: as in WAM 8705301530</p></li>
-</ul>
-</section>
-<section id="the-datetime-types-can-be-specified-as">
-<h2>The datetime types can be specified as<a class="headerlink" href="#the-datetime-types-can-be-specified-as" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>existing datetime object</p></li>
-<li><p>int or float, assumed as Unix time, i.e. seconds (if &gt;= -2e10 or &lt;= 2e10) or
-milliseconds (if &lt; -2e10 or &gt; 2e10) since 1 January 1970.</p></li>
-<li><p>ISO 8601 time string.</p></li>
-</ul>
-</section>
-<section id="the-timedelta-type-can-be-specified-as">
-<h2>The timedelta type can be specified as<a class="headerlink" href="#the-timedelta-type-can-be-specified-as" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>existing timedelta object</p></li>
-<li><p>int or float, assumed as seconds</p></li>
-<li><p>ISO 8601 duration string, following formats work:</p>
-<ul>
-<li><p><cite>[-][DD ][HH:MM]SS[.ffffff]</cite></p></li>
-<li><p><cite>[±]P[DD]DT[HH]H[MM]M[SS]S</cite> (ISO 8601 format for timedelta)</p></li>
-</ul>
-</li>
-</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Default values for the time specification fields are provided for the case where
+the user wants to set times dynamically after instantiating this subcomponent.</p>
+</div>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [502]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.time</span> <span class="kn">import</span> <span class="n">NONSTATIONARY</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [142]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.time</span> <span class="kn">import</span> <span class="n">NONSTATIONARY</span>
 
-<span class="gp">In [503]: </span><span class="n">nonstat</span> <span class="o">=</span> <span class="n">NONSTATIONARY</span><span class="p">(</span>
+<span class="gp">In [143]: </span><span class="n">nonstat</span> <span class="o">=</span> <span class="n">NONSTATIONARY</span><span class="p">(</span>
 <span class="gp">   .....: </span>    <span class="n">tbeg</span><span class="o">=</span><span class="s2">&quot;2012-01-01T00:00:00&quot;</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">tend</span><span class="o">=</span><span class="s2">&quot;2012-02-01T00:00:00&quot;</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">delt</span><span class="o">=</span><span class="s2">&quot;PT1H&quot;</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">deltfmt</span><span class="o">=</span><span class="s2">&quot;hr&quot;</span><span class="p">,</span>
+<span class="gp">   .....: </span>    <span class="n">dfmt</span><span class="o">=</span><span class="s2">&quot;hr&quot;</span><span class="p">,</span>
 <span class="gp">   .....: </span><span class="p">)</span>
 <span class="gp">   .....: </span>
 
-<span class="gp">In [504]: </span><span class="nb">print</span><span class="p">(</span><span class="n">nonstat</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
-<span class="go">NONSTATIONARY 20120101.000000 1.0 HR 20120201.000000</span>
+<span class="gp">In [144]: </span><span class="nb">print</span><span class="p">(</span><span class="n">nonstat</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">NONSTATIONARY tbeg=20120101.000000 delt=1.0 HR tend=20120201.000000</span>
 
-<span class="gp">In [505]: </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">In [145]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
-<span class="gp">In [506]: </span><span class="n">nonstat</span> <span class="o">=</span> <span class="n">NONSTATIONARY</span><span class="p">(</span>
-<span class="gp">   .....: </span>    <span class="n">tbeg</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-<span class="gp">   .....: </span>    <span class="n">tend</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
-<span class="gp">   .....: </span>    <span class="n">delt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
-<span class="gp">   .....: </span>    <span class="n">deltfmt</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span>
+<span class="gp">In [146]: </span><span class="n">nonstat</span> <span class="o">=</span> <span class="n">NONSTATIONARY</span><span class="p">(</span>
+<span class="gp">   .....: </span>    <span class="n">tbeg</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">   .....: </span>    <span class="n">tend</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+<span class="gp">   .....: </span>    <span class="n">delt</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+<span class="gp">   .....: </span>    <span class="n">tfmt</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">   .....: </span>    <span class="n">dfmt</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span>
+<span class="gp">   .....: </span>    <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;tbl&quot;</span><span class="p">,</span>
 <span class="gp">   .....: </span><span class="p">)</span>
 <span class="gp">   .....: </span>
 
-<span class="gp">In [507]: </span><span class="nb">print</span><span class="p">(</span><span class="n">nonstat</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
-<span class="go">NONSTATIONARY 19900101.000000 30.0 MIN 19900107.000000</span>
+<span class="gp">In [147]: </span><span class="nb">print</span><span class="p">(</span><span class="n">nonstat</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">NONSTATIONARY tbegtbl=19900101.000000 delttbl=30.0 MIN tendtbl=19900107.000000</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.delt" title="rompy.swan.subcomponents.time.NONSTATIONARY.delt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delt</span> <span class="pre">(datetime.timedelta)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.deltfmt" title="rompy.swan.subcomponents.time.NONSTATIONARY.deltfmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deltfmt</span> <span class="pre">(Literal['sec',</span> <span class="pre">'min',</span> <span class="pre">'hr',</span> <span class="pre">'day'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.dfmt" title="rompy.swan.subcomponents.time.NONSTATIONARY.dfmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dfmt</span> <span class="pre">(Literal['sec',</span> <span class="pre">'min',</span> <span class="pre">'hr',</span> <span class="pre">'day'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.model_type" title="rompy.swan.subcomponents.time.NONSTATIONARY.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['nonstationary',</span> <span class="pre">'NONSTATIONARY'])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.suffix" title="rompy.swan.subcomponents.time.NONSTATIONARY.suffix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">suffix</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.suffix" title="rompy.swan.subcomponents.time.NONSTATIONARY.suffix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">suffix</span> <span class="pre">(str)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tbeg" title="rompy.swan.subcomponents.time.NONSTATIONARY.tbeg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tbeg</span> <span class="pre">(datetime.datetime)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tend" title="rompy.swan.subcomponents.time.NONSTATIONARY.tend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tend</span> <span class="pre">(datetime.datetime)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tfmt" title="rompy.swan.subcomponents.time.NONSTATIONARY.tfmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tfmt</span> <span class="pre">(Literal[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6])</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Validators<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.set_time_format" title="rompy.swan.subcomponents.time.NONSTATIONARY.set_time_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_time_format</span></code></a> » <a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tfmt" title="rompy.swan.subcomponents.time.NONSTATIONARY.tfmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tfmt</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tfmt" title="rompy.swan.subcomponents.time.NONSTATIONARY.tfmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tfmt</span> <span class="pre">(Union[Literal[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6],</span> <span class="pre">str])</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.delt">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">timedelta</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.delt" title="Link to this definition">#</a></dt>
-<dd><p>Time interval between fields</p>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">timedelta</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.timedelta(seconds=3600)</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.delt" title="Link to this definition">#</a></dt>
+<dd><p>Time interval</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.deltfmt">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deltfmt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'sec'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'min'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'hr'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'day'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'sec'</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.deltfmt" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.dfmt">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dfmt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'sec'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'min'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'hr'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'day'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'sec'</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.dfmt" title="Link to this definition">#</a></dt>
 <dd><p>Format to render time interval specification</p>
 </dd></dl>
 
@@ -571,54 +545,34 @@ milliseconds (if &lt; -2e10 or &gt; 2e10) since 1 January 1970.</p></li>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.suffix">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">suffix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.suffix" title="Link to this definition">#</a></dt>
-<dd><p>Suffix to append to the variable name when rendering</p>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">suffix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.suffix" title="Link to this definition">#</a></dt>
+<dd><p>Suffix to prepend to argument names when rendering</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.tbeg">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tbeg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tbeg" title="Link to this definition">#</a></dt>
-<dd><p>Begin time of the first field of the variable</p>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tbeg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.datetime(1970,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0)</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tbeg" title="Link to this definition">#</a></dt>
+<dd><p>Start time</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.tend">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tend</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tend" title="Link to this definition">#</a></dt>
-<dd><p>End time of the last field of the variable</p>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tend</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.datetime(1970,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">0,</span> <span class="pre">0)</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tend" title="Link to this definition">#</a></dt>
+<dd><p>End time</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.tfmt">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tfmt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tfmt" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tfmt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tfmt" title="Link to this definition">#</a></dt>
 <dd><p>Format to render time specification</p>
-<dl class="field-list simple">
-<dt class="field-odd">Validated by<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.set_time_format" title="rompy.swan.subcomponents.time.NONSTATIONARY.set_time_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_time_format</span></code></a></p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.cmd">
 <span class="sig-name descname"><span class="pre">cmd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/rompy/swan/subcomponents/time.html#NONSTATIONARY.cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.cmd" title="Link to this definition">#</a></dt>
-<dd><p>Render NONSTATIONARY string.</p>
+<dd><p>Render subcomponent cmd.</p>
 </dd></dl>
 
-<dl class="py method pydantic_validator">
-<dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.set_time_format">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_time_format</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tfmt" title="rompy.swan.subcomponents.time.NONSTATIONARY.tfmt"><em class="xref py py-obj"><span class="pre">tfmt</span></em></a><a class="reference internal" href="../../../_modules/rompy/swan/subcomponents/time.html#NONSTATIONARY.set_time_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.set_time_format" title="Link to this definition">#</a></dt>
-<dd><p>Set the time format.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="rompy.swan.subcomponents.time.NONSTATIONARY.delt_string">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delt_string</span></span><a class="headerlink" href="#rompy.swan.subcomponents.time.NONSTATIONARY.delt_string" title="Link to this definition">#</a></dt>
-<dd><p>Return the timedelta as a string.</p>
-</dd></dl>
-
-</section>
 </dd></dl>
 
 </section>
@@ -634,20 +588,20 @@ milliseconds (if &lt; -2e10 or &gt; 2e10) since 1 January 1970.</p></li>
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../time.html"
+       href="rompy.swan.subcomponents.time.TimeRangeClosed.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Time</p>
+        <p class="prev-next-title">rompy.swan.subcomponents.time.TimeRangeClosed</p>
       </div>
     </a>
     <a class="right-next"
-       href="../cgrid.html"
+       href="rompy.swan.subcomponents.time.STATIONARY.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Computational grid</p>
+        <p class="prev-next-title">rompy.swan.subcomponents.time.STATIONARY</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -668,15 +622,13 @@ milliseconds (if &lt; -2e10 or &gt; 2e10) since 1 January 1970.</p></li>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.delt"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.delt</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.deltfmt"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.deltfmt</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.dfmt"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.dfmt</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.model_type"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.model_type</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.suffix"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.suffix</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tbeg"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.tbeg</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tend"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.tend</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.tfmt"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.tfmt</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.cmd"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.cmd()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.set_time_format"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.set_time_format</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.time.NONSTATIONARY.delt_string"><code class="docutils literal notranslate"><span class="pre">NONSTATIONARY.delt_string</span></code></a></li>
 </ul>
 </li>
 </ul>

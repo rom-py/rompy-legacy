@@ -43,7 +43,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'swan/index';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Startup" href="components/startup.html" />
+    <link rel="next" title="rompy.swan.grid.SwanGrid" href="_generated/rompy.swan.grid.SwanGrid.html" />
     <link rel="prev" title="Models" href="../models.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -379,6 +379,15 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SWAN</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#grid">Grid</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.swan.grid.SwanGrid.html">rompy.swan.grid.SwanGrid</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data">Data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.swan.data.SwanDataGrid.html">rompy.swan.data.SwanDataGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.swan.boundary.DataBoundary.html">rompy.swan.boundary.DataBoundary</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#components">Components</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="components/startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="components/cgrid.html">Computational grid</a></li>
@@ -388,9 +397,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="components/numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="components/output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="components/lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="components/group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#subcomponents">Subcomponents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="subcomponents/base.html">Base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="subcomponents/startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="subcomponents/spectrum.html">Spectrum</a></li>
 <li class="toctree-l4"><a class="reference internal" href="subcomponents/time.html">Time</a></li>
@@ -399,6 +410,14 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="subcomponents/boundary.html">Boundary and initial conditions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="subcomponents/physics.html">Physics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="subcomponents/numerics.html">Numerics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subcomponents/output.html">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interface">Interface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.swan.interface.DataInterface.html">rompy.swan.interface.DataInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.swan.interface.BoundaryInterface.html">rompy.swan.interface.BoundaryInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.swan.interface.OutputInterface.html">rompy.swan.interface.OutputInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.swan.interface.LockupInterface.html">rompy.swan.interface.LockupInterface</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#types">Types</a><ul>
@@ -470,30 +489,54 @@ document.write(`
                   
   <section id="swan">
 <h1>SWAN<a class="headerlink" href="#swan" title="Link to this heading">#</a></h1>
-<p>The SWAN command instructions are described in Rompy by a set of pydantic models
-defined as <cite>components</cite>. Each component defines a full command instruction such
-as <cite>PROJECT</cite>, <cite>CGRID</cite>, <cite>GEN3</cite>, etc. Inputs to the components may include other
-pydantic models called <cite>subcomponents</cite> to handle more complex arguments.</p>
+<p>TODO: Ensure the <cite>model_type</cite> is shown next to each class in the autosummaries.</p>
+<p>TODO: Fix broken links to classes and modules.</p>
+<section id="grid">
+<h2>Grid<a class="headerlink" href="#grid" title="Link to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.grid.SwanGrid.html#rompy.swan.grid.SwanGrid" title="rompy.swan.grid.SwanGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.grid.SwanGrid</span></code></a></p></td>
+<td><p>Regular SWAN grid in geographic space.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data">
+<h2>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid" title="rompy.swan.data.SwanDataGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.data.SwanDataGrid</span></code></a></p></td>
+<td><p>This class is used to write SWAN data from a dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary" title="rompy.swan.boundary.DataBoundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.boundary.DataBoundary</span></code></a></p></td>
+<td><p>SWAN BOUNDNEST1 NEST data class.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="components">
+<h2>Components<a class="headerlink" href="#components" title="Link to this heading">#</a></h2>
+<p>SWAN command instructions are described in Rompy by a set of pydantic models defined as
+<cite>components</cite>. Each component defines a full command instruction such as <cite>PROJECT</cite>,
+<cite>CGRID</cite>, <cite>GEN3</cite>, NUMERIC, etc. Inputs to the components may include other pydantic
+models called <cite>subcomponents</cite> to handle more complex arguments.</p>
 <p>Components are subclasses of <code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.swan.components.base.BaseComponent</span></code>.
 The base component class implements the following attribues:</p>
 <ul class="simple">
-<li><p>The <strong>model_type</strong> field that must be overwritten in each component subclass. The
-<cite>model_type</cite> field is defined as a <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a> type and is used to specify the exact
-component class in a declarative framework (i.e., when using a dict from a yaml or
-json file to prescribe the model config).</p></li>
+<li><p>The <strong>model_type</strong> field that should be overwritten in each component subclass. The
+<cite>model_type</cite> field is defined as a <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a> type and is used to discriminate the
+exact components to use in fields defined by a <cite>Union</cite> type of two or more components
+in a declarative framework (i.e., instantiating with a dict from yaml or json file).</p></li>
 <li><p>The <strong>cmd()</strong> method that must be overwritten in each component subclass. The <cite>cmd()</cite>
 method should return either a string or a list of strings to fully define a SWAN
 command line instruction. A list of strings defines multiple command line
-instructions that are executed in sequence such as the [INPGRID, READGRID] components.</p></li>
+instructions that are executed in sequence such as the INPGRID/READGRID components.</p></li>
 <li><p>The <strong>render()</strong> method that constructs the command line instruction from the content
 returned from the <cite>cmd()</cite> method. The <cite>render()</cite> method is typically called inside
-the model template to construct the specific command line instruction from that
-component, taking care of maximum line size, line break and line continuation.</p></li>
+the <cite>__call__</cite> method of the config class to construct the specific command line
+instruction from that component, taking care of maximum line size, line break and
+line continuation.</p></li>
 </ul>
-<p>TODO: Ensure the <cite>model_type</cite> is shown next to each class in the autosummaries.</p>
-<p>TODO: Fix broken links to classes and modules.</p>
-<section id="components">
-<h2>Components<a class="headerlink" href="#components" title="Link to this heading">#</a></h2>
 <p>Components are defined within the <code class="xref py py-mod docutils literal notranslate"><span class="pre">rompy.swan.components</span></code> subpackage and
 render an entire SWAN command line specification. The following modules are available:</p>
 <div class="toctree-wrapper compound">
@@ -507,6 +550,7 @@ render an entire SWAN command line specification. The following modules are avai
 <li><p><a class="reference internal" href="components/numerics.html"><span class="doc">Numerics</span></a></p></li>
 <li><p><a class="reference internal" href="components/output.html"><span class="doc">Output</span></a></p></li>
 <li><p><a class="reference internal" href="components/lockup.html"><span class="doc">Lock-up</span></a></p></li>
+<li><p><a class="reference internal" href="components/group.html"><span class="doc">Group</span></a></p></li>
 </ul>
 </section>
 <section id="subcomponents">
@@ -517,6 +561,7 @@ arguments to one or more component. The following modules are available:</p>
 <div class="toctree-wrapper compound">
 </div>
 <ul class="simple">
+<li><p><a class="reference internal" href="subcomponents/base.html"><span class="doc">Base</span></a></p></li>
 <li><p><a class="reference internal" href="subcomponents/startup.html"><span class="doc">Startup</span></a></p></li>
 <li><p><a class="reference internal" href="subcomponents/spectrum.html"><span class="doc">Spectrum</span></a></p></li>
 <li><p><a class="reference internal" href="subcomponents/time.html"><span class="doc">Time</span></a></p></li>
@@ -525,7 +570,31 @@ arguments to one or more component. The following modules are available:</p>
 <li><p><a class="reference internal" href="subcomponents/boundary.html"><span class="doc">Boundary and initial conditions</span></a></p></li>
 <li><p><a class="reference internal" href="subcomponents/physics.html"><span class="doc">Physics</span></a></p></li>
 <li><p><a class="reference internal" href="subcomponents/numerics.html"><span class="doc">Numerics</span></a></p></li>
+<li><p><a class="reference internal" href="subcomponents/output.html"><span class="doc">Output</span></a></p></li>
 </ul>
+</section>
+<section id="interface">
+<h2>Interface<a class="headerlink" href="#interface" title="Link to this heading">#</a></h2>
+<p>Interface classes provide an interface between swan components and higher level objects
+such as <cite>TimeRange</cite>, <cite>Data</cite> and <cite>Grid</cite> objects. They are used inside the <cite>__call__</cite>
+method of the config classes to pass instances of these objects to the appropriate
+components and define consistent parameters to the config after instantiating them.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.interface.DataInterface.html#rompy.swan.interface.DataInterface" title="rompy.swan.interface.DataInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.interface.DataInterface</span></code></a></p></td>
+<td><p>SWAN forcing data interface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.interface.BoundaryInterface.html#rompy.swan.interface.BoundaryInterface" title="rompy.swan.interface.BoundaryInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.interface.BoundaryInterface</span></code></a></p></td>
+<td><p>SWAN forcing boundary interface.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.swan.interface.OutputInterface.html#rompy.swan.interface.OutputInterface" title="rompy.swan.interface.OutputInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.interface.OutputInterface</span></code></a></p></td>
+<td><p>Output group component with consistent times.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.swan.interface.LockupInterface.html#rompy.swan.interface.LockupInterface" title="rompy.swan.interface.LockupInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.swan.interface.LockupInterface</span></code></a></p></td>
+<td><p>Lockup group component with consistent times.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="types">
 <h2>Types<a class="headerlink" href="#types" title="Link to this heading">#</a></h2>
@@ -558,11 +627,11 @@ arguments to one or more component. The following modules are available:</p>
       </div>
     </a>
     <a class="right-next"
-       href="components/startup.html"
+       href="_generated/rompy.swan.grid.SwanGrid.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Startup</p>
+        <p class="prev-next-title">rompy.swan.grid.SwanGrid</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -581,8 +650,11 @@ arguments to one or more component. The following modules are available:</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grid">Grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components">Components</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subcomponents">Subcomponents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interface">Interface</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types">Types</a></li>
 </ul>
   </nav></div>

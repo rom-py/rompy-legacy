@@ -434,234 +434,31 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
 
-<span class="kn">from</span> <span class="nn">rompy.core</span> <span class="kn">import</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">,</span> <span class="n">RompyBaseModel</span><span class="p">,</span> <span class="n">Spectrum</span><span class="p">,</span> <span class="n">TimeRange</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.boundary</span> <span class="kn">import</span> <span class="n">DataBoundary</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.components</span> <span class="kn">import</span> <span class="n">boundary</span><span class="p">,</span> <span class="n">cgrid</span><span class="p">,</span> <span class="n">inpgrid</span><span class="p">,</span> <span class="n">physics</span><span class="p">,</span> <span class="n">startup</span>
+<span class="kn">from</span> <span class="nn">rompy.core</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
 
-<span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">SwanDataGrid</span>
-<span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">SwanGrid</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.interface</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DataInterface</span><span class="p">,</span>
+    <span class="n">BoundaryInterface</span><span class="p">,</span>
+    <span class="n">OutputInterface</span><span class="p">,</span>
+    <span class="n">LockupInterface</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">rompy.swan.legacy</span> <span class="kn">import</span> <span class="n">ForcingData</span><span class="p">,</span> <span class="n">SwanSpectrum</span><span class="p">,</span> <span class="n">SwanPhysics</span><span class="p">,</span> <span class="n">Outputs</span>
+
+<span class="kn">from</span> <span class="nn">rompy.swan.components</span> <span class="kn">import</span> <span class="n">boundary</span><span class="p">,</span> <span class="n">cgrid</span><span class="p">,</span> <span class="n">numerics</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.components.group</span> <span class="kn">import</span> <span class="n">STARTUP</span><span class="p">,</span> <span class="n">INPGRIDS</span><span class="p">,</span> <span class="n">PHYSICS</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">,</span> <span class="n">LOCKUP</span>
+
+<span class="kn">from</span> <span class="nn">rompy.swan.grid</span> <span class="kn">import</span> <span class="n">SwanGrid</span>
+
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
 
 <span class="n">HERE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 
 <span class="n">DEFAULT_TEMPLATE</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;templates&quot;</span> <span class="o">/</span> <span class="s2">&quot;swan&quot;</span><span class="p">)</span>
-
-<span class="n">PROJECT_TYPES</span> <span class="o">=</span> <span class="n">startup</span><span class="o">.</span><span class="n">PROJECT</span>
-<span class="n">SET_TYPES</span> <span class="o">=</span> <span class="n">startup</span><span class="o">.</span><span class="n">SET</span>
-<span class="n">MODE_TYPES</span> <span class="o">=</span> <span class="n">startup</span><span class="o">.</span><span class="n">MODE</span>
-<span class="n">COORDINATES_TYPES</span> <span class="o">=</span> <span class="n">startup</span><span class="o">.</span><span class="n">COORDINATES</span>
-<span class="n">CGRID_TYPES</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">cgrid</span><span class="o">.</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">cgrid</span><span class="o">.</span><span class="n">CURVILINEAR</span><span class="p">,</span> <span class="n">cgrid</span><span class="o">.</span><span class="n">UNSTRUCTURED</span><span class="p">]</span>
-<span class="n">INPGRID_TYPES</span> <span class="o">=</span> <span class="n">inpgrid</span><span class="o">.</span><span class="n">INPGRIDS</span>
-<span class="n">BOUNDARY_TYPES</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
-    <span class="n">boundary</span><span class="o">.</span><span class="n">BOUNDSPEC</span><span class="p">,</span> <span class="n">boundary</span><span class="o">.</span><span class="n">BOUNDNEST1</span><span class="p">,</span> <span class="n">boundary</span><span class="o">.</span><span class="n">BOUNDNEST2</span><span class="p">,</span> <span class="n">boundary</span><span class="o">.</span><span class="n">BOUNDNEST3</span>
-<span class="p">]</span>
-<span class="n">INITIAL_TYPES</span> <span class="o">=</span> <span class="n">boundary</span><span class="o">.</span><span class="n">INITIAL</span>
-<span class="n">PHYSICS_TYPES</span> <span class="o">=</span> <span class="n">physics</span><span class="o">.</span><span class="n">PHYSICS</span>
-
-
-<div class="viewcode-block" id="OutputLocs">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.OutputLocs">[docs]</a>
-<span class="k">class</span> <span class="nc">OutputLocs</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Output locations&quot;&quot;&quot;</span>
-
-    <span class="n">coords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Coordinate</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="p">[],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;list of coordinates to output spectra&quot;</span>
-    <span class="p">)</span>
-    <span class="c1"># coords: list[Coordinate] = [[&quot;115.61&quot;, &quot;-32.618&quot;], [&quot;115.686067&quot;, &quot;-32.532381&quot;]]</span>
-
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-            <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">coord</span><span class="o">.</span><span class="n">lat</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">coord</span><span class="o">.</span><span class="n">lon</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">ret</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-            <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">coord</span><span class="o">.</span><span class="n">lat</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">coord</span><span class="o">.</span><span class="n">lon</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
-
-
-
-<div class="viewcode-block" id="ForcingData">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.ForcingData">[docs]</a>
-<span class="k">class</span> <span class="nc">ForcingData</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN forcing data.&quot;&quot;&quot;</span>
-    <span class="n">bottom</span><span class="p">:</span> <span class="n">SwanDataGrid</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Bathymetry data for SWAN&quot;</span><span class="p">)</span>
-    <span class="n">wind</span><span class="p">:</span> <span class="n">SwanDataGrid</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The wind data for SWAN.&quot;</span><span class="p">)</span>
-    <span class="n">current</span><span class="p">:</span> <span class="n">SwanDataGrid</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The current data for SWAN.&quot;</span><span class="p">)</span>
-    <span class="n">boundary</span><span class="p">:</span> <span class="n">DataBoundary</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The boundary data for SWAN.&quot;</span>
-    <span class="p">)</span>
-
-<div class="viewcode-block" id="ForcingData.get">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.ForcingData.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">SwanGrid</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="n">TimeRange</span><span class="p">,</span> <span class="n">staging_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
-        <span class="n">forcing</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">boundary</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> Processing </span><span class="si">{</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> forcing&quot;</span><span class="p">)</span>
-                <span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_filter_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
-                <span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_filter_time</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;boundary&quot;</span><span class="p">:</span>
-                    <span class="n">boundary</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">staging_dir</span><span class="p">,</span> <span class="n">grid</span><span class="p">))</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">forcing</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">staging_dir</span><span class="p">,</span> <span class="n">grid</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">forcing</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">forcing</span><span class="p">),</span> <span class="n">boundary</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">boundary</span><span class="p">))</span></div>
-
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">forcing</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">forcing</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">forcing</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">forcing</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
-
-
-
-<div class="viewcode-block" id="SwanSpectrum">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.SwanSpectrum">[docs]</a>
-<span class="k">class</span> <span class="nc">SwanSpectrum</span><span class="p">(</span><span class="n">Spectrum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN Spectrum&quot;&quot;&quot;</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;CIRCLE </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ndirs</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fmin</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fmax</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nfreqs</span><span class="si">}</span><span class="s2">&quot;</span></div>
-
-
-
-<div class="viewcode-block" id="SwanPhysics">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.SwanPhysics">[docs]</a>
-<span class="k">class</span> <span class="nc">SwanPhysics</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Container class represting configuraable SWAN physics options&quot;&quot;&quot;</span>
-
-    <span class="n">friction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;MAD&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of friction, either MAD, COLL, JON or RIP&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">friction_coeff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The coefficient of friction for the given surface and object.&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-<div class="viewcode-block" id="SwanPhysics.validate_friction">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.SwanPhysics.validate_friction">[docs]</a>
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;friction&quot;</span><span class="p">)</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">validate_friction</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;JON&quot;</span><span class="p">,</span> <span class="s2">&quot;COLL&quot;</span><span class="p">,</span> <span class="s2">&quot;MAD&quot;</span><span class="p">,</span> <span class="s2">&quot;RIP&quot;</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;friction must be one of JON, COLL, MAD or RIP&quot;</span>
-            <span class="p">)</span>  <span class="c1"># TODO Raf to add actual friction options</span>
-        <span class="k">return</span> <span class="n">v</span></div>
-
-
-<div class="viewcode-block" id="SwanPhysics.validate_friction_coeff">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.SwanPhysics.validate_friction_coeff">[docs]</a>
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;friction_coeff&quot;</span><span class="p">)</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">validate_friction_coeff</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="c1"># TODO Raf to add sensible friction coeff range</span>
-        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;friction_coeff must be less than 1&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;friction_coeff must be greater than 0&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span></div>
-
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;GEN3 WESTH 0.000075 0.00175</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;BREAKING</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;FRICTION </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">friction</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">friction_coeff</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;TRIADS</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;PROP BSBT</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;NUM ACCUR 0.02 0.02 0.02 95 NONSTAT 20</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
-
-
-
-<div class="viewcode-block" id="GridOutput">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.GridOutput">[docs]</a>
-<span class="k">class</span> <span class="nc">GridOutput</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gridded outputs for SWAN&quot;&quot;&quot;</span>
-
-    <span class="n">period</span><span class="p">:</span> <span class="n">TimeRange</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">variables</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;DEPTH&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;UBOT&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;HSIGN&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;HSWELL&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;DIR&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;TPS&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;TM01&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;WIND&quot;</span><span class="p">,</span>
-    <span class="p">]</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Grid:</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">:</span>
-            <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">period: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">variables: </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
-
-
-
-<div class="viewcode-block" id="SpecOutput">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.SpecOutput">[docs]</a>
-<span class="k">class</span> <span class="nc">SpecOutput</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spectral outputs for SWAN&quot;&quot;&quot;</span>
-    <span class="n">period</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeRange</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time range for which the spectral outputs are requested&quot;</span>
-    <span class="p">)</span>
-    <span class="n">locations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">OutputLocs</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">OutputLocs</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="p">[]),</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Output locations for which the spectral outputs are requested&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Spec</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">:</span>
-            <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">period: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">locations: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
-
-
-
-<div class="viewcode-block" id="Outputs">
-<a class="viewcode-back" href="../../../api.html#rompy.swan.config.Outputs">[docs]</a>
-<span class="k">class</span> <span class="nc">Outputs</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Outputs for SWAN&quot;&quot;&quot;</span>
-
-    <span class="n">grid</span><span class="p">:</span> <span class="n">GridOutput</span> <span class="o">=</span> <span class="n">GridOutput</span><span class="p">()</span>
-    <span class="n">spec</span><span class="p">:</span> <span class="n">SpecOutput</span> <span class="o">=</span> <span class="n">SpecOutput</span><span class="p">()</span>
-    <span class="n">_datefmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">.%H%M%S&quot;</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">out_intvl</span> <span class="o">=</span> <span class="s2">&quot;1.0 HR&quot;</span>  <span class="c1"># Hardcoded for now, need to get from time object too TODO</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;OUTPUT OPTIONS BLOCK 8</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;BLOCK &#39;COMPGRID&#39; HEADER &#39;outputs/swan_out.nc&#39; LAYOUT 1 </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span><span class="si">}</span><span class="s2"> OUT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">period</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_datefmt</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">out_intvl</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">locations</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;POINTs &#39;pts&#39; FILE &#39;out.loc&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;SPECout &#39;pts&#39; SPEC2D ABS &#39;outputs/spec_out.nc&#39; OUTPUT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">period</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_datefmt</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">out_intvl</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;TABle &#39;pts&#39; HEADer &#39;outputs/tab_out.nc&#39; TIME XP YP HS TPS TM01 DIR DSPR WIND OUTPUT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">period</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_datefmt</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">out_intvl</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">ret</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
-
 
 
 <div class="viewcode-block" id="SwanConfig">
@@ -720,56 +517,65 @@ document.write(`
 
 
 
+<span class="n">STARTUP_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">STARTUP</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Startup components&quot;</span><span class="p">)]</span>
+<span class="n">INITIAL_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">boundary</span><span class="o">.</span><span class="n">INITIAL</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Initial component&quot;</span><span class="p">)]</span>
+<span class="n">PHYSICS_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">PHYSICS</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Physics components&quot;</span><span class="p">)]</span>
+<span class="n">PROP_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">numerics</span><span class="o">.</span><span class="n">PROP</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Propagation components&quot;</span><span class="p">)]</span>
+<span class="n">NUMERIC_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">numerics</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Numerics components&quot;</span><span class="p">)]</span>
+<span class="n">OUTPUT_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">OUTPUT</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Output components&quot;</span><span class="p">)]</span>
+<span class="n">LOCKUP_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">LOCKUP</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Output components&quot;</span><span class="p">)]</span>
+<span class="n">CGRID_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span><span class="n">cgrid</span><span class="o">.</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">cgrid</span><span class="o">.</span><span class="n">CURVILINEAR</span><span class="p">,</span> <span class="n">cgrid</span><span class="o">.</span><span class="n">UNSTRUCTURED</span><span class="p">],</span>
+    <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Cgrid component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">INPGRID_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span><span class="n">INPGRIDS</span><span class="p">,</span> <span class="n">DataInterface</span><span class="p">],</span>
+    <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Input grid components&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">BOUNDARY_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span>
+        <span class="n">boundary</span><span class="o">.</span><span class="n">BOUNDSPEC</span><span class="p">,</span>
+        <span class="n">boundary</span><span class="o">.</span><span class="n">BOUNDNEST1</span><span class="p">,</span>
+        <span class="n">boundary</span><span class="o">.</span><span class="n">BOUNDNEST2</span><span class="p">,</span>
+        <span class="n">boundary</span><span class="o">.</span><span class="n">BOUNDNEST3</span><span class="p">,</span>
+        <span class="n">BoundaryInterface</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Boundary component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+
 <div class="viewcode-block" id="SwanConfigComponents">
 <a class="viewcode-back" href="../../../api.html#rompy.swan.config.SwanConfigComponents">[docs]</a>
 <span class="k">class</span> <span class="nc">SwanConfigComponents</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN config class.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN config class.</span>
 
-    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;swancomp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;swancomp&quot;</span><span class="p">,</span>
+<span class="sd">    TODO: Combine boundary and inpgrid into a single input type.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The `cgrid` is the only required field since it is used to define the swan grid</span>
+<span class="sd">    object which is passed to other components.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;swanconfig&quot;</span><span class="p">,</span> <span class="s2">&quot;SWANCONFIG&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;swanconfig&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;templates&quot;</span> <span class="o">/</span> <span class="s2">&quot;swancomp&quot;</span><span class="p">),</span>
+        <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">HERE</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;templates&quot;</span> <span class="o">/</span> <span class="s2">&quot;swancomp&quot;</span><span class="p">),</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The template for SWAN.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">project</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PROJECT_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN PROJECT component&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="nb">set</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SET_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN SET component&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MODE_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN MODE component&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">coordinates</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">COORDINATES_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN COORDINATES component&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">cgrid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CGRID_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN CGRID component&quot;</span><span class="p">,</span>
-        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">inpgrid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">INPGRID_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN INPGRID components&quot;</span>
-    <span class="p">)</span>
-    <span class="n">boundary</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BOUNDARY_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN BOUNDARY component&quot;</span><span class="p">,</span>
-        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">initial</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">INITIAL_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN INITIAL component&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">physics</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PHYSICS_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SWAN PHYSICS component&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">cgrid</span><span class="p">:</span> <span class="n">CGRID_TYPES</span>
+    <span class="n">startup</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">STARTUP_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">inpgrid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">INPGRID_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">boundary</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BOUNDARY_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">initial</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">INITIAL_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">physics</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PHYSICS_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">prop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PROP_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">numeric</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NUMERIC_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">OUTPUT_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">lockup</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LOCKUP_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SwanConfigComponents.no_nor_if_spherical">
 <a class="viewcode-back" href="../../../api.html#rompy.swan.config.SwanConfigComponents.no_nor_if_spherical">[docs]</a>
@@ -818,7 +624,86 @@ document.write(`
     <span class="k">def</span> <span class="nf">transm_msc_mdc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SwanConfigComponents&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure the number of transmission coefficients match msc and mdc.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span></div>
-</div>
+
+
+<div class="viewcode-block" id="SwanConfigComponents.locations_2d">
+<a class="viewcode-back" href="../../../api.html#rompy.swan.config.SwanConfigComponents.locations_2d">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">locations_2d</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SwanConfigComponents&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure Location components not used in 1D mode.&quot;&quot;&quot;</span>
+        <span class="c1"># FRAME, GROUP, RAY, ISOLINE and NGRID not in 1D</span>
+        <span class="c1"># BLOCK and NESTOUT not in 1D</span>
+        <span class="c1"># GROUP not in unstructured</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="SwanConfigComponents.group_within_cgrid">
+<a class="viewcode-back" href="../../../api.html#rompy.swan.config.SwanConfigComponents.group_within_cgrid">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">group_within_cgrid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SwanConfigComponents&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure group indices are contained in computational grid.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="SwanConfigComponents.not_curvilinear_if_ray">
+<a class="viewcode-back" href="../../../api.html#rompy.swan.config.SwanConfigComponents.not_curvilinear_if_ray">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">not_curvilinear_if_ray</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SwanConfigComponents&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure bottom and water level grids are not curvilinear for RAY.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define a SwanGrid from the cgrid field.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SwanGrid</span><span class="p">(</span>
+            <span class="n">x0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cgrid</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">xp</span><span class="p">,</span>
+            <span class="n">y0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cgrid</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">yp</span><span class="p">,</span>
+            <span class="n">rot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cgrid</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">alp</span><span class="p">,</span>
+            <span class="n">dx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cgrid</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span>
+            <span class="n">dy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cgrid</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">dy</span><span class="p">,</span>
+            <span class="n">nx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cgrid</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">mx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">ny</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cgrid</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">my</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">period</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">period</span>
+        <span class="n">staging_dir</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">staging_dir</span>
+
+        <span class="c1"># Interface the runtime with components that require times</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">OutputInterface</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span><span class="o">.</span><span class="n">group</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lockup</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lockup</span> <span class="o">=</span> <span class="n">LockupInterface</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lockup</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span><span class="o">.</span><span class="n">group</span>
+
+        <span class="c1"># Render each group component before passing to template</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cgrid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cgrid</span><span class="o">.</span><span class="n">render</span><span class="p">()}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;startup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;initial&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">physics</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;physics&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;prop&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">numeric</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;numeric&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numeric</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lockup</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;lockup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lockup</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+
+        <span class="c1"># inpgrid / boundary may use the Interface api so we need passing the args</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inpgrid</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inpgrid</span><span class="p">,</span> <span class="n">DataInterface</span><span class="p">):</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;inpgrid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">staging_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">inpgrid</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;inpgrid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary</span><span class="p">,</span> <span class="n">BoundaryInterface</span><span class="p">):</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;boundary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">staging_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;boundary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">ret</span></div>
 
 </pre></div>
 

@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -495,10 +499,10 @@ dissipation by vegetation with layer schematization in SWAN. Coastal Engineering
 <p>Vertical layering of the vegetation is not yet implemented for the
 Jacobsen et al. (2019) method.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [259]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">VEGETATION</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [200]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">VEGETATION</span>
 
 <span class="go"># Single layer</span>
-<span class="gp">In [260]: </span><span class="n">vegetation</span> <span class="o">=</span> <span class="n">VEGETATION</span><span class="p">(</span>
+<span class="gp">In [201]: </span><span class="n">vegetation</span> <span class="o">=</span> <span class="n">VEGETATION</span><span class="p">(</span>
 <span class="gp">   .....: </span>    <span class="n">height</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">diamtr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">drag</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
@@ -506,11 +510,11 @@ Jacobsen et al. (2019) method.</p>
 <span class="gp">   .....: </span><span class="p">)</span>
 <span class="gp">   .....: </span>
 
-<span class="gp">In [261]: </span><span class="nb">print</span><span class="p">(</span><span class="n">vegetation</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [202]: </span><span class="nb">print</span><span class="p">(</span><span class="n">vegetation</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">VEGETATION iveg=1 height=1.2 diamtr=0.1 nstems=10 drag=0.5</span>
 
 <span class="go"># 2 vertical layers</span>
-<span class="gp">In [262]: </span><span class="n">vegetation</span> <span class="o">=</span> <span class="n">VEGETATION</span><span class="p">(</span>
+<span class="gp">In [203]: </span><span class="n">vegetation</span> <span class="o">=</span> <span class="n">VEGETATION</span><span class="p">(</span>
 <span class="gp">   .....: </span>    <span class="n">iveg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">height</span><span class="o">=</span><span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span>
 <span class="gp">   .....: </span>    <span class="n">diamtr</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
@@ -519,7 +523,7 @@ Jacobsen et al. (2019) method.</p>
 <span class="gp">   .....: </span><span class="p">)</span>
 <span class="gp">   .....: </span>
 
-<span class="gp">In [263]: </span><span class="nb">print</span><span class="p">(</span><span class="n">vegetation</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [204]: </span><span class="nb">print</span><span class="p">(</span><span class="n">vegetation</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">VEGETATION iveg=1 height=1.2 diamtr=0.1 nstems=10 drag=0.5 height=0.8 diamtr=0.1 nstems=5 drag=0.5</span>
 </pre></div>
 </div>
@@ -643,7 +647,7 @@ Jacobsen et al. (2019) method.</p>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py" id="rompy.swan.components.physics.VEGETATION.number_of_layers">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_layers</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.nstems" title="rompy.swan.components.physics.VEGETATION.nstems"><em class="xref py py-obj"><span class="pre">nstems</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.diamtr" title="rompy.swan.components.physics.VEGETATION.diamtr"><em class="xref py py-obj"><span class="pre">diamtr</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.height" title="rompy.swan.components.physics.VEGETATION.height"><em class="xref py py-obj"><span class="pre">height</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.drag" title="rompy.swan.components.physics.VEGETATION.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><a class="reference internal" href="../../../_modules/rompy/swan/components/physics.html#VEGETATION.number_of_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_layers</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.drag" title="rompy.swan.components.physics.VEGETATION.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.nstems" title="rompy.swan.components.physics.VEGETATION.nstems"><em class="xref py py-obj"><span class="pre">nstems</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.height" title="rompy.swan.components.physics.VEGETATION.height"><em class="xref py py-obj"><span class="pre">height</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.swan.components.physics.VEGETATION.diamtr" title="rompy.swan.components.physics.VEGETATION.diamtr"><em class="xref py py-obj"><span class="pre">diamtr</span></em></a><a class="reference internal" href="../../../_modules/rompy/swan/components/physics.html#VEGETATION.number_of_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.VEGETATION.number_of_layers" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

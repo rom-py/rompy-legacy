@@ -379,6 +379,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
@@ -388,9 +390,11 @@ document.write(`
 <li class="toctree-l4 current"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -475,24 +479,24 @@ document.write(`
 </pre></div>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [48]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.numerics</span> <span class="kn">import</span> <span class="n">NUMERIC</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.numerics</span> <span class="kn">import</span> <span class="n">NUMERIC</span>
 
-<span class="gp">In [49]: </span><span class="n">numeric</span> <span class="o">=</span> <span class="n">NUMERIC</span><span class="p">()</span>
+<span class="gp">In [5]: </span><span class="n">numeric</span> <span class="o">=</span> <span class="n">NUMERIC</span><span class="p">()</span>
 
-<span class="gp">In [50]: </span><span class="nb">print</span><span class="p">(</span><span class="n">numeric</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [6]: </span><span class="nb">print</span><span class="p">(</span><span class="n">numeric</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">NUMERIC</span>
 
-<span class="gp">In [51]: </span><span class="n">numeric</span> <span class="o">=</span> <span class="n">NUMERIC</span><span class="p">(</span>
-<span class="gp">   ....: </span>    <span class="n">stopc</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dabs</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">drel</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">curvat</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">npnts</span><span class="o">=</span><span class="mf">99.5</span><span class="p">),</span>
-<span class="gp">   ....: </span>    <span class="n">dirimpl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">cdd</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
-<span class="gp">   ....: </span>    <span class="n">sigimpl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">css</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">eps2</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">outp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
-<span class="gp">   ....: </span>    <span class="n">ctheta</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">cfl</span><span class="o">=</span><span class="mf">0.9</span><span class="p">),</span>
-<span class="gp">   ....: </span>    <span class="n">csigma</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">cfl</span><span class="o">=</span><span class="mf">0.9</span><span class="p">),</span>
-<span class="gp">   ....: </span>    <span class="n">setup</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">eps2</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">outp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
-<span class="gp">   ....: </span><span class="p">)</span>
-<span class="gp">   ....: </span>
+<span class="gp">In [7]: </span><span class="n">numeric</span> <span class="o">=</span> <span class="n">NUMERIC</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">stopc</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dabs</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">drel</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">curvat</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">npnts</span><span class="o">=</span><span class="mf">99.5</span><span class="p">),</span>
+<span class="gp">   ...: </span>    <span class="n">dirimpl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">cdd</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+<span class="gp">   ...: </span>    <span class="n">sigimpl</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">css</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">eps2</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">outp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
+<span class="gp">   ...: </span>    <span class="n">ctheta</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">cfl</span><span class="o">=</span><span class="mf">0.9</span><span class="p">),</span>
+<span class="gp">   ...: </span>    <span class="n">csigma</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">cfl</span><span class="o">=</span><span class="mf">0.9</span><span class="p">),</span>
+<span class="gp">   ...: </span>    <span class="n">setup</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">eps2</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">outp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
+<span class="gp">   ...: </span><span class="p">)</span>
+<span class="gp">   ...: </span>
 
-<span class="gp">In [52]: </span><span class="nb">print</span><span class="p">(</span><span class="n">numeric</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [8]: </span><span class="nb">print</span><span class="p">(</span><span class="n">numeric</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">NUMERIC STOPC dabs=0.05 drel=0.01 curvat=0.05 npnts=99.5 DIRIMPL cdd=0.5 SIGIMPL css=0.5 eps2=0.0001 outp=0 niter=20 CTHETA cfl=0.9</span>
 </pre></div>
 </div>

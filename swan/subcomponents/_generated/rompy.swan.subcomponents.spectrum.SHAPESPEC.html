@@ -379,8 +379,11 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../models.html">Models</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#components">Components</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../spectrum.html">Spectrum</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../time.html">Time</a></li>
@@ -389,8 +392,10 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="../boundary.html">Boundary and initial conditions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../physics.html">Physics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
 </li>
@@ -479,21 +484,21 @@ spectral input.</p>
 <p>While technically a component <cite>BOUND SHAPESPEC</cite>, this is only intended to be used
 as a subcomponent of the <cite>BOUNDSPEC</cite> component.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [481]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.spectrum</span> <span class="kn">import</span> <span class="n">SHAPESPEC</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [115]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.spectrum</span> <span class="kn">import</span> <span class="n">SHAPESPEC</span>
 
-<span class="gp">In [482]: </span><span class="n">shapespec</span> <span class="o">=</span> <span class="n">SHAPESPEC</span><span class="p">()</span>
+<span class="gp">In [116]: </span><span class="n">shapespec</span> <span class="o">=</span> <span class="n">SHAPESPEC</span><span class="p">()</span>
 
-<span class="gp">In [483]: </span><span class="nb">print</span><span class="p">(</span><span class="n">shapespec</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [117]: </span><span class="nb">print</span><span class="p">(</span><span class="n">shapespec</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">BOUND SHAPESPEC JONSWAP gamma=3.3 PEAK DSPR POWER</span>
 
-<span class="gp">In [484]: </span><span class="n">shapespec</span> <span class="o">=</span> <span class="n">SHAPESPEC</span><span class="p">(</span>
+<span class="gp">In [118]: </span><span class="n">shapespec</span> <span class="o">=</span> <span class="n">SHAPESPEC</span><span class="p">(</span>
 <span class="gp">   .....: </span>    <span class="n">shape</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;tma&quot;</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">3.1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">12</span><span class="p">),</span>
 <span class="gp">   .....: </span>    <span class="n">per_type</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
 <span class="gp">   .....: </span>    <span class="n">dspr_type</span><span class="o">=</span><span class="s2">&quot;degrees&quot;</span><span class="p">,</span>
 <span class="gp">   .....: </span><span class="p">)</span>
 <span class="gp">   .....: </span>
 
-<span class="gp">In [485]: </span><span class="nb">print</span><span class="p">(</span><span class="n">shapespec</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="gp">In [119]: </span><span class="nb">print</span><span class="p">(</span><span class="n">shapespec</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">BOUND SHAPESPEC TMA gamma=3.1 d=12.0 MEAN DSPR DEGREES</span>
 </pre></div>
 </div>
