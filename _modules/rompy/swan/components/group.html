@@ -608,7 +608,7 @@ document.write(`
 <span class="c1"># Inpgrid</span>
 <span class="c1"># =====================================================================================</span>
 <span class="n">INPGRID_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
-    <span class="n">Union</span><span class="p">[</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">CURVILINEAR</span><span class="p">,</span> <span class="n">UNSTRUCTURED</span><span class="p">],</span>
+    <span class="nb">list</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">CURVILINEAR</span><span class="p">,</span> <span class="n">UNSTRUCTURED</span><span class="p">]],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 
@@ -677,10 +677,22 @@ document.write(`
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;inpgrids&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;inpgrids&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
-    <span class="n">inpgrids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">INPGRID_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">inpgrids</span><span class="p">:</span> <span class="n">INPGRID_TYPES</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of input grid components&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+
+<div class="viewcode-block" id="INPGRIDS.ensure_unique_grid_type">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.INPGRIDS.html#rompy.swan.components.group.INPGRIDS.ensure_unique_grid_type">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;inpgrids&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">ensure_unique_grid_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inpgrids</span><span class="p">:</span> <span class="n">INPGRID_TYPES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">INPGRID_TYPES</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure that each grid type is unique.&quot;&quot;&quot;</span>
+        <span class="n">grid_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">grid_type</span> <span class="k">for</span> <span class="n">inpgrid</span> <span class="ow">in</span> <span class="n">inpgrids</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid_types</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">grid_types</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each grid type must be unique&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inpgrids</span></div>
+
 
 <div class="viewcode-block" id="INPGRIDS.cmd">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.INPGRIDS.html#rompy.swan.components.group.INPGRIDS.cmd">[docs]</a>

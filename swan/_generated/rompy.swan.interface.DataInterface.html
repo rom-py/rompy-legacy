@@ -475,6 +475,11 @@ document.write(`
 <li><p><a class="reference internal" href="#rompy.swan.interface.DataInterface.model_type" title="rompy.swan.interface.DataInterface.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['data_interface',</span> <span class="pre">'DATA_INTERFACE'])</span></code></a></p></li>
 </ul>
 </dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.interface.DataInterface.ensure_unique_var" title="rompy.swan.interface.DataInterface.ensure_unique_var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_unique_var</span></code></a> » <a class="reference internal" href="#rompy.swan.interface.DataInterface.input" title="rompy.swan.interface.DataInterface.input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></a></p></li>
+</ul>
+</dd>
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.interface.DataInterface.bottom">
@@ -486,12 +491,25 @@ document.write(`
 <dt class="sig sig-object py" id="rompy.swan.interface.DataInterface.input">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid" title="rompy.swan.data.SwanDataGrid"><span class="pre">SwanDataGrid</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#rompy.swan.interface.DataInterface.input" title="Link to this definition">#</a></dt>
 <dd><p>Input grid data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.swan.interface.DataInterface.ensure_unique_var" title="rompy.swan.interface.DataInterface.ensure_unique_var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_unique_var</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.swan.interface.DataInterface.model_type">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'data_interface'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'DATA_INTERFACE'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data_interface'</span></em><a class="headerlink" href="#rompy.swan.interface.DataInterface.model_type" title="Link to this definition">#</a></dt>
 <dd><p>Model type discriminator</p>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.swan.interface.DataInterface.ensure_unique_var">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ensure_unique_var</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.swan.interface.DataInterface.input" title="rompy.swan.interface.DataInterface.input"><em class="xref py py-obj"><span class="pre">input</span></em></a><a class="reference internal" href="../../_modules/rompy/swan/interface.html#DataInterface.ensure_unique_var"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.interface.DataInterface.ensure_unique_var" title="Link to this definition">#</a></dt>
+<dd><p>Ensure that each input var is unique.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -556,6 +574,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.interface.DataInterface.bottom"><code class="docutils literal notranslate"><span class="pre">DataInterface.bottom</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.interface.DataInterface.input"><code class="docutils literal notranslate"><span class="pre">DataInterface.input</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.interface.DataInterface.model_type"><code class="docutils literal notranslate"><span class="pre">DataInterface.model_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.interface.DataInterface.ensure_unique_var"><code class="docutils literal notranslate"><span class="pre">DataInterface.ensure_unique_var</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.interface.DataInterface.get"><code class="docutils literal notranslate"><span class="pre">DataInterface.get()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.interface.DataInterface.render"><code class="docutils literal notranslate"><span class="pre">DataInterface.render()</span></code></a></li>
 </ul>
