@@ -776,7 +776,7 @@ beyond the arguments provided by the user..</p>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_start_end</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">end</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">start</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.validate_start_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_start_end</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">start</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">end</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.validate_start_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <dl class="py method pydantic_validator">
@@ -1285,7 +1285,7 @@ range as the model run.</p>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Filter</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Filter(sort={},</span> <span class="pre">subset={},</span> <span class="pre">crop={},</span> <span class="pre">timenorm={},</span> <span class="pre">rename={},</span> <span class="pre">derived={})</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Filter</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">[Optional]</span></em></dt>
 <dd><p>Optional filter specification to apply to the dataset</p>
 </dd></dl>
 
@@ -3102,7 +3102,7 @@ functions.</p>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Filter</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Filter(sort={},</span> <span class="pre">subset={},</span> <span class="pre">crop={},</span> <span class="pre">timenorm={},</span> <span class="pre">rename={},</span> <span class="pre">derived={})</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Filter</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">[Optional]</span></em></dt>
 <dd><p>Optional filter specification to apply to the dataset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
@@ -3275,38 +3275,28 @@ same as the rotation of the data.</p>
 <p>SWAN boundary classes.</p>
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.boundary.</span></span><span class="sig-name descname"><span class="pre">DataBoundary</span></span><a class="reference internal" href="_modules/rompy/swan/boundary.html#DataBoundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.boundary.</span></span><span class="sig-name descname"><span class="pre">Boundnest1</span></span><a class="reference internal" href="_modules/rompy/swan/boundary.html#Boundnest1"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>SWAN BOUNDNEST1 NEST data class.</p>
-<p class="rubric">Notes</p>
-<p>The <cite>tolerance</cite> behaves differently with sel_methods <cite>idw</cite> and <cite>nearest</cite>; in <cite>idw</cite>
-sites with no enough neighbours within <cite>tolerance</cite> are masked whereas in <cite>nearest</cite>
-an exception is raised (see wavespectra documentation for more details).</p>
-<p>Be aware that when using <cite>idw</cite> missing values will be returned for sites with less
-than 2 neighbours within <cite>tolerance</cite> in the original dataset. This is okay for land
-mask areas but could cause boundary issues when on an open boundary location. To
-avoid this either use <cite>nearest</cite> or increase <cite>tolerance</cite> to include more neighbours.</p>
-<p>TODO: Break this into a core and a swan specific class.
-TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.buffer" title="rompy.swan.boundary.DataBoundary.buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffer</span> <span class="pre">()</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.coords" title="rompy.swan.boundary.DataBoundary.coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coords</span> <span class="pre">()</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.crop_data" title="rompy.swan.boundary.DataBoundary.crop_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crop_data</span> <span class="pre">()</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.filter" title="rompy.swan.boundary.DataBoundary.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">(rompy.core.filters.Filter</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.id" title="rompy.swan.boundary.DataBoundary.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.model_type" title="rompy.swan.boundary.DataBoundary.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">()</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.rectangle" title="rompy.swan.boundary.DataBoundary.rectangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rectangle</span> <span class="pre">(Literal['closed',</span> <span class="pre">'open'])</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.sel_method" title="rompy.swan.boundary.DataBoundary.sel_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sel_method</span> <span class="pre">(Literal['idw',</span> <span class="pre">'nearest'])</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.source" title="rompy.swan.boundary.DataBoundary.source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span> <span class="pre">(rompy.core.data.SourceDataset</span> <span class="pre">|</span> <span class="pre">rompy.core.data.SourceFile</span> <span class="pre">|</span> <span class="pre">rompy.core.data.SourceIntake</span> <span class="pre">|</span> <span class="pre">rompy.core.data.SourceDatamesh</span> <span class="pre">|</span> <span class="pre">rompy.swan.boundary.SourceWavespectra)</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.spacing" title="rompy.swan.boundary.DataBoundary.spacing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spacing</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.tolerance" title="rompy.swan.boundary.DataBoundary.tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolerance</span> <span class="pre">(float)</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.variables" title="rompy.swan.boundary.DataBoundary.variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variables</span> <span class="pre">()</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffer</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">coords</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">crop_data</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['boundnest1',</span> <span class="pre">'BOUNDNEST1'])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rectangle</span> <span class="pre">(Literal['closed',</span> <span class="pre">'open'])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sel_method</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spacing</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolerance</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">variables</span> <span class="pre">()</span></code></p></li>
 </ul>
 </dd>
 <dt class="field-even">Validators<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3317,7 +3307,7 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3330,7 +3320,7 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3339,11 +3329,11 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">crop_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em></dt>
-<dd><p>Update crop filters from Grid and Time objects if passed to get method</p>
+<dd><p>Update crop filter from Time object if passed to get method</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3356,7 +3346,7 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3369,7 +3359,7 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3377,12 +3367,11 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'data_grid'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data_grid'</span></em></dt>
-<dd><p>Model type discriminator</p>
-<dl class="field-list simple">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'boundnest1'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'BOUNDNEST1'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'boundnest1'</span></em></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3395,7 +3384,7 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3408,7 +3397,7 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3416,12 +3405,12 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">SourceDataset</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SourceFile</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SourceIntake</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SourceDatamesh</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SourceWavespectra</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BOUNDARY_SOURCE_TYPES</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
 <dd><p>Dataset source reader, must return a wavespectra-enabled xarray dataset in the open method</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3434,7 +3423,7 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3452,7 +3441,7 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 </dd>
 <dt class="field-even">Validated by<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3465,7 +3454,7 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.DataBoundary.html#rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor" title="rompy.swan.boundary.DataBoundary.assert_has_wavespectra_accessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></a></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -3473,24 +3462,39 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">assert_has_wavespectra_accessor</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="_modules/rompy/swan/boundary.html#DataBoundary.assert_has_wavespectra_accessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">assert_has_wavespectra_accessor</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="swan/_generated/rompy.swan.grid.SwanGrid.html#rompy.swan.grid.SwanGrid" title="rompy.swan.grid.SwanGrid"><span class="pre">SwanGrid</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/rompy/swan/boundary.html#DataBoundary.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Write the data source to a new location</p>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="swan/_generated/rompy.swan.grid.SwanGrid.html#rompy.swan.grid.SwanGrid" title="rompy.swan.grid.SwanGrid"><span class="pre">SwanGrid</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TimeRange</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/rompy/swan/boundary.html#Boundnest1.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Write the data source to a new location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>destdir</strong> (<em>str</em><em> | </em><em>Path</em>) – Destination directory for the SWAN ASCII file.</p></li>
+<li><p><strong>grid</strong> (<a class="reference internal" href="_generated/rompy.core.grid.RegularGrid.html#rompy.core.grid.RegularGrid" title="rompy.core.grid.RegularGrid"><em>RegularGrid</em></a>) – Grid instance to use for selecting the boundary points.</p></li>
+<li><p><strong>time</strong> (<em>TimeRange</em><em>, </em><em>optional</em>) – The times to filter the data to, only used if <cite>self.crop_data</cite> is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>cmd</strong> – Boundary command string to render in the SWAN INPUT file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'turbo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/swan/boundary.html#DataBoundary.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'turbo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Plot the grid.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">plot_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'turbo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/swan/boundary.html#DataBoundary.plot_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">plot_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Plot the boundary points on a map.</p>
 </dd></dl>
 
@@ -3500,86 +3504,6 @@ TODO: Allow specifying resolutions along x and y instead of a single value.</p>
 <dd><p>Return the filtered xarray dataset instance.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class pydantic_model">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.boundary.</span></span><span class="sig-name descname"><span class="pre">SourceWavespectra</span></span><a class="reference internal" href="_modules/rompy/swan/boundary.html#SourceWavespectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Wavespectra dataset from wavespectra reader.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Fields<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">kwargs</span> <span class="pre">(dict)</span></code></p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['wavespectra'])</span></code></p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reader</span> <span class="pre">(str)</span></code></p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">uri</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">pathlib.Path)</span></code></p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kwargs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
-<dd><p>Keyword arguments to pass to wavespectra.read_swan</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'wavespectra'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wavespectra'</span></em></dt>
-<dd><p>Model type discriminator</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reader</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
-<dd><p>Name of the wavespectra reader to use, e.g., read_swan</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uri</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
-<dd><p>Path to the dataset</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Filter</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dataset</span></span></span></dt>
-<dd><p>Return the filtered dataset object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>variables</strong> (<em>list</em><em>, </em><em>optional</em>) – List of variables to select from the dataset.</p></li>
-<li><p><strong>filters</strong> (<em>Filter</em><em>, </em><em>optional</em>) – Filters to apply to the dataset.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The kwargs are only a placeholder in case a subclass needs to pass additional
-arguments to the open method.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">rompy.swan.boundary.</span></span><span class="sig-name descname"><span class="pre">find_minimum_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/rompy/swan/boundary.html#find_minimum_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Find the minimum distance between a set of points.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – List of points as (x, y) tuples.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>min_distance</strong> – Minimum distance between all points.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">rompy.swan.boundary.</span></span><span class="sig-name descname"><span class="pre">scatter_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bnd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'turbo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rompy/swan/boundary.html#scatter_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Plot the grid</p>
 </dd></dl>
 
 </section>
@@ -11243,7 +11167,7 @@ Jacobsen et al. (2019) method.</p>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_layers</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.drag" title="rompy.swan.components.physics.VEGETATION.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.height" title="rompy.swan.components.physics.VEGETATION.height"><em class="xref py py-obj"><span class="pre">height</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.diamtr" title="rompy.swan.components.physics.VEGETATION.diamtr"><em class="xref py py-obj"><span class="pre">diamtr</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.nstems" title="rompy.swan.components.physics.VEGETATION.nstems"><em class="xref py py-obj"><span class="pre">nstems</span></em></a><a class="reference internal" href="_modules/rompy/swan/components/physics.html#VEGETATION.number_of_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_layers</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.height" title="rompy.swan.components.physics.VEGETATION.height"><em class="xref py py-obj"><span class="pre">height</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.diamtr" title="rompy.swan.components.physics.VEGETATION.diamtr"><em class="xref py py-obj"><span class="pre">diamtr</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.nstems" title="rompy.swan.components.physics.VEGETATION.nstems"><em class="xref py py-obj"><span class="pre">nstems</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.drag" title="rompy.swan.components.physics.VEGETATION.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><a class="reference internal" href="_modules/rompy/swan/components/physics.html#VEGETATION.number_of_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
