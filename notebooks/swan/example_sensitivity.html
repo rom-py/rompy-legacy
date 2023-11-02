@@ -46,6 +46,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/swan/example_sensitivity';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Working demonstration" href="../oceanum_example.html" />
+    <link rel="prev" title="SWAN procedural example" href="example_procedural.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -165,7 +167,7 @@
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="../../demo.html">
                         Demonstration notebooks
                       </a>
@@ -311,7 +313,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="../../demo.html">
                         Demonstration notebooks
                       </a>
@@ -375,12 +377,33 @@ document.write(`
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 <h3><a href="../../index.html">Table of Contents</a></h3>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../models.html">Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../demo.html#thumbnails-gallery">Thumbnails gallery</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../demo.html">Basic demonstration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../demo.html#Command-line-interface">Command line interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../templates_demo.html">Templates demonstration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_declarative.html">SWAN declarative example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_procedural.html">SWAN procedural example</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SWAN sensitivity example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Workspace-basepath">Workspace basepath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Instantiate-model">Instantiate model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Run-the-model">Run the model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Run the model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Plot-outputs">Plot outputs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../oceanum_example.html">Working demonstration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../swan-config-components.html">Model components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../physics.html">SWAN Physics Components</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
 </ul>
 </div>
@@ -418,6 +441,9 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
+    
+    <li class="breadcrumb-item"><a href="../../demo.html" class="nav-link">Demonstration notebooks</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page">SWAN...</li>
   </ul>
 </nav>
@@ -437,7 +463,7 @@ document.write(`
                   
   <section id="SWAN-sensitivity-example">
 <h1>SWAN sensitivity example<a class="headerlink" href="#SWAN-sensitivity-example" title="Link to this heading">#</a></h1>
-<p>In this notebook we will load the base config options from yaml file and define different SWAN workspaces for different friction parameters to simulate sensitivity testing</p>
+<p>In this notebook we will load the base config options from yaml file and define different SWAN workspaces for different source terms to simulate sensitivity testing</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -445,9 +471,11 @@ document.write(`
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
 <span class="o">%</span><span class="k">autoreload</span> 2
 
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
@@ -461,7 +489,8 @@ document.write(`
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">workdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;example_sensitivity&quot;</span><span class="p">)</span>
-<span class="n">workdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">workdir</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">workdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -497,7 +526,7 @@ document.write(`
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-SwanConfigComponents(model_type=&#39;swanconfig&#39;, template=&#39;/source/csiro/rompy/rompy/templates/swancomp&#39;, checkout=&#39;main&#39;, cgrid=REGULAR(model_type=&#39;regular&#39;, spectrum=SPECTRUM(model_type=&#39;spectrum&#39;, mdc=36, flow=0.04, fhigh=1.0, msc=None, dir1=None, dir2=None), grid=GRIDREGULAR(model_type=&#39;gridregular&#39;, xp=110.0, yp=-35.2, alp=4.0, xlen=7.5, ylen=12.5, mx=14, my=24, suffix=&#39;c&#39;)), startup=STARTUP(model_type=&#39;startup&#39;, project=PROJECT(model_type=&#39;project&#39;, name=&#39;Test declarative&#39;, nr=&#39;run1&#39;, title1=&#39;Friction sensitivity testing&#39;, title2=None, title3=None), set=SET(model_type=&#39;set&#39;, level=0.0, nor=None, depmin=0.05, maxmes=None, maxerr=None, grav=None, rho=None, cdcap=None, inrhog=None, hsrerr=None, direction_convention=&#39;nautical&#39;, pwtail=None, froudmax=None, icewind=None), mode=MODE(model_type=&#39;mode&#39;, kind=&#39;nonstationary&#39;, dim=&#39;twodimensional&#39;), coordinates=COORDINATES(model_type=&#39;coordinates&#39;, kind=SPHERICAL(model_type=&#39;spherical&#39;, projection=&#39;ccm&#39;), reapeating=False)), inpgrid=DataInterface(model_type=&#39;data_interface&#39;, bottom=SwanDataGrid(model_type=&#39;data_grid&#39;, id=&#39;data&#39;, source=SourceIntake(model_type=&#39;intake&#39;, dataset_id=&#39;gebco&#39;, catalog_uri=&#39;../../tests/data/catalog.yaml&#39;, kwargs={}), filter=Filter(sort={}, subset={}, crop={}, timenorm={}, rename={}, derived={}), variables=[&#39;elevation&#39;], coords=DatasetCoords(t=&#39;time&#39;, x=&#39;lon&#39;, y=&#39;lat&#39;, z=&#39;depth&#39;), crop_data=True, buffer=1.0, z1=&#39;elevation&#39;, z2=None, var=&lt;GridOptions.BOTTOM: &#39;bottom&#39;&gt;, fac=-1.0), input=[SwanDataGrid(model_type=&#39;data_grid&#39;, id=&#39;data&#39;, source=SourceIntake(model_type=&#39;intake&#39;, dataset_id=&#39;era5&#39;, catalog_uri=&#39;../../tests/data/catalog.yaml&#39;, kwargs={}), filter=Filter(sort={&#39;coords&#39;: [&#39;latitude&#39;]}, subset={}, crop={}, timenorm={}, rename={}, derived={}), variables=[&#39;u10&#39;, &#39;v10&#39;], coords=DatasetCoords(t=&#39;time&#39;, x=&#39;longitude&#39;, y=&#39;latitude&#39;, z=&#39;depth&#39;), crop_data=True, buffer=2.0, z1=&#39;u10&#39;, z2=&#39;v10&#39;, var=&lt;GridOptions.WIND: &#39;wind&#39;&gt;, fac=1.0)]), boundary=BOUNDSPEC(model_type=&#39;boundspec&#39;, shapespec=SHAPESPEC(model_type=&#39;shapespec&#39;, shape=TMA(model_type=&#39;tma&#39;, gamma=3.3, d=12.0), per_type=&#39;peak&#39;, dspr_type=&#39;degrees&#39;), location=SIDE(model_type=&#39;side&#39;, side=&#39;west&#39;, direction=&#39;ccw&#39;), data=CONSTANTPAR(model_type=&#39;constantpar&#39;, hs=2.0, per=12.0, dir=255.0, dd=25.0)), initial=INITIAL(model_type=&#39;initial&#39;, kind=DEFAULT(model_type=&#39;default&#39;)), physics=PHYSICS(model_type=&#39;physics&#39;, gen=GEN3(model_type=&#39;gen3&#39;, source_terms=KOMEN(model_type=&#39;komen&#39;, wind_drag=&#39;wu&#39;, agrow=False, a=None, cds2=2.3e-05, stpm=0.00302)), sswell=None, negatinp=None, wcapping=None, quadrupl=None, breaking=None, friction=FRICTION_JONSWAP(model_type=&#39;jonswap&#39;, cfjon=0.038), triad=None, vegetation=None, mud=None, sice=None, turbulence=None, bragg=None, limiter=None, obstacle=None, setup=None, diffraction=None, surfbeat=None, scat=None, deactivate=None), prop=PROP(model_type=&#39;prop&#39;, scheme=BSBT(model_type=&#39;bsbt&#39;)), numeric=NUMERIC(model_type=&#39;numeric&#39;, stopc=STOPC(model_type=&#39;stopc&#39;, dabs=0.05, drel=0.01, curvat=0.05, npnts=99.5, mode=NONSTAT(model_type=&#39;nonstat&#39;, mxitst=3), limiter=0.1), dirimpl=None, sigimpl=None, ctheta=None, csigma=None, setup=None), output=OUTPUT(model_type=&#39;output&#39;, frame=None, group=None, curve=None, ray=None, isoline=None, points=POINTS(model_type=&#39;points&#39;, sname=&#39;pts&#39;, xp=[114.0, 112.5, 115.0], yp=[-34.0, -26.0, -30.0]), ngrid=None, quantity=QUANTITIES(model_type=&#39;quantities&#39;, quantities=[QUANTITY(model_type=&#39;quantity&#39;, output=[&lt;BlockOptions.DEPTH: &#39;depth&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;, &lt;BlockOptions.TM01: &#39;tm01&#39;&gt;], short=None, long=None, lexp=None, hexp=None, excv=-9.0, power=None, ref=None, fswell=None, noswll=None, fmin=None, fmax=None, coord=None), QUANTITY(model_type=&#39;quantity&#39;, output=[&lt;BlockOptions.HSWELL: &#39;hswell&#39;&gt;], short=None, long=None, lexp=None, hexp=None, excv=None, power=None, ref=None, fswell=0.125, noswll=None, fmin=None, fmax=None, coord=None)]), output_options=None, block=BLOCK(model_type=&#39;block&#39;, sname=&#39;COMPGRID&#39;, fname=&#39;swangrid.nc&#39;, times=TimeRangeOpen(model_type=&#39;open&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;sec&#39;, suffix=&#39;blk&#39;), header=None, idla=None, output=[&lt;BlockOptions.DEPTH: &#39;depth&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;], unit=None), table=TABLE(model_type=&#39;table&#39;, sname=&#39;pts&#39;, fname=&#39;swantable.nc&#39;, times=TimeRangeOpen(model_type=&#39;open&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;sec&#39;, suffix=&#39;tbl&#39;), format=&#39;noheader&#39;, output=[&lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.HSWELL: &#39;hswell&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.TM01: &#39;tm01&#39;&gt;, &lt;BlockOptions.WATLEV: &#39;watlev&#39;&gt;, &lt;BlockOptions.QP: &#39;qp&#39;&gt;]), specout=None, nestout=None, test=None), lockup=LOCKUP(model_type=&#39;lockup&#39;, compute=COMPUTE_STAT(model_type=&#39;stat&#39;, times=NONSTATIONARY(model_type=&#39;nonstationary&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;sec&#39;, suffix=&#39;&#39;, tend=datetime.datetime(1970, 1, 2, 0, 0)), hotfile=HOTFILE(model_type=&#39;hotfile&#39;, fname=PosixPath(&#39;hotfile.txt&#39;), format=&#39;free&#39;), hottimes=[1, -1], suffix=&#39;_%Y%m%dT%H%M%S&#39;)))
+SwanConfigComponents(model_type=&#39;swanconfig&#39;, template=&#39;/source/csiro/rompy/rompy/templates/swancomp&#39;, checkout=&#39;main&#39;, cgrid=REGULAR(model_type=&#39;regular&#39;, spectrum=SPECTRUM(model_type=&#39;spectrum&#39;, mdc=36, flow=0.04, fhigh=1.0, msc=None, dir1=None, dir2=None), grid=GRIDREGULAR(model_type=&#39;gridregular&#39;, xp=110.0, yp=-35.2, alp=4.0, xlen=7.5, ylen=12.5, mx=14, my=24, suffix=&#39;c&#39;)), startup=STARTUP(model_type=&#39;startup&#39;, project=PROJECT(model_type=&#39;project&#39;, name=&#39;Test sensitivity&#39;, nr=&#39;run1&#39;, title1=&#39;Source terms sensitivity testing&#39;, title2=None, title3=None), set=SET(model_type=&#39;set&#39;, level=0.0, nor=None, depmin=0.05, maxmes=None, maxerr=None, grav=None, rho=None, cdcap=None, inrhog=None, hsrerr=None, direction_convention=&#39;nautical&#39;, pwtail=None, froudmax=None, icewind=None), mode=MODE(model_type=&#39;mode&#39;, kind=&#39;nonstationary&#39;, dim=&#39;twodimensional&#39;), coordinates=COORDINATES(model_type=&#39;coordinates&#39;, kind=SPHERICAL(model_type=&#39;spherical&#39;, projection=&#39;ccm&#39;), reapeating=False)), inpgrid=DataInterface(model_type=&#39;data_interface&#39;, bottom=SwanDataGrid(model_type=&#39;data_grid&#39;, id=&#39;data&#39;, source=SourceIntake(model_type=&#39;intake&#39;, dataset_id=&#39;gebco&#39;, catalog_uri=&#39;../../tests/data/catalog.yaml&#39;, kwargs={}), filter=Filter(sort={}, subset={}, crop={}, timenorm={}, rename={}, derived={}), variables=[&#39;elevation&#39;], coords=DatasetCoords(t=&#39;time&#39;, x=&#39;lon&#39;, y=&#39;lat&#39;, z=&#39;depth&#39;), crop_data=True, buffer=1.0, z1=&#39;elevation&#39;, z2=None, var=&lt;GridOptions.BOTTOM: &#39;bottom&#39;&gt;, fac=-1.0), input=[SwanDataGrid(model_type=&#39;data_grid&#39;, id=&#39;data&#39;, source=SourceIntake(model_type=&#39;intake&#39;, dataset_id=&#39;era5&#39;, catalog_uri=&#39;../../tests/data/catalog.yaml&#39;, kwargs={}), filter=Filter(sort={&#39;coords&#39;: [&#39;latitude&#39;]}, subset={}, crop={}, timenorm={}, rename={}, derived={}), variables=[&#39;u10&#39;, &#39;v10&#39;], coords=DatasetCoords(t=&#39;time&#39;, x=&#39;longitude&#39;, y=&#39;latitude&#39;, z=&#39;depth&#39;), crop_data=True, buffer=2.0, z1=&#39;u10&#39;, z2=&#39;v10&#39;, var=&lt;GridOptions.WIND: &#39;wind&#39;&gt;, fac=1.0)]), boundary=BOUNDSPEC(model_type=&#39;boundspec&#39;, shapespec=SHAPESPEC(model_type=&#39;shapespec&#39;, shape=TMA(model_type=&#39;tma&#39;, gamma=3.3, d=12.0), per_type=&#39;peak&#39;, dspr_type=&#39;degrees&#39;), location=SIDE(model_type=&#39;side&#39;, side=&#39;west&#39;, direction=&#39;ccw&#39;), data=CONSTANTPAR(model_type=&#39;constantpar&#39;, hs=2.0, per=12.0, dir=255.0, dd=25.0)), initial=INITIAL(model_type=&#39;initial&#39;, kind=DEFAULT(model_type=&#39;default&#39;)), physics=PHYSICS(model_type=&#39;physics&#39;, gen=GEN3(model_type=&#39;gen3&#39;, source_terms=KOMEN(model_type=&#39;komen&#39;, wind_drag=&#39;wu&#39;, agrow=False, a=None, cds2=2.3e-05, stpm=0.00302)), sswell=None, negatinp=None, wcapping=None, quadrupl=None, breaking=None, friction=FRICTION_JONSWAP(model_type=&#39;jonswap&#39;, cfjon=0.038), triad=None, vegetation=None, mud=None, sice=None, turbulence=None, bragg=None, limiter=None, obstacle=None, setup=None, diffraction=None, surfbeat=None, scat=None, deactivate=None), prop=PROP(model_type=&#39;prop&#39;, scheme=BSBT(model_type=&#39;bsbt&#39;)), numeric=NUMERIC(model_type=&#39;numeric&#39;, stopc=STOPC(model_type=&#39;stopc&#39;, dabs=0.02, drel=0.02, curvat=0.02, npnts=98.0, mode=STAT(model_type=&#39;stat&#39;, mxitst=3, alfa=None), limiter=None), dirimpl=None, sigimpl=None, ctheta=None, csigma=None, setup=None), output=OUTPUT(model_type=&#39;output&#39;, frame=None, group=None, curve=None, ray=None, isoline=None, points=POINTS(model_type=&#39;points&#39;, sname=&#39;pts&#39;, xp=[114.0, 112.5, 115.0], yp=[-34.0, -26.0, -30.0]), ngrid=None, quantity=QUANTITIES(model_type=&#39;quantities&#39;, quantities=[QUANTITY(model_type=&#39;quantity&#39;, output=[&lt;BlockOptions.DEPTH: &#39;depth&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;, &lt;BlockOptions.TM01: &#39;tm01&#39;&gt;], short=None, long=None, lexp=None, hexp=None, excv=-9.0, power=None, ref=None, fswell=None, noswll=None, fmin=None, fmax=None, coord=None), QUANTITY(model_type=&#39;quantity&#39;, output=[&lt;BlockOptions.HSWELL: &#39;hswell&#39;&gt;], short=None, long=None, lexp=None, hexp=None, excv=None, power=None, ref=None, fswell=0.125, noswll=None, fmin=None, fmax=None, coord=None)]), output_options=None, block=BLOCK(model_type=&#39;block&#39;, sname=&#39;COMPGRID&#39;, fname=&#39;swangrid.nc&#39;, times=TimeRangeOpen(model_type=&#39;open&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;hr&#39;, suffix=&#39;blk&#39;), header=None, idla=None, output=[&lt;BlockOptions.DEPTH: &#39;depth&#39;&gt;, &lt;BlockOptions.WIND: &#39;wind&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;], unit=None), table=TABLE(model_type=&#39;table&#39;, sname=&#39;pts&#39;, fname=&#39;swantable.txt&#39;, times=TimeRangeOpen(model_type=&#39;open&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;hr&#39;, suffix=&#39;tbl&#39;), format=&#39;header&#39;, output=[&lt;BlockOptions.TIME: &#39;time&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.HSWELL: &#39;hswell&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.TM01: &#39;tm01&#39;&gt;]), specout=SPECOUT(model_type=&#39;specout&#39;, sname=&#39;pts&#39;, fname=&#39;swanspec.nc&#39;, times=TimeRangeOpen(model_type=&#39;open&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;hr&#39;, suffix=&#39;spc&#39;), dim=SPEC2D(model_type=&#39;spec2d&#39;), freq=ABS(model_type=&#39;abs&#39;)), nestout=None, test=None), lockup=LOCKUP(model_type=&#39;lockup&#39;, compute=COMPUTE_STAT(model_type=&#39;stat&#39;, times=NONSTATIONARY(model_type=&#39;nonstationary&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;sec&#39;, suffix=&#39;&#39;, tend=datetime.datetime(1970, 1, 2, 0, 0)), hotfile=HOTFILE(model_type=&#39;hotfile&#39;, fname=PosixPath(&#39;hotfile.txt&#39;), format=&#39;free&#39;), hottimes=[1, -1], suffix=&#39;_%Y%m%dT%H%M%S&#39;)))
 </pre></div></div>
 </div>
 <section id="Examine-components">
@@ -517,16 +546,16 @@ SwanConfigComponents(model_type=&#39;swanconfig&#39;, template=&#39;/source/csir
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39;
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Friction</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source terms</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">friction</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -535,7 +564,7 @@ PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-FRICTION JONSWAP CONSTANT cfjon=0.038
+GEN3 KOMEN cds2=2.3e-05 stpm=0.00302 DRAG WU
 </pre></div></div>
 </div>
 </section>
@@ -545,11 +574,11 @@ FRICTION JONSWAP CONSTANT cfjon=0.038
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_experiment</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">cfjon</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_experiment</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">source_terms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a new config object for a given experiment&quot;&quot;&quot;</span>
     <span class="n">new_config</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-    <span class="n">new_config</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">title2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Jonswap friction cfjon=</span><span class="si">{</span><span class="n">cfjon</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">new_config</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">friction</span><span class="o">.</span><span class="n">cfjon</span> <span class="o">=</span> <span class="n">cfjon</span>
+    <span class="n">new_config</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">title2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Experiment </span><span class="si">{</span><span class="n">source_terms</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">new_config</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="n">source_terms</span> <span class="o">=</span> <span class="n">source_terms</span>
     <span class="k">return</span> <span class="n">new_config</span>
 </pre></div>
 </div>
@@ -580,18 +609,19 @@ TimeRange(start=datetime.datetime(2023, 1, 1, 0, 0), end=datetime.datetime(2023,
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rompy.model</span> <span class="kn">import</span> <span class="n">ModelRun</span>
-
+<span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.physics</span> <span class="kn">import</span> <span class="n">KOMEN</span><span class="p">,</span> <span class="n">JANSSEN</span><span class="p">,</span> <span class="n">WESTHUYSEN</span><span class="p">,</span> <span class="n">ST6C1</span><span class="p">,</span> <span class="n">ST6C2</span><span class="p">,</span> <span class="n">ST6C3</span><span class="p">,</span> <span class="n">ST6C4</span><span class="p">,</span> <span class="n">ST6C5</span>
 <span class="n">runs</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">cfjon</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]:</span>
-    <span class="n">run_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cfjon-</span><span class="si">{</span><span class="n">cfjon</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">new_config</span> <span class="o">=</span> <span class="n">set_experiment</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">cfjon</span><span class="o">=</span><span class="n">cfjon</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">[</span><span class="n">KOMEN</span><span class="p">,</span> <span class="n">JANSSEN</span><span class="p">,</span> <span class="n">WESTHUYSEN</span><span class="p">,</span> <span class="n">ST6C1</span><span class="p">,</span> <span class="n">ST6C2</span><span class="p">,</span> <span class="n">ST6C3</span><span class="p">,</span> <span class="n">ST6C4</span><span class="p">,</span> <span class="n">ST6C5</span><span class="p">]:</span>
+    <span class="n">source_terms</span> <span class="o">=</span> <span class="n">component</span><span class="p">()</span>
+    <span class="n">run_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_terms</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">new_config</span> <span class="o">=</span> <span class="n">set_experiment</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">source_terms</span><span class="o">=</span><span class="n">source_terms</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">new_config</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">new_config</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">friction</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">new_config</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="n">source_terms</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ModelRun</span><span class="p">(</span>
         <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
@@ -608,20 +638,29 @@ TimeRange(start=datetime.datetime(2023, 1, 1, 0, 0), end=datetime.datetime(2023,
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 
-PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.01&#39;
-FRICTION JONSWAP CONSTANT cfjon=0.01
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39; title2=&#39;Experiment KOMEN&#39;
+KOMEN DRAG WU
 
-PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.02&#39;
-FRICTION JONSWAP CONSTANT cfjon=0.02
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39; title2=&#39;Experiment JANSSEN&#39;
+JANSSEN DRAG WU
 
-PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.03&#39;
-FRICTION JONSWAP CONSTANT cfjon=0.03
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39; title2=&#39;Experiment WESTHUYSEN&#39;
+WESTHUYSEN DRAG WU
 
-PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.04&#39;
-FRICTION JONSWAP CONSTANT cfjon=0.04
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39; title2=&#39;Experiment ST6C1&#39;
+ST6 a1sds=4.7e-07 a2sds=6.6e-06 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=28.0 AGROW
 
-PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.05&#39;
-FRICTION JONSWAP CONSTANT cfjon=0.05
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39; title2=&#39;Experiment ST6C2&#39;
+ST6 a1sds=4.7e-07 a2sds=6.6e-06 p1sds=4.0 p2sds=4.0 UP FAN VECTAU U10PROXY windscaling=28.0 AGROW
+
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39; title2=&#39;Experiment ST6C3&#39;
+ST6 a1sds=2.8e-06 a2sds=3.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=32.0 AGROW
+
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39; title2=&#39;Experiment ST6C4&#39;
+ST6 a1sds=2.8e-06 a2sds=3.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=32.0 DEBIAS cdfac=0.89 AGROW
+
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39; title2=&#39;Experiment ST6C5&#39;
+ST6 a1sds=6.5e-06 a2sds=8.5e-05 p1sds=4.0 p2sds=4.0 UP HWANG VECTAU U10PROXY windscaling=35.0 DEBIAS cdfac=0.89 AGROW
 </pre></div></div>
 </div>
 </section>
@@ -629,7 +668,7 @@ FRICTION JONSWAP CONSTANT cfjon=0.05
 <section id="Run-the-model">
 <h2>Run the model<a class="headerlink" href="#Run-the-model" title="Link to this heading">#</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
@@ -646,7 +685,7 @@ INFO:rompy.model:
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Model settings:
 INFO:rompy.model:
-run_id: cfjon-0.01
+run_id: komen
 period:
         Start: 2023-01-01 00:00:00
         End: 2023-01-02 00:00:00
@@ -659,8 +698,8 @@ config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
 
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Generating model input files in example_sensitivity
-INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.01/bottom.grd
-INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.01/wind.grd
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/komen/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/komen/wind.grd
 INFO:rompy.model:
 INFO:rompy.model:Successfully generated project in example_sensitivity
 INFO:rompy.model:-----------------------------------------------------
@@ -668,7 +707,7 @@ INFO:rompy.model:
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Model settings:
 INFO:rompy.model:
-run_id: cfjon-0.02
+run_id: janssen
 period:
         Start: 2023-01-01 00:00:00
         End: 2023-01-02 00:00:00
@@ -681,8 +720,8 @@ config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
 
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Generating model input files in example_sensitivity
-INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.02/bottom.grd
-INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.02/wind.grd
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/janssen/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/janssen/wind.grd
 INFO:rompy.model:
 INFO:rompy.model:Successfully generated project in example_sensitivity
 INFO:rompy.model:-----------------------------------------------------
@@ -690,7 +729,7 @@ INFO:rompy.model:
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Model settings:
 INFO:rompy.model:
-run_id: cfjon-0.03
+run_id: westhuysen
 period:
         Start: 2023-01-01 00:00:00
         End: 2023-01-02 00:00:00
@@ -703,8 +742,8 @@ config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
 
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Generating model input files in example_sensitivity
-INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.03/bottom.grd
-INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.03/wind.grd
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/westhuysen/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/westhuysen/wind.grd
 INFO:rompy.model:
 INFO:rompy.model:Successfully generated project in example_sensitivity
 INFO:rompy.model:-----------------------------------------------------
@@ -712,7 +751,7 @@ INFO:rompy.model:
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Model settings:
 INFO:rompy.model:
-run_id: cfjon-0.04
+run_id: st6c1
 period:
         Start: 2023-01-01 00:00:00
         End: 2023-01-02 00:00:00
@@ -725,8 +764,8 @@ config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
 
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Generating model input files in example_sensitivity
-INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.04/bottom.grd
-INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.04/wind.grd
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/st6c1/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/st6c1/wind.grd
 INFO:rompy.model:
 INFO:rompy.model:Successfully generated project in example_sensitivity
 INFO:rompy.model:-----------------------------------------------------
@@ -734,7 +773,7 @@ INFO:rompy.model:
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Model settings:
 INFO:rompy.model:
-run_id: cfjon-0.05
+run_id: st6c2
 period:
         Start: 2023-01-01 00:00:00
         End: 2023-01-02 00:00:00
@@ -747,8 +786,74 @@ config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
 
 INFO:rompy.model:-----------------------------------------------------
 INFO:rompy.model:Generating model input files in example_sensitivity
-INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.05/bottom.grd
-INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.05/wind.grd
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/st6c2/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/st6c2/wind.grd
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in example_sensitivity
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+run_id: st6c3
+period:
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-02 00:00:00
+        Duration: 1 day, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+output_dir: example_sensitivity
+config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in example_sensitivity
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/st6c3/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/st6c3/wind.grd
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in example_sensitivity
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+run_id: st6c4
+period:
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-02 00:00:00
+        Duration: 1 day, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+output_dir: example_sensitivity
+config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in example_sensitivity
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/st6c4/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/st6c4/wind.grd
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in example_sensitivity
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+run_id: st6c5
+period:
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-02 00:00:00
+        Duration: 1 day, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+output_dir: example_sensitivity
+config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in example_sensitivity
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/st6c5/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/st6c5/wind.grd
 INFO:rompy.model:
 INFO:rompy.model:Successfully generated project in example_sensitivity
 INFO:rompy.model:-----------------------------------------------------
@@ -757,50 +862,54 @@ INFO:rompy.model:-----------------------------------------------------
 <section id="Check-the-workspace">
 <h3>Check the workspace<a class="headerlink" href="#Check-the-workspace" title="Link to this heading">#</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">workdir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[PosixPath(&#39;example_sensitivity/cfjon-0.01&#39;),
- PosixPath(&#39;example_sensitivity/cfjon-0.02&#39;),
- PosixPath(&#39;example_sensitivity/cfjon-0.03&#39;),
- PosixPath(&#39;example_sensitivity/cfjon-0.04&#39;),
- PosixPath(&#39;example_sensitivity/cfjon-0.05&#39;)]
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;example_sensitivity/cfjon-0.03&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modeldirs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">workdir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
+<span class="n">modeldirs</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[PosixPath(&#39;example_sensitivity/cfjon-0.03/INPUT&#39;),
- PosixPath(&#39;example_sensitivity/cfjon-0.03/bottom.grd&#39;),
- PosixPath(&#39;example_sensitivity/cfjon-0.03/wind.grd&#39;)]
+[PosixPath(&#39;example_sensitivity/janssen&#39;),
+ PosixPath(&#39;example_sensitivity/komen&#39;),
+ PosixPath(&#39;example_sensitivity/st6c1&#39;),
+ PosixPath(&#39;example_sensitivity/st6c2&#39;),
+ PosixPath(&#39;example_sensitivity/st6c3&#39;),
+ PosixPath(&#39;example_sensitivity/st6c4&#39;),
+ PosixPath(&#39;example_sensitivity/st6c5&#39;),
+ PosixPath(&#39;example_sensitivity/westhuysen&#39;)]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;example_sensitivity/cfjon-0.03/INPUT&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">modeldirs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[PosixPath(&#39;example_sensitivity/janssen/INPUT&#39;),
+ PosixPath(&#39;example_sensitivity/janssen/bottom.grd&#39;),
+ PosixPath(&#39;example_sensitivity/janssen/wind.grd&#39;)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span> <span class="o">=</span> <span class="n">modeldirs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;INPUT&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -812,12 +921,12 @@ INFO:rompy.model:-----------------------------------------------------
 <div class="highlight"><pre>
 ! Rompy SwanConfig
 ! Template: /source/csiro/rompy/rompy/templates/swancomp
-! Generated: 2023-10-16 02:11:30.301323 on rafael-XPS by rguedes
+! Generated: 2023-11-02 23:42:45.623226 on rafael-XPS by rguedes
 
 
 ! Startup -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.03&#39;
+PROJECT name=&#39;Test sensitivity&#39; nr=&#39;run1&#39; title1=&#39;Source terms sensitivity testing&#39; title2=&#39;Experiment JANSSEN&#39;
 
 SET level=0.0 depmin=0.05 NAUTICAL
 
@@ -850,16 +959,16 @@ INITIAL DEFAULT
 
 ! Physics -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-GEN3 KOMEN cds2=2.3e-05 stpm=0.00302 DRAG WU
+GEN3 JANSSEN DRAG WU
 
-FRICTION JONSWAP CONSTANT cfjon=0.03
+FRICTION JONSWAP CONSTANT cfjon=0.038
 
 
 ! Numerics ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 PROP BSBT
 
-NUMERIC STOPC dabs=0.05 drel=0.01 curvat=0.05 npnts=99.5 NONSTATIONARY mxitst=3 limiter=0.1
+NUMERIC STOPC dabs=0.02 drel=0.02 curvat=0.02 npnts=98.0 STATIONARY mxitst=3
 
 
 ! Output --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -875,20 +984,22 @@ QUANTITY HSWELL fswell=0.125
 
 BLOCK sname=&#39;COMPGRID&#39; fname=&#39;swangrid.nc&#39; &amp;
     DEPTH &amp;
+    WIND &amp;
     HSIGN &amp;
     TPS &amp;
     DIR &amp;
-    OUTPUT tbegblk=20230101.000000 deltblk=3600.0 SEC
+    OUTPUT tbegblk=20230101.000000 deltblk=1.0 HR
 
-TABLE sname=&#39;pts&#39; NOHEADER fname=&#39;swantable.nc&#39; &amp;
+TABLE sname=&#39;pts&#39; HEADER fname=&#39;swantable.txt&#39; &amp;
+    TIME &amp;
     HSIGN &amp;
     HSWELL &amp;
     DIR &amp;
     TPS &amp;
     TM01 &amp;
-    WATLEV &amp;
-    QP &amp;
-    OUTPUT tbegtbl=20230101.000000 delttbl=3600.0 SEC
+    OUTPUT tbegtbl=20230101.000000 delttbl=1.0 HR
+
+SPECOUT sname=&#39;pts&#39; SPEC2D ABS fname=&#39;swanspec.nc&#39; OUTPUT tbegspc=20230101.000000 deltspc=1.0 HR
 
 
 ! Lockup --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -927,11 +1038,1705 @@ STOP
 </section>
 <section id="id1">
 <h2>Run the model<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<p>Todo</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">modeldir</span> <span class="ow">in</span> <span class="n">modeldirs</span><span class="p">:</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;./</span><span class="si">{</span><span class="n">modeldir</span><span class="si">}</span><span class="s2">:/home&quot;</span><span class="p">,</span> <span class="s2">&quot;oceanum/swan:4141&quot;</span><span class="p">,</span> <span class="s2">&quot;swan.exe&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">modeldir</span><span class="si">}</span><span class="s2">/swan.log&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+docker run -v ./example_sensitivity/janssen:/home oceanum/swan:4141 swan.exe &gt; example_sensitivity/janssen/swan.log
+docker run -v ./example_sensitivity/komen:/home oceanum/swan:4141 swan.exe &gt; example_sensitivity/komen/swan.log
+docker run -v ./example_sensitivity/st6c1:/home oceanum/swan:4141 swan.exe &gt; example_sensitivity/st6c1/swan.log
+docker run -v ./example_sensitivity/st6c2:/home oceanum/swan:4141 swan.exe &gt; example_sensitivity/st6c2/swan.log
+docker run -v ./example_sensitivity/st6c3:/home oceanum/swan:4141 swan.exe &gt; example_sensitivity/st6c3/swan.log
+docker run -v ./example_sensitivity/st6c4:/home oceanum/swan:4141 swan.exe &gt; example_sensitivity/st6c4/swan.log
+docker run -v ./example_sensitivity/st6c5:/home oceanum/swan:4141 swan.exe &gt; example_sensitivity/st6c5/swan.log
+docker run -v ./example_sensitivity/westhuysen:/home oceanum/swan:4141 swan.exe &gt; example_sensitivity/westhuysen/swan.log
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check for output files</span>
+<span class="k">for</span> <span class="n">modeldir</span> <span class="ow">in</span> <span class="n">modeldirs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">modeldir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.nc&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[PosixPath(&#39;example_sensitivity/janssen/swangrid.nc&#39;), PosixPath(&#39;example_sensitivity/janssen/swanspec.nc&#39;)]
+[PosixPath(&#39;example_sensitivity/komen/swangrid.nc&#39;), PosixPath(&#39;example_sensitivity/komen/swanspec.nc&#39;)]
+[PosixPath(&#39;example_sensitivity/st6c1/swangrid.nc&#39;), PosixPath(&#39;example_sensitivity/st6c1/swanspec.nc&#39;)]
+[PosixPath(&#39;example_sensitivity/st6c2/swangrid.nc&#39;), PosixPath(&#39;example_sensitivity/st6c2/swanspec.nc&#39;)]
+[PosixPath(&#39;example_sensitivity/st6c3/swangrid.nc&#39;), PosixPath(&#39;example_sensitivity/st6c3/swanspec.nc&#39;)]
+[PosixPath(&#39;example_sensitivity/st6c4/swangrid.nc&#39;), PosixPath(&#39;example_sensitivity/st6c4/swanspec.nc&#39;)]
+[PosixPath(&#39;example_sensitivity/st6c5/swangrid.nc&#39;), PosixPath(&#39;example_sensitivity/st6c5/swanspec.nc&#39;)]
+[PosixPath(&#39;example_sensitivity/westhuysen/swangrid.nc&#39;), PosixPath(&#39;example_sensitivity/westhuysen/swanspec.nc&#39;)]
+</pre></div></div>
+</div>
 </section>
 <section id="Plot-outputs">
 <h2>Plot outputs<a class="headerlink" href="#Plot-outputs" title="Link to this heading">#</a></h2>
-<p>Todo</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">from</span> <span class="nn">wavespectra</span> <span class="kn">import</span> <span class="n">read_ncswan</span><span class="p">,</span> <span class="n">read_swan</span>
+<span class="kn">from</span> <span class="nn">wavespectra.core.swan</span> <span class="kn">import</span> <span class="n">read_tab</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.notebook_repr_html&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_gridded_output</span><span class="p">(</span><span class="n">run</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read mean gridded output from a model run&quot;&quot;&quot;</span>
+    <span class="n">modeldir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">run</span><span class="o">.</span><span class="n">run_id</span>
+    <span class="n">dset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">modeldir</span> <span class="o">/</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dset</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">read_spectra_output</span><span class="p">(</span><span class="n">run</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read mean spectra output from a model run&quot;&quot;&quot;</span>
+    <span class="n">modeldir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">run</span><span class="o">.</span><span class="n">run_id</span>
+    <span class="n">dset</span> <span class="o">=</span> <span class="n">read_ncswan</span><span class="p">(</span><span class="n">modeldir</span> <span class="o">/</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">specout</span><span class="o">.</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dset</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gridded parameters</span>
+
+<span class="n">dsgrid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">read_gridded_output</span><span class="p">(</span><span class="n">run</span><span class="p">)</span> <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="s2">&quot;source_terms&quot;</span><span class="p">)</span>
+<span class="n">dsgrid</span><span class="p">[</span><span class="s2">&quot;source_terms&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_id</span> <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">]</span>
+<span class="n">dsgrid</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:       (yc: 25, xc: 15, source_terms: 8)
+Coordinates:
+    longitude     (yc, xc) float32 110.0 110.5 111.1 111.6 ... 115.5 116.1 116.6
+    latitude      (yc, xc) float32 -35.2 -35.16 -35.13 ... -22.28 -22.24 -22.21
+  * source_terms  (source_terms) &lt;U10 &#x27;komen&#x27; &#x27;janssen&#x27; ... &#x27;st6c4&#x27; &#x27;st6c5&#x27;
+Dimensions without coordinates: yc, xc
+Data variables:
+    depth         (source_terms, yc, xc) float32 4.824e+03 4.16e+03 ... nan nan
+    xwnd          (source_terms, yc, xc) float32 -0.8986 -1.029 ... nan nan
+    ywnd          (source_terms, yc, xc) float32 6.718 6.65 6.582 ... nan nan
+    hs            (source_terms, yc, xc) float32 1.019 0.6307 0.6288 ... nan nan
+    tps           (source_terms, yc, xc) float32 11.66 11.66 11.66 ... nan nan
+    theta0        (source_terms, yc, xc) float32 255.5 291.2 291.5 ... nan nan</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-91043484-c015-4100-a09b-b0e95a594089' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-91043484-c015-4100-a09b-b0e95a594089' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span>yc</span>: 25</li><li><span>xc</span>: 15</li><li><span class='xr-has-index'>source_terms</span>: 8</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-34ecf7c6-f909-440c-8ae9-b58fa97965ac' class='xr-section-summary-in' type='checkbox'  checked><label for='section-34ecf7c6-f909-440c-8ae9-b58fa97965ac' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>longitude</span></div><div class='xr-var-dims'>(yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>110.0 110.5 111.1 ... 116.1 116.6</div><input id='attrs-f8562735-6c95-4987-adca-219d98bd8aeb' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-f8562735-6c95-4987-adca-219d98bd8aeb' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-936babcf-ec8a-48d4-b872-4c0a1b74efa2' class='xr-var-data-in' type='checkbox'><label for='data-936babcf-ec8a-48d4-b872-4c0a1b74efa2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd><dt><span>long_name :</span></dt><dd>longitude</dd><dt><span>standard_name :</span></dt><dd>longitude</dd></dl></div><div class='xr-var-data'><pre>array([[110.      , 110.53441 , 111.06882 , 111.603226, 112.137634,
+        112.67204 , 113.20646 , 113.74087 , 114.275276, 114.809685,
+        115.34409 , 115.8785  , 116.41291 , 116.94732 , 117.48173 ],
+       [109.96367 , 110.49808 , 111.032486, 111.566895, 112.1013  ,
+        112.63571 , 113.17013 , 113.70454 , 114.238945, 114.77335 ,
+        115.30776 , 115.84217 , 116.37658 , 116.91099 , 117.4454  ],
+       [109.92734 , 110.46175 , 110.996155, 111.53056 , 112.06497 ,
+        112.59938 , 113.13379 , 113.668205, 114.202614, 114.73702 ,
+        115.27143 , 115.80584 , 116.34025 , 116.87466 , 117.409065],
+       [109.89101 , 110.425415, 110.95982 , 111.49423 , 112.02864 ,
+        112.56305 , 113.09746 , 113.631874, 114.16628 , 114.70069 ,
+        115.2351  , 115.76951 , 116.30392 , 116.838326, 117.372734],
+       [109.854675, 110.389084, 110.92349 , 111.4579  , 111.99231 ,
+        112.52672 , 113.06113 , 113.59554 , 114.12995 , 114.66436 ,
+        115.19877 , 115.73318 , 116.267586, 116.801994, 117.3364  ],
+       [109.818344, 110.35275 , 110.88716 , 111.42157 , 111.95598 ,
+        112.49039 , 113.024796, 113.559204, 114.09362 , 114.62803 ,
+        115.16244 , 115.696846, 116.231255, 116.76566 , 117.30007 ],
+       [109.78201 , 110.31642 , 110.85083 , 111.38524 , 111.91965 ,
+        112.454056, 112.988464, 113.52287 , 114.05728 , 114.5917  ,
+...
+        114.690125, 115.22453 , 115.75894 , 116.29335 , 116.82777 ],
+       [109.3097  , 109.84411 , 110.37852 , 110.91293 , 111.44734 ,
+        111.98175 , 112.51616 , 113.05057 , 113.58498 , 114.119385,
+        114.65379 , 115.1882  , 115.72261 , 116.25702 , 116.791435],
+       [109.27337 , 109.80778 , 110.342186, 110.876595, 111.41101 ,
+        111.94542 , 112.47983 , 113.01424 , 113.548645, 114.08305 ,
+        114.61746 , 115.15187 , 115.68628 , 116.22069 , 116.755104],
+       [109.23704 , 109.77145 , 110.305855, 110.84026 , 111.37467 ,
+        111.90909 , 112.4435  , 112.977905, 113.512314, 114.04672 ,
+        114.58113 , 115.11554 , 115.64995 , 116.18436 , 116.718765],
+       [109.20071 , 109.735115, 110.26952 , 110.80393 , 111.33834 ,
+        111.87276 , 112.407166, 112.941574, 113.47598 , 114.01039 ,
+        114.5448  , 115.07921 , 115.61362 , 116.148026, 116.682434],
+       [109.164375, 109.698784, 110.23319 , 110.7676  , 111.30201 ,
+        111.836426, 112.370834, 112.90524 , 113.43965 , 113.97406 ,
+        114.50847 , 115.04288 , 115.577286, 116.111694, 116.6461  ],
+       [109.128044, 109.66245 , 110.19686 , 110.73127 , 111.26568 ,
+        111.80009 , 112.3345  , 112.86891 , 113.40332 , 113.93773 ,
+        114.47214 , 115.006546, 115.540955, 116.07536 , 116.60977 ]],
+      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>latitude</span></div><div class='xr-var-dims'>(yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>-35.2 -35.16 ... -22.24 -22.21</div><input id='attrs-efd319ed-db51-4209-9000-7f6cad095c9a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-efd319ed-db51-4209-9000-7f6cad095c9a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-953e02e3-759d-49f1-ac28-007cca9fa84d' class='xr-var-data-in' type='checkbox'><label for='data-953e02e3-759d-49f1-ac28-007cca9fa84d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd><dt><span>long_name :</span></dt><dd>latitude</dd><dt><span>standard_name :</span></dt><dd>latitude</dd></dl></div><div class='xr-var-data'><pre>array([[-35.2     , -35.162632, -35.125263, -35.08789 , -35.05052 ,
+        -35.013153, -34.975784, -34.938416, -34.901043, -34.863674,
+        -34.826305, -34.788937, -34.751568, -34.714195, -34.676826],
+       [-34.680435, -34.643066, -34.605698, -34.56833 , -34.530956,
+        -34.493587, -34.45622 , -34.41885 , -34.38148 , -34.34411 ,
+        -34.30674 , -34.26937 , -34.232002, -34.194633, -34.15726 ],
+       [-34.160873, -34.1235  , -34.086132, -34.048763, -34.011395,
+        -33.974022, -33.936653, -33.899284, -33.861916, -33.824547,
+        -33.787178, -33.749805, -33.712437, -33.675068, -33.6377  ],
+       [-33.641308, -33.60394 , -33.566566, -33.529198, -33.49183 ,
+        -33.45446 , -33.41709 , -33.37972 , -33.34235 , -33.30498 ,
+        -33.267612, -33.230244, -33.19287 , -33.155502, -33.118134],
+       [-33.121742, -33.084373, -33.047005, -33.009632, -32.972263,
+        -32.934895, -32.897526, -32.860157, -32.822784, -32.785416,
+        -32.748047, -32.71068 , -32.67331 , -32.635937, -32.598568],
+       [-32.602177, -32.564808, -32.52744 , -32.49007 , -32.452698,
+        -32.41533 , -32.37796 , -32.34059 , -32.303223, -32.265854,
+        -32.22848 , -32.191113, -32.153744, -32.116375, -32.079002],
+       [-32.08261 , -32.045242, -32.007874, -31.970505, -31.933134,
+        -31.895765, -31.858397, -31.821026, -31.783657, -31.746286,
+...
+        -25.474142, -25.436771, -25.399403, -25.362034, -25.324665],
+       [-25.328274, -25.290903, -25.253532, -25.216164, -25.178795,
+        -25.141426, -25.104055, -25.066685, -25.029316, -24.991947,
+        -24.954578, -24.917208, -24.879837, -24.842468, -24.8051  ],
+       [-24.808708, -24.77134 , -24.73397 , -24.696602, -24.659231,
+        -24.62186 , -24.584492, -24.547123, -24.509754, -24.472383,
+        -24.435013, -24.397644, -24.360275, -24.322906, -24.285536],
+       [-24.289143, -24.251774, -24.214405, -24.177036, -24.139666,
+        -24.102295, -24.064926, -24.027557, -23.990189, -23.952818,
+        -23.915447, -23.878078, -23.84071 , -23.80334 , -23.76597 ],
+       [-23.769579, -23.732208, -23.69484 , -23.65747 , -23.620102,
+        -23.582731, -23.54536 , -23.507992, -23.470623, -23.433254,
+        -23.395884, -23.358513, -23.321144, -23.283775, -23.246407],
+       [-23.250015, -23.212646, -23.175276, -23.137907, -23.100536,
+        -23.063168, -23.025799, -22.988428, -22.95106 , -22.913689,
+        -22.87632 , -22.838951, -22.80158 , -22.764212, -22.726841],
+       [-22.73045 , -22.69308 , -22.65571 , -22.618341, -22.58097 ,
+        -22.543602, -22.506233, -22.468863, -22.431494, -22.394123,
+        -22.356754, -22.319386, -22.282015, -22.244646, -22.207275]],
+      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>source_terms</span></div><div class='xr-var-dims'>(source_terms)</div><div class='xr-var-dtype'>&lt;U10</div><div class='xr-var-preview xr-preview'>&#x27;komen&#x27; &#x27;janssen&#x27; ... &#x27;st6c5&#x27;</div><input id='attrs-6596b15f-bfe7-4768-a5cf-d9923527a1c0' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-6596b15f-bfe7-4768-a5cf-d9923527a1c0' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-754e5dc5-36e3-4cd3-8c3f-aaac9ad4f1db' class='xr-var-data-in' type='checkbox'><label for='data-754e5dc5-36e3-4cd3-8c3f-aaac9ad4f1db' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;komen&#x27;, &#x27;janssen&#x27;, &#x27;westhuysen&#x27;, &#x27;st6c1&#x27;, &#x27;st6c2&#x27;, &#x27;st6c3&#x27;, &#x27;st6c4&#x27;,
+       &#x27;st6c5&#x27;], dtype=&#x27;&lt;U10&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-668117da-1c00-415f-8231-74f86d9fbe05' class='xr-section-summary-in' type='checkbox'  checked><label for='section-668117da-1c00-415f-8231-74f86d9fbe05' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>depth</span></div><div class='xr-var-dims'>(source_terms, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>4.824e+03 4.16e+03 ... nan nan</div><input id='attrs-24811b35-aac3-4a83-be11-846c56a94b2b' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-24811b35-aac3-4a83-be11-846c56a94b2b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7588c245-e7eb-48a2-addd-dcdebf75b769' class='xr-var-data-in' type='checkbox'><label for='data-7588c245-e7eb-48a2-addd-dcdebf75b769' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[4823.951 , 4160.235 , 3517.904 , ...,       nan,       nan,
+               nan],
+        [4081.297 , 3441.2422, 2892.3357, ...,       nan,       nan,
+               nan],
+        [3056.671 , 2631.195 , 2384.4294, ...,       nan,       nan,
+               nan],
+        ...,
+        [3246.6487, 4145.945 , 4225.1567, ...,       nan,       nan,
+               nan],
+        [3510.1592, 4227.9146, 4563.9614, ...,       nan,       nan,
+               nan],
+        [3835.8284, 4350.438 , 4695.601 , ...,       nan,       nan,
+               nan]],
+
+       [[4823.951 , 4160.235 , 3517.904 , ...,       nan,       nan,
+               nan],
+        [4081.297 , 3441.2422, 2892.3357, ...,       nan,       nan,
+               nan],
+        [3056.671 , 2631.195 , 2384.4294, ...,       nan,       nan,
+               nan],
+...
+        [3246.6487, 4145.945 , 4225.1567, ...,       nan,       nan,
+               nan],
+        [3510.1592, 4227.9146, 4563.9614, ...,       nan,       nan,
+               nan],
+        [3835.8284, 4350.438 , 4695.601 , ...,       nan,       nan,
+               nan]],
+
+       [[4823.951 , 4160.235 , 3517.904 , ...,       nan,       nan,
+               nan],
+        [4081.297 , 3441.2422, 2892.3357, ...,       nan,       nan,
+               nan],
+        [3056.671 , 2631.195 , 2384.4294, ...,       nan,       nan,
+               nan],
+        ...,
+        [3246.6487, 4145.945 , 4225.1567, ...,       nan,       nan,
+               nan],
+        [3510.1592, 4227.9146, 4563.9614, ...,       nan,       nan,
+               nan],
+        [3835.8284, 4350.438 , 4695.601 , ...,       nan,       nan,
+               nan]]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>xwnd</span></div><div class='xr-var-dims'>(source_terms, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>-0.8986 -1.029 -1.157 ... nan nan</div><input id='attrs-e9e3f16b-da6b-436f-b867-d9cfa40e39ac' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-e9e3f16b-da6b-436f-b867-d9cfa40e39ac' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-151daab4-427d-437d-8d74-de3f91d96c17' class='xr-var-data-in' type='checkbox'><label for='data-151daab4-427d-437d-8d74-de3f91d96c17' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[-0.8985871, -1.0285959, -1.157384 , ...,        nan,
+                nan,        nan],
+        [-1.1927854, -1.3132724, -1.432905 , ...,        nan,
+                nan,        nan],
+        [-1.6694846, -1.7384562, -1.8047427, ...,        nan,
+                nan,        nan],
+        ...,
+        [       nan,        nan,        nan, ...,        nan,
+                nan,        nan],
+        [       nan,        nan,        nan, ...,        nan,
+                nan,        nan],
+        [       nan,        nan,        nan, ...,        nan,
+                nan,        nan]],
+
+       [[-0.8985871, -1.0285959, -1.157384 , ...,        nan,
+                nan,        nan],
+        [-1.1927854, -1.3132724, -1.432905 , ...,        nan,
+                nan,        nan],
+        [-1.6694846, -1.7384562, -1.8047427, ...,        nan,
+                nan,        nan],
+...
+        [       nan,        nan,        nan, ...,        nan,
+                nan,        nan],
+        [       nan,        nan,        nan, ...,        nan,
+                nan,        nan],
+        [       nan,        nan,        nan, ...,        nan,
+                nan,        nan]],
+
+       [[-0.8985871, -1.0285959, -1.157384 , ...,        nan,
+                nan,        nan],
+        [-1.1927854, -1.3132724, -1.432905 , ...,        nan,
+                nan,        nan],
+        [-1.6694846, -1.7384562, -1.8047427, ...,        nan,
+                nan,        nan],
+        ...,
+        [       nan,        nan,        nan, ...,        nan,
+                nan,        nan],
+        [       nan,        nan,        nan, ...,        nan,
+                nan,        nan],
+        [       nan,        nan,        nan, ...,        nan,
+                nan,        nan]]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>ywnd</span></div><div class='xr-var-dims'>(source_terms, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>6.718 6.65 6.582 ... nan nan nan</div><input id='attrs-ac13317b-2ad7-4f2b-af97-c4b201eb9081' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ac13317b-2ad7-4f2b-af97-c4b201eb9081' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5cda5297-5dbb-4a71-8131-a4b8cd704b9e' class='xr-var-data-in' type='checkbox'><label for='data-5cda5297-5dbb-4a71-8131-a4b8cd704b9e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[6.7184663, 6.650105 , 6.5822325, ...,       nan,       nan,
+               nan],
+        [6.903531 , 6.849573 , 6.785363 , ...,       nan,       nan,
+               nan],
+        [7.2056627, 7.13828  , 7.054905 , ...,       nan,       nan,
+               nan],
+        ...,
+        [      nan,       nan,       nan, ...,       nan,       nan,
+               nan],
+        [      nan,       nan,       nan, ...,       nan,       nan,
+               nan],
+        [      nan,       nan,       nan, ...,       nan,       nan,
+               nan]],
+
+       [[6.7184663, 6.650105 , 6.5822325, ...,       nan,       nan,
+               nan],
+        [6.903531 , 6.849573 , 6.785363 , ...,       nan,       nan,
+               nan],
+        [7.2056627, 7.13828  , 7.054905 , ...,       nan,       nan,
+               nan],
+...
+        [      nan,       nan,       nan, ...,       nan,       nan,
+               nan],
+        [      nan,       nan,       nan, ...,       nan,       nan,
+               nan],
+        [      nan,       nan,       nan, ...,       nan,       nan,
+               nan]],
+
+       [[6.7184663, 6.650105 , 6.5822325, ...,       nan,       nan,
+               nan],
+        [6.903531 , 6.849573 , 6.785363 , ...,       nan,       nan,
+               nan],
+        [7.2056627, 7.13828  , 7.054905 , ...,       nan,       nan,
+               nan],
+        ...,
+        [      nan,       nan,       nan, ...,       nan,       nan,
+               nan],
+        [      nan,       nan,       nan, ...,       nan,       nan,
+               nan],
+        [      nan,       nan,       nan, ...,       nan,       nan,
+               nan]]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>hs</span></div><div class='xr-var-dims'>(source_terms, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>1.019 0.6307 0.6288 ... nan nan nan</div><input id='attrs-599be1da-1e5c-42f5-82bd-b64fad04a2d8' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-599be1da-1e5c-42f5-82bd-b64fad04a2d8' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9360442d-ce47-4428-ab78-eeff3af0313c' class='xr-var-data-in' type='checkbox'><label for='data-9360442d-ce47-4428-ab78-eeff3af0313c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[1.0192268 , 0.63066536, 0.6288341 , ...,        nan,
+                nan,        nan],
+        [1.1814324 , 1.3336895 , 1.2929169 , ...,        nan,
+                nan,        nan],
+        [1.2695091 , 1.4816737 , 1.4532303 , ...,        nan,
+                nan,        nan],
+        ...,
+        [1.7042453 , 1.9786367 , 1.9581891 , ...,        nan,
+                nan,        nan],
+        [1.6415908 , 1.8393509 , 1.8341626 , ...,        nan,
+                nan,        nan],
+        [1.5887021 , 1.671926  , 1.694815  , ...,        nan,
+                nan,        nan]],
+
+       [[1.0107424 , 0.6126289 , 0.60542625, ...,        nan,
+                nan,        nan],
+        [1.1889399 , 1.32725   , 1.2820215 , ...,        nan,
+                nan,        nan],
+        [1.2861719 , 1.4874724 , 1.4557636 , ...,        nan,
+                nan,        nan],
+...
+        [1.6818448 , 1.9637436 , 1.9407938 , ...,        nan,
+                nan,        nan],
+        [1.6280103 , 1.8407547 , 1.8310803 , ...,        nan,
+                nan,        nan],
+        [1.574511  , 1.67745   , 1.6956695 , ...,        nan,
+                nan,        nan]],
+
+       [[1.0049133 , 0.5968502 , 0.5881523 , ...,        nan,
+                nan,        nan],
+        [1.1108131 , 1.1534166 , 1.10535   , ...,        nan,
+                nan,        nan],
+        [1.1872003 , 1.3097018 , 1.2791528 , ...,        nan,
+                nan,        nan],
+        ...,
+        [1.7535931 , 2.0571308 , 2.0438855 , ...,        nan,
+                nan,        nan],
+        [1.6953642 , 1.9304483 , 1.9248636 , ...,        nan,
+                nan,        nan],
+        [1.6400958 , 1.7745602 , 1.7801449 , ...,        nan,
+                nan,        nan]]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>tps</span></div><div class='xr-var-dims'>(source_terms, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>11.66 11.66 11.66 ... nan nan nan</div><input id='attrs-c9db6c6c-c5da-494a-8ad3-5d30cb8e33da' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c9db6c6c-c5da-494a-8ad3-5d30cb8e33da' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d1cc7168-a18e-4041-8c48-4d6622432c66' class='xr-var-data-in' type='checkbox'><label for='data-d1cc7168-a18e-4041-8c48-4d6622432c66' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[11.661121 , 11.661121 , 11.661732 , ...,        nan,
+                nan,        nan],
+        [11.661121 , 11.661793 , 11.66222  , ...,        nan,
+                nan,        nan],
+        [11.661121 , 11.662037 , 11.662708 , ...,        nan,
+                nan,        nan],
+        ...,
+        [ 7.6884065,  7.8873553,  7.903043 , ...,        nan,
+                nan,        nan],
+        [ 7.7627187,  7.927702 ,  7.9547405, ...,        nan,
+                nan,        nan],
+        [ 7.8102965,  7.9473553,  7.978271 , ...,        nan,
+                nan,        nan]],
+
+       [[11.661121 , 11.66164  , 11.662373 , ...,        nan,
+                nan,        nan],
+        [11.661121 , 11.662556 , 11.663898 , ...,        nan,
+                nan,        nan],
+        [11.661121 , 11.663197 , 10.905086 , ...,        nan,
+                nan,        nan],
+...
+        [ 7.538561 ,  7.665639 ,  7.6623135, ...,        nan,
+                nan,        nan],
+        [ 8.1478   ,  7.7109585,  7.7162695, ...,        nan,
+                nan,        nan],
+        [ 8.539263 ,  7.7229834,  7.735404 , ...,        nan,
+                nan,        nan]],
+
+       [[11.661121 , 11.661884 , 11.662403 , ...,        nan,
+                nan,        nan],
+        [11.661121 , 11.661884 , 11.66222  , ...,        nan,
+                nan,        nan],
+        [11.661121 , 11.661945 , 11.6628   , ...,        nan,
+                nan,        nan],
+        ...,
+        [ 7.7295146,  7.864436 ,  7.868037 , ...,        nan,
+                nan,        nan],
+        [ 7.7735524,  7.9105506,  7.9117393, ...,        nan,
+                nan,        nan],
+        [ 7.8086786,  7.9306006,  7.932705 , ...,        nan,
+                nan,        nan]]], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>theta0</span></div><div class='xr-var-dims'>(source_terms, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>255.5 291.2 291.5 ... nan nan nan</div><input id='attrs-f3926d58-28ed-4f12-a4e6-21be507acfb7' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-f3926d58-28ed-4f12-a4e6-21be507acfb7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-4ea3af42-c471-4930-af76-1befe7acfaee' class='xr-var-data-in' type='checkbox'><label for='data-4ea3af42-c471-4930-af76-1befe7acfaee' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[255.51137, 291.2079 , 291.5412 , ...,       nan,       nan,
+               nan],
+        [232.16513, 207.59586, 205.65694, ...,       nan,       nan,
+               nan],
+        [215.15535, 197.54132, 198.0902 , ...,       nan,       nan,
+               nan],
+        ...,
+        [178.59105, 182.74272, 189.30594, ...,       nan,       nan,
+               nan],
+        [183.33075, 184.87103, 189.97305, ...,       nan,       nan,
+               nan],
+        [187.59137, 180.92574, 186.74869, ...,       nan,       nan,
+               nan]],
+
+       [[255.24213, 287.9488 , 287.68384, ...,       nan,       nan,
+               nan],
+        [229.47887, 206.4798 , 204.27303, ...,       nan,       nan,
+               nan],
+        [212.41219, 196.26465, 195.89618, ...,       nan,       nan,
+               nan],
+...
+        [178.39902, 182.91827, 189.82843, ...,       nan,       nan,
+               nan],
+        [182.74205, 184.25159, 189.59729, ...,       nan,       nan,
+               nan],
+        [187.41913, 180.35092, 186.54213, ...,       nan,       nan,
+               nan]],
+
+       [[255.1523 , 286.08612, 285.77368, ...,       nan,       nan,
+               nan],
+        [242.54309, 226.48305, 225.45906, ...,       nan,       nan,
+               nan],
+        [229.49602, 212.3399 , 212.71413, ...,       nan,       nan,
+               nan],
+        ...,
+        [175.19928, 180.99101, 187.77765, ...,       nan,       nan,
+               nan],
+        [179.3098 , 182.44803, 187.57178, ...,       nan,       nan,
+               nan],
+        [183.65086, 178.93758, 185.23143, ...,       nan,       nan,
+               nan]]], dtype=float32)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-a1fa3e7e-876c-4fa3-af21-7a3f39c6116f' class='xr-section-summary-in' type='checkbox'  ><label for='section-a1fa3e7e-876c-4fa3-af21-7a3f39c6116f' class='xr-section-summary' >Indexes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>source_terms</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-7fbe2a45-2a0c-47ce-9c4a-eae70b3b487a' class='xr-index-data-in' type='checkbox'/><label for='index-7fbe2a45-2a0c-47ce-9c4a-eae70b3b487a' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;komen&#x27;, &#x27;janssen&#x27;, &#x27;westhuysen&#x27;, &#x27;st6c1&#x27;, &#x27;st6c2&#x27;, &#x27;st6c3&#x27;, &#x27;st6c4&#x27;,
+       &#x27;st6c5&#x27;],
+      dtype=&#x27;object&#x27;, name=&#x27;source_terms&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-c53d11bc-21ba-4e70-8048-c548ab463177' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-c53d11bc-21ba-4e70-8048-c548ab463177' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Wave spectra</span>
+
+<span class="n">dspec</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">read_spectra_output</span><span class="p">(</span><span class="n">run</span><span class="p">)</span> <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="s2">&quot;source_terms&quot;</span><span class="p">)</span>
+<span class="n">dspec</span><span class="p">[</span><span class="s2">&quot;source_terms&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_id</span> <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">]</span>
+<span class="n">dspec</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:       (source_terms: 8, site: 3, freq: 35, dir: 36)
+Coordinates:
+  * freq          (freq) float32 0.04 0.04397 0.04834 ... 0.8275 0.9097 1.0
+  * dir           (dir) float32 261.0 251.0 241.0 231.0 ... 291.0 281.0 271.0
+  * site          (site) int64 1 2 3
+  * source_terms  (source_terms) &lt;U10 &#x27;komen&#x27; &#x27;janssen&#x27; ... &#x27;st6c4&#x27; &#x27;st6c5&#x27;
+Data variables:
+    lon           (source_terms, site) float32 dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;
+    lat           (source_terms, site) float32 dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;
+    efth          (source_terms, site, freq, dir) float32 dask.array&lt;chunksize=(1, 3, 35, 36), meta=np.ndarray&gt;
+    dpt           (source_terms, site) float32 dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;
+    wspd          (source_terms, site) float32 dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;
+    wdir          (source_terms, site) float32 dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-fe37ef31-1d9b-4758-b5e1-ee55d67f4385' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-fe37ef31-1d9b-4758-b5e1-ee55d67f4385' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>source_terms</span>: 8</li><li><span class='xr-has-index'>site</span>: 3</li><li><span class='xr-has-index'>freq</span>: 35</li><li><span class='xr-has-index'>dir</span>: 36</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-9ab45a09-dc6c-46a3-b60d-c248cf35f910' class='xr-section-summary-in' type='checkbox'  checked><label for='section-9ab45a09-dc6c-46a3-b60d-c248cf35f910' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>freq</span></div><div class='xr-var-dims'>(freq)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>0.04 0.04397 0.04834 ... 0.9097 1.0</div><input id='attrs-7939ff21-afc5-43c0-b525-c821b3ea0c00' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7939ff21-afc5-43c0-b525-c821b3ea0c00' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-82028d5b-6f54-44b5-a5a0-13fb9263d3e3' class='xr-var-data-in' type='checkbox'><label for='data-82028d5b-6f54-44b5-a5a0-13fb9263d3e3' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_surface_wave_frequency</dd><dt><span>units :</span></dt><dd>Hz</dd></dl></div><div class='xr-var-data'><pre>array([0.04    , 0.043972, 0.048338, 0.053138, 0.058415, 0.064215, 0.070592,
+       0.077602, 0.085307, 0.093778, 0.103091, 0.113327, 0.124581, 0.136951,
+       0.15055 , 0.1655  , 0.181934, 0.2     , 0.21986 , 0.241692, 0.265691,
+       0.292074, 0.321077, 0.35296 , 0.388008, 0.426537, 0.468892, 0.515452,
+       0.566636, 0.622902, 0.684756, 0.752752, 0.827499, 0.909669, 0.999999],
+      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>dir</span></div><div class='xr-var-dims'>(dir)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>261.0 251.0 241.0 ... 281.0 271.0</div><input id='attrs-7cbf6b9d-3036-4750-a804-852afd0d9d41' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7cbf6b9d-3036-4750-a804-852afd0d9d41' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e22bd9d5-183f-4ef7-9be2-af0ace37d247' class='xr-var-data-in' type='checkbox'><label for='data-e22bd9d5-183f-4ef7-9be2-af0ace37d247' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_surface_wave_from_direction</dd><dt><span>units :</span></dt><dd>degree</dd></dl></div><div class='xr-var-data'><pre>array([261.      , 251.      , 241.      , 231.      , 221.      , 211.      ,
+       201.      , 191.      , 181.      , 171.      , 160.99998 , 151.      ,
+       141.      , 131.      , 120.999985, 110.999985, 100.99999 ,  90.99999 ,
+        80.99999 ,  70.999985,  60.999985,  50.999985,  40.99999 ,  30.999989,
+        20.99999 ,  10.999992,   0.999994, 350.99997 , 340.99997 , 330.99997 ,
+       320.99997 , 310.99997 , 300.99997 , 290.99997 , 281.      , 271.      ],
+      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>site</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1 2 3</div><input id='attrs-58de44f4-154b-4fdf-ab9d-53a7d976bd5d' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-58de44f4-154b-4fdf-ab9d-53a7d976bd5d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ced02a6f-7e34-40d9-9c06-2e13e5fec0db' class='xr-var-data-in' type='checkbox'><label for='data-ced02a6f-7e34-40d9-9c06-2e13e5fec0db' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>site</dd><dt><span>units :</span></dt><dd></dd></dl></div><div class='xr-var-data'><pre>array([1, 2, 3])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>source_terms</span></div><div class='xr-var-dims'>(source_terms)</div><div class='xr-var-dtype'>&lt;U10</div><div class='xr-var-preview xr-preview'>&#x27;komen&#x27; &#x27;janssen&#x27; ... &#x27;st6c5&#x27;</div><input id='attrs-2ef21849-eecc-4f8a-a1c9-0928ac557f6e' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-2ef21849-eecc-4f8a-a1c9-0928ac557f6e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d80c639b-fcb9-4fb2-888a-0abc283df3ed' class='xr-var-data-in' type='checkbox'><label for='data-d80c639b-fcb9-4fb2-888a-0abc283df3ed' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;komen&#x27;, &#x27;janssen&#x27;, &#x27;westhuysen&#x27;, &#x27;st6c1&#x27;, &#x27;st6c2&#x27;, &#x27;st6c3&#x27;, &#x27;st6c4&#x27;,
+       &#x27;st6c5&#x27;], dtype=&#x27;&lt;U10&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-0ae707e4-35f8-4d93-a7f9-2c384cbffe0d' class='xr-section-summary-in' type='checkbox'  checked><label for='section-0ae707e4-35f8-4d93-a7f9-2c384cbffe0d' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>(source_terms, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;</div><input id='attrs-178452da-4ffa-442a-9b9c-32dd8b6b3335' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-178452da-4ffa-442a-9b9c-32dd8b6b3335' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-982d7109-178c-4100-9b39-e300d43e728f' class='xr-var-data-in' type='checkbox'><label for='data-982d7109-178c-4100-9b39-e300d43e728f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 96 B </td>
+                        <td> 12 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (8, 3) </td>
+                        <td> (1, 3) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 8 chunks in 25 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="95" height="170" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="45" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="15" x2="45" y2="15" />
+  <line x1="0" y1="30" x2="45" y2="30" />
+  <line x1="0" y1="45" x2="45" y2="45" />
+  <line x1="0" y1="60" x2="45" y2="60" />
+  <line x1="0" y1="75" x2="45" y2="75" />
+  <line x1="0" y1="90" x2="45" y2="90" />
+  <line x1="0" y1="105" x2="45" y2="105" />
+  <line x1="0" y1="120" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="120" style="stroke-width:2" />
+  <line x1="45" y1="0" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 45.0,0.0 45.0,120.0 0.0,120.0" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="22.500000" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="65.000000" y="60.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,65.000000,60.000000)">8</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>(source_terms, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;</div><input id='attrs-1349e556-b42a-41c1-aa8c-a54a7b618482' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-1349e556-b42a-41c1-aa8c-a54a7b618482' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ff602ffd-5059-45fa-bcaf-d13973203d74' class='xr-var-data-in' type='checkbox'><label for='data-ff602ffd-5059-45fa-bcaf-d13973203d74' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 96 B </td>
+                        <td> 12 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (8, 3) </td>
+                        <td> (1, 3) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 8 chunks in 25 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="95" height="170" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="45" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="15" x2="45" y2="15" />
+  <line x1="0" y1="30" x2="45" y2="30" />
+  <line x1="0" y1="45" x2="45" y2="45" />
+  <line x1="0" y1="60" x2="45" y2="60" />
+  <line x1="0" y1="75" x2="45" y2="75" />
+  <line x1="0" y1="90" x2="45" y2="90" />
+  <line x1="0" y1="105" x2="45" y2="105" />
+  <line x1="0" y1="120" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="120" style="stroke-width:2" />
+  <line x1="45" y1="0" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 45.0,0.0 45.0,120.0 0.0,120.0" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="22.500000" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="65.000000" y="60.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,65.000000,60.000000)">8</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>efth</span></div><div class='xr-var-dims'>(source_terms, site, freq, dir)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 3, 35, 36), meta=np.ndarray&gt;</div><input id='attrs-24461a01-7128-4b10-9822-833a1603cceb' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-24461a01-7128-4b10-9822-833a1603cceb' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a5a093dd-0c91-4210-8034-ae74a3aeaab9' class='xr-var-data-in' type='checkbox'><label for='data-a5a093dd-0c91-4210-8034-ae74a3aeaab9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 118.12 kiB </td>
+                        <td> 14.77 kiB </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (8, 3, 35, 36) </td>
+                        <td> (1, 3, 35, 36) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 8 chunks in 49 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="416" height="188" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="42" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="30" x2="42" y2="30" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="30" style="stroke-width:2" />
+  <line x1="5" y1="0" x2="5" y2="30" />
+  <line x1="10" y1="0" x2="10" y2="30" />
+  <line x1="15" y1="0" x2="15" y2="30" />
+  <line x1="21" y1="0" x2="21" y2="30" />
+  <line x1="26" y1="0" x2="26" y2="30" />
+  <line x1="31" y1="0" x2="31" y2="30" />
+  <line x1="37" y1="0" x2="37" y2="30" />
+  <line x1="42" y1="0" x2="42" y2="30" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 42.443115991541845,0.0 42.443115991541845,30.931822596185057 0.0,30.931822596185057" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="21.221558" y="50.931823" font-size="1.0rem" font-weight="100" text-anchor="middle" >8</text>
+  <text x="62.443116" y="15.465911" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,62.443116,15.465911)">1</text>
+
+
+  <!-- Horizontal lines -->
+  <line x1="112" y1="0" x2="134" y2="22" style="stroke-width:2" />
+  <line x1="112" y1="116" x2="134" y2="138" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="112" y1="0" x2="112" y2="116" style="stroke-width:2" />
+  <line x1="134" y1="22" x2="134" y2="138" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="112.0,0.0 134.09622738579822,22.096227385798212 134.09622738579822,138.76289405246487 112.0,116.66666666666667" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Horizontal lines -->
+  <line x1="112" y1="0" x2="232" y2="0" style="stroke-width:2" />
+  <line x1="134" y1="22" x2="254" y2="22" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="112" y1="0" x2="134" y2="22" style="stroke-width:2" />
+  <line x1="232" y1="0" x2="254" y2="22" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="112.0,0.0 232.0,0.0 254.09622738579822,22.096227385798212 134.09622738579822,22.096227385798212" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Horizontal lines -->
+  <line x1="134" y1="22" x2="254" y2="22" style="stroke-width:2" />
+  <line x1="134" y1="138" x2="254" y2="138" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="134" y1="22" x2="134" y2="138" style="stroke-width:2" />
+  <line x1="254" y1="22" x2="254" y2="138" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="134.09622738579822,22.096227385798212 254.09622738579822,22.096227385798212 254.09622738579822,138.76289405246487 134.09622738579822,138.76289405246487" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="194.096227" y="158.762894" font-size="1.0rem" font-weight="100" text-anchor="middle" >36</text>
+  <text x="274.096227" y="80.429561" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,274.096227,80.429561)">35</text>
+  <text x="113.048114" y="147.714780" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(45,113.048114,147.714780)">3</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>dpt</span></div><div class='xr-var-dims'>(source_terms, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;</div><input id='attrs-1a055463-69b1-45ca-8351-c9f96a6fb3e9' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-1a055463-69b1-45ca-8351-c9f96a6fb3e9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ec84cc92-92c9-47cb-9de0-f58035fa7552' class='xr-var-data-in' type='checkbox'><label for='data-ec84cc92-92c9-47cb-9de0-f58035fa7552' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 96 B </td>
+                        <td> 12 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (8, 3) </td>
+                        <td> (1, 3) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 8 chunks in 41 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="95" height="170" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="45" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="15" x2="45" y2="15" />
+  <line x1="0" y1="30" x2="45" y2="30" />
+  <line x1="0" y1="45" x2="45" y2="45" />
+  <line x1="0" y1="60" x2="45" y2="60" />
+  <line x1="0" y1="75" x2="45" y2="75" />
+  <line x1="0" y1="90" x2="45" y2="90" />
+  <line x1="0" y1="105" x2="45" y2="105" />
+  <line x1="0" y1="120" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="120" style="stroke-width:2" />
+  <line x1="45" y1="0" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 45.0,0.0 45.0,120.0 0.0,120.0" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="22.500000" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="65.000000" y="60.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,65.000000,60.000000)">8</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>wspd</span></div><div class='xr-var-dims'>(source_terms, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;</div><input id='attrs-d5d62f3c-a994-4c81-8252-fc29c8268b3f' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-d5d62f3c-a994-4c81-8252-fc29c8268b3f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-acd9326e-6ff7-46af-b625-ff5c1704efa1' class='xr-var-data-in' type='checkbox'><label for='data-acd9326e-6ff7-46af-b625-ff5c1704efa1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 96 B </td>
+                        <td> 12 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (8, 3) </td>
+                        <td> (1, 3) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 8 chunks in 89 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="95" height="170" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="45" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="15" x2="45" y2="15" />
+  <line x1="0" y1="30" x2="45" y2="30" />
+  <line x1="0" y1="45" x2="45" y2="45" />
+  <line x1="0" y1="60" x2="45" y2="60" />
+  <line x1="0" y1="75" x2="45" y2="75" />
+  <line x1="0" y1="90" x2="45" y2="90" />
+  <line x1="0" y1="105" x2="45" y2="105" />
+  <line x1="0" y1="120" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="120" style="stroke-width:2" />
+  <line x1="45" y1="0" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 45.0,0.0 45.0,120.0 0.0,120.0" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="22.500000" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="65.000000" y="60.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,65.000000,60.000000)">8</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>wdir</span></div><div class='xr-var-dims'>(source_terms, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(1, 3), meta=np.ndarray&gt;</div><input id='attrs-cde2f1e1-9cde-44bb-8491-aaa43cd7b989' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-cde2f1e1-9cde-44bb-8491-aaa43cd7b989' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6a8ab2e9-93de-4e70-9dba-30159996b9c4' class='xr-var-data-in' type='checkbox'><label for='data-6a8ab2e9-93de-4e70-9dba-30159996b9c4' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 96 B </td>
+                        <td> 12 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (8, 3) </td>
+                        <td> (1, 3) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 8 chunks in 89 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="95" height="170" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="45" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="15" x2="45" y2="15" />
+  <line x1="0" y1="30" x2="45" y2="30" />
+  <line x1="0" y1="45" x2="45" y2="45" />
+  <line x1="0" y1="60" x2="45" y2="60" />
+  <line x1="0" y1="75" x2="45" y2="75" />
+  <line x1="0" y1="90" x2="45" y2="90" />
+  <line x1="0" y1="105" x2="45" y2="105" />
+  <line x1="0" y1="120" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="120" style="stroke-width:2" />
+  <line x1="45" y1="0" x2="45" y2="120" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 45.0,0.0 45.0,120.0 0.0,120.0" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="22.500000" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="65.000000" y="60.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,65.000000,60.000000)">8</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li></ul></div></li><li class='xr-section-item'><input id='section-2be23134-0b81-4527-8b2c-b2ba3774c977' class='xr-section-summary-in' type='checkbox'  ><label for='section-2be23134-0b81-4527-8b2c-b2ba3774c977' class='xr-section-summary' >Indexes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>freq</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-29cb324c-479e-4bfe-9615-e40416f3d511' class='xr-index-data-in' type='checkbox'/><label for='index-29cb324c-479e-4bfe-9615-e40416f3d511' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([ 0.03999999910593033,   0.0439719632267952,  0.04833833873271942,
+        0.05313829332590103, 0.058414872735738754,  0.06421541422605515,
+        0.07059194892644882,  0.07760166376829147,  0.08530744165182114,
+        0.09377838671207428,  0.10309050232172012,  0.11332729458808899,
+        0.12458059191703796,  0.13695132732391357,   0.1505504697561264,
+         0.1655000001192093,  0.18193399906158447,   0.1999998688697815,
+        0.21985965967178345,  0.24169152975082397,  0.26569128036499023,
+        0.29207417368888855,   0.3210768699645996,   0.3529595136642456,
+         0.3880080580711365,     0.42653688788414,  0.46889159083366394,
+         0.5154520869255066,   0.5666360259056091,   0.6229023933410645,
+         0.6847560405731201,   0.7527517080307007,    0.827499270439148,
+         0.9096691608428955,   0.9999985098838806],
+      dtype=&#x27;float32&#x27;, name=&#x27;freq&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>dir</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-e4b4c756-edcf-471d-8573-f3fd67f27d11' class='xr-index-data-in' type='checkbox'/><label for='index-e4b4c756-edcf-471d-8573-f3fd67f27d11' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([             261.0,              251.0,              241.0,
+                    231.0,              221.0,              211.0,
+                    201.0,              191.0,              181.0,
+                    171.0, 160.99998474121094,              151.0,
+                    141.0,              131.0, 120.99998474121094,
+       110.99998474121094, 100.99999237060547,  90.99999237060547,
+        80.99999237060547,  70.99998474121094,  60.99998474121094,
+        50.99998474121094,   40.9999885559082, 30.999988555908203,
+       20.999990463256836, 10.999992370605469, 0.9999943375587463,
+        350.9999694824219,  340.9999694824219,  330.9999694824219,
+        320.9999694824219,  310.9999694824219,  300.9999694824219,
+        290.9999694824219,              281.0,              271.0],
+      dtype=&#x27;float32&#x27;, name=&#x27;dir&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>site</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-8aa00bf7-3962-409b-8361-f4851c85f69a' class='xr-index-data-in' type='checkbox'/><label for='index-8aa00bf7-3962-409b-8361-f4851c85f69a' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([1, 2, 3], dtype=&#x27;int64&#x27;, name=&#x27;site&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>source_terms</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-32a2e39e-3a1e-479d-9f2b-09a4c335814f' class='xr-index-data-in' type='checkbox'/><label for='index-32a2e39e-3a1e-479d-9f2b-09a4c335814f' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;komen&#x27;, &#x27;janssen&#x27;, &#x27;westhuysen&#x27;, &#x27;st6c1&#x27;, &#x27;st6c2&#x27;, &#x27;st6c3&#x27;, &#x27;st6c4&#x27;,
+       &#x27;st6c5&#x27;],
+      dtype=&#x27;object&#x27;, name=&#x27;source_terms&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-4d2de1ae-ad68-4388-b81d-5903d8bad6e9' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-4d2de1ae-ad68-4388-b81d-5903d8bad6e9' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div>
+</div>
+<section id="Gridded-parameters">
+<h3>Gridded parameters<a class="headerlink" href="#Gridded-parameters" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">dsgrid</span><span class="o">.</span><span class="n">hs</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+    <span class="n">col</span><span class="o">=</span><span class="s2">&quot;source_terms&quot;</span><span class="p">,</span>
+    <span class="n">col_wrap</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;turbo&quot;</span><span class="p">,</span>
+    <span class="n">subplot_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()),</span>
+    <span class="n">cbar_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Hs (m)&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">coastlines</span><span class="p">());</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_sensitivity_29_0.png" src="../../_images/notebooks_swan_example_sensitivity_29_0.png" />
+</div>
+</div>
+</section>
+<section id="Wave-spectra">
+<h3>Wave spectra<a class="headerlink" href="#Wave-spectra" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">dspec</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s2">&quot;source_terms&quot;</span><span class="p">,</span> <span class="n">col_wrap</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Ed (m2/Hz/deg)&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_sensitivity_31_0.png" src="../../_images/notebooks_swan_example_sensitivity_31_0.png" />
+</div>
+</div>
+</section>
 </section>
 </section>
 
@@ -945,6 +2750,24 @@ STOP
                 <footer class="prev-next-footer">
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="example_procedural.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SWAN procedural example</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../oceanum_example.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Working demonstration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -971,7 +2794,11 @@ STOP
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Run the model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-outputs">Plot outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-outputs">Plot outputs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Gridded-parameters">Gridded parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Wave-spectra">Wave spectra</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
