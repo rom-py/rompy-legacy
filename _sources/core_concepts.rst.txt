@@ -54,6 +54,22 @@ following base classes for data objects:
 
     rompy.core.data.DataBlob
     rompy.core.data.DataGrid
+    rompy.core.data.SourceBase
+    rompy.core.data.SourceDataset
+    rompy.core.data.SourceFile
+    rompy.core.data.SourceIntake
+
+
+Boundary
+^^^^^^^^
+
+.. autosummary::
+    :nosignatures:
+    :toctree: _generated/
+
+    rompy.core.boundary.BoundaryWaveStation
+    rompy.core.boundary.SourceWavespectra
+
 
 Spectrum
 ^^^^^^^^

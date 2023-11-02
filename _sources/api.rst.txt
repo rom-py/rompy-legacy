@@ -112,6 +112,13 @@ Base
     :inherited-members: BaseModel
     :no-index:
 
+Group
+~~~~~
+.. automodule:: rompy.swan.components.group
+    :members:
+    :inherited-members: BaseModel
+    :no-index:
+
 Startup
 ~~~~~~~
 .. automodule:: rompy.swan.components.startup

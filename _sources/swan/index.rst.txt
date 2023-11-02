@@ -24,7 +24,7 @@ Data
     :toctree: _generated/
 
     rompy.swan.data.SwanDataGrid
-    rompy.swan.boundary.DataBoundary
+    rompy.swan.boundary.Boundnest1
 
 
 Components
