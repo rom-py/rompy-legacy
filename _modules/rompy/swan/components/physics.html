@@ -1143,7 +1143,7 @@ document.write(`
 
 <span class="sd">    .. code-block:: text</span>
 
-<span class="sd">        QUADRUPL [iquad] [lambda] [Cnl4] [Csh1] [Csh2] [Csh3]</span>
+<span class="sd">        QUADRUPL [iquad] [lambda] [cnl4] [Csh1] [Csh2] [Csh3]</span>
 
 <span class="sd">    With this option the user can influence the computation of nonlinear quadruplet</span>
 <span class="sd">    wave interactions which are usually included in the computations. Can be</span>
@@ -1169,7 +1169,7 @@ document.write(`
 <span class="sd">        quadrupl = QUADRUPL()</span>
 <span class="sd">        print(quadrupl.render())</span>
 <span class="sd">        kwargs = dict(</span>
-<span class="sd">            iquad=3, lambd=0.25, cn14=3.0e7, csh1=5.5, csh2=0.833333, csh3=-1.25</span>
+<span class="sd">            iquad=3, lambd=0.25, cnl4=3.0e7, csh1=5.5, csh2=0.833333, csh3=-1.25</span>
 <span class="sd">        )</span>
 <span class="sd">        quadrupl = QUADRUPL(**kwargs)</span>
 <span class="sd">        print(quadrupl.render())</span>
@@ -1197,7 +1197,7 @@ document.write(`
             <span class="s2">&quot;(SWAN default: 0.25)&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">cn14</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">cnl4</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
             <span class="s2">&quot;Proportionality coefficient for quadruplet interactions in case of DIA &quot;</span>
@@ -1234,14 +1234,14 @@ document.write(`
             <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; iquad=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">iquad</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; lambda=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lambd</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cn14</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; Cn14=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cn14</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnl4</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cnl4=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cnl4</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">csh1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; Csh1=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">csh1</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; csh1=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">csh1</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">csh2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; Csh2=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">csh2</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; csh2=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">csh2</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">csh3</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; Csh3=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">csh3</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; csh3=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">csh3</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="nb">repr</span></div>
 </div>
 
@@ -1628,10 +1628,14 @@ document.write(`
 
 <span class="sd">    .. code-block:: text</span>
 
-<span class="sd">        TRIAD</span>
+<span class="sd">        TRIAD [itriad] [trfac] [cutfr] [a] [b] [urcrit] [urslim]</span>
 
 <span class="sd">    With this command the user can activate the triad wave-wave interactions. If this</span>
 <span class="sd">    command is not used, SWAN will not account for triads.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This is the TRIAD specification in SWAN &lt; 41.45.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -1642,7 +1646,15 @@ document.write(`
 <span class="sd">        from rompy.swan.components.physics import TRIAD</span>
 <span class="sd">        triad = TRIAD()</span>
 <span class="sd">        print(triad.render())</span>
-<span class="sd">        triad = TRIAD(biphase=dict(model_type=&quot;eldeberky&quot;, urcrit=0.63))</span>
+<span class="sd">        triad = TRIAD(</span>
+<span class="sd">            itriad=1,</span>
+<span class="sd">            trfac=0.8,</span>
+<span class="sd">            cutfr=2.5,</span>
+<span class="sd">            a=0.95,</span>
+<span class="sd">            b=-0.75,</span>
+<span class="sd">            ucrit=0.2,</span>
+<span class="sd">            urslim=0.01,</span>
+<span class="sd">        )</span>
 <span class="sd">        print(triad.render())</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1650,11 +1662,57 @@ document.write(`
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;triad&quot;</span><span class="p">,</span> <span class="s2">&quot;TRIAD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;triad&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
-    <span class="n">biphase</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ELDEBERKY</span><span class="p">,</span> <span class="n">DEWIT</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">itriad</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;Defines the parameterization of biphase (self-self interaction) &quot;</span>
-            <span class="s2">&quot;(SWAN default: ELDEBERKY)&quot;</span>
+            <span class="s2">&quot;Approximation method for the triad computation: </span><span class="se">\n\n</span><span class="s2">* 1: the LTA method &quot;</span>
+            <span class="s2">&quot;of Eldeberky (1996) </span><span class="se">\n</span><span class="s2">* 2: the SPB method of Becq-Girard et al. (1999) &quot;</span>
+            <span class="s2">&quot;(SWAN default: 1)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">trfac</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Proportionality coefficient (SWAN default: 0.8 in case of LTA method, &quot;</span>
+            <span class="s2">&quot;0.9 in case of SPB method)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">cutfr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Controls the maximum frequency that is considered in the LTA &quot;</span>
+            <span class="s2">&quot;computation. The value of `cutfr` is the ratio of this maximum &quot;</span>
+            <span class="s2">&quot;frequency over the mean frequency (SWAN default: 2.5)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">a</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;First calibration parameter for tuning K in Eq. (5.1) of Becq-Girard et &quot;</span>
+            <span class="s2">&quot;al. (1999). This parameter is associated with broadening of the &quot;</span>
+            <span class="s2">&quot;resonance condition (SWAN default: 0.95)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Second calibration parameter for tuning K in Eq. (5.1) of Becq-Girard &quot;</span>
+            <span class="s2">&quot;et al. (1999). This parameter is associated with broadening of the &quot;</span>
+            <span class="s2">&quot;resonance condition (SWAN default: -0.75 for 1D, 0.0 for 2D&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">ucrit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;The critical Ursell number appearing in the expression for the biphase &quot;</span>
+            <span class="s2">&quot;(SWAN default: 0.2)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">urslim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;The lower threshold for Ursell number, if the actual Ursell number is &quot;</span>
+            <span class="s2">&quot;below this value triad interactions are be computed (SWAN default: 0.01)&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
 
@@ -1663,8 +1721,20 @@ document.write(`
     <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;TRIAD&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">biphase</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">biphase</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">itriad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; itriad=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">itriad</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trfac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; trfac=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">trfac</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutfr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cutfr=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cutfr</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; a=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; b=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ucrit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; urcrit=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ucrit</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">urslim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; urslim=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">urslim</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="nb">repr</span></div>
 </div>
 
@@ -1672,7 +1742,7 @@ document.write(`
 
 <div class="viewcode-block" id="TRIAD_DCTA">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.physics.TRIAD_DCTA.html#rompy.swan.components.physics.TRIAD_DCTA">[docs]</a>
-<span class="k">class</span> <span class="nc">TRIAD_DCTA</span><span class="p">(</span><span class="n">TRIAD</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TRIAD_DCTA</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Triad interactions with the DCTA method of Booij et al. (2009).</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1687,7 +1757,8 @@ document.write(`
 
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
-<span class="sd">    This is the default method to compute the triad interactions in SWAN.</span>
+<span class="sd">    This is the default method to compute the triad interactions in SWAN &gt;= 41.45, it</span>
+<span class="sd">    is not supported in earlier versions of the model.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -1731,6 +1802,13 @@ document.write(`
             <span class="s2">&quot;with the DCTA framework are accounted for&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
+    <span class="n">biphase</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ELDEBERKY</span><span class="p">,</span> <span class="n">DEWIT</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Defines the parameterization of biphase (self-self interaction) &quot;</span>
+            <span class="s2">&quot;(SWAN default: ELDEBERKY)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
 
 <div class="viewcode-block" id="TRIAD_DCTA.cmd">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.physics.TRIAD_DCTA.html#rompy.swan.components.physics.TRIAD_DCTA.cmd">[docs]</a>
@@ -1754,7 +1832,7 @@ document.write(`
 
 <div class="viewcode-block" id="TRIAD_LTA">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.physics.TRIAD_LTA.html#rompy.swan.components.physics.TRIAD_LTA">[docs]</a>
-<span class="k">class</span> <span class="nc">TRIAD_LTA</span><span class="p">(</span><span class="n">TRIAD</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TRIAD_LTA</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Triad interactions with the LTA method of Eldeberky (1996).</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1766,6 +1844,10 @@ document.write(`
 <span class="sd">    Eldeberky, Y., Polnikov, V. and Battjes, J.A., 1996. A statistical approach for</span>
 <span class="sd">    modeling triad interactions in dispersive waves. In Coastal Engineering 1996</span>
 <span class="sd">    (pp. 1088-1101).</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This method to compute the triad interactions is only supported in SWAN &gt;= 41.45.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -1803,6 +1885,13 @@ document.write(`
             <span class="s2">&quot;frequency over the mean frequency (SWAN default: 2.5)&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
+    <span class="n">biphase</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ELDEBERKY</span><span class="p">,</span> <span class="n">DEWIT</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Defines the parameterization of biphase (self-self interaction) &quot;</span>
+            <span class="s2">&quot;(SWAN default: ELDEBERKY)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
 
 <div class="viewcode-block" id="TRIAD_LTA.cmd">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.physics.TRIAD_LTA.html#rompy.swan.components.physics.TRIAD_LTA.cmd">[docs]</a>
@@ -1822,7 +1911,7 @@ document.write(`
 
 <div class="viewcode-block" id="TRIAD_SPB">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.physics.TRIAD_SPB.html#rompy.swan.components.physics.TRIAD_SPB">[docs]</a>
-<span class="k">class</span> <span class="nc">TRIAD_SPB</span><span class="p">(</span><span class="n">TRIAD</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TRIAD_SPB</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Triad interactions with the SPB method of Becq-Girard et al. (1999).</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1834,6 +1923,10 @@ document.write(`
 <span class="sd">    Becq-Girard, F., Forget, P. and Benoit, M., 1999. Non-linear propagation of</span>
 <span class="sd">    unidirectional wave fields over varying topography. Coastal Engineering, 38(2),</span>
 <span class="sd">    pp.91-113.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This method to compute the triad interactions is only supported in SWAN &gt;= 41.45.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -1882,6 +1975,13 @@ document.write(`
             <span class="s2">&quot;by means of laboratory experiments. However, it may not be appropriate &quot;</span>
             <span class="s2">&quot;for true 2D field cases as it does not scale with the wave field &quot;</span>
             <span class="s2">&quot;characteristics. Hence, this parameter is set to zero (SWAN default: 0.0)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">biphase</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ELDEBERKY</span><span class="p">,</span> <span class="n">DEWIT</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Defines the parameterization of biphase (self-self interaction) &quot;</span>
+            <span class="s2">&quot;(SWAN default: ELDEBERKY)&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
 

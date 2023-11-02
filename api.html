@@ -773,12 +773,12 @@ beyond the arguments provided by the user..</p>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_duration_interval</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">interval</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">duration</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.valid_duration_interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_duration_interval</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">duration</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">interval</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.valid_duration_interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_start_end</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">start</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">end</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.validate_start_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_start_end</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">end</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">start</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.validate_start_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <dl class="py method pydantic_validator">
@@ -10449,7 +10449,7 @@ a list of <cite>OFF</cite> components.</p>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.components.physics.</span></span><span class="sig-name descname"><span class="pre">QUADRUPL</span></span><a class="reference internal" href="_modules/rompy/swan/components/physics.html#QUADRUPL"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Nonlinear quadruplet wave interactions.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>QUADRUPL [iquad] [lambda] [Cnl4] [Csh1] [Csh2] [Csh3]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>QUADRUPL [iquad] [lambda] [cnl4] [Csh1] [Csh2] [Csh3]
 </pre></div>
 </div>
 <p>With this option the user can influence the computation of nonlinear quadruplet
@@ -10474,20 +10474,20 @@ computation a bit more, than the choice <cite>iquad = 8</cite> is a good choice.
 <span class="go">QUADRUPL</span>
 
 <span class="gp">In [4]: </span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-<span class="gp">   ...: </span>    <span class="n">iquad</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">lambd</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">cn14</span><span class="o">=</span><span class="mf">3.0e7</span><span class="p">,</span> <span class="n">csh1</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">csh2</span><span class="o">=</span><span class="mf">0.833333</span><span class="p">,</span> <span class="n">csh3</span><span class="o">=-</span><span class="mf">1.25</span>
+<span class="gp">   ...: </span>    <span class="n">iquad</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">lambd</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">cnl4</span><span class="o">=</span><span class="mf">3.0e7</span><span class="p">,</span> <span class="n">csh1</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">csh2</span><span class="o">=</span><span class="mf">0.833333</span><span class="p">,</span> <span class="n">csh3</span><span class="o">=-</span><span class="mf">1.25</span>
 <span class="gp">   ...: </span><span class="p">)</span>
 <span class="gp">   ...: </span>
 
 <span class="gp">In [5]: </span><span class="n">quadrupl</span> <span class="o">=</span> <span class="n">QUADRUPL</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <span class="gp">In [6]: </span><span class="nb">print</span><span class="p">(</span><span class="n">quadrupl</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
-<span class="go">QUADRUPL iquad=3 lambda=0.25 Cn14=30000000.0 Csh1=5.5 Csh2=0.833333 Csh3=-1.25</span>
+<span class="go">QUADRUPL iquad=3 lambda=0.25 cnl4=30000000.0 csh1=5.5 csh2=0.833333 csh3=-1.25</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.QUADRUPL.html#rompy.swan.components.physics.QUADRUPL.cn14" title="rompy.swan.components.physics.QUADRUPL.cn14"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cn14</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.QUADRUPL.html#rompy.swan.components.physics.QUADRUPL.cnl4" title="rompy.swan.components.physics.QUADRUPL.cnl4"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cnl4</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.QUADRUPL.html#rompy.swan.components.physics.QUADRUPL.csh1" title="rompy.swan.components.physics.QUADRUPL.csh1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csh1</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.QUADRUPL.html#rompy.swan.components.physics.QUADRUPL.csh2" title="rompy.swan.components.physics.QUADRUPL.csh2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csh2</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.QUADRUPL.html#rompy.swan.components.physics.QUADRUPL.csh3" title="rompy.swan.components.physics.QUADRUPL.csh3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csh3</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
@@ -10499,7 +10499,7 @@ computation a bit more, than the choice <cite>iquad = 8</cite> is a good choice.
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cn14</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cnl4</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
 <dd><p>Proportionality coefficient for quadruplet interactions in case of DIA (SWAN default: 3.0e7</p>
 </dd></dl>
 
@@ -11660,11 +11660,15 @@ p.104068.</p>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.components.physics.</span></span><span class="sig-name descname"><span class="pre">TRIAD</span></span><a class="reference internal" href="_modules/rompy/swan/components/physics.html#TRIAD"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Wave triad interactions.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>TRIAD
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>TRIAD [itriad] [trfac] [cutfr] [a] [b] [urcrit] [urslim]
 </pre></div>
 </div>
 <p>With this command the user can activate the triad wave-wave interactions. If this
 command is not used, SWAN will not account for triads.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is the TRIAD specification in SWAN &lt; 41.45.</p>
+</div>
 <p class="rubric">Examples</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">TRIAD</span>
 
@@ -11673,30 +11677,85 @@ command is not used, SWAN will not account for triads.</p>
 <span class="gp">In [3]: </span><span class="nb">print</span><span class="p">(</span><span class="n">triad</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
 <span class="go">TRIAD</span>
 
-<span class="gp">In [4]: </span><span class="n">triad</span> <span class="o">=</span> <span class="n">TRIAD</span><span class="p">(</span><span class="n">biphase</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;eldeberky&quot;</span><span class="p">,</span> <span class="n">urcrit</span><span class="o">=</span><span class="mf">0.63</span><span class="p">))</span>
+<span class="gp">In [4]: </span><span class="n">triad</span> <span class="o">=</span> <span class="n">TRIAD</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">itriad</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">trfac</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">cutfr</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">a</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">b</span><span class="o">=-</span><span class="mf">0.75</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">ucrit</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">urslim</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">   ...: </span><span class="p">)</span>
+<span class="gp">   ...: </span>
 
 <span class="gp">In [5]: </span><span class="nb">print</span><span class="p">(</span><span class="n">triad</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
-<span class="go">TRIAD BIPHASE ELDEBERKY urcrit=0.63</span>
+<span class="go">TRIAD itriad=1 trfac=0.8 cutfr=2.5 a=0.95 b=-0.75 urcrit=0.2 urslim=0.01</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD.biphase" title="rompy.swan.components.physics.TRIAD.biphase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biphase</span> <span class="pre">(rompy.swan.subcomponents.physics.ELDEBERKY</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.physics.DEWIT</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD.a" title="rompy.swan.components.physics.TRIAD.a"><code class="xref py py-obj docutils literal notranslate"><span class="pre">a</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD.b" title="rompy.swan.components.physics.TRIAD.b"><code class="xref py py-obj docutils literal notranslate"><span class="pre">b</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD.cutfr" title="rompy.swan.components.physics.TRIAD.cutfr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cutfr</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD.itriad" title="rompy.swan.components.physics.TRIAD.itriad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">itriad</span> <span class="pre">(Literal[1,</span> <span class="pre">2]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD.model_type" title="rompy.swan.components.physics.TRIAD.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['triad',</span> <span class="pre">'TRIAD'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD.trfac" title="rompy.swan.components.physics.TRIAD.trfac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trfac</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD.ucrit" title="rompy.swan.components.physics.TRIAD.ucrit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ucrit</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD.html#rompy.swan.components.physics.TRIAD.urslim" title="rompy.swan.components.physics.TRIAD.urslim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">urslim</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">biphase</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ELDEBERKY.html#rompy.swan.subcomponents.physics.ELDEBERKY" title="rompy.swan.subcomponents.physics.ELDEBERKY"><span class="pre">ELDEBERKY</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="swan/subcomponents/_generated/rompy.swan.subcomponents.physics.DEWIT.html#rompy.swan.subcomponents.physics.DEWIT" title="rompy.swan.subcomponents.physics.DEWIT"><span class="pre">DEWIT</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
-<dd><p>Defines the parameterization of biphase (self-self interaction) (SWAN default: ELDEBERKY)</p>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">a</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>First calibration parameter for tuning K in Eq. (5.1) of Becq-Girard et al. (1999). This parameter is associated with broadening of the resonance condition (SWAN default: 0.95)</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">b</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>Second calibration parameter for tuning K in Eq. (5.1) of Becq-Girard et al. (1999). This parameter is associated with broadening of the resonance condition (SWAN default: -0.75 for 1D, 0.0 for 2D</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cutfr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>Controls the maximum frequency that is considered in the LTA computation. The value of <cite>cutfr</cite> is the ratio of this maximum frequency over the mean frequency (SWAN default: 2.5)</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">itriad</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>Approximation method for the triad computation:</p>
+<ul class="simple">
+<li><p>1: the LTA method of Eldeberky (1996)</p></li>
+<li><p>2: the SPB method of Becq-Girard et al. (1999) (SWAN default: 1)</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'triad'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'TRIAD'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'triad'</span></em></dt>
 <dd><p>Model type discriminator</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trfac</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>Proportionality coefficient (SWAN default: 0.8 in case of LTA method, 0.9 in case of SPB method)</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ucrit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>The critical Ursell number appearing in the expression for the biphase (SWAN default: 0.2)</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">urslim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd><p>The lower threshold for Ursell number, if the actual Ursell number is below this value triad interactions are be computed (SWAN default: 0.01)</p>
 </dd></dl>
 
 <dl class="py method">
@@ -11737,7 +11796,8 @@ approximation in SWAN. In Proceedings Of Coastal Dynamics 2009: Impacts of Human
 Activities on Dynamic Coastal Processes (With CD-ROM) (pp. 1-10).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This is the default method to compute the triad interactions in SWAN.</p>
+<p>This is the default method to compute the triad interactions in SWAN &gt;= 41.45, it
+is not supported in earlier versions of the model.</p>
 </div>
 <p class="rubric">Examples</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">TRIAD_DCTA</span>
@@ -11762,7 +11822,7 @@ Activities on Dynamic Coastal Processes (With CD-ROM) (pp. 1-10).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_DCTA.html#rompy.swan.components.physics.TRIAD_DCTA.biphase" title="rompy.swan.components.physics.TRIAD_DCTA.biphase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biphase</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_DCTA.html#rompy.swan.components.physics.TRIAD_DCTA.biphase" title="rompy.swan.components.physics.TRIAD_DCTA.biphase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biphase</span> <span class="pre">(rompy.swan.subcomponents.physics.ELDEBERKY</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.physics.DEWIT</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_DCTA.html#rompy.swan.components.physics.TRIAD_DCTA.model_type" title="rompy.swan.components.physics.TRIAD_DCTA.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['dcta',</span> <span class="pre">'DCTA'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_DCTA.html#rompy.swan.components.physics.TRIAD_DCTA.noncolinear" title="rompy.swan.components.physics.TRIAD_DCTA.noncolinear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">noncolinear</span> <span class="pre">(bool)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_DCTA.html#rompy.swan.components.physics.TRIAD_DCTA.p" title="rompy.swan.components.physics.TRIAD_DCTA.p"><code class="xref py py-obj docutils literal notranslate"><span class="pre">p</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
@@ -11836,6 +11896,10 @@ Activities on Dynamic Coastal Processes (With CD-ROM) (pp. 1-10).</p>
 <p>Eldeberky, Y., Polnikov, V. and Battjes, J.A., 1996. A statistical approach for
 modeling triad interactions in dispersive waves. In Coastal Engineering 1996
 (pp. 1088-1101).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method to compute the triad interactions is only supported in SWAN &gt;= 41.45.</p>
+</div>
 <p class="rubric">Examples</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">TRIAD_LTA</span>
 
@@ -11858,7 +11922,7 @@ modeling triad interactions in dispersive waves. In Coastal Engineering 1996
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_LTA.html#rompy.swan.components.physics.TRIAD_LTA.biphase" title="rompy.swan.components.physics.TRIAD_LTA.biphase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biphase</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_LTA.html#rompy.swan.components.physics.TRIAD_LTA.biphase" title="rompy.swan.components.physics.TRIAD_LTA.biphase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biphase</span> <span class="pre">(rompy.swan.subcomponents.physics.ELDEBERKY</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.physics.DEWIT</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_LTA.html#rompy.swan.components.physics.TRIAD_LTA.cutfr" title="rompy.swan.components.physics.TRIAD_LTA.cutfr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cutfr</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_LTA.html#rompy.swan.components.physics.TRIAD_LTA.model_type" title="rompy.swan.components.physics.TRIAD_LTA.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['lta',</span> <span class="pre">'LTA'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_LTA.html#rompy.swan.components.physics.TRIAD_LTA.trfac" title="rompy.swan.components.physics.TRIAD_LTA.trfac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trfac</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
@@ -11925,6 +11989,10 @@ modeling triad interactions in dispersive waves. In Coastal Engineering 1996
 <p>Becq-Girard, F., Forget, P. and Benoit, M., 1999. Non-linear propagation of
 unidirectional wave fields over varying topography. Coastal Engineering, 38(2),
 pp.91-113.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method to compute the triad interactions is only supported in SWAN &gt;= 41.45.</p>
+</div>
 <p class="rubric">Examples</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">TRIAD_SPB</span>
 
@@ -11950,7 +12018,7 @@ pp.91-113.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_SPB.html#rompy.swan.components.physics.TRIAD_SPB.a" title="rompy.swan.components.physics.TRIAD_SPB.a"><code class="xref py py-obj docutils literal notranslate"><span class="pre">a</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_SPB.html#rompy.swan.components.physics.TRIAD_SPB.b" title="rompy.swan.components.physics.TRIAD_SPB.b"><code class="xref py py-obj docutils literal notranslate"><span class="pre">b</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_SPB.html#rompy.swan.components.physics.TRIAD_SPB.biphase" title="rompy.swan.components.physics.TRIAD_SPB.biphase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biphase</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_SPB.html#rompy.swan.components.physics.TRIAD_SPB.biphase" title="rompy.swan.components.physics.TRIAD_SPB.biphase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biphase</span> <span class="pre">(rompy.swan.subcomponents.physics.ELDEBERKY</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.physics.DEWIT</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_SPB.html#rompy.swan.components.physics.TRIAD_SPB.model_type" title="rompy.swan.components.physics.TRIAD_SPB.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['spb',</span> <span class="pre">'SPB'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.TRIAD_SPB.html#rompy.swan.components.physics.TRIAD_SPB.trfac" title="rompy.swan.components.physics.TRIAD_SPB.trfac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trfac</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 </ul>
@@ -12312,7 +12380,7 @@ Jacobsen et al. (2019) method.</p>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_layers</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.drag" title="rompy.swan.components.physics.VEGETATION.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.diamtr" title="rompy.swan.components.physics.VEGETATION.diamtr"><em class="xref py py-obj"><span class="pre">diamtr</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.nstems" title="rompy.swan.components.physics.VEGETATION.nstems"><em class="xref py py-obj"><span class="pre">nstems</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.height" title="rompy.swan.components.physics.VEGETATION.height"><em class="xref py py-obj"><span class="pre">height</span></em></a><a class="reference internal" href="_modules/rompy/swan/components/physics.html#VEGETATION.number_of_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_layers</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.nstems" title="rompy.swan.components.physics.VEGETATION.nstems"><em class="xref py py-obj"><span class="pre">nstems</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.drag" title="rompy.swan.components.physics.VEGETATION.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.height" title="rompy.swan.components.physics.VEGETATION.height"><em class="xref py py-obj"><span class="pre">height</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="swan/components/_generated/rompy.swan.components.physics.VEGETATION.html#rompy.swan.components.physics.VEGETATION.diamtr" title="rompy.swan.components.physics.VEGETATION.diamtr"><em class="xref py py-obj"><span class="pre">diamtr</span></em></a><a class="reference internal" href="_modules/rompy/swan/components/physics.html#VEGETATION.number_of_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
