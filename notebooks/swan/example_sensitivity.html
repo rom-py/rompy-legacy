@@ -1,0 +1,1039 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SWAN sensitivity example &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/swan/example_sensitivity';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">SWAN...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="SWAN-sensitivity-example">
+<h1>SWAN sensitivity example<a class="headerlink" href="#SWAN-sensitivity-example" title="Link to this heading">#</a></h1>
+<p>In this notebook we will load the base config options from yaml file and define different SWAN workspaces for different friction parameters to simulate sensitivity testing</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Workspace-basepath">
+<h2>Workspace basepath<a class="headerlink" href="#Workspace-basepath" title="Link to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">workdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;example_sensitivity&quot;</span><span class="p">)</span>
+<span class="n">workdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Instantiate-model">
+<h2>Instantiate model<a class="headerlink" href="#Instantiate-model" title="Link to this heading">#</a></h2>
+<p>Use a fully-defined config from yaml to instantiate ModelRun with the runtime parameters and the config definition</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncoment below to view the contents of the yaml file</span>
+
+<span class="c1"># !cat example_sensitivity.yml</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rompy.swan.config</span> <span class="kn">import</span> <span class="n">SwanConfigComponents</span>
+
+<span class="n">conf_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example_sensitivity.yml&quot;</span><span class="p">),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">SwanConfigComponents</span><span class="p">(</span><span class="o">**</span><span class="n">conf_dict</span><span class="p">)</span>
+<span class="n">config</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SwanConfigComponents(model_type=&#39;swanconfig&#39;, template=&#39;/source/csiro/rompy/rompy/templates/swancomp&#39;, checkout=&#39;main&#39;, cgrid=REGULAR(model_type=&#39;regular&#39;, spectrum=SPECTRUM(model_type=&#39;spectrum&#39;, mdc=36, flow=0.04, fhigh=1.0, msc=None, dir1=None, dir2=None), grid=GRIDREGULAR(model_type=&#39;gridregular&#39;, xp=110.0, yp=-35.2, alp=4.0, xlen=7.5, ylen=12.5, mx=14, my=24, suffix=&#39;c&#39;)), startup=STARTUP(model_type=&#39;startup&#39;, project=PROJECT(model_type=&#39;project&#39;, name=&#39;Test declarative&#39;, nr=&#39;run1&#39;, title1=&#39;Friction sensitivity testing&#39;, title2=None, title3=None), set=SET(model_type=&#39;set&#39;, level=0.0, nor=None, depmin=0.05, maxmes=None, maxerr=None, grav=None, rho=None, cdcap=None, inrhog=None, hsrerr=None, direction_convention=&#39;nautical&#39;, pwtail=None, froudmax=None, icewind=None), mode=MODE(model_type=&#39;mode&#39;, kind=&#39;nonstationary&#39;, dim=&#39;twodimensional&#39;), coordinates=COORDINATES(model_type=&#39;coordinates&#39;, kind=SPHERICAL(model_type=&#39;spherical&#39;, projection=&#39;ccm&#39;), reapeating=False)), inpgrid=DataInterface(model_type=&#39;data_interface&#39;, bottom=SwanDataGrid(model_type=&#39;data_grid&#39;, id=&#39;data&#39;, source=SourceIntake(model_type=&#39;intake&#39;, dataset_id=&#39;gebco&#39;, catalog_uri=&#39;../../tests/data/catalog.yaml&#39;, kwargs={}), filter=Filter(sort={}, subset={}, crop={}, timenorm={}, rename={}, derived={}), variables=[&#39;elevation&#39;], coords=DatasetCoords(t=&#39;time&#39;, x=&#39;lon&#39;, y=&#39;lat&#39;, z=&#39;depth&#39;), crop_data=True, buffer=1.0, z1=&#39;elevation&#39;, z2=None, var=&lt;GridOptions.BOTTOM: &#39;bottom&#39;&gt;, fac=-1.0), input=[SwanDataGrid(model_type=&#39;data_grid&#39;, id=&#39;data&#39;, source=SourceIntake(model_type=&#39;intake&#39;, dataset_id=&#39;era5&#39;, catalog_uri=&#39;../../tests/data/catalog.yaml&#39;, kwargs={}), filter=Filter(sort={&#39;coords&#39;: [&#39;latitude&#39;]}, subset={}, crop={}, timenorm={}, rename={}, derived={}), variables=[&#39;u10&#39;, &#39;v10&#39;], coords=DatasetCoords(t=&#39;time&#39;, x=&#39;longitude&#39;, y=&#39;latitude&#39;, z=&#39;depth&#39;), crop_data=True, buffer=2.0, z1=&#39;u10&#39;, z2=&#39;v10&#39;, var=&lt;GridOptions.WIND: &#39;wind&#39;&gt;, fac=1.0)]), boundary=BOUNDSPEC(model_type=&#39;boundspec&#39;, shapespec=SHAPESPEC(model_type=&#39;shapespec&#39;, shape=TMA(model_type=&#39;tma&#39;, gamma=3.3, d=12.0), per_type=&#39;peak&#39;, dspr_type=&#39;degrees&#39;), location=SIDE(model_type=&#39;side&#39;, side=&#39;west&#39;, direction=&#39;ccw&#39;), data=CONSTANTPAR(model_type=&#39;constantpar&#39;, hs=2.0, per=12.0, dir=255.0, dd=25.0)), initial=INITIAL(model_type=&#39;initial&#39;, kind=DEFAULT(model_type=&#39;default&#39;)), physics=PHYSICS(model_type=&#39;physics&#39;, gen=GEN3(model_type=&#39;gen3&#39;, source_terms=KOMEN(model_type=&#39;komen&#39;, wind_drag=&#39;wu&#39;, agrow=False, a=None, cds2=2.3e-05, stpm=0.00302)), sswell=None, negatinp=None, wcapping=None, quadrupl=None, breaking=None, friction=FRICTION_JONSWAP(model_type=&#39;jonswap&#39;, cfjon=0.038), triad=None, vegetation=None, mud=None, sice=None, turbulence=None, bragg=None, limiter=None, obstacle=None, setup=None, diffraction=None, surfbeat=None, scat=None, deactivate=None), prop=PROP(model_type=&#39;prop&#39;, scheme=BSBT(model_type=&#39;bsbt&#39;)), numeric=NUMERIC(model_type=&#39;numeric&#39;, stopc=STOPC(model_type=&#39;stopc&#39;, dabs=0.05, drel=0.01, curvat=0.05, npnts=99.5, mode=NONSTAT(model_type=&#39;nonstat&#39;, mxitst=3), limiter=0.1), dirimpl=None, sigimpl=None, ctheta=None, csigma=None, setup=None), output=OUTPUT(model_type=&#39;output&#39;, frame=None, group=None, curve=None, ray=None, isoline=None, points=POINTS(model_type=&#39;points&#39;, sname=&#39;pts&#39;, xp=[114.0, 112.5, 115.0], yp=[-34.0, -26.0, -30.0]), ngrid=None, quantity=QUANTITIES(model_type=&#39;quantities&#39;, quantities=[QUANTITY(model_type=&#39;quantity&#39;, output=[&lt;BlockOptions.DEPTH: &#39;depth&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;, &lt;BlockOptions.TM01: &#39;tm01&#39;&gt;], short=None, long=None, lexp=None, hexp=None, excv=-9.0, power=None, ref=None, fswell=None, noswll=None, fmin=None, fmax=None, coord=None), QUANTITY(model_type=&#39;quantity&#39;, output=[&lt;BlockOptions.HSWELL: &#39;hswell&#39;&gt;], short=None, long=None, lexp=None, hexp=None, excv=None, power=None, ref=None, fswell=0.125, noswll=None, fmin=None, fmax=None, coord=None)]), output_options=None, block=BLOCK(model_type=&#39;block&#39;, sname=&#39;COMPGRID&#39;, fname=&#39;swangrid.nc&#39;, times=TimeRangeOpen(model_type=&#39;open&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;sec&#39;, suffix=&#39;blk&#39;), header=None, idla=None, output=[&lt;BlockOptions.DEPTH: &#39;depth&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;], unit=None), table=TABLE(model_type=&#39;table&#39;, sname=&#39;pts&#39;, fname=&#39;swantable.nc&#39;, times=TimeRangeOpen(model_type=&#39;open&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;sec&#39;, suffix=&#39;tbl&#39;), format=&#39;noheader&#39;, output=[&lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.HSWELL: &#39;hswell&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.TM01: &#39;tm01&#39;&gt;, &lt;BlockOptions.WATLEV: &#39;watlev&#39;&gt;, &lt;BlockOptions.QP: &#39;qp&#39;&gt;]), specout=None, nestout=None, test=None), lockup=LOCKUP(model_type=&#39;lockup&#39;, compute=COMPUTE_STAT(model_type=&#39;stat&#39;, times=NONSTATIONARY(model_type=&#39;nonstationary&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;sec&#39;, suffix=&#39;&#39;, tend=datetime.datetime(1970, 1, 2, 0, 0)), hotfile=HOTFILE(model_type=&#39;hotfile&#39;, fname=PosixPath(&#39;hotfile.txt&#39;), format=&#39;free&#39;), hottimes=[1, -1], suffix=&#39;_%Y%m%dT%H%M%S&#39;)))
+</pre></div></div>
+</div>
+<section id="Examine-components">
+<h3>Examine components<a class="headerlink" href="#Examine-components" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Project</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Friction</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">friction</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+FRICTION JONSWAP CONSTANT cfjon=0.038
+</pre></div></div>
+</div>
+</section>
+<section id="Sensitivity-config">
+<h3>Sensitivity config<a class="headerlink" href="#Sensitivity-config" title="Link to this heading">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_experiment</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">cfjon</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a new config object for a given experiment&quot;&quot;&quot;</span>
+    <span class="n">new_config</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="n">new_config</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">title2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Jonswap friction cfjon=</span><span class="si">{</span><span class="n">cfjon</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">new_config</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">friction</span><span class="o">.</span><span class="n">cfjon</span> <span class="o">=</span> <span class="n">cfjon</span>
+    <span class="k">return</span> <span class="n">new_config</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rompy.core.time</span> <span class="kn">import</span> <span class="n">TimeRange</span>
+
+<span class="n">period</span> <span class="o">=</span> <span class="n">TimeRange</span><span class="p">(</span>
+    <span class="n">start</span><span class="o">=</span><span class="s2">&quot;2023-01-01T00:00:00&quot;</span><span class="p">,</span>
+    <span class="n">end</span><span class="o">=</span><span class="s2">&quot;2023-01-02T00:00:00&quot;</span><span class="p">,</span>
+    <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;1h&quot;</span>
+<span class="p">)</span>
+
+<span class="n">period</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+TimeRange(start=datetime.datetime(2023, 1, 1, 0, 0), end=datetime.datetime(2023, 1, 2, 0, 0), duration=datetime.timedelta(days=1), interval=datetime.timedelta(seconds=3600), include_end=True)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rompy.model</span> <span class="kn">import</span> <span class="n">ModelRun</span>
+
+<span class="n">runs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">cfjon</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]:</span>
+    <span class="n">run_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cfjon-</span><span class="si">{</span><span class="n">cfjon</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">new_config</span> <span class="o">=</span> <span class="n">set_experiment</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">cfjon</span><span class="o">=</span><span class="n">cfjon</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">new_config</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">new_config</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">friction</span><span class="o">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ModelRun</span><span class="p">(</span>
+        <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">new_config</span><span class="p">,</span>
+        <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">workdir</span><span class="p">)),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.01&#39;
+FRICTION JONSWAP CONSTANT cfjon=0.01
+
+PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.02&#39;
+FRICTION JONSWAP CONSTANT cfjon=0.02
+
+PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.03&#39;
+FRICTION JONSWAP CONSTANT cfjon=0.03
+
+PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.04&#39;
+FRICTION JONSWAP CONSTANT cfjon=0.04
+
+PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.05&#39;
+FRICTION JONSWAP CONSTANT cfjon=0.05
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Run-the-model">
+<h2>Run the model<a class="headerlink" href="#Run-the-model" title="Link to this heading">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+run_id: cfjon-0.01
+period:
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-02 00:00:00
+        Duration: 1 day, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+output_dir: example_sensitivity
+config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in example_sensitivity
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.01/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.01/wind.grd
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in example_sensitivity
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+run_id: cfjon-0.02
+period:
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-02 00:00:00
+        Duration: 1 day, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+output_dir: example_sensitivity
+config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in example_sensitivity
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.02/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.02/wind.grd
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in example_sensitivity
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+run_id: cfjon-0.03
+period:
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-02 00:00:00
+        Duration: 1 day, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+output_dir: example_sensitivity
+config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in example_sensitivity
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.03/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.03/wind.grd
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in example_sensitivity
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+run_id: cfjon-0.04
+period:
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-02 00:00:00
+        Duration: 1 day, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+output_dir: example_sensitivity
+config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in example_sensitivity
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.04/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.04/wind.grd
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in example_sensitivity
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+run_id: cfjon-0.05
+period:
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-02 00:00:00
+        Duration: 1 day, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+output_dir: example_sensitivity
+config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in example_sensitivity
+INFO:rompy.swan.data:   Writing bottom to example_sensitivity/cfjon-0.05/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_sensitivity/cfjon-0.05/wind.grd
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in example_sensitivity
+INFO:rompy.model:-----------------------------------------------------
+</pre></div></div>
+</div>
+<section id="Check-the-workspace">
+<h3>Check the workspace<a class="headerlink" href="#Check-the-workspace" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">workdir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[PosixPath(&#39;example_sensitivity/cfjon-0.01&#39;),
+ PosixPath(&#39;example_sensitivity/cfjon-0.02&#39;),
+ PosixPath(&#39;example_sensitivity/cfjon-0.03&#39;),
+ PosixPath(&#39;example_sensitivity/cfjon-0.04&#39;),
+ PosixPath(&#39;example_sensitivity/cfjon-0.05&#39;)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;example_sensitivity/cfjon-0.03&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[PosixPath(&#39;example_sensitivity/cfjon-0.03/INPUT&#39;),
+ PosixPath(&#39;example_sensitivity/cfjon-0.03/bottom.grd&#39;),
+ PosixPath(&#39;example_sensitivity/cfjon-0.03/wind.grd&#39;)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;example_sensitivity/cfjon-0.03/INPUT&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+! Rompy SwanConfig
+! Template: /source/csiro/rompy/rompy/templates/swancomp
+! Generated: 2023-10-16 02:11:30.301323 on rafael-XPS by rguedes
+
+
+! Startup -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Friction sensitivity testing&#39; title2=&#39;Jonswap friction cfjon=0.03&#39;
+
+SET level=0.0 depmin=0.05 NAUTICAL
+
+MODE NONSTATIONARY TWODIMENSIONAL
+
+COORDINATES SPHERICAL CCM
+
+! Computational Grid --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CGRID REGULAR xpc=110.0 ypc=-35.2 alpc=4.0 xlenc=7.5 ylenc=12.5 mxc=14 myc=24 CIRCLE mdc=36 flow=0.04 fhigh=1.0
+
+! Input Grids ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INPGRID BOTTOM REG 109.0 -36.0 0.0 8 14 1.0 1.0 EXC -99.0
+READINP BOTTOM -1.0 &#39;bottom.grd&#39; 3 FREE
+
+INPGRID WIND REG 110.0 -35.0 0.0 1 2 5.0 5.0 EXC -99.0 NONSTATION 20230101.000000 6.0 HR
+READINP WIND 1.0 &#39;wind.grd&#39; 3 0 1 0 FREE
+
+
+
+! Boundary and Initial conditions -------------------------------------------------------------------------------------------------------------------------------------------------
+
+BOUND SHAPESPEC TMA gamma=3.3 d=12.0 PEAK DSPR DEGREES
+BOUNDSPEC SIDE WEST CCW CONSTANT PAR hs=2.0 per=12.0 dir=255.0 dd=25.0
+
+INITIAL DEFAULT
+
+
+! Physics -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GEN3 KOMEN cds2=2.3e-05 stpm=0.00302 DRAG WU
+
+FRICTION JONSWAP CONSTANT cfjon=0.03
+
+
+! Numerics ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PROP BSBT
+
+NUMERIC STOPC dabs=0.05 drel=0.01 curvat=0.05 npnts=99.5 NONSTATIONARY mxitst=3 limiter=0.1
+
+
+! Output --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+POINTS sname=&#39;pts&#39; &amp;
+    xp=114.0 yp=-34.0 &amp;
+    xp=112.5 yp=-26.0 &amp;
+    xp=115.0 yp=-30.0
+
+QUANTITY DEPTH HSIGN TPS DIR TM01 excv=-9.0
+
+QUANTITY HSWELL fswell=0.125
+
+BLOCK sname=&#39;COMPGRID&#39; fname=&#39;swangrid.nc&#39; &amp;
+    DEPTH &amp;
+    HSIGN &amp;
+    TPS &amp;
+    DIR &amp;
+    OUTPUT tbegblk=20230101.000000 deltblk=3600.0 SEC
+
+TABLE sname=&#39;pts&#39; NOHEADER fname=&#39;swantable.nc&#39; &amp;
+    HSIGN &amp;
+    HSWELL &amp;
+    DIR &amp;
+    TPS &amp;
+    TM01 &amp;
+    WATLEV &amp;
+    QP &amp;
+    OUTPUT tbegtbl=20230101.000000 delttbl=3600.0 SEC
+
+
+! Lockup --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+COMPUTE STATIONARY time=20230101.000000
+COMPUTE STATIONARY time=20230101.010000
+HOTFILE fname=&#39;hotfile_20230101T010000.txt&#39; FREE
+COMPUTE STATIONARY time=20230101.020000
+COMPUTE STATIONARY time=20230101.030000
+COMPUTE STATIONARY time=20230101.040000
+COMPUTE STATIONARY time=20230101.050000
+COMPUTE STATIONARY time=20230101.060000
+COMPUTE STATIONARY time=20230101.070000
+COMPUTE STATIONARY time=20230101.080000
+COMPUTE STATIONARY time=20230101.090000
+COMPUTE STATIONARY time=20230101.100000
+COMPUTE STATIONARY time=20230101.110000
+COMPUTE STATIONARY time=20230101.120000
+COMPUTE STATIONARY time=20230101.130000
+COMPUTE STATIONARY time=20230101.140000
+COMPUTE STATIONARY time=20230101.150000
+COMPUTE STATIONARY time=20230101.160000
+COMPUTE STATIONARY time=20230101.170000
+COMPUTE STATIONARY time=20230101.180000
+COMPUTE STATIONARY time=20230101.190000
+COMPUTE STATIONARY time=20230101.200000
+COMPUTE STATIONARY time=20230101.210000
+COMPUTE STATIONARY time=20230101.220000
+COMPUTE STATIONARY time=20230101.230000
+COMPUTE STATIONARY time=20230102.000000
+HOTFILE fname=&#39;hotfile_20230102T000000.txt&#39; FREE
+STOP
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="id1">
+<h2>Run the model<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Todo</p>
+</section>
+<section id="Plot-outputs">
+<h2>Plot outputs<a class="headerlink" href="#Plot-outputs" title="Link to this heading">#</a></h2>
+<p>Todo</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Workspace-basepath">Workspace basepath</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Instantiate-model">Instantiate model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Examine-components">Examine components</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Sensitivity-config">Sensitivity config</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Run-the-model">Run the model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Check-the-workspace">Check the workspace</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Run the model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-outputs">Plot outputs</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/notebooks/swan/example_sensitivity.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

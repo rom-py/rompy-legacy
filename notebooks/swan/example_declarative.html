@@ -1,0 +1,2807 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SWAN declarative example &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/swan/example_declarative';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Working demonstration" href="../oceanum_example.html" />
+    <link rel="prev" title="Templates demonstration" href="../templates_demo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        Home
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
+                        Quickstart
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../core_concepts.html">
+                        Core Concepts
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../models.html">
+                        Models
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../demo.html">
+                        Demonstration notebooks
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+                        API  Documentation
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../demo.html#thumbnails-gallery">Thumbnails gallery</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../demo.html">Basic demonstration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../demo.html#Command-line-interface">Command line interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../templates_demo.html">Templates demonstration</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SWAN declarative example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Instantiate-model">Instantiate model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Run-the-model">Run the model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Plot-outputs">Plot outputs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../oceanum_example.html">Working demonstration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../swan-config-components.html">Model components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../physics.html">SWAN Physics Components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../demo.html" class="nav-link">Demonstration notebooks</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">SWAN...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="SWAN-declarative-example">
+<h1>SWAN declarative example<a class="headerlink" href="#SWAN-declarative-example" title="Link to this heading">#</a></h1>
+<p>In this notebook we will run SWAN entirely from a model runtime and config entirely declared in a yaml file. We only plot some model settings to visualise before creating the model workspace</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Instantiate-model">
+<h2>Instantiate model<a class="headerlink" href="#Instantiate-model" title="Link to this heading">#</a></h2>
+<p>Use a fully-defined config from yaml to instantiate ModelRun with the runtime parameters and the config definition</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncoment below to view the contents of the yaml file</span>
+
+<span class="c1"># !cat example_declarative.yml</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rompy.model</span> <span class="kn">import</span> <span class="n">ModelRun</span>
+
+<span class="n">conf</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example_declarative.yml&quot;</span><span class="p">),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">)</span>
+<span class="n">run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span><span class="o">**</span><span class="n">conf</span><span class="p">)</span>
+<span class="n">run</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ModelRun(run_id=&#39;run1&#39;, period=TimeRange(start=datetime.datetime(2023, 1, 1, 0, 0), end=datetime.datetime(2023, 1, 2, 0, 0), duration=datetime.timedelta(days=1), interval=datetime.timedelta(seconds=3600), include_end=True), output_dir=&#39;example_declarative&#39;, config=SwanConfigComponents(model_type=&#39;swanconfig&#39;, template=&#39;/source/csiro/rompy/rompy/templates/swancomp&#39;, checkout=&#39;main&#39;, cgrid=REGULAR(model_type=&#39;regular&#39;, spectrum=SPECTRUM(model_type=&#39;spectrum&#39;, mdc=36, flow=0.04, fhigh=1.0, msc=None, dir1=None, dir2=None), grid=GRIDREGULAR(model_type=&#39;gridregular&#39;, xp=110.0, yp=-35.2, alp=4.0, xlen=7.5, ylen=12.5, mx=14, my=24, suffix=&#39;c&#39;)), startup=STARTUP(model_type=&#39;startup&#39;, project=PROJECT(model_type=&#39;project&#39;, name=&#39;Test declarative&#39;, nr=&#39;run1&#39;, title1=&#39;Declarative definition of a Swan config with rompy&#39;, title2=None, title3=None), set=SET(model_type=&#39;set&#39;, level=0.0, nor=None, depmin=0.05, maxmes=None, maxerr=None, grav=None, rho=None, cdcap=None, inrhog=None, hsrerr=None, direction_convention=&#39;nautical&#39;, pwtail=None, froudmax=None, icewind=None), mode=MODE(model_type=&#39;mode&#39;, kind=&#39;nonstationary&#39;, dim=&#39;twodimensional&#39;), coordinates=COORDINATES(model_type=&#39;coordinates&#39;, kind=SPHERICAL(model_type=&#39;spherical&#39;, projection=&#39;ccm&#39;), reapeating=False)), inpgrid=DataInterface(model_type=&#39;data_interface&#39;, bottom=SwanDataGrid(model_type=&#39;data_grid&#39;, id=&#39;data&#39;, source=SourceIntake(model_type=&#39;intake&#39;, dataset_id=&#39;gebco&#39;, catalog_uri=&#39;../../tests/data/catalog.yaml&#39;, kwargs={}), filter=Filter(sort={}, subset={}, crop={}, timenorm={}, rename={}, derived={}), variables=[&#39;elevation&#39;], coords=DatasetCoords(t=&#39;time&#39;, x=&#39;lon&#39;, y=&#39;lat&#39;, z=&#39;depth&#39;), crop_data=True, buffer=1.0, z1=&#39;elevation&#39;, z2=None, var=&lt;GridOptions.BOTTOM: &#39;bottom&#39;&gt;, fac=-1.0), input=[SwanDataGrid(model_type=&#39;data_grid&#39;, id=&#39;data&#39;, source=SourceIntake(model_type=&#39;intake&#39;, dataset_id=&#39;era5&#39;, catalog_uri=&#39;../../tests/data/catalog.yaml&#39;, kwargs={}), filter=Filter(sort={&#39;coords&#39;: [&#39;latitude&#39;]}, subset={}, crop={}, timenorm={}, rename={}, derived={}), variables=[&#39;u10&#39;, &#39;v10&#39;], coords=DatasetCoords(t=&#39;time&#39;, x=&#39;longitude&#39;, y=&#39;latitude&#39;, z=&#39;depth&#39;), crop_data=True, buffer=2.0, z1=&#39;u10&#39;, z2=&#39;v10&#39;, var=&lt;GridOptions.WIND: &#39;wind&#39;&gt;, fac=1.0)]), boundary=None, initial=INITIAL(model_type=&#39;initial&#39;, kind=DEFAULT(model_type=&#39;default&#39;)), physics=PHYSICS(model_type=&#39;physics&#39;, gen=GEN3(model_type=&#39;gen3&#39;, source_terms=WESTHUYSEN(model_type=&#39;westhuysen&#39;, wind_drag=&#39;wu&#39;, agrow=False, a=None, cds2=None, br=None)), sswell=None, negatinp=None, wcapping=None, quadrupl=QUADRUPL(model_type=&#39;quadrupl&#39;, iquad=2, lambd=None, cn14=None, csh1=None, csh2=None, csh3=None), breaking=BREAKING_CONSTANT(model_type=&#39;constant&#39;, alpha=None, gamma=0.73), friction=FRICTION_MADSEN(model_type=&#39;madsen&#39;, kn=0.05), triad=TRIAD(model_type=&#39;triad&#39;, biphase=None), vegetation=None, mud=None, sice=None, turbulence=None, bragg=None, limiter=None, obstacle=None, setup=None, diffraction=None, surfbeat=None, scat=None, deactivate=None), prop=PROP(model_type=&#39;prop&#39;, scheme=BSBT(model_type=&#39;bsbt&#39;)), numeric=NUMERIC(model_type=&#39;numeric&#39;, stopc=STOPC(model_type=&#39;stopc&#39;, dabs=0.05, drel=0.05, curvat=0.05, npnts=95.0, mode=NONSTAT(model_type=&#39;nonstat&#39;, mxitns=3), limiter=None), dirimpl=None, sigimpl=None, ctheta=None, csigma=None, setup=None), output=OUTPUT(model_type=&#39;output&#39;, frame=None, group=None, curve=None, ray=None, isoline=None, points=POINTS(model_type=&#39;points&#39;, sname=&#39;pts&#39;, xp=[114.0, 112.5, 115.0], yp=[-34.0, -26.0, -30.0]), ngrid=None, quantity=QUANTITIES(model_type=&#39;quantities&#39;, quantities=[QUANTITY(model_type=&#39;quantity&#39;, output=[&lt;BlockOptions.DEPTH: &#39;depth&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;, &lt;BlockOptions.TM01: &#39;tm01&#39;&gt;], short=None, long=None, lexp=None, hexp=None, excv=-9.0, power=None, ref=None, fswell=None, noswll=None, fmin=None, fmax=None, coord=None), QUANTITY(model_type=&#39;quantity&#39;, output=[&lt;BlockOptions.HSWELL: &#39;hswell&#39;&gt;], short=None, long=None, lexp=None, hexp=None, excv=None, power=None, ref=None, fswell=0.125, noswll=None, fmin=None, fmax=None, coord=None)]), output_options=None, block=BLOCK(model_type=&#39;block&#39;, sname=&#39;COMPGRID&#39;, fname=&#39;swangrid.nc&#39;, times=TimeRangeOpen(model_type=&#39;open&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;hr&#39;, suffix=&#39;blk&#39;), header=None, idla=None, output=[&lt;BlockOptions.DEPTH: &#39;depth&#39;&gt;, &lt;BlockOptions.WIND: &#39;wind&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;], unit=None), table=TABLE(model_type=&#39;table&#39;, sname=&#39;pts&#39;, fname=&#39;swantable.txt&#39;, times=TimeRangeOpen(model_type=&#39;open&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;hr&#39;, suffix=&#39;tbl&#39;), format=&#39;header&#39;, output=[&lt;BlockOptions.TIME: &#39;time&#39;&gt;, &lt;BlockOptions.HSIGN: &#39;hsign&#39;&gt;, &lt;BlockOptions.HSWELL: &#39;hswell&#39;&gt;, &lt;BlockOptions.DIR: &#39;dir&#39;&gt;, &lt;BlockOptions.TPS: &#39;tps&#39;&gt;, &lt;BlockOptions.TM01: &#39;tm01&#39;&gt;]), specout=SPECOUT(model_type=&#39;specout&#39;, sname=&#39;pts&#39;, fname=&#39;swanspec.nc&#39;, times=None, dim=SPEC2D(model_type=&#39;spec2d&#39;), freq=ABS(model_type=&#39;abs&#39;)), nestout=None, test=None), lockup=LOCKUP(model_type=&#39;lockup&#39;, compute=COMPUTE_NONSTAT(model_type=&#39;nonstat&#39;, times=NONSTATIONARY(model_type=&#39;nonstationary&#39;, tbeg=datetime.datetime(1970, 1, 1, 0, 0), delt=datetime.timedelta(seconds=3600), tfmt=1, dfmt=&#39;hr&#39;, suffix=&#39;c&#39;, tend=datetime.datetime(1970, 1, 2, 0, 0)), hotfile=HOTFILE(model_type=&#39;hotfile&#39;, fname=PosixPath(&#39;hotfile.txt&#39;), format=&#39;free&#39;), hottimes=[-1], suffix=&#39;_%Y%m%dT%H%M%S&#39;, initstat=True))))
+</pre></div></div>
+</div>
+<section id="QC-config">
+<h3>QC config<a class="headerlink" href="#QC-config" title="Link to this heading">#</a></h3>
+<p>Plot model grid and data to QC before generating the workspace</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Model grid</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fscale</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_declarative_6_0.png" src="../../_images/notebooks_swan_example_declarative_6_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Model bathy</span>
+
+<span class="n">bottom</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">bottom</span>
+<span class="n">bottom</span><span class="o">.</span><span class="n">_filter_grid</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span> <span class="c1"># This isn&#39;t necessary since cropping is done by the SwanConfigComponents, it is just for plotting</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bottom</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="s2">&quot;elevation&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">5000</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;turbo_r&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_declarative_7_0.png" src="../../_images/notebooks_swan_example_declarative_7_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Model winds</span>
+
+<span class="n">wind</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">wind</span><span class="o">.</span><span class="n">_filter_grid</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span> <span class="c1"># This isn&#39;t necessary since cropping is done by the SwanConfigComponents, it is just for plotting</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">wind</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="s2">&quot;u10&quot;</span><span class="p">,</span> <span class="n">isel</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu_r&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_declarative_8_0.png" src="../../_images/notebooks_swan_example_declarative_8_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Run-the-model">
+<h2>Run the model<a class="headerlink" href="#Run-the-model" title="Link to this heading">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:rompy.model:
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Model settings:
+INFO:rompy.model:
+run_id: run1
+period:
+        Start: 2023-01-01 00:00:00
+        End: 2023-01-02 00:00:00
+        Duration: 1 day, 0:00:00
+        Interval: 1:00:00
+        Include End: True
+
+output_dir: example_declarative
+config: &lt;class &#39;rompy.swan.config.SwanConfigComponents&#39;&gt;
+
+INFO:rompy.model:-----------------------------------------------------
+INFO:rompy.model:Generating model input files in example_declarative
+INFO:rompy.swan.data:   Writing bottom to example_declarative/run1/bottom.grd
+INFO:rompy.swan.data:   Writing wind to example_declarative/run1/wind.grd
+INFO:rompy.model:
+INFO:rompy.model:Successfully generated project in example_declarative
+INFO:rompy.model:-----------------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;/source/csiro/rompy/notebooks/swan/example_declarative/run1&#39;
+</pre></div></div>
+</div>
+<section id="Check-the-workspace">
+<h3>Check the workspace<a class="headerlink" href="#Check-the-workspace" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">((</span><span class="n">Path</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">run</span><span class="o">.</span><span class="n">run_id</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[PosixPath(&#39;example_declarative/run1/bottom.grd&#39;),
+ PosixPath(&#39;example_declarative/run1/PRINT&#39;),
+ PosixPath(&#39;example_declarative/run1/swaninit&#39;),
+ PosixPath(&#39;example_declarative/run1/INPUT&#39;),
+ PosixPath(&#39;example_declarative/run1/swangrid.nc&#39;),
+ PosixPath(&#39;example_declarative/run1/wind.grd&#39;),
+ PosixPath(&#39;example_declarative/run1/hotfile_20230102T000000.txt&#39;),
+ PosixPath(&#39;example_declarative/run1/swantable.txt&#39;),
+ PosixPath(&#39;example_declarative/run1/swanspec.nc&#39;),
+ PosixPath(&#39;example_declarative/run1/norm_end&#39;)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;example_declarative/run1/INPUT&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+! Rompy SwanConfig
+! Template: /source/csiro/rompy/rompy/templates/swancomp
+! Generated: 2023-11-02 06:16:30.795867 on rafael-XPS by rguedes
+
+
+! Startup -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PROJECT name=&#39;Test declarative&#39; nr=&#39;run1&#39; title1=&#39;Declarative definition of a Swan config with rompy&#39;
+
+SET level=0.0 depmin=0.05 NAUTICAL
+
+MODE NONSTATIONARY TWODIMENSIONAL
+
+COORDINATES SPHERICAL CCM
+
+! Computational Grid --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CGRID REGULAR xpc=110.0 ypc=-35.2 alpc=4.0 xlenc=7.5 ylenc=12.5 mxc=14 myc=24 CIRCLE mdc=36 flow=0.04 fhigh=1.0
+
+! Input Grids ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INPGRID BOTTOM REG 109.0 -36.0 0.0 8 14 1.0 1.0 EXC -99.0
+READINP BOTTOM -1.0 &#39;bottom.grd&#39; 3 FREE
+
+INPGRID WIND REG 110.0 -35.0 0.0 1 2 5.0 5.0 EXC -99.0 NONSTATION 20230101.000000 6.0 HR
+READINP WIND 1.0 &#39;wind.grd&#39; 3 0 1 0 FREE
+
+
+
+! Boundary and Initial conditions -------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+INITIAL DEFAULT
+
+
+! Physics -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GEN3 WESTHUYSEN DRAG WU
+
+QUADRUPL iquad=2
+
+BREAKING CONSTANT gamma=0.73
+
+FRICTION MADSEN kn=0.05
+
+TRIAD
+
+
+! Numerics ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PROP BSBT
+
+NUMERIC STOPC dabs=0.05 drel=0.05 curvat=0.05 npnts=95.0 NONSTATIONARY mxitns=3
+
+
+! Output --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+POINTS sname=&#39;pts&#39; &amp;
+    xp=114.0 yp=-34.0 &amp;
+    xp=112.5 yp=-26.0 &amp;
+    xp=115.0 yp=-30.0
+
+QUANTITY DEPTH HSIGN TPS DIR TM01 excv=-9.0
+
+QUANTITY HSWELL fswell=0.125
+
+BLOCK sname=&#39;COMPGRID&#39; fname=&#39;swangrid.nc&#39; &amp;
+    DEPTH &amp;
+    WIND &amp;
+    HSIGN &amp;
+    TPS &amp;
+    DIR &amp;
+    OUTPUT tbegblk=20230101.000000 deltblk=1.0 HR
+
+TABLE sname=&#39;pts&#39; HEADER fname=&#39;swantable.txt&#39; &amp;
+    TIME &amp;
+    HSIGN &amp;
+    HSWELL &amp;
+    DIR &amp;
+    TPS &amp;
+    TM01 &amp;
+    OUTPUT tbegtbl=20230101.000000 delttbl=1.0 HR
+
+SPECOUT sname=&#39;pts&#39; SPEC2D ABS fname=&#39;swanspec.nc&#39; OUTPUT tbegspc=20230101.000000 deltspc=3600.0 SEC
+
+
+! Lockup --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+COMPUTE STATIONARY time=20230101.000000
+COMPUTE NONSTATIONARY tbegc=20230101.000000 deltc=1.0 HR tendc=20230102.000000
+HOTFILE fname=&#39;hotfile_20230102T000000.txt&#39; FREE
+STOP
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Run the model</span>
+
+<span class="o">!</span>docker<span class="w"> </span>run<span class="w">  </span>-v<span class="w"> </span>./example_declarative/run1:/home<span class="w"> </span>oceanum/swan:4141<span class="w"> </span>swan.exe
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+ SWAN is preparing computation
+
+ iteration    1; sweep 1
++iteration    1; sweep 2
++iteration    1; sweep 3
++iteration    1; sweep 4
+ not possible to compute, first iteration
+
+ iteration    2; sweep 1
++iteration    2; sweep 2
++iteration    2; sweep 3
++iteration    2; sweep 4
+ accuracy OK in  45.28 % of wet grid points ( 95.00 % required)
+
+ iteration    3; sweep 1
++iteration    3; sweep 2
++iteration    3; sweep 3
++iteration    3; sweep 4
+ accuracy OK in   0.79 % of wet grid points ( 95.00 % required)
+
+ iteration    4; sweep 1
++iteration    4; sweep 2
++iteration    4; sweep 3
++iteration    4; sweep 4
+ accuracy OK in  56.70 % of wet grid points ( 95.00 % required)
+
+ iteration    5; sweep 1
++iteration    5; sweep 2
++iteration    5; sweep 3
++iteration    5; sweep 4
+ accuracy OK in  20.87 % of wet grid points ( 95.00 % required)
+
+ iteration    6; sweep 1
++iteration    6; sweep 2
++iteration    6; sweep 3
++iteration    6; sweep 4
+ accuracy OK in  85.83 % of wet grid points ( 95.00 % required)
+
+ iteration    7; sweep 1
++iteration    7; sweep 2
++iteration    7; sweep 3
++iteration    7; sweep 4
+ accuracy OK in  96.86 % of wet grid points ( 95.00 % required)
+
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.010000   , step      1; iteration    1; sweep 1
++time 20230101.010000   , step      1; iteration    1; sweep 2
++time 20230101.010000   , step      1; iteration    1; sweep 3
++time 20230101.010000   , step      1; iteration    1; sweep 4
++time 20230101.010000   , step      1; iteration    2; sweep 1
++time 20230101.010000   , step      1; iteration    2; sweep 2
++time 20230101.010000   , step      1; iteration    2; sweep 3
++time 20230101.010000   , step      1; iteration    2; sweep 4
++time 20230101.010000   , step      1; iteration    3; sweep 1
++time 20230101.010000   , step      1; iteration    3; sweep 2
++time 20230101.010000   , step      1; iteration    3; sweep 3
++time 20230101.010000   , step      1; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.020000   , step      2; iteration    1; sweep 1
++time 20230101.020000   , step      2; iteration    1; sweep 2
++time 20230101.020000   , step      2; iteration    1; sweep 3
++time 20230101.020000   , step      2; iteration    1; sweep 4
++time 20230101.020000   , step      2; iteration    2; sweep 1
++time 20230101.020000   , step      2; iteration    2; sweep 2
++time 20230101.020000   , step      2; iteration    2; sweep 3
++time 20230101.020000   , step      2; iteration    2; sweep 4
++time 20230101.020000   , step      2; iteration    3; sweep 1
++time 20230101.020000   , step      2; iteration    3; sweep 2
++time 20230101.020000   , step      2; iteration    3; sweep 3
++time 20230101.020000   , step      2; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.030000   , step      3; iteration    1; sweep 1
++time 20230101.030000   , step      3; iteration    1; sweep 2
++time 20230101.030000   , step      3; iteration    1; sweep 3
++time 20230101.030000   , step      3; iteration    1; sweep 4
++time 20230101.030000   , step      3; iteration    2; sweep 1
++time 20230101.030000   , step      3; iteration    2; sweep 2
++time 20230101.030000   , step      3; iteration    2; sweep 3
++time 20230101.030000   , step      3; iteration    2; sweep 4
++time 20230101.030000   , step      3; iteration    3; sweep 1
++time 20230101.030000   , step      3; iteration    3; sweep 2
++time 20230101.030000   , step      3; iteration    3; sweep 3
++time 20230101.030000   , step      3; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.040000   , step      4; iteration    1; sweep 1
++time 20230101.040000   , step      4; iteration    1; sweep 2
++time 20230101.040000   , step      4; iteration    1; sweep 3
++time 20230101.040000   , step      4; iteration    1; sweep 4
++time 20230101.040000   , step      4; iteration    2; sweep 1
++time 20230101.040000   , step      4; iteration    2; sweep 2
++time 20230101.040000   , step      4; iteration    2; sweep 3
++time 20230101.040000   , step      4; iteration    2; sweep 4
++time 20230101.040000   , step      4; iteration    3; sweep 1
++time 20230101.040000   , step      4; iteration    3; sweep 2
++time 20230101.040000   , step      4; iteration    3; sweep 3
++time 20230101.040000   , step      4; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.050000   , step      5; iteration    1; sweep 1
++time 20230101.050000   , step      5; iteration    1; sweep 2
++time 20230101.050000   , step      5; iteration    1; sweep 3
++time 20230101.050000   , step      5; iteration    1; sweep 4
++time 20230101.050000   , step      5; iteration    2; sweep 1
++time 20230101.050000   , step      5; iteration    2; sweep 2
++time 20230101.050000   , step      5; iteration    2; sweep 3
++time 20230101.050000   , step      5; iteration    2; sweep 4
++time 20230101.050000   , step      5; iteration    3; sweep 1
++time 20230101.050000   , step      5; iteration    3; sweep 2
++time 20230101.050000   , step      5; iteration    3; sweep 3
++time 20230101.050000   , step      5; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.060000   , step      6; iteration    1; sweep 1
++time 20230101.060000   , step      6; iteration    1; sweep 2
++time 20230101.060000   , step      6; iteration    1; sweep 3
++time 20230101.060000   , step      6; iteration    1; sweep 4
++time 20230101.060000   , step      6; iteration    2; sweep 1
++time 20230101.060000   , step      6; iteration    2; sweep 2
++time 20230101.060000   , step      6; iteration    2; sweep 3
++time 20230101.060000   , step      6; iteration    2; sweep 4
++time 20230101.060000   , step      6; iteration    3; sweep 1
++time 20230101.060000   , step      6; iteration    3; sweep 2
++time 20230101.060000   , step      6; iteration    3; sweep 3
++time 20230101.060000   , step      6; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.070000   , step      7; iteration    1; sweep 1
++time 20230101.070000   , step      7; iteration    1; sweep 2
++time 20230101.070000   , step      7; iteration    1; sweep 3
++time 20230101.070000   , step      7; iteration    1; sweep 4
++time 20230101.070000   , step      7; iteration    2; sweep 1
++time 20230101.070000   , step      7; iteration    2; sweep 2
++time 20230101.070000   , step      7; iteration    2; sweep 3
++time 20230101.070000   , step      7; iteration    2; sweep 4
++time 20230101.070000   , step      7; iteration    3; sweep 1
++time 20230101.070000   , step      7; iteration    3; sweep 2
++time 20230101.070000   , step      7; iteration    3; sweep 3
++time 20230101.070000   , step      7; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.080000   , step      8; iteration    1; sweep 1
++time 20230101.080000   , step      8; iteration    1; sweep 2
++time 20230101.080000   , step      8; iteration    1; sweep 3
++time 20230101.080000   , step      8; iteration    1; sweep 4
++time 20230101.080000   , step      8; iteration    2; sweep 1
++time 20230101.080000   , step      8; iteration    2; sweep 2
++time 20230101.080000   , step      8; iteration    2; sweep 3
++time 20230101.080000   , step      8; iteration    2; sweep 4
++time 20230101.080000   , step      8; iteration    3; sweep 1
++time 20230101.080000   , step      8; iteration    3; sweep 2
++time 20230101.080000   , step      8; iteration    3; sweep 3
++time 20230101.080000   , step      8; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.090000   , step      9; iteration    1; sweep 1
++time 20230101.090000   , step      9; iteration    1; sweep 2
++time 20230101.090000   , step      9; iteration    1; sweep 3
++time 20230101.090000   , step      9; iteration    1; sweep 4
++time 20230101.090000   , step      9; iteration    2; sweep 1
++time 20230101.090000   , step      9; iteration    2; sweep 2
++time 20230101.090000   , step      9; iteration    2; sweep 3
++time 20230101.090000   , step      9; iteration    2; sweep 4
++time 20230101.090000   , step      9; iteration    3; sweep 1
++time 20230101.090000   , step      9; iteration    3; sweep 2
++time 20230101.090000   , step      9; iteration    3; sweep 3
++time 20230101.090000   , step      9; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.100000   , step     10; iteration    1; sweep 1
++time 20230101.100000   , step     10; iteration    1; sweep 2
++time 20230101.100000   , step     10; iteration    1; sweep 3
++time 20230101.100000   , step     10; iteration    1; sweep 4
++time 20230101.100000   , step     10; iteration    2; sweep 1
++time 20230101.100000   , step     10; iteration    2; sweep 2
++time 20230101.100000   , step     10; iteration    2; sweep 3
++time 20230101.100000   , step     10; iteration    2; sweep 4
++time 20230101.100000   , step     10; iteration    3; sweep 1
++time 20230101.100000   , step     10; iteration    3; sweep 2
++time 20230101.100000   , step     10; iteration    3; sweep 3
++time 20230101.100000   , step     10; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.110000   , step     11; iteration    1; sweep 1
++time 20230101.110000   , step     11; iteration    1; sweep 2
++time 20230101.110000   , step     11; iteration    1; sweep 3
++time 20230101.110000   , step     11; iteration    1; sweep 4
++time 20230101.110000   , step     11; iteration    2; sweep 1
++time 20230101.110000   , step     11; iteration    2; sweep 2
++time 20230101.110000   , step     11; iteration    2; sweep 3
++time 20230101.110000   , step     11; iteration    2; sweep 4
++time 20230101.110000   , step     11; iteration    3; sweep 1
++time 20230101.110000   , step     11; iteration    3; sweep 2
++time 20230101.110000   , step     11; iteration    3; sweep 3
++time 20230101.110000   , step     11; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.120000   , step     12; iteration    1; sweep 1
++time 20230101.120000   , step     12; iteration    1; sweep 2
++time 20230101.120000   , step     12; iteration    1; sweep 3
++time 20230101.120000   , step     12; iteration    1; sweep 4
++time 20230101.120000   , step     12; iteration    2; sweep 1
++time 20230101.120000   , step     12; iteration    2; sweep 2
++time 20230101.120000   , step     12; iteration    2; sweep 3
++time 20230101.120000   , step     12; iteration    2; sweep 4
++time 20230101.120000   , step     12; iteration    3; sweep 1
++time 20230101.120000   , step     12; iteration    3; sweep 2
++time 20230101.120000   , step     12; iteration    3; sweep 3
++time 20230101.120000   , step     12; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.130000   , step     13; iteration    1; sweep 1
++time 20230101.130000   , step     13; iteration    1; sweep 2
++time 20230101.130000   , step     13; iteration    1; sweep 3
++time 20230101.130000   , step     13; iteration    1; sweep 4
++time 20230101.130000   , step     13; iteration    2; sweep 1
++time 20230101.130000   , step     13; iteration    2; sweep 2
++time 20230101.130000   , step     13; iteration    2; sweep 3
++time 20230101.130000   , step     13; iteration    2; sweep 4
++time 20230101.130000   , step     13; iteration    3; sweep 1
++time 20230101.130000   , step     13; iteration    3; sweep 2
++time 20230101.130000   , step     13; iteration    3; sweep 3
++time 20230101.130000   , step     13; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.140000   , step     14; iteration    1; sweep 1
++time 20230101.140000   , step     14; iteration    1; sweep 2
++time 20230101.140000   , step     14; iteration    1; sweep 3
++time 20230101.140000   , step     14; iteration    1; sweep 4
++time 20230101.140000   , step     14; iteration    2; sweep 1
++time 20230101.140000   , step     14; iteration    2; sweep 2
++time 20230101.140000   , step     14; iteration    2; sweep 3
++time 20230101.140000   , step     14; iteration    2; sweep 4
++time 20230101.140000   , step     14; iteration    3; sweep 1
++time 20230101.140000   , step     14; iteration    3; sweep 2
++time 20230101.140000   , step     14; iteration    3; sweep 3
++time 20230101.140000   , step     14; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.150000   , step     15; iteration    1; sweep 1
++time 20230101.150000   , step     15; iteration    1; sweep 2
++time 20230101.150000   , step     15; iteration    1; sweep 3
++time 20230101.150000   , step     15; iteration    1; sweep 4
++time 20230101.150000   , step     15; iteration    2; sweep 1
++time 20230101.150000   , step     15; iteration    2; sweep 2
++time 20230101.150000   , step     15; iteration    2; sweep 3
++time 20230101.150000   , step     15; iteration    2; sweep 4
++time 20230101.150000   , step     15; iteration    3; sweep 1
++time 20230101.150000   , step     15; iteration    3; sweep 2
++time 20230101.150000   , step     15; iteration    3; sweep 3
++time 20230101.150000   , step     15; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.160000   , step     16; iteration    1; sweep 1
++time 20230101.160000   , step     16; iteration    1; sweep 2
++time 20230101.160000   , step     16; iteration    1; sweep 3
++time 20230101.160000   , step     16; iteration    1; sweep 4
++time 20230101.160000   , step     16; iteration    2; sweep 1
++time 20230101.160000   , step     16; iteration    2; sweep 2
++time 20230101.160000   , step     16; iteration    2; sweep 3
++time 20230101.160000   , step     16; iteration    2; sweep 4
++time 20230101.160000   , step     16; iteration    3; sweep 1
++time 20230101.160000   , step     16; iteration    3; sweep 2
++time 20230101.160000   , step     16; iteration    3; sweep 3
++time 20230101.160000   , step     16; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.170000   , step     17; iteration    1; sweep 1
++time 20230101.170000   , step     17; iteration    1; sweep 2
++time 20230101.170000   , step     17; iteration    1; sweep 3
++time 20230101.170000   , step     17; iteration    1; sweep 4
++time 20230101.170000   , step     17; iteration    2; sweep 1
++time 20230101.170000   , step     17; iteration    2; sweep 2
++time 20230101.170000   , step     17; iteration    2; sweep 3
++time 20230101.170000   , step     17; iteration    2; sweep 4
++time 20230101.170000   , step     17; iteration    3; sweep 1
++time 20230101.170000   , step     17; iteration    3; sweep 2
++time 20230101.170000   , step     17; iteration    3; sweep 3
++time 20230101.170000   , step     17; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.180000   , step     18; iteration    1; sweep 1
++time 20230101.180000   , step     18; iteration    1; sweep 2
++time 20230101.180000   , step     18; iteration    1; sweep 3
++time 20230101.180000   , step     18; iteration    1; sweep 4
++time 20230101.180000   , step     18; iteration    2; sweep 1
++time 20230101.180000   , step     18; iteration    2; sweep 2
++time 20230101.180000   , step     18; iteration    2; sweep 3
++time 20230101.180000   , step     18; iteration    2; sweep 4
++time 20230101.180000   , step     18; iteration    3; sweep 1
++time 20230101.180000   , step     18; iteration    3; sweep 2
++time 20230101.180000   , step     18; iteration    3; sweep 3
++time 20230101.180000   , step     18; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.190000   , step     19; iteration    1; sweep 1
++time 20230101.190000   , step     19; iteration    1; sweep 2
++time 20230101.190000   , step     19; iteration    1; sweep 3
++time 20230101.190000   , step     19; iteration    1; sweep 4
++time 20230101.190000   , step     19; iteration    2; sweep 1
++time 20230101.190000   , step     19; iteration    2; sweep 2
++time 20230101.190000   , step     19; iteration    2; sweep 3
++time 20230101.190000   , step     19; iteration    2; sweep 4
++time 20230101.190000   , step     19; iteration    3; sweep 1
++time 20230101.190000   , step     19; iteration    3; sweep 2
++time 20230101.190000   , step     19; iteration    3; sweep 3
++time 20230101.190000   , step     19; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.200000   , step     20; iteration    1; sweep 1
++time 20230101.200000   , step     20; iteration    1; sweep 2
++time 20230101.200000   , step     20; iteration    1; sweep 3
++time 20230101.200000   , step     20; iteration    1; sweep 4
++time 20230101.200000   , step     20; iteration    2; sweep 1
++time 20230101.200000   , step     20; iteration    2; sweep 2
++time 20230101.200000   , step     20; iteration    2; sweep 3
++time 20230101.200000   , step     20; iteration    2; sweep 4
++time 20230101.200000   , step     20; iteration    3; sweep 1
++time 20230101.200000   , step     20; iteration    3; sweep 2
++time 20230101.200000   , step     20; iteration    3; sweep 3
++time 20230101.200000   , step     20; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.210000   , step     21; iteration    1; sweep 1
++time 20230101.210000   , step     21; iteration    1; sweep 2
++time 20230101.210000   , step     21; iteration    1; sweep 3
++time 20230101.210000   , step     21; iteration    1; sweep 4
++time 20230101.210000   , step     21; iteration    2; sweep 1
++time 20230101.210000   , step     21; iteration    2; sweep 2
++time 20230101.210000   , step     21; iteration    2; sweep 3
++time 20230101.210000   , step     21; iteration    2; sweep 4
++time 20230101.210000   , step     21; iteration    3; sweep 1
++time 20230101.210000   , step     21; iteration    3; sweep 2
++time 20230101.210000   , step     21; iteration    3; sweep 3
++time 20230101.210000   , step     21; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.220000   , step     22; iteration    1; sweep 1
++time 20230101.220000   , step     22; iteration    1; sweep 2
++time 20230101.220000   , step     22; iteration    1; sweep 3
++time 20230101.220000   , step     22; iteration    1; sweep 4
++time 20230101.220000   , step     22; iteration    2; sweep 1
++time 20230101.220000   , step     22; iteration    2; sweep 2
++time 20230101.220000   , step     22; iteration    2; sweep 3
++time 20230101.220000   , step     22; iteration    2; sweep 4
++time 20230101.220000   , step     22; iteration    3; sweep 1
++time 20230101.220000   , step     22; iteration    3; sweep 2
++time 20230101.220000   , step     22; iteration    3; sweep 3
++time 20230101.220000   , step     22; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230101.230000   , step     23; iteration    1; sweep 1
++time 20230101.230000   , step     23; iteration    1; sweep 2
++time 20230101.230000   , step     23; iteration    1; sweep 3
++time 20230101.230000   , step     23; iteration    1; sweep 4
++time 20230101.230000   , step     23; iteration    2; sweep 1
++time 20230101.230000   , step     23; iteration    2; sweep 2
++time 20230101.230000   , step     23; iteration    2; sweep 3
++time 20230101.230000   , step     23; iteration    2; sweep 4
++time 20230101.230000   , step     23; iteration    3; sweep 1
++time 20230101.230000   , step     23; iteration    3; sweep 2
++time 20230101.230000   , step     23; iteration    3; sweep 3
++time 20230101.230000   , step     23; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
++time 20230102.000000   , step     24; iteration    1; sweep 1
++time 20230102.000000   , step     24; iteration    1; sweep 2
++time 20230102.000000   , step     24; iteration    1; sweep 3
++time 20230102.000000   , step     24; iteration    1; sweep 4
++time 20230102.000000   , step     24; iteration    2; sweep 1
++time 20230102.000000   , step     24; iteration    2; sweep 2
++time 20230102.000000   , step     24; iteration    2; sweep 3
++time 20230102.000000   , step     24; iteration    2; sweep 4
++time 20230102.000000   , step     24; iteration    3; sweep 1
++time 20230102.000000   , step     24; iteration    3; sweep 2
++time 20230102.000000   , step     24; iteration    3; sweep 3
++time 20230102.000000   , step     24; iteration    3; sweep 4
++SWAN is processing output request    1
++SWAN is processing output request    2
++SWAN is processing output request    3
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Plot-outputs">
+<h2>Plot outputs<a class="headerlink" href="#Plot-outputs" title="Link to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">from</span> <span class="nn">wavespectra</span> <span class="kn">import</span> <span class="n">read_ncswan</span>
+<span class="kn">from</span> <span class="nn">wavespectra.core.swan</span> <span class="kn">import</span> <span class="n">read_tab</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.notebook_repr_html&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modeldir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">run</span><span class="o">.</span><span class="n">run_id</span>
+
+<span class="nb">sorted</span><span class="p">(</span><span class="n">modeldir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[PosixPath(&#39;example_declarative/run1/INPUT&#39;),
+ PosixPath(&#39;example_declarative/run1/PRINT&#39;),
+ PosixPath(&#39;example_declarative/run1/bottom.grd&#39;),
+ PosixPath(&#39;example_declarative/run1/hotfile_20230102T000000.txt&#39;),
+ PosixPath(&#39;example_declarative/run1/norm_end&#39;),
+ PosixPath(&#39;example_declarative/run1/swangrid.nc&#39;),
+ PosixPath(&#39;example_declarative/run1/swaninit&#39;),
+ PosixPath(&#39;example_declarative/run1/swanspec.nc&#39;),
+ PosixPath(&#39;example_declarative/run1/swantable.txt&#39;),
+ PosixPath(&#39;example_declarative/run1/wind.grd&#39;)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gridded output</span>
+
+<span class="n">dsgrid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">modeldir</span> <span class="o">/</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">dsgrid</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:    (time: 25, yc: 25, xc: 15)
+Coordinates:
+  * time       (time) datetime64[ns] 2023-01-01 ... 2023-01-02
+    longitude  (yc, xc) float32 ...
+    latitude   (yc, xc) float32 ...
+Dimensions without coordinates: yc, xc
+Data variables:
+    depth      (time, yc, xc) float32 ...
+    xwnd       (time, yc, xc) float32 ...
+    ywnd       (time, yc, xc) float32 ...
+    hs         (time, yc, xc) float32 ...
+    tps        (time, yc, xc) float32 ...
+    theta0     (time, yc, xc) float32 ...
+Attributes:
+    Conventions:             CF-1.5
+    History:                 Created with agioncmd version 1.5
+    Directional_convention:  nautical
+    project:                 Test declarative
+    run:                     run1</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-3c593e1d-82aa-476c-94d4-880918ffbbe8' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-3c593e1d-82aa-476c-94d4-880918ffbbe8' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>time</span>: 25</li><li><span>yc</span>: 25</li><li><span>xc</span>: 15</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-b2d7243f-a60d-4e72-aa43-6a09e64675fe' class='xr-section-summary-in' type='checkbox'  checked><label for='section-b2d7243f-a60d-4e72-aa43-6a09e64675fe' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>time</span></div><div class='xr-var-dims'>(time)</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>2023-01-01 ... 2023-01-02</div><input id='attrs-70ef6ca9-1d71-4212-8713-3f3346b8d923' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-70ef6ca9-1d71-4212-8713-3f3346b8d923' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-83b32ed8-43c5-47a0-af4c-31f96701a268' class='xr-var-data-in' type='checkbox'><label for='data-83b32ed8-43c5-47a0-af4c-31f96701a268' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>time</dd><dt><span>long_name :</span></dt><dd>time</dd></dl></div><div class='xr-var-data'><pre>array([&#x27;2023-01-01T00:00:00.000000000&#x27;, &#x27;2023-01-01T01:00:00.000000000&#x27;,
+       &#x27;2023-01-01T02:00:00.000000000&#x27;, &#x27;2023-01-01T03:00:00.000000000&#x27;,
+       &#x27;2023-01-01T04:00:00.000000000&#x27;, &#x27;2023-01-01T05:00:00.000000000&#x27;,
+       &#x27;2023-01-01T06:00:00.000000000&#x27;, &#x27;2023-01-01T07:00:00.000000000&#x27;,
+       &#x27;2023-01-01T08:00:00.000000000&#x27;, &#x27;2023-01-01T09:00:00.000000000&#x27;,
+       &#x27;2023-01-01T10:00:00.000000000&#x27;, &#x27;2023-01-01T11:00:00.000000000&#x27;,
+       &#x27;2023-01-01T12:00:00.000000000&#x27;, &#x27;2023-01-01T13:00:00.000000000&#x27;,
+       &#x27;2023-01-01T14:00:00.000000000&#x27;, &#x27;2023-01-01T15:00:00.000000000&#x27;,
+       &#x27;2023-01-01T16:00:00.000000000&#x27;, &#x27;2023-01-01T17:00:00.000000000&#x27;,
+       &#x27;2023-01-01T18:00:00.000000000&#x27;, &#x27;2023-01-01T19:00:00.000000000&#x27;,
+       &#x27;2023-01-01T20:00:00.000000000&#x27;, &#x27;2023-01-01T21:00:00.000000000&#x27;,
+       &#x27;2023-01-01T22:00:00.000000000&#x27;, &#x27;2023-01-01T23:00:00.000000000&#x27;,
+       &#x27;2023-01-02T00:00:00.000000000&#x27;], dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>longitude</span></div><div class='xr-var-dims'>(yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-09369d63-d4be-4994-8492-7cfb0d946e1a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-09369d63-d4be-4994-8492-7cfb0d946e1a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d56945c2-88fe-4673-88e9-ab6fafa3ca12' class='xr-var-data-in' type='checkbox'><label for='data-d56945c2-88fe-4673-88e9-ab6fafa3ca12' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd><dt><span>long_name :</span></dt><dd>longitude</dd><dt><span>standard_name :</span></dt><dd>longitude</dd></dl></div><div class='xr-var-data'><pre>[375 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>latitude</span></div><div class='xr-var-dims'>(yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-7584d62b-2cbd-499f-8c3c-5d0a2491dcdf' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7584d62b-2cbd-499f-8c3c-5d0a2491dcdf' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5aadc905-30e8-4a47-96fe-e270ad15264c' class='xr-var-data-in' type='checkbox'><label for='data-5aadc905-30e8-4a47-96fe-e270ad15264c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd><dt><span>long_name :</span></dt><dd>latitude</dd><dt><span>standard_name :</span></dt><dd>latitude</dd></dl></div><div class='xr-var-data'><pre>[375 values with dtype=float32]</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-f31f6cde-6a71-4178-b420-6de4f54fae41' class='xr-section-summary-in' type='checkbox'  checked><label for='section-f31f6cde-6a71-4178-b420-6de4f54fae41' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>depth</span></div><div class='xr-var-dims'>(time, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-eea6e925-c5e1-4b03-9f4d-a18efad7c8c8' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-eea6e925-c5e1-4b03-9f4d-a18efad7c8c8' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-97aa4b02-09cb-4b95-85fa-510b2632c332' class='xr-var-data-in' type='checkbox'><label for='data-97aa4b02-09cb-4b95-85fa-510b2632c332' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m</dd><dt><span>standard_name :</span></dt><dd>sea_floor_depth_below_sea_level</dd><dt><span>long_name :</span></dt><dd>depth below mean sea level</dd></dl></div><div class='xr-var-data'><pre>[9375 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>xwnd</span></div><div class='xr-var-dims'>(time, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-949267f2-0e24-4619-a3ca-a11d35d6ce83' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-949267f2-0e24-4619-a3ca-a11d35d6ce83' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-95c8d326-82c1-437e-b32c-1e2a09ca892e' class='xr-var-data-in' type='checkbox'><label for='data-95c8d326-82c1-437e-b32c-1e2a09ca892e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m s-1</dd><dt><span>standard_name :</span></dt><dd>eastward_wind</dd><dt><span>long_name :</span></dt><dd>U-Component of Wind</dd></dl></div><div class='xr-var-data'><pre>[9375 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>ywnd</span></div><div class='xr-var-dims'>(time, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-fd41d6c8-c8ff-4c6a-a869-4d47407cbafe' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-fd41d6c8-c8ff-4c6a-a869-4d47407cbafe' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-132be061-239a-4da7-bcd6-20974d0b32d5' class='xr-var-data-in' type='checkbox'><label for='data-132be061-239a-4da7-bcd6-20974d0b32d5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m s-1</dd><dt><span>standard_name :</span></dt><dd>northward_wind</dd><dt><span>long_name :</span></dt><dd>V-Component of Wind</dd></dl></div><div class='xr-var-data'><pre>[9375 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>hs</span></div><div class='xr-var-dims'>(time, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-e6d43eec-b263-47ae-b8a4-46d8d87ec3d3' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-e6d43eec-b263-47ae-b8a4-46d8d87ec3d3' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-2fcd4b9e-dcde-474e-a68c-295020432bcb' class='xr-var-data-in' type='checkbox'><label for='data-2fcd4b9e-dcde-474e-a68c-295020432bcb' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m</dd><dt><span>standard_name :</span></dt><dd>sea_surface_wave_significant_height</dd><dt><span>long_name :</span></dt><dd>hs</dd></dl></div><div class='xr-var-data'><pre>[9375 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>tps</span></div><div class='xr-var-dims'>(time, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-241dca3b-83cd-41cf-9758-e6139c1c9031' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-241dca3b-83cd-41cf-9758-e6139c1c9031' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-13868829-72dd-4064-832a-0ebdc5f82ed2' class='xr-var-data-in' type='checkbox'><label for='data-13868829-72dd-4064-832a-0ebdc5f82ed2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>s</dd><dt><span>long_name :</span></dt><dd>tps</dd></dl></div><div class='xr-var-data'><pre>[9375 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>theta0</span></div><div class='xr-var-dims'>(time, yc, xc)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-18ee3cce-b12a-45d5-9b8e-5e378de68ae1' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-18ee3cce-b12a-45d5-9b8e-5e378de68ae1' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7eda3a7c-3330-43ee-b53a-53561b34e066' class='xr-var-data-in' type='checkbox'><label for='data-7eda3a7c-3330-43ee-b53a-53561b34e066' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees</dd><dt><span>standard_name :</span></dt><dd>sea_surface_wave_from_direction</dd><dt><span>long_name :</span></dt><dd>theta0</dd></dl></div><div class='xr-var-data'><pre>[9375 values with dtype=float32]</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-63f892ee-e12c-4f57-8d31-e02bafe5d202' class='xr-section-summary-in' type='checkbox'  ><label for='section-63f892ee-e12c-4f57-8d31-e02bafe5d202' class='xr-section-summary' >Indexes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>time</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-727534a5-6acc-488f-b96f-da811f0b8a3e' class='xr-index-data-in' type='checkbox'/><label for='index-727534a5-6acc-488f-b96f-da811f0b8a3e' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(DatetimeIndex([&#x27;2023-01-01 00:00:00&#x27;, &#x27;2023-01-01 01:00:00&#x27;,
+               &#x27;2023-01-01 02:00:00&#x27;, &#x27;2023-01-01 03:00:00&#x27;,
+               &#x27;2023-01-01 04:00:00&#x27;, &#x27;2023-01-01 05:00:00&#x27;,
+               &#x27;2023-01-01 06:00:00&#x27;, &#x27;2023-01-01 07:00:00&#x27;,
+               &#x27;2023-01-01 08:00:00&#x27;, &#x27;2023-01-01 09:00:00&#x27;,
+               &#x27;2023-01-01 10:00:00&#x27;, &#x27;2023-01-01 11:00:00&#x27;,
+               &#x27;2023-01-01 12:00:00&#x27;, &#x27;2023-01-01 13:00:00&#x27;,
+               &#x27;2023-01-01 14:00:00&#x27;, &#x27;2023-01-01 15:00:00&#x27;,
+               &#x27;2023-01-01 16:00:00&#x27;, &#x27;2023-01-01 17:00:00&#x27;,
+               &#x27;2023-01-01 18:00:00&#x27;, &#x27;2023-01-01 19:00:00&#x27;,
+               &#x27;2023-01-01 20:00:00&#x27;, &#x27;2023-01-01 21:00:00&#x27;,
+               &#x27;2023-01-01 22:00:00&#x27;, &#x27;2023-01-01 23:00:00&#x27;,
+               &#x27;2023-01-02 00:00:00&#x27;],
+              dtype=&#x27;datetime64[ns]&#x27;, name=&#x27;time&#x27;, freq=None))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-7f08f101-85d8-4f2c-8fec-1d373e77ca5b' class='xr-section-summary-in' type='checkbox'  checked><label for='section-7f08f101-85d8-4f2c-8fec-1d373e77ca5b' class='xr-section-summary' >Attributes: <span>(5)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>Conventions :</span></dt><dd>CF-1.5</dd><dt><span>History :</span></dt><dd>Created with agioncmd version 1.5</dd><dt><span>Directional_convention :</span></dt><dd>nautical</dd><dt><span>project :</span></dt><dd>Test declarative</dd><dt><span>run :</span></dt><dd>run1</dd></dl></div></li></ul></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Spectra output</span>
+
+<span class="n">dspec</span> <span class="o">=</span> <span class="n">read_ncswan</span><span class="p">(</span><span class="n">modeldir</span> <span class="o">/</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">specout</span><span class="o">.</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">dspec</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:  (time: 25, site: 3, freq: 35, dir: 36)
+Coordinates:
+  * time     (time) datetime64[ns] 2023-01-01 2023-01-01T01:00:00 ... 2023-01-02
+  * freq     (freq) float32 0.04 0.04397 0.04834 0.05314 ... 0.8275 0.9097 1.0
+  * dir      (dir) float32 261.0 251.0 241.0 231.0 ... 301.0 291.0 281.0 271.0
+  * site     (site) int64 1 2 3
+Data variables:
+    lon      (site) float32 dask.array&lt;chunksize=(3,), meta=np.ndarray&gt;
+    lat      (site) float32 dask.array&lt;chunksize=(3,), meta=np.ndarray&gt;
+    efth     (time, site, freq, dir) float32 dask.array&lt;chunksize=(25, 3, 35, 36), meta=np.ndarray&gt;
+    dpt      (time, site) float32 dask.array&lt;chunksize=(25, 3), meta=np.ndarray&gt;
+    wspd     (time, site) float32 dask.array&lt;chunksize=(25, 3), meta=np.ndarray&gt;
+    wdir     (time, site) float32 dask.array&lt;chunksize=(25, 3), meta=np.ndarray&gt;
+Attributes:
+    Conventions:             CF-1.5
+    History:                 Created with agioncmd version 1.5
+    Directional_convention:  nautical
+    project:                 Test declarative
+    model:                   41.41
+    run:                     run1</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-d3d1a512-0aa2-4f10-ad45-36db8e258f5c' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-d3d1a512-0aa2-4f10-ad45-36db8e258f5c' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>time</span>: 25</li><li><span class='xr-has-index'>site</span>: 3</li><li><span class='xr-has-index'>freq</span>: 35</li><li><span class='xr-has-index'>dir</span>: 36</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-c712c4cc-5a0e-4fdb-b09a-5264321ddcc2' class='xr-section-summary-in' type='checkbox'  checked><label for='section-c712c4cc-5a0e-4fdb-b09a-5264321ddcc2' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>time</span></div><div class='xr-var-dims'>(time)</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>2023-01-01 ... 2023-01-02</div><input id='attrs-7a6b4d52-0a67-4ada-8db1-69f4051786bd' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7a6b4d52-0a67-4ada-8db1-69f4051786bd' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-16bcaf68-250e-425e-814b-025785f1eecc' class='xr-var-data-in' type='checkbox'><label for='data-16bcaf68-250e-425e-814b-025785f1eecc' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>time</dd></dl></div><div class='xr-var-data'><pre>array([&#x27;2023-01-01T00:00:00.000000000&#x27;, &#x27;2023-01-01T01:00:00.000000000&#x27;,
+       &#x27;2023-01-01T02:00:00.000000000&#x27;, &#x27;2023-01-01T03:00:00.000000000&#x27;,
+       &#x27;2023-01-01T04:00:00.000000000&#x27;, &#x27;2023-01-01T05:00:00.000000000&#x27;,
+       &#x27;2023-01-01T06:00:00.000000000&#x27;, &#x27;2023-01-01T07:00:00.000000000&#x27;,
+       &#x27;2023-01-01T08:00:00.000000000&#x27;, &#x27;2023-01-01T09:00:00.000000000&#x27;,
+       &#x27;2023-01-01T10:00:00.000000000&#x27;, &#x27;2023-01-01T11:00:00.000000000&#x27;,
+       &#x27;2023-01-01T12:00:00.000000000&#x27;, &#x27;2023-01-01T13:00:00.000000000&#x27;,
+       &#x27;2023-01-01T14:00:00.000000000&#x27;, &#x27;2023-01-01T15:00:00.000000000&#x27;,
+       &#x27;2023-01-01T16:00:00.000000000&#x27;, &#x27;2023-01-01T17:00:00.000000000&#x27;,
+       &#x27;2023-01-01T18:00:00.000000000&#x27;, &#x27;2023-01-01T19:00:00.000000000&#x27;,
+       &#x27;2023-01-01T20:00:00.000000000&#x27;, &#x27;2023-01-01T21:00:00.000000000&#x27;,
+       &#x27;2023-01-01T22:00:00.000000000&#x27;, &#x27;2023-01-01T23:00:00.000000000&#x27;,
+       &#x27;2023-01-02T00:00:00.000000000&#x27;], dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>freq</span></div><div class='xr-var-dims'>(freq)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>0.04 0.04397 0.04834 ... 0.9097 1.0</div><input id='attrs-c867f89b-291d-4da2-b099-7ccfbc07b64b' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-c867f89b-291d-4da2-b099-7ccfbc07b64b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9d2fc553-ae65-4728-b59c-492eca88e353' class='xr-var-data-in' type='checkbox'><label for='data-9d2fc553-ae65-4728-b59c-492eca88e353' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_surface_wave_frequency</dd><dt><span>units :</span></dt><dd>Hz</dd></dl></div><div class='xr-var-data'><pre>array([0.04    , 0.043972, 0.048338, 0.053138, 0.058415, 0.064215, 0.070592,
+       0.077602, 0.085307, 0.093778, 0.103091, 0.113327, 0.124581, 0.136951,
+       0.15055 , 0.1655  , 0.181934, 0.2     , 0.21986 , 0.241692, 0.265691,
+       0.292074, 0.321077, 0.35296 , 0.388008, 0.426537, 0.468892, 0.515452,
+       0.566636, 0.622902, 0.684756, 0.752752, 0.827499, 0.909669, 0.999999],
+      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>dir</span></div><div class='xr-var-dims'>(dir)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>261.0 251.0 241.0 ... 281.0 271.0</div><input id='attrs-2e67f57d-ec8e-484b-ae67-e9c378f0358a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-2e67f57d-ec8e-484b-ae67-e9c378f0358a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0f77468b-1f5e-4861-bc8d-394566dc5ce0' class='xr-var-data-in' type='checkbox'><label for='data-0f77468b-1f5e-4861-bc8d-394566dc5ce0' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_surface_wave_from_direction</dd><dt><span>units :</span></dt><dd>degree</dd></dl></div><div class='xr-var-data'><pre>array([261.      , 251.      , 241.      , 231.      , 221.      , 211.      ,
+       201.      , 191.      , 181.      , 171.      , 160.99998 , 151.      ,
+       141.      , 131.      , 120.999985, 110.999985, 100.99999 ,  90.99999 ,
+        80.99999 ,  70.999985,  60.999985,  50.999985,  40.99999 ,  30.999989,
+        20.99999 ,  10.999992,   0.999994, 350.99997 , 340.99997 , 330.99997 ,
+       320.99997 , 310.99997 , 300.99997 , 290.99997 , 281.      , 271.      ],
+      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>site</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1 2 3</div><input id='attrs-dd70076d-9a21-422a-b49c-806b69dd7d84' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-dd70076d-9a21-422a-b49c-806b69dd7d84' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f9f3770a-3761-48f8-8890-51b600d44e99' class='xr-var-data-in' type='checkbox'><label for='data-f9f3770a-3761-48f8-8890-51b600d44e99' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>site</dd><dt><span>units :</span></dt><dd></dd></dl></div><div class='xr-var-data'><pre>array([1, 2, 3])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-18dac5e7-e621-4ae4-953e-89add421fe27' class='xr-section-summary-in' type='checkbox'  checked><label for='section-18dac5e7-e621-4ae4-953e-89add421fe27' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(3,), meta=np.ndarray&gt;</div><input id='attrs-8f268988-c6c4-4dcd-ac25-d64aeede2c85' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-8f268988-c6c4-4dcd-ac25-d64aeede2c85' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f9a1873a-576a-4183-8e10-947f8f83ba2e' class='xr-var-data-in' type='checkbox'><label for='data-f9a1873a-576a-4183-8e10-947f8f83ba2e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>longitude</dd><dt><span>units :</span></dt><dd>degrees_east</dd></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 12 B </td>
+                        <td> 12 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (3,) </td>
+                        <td> (3,) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 1 chunks in 2 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="170" height="93" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="43" x2="120" y2="43" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="43" style="stroke-width:2" />
+  <line x1="120" y1="0" x2="120" y2="43" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 120.0,0.0 120.0,43.88583450710766 0.0,43.88583450710766" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="63.885835" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="140.000000" y="21.942917" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,21.942917)">1</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(3,), meta=np.ndarray&gt;</div><input id='attrs-9d7de16a-2573-4aaa-9b65-b5dcbb5ebec5' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-9d7de16a-2573-4aaa-9b65-b5dcbb5ebec5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d1d67479-b509-4d3c-8fb6-5268e76ddbb9' class='xr-var-data-in' type='checkbox'><label for='data-d1d67479-b509-4d3c-8fb6-5268e76ddbb9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>latitude</dd><dt><span>units :</span></dt><dd>degrees_north</dd></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 12 B </td>
+                        <td> 12 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (3,) </td>
+                        <td> (3,) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 1 chunks in 2 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="170" height="93" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="43" x2="120" y2="43" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="43" style="stroke-width:2" />
+  <line x1="120" y1="0" x2="120" y2="43" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 120.0,0.0 120.0,43.88583450710766 0.0,43.88583450710766" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="60.000000" y="63.885835" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="140.000000" y="21.942917" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,21.942917)">1</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>efth</span></div><div class='xr-var-dims'>(time, site, freq, dir)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(25, 3, 35, 36), meta=np.ndarray&gt;</div><input id='attrs-d81ad259-2258-4759-a30f-54941fae7199' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-d81ad259-2258-4759-a30f-54941fae7199' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-aad551cc-ad54-4c7e-b12d-23330e3a804f' class='xr-var-data-in' type='checkbox'><label for='data-aad551cc-ad54-4c7e-b12d-23330e3a804f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_surface_wave_directional_variance_spectral_density</dd><dt><span>units :</span></dt><dd>m2 s degree-1</dd></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 369.14 kiB </td>
+                        <td> 369.14 kiB </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (25, 3, 35, 36) </td>
+                        <td> (25, 3, 35, 36) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 1 chunks in 3 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="498" height="188" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="83" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="30" x2="83" y2="30" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="30" style="stroke-width:2" />
+  <line x1="83" y1="0" x2="83" y2="30" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 83.33333333333334,0.0 83.33333333333334,30.931822596185057 0.0,30.931822596185057" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="41.666667" y="50.931823" font-size="1.0rem" font-weight="100" text-anchor="middle" >25</text>
+  <text x="103.333333" y="15.465911" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,103.333333,15.465911)">1</text>
+
+
+  <!-- Horizontal lines -->
+  <line x1="153" y1="0" x2="175" y2="22" style="stroke-width:2" />
+  <line x1="153" y1="116" x2="175" y2="138" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="153" y1="0" x2="153" y2="116" style="stroke-width:2" />
+  <line x1="175" y1="22" x2="175" y2="138" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="153.0,0.0 175.09622738579822,22.096227385798212 175.09622738579822,138.76289405246487 153.0,116.66666666666667" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Horizontal lines -->
+  <line x1="153" y1="0" x2="273" y2="0" style="stroke-width:2" />
+  <line x1="175" y1="22" x2="295" y2="22" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="153" y1="0" x2="175" y2="22" style="stroke-width:2" />
+  <line x1="273" y1="0" x2="295" y2="22" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="153.0,0.0 273.0,0.0 295.0962273857982,22.096227385798212 175.09622738579822,22.096227385798212" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Horizontal lines -->
+  <line x1="175" y1="22" x2="295" y2="22" style="stroke-width:2" />
+  <line x1="175" y1="138" x2="295" y2="138" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="175" y1="22" x2="175" y2="138" style="stroke-width:2" />
+  <line x1="295" y1="22" x2="295" y2="138" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="175.09622738579822,22.096227385798212 295.0962273857982,22.096227385798212 295.0962273857982,138.76289405246487 175.09622738579822,138.76289405246487" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="235.096227" y="158.762894" font-size="1.0rem" font-weight="100" text-anchor="middle" >36</text>
+  <text x="315.096227" y="80.429561" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,315.096227,80.429561)">35</text>
+  <text x="154.048114" y="147.714780" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(45,154.048114,147.714780)">3</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>dpt</span></div><div class='xr-var-dims'>(time, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(25, 3), meta=np.ndarray&gt;</div><input id='attrs-1486904f-2eba-4406-97e3-3e6321a53f6a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-1486904f-2eba-4406-97e3-3e6321a53f6a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1b4b744a-f4e0-4b18-b20f-70df5350d2a5' class='xr-var-data-in' type='checkbox'><label for='data-1b4b744a-f4e0-4b18-b20f-70df5350d2a5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_floor_depth_below_sea_surface</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 300 B </td>
+                        <td> 300 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (25, 3) </td>
+                        <td> (25, 3) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 1 chunks in 2 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="89" height="170" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="39" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="120" x2="39" y2="120" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="120" style="stroke-width:2" />
+  <line x1="39" y1="0" x2="39" y2="120" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 39.58119518571221,0.0 39.58119518571221,120.0 0.0,120.0" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="19.790598" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="59.581195" y="60.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,59.581195,60.000000)">25</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>wspd</span></div><div class='xr-var-dims'>(time, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(25, 3), meta=np.ndarray&gt;</div><input id='attrs-3919c445-07b6-41ba-9a61-f2858f5dc66a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-3919c445-07b6-41ba-9a61-f2858f5dc66a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-2345c979-0077-4d94-8ef9-90e6d0f29342' class='xr-var-data-in' type='checkbox'><label for='data-2345c979-0077-4d94-8ef9-90e6d0f29342' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>wind_speed_at_10m_above_ground_level</dd><dt><span>units :</span></dt><dd>m s-1</dd></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 300 B </td>
+                        <td> 300 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (25, 3) </td>
+                        <td> (25, 3) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 1 chunks in 8 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="89" height="170" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="39" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="120" x2="39" y2="120" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="120" style="stroke-width:2" />
+  <line x1="39" y1="0" x2="39" y2="120" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 39.58119518571221,0.0 39.58119518571221,120.0 0.0,120.0" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="19.790598" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="59.581195" y="60.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,59.581195,60.000000)">25</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>wdir</span></div><div class='xr-var-dims'>(time, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>dask.array&lt;chunksize=(25, 3), meta=np.ndarray&gt;</div><input id='attrs-5bb178ca-f88b-42e8-bb69-2118cd63e6ab' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-5bb178ca-f88b-42e8-bb69-2118cd63e6ab' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c8cd88a3-e476-4cb2-89d2-cee565585a45' class='xr-var-data-in' type='checkbox'><label for='data-c8cd88a3-e476-4cb2-89d2-cee565585a45' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>wind_from_direction_at_10m_above_ground_level</dd><dt><span>units :</span></dt><dd>degree</dd></dl></div><div class='xr-var-data'><table>
+    <tr>
+        <td>
+            <table style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td> </td>
+                        <th> Array </th>
+                        <th> Chunk </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th> Bytes </th>
+                        <td> 300 B </td>
+                        <td> 300 B </td>
+                    </tr>
+
+                    <tr>
+                        <th> Shape </th>
+                        <td> (25, 3) </td>
+                        <td> (25, 3) </td>
+                    </tr>
+                    <tr>
+                        <th> Dask graph </th>
+                        <td colspan="2"> 1 chunks in 8 graph layers </td>
+                    </tr>
+                    <tr>
+                        <th> Data type </th>
+                        <td colspan="2"> float32 numpy.ndarray </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+        <svg width="89" height="170" style="stroke:rgb(0,0,0);stroke-width:1" >
+
+  <!-- Horizontal lines -->
+  <line x1="0" y1="0" x2="39" y2="0" style="stroke-width:2" />
+  <line x1="0" y1="120" x2="39" y2="120" style="stroke-width:2" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="120" style="stroke-width:2" />
+  <line x1="39" y1="0" x2="39" y2="120" style="stroke-width:2" />
+
+  <!-- Colored Rectangle -->
+  <polygon points="0.0,0.0 39.58119518571221,0.0 39.58119518571221,120.0 0.0,120.0" style="fill:#ECB172A0;stroke-width:0"/>
+
+  <!-- Text -->
+  <text x="19.790598" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" >3</text>
+  <text x="59.581195" y="60.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,59.581195,60.000000)">25</text>
+</svg>
+        </td>
+    </tr>
+</table></div></li></ul></div></li><li class='xr-section-item'><input id='section-91673118-e9a1-4bba-93c9-c7904bae2a13' class='xr-section-summary-in' type='checkbox'  ><label for='section-91673118-e9a1-4bba-93c9-c7904bae2a13' class='xr-section-summary' >Indexes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>time</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-94b1f701-15a4-4793-bc89-339f9aafd75e' class='xr-index-data-in' type='checkbox'/><label for='index-94b1f701-15a4-4793-bc89-339f9aafd75e' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(DatetimeIndex([&#x27;2023-01-01 00:00:00&#x27;, &#x27;2023-01-01 01:00:00&#x27;,
+               &#x27;2023-01-01 02:00:00&#x27;, &#x27;2023-01-01 03:00:00&#x27;,
+               &#x27;2023-01-01 04:00:00&#x27;, &#x27;2023-01-01 05:00:00&#x27;,
+               &#x27;2023-01-01 06:00:00&#x27;, &#x27;2023-01-01 07:00:00&#x27;,
+               &#x27;2023-01-01 08:00:00&#x27;, &#x27;2023-01-01 09:00:00&#x27;,
+               &#x27;2023-01-01 10:00:00&#x27;, &#x27;2023-01-01 11:00:00&#x27;,
+               &#x27;2023-01-01 12:00:00&#x27;, &#x27;2023-01-01 13:00:00&#x27;,
+               &#x27;2023-01-01 14:00:00&#x27;, &#x27;2023-01-01 15:00:00&#x27;,
+               &#x27;2023-01-01 16:00:00&#x27;, &#x27;2023-01-01 17:00:00&#x27;,
+               &#x27;2023-01-01 18:00:00&#x27;, &#x27;2023-01-01 19:00:00&#x27;,
+               &#x27;2023-01-01 20:00:00&#x27;, &#x27;2023-01-01 21:00:00&#x27;,
+               &#x27;2023-01-01 22:00:00&#x27;, &#x27;2023-01-01 23:00:00&#x27;,
+               &#x27;2023-01-02 00:00:00&#x27;],
+              dtype=&#x27;datetime64[ns]&#x27;, name=&#x27;time&#x27;, freq=None))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>freq</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-5aba7f99-83cf-4e30-9ab5-25ee98d2d82f' class='xr-index-data-in' type='checkbox'/><label for='index-5aba7f99-83cf-4e30-9ab5-25ee98d2d82f' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([ 0.03999999910593033,   0.0439719632267952,  0.04833833873271942,
+        0.05313829332590103, 0.058414872735738754,  0.06421541422605515,
+        0.07059194892644882,  0.07760166376829147,  0.08530744165182114,
+        0.09377838671207428,  0.10309050232172012,  0.11332729458808899,
+        0.12458059191703796,  0.13695132732391357,   0.1505504697561264,
+         0.1655000001192093,  0.18193399906158447,   0.1999998688697815,
+        0.21985965967178345,  0.24169152975082397,  0.26569128036499023,
+        0.29207417368888855,   0.3210768699645996,   0.3529595136642456,
+         0.3880080580711365,     0.42653688788414,  0.46889159083366394,
+         0.5154520869255066,   0.5666360259056091,   0.6229023933410645,
+         0.6847560405731201,   0.7527517080307007,    0.827499270439148,
+         0.9096691608428955,   0.9999985098838806],
+      dtype=&#x27;float32&#x27;, name=&#x27;freq&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>dir</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-e3fa5fdb-5db2-4631-9897-6f1c5ce76fc1' class='xr-index-data-in' type='checkbox'/><label for='index-e3fa5fdb-5db2-4631-9897-6f1c5ce76fc1' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([             261.0,              251.0,              241.0,
+                    231.0,              221.0,              211.0,
+                    201.0,              191.0,              181.0,
+                    171.0, 160.99998474121094,              151.0,
+                    141.0,              131.0, 120.99998474121094,
+       110.99998474121094, 100.99999237060547,  90.99999237060547,
+        80.99999237060547,  70.99998474121094,  60.99998474121094,
+        50.99998474121094,   40.9999885559082, 30.999988555908203,
+       20.999990463256836, 10.999992370605469, 0.9999943375587463,
+        350.9999694824219,  340.9999694824219,  330.9999694824219,
+        320.9999694824219,  310.9999694824219,  300.9999694824219,
+        290.9999694824219,              281.0,              271.0],
+      dtype=&#x27;float32&#x27;, name=&#x27;dir&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>site</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-fe283e4b-abe8-4d5c-9f19-d68d631131a0' class='xr-index-data-in' type='checkbox'/><label for='index-fe283e4b-abe8-4d5c-9f19-d68d631131a0' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([1, 2, 3], dtype=&#x27;int64&#x27;, name=&#x27;site&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-8892f6c5-5c32-4dcb-ad00-3bb0fa71b25e' class='xr-section-summary-in' type='checkbox'  checked><label for='section-8892f6c5-5c32-4dcb-ad00-3bb0fa71b25e' class='xr-section-summary' >Attributes: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>Conventions :</span></dt><dd>CF-1.5</dd><dt><span>History :</span></dt><dd>Created with agioncmd version 1.5</dd><dt><span>Directional_convention :</span></dt><dd>nautical</dd><dt><span>project :</span></dt><dd>Test declarative</dd><dt><span>model :</span></dt><dd>41.41</dd><dt><span>run :</span></dt><dd>run1</dd></dl></div></li></ul></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;head -n 15 </span><span class="si">{</span><span class="n">modeldir</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">fname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+%
+%
+% Run:run1  Table:pts               SWAN version:41.41
+%
+%       Time               Hsig          Hswell        Dir           TPsmoo        Tm01
+%       [ ]                [m]           [m]           [degr]        [sec]         [sec]
+%
+20230101.000000          0.61126       0.00002       183.186        3.6992        2.7202
+20230101.000000          1.07937       0.03900       176.467        4.9832        3.7063
+20230101.000000         -9.00000      -9.00000        -9.000       -9.0000       -9.0000
+20230101.010000          0.61275       0.00002       182.850        3.7210        2.7083
+20230101.010000          1.07086       0.03935       176.350        5.0704        3.6928
+20230101.010000         -9.00000      -9.00000        -9.000       -9.0000       -9.0000
+20230101.020000          0.61664       0.00002       182.787        3.7145        2.7083
+20230101.020000          1.06328       0.03973       176.565        5.0631        3.6886
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Timeseries output (keep 1st site only)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="n">modeldir</span> <span class="o">/</span> <span class="n">run</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">fname</span><span class="p">)</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+                        Hsig   Hswell      Dir  TPsmoo    Tm01
+time
+2023-01-01 00:00:00  0.61126  0.00002  183.186  3.6992  2.7202
+2023-01-01 01:00:00  0.61275  0.00002  182.850  3.7210  2.7083
+2023-01-01 02:00:00  0.61664  0.00002  182.787  3.7145  2.7083
+2023-01-01 03:00:00  0.61837  0.00001  182.792  3.7198  2.7177
+2023-01-01 04:00:00  0.62287  0.00001  182.762  3.7230  2.7247
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">dsgrid</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_declarative_22_0.png" src="../../_images/notebooks_swan_example_declarative_22_0.png" />
+</div>
+</div>
+<section id="Plot-gridded-Hs">
+<h3>Plot gridded Hs<a class="headerlink" href="#Plot-gridded-Hs" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">dsgrid</span><span class="o">.</span><span class="n">hs</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+    <span class="n">col</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+    <span class="n">col_wrap</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;turbo&quot;</span><span class="p">,</span>
+    <span class="n">subplot_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()),</span>
+<span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">coastlines</span><span class="p">());</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_declarative_24_0.png" src="../../_images/notebooks_swan_example_declarative_24_0.png" />
+</div>
+</div>
+</section>
+<section id="Plot-gridded-u-wind">
+<h3>Plot gridded u-wind<a class="headerlink" href="#Plot-gridded-u-wind" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">dsgrid</span><span class="o">.</span><span class="n">xwnd</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">dsgrid</span><span class="o">.</span><span class="n">xwnd</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">u</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">v</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+    <span class="n">col</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+    <span class="n">col_wrap</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+    <span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Wind speed (m/s)&quot;</span><span class="p">},</span>
+    <span class="n">subplot_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()),</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">time</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">),</span> <span class="n">v</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dspec</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">dspec</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_declarative_26_0.png" src="../../_images/notebooks_swan_example_declarative_26_0.png" />
+</div>
+</div>
+</section>
+<section id="Plot-spectra">
+<h3>Plot spectra<a class="headerlink" href="#Plot-spectra" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">dspec</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">col_wrap</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_declarative_28_0.png" src="../../_images/notebooks_swan_example_declarative_28_0.png" />
+</div>
+</div>
+</section>
+<section id="Plot-timeseries">
+<h3>Plot timeseries<a class="headerlink" href="#Plot-timeseries" title="Link to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">Hsig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;From table&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">dspec</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">hs</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;From spectra&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Hs (m)&quot;</span><span class="p">)</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">TPsmoo</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;From table&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">dspec</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">tp</span><span class="p">(</span><span class="n">smooth</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;From spectra&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Tp (s)&quot;</span><span class="p">)</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_swan_example_declarative_30_0.png" src="../../_images/notebooks_swan_example_declarative_30_0.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../templates_demo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Templates demonstration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../oceanum_example.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Working demonstration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Instantiate-model">Instantiate model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QC-config">QC config</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Run-the-model">Run the model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Check-the-workspace">Check the workspace</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-outputs">Plot outputs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-gridded-Hs">Plot gridded Hs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-gridded-u-wind">Plot gridded u-wind</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-spectra">Plot spectra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-timeseries">Plot timeseries</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/notebooks/swan/example_declarative.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
