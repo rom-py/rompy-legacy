@@ -14,6 +14,7 @@ Sub-commands to support the numerics components
     rompy.swan.subcomponents.numerics.STAT
     rompy.swan.subcomponents.numerics.NONSTAT
     rompy.swan.subcomponents.numerics.STOPC
+    rompy.swan.subcomponents.numerics.ACCUR
     rompy.swan.subcomponents.numerics.DIRIMPL
     rompy.swan.subcomponents.numerics.SIGIMPL
     rompy.swan.subcomponents.numerics.CTHETA

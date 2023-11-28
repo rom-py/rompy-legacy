@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>rompy.swan.components.physics.TRIAD &#8212; rompy 0.1.0 documentation</title>
+    <title>rompy.swan.subcomponents.numerics.ACCUR &#8212; rompy 0.1.0 documentation</title>
   
   
   
@@ -40,11 +40,11 @@
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'swan/components/_generated/rompy.swan.components.physics.TRIAD';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.ACCUR';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="rompy.swan.components.physics.TRIAD_DCTA" href="rompy.swan.components.physics.TRIAD_DCTA.html" />
-    <link rel="prev" title="rompy.swan.components.physics.FRICTION_RIPPLES" href="rompy.swan.components.physics.FRICTION_RIPPLES.html" />
+    <link rel="next" title="rompy.swan.subcomponents.numerics.DIRIMPL" href="rompy.swan.subcomponents.numerics.DIRIMPL.html" />
+    <link rel="prev" title="rompy.swan.subcomponents.numerics.STOPC" href="rompy.swan.subcomponents.numerics.STOPC.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -389,19 +389,20 @@ document.write(`
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">SWAN</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#grid">Grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#data">Data</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#components">Components</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#components">Components</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../startup.html">Startup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../spectrum.html">Spectrum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../time.html">Time</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cgrid.html">Computational grid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../inpgrid.html">Input grids</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../readgrid.html">Grid reader</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../boundary.html">Boundary and initial conditions</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../physics.html">Physics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../numerics.html">Numerics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../physics.html">Physics</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../numerics.html">Numerics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../output.html">Output</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../lockup.html">Lock-up</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../group.html">Group</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../index.html#subcomponents">Subcomponents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#interface">Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../index.html#types">Types</a></li>
 </ul>
@@ -456,9 +457,9 @@ document.write(`
     <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
     
     
-    <li class="breadcrumb-item"><a href="../physics.html" class="nav-link">Physics</a></li>
+    <li class="breadcrumb-item"><a href="../numerics.html" class="nav-link">Numerics</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">rompy.swan.c...</li>
+    <li class="breadcrumb-item active" aria-current="page">rompy.swan.s...</li>
   </ul>
 </nav>
 </div>
@@ -475,113 +476,112 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="rompy-swan-components-physics-triad">
-<h1>rompy.swan.components.physics.TRIAD<a class="headerlink" href="#rompy-swan-components-physics-triad" title="Link to this heading">#</a></h1>
+  <section id="rompy-swan-subcomponents-numerics-accur">
+<h1>rompy.swan.subcomponents.numerics.ACCUR<a class="headerlink" href="#rompy-swan-subcomponents-numerics-accur" title="Link to this heading">#</a></h1>
 <dl class="py class pydantic_model">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.components.physics.</span></span><span class="sig-name descname"><span class="pre">TRIAD</span></span><a class="reference internal" href="../../../_modules/rompy/swan/components/physics.html#TRIAD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.TRIAD" title="Link to this definition">#</a></dt>
-<dd><p>Wave triad interactions.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>TRIAD [itriad] [trfac] [cutfr] [a] [b] [urcrit] [urslim]
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.ACCUR">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.swan.subcomponents.numerics.</span></span><span class="sig-name descname"><span class="pre">ACCUR</span></span><a class="reference internal" href="../../../_modules/rompy/swan/subcomponents/numerics.html#ACCUR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.subcomponents.numerics.ACCUR" title="Link to this definition">#</a></dt>
+<dd><p>Stop the iterative procedure.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ACCUR [drel] [dhoval] [dtoval] [npnts] -&gt;STAT|NONSTAT [limiter]
 </pre></div>
 </div>
-<p>With this command the user can activate the triad wave-wave interactions. If this
-command is not used, SWAN will not account for triads.</p>
+<p>With this option the user can influence the criterion for terminating the iterative
+procedure in the SWAN computations (both stationary and non-stationary modes).
+SWAN stops the iterations if (a), (b) and (c) are all satisfied:</p>
+<ol class="loweralpha simple">
+<li><p>The change in the local significant wave height Hs from one iteration to the
+next is less than (1) fraction <cite>drel</cite> of that height or (2) fraction <cite>dhoval</cite>
+of the average Hs over all grid points.</p></li>
+<li><p>The change in the local mean wave period Tm01 from one iteration to the next is
+less than (1) fraction <cite>drel</cite> of that period or (2) fraction <cite>dtoval</cite> of the
+average mean wave period over all wet grid points.</p></li>
+<li><p>Conditions (a) and (b) are fulfilled in more than fraction <cite>npnts%</cite> of all wet
+grid points.</p></li>
+</ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This is the TRIAD specification in SWAN &lt; 41.45.</p>
+<p>This command has become obsolete in SWAN 41.01. The command STOPC should be used.</p>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [175]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="n">TRIAD</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [276]: </span><span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.numerics</span> <span class="kn">import</span> <span class="n">ACCUR</span>
 
-<span class="gp">In [176]: </span><span class="n">triad</span> <span class="o">=</span> <span class="n">TRIAD</span><span class="p">()</span>
+<span class="gp">In [277]: </span><span class="n">accur</span> <span class="o">=</span> <span class="n">ACCUR</span><span class="p">()</span>
 
-<span class="gp">In [177]: </span><span class="nb">print</span><span class="p">(</span><span class="n">triad</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
-<span class="go">TRIAD</span>
+<span class="gp">In [278]: </span><span class="nb">print</span><span class="p">(</span><span class="n">accur</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">ACCUR</span>
 
-<span class="gp">In [178]: </span><span class="n">triad</span> <span class="o">=</span> <span class="n">TRIAD</span><span class="p">(</span>
-<span class="gp">   .....: </span>    <span class="n">itriad</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">trfac</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">cutfr</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">a</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">b</span><span class="o">=-</span><span class="mf">0.75</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">ucrit</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-<span class="gp">   .....: </span>    <span class="n">urslim</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">In [279]: </span><span class="n">accur</span> <span class="o">=</span> <span class="n">ACCUR</span><span class="p">(</span>
+<span class="gp">   .....: </span>    <span class="n">drel</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">   .....: </span>    <span class="n">dhoval</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+<span class="gp">   .....: </span>    <span class="n">dtoval</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+<span class="gp">   .....: </span>    <span class="n">npnts</span><span class="o">=</span><span class="mf">98.0</span><span class="p">,</span>
+<span class="gp">   .....: </span>    <span class="n">mode</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;nonstat&quot;</span><span class="p">,</span> <span class="n">mxitns</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="gp">   .....: </span>    <span class="n">limiter</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
 <span class="gp">   .....: </span><span class="p">)</span>
 <span class="gp">   .....: </span>
 
-<span class="gp">In [179]: </span><span class="nb">print</span><span class="p">(</span><span class="n">triad</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
-<span class="go">TRIAD itriad=1 trfac=0.8 cutfr=2.5 a=0.95 b=-0.75 urcrit=0.2 urslim=0.01</span>
+<span class="gp">In [280]: </span><span class="nb">print</span><span class="p">(</span><span class="n">accur</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+<span class="go">ACCUR drel=0.01 dhoval=0.02 dtoval=0.02 npnts=98.0 NONSTATIONARY mxitns=1 limiter=0.1</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#rompy.swan.components.physics.TRIAD.a" title="rompy.swan.components.physics.TRIAD.a"><code class="xref py py-obj docutils literal notranslate"><span class="pre">a</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.physics.TRIAD.b" title="rompy.swan.components.physics.TRIAD.b"><code class="xref py py-obj docutils literal notranslate"><span class="pre">b</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.physics.TRIAD.cutfr" title="rompy.swan.components.physics.TRIAD.cutfr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cutfr</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.physics.TRIAD.itriad" title="rompy.swan.components.physics.TRIAD.itriad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">itriad</span> <span class="pre">(Literal[1,</span> <span class="pre">2]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.physics.TRIAD.model_type" title="rompy.swan.components.physics.TRIAD.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['triad',</span> <span class="pre">'TRIAD'])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.physics.TRIAD.trfac" title="rompy.swan.components.physics.TRIAD.trfac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trfac</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.physics.TRIAD.ucrit" title="rompy.swan.components.physics.TRIAD.ucrit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ucrit</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.components.physics.TRIAD.urslim" title="rompy.swan.components.physics.TRIAD.urslim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">urslim</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.ACCUR.dhoval" title="rompy.swan.subcomponents.numerics.ACCUR.dhoval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dhoval</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.ACCUR.drel" title="rompy.swan.subcomponents.numerics.ACCUR.drel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drel</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.ACCUR.dtoval" title="rompy.swan.subcomponents.numerics.ACCUR.dtoval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtoval</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.ACCUR.limiter" title="rompy.swan.subcomponents.numerics.ACCUR.limiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">limiter</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.ACCUR.mode" title="rompy.swan.subcomponents.numerics.ACCUR.mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mode</span> <span class="pre">(rompy.swan.subcomponents.numerics.STAT</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.numerics.NONSTAT</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.ACCUR.model_type" title="rompy.swan.subcomponents.numerics.ACCUR.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['accur',</span> <span class="pre">'ACCUR'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.swan.subcomponents.numerics.ACCUR.npnts" title="rompy.swan.subcomponents.numerics.ACCUR.npnts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">npnts</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD.a">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">a</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.TRIAD.a" title="Link to this definition">#</a></dt>
-<dd><p>First calibration parameter for tuning K in Eq. (5.1) of Becq-Girard et al. (1999). This parameter is associated with broadening of the resonance condition (SWAN default: 0.95)</p>
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.ACCUR.dhoval">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dhoval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.ACCUR.dhoval" title="Link to this definition">#</a></dt>
+<dd><p>Fraction of the average Hs over all wet grid points below which the the stopping criteria needs to be satisfied (SWAN default: 0.02)</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD.b">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">b</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.TRIAD.b" title="Link to this definition">#</a></dt>
-<dd><p>Second calibration parameter for tuning K in Eq. (5.1) of Becq-Girard et al. (1999). This parameter is associated with broadening of the resonance condition (SWAN default: -0.75 for 1D, 0.0 for 2D</p>
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.ACCUR.drel">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">drel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.ACCUR.drel" title="Link to this definition">#</a></dt>
+<dd><p>Maximum relative change in Hs or Tm01 from one iteration to the next (SWAN default: 0.02)</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD.cutfr">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cutfr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.TRIAD.cutfr" title="Link to this definition">#</a></dt>
-<dd><p>Controls the maximum frequency that is considered in the LTA computation. The value of <cite>cutfr</cite> is the ratio of this maximum frequency over the mean frequency (SWAN default: 2.5)</p>
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.ACCUR.dtoval">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtoval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.ACCUR.dtoval" title="Link to this definition">#</a></dt>
+<dd><p>Fraction of the average Tm01 over all wet grid points below which the the stopping criteria needs to be satisfied (SWAN default: 0.02)</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD.itriad">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">itriad</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.TRIAD.itriad" title="Link to this definition">#</a></dt>
-<dd><p>Approximation method for the triad computation:</p>
-<ul class="simple">
-<li><p>1: the LTA method of Eldeberky (1996)</p></li>
-<li><p>2: the SPB method of Becq-Girard et al. (1999) (SWAN default: 1)</p></li>
-</ul>
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.ACCUR.limiter">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">limiter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.ACCUR.limiter" title="Link to this definition">#</a></dt>
+<dd><p>Determines the maximum change per iteration of the energy density per spectral-bin given in terms of a fraction of the omni-directional Phillips level (SWAN default: 0.1)</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD.model_type">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'triad'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'TRIAD'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'triad'</span></em><a class="headerlink" href="#rompy.swan.components.physics.TRIAD.model_type" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.ACCUR.mode">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.subcomponents.numerics.STAT.html#rompy.swan.subcomponents.numerics.STAT" title="rompy.swan.subcomponents.numerics.STAT"><span class="pre">STAT</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="rompy.swan.subcomponents.numerics.NONSTAT.html#rompy.swan.subcomponents.numerics.NONSTAT" title="rompy.swan.subcomponents.numerics.NONSTAT"><span class="pre">NONSTAT</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.ACCUR.mode" title="Link to this definition">#</a></dt>
+<dd><p>Termination criteria for stationary or nonstationary runs</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.ACCUR.model_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'accur'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ACCUR'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'accur'</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.ACCUR.model_type" title="Link to this definition">#</a></dt>
 <dd><p>Model type discriminator</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD.trfac">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trfac</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.TRIAD.trfac" title="Link to this definition">#</a></dt>
-<dd><p>Proportionality coefficient (SWAN default: 0.8 in case of LTA method, 0.9 in case of SPB method)</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD.ucrit">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ucrit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.TRIAD.ucrit" title="Link to this definition">#</a></dt>
-<dd><p>The critical Ursell number appearing in the expression for the biphase (SWAN default: 0.2)</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD.urslim">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">urslim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.components.physics.TRIAD.urslim" title="Link to this definition">#</a></dt>
-<dd><p>The lower threshold for Ursell number, if the actual Ursell number is below this value triad interactions are be computed (SWAN default: 0.01)</p>
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.ACCUR.npnts">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">npnts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.swan.subcomponents.numerics.ACCUR.npnts" title="Link to this definition">#</a></dt>
+<dd><p>Percentage of points in the computational grid above which the stopping criteria needs to be satisfied (SWAN default: 98)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rompy.swan.components.physics.TRIAD.cmd">
-<span class="sig-name descname"><span class="pre">cmd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/rompy/swan/components/physics.html#TRIAD.cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.components.physics.TRIAD.cmd" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="rompy.swan.subcomponents.numerics.ACCUR.cmd">
+<span class="sig-name descname"><span class="pre">cmd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/rompy/swan/subcomponents/numerics.html#ACCUR.cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.swan.subcomponents.numerics.ACCUR.cmd" title="Link to this definition">#</a></dt>
 <dd><p>Command file string for this component.</p>
 </dd></dl>
 
@@ -600,20 +600,20 @@ command is not used, SWAN will not account for triads.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="rompy.swan.components.physics.FRICTION_RIPPLES.html"
+       href="rompy.swan.subcomponents.numerics.STOPC.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">rompy.swan.components.physics.FRICTION_RIPPLES</p>
+        <p class="prev-next-title">rompy.swan.subcomponents.numerics.STOPC</p>
       </div>
     </a>
     <a class="right-next"
-       href="rompy.swan.components.physics.TRIAD_DCTA.html"
+       href="rompy.swan.subcomponents.numerics.DIRIMPL.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">rompy.swan.components.physics.TRIAD_DCTA</p>
+        <p class="prev-next-title">rompy.swan.subcomponents.numerics.DIRIMPL</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -633,16 +633,15 @@ command is not used, SWAN will not account for triads.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD"><code class="docutils literal notranslate"><span class="pre">TRIAD</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD.a"><code class="docutils literal notranslate"><span class="pre">TRIAD.a</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD.b"><code class="docutils literal notranslate"><span class="pre">TRIAD.b</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD.cutfr"><code class="docutils literal notranslate"><span class="pre">TRIAD.cutfr</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD.itriad"><code class="docutils literal notranslate"><span class="pre">TRIAD.itriad</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD.model_type"><code class="docutils literal notranslate"><span class="pre">TRIAD.model_type</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD.trfac"><code class="docutils literal notranslate"><span class="pre">TRIAD.trfac</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD.ucrit"><code class="docutils literal notranslate"><span class="pre">TRIAD.ucrit</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD.urslim"><code class="docutils literal notranslate"><span class="pre">TRIAD.urslim</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.components.physics.TRIAD.cmd"><code class="docutils literal notranslate"><span class="pre">TRIAD.cmd()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.ACCUR"><code class="docutils literal notranslate"><span class="pre">ACCUR</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.ACCUR.dhoval"><code class="docutils literal notranslate"><span class="pre">ACCUR.dhoval</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.ACCUR.drel"><code class="docutils literal notranslate"><span class="pre">ACCUR.drel</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.ACCUR.dtoval"><code class="docutils literal notranslate"><span class="pre">ACCUR.dtoval</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.ACCUR.limiter"><code class="docutils literal notranslate"><span class="pre">ACCUR.limiter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.ACCUR.mode"><code class="docutils literal notranslate"><span class="pre">ACCUR.mode</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.ACCUR.model_type"><code class="docutils literal notranslate"><span class="pre">ACCUR.model_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.ACCUR.npnts"><code class="docutils literal notranslate"><span class="pre">ACCUR.npnts</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.subcomponents.numerics.ACCUR.cmd"><code class="docutils literal notranslate"><span class="pre">ACCUR.cmd()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -651,7 +650,7 @@ command is not used, SWAN will not account for triads.</p>
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../../../_sources/swan/components/_generated/rompy.swan.components.physics.TRIAD.rst.txt">
+    <a href="../../../_sources/swan/subcomponents/_generated/rompy.swan.subcomponents.numerics.ACCUR.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
