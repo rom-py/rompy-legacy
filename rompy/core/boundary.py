@@ -5,19 +5,18 @@ from typing import Literal, Optional, Union
 
 import numpy as np
 import wavespectra
-import xarray as xr
 from pydantic import Field, model_validator
 
+from rompy.core.time import TimeRange
 from rompy.core.data import (
     DataGrid,
     SourceBase,
-    SourceDatamesh,
     SourceDataset,
     SourceFile,
     SourceIntake,
+    SourceDatamesh,
 )
 from rompy.core.grid import RegularGrid
-from rompy.core.time import TimeRange
 
 logger = logging.getLogger(__name__)
 
@@ -108,22 +107,36 @@ BOUNDARY_SOURCE_TYPES = Union[
     SourceFile,
     SourceIntake,
     SourceDatamesh,
-]
-SPEC_BOUNDARY_SOURCE_TYPES = Union[
-    SourceDataset,
-    SourceFile,
-    SourceIntake,
-    SourceDatamesh,
     SourceWavespectra,
 ]
 
 
-class DataBoundary(DataGrid):
-    data_type: Literal["boundary"] = Field(
-        default="data_boundary",
-        description="Model type discriminator",
-    )
+class BoundaryWaveStation(DataGrid):
+    """Wave boundary data from station datasets.
+
+    Notes
+    -----
+    The `tolerance` behaves differently with sel_methods `idw` and `nearest`; in `idw`
+    sites with no enough neighbours within `tolerance` are masked whereas in `nearest`
+    an exception is raised (see wavespectra documentation for more details).
+
+    Be aware that when using `idw` missing values will be returned for sites with less
+    than 2 neighbours within `tolerance` in the original dataset. This is okay for land
+    mask areas but could cause boundary issues when on an open boundary location. To
+    avoid this either use `nearest` or increase `tolerance` to include more neighbours.
+
+    TODO: Allow specifying resolutions along x and y instead of a single value.
+
+    """
+
     id: str = Field(description="Unique identifier for this data source")
+    source: BOUNDARY_SOURCE_TYPES = Field(
+        description=(
+            "Dataset source reader, must return a wavespectra-enabled "
+            "xarray dataset in the open method"
+        ),
+        discriminator="model_type",
+    )
     spacing: Optional[float] = Field(
         default=None,
         description=(
@@ -131,39 +144,38 @@ class DataBoundary(DataGrid):
             "distance between points in the dataset"
         ),
     )
-    sel_method: Literal["nearest", "interp"] = Field(
-        default="nearest",
+    sel_method: Literal["idw", "nearest"] = Field(
+        default="idw",
         description=(
-            "Wavespectra method to use for selecting boundary points from the dataset. Only sel_method or interpolate_method can be set, not both."
+            "Wavespectra method to use for selecting boundary points from the dataset"
         ),
     )
-    sel_method_kwargs: dict = Field(
-        default={}, description="Keyword arguments for sel_method passed to wavespectra"
-    )
-    interpolate_method: Literal[
-        "nearest", "zero", "slinear", "quadratic", "cubic", "polynomial"
-    ] = Field(
-        default=None,
+    tolerance: float = Field(
+        default=1.0,
         description=(
-            "Wavespectra method to use for selecting boundary points from the dataset. Only sel_method or interpolate_method can be set, not both."
+            "Wavespectra tolerance for selecting boundary points from the dataset"
         ),
-    )
-    interp_method_kwargs: dict = Field(
-        default={}, description="Keyword arguments for sel_method passed to wavespectra"
+        ge=0,
     )
     crop_data: bool = Field(
         default=True,
         description="Update crop filter from Time object if passed to get method",
     )
 
-    # validator that ensures that only one of sel_method and interpolate_method is set
     @model_validator(mode="after")
-    def assert_sel_method(cls, v):
-        if v.sel_method is not None and v.interpolate_method is not None:
-            raise ValueError("Only one of sel_method and interpolate_method can be set")
-        if v.sel_method is None and v.interpolate_method is None:
-            raise ValueError("Either sel_method or interpolate_method must be set")
-        return v
+    def assert_has_wavespectra_accessor(self) -> "BoundaryWaveStation":
+        dset = self.source.open()
+        if not hasattr(dset, "spec"):
+            raise ValueError(f"Wavespectra compatible source is required")
+        return self
+
+    @property
+    def ds(self):
+        """Return the filtered xarray dataset instance."""
+        dset = super().ds
+        if dset.efth.size == 0:
+            raise ValueError(f"Empty dataset after applying filter {self.filter}")
+        return dset
 
     def _filter_grid(self, *args, **kwargs):
         """Overwrite DataGrid's which assumes a regular grid."""
@@ -196,131 +208,20 @@ class DataBoundary(DataGrid):
 
     def _boundary_points(self, grid):
         """Coordinates of boundary points based on grid bbox and dataset resolution."""
-        if issubclass(grid.__class__, RegularGrid):
-            if self.spacing is None:
-                dx, dy = self._boundary_resolutions(grid)
-                spacing = min(dx, dy)
-            else:
-                spacing = self.spacing
-            points = grid.points_along_boundary(spacing=spacing)
-            if len(points.geoms) < 4:
-                logger.warning(
-                    f"There are only {len(points)} boundary points (less than 1 point per grid side), "
-                    f"consider setting a smaller spacing (the current spacing is {spacing})"
-                )
-            xbnd = np.array([p.x for p in points.geoms])
-            ybnd = np.array([p.y for p in points.geoms])
-        elif grid.__class__.__name__ == "SCHISMGrid":
-            xbnd, ybnd = grid.ocean_boundary()
-        return xbnd, ybnd
-
-    def _sel_boundary(self, grid):
-        """Select the boundary points from the dataset."""
-        xbnd, ybnd = self._boundary_points(grid)
-        xbnd = xr.DataArray(xbnd, dims=("site",))
-        ybnd = xr.DataArray(ybnd, dims=("site",))
-        if self.sel_method != None:
-            ds = self.ds.sel(
-                {self.coords.x: xbnd, self.coords.y: ybnd},
-                method=self.sel_method,
-                **self.sel_method_kwargs,
-            )
+        if self.spacing is None:
+            dx, dy = self._boundary_resolutions(grid)
+            spacing = min(dx, dy)
         else:
-            ds = self.ds.interp(
-                {self.coords.x: xbnd, self.coords.y: ybnd},
-                method=self.interpolate_method,
-                **self.interp_method_kwargs,
+            spacing = self.spacing
+        points = grid.points_along_boundary(spacing=spacing)
+        if len(points.geoms) < 4:
+            logger.warning(
+                f"There are only {len(points)} boundary points (less than 1 point per grid side), "
+                f"consider setting a smaller spacing (the current spacing is {spacing})"
             )
-        return ds
-
-    def plot(self, model_grid=None, cmap="turbo", fscale=10, ax=None, **kwargs):
-        return scatter_plot(
-            self, model_grid=model_grid, cmap=cmap, fscale=fscale, ax=ax, **kwargs
-        )
-
-    def plot_boundary(self, grid=None, fscale=10, ax=None, **kwargs):
-        """Plot the boundary points on a map."""
-        ds = self._sel_boundary(grid)
-        fig, ax = grid.plot(ax=ax, fscale=fscale, **kwargs)
-        return scatter_plot(
-            self,
-            ds=ds,
-            fscale=fscale,
-            ax=ax,
-            **kwargs,
-        )
-
-    def get(
-        self, destdir: str | Path, grid: RegularGrid, time: Optional[TimeRange] = None
-    ) -> str:
-        """Write the selected boundary data to a netcdf file.
-
-        Parameters
-        ----------
-        destdir : str | Path
-            Destination directory for the netcdf file.
-        grid : RegularGrid
-            Grid instance to use for selecting the boundary points.
-        time: TimeRange, optional
-            The times to filter the data to, only used if `self.crop_data` is True.
-
-        Returns
-        -------
-        outfile : Path
-            Path to the netcdf file.
-
-        """
-        if self.crop_data and time is not None:
-            self._filter_time(time)
-        ds = self._sel_boundary(grid)
-        outfile = Path(destdir) / f"{self.id}.nc"
-        ds.to_netcdf(outfile)
-        return outfile
-
-
-class BoundaryWaveStation(DataBoundary):
-    """Wave boundary data from station datasets.
-
-    Notes
-    -----
-    The `tolerance` behaves differently with sel_methods `idw` and `nearest`; in `idw`
-    sites with no enough neighbours within `tolerance` are masked whereas in `nearest`
-    an exception is raised (see wavespectra documentation for more details).
-
-    Be aware that when using `idw` missing values will be returned for sites with less
-    than 2 neighbours within `tolerance` in the original dataset. This is okay for land
-    mask areas but could cause boundary issues when on an open boundary location. To
-    avoid this either use `nearest` or increase `tolerance` to include more neighbours.
-
-    TODO: Allow specifying resolutions along x and y instead of a single value.
-
-    """
-
-    grid_type: Literal["boundary_wave_station"] = Field(
-        default="boundary_wave_station",
-        description="Model type discriminator",
-    )
-    source: SPEC_BOUNDARY_SOURCE_TYPES = Field(
-        description=(
-            "Dataset source reader, must return a wavespectra-enabled "
-            "xarray dataset in the open method"
-        ),
-        discriminator="model_type",
-    )
-
-    sel_method: Literal["idw", "nearest"] = Field(
-        default="idw",
-        description=(
-            "Wavespectra method to use for selecting boundary points from the dataset"
-        ),
-    )
-
-    @model_validator(mode="after")
-    def assert_has_wavespectra_accessor(self) -> "BoundaryWaveStation":
-        dset = self.source.open()
-        if not hasattr(dset, "spec"):
-            raise ValueError(f"Wavespectra compatible source is required")
-        return self
+        xbnd = np.array([p.x for p in points.geoms])
+        ybnd = np.array([p.y for p in points.geoms])
+        return xbnd, ybnd
 
     def _sel_boundary(self, grid):
         """Select the boundary points from the dataset."""
@@ -329,17 +230,9 @@ class BoundaryWaveStation(DataBoundary):
             lons=xbnd,
             lats=ybnd,
             method=self.sel_method,
-            **self.sel_method_kwargs,
+            tolerance=self.tolerance,
         )
         return ds
-
-    @property
-    def ds(self):
-        """Return the filtered xarray dataset instance."""
-        dset = super().ds
-        if dset.efth.size == 0:
-            raise ValueError(f"Empty dataset after applying filter {self.filter}")
-        return dset
 
     def get(
         self, destdir: str | Path, grid: RegularGrid, time: Optional[TimeRange] = None
@@ -367,6 +260,23 @@ class BoundaryWaveStation(DataBoundary):
         outfile = Path(destdir) / f"{self.id}.nc"
         ds.spec.to_netcdf(outfile)
         return outfile
+
+    def plot(self, model_grid=None, cmap="turbo", fscale=10, ax=None, **kwargs):
+        return scatter_plot(
+            self, model_grid=model_grid, cmap=cmap, fscale=fscale, ax=ax, **kwargs
+        )
+
+    def plot_boundary(self, grid=None, fscale=10, ax=None, **kwargs):
+        """Plot the boundary points on a map."""
+        ds = self._sel_boundary(grid)
+        fig, ax = grid.plot(ax=ax, fscale=fscale, **kwargs)
+        return scatter_plot(
+            self,
+            ds=ds,
+            fscale=fscale,
+            ax=ax,
+            **kwargs,
+        )
 
 
 def scatter_plot(bnd, ds=None, fscale=10, ax=None, **kwargs):
@@ -416,4 +326,3 @@ def scatter_plot(bnd, ds=None, fscale=10, ax=None, **kwargs):
         gl.yformatter = LATITUDE_FORMATTER
 
     ax.scatter(ds[bnd.coords.x], ds[bnd.coords.y], transform=ccrs.PlateCarree())
-    return ax

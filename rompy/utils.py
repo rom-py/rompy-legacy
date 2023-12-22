@@ -238,38 +238,3 @@ def find_matchup_data(
                     out_ds.attrs[attrs_prepend_map[str(attr_source)] + key] = val
 
     return out_ds
-
-
-def total_seconds(timedelta):
-    """Convert timedeltas to seconds
-
-    In Python, time differences can take many formats. This function can take
-    timedeltas in any format and return the corresponding number of seconds, as
-    a float.
-
-    Beware! Representing timedeltas as floats is not as precise as representing
-    them as a timedelta object in datetime, numpy, or pandas.
-
-    Parameters
-    ----------
-    timedelta : various
-        Time delta from python's datetime library or from numpy or pandas. If
-        it is from numpy, it can be an ndarray with dtype datetime64. If it is
-        from pandas, it can also be a Series of datetimes. However, this
-        function cannot operate on entire pandas DataFrames. To convert a
-        DataFrame, do df.apply(to_seconds)
-
-    Returns
-    -------
-    seconds : various
-        Returns the total seconds in the input timedelta object(s) as float.
-        If the input is a numpy ndarray or pandas Series, the output is the
-        same, but with a float datatype.
-    """
-    try:
-        seconds = timedelta.total_seconds()
-    except AttributeError:  # no method total_seconds
-        one_second = np.timedelta64(1000000000, "ns")
-        # use nanoseconds to get highest possible precision in output
-        seconds = timedelta / one_second
-    return seconds
