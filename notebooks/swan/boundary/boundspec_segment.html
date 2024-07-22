@@ -1,0 +1,2302 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SWAN BOUNDSPEC SEGMENT &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/swan/boundary/boundspec_segment';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">SWAN...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="SWAN-BOUNDSPEC-SEGMENT">
+<h1>SWAN BOUNDSPEC SEGMENT<a class="headerlink" href="#SWAN-BOUNDSPEC-SEGMENT" title="Link to this heading">#</a></h1>
+<p>This notebooks shows examples of how to prescribe BOUNDSPEC SEGMENT spectral boundaries using rompy boundary data objects.</p>
+<p>Boundary of type <code class="docutils literal notranslate"><span class="pre">BOUNDSPEC</span> <span class="pre">SEGMENT</span></code> can be specified from existing spectral data using the <code class="docutils literal notranslate"><span class="pre">rompy.swan.boundary.BoundspecSegmentXY</span></code> object. The boundary locations can be defined in three different ways:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SIDE</p></td>
+<td><p>Define boundary segment along one side of computational grid</p></td>
+</tr>
+<tr class="row-odd"><td><p>SIDES</p></td>
+<td><p>Define boundary segment along multiple, contiguous sides of computational grid</p></td>
+</tr>
+<tr class="row-even"><td><p>XY</p></td>
+<td><p>Define boundary segment from a sequency of points explicitly provided</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The boundary spectra are defined by interpolating or nearest-selecting from the source spectra data at the selected boundary locations.</p>
+<p>This class only supports <code class="docutils literal notranslate"><span class="pre">FILE</span></code> type boundary since the <code class="docutils literal notranslate"><span class="pre">PAR</span></code> type does not allow for nonstationary boundary specification (the user can prescribe <code class="docutils literal notranslate"><span class="pre">PAR</span></code> type boundary by using the SWAN components if required).</p>
+<p>We currently support <code class="docutils literal notranslate"><span class="pre">TPAR</span></code> and <code class="docutils literal notranslate"><span class="pre">SPEC2D</span></code> file types to write the boundary data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">mkdtemp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">colors</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">wavespectra</span>
+
+<span class="kn">from</span> <span class="nn">rompy.core.data</span> <span class="kn">import</span> <span class="n">SourceFile</span>
+<span class="kn">from</span> <span class="nn">rompy.core.time</span> <span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.grid</span> <span class="kn">import</span> <span class="n">SwanGrid</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.boundary</span> <span class="kn">import</span> <span class="n">BoundspecSegmentXY</span>
+<span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.boundary</span> <span class="kn">import</span> <span class="n">SIDE</span><span class="p">,</span> <span class="n">SIDES</span><span class="p">,</span> <span class="n">XY</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Helper-functions">
+<h2>Helper functions<a class="headerlink" href="#Helper-functions" title="Link to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_tpar</span><span class="p">(</span><span class="n">tparfile</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read SWAN TPAR files as a Dataframe.&quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+        <span class="n">tparfile</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">date_format</span><span class="o">=</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">.%H%M%S&quot;</span><span class="p">,</span>
+        <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;hs&quot;</span><span class="p">,</span> <span class="s2">&quot;tp&quot;</span><span class="p">,</span> <span class="s2">&quot;dpm&quot;</span><span class="p">,</span> <span class="s2">&quot;dspr&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">get_color</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the HEX color for a value in a colormap.&quot;&quot;&quot;</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">rgb2hex</span><span class="p">(</span><span class="n">cmap</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">plot_boundary_side</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="n">tpars</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot side boundary stats.</span>
+
+<span class="sd">    This function plots a snapshot of wave statistics from the source spectra dataset</span>
+<span class="sd">    and the boundary wave stats generated for a grid from those spectra points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dset: xr.Dataset</span>
+<span class="sd">        Source spectra dataset used to define the boundary.</span>
+<span class="sd">    tpars: list[pd.DataFrame]</span>
+<span class="sd">        Boundary time series defined from TPAR or SWAN ASCII file for each segment.</span>
+<span class="sd">    grid: SwanGrid</span>
+<span class="sd">        Grid object defining the SWAN domain.</span>
+<span class="sd">    time: Datatime | str</span>
+<span class="sd">        Time to plot.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># xb, yb = bnd._boundary_points(grid)</span>
+    <span class="n">xb</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">yb</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">))</span>
+
+    <span class="c1"># Hs</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">dset</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">dset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">hs</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;turbo&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Hs (m)&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">tpars</span><span class="p">:</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;x0&quot;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;x1&quot;</span><span class="p">]]</span>
+        <span class="n">yb</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;y0&quot;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;y1&quot;</span><span class="p">]]</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">get_color</span><span class="p">(</span><span class="s2">&quot;turbo&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;hs&quot;</span><span class="p">],</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Tp</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">dset</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">dset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">tp</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">13.8</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">14.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Tp (s)&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">tpars</span><span class="p">:</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;x0&quot;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;x1&quot;</span><span class="p">]]</span>
+        <span class="n">yb</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;y0&quot;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;y1&quot;</span><span class="p">]]</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">get_color</span><span class="p">(</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;tp&quot;</span><span class="p">],</span> <span class="mf">13.8</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Dpm</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">dset</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">dset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">dpm</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;hsv&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">220</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">225</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Dpm (deg)&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">tpars</span><span class="p">:</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;x0&quot;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;x1&quot;</span><span class="p">]]</span>
+        <span class="n">yb</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;y0&quot;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;y1&quot;</span><span class="p">]]</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">get_color</span><span class="p">(</span><span class="s2">&quot;hsv&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time</span><span class="p">][</span><span class="s2">&quot;dpm&quot;</span><span class="p">],</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">225</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="c1"># ax.scatter(xb, yb, s=200, c=df.loc[time][&quot;dpm&quot;], marker=&quot;&gt;&quot;, edgecolor=&quot;k&quot;, cmap=&quot;hsv&quot;, vmin=220, vmax=225)</span>
+
+    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">:</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="mf">110.5</span><span class="p">,</span> <span class="mf">115.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">29.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">23.5</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">datadir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../../tests/data&quot;</span><span class="p">)</span>
+<span class="n">modeldir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
+<span class="n">modeldir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Define-rompy-objects">
+<h3>Define rompy objects<a class="headerlink" href="#Define-rompy-objects" title="Link to this heading">#</a></h3>
+<p>Create instances of source, time and grid objects to use with the boundary classes</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># source defines the dataset to be used to create the model boundary</span>
+
+<span class="n">source</span> <span class="o">=</span> <span class="n">SourceFile</span><span class="p">(</span>
+    <span class="n">uri</span><span class="o">=</span><span class="n">datadir</span> <span class="o">/</span> <span class="s2">&quot;aus-20230101.nc&quot;</span><span class="p">,</span>
+    <span class="n">kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="s2">&quot;netcdf4&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">dset</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+<span class="n">dset</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 1MB
+Dimensions:  (time: 5, site: 412, freq: 11, dir: 8)
+Coordinates:
+  * time     (time) datetime64[ns] 40B 2023-01-01 ... 2023-01-02
+  * site     (site) int64 3kB 0 4 8 12 16 20 ... 1624 1628 1632 1636 1640 1644
+  * freq     (freq) float32 44B 0.05417 0.05959 0.06555 ... 0.1161 0.1277 0.1405
+  * dir      (dir) float32 32B 0.0 45.0 90.0 135.0 180.0 225.0 270.0 315.0
+Data variables:
+    lon      (site) float32 2kB ...
+    lat      (site) float32 2kB ...
+    efth     (time, site, freq, dir) float64 1MB ...
+    dpt      (time, site) float32 8kB ...
+    wspd     (time, site) float32 8kB ...
+    wdir     (time, site) float32 8kB ...
+Attributes: (12/16)
+    product_name:           ww3.all_spec.nc
+    area:                   Global 0.5 x 0.5 degree
+    data_type:              OCO spectra 2D
+    format_version:         1.1
+    southernmost_latitude:  n/a
+    northernmost_latitude:  n/a
+    ...                     ...
+    minimum_altitude:       n/a
+    maximum_altitude:       n/a
+    altitude_resolution:    n/a
+    start_date:             2023-01-01 00:00:00
+    stop_date:              2023-02-01 00:00:00
+    field_type:             3-hourly</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-b939cbb8-034d-4c75-9a1f-6913db5393f1' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-b939cbb8-034d-4c75-9a1f-6913db5393f1' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>time</span>: 5</li><li><span class='xr-has-index'>site</span>: 412</li><li><span class='xr-has-index'>freq</span>: 11</li><li><span class='xr-has-index'>dir</span>: 8</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-7fda6ece-ea99-4a95-9cc6-bd4e1a232053' class='xr-section-summary-in' type='checkbox'  checked><label for='section-7fda6ece-ea99-4a95-9cc6-bd4e1a232053' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>time</span></div><div class='xr-var-dims'>(time)</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>2023-01-01 ... 2023-01-02</div><input id='attrs-9be1bdab-0076-48d1-8579-82d2ec57172c' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-9be1bdab-0076-48d1-8579-82d2ec57172c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1ed4db89-f0ff-4572-aa15-02ac6bdbf8a3' class='xr-var-data-in' type='checkbox'><label for='data-1ed4db89-f0ff-4572-aa15-02ac6bdbf8a3' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>time</dd></dl></div><div class='xr-var-data'><pre>array([&#x27;2023-01-01T00:00:00.000000000&#x27;, &#x27;2023-01-01T06:00:00.000000000&#x27;,
+       &#x27;2023-01-01T12:00:00.000000000&#x27;, &#x27;2023-01-01T18:00:00.000000000&#x27;,
+       &#x27;2023-01-02T00:00:00.000000000&#x27;], dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>site</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>0 4 8 12 16 ... 1632 1636 1640 1644</div><input id='attrs-7d718a8a-75c7-47e1-a2b6-35347a435d5c' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7d718a8a-75c7-47e1-a2b6-35347a435d5c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ec017e6f-9317-4297-baf3-06641288dd79' class='xr-var-data-in' type='checkbox'><label for='data-ec017e6f-9317-4297-baf3-06641288dd79' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([   0,    4,    8, ..., 1636, 1640, 1644])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>freq</span></div><div class='xr-var-dims'>(freq)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>0.05417 0.05959 ... 0.1277 0.1405</div><input id='attrs-bc7b37be-75e9-4ee4-a7cf-af0db5cf47a8' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-bc7b37be-75e9-4ee4-a7cf-af0db5cf47a8' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-38fc4690-3a14-4e38-b6c7-703830e88918' class='xr-var-data-in' type='checkbox'><label for='data-38fc4690-3a14-4e38-b6c7-703830e88918' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_surface_wave_frequency</dd><dt><span>units :</span></dt><dd>Hz</dd></dl></div><div class='xr-var-data'><pre>array([0.054172, 0.059589, 0.065548, 0.072103, 0.079313, 0.087244, 0.095968,
+       0.105565, 0.116122, 0.127734, 0.140507], dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>dir</span></div><div class='xr-var-dims'>(dir)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>0.0 45.0 90.0 ... 225.0 270.0 315.0</div><input id='attrs-7517e28f-feb2-4836-bb34-75b7d8e15937' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7517e28f-feb2-4836-bb34-75b7d8e15937' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f0e54f99-74ac-449a-8856-bd1931d374b0' class='xr-var-data-in' type='checkbox'><label for='data-f0e54f99-74ac-449a-8856-bd1931d374b0' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_surface_wave_from_direction</dd><dt><span>units :</span></dt><dd>degree</dd></dl></div><div class='xr-var-data'><pre>array([  0.,  45.,  90., 135., 180., 225., 270., 315.], dtype=float32)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-0411c57a-f5ad-460c-9187-0e4173bc7db2' class='xr-section-summary-in' type='checkbox'  checked><label for='section-0411c57a-f5ad-460c-9187-0e4173bc7db2' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-7b3e5276-19a6-4c99-b827-fa6fc254e12f' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7b3e5276-19a6-4c99-b827-fa6fc254e12f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a6a6d0e6-16f4-48f1-a495-4cfbf5b7e60d' class='xr-var-data-in' type='checkbox'><label for='data-a6a6d0e6-16f4-48f1-a495-4cfbf5b7e60d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>longitude</dd><dt><span>units :</span></dt><dd>degrees_east</dd></dl></div><div class='xr-var-data'><pre>[412 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>(site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-08c2fdc5-1d3b-4a07-be2e-561934b1aebe' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-08c2fdc5-1d3b-4a07-be2e-561934b1aebe' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e4897ccb-7522-4660-b20b-82fb0d573f9d' class='xr-var-data-in' type='checkbox'><label for='data-e4897ccb-7522-4660-b20b-82fb0d573f9d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>latitude</dd><dt><span>units :</span></dt><dd>degrees_north</dd></dl></div><div class='xr-var-data'><pre>[412 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>efth</span></div><div class='xr-var-dims'>(time, site, freq, dir)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-e341016e-1c1f-4ce3-9fee-cf8c1fb4fd67' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-e341016e-1c1f-4ce3-9fee-cf8c1fb4fd67' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d17c3b18-dfed-40ae-9829-81d953067941' class='xr-var-data-in' type='checkbox'><label for='data-d17c3b18-dfed-40ae-9829-81d953067941' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_surface_wave_directional_variance_spectral_density</dd><dt><span>units :</span></dt><dd>m2 s degree-1</dd></dl></div><div class='xr-var-data'><pre>[181280 values with dtype=float64]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>dpt</span></div><div class='xr-var-dims'>(time, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-d2c753a5-b2e8-4bc4-971c-648dba9a4571' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-d2c753a5-b2e8-4bc4-971c-648dba9a4571' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-623519f4-442c-4b73-9d20-d3462c9f7775' class='xr-var-data-in' type='checkbox'><label for='data-623519f4-442c-4b73-9d20-d3462c9f7775' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>sea_floor_depth_below_sea_surface</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><div class='xr-var-data'><pre>[2060 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>wspd</span></div><div class='xr-var-dims'>(time, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-d6beb4a9-334f-4174-82f9-5a43a667aba7' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-d6beb4a9-334f-4174-82f9-5a43a667aba7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-282ec7de-18f3-40fd-8596-72c27052c113' class='xr-var-data-in' type='checkbox'><label for='data-282ec7de-18f3-40fd-8596-72c27052c113' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>wind_speed_at_10m_above_ground_level</dd><dt><span>units :</span></dt><dd>m s-1</dd></dl></div><div class='xr-var-data'><pre>[2060 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>wdir</span></div><div class='xr-var-dims'>(time, site)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-17b8af93-eda3-4608-9ad5-0e6832aad781' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-17b8af93-eda3-4608-9ad5-0e6832aad781' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0a7075c7-974c-460e-afe4-b4799d89a62f' class='xr-var-data-in' type='checkbox'><label for='data-0a7075c7-974c-460e-afe4-b4799d89a62f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>wind_from_direction_at_10m_above_ground_level</dd><dt><span>units :</span></dt><dd>degree</dd></dl></div><div class='xr-var-data'><pre>[2060 values with dtype=float32]</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-de208dde-fda6-4ede-a2d4-3bb5e84febec' class='xr-section-summary-in' type='checkbox'  ><label for='section-de208dde-fda6-4ede-a2d4-3bb5e84febec' class='xr-section-summary' >Indexes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>time</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-1f10ab40-d30d-4570-bb69-8cf82dff507e' class='xr-index-data-in' type='checkbox'/><label for='index-1f10ab40-d30d-4570-bb69-8cf82dff507e' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(DatetimeIndex([&#x27;2023-01-01 00:00:00&#x27;, &#x27;2023-01-01 06:00:00&#x27;,
+               &#x27;2023-01-01 12:00:00&#x27;, &#x27;2023-01-01 18:00:00&#x27;,
+               &#x27;2023-01-02 00:00:00&#x27;],
+              dtype=&#x27;datetime64[ns]&#x27;, name=&#x27;time&#x27;, freq=None))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>site</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-7450deb5-5109-45c7-ab0f-f0055f79aafe' class='xr-index-data-in' type='checkbox'/><label for='index-7450deb5-5109-45c7-ab0f-f0055f79aafe' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([   0,    4,    8,   12,   16,   20,   24,   28,   32,   36,
+       ...
+       1608, 1612, 1616, 1620, 1624, 1628, 1632, 1636, 1640, 1644],
+      dtype=&#x27;int64&#x27;, name=&#x27;site&#x27;, length=412))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>freq</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-15c086ca-1b84-4077-903d-b361cdb6e74c' class='xr-index-data-in' type='checkbox'/><label for='index-15c086ca-1b84-4077-903d-b361cdb6e74c' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([0.05417170003056526, 0.05958886817097664, 0.06554775685071945,
+       0.07210253179073334, 0.07931278645992279, 0.08724407106637955,
+       0.09596847742795944, 0.10556533187627792, 0.11612186580896378,
+       0.12773405015468597, 0.14050745964050293],
+      dtype=&#x27;float32&#x27;, name=&#x27;freq&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>dir</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-e79a7e6f-2229-413a-a79c-d3ac3a5558ab' class='xr-index-data-in' type='checkbox'/><label for='index-e79a7e6f-2229-413a-a79c-d3ac3a5558ab' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([0.0, 45.0, 90.0, 135.0, 180.0, 225.0, 270.0, 315.0], dtype=&#x27;float32&#x27;, name=&#x27;dir&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-36570cc1-960b-4b25-9bfb-73b13f9d468c' class='xr-section-summary-in' type='checkbox'  ><label for='section-36570cc1-960b-4b25-9bfb-73b13f9d468c' class='xr-section-summary' >Attributes: <span>(16)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>product_name :</span></dt><dd>ww3.all_spec.nc</dd><dt><span>area :</span></dt><dd>Global 0.5 x 0.5 degree</dd><dt><span>data_type :</span></dt><dd>OCO spectra 2D</dd><dt><span>format_version :</span></dt><dd>1.1</dd><dt><span>southernmost_latitude :</span></dt><dd>n/a</dd><dt><span>northernmost_latitude :</span></dt><dd>n/a</dd><dt><span>latitude_resolution :</span></dt><dd>n/a</dd><dt><span>westernmost_longitude :</span></dt><dd>n/a</dd><dt><span>easternmost_longitude :</span></dt><dd>n/a</dd><dt><span>longitude_resolution :</span></dt><dd>n/a</dd><dt><span>minimum_altitude :</span></dt><dd>n/a</dd><dt><span>maximum_altitude :</span></dt><dd>n/a</dd><dt><span>altitude_resolution :</span></dt><dd>n/a</dd><dt><span>start_date :</span></dt><dd>2023-01-01 00:00:00</dd><dt><span>stop_date :</span></dt><dd>2023-02-01 00:00:00</dd><dt><span>field_type :</span></dt><dd>3-hourly</dd></dl></div></li></ul></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># times prescribe the times over which the model will run</span>
+
+<span class="n">times</span> <span class="o">=</span> <span class="n">TimeRange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">&quot;2023-01-01T00&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;2023-01-02T00&quot;</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;6h&quot;</span><span class="p">)</span>
+<span class="n">times</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+TimeRange(start=datetime.datetime(2023, 1, 1, 0, 0), end=datetime.datetime(2023, 1, 2, 0, 0), duration=datetime.timedelta(days=1), interval=datetime.timedelta(seconds=21600), include_end=True)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># grid defines the model grid</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">SwanGrid</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mi">112</span><span class="p">,</span> <span class="n">y0</span><span class="o">=-</span><span class="mi">29</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">grid</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SwanGrid: REG, 8x9
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot model grid and boundary points in the source spectra</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fscale</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">dset</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="mi">108</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mf">35.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">19</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_9_0.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_9_0.png" />
+</div>
+</div>
+</section>
+<section id="Boundary-segment-along-one-side">
+<h3>Boundary segment along one side<a class="headerlink" href="#Boundary-segment-along-one-side" title="Link to this heading">#</a></h3>
+<p>Create <code class="docutils literal notranslate"><span class="pre">BOUNDSPEC</span> <span class="pre">SEGMENT</span></code> type SWAN boundary with the points defined along one side of the computational grid.</p>
+<p>The boundary is defined as <code class="docutils literal notranslate"><span class="pre">TPAR</span></code> files by interpolating from the source spectra dataset along the grid side. The <em>Inverse Distance Weighting</em> (<code class="docutils literal notranslate"><span class="pre">idw</span></code>) sel method from wavespectra will be used to interpolate from the source spectra at each boundary point.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">workspace</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">mkdtemp</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">))</span>
+
+<span class="n">bnd</span> <span class="o">=</span> <span class="n">BoundspecSegmentXY</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;wa&quot;</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+    <span class="n">sel_method</span><span class="o">=</span><span class="s2">&quot;idw&quot;</span><span class="p">,</span>
+    <span class="n">sel_method_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+    <span class="n">location</span><span class="o">=</span><span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;west&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">bnd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="o">=</span><span class="n">workspace</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">times</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ls -l </span><span class="si">{</span><span class="n">workspace</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;BOUNDSPEC SEGMENT XY 110.63191943 -25.24122952 110.80292950 -25.71107583 CONSTANT FILE fname=&#39;wa_tpar_000.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.80292950 -25.71107583 110.97393957 -26.18092214 CONSTANT FILE fname=&#39;wa_tpar_001.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.97393957 -26.18092214 111.14494964 -26.65076845 CONSTANT FILE fname=&#39;wa_tpar_002.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.14494964 -26.65076845 111.31595971 -27.12061476 CONSTANT FILE fname=&#39;wa_tpar_003.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.31595971 -27.12061476 111.48696979 -27.59046107 CONSTANT FILE fname=&#39;wa_tpar_004.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.48696979 -27.59046107 111.65797986 -28.06030738 CONSTANT FILE fname=&#39;wa_tpar_005.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.65797986 -28.06030738 111.82898993 -28.53015369 CONSTANT FILE fname=&#39;wa_tpar_006.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.82898993 -28.53015369 112.00000000 -29.00000000 CONSTANT FILE fname=&#39;wa_tpar_007.bnd&#39; seq=1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+total 32
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_000.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_001.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_002.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_003.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_004.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_005.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_006.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_007.bnd
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpars</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">cmdrow</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)):</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">cmdrow</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">read_tpar</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">tpars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">pd</span><span class="o">.</span><span class="n">option_context</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="mi">999</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hs</th>
+      <th>tp</th>
+      <th>dpm</th>
+      <th>dspr</th>
+      <th>x0</th>
+      <th>x1</th>
+      <th>y0</th>
+      <th>y1</th>
+    </tr>
+    <tr>
+      <th>0</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01 00:00:00</th>
+      <td>2.91</td>
+      <td>14.14</td>
+      <td>224.35</td>
+      <td>25.31</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 06:00:00</th>
+      <td>2.99</td>
+      <td>14.11</td>
+      <td>224.08</td>
+      <td>26.31</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 12:00:00</th>
+      <td>3.35</td>
+      <td>14.25</td>
+      <td>223.91</td>
+      <td>28.19</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 18:00:00</th>
+      <td>3.62</td>
+      <td>14.31</td>
+      <td>224.13</td>
+      <td>29.76</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02 00:00:00</th>
+      <td>3.59</td>
+      <td>14.18</td>
+      <td>224.47</td>
+      <td>30.52</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Plot boundary stats, note the values weighted by the four nearest neighbours at each site along the <code class="docutils literal notranslate"><span class="pre">WEST</span></code> boundary</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="mi">2</span><span class="p">]:</span>
+    <span class="n">plot_boundary_side</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="n">tpars</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_14_0.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_14_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_14_1.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_14_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_14_2.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_14_2.png" />
+</div>
+</div>
+</section>
+<section id="Boundary-segment-along-multiple-sides">
+<h3>Boundary segment along multiple sides<a class="headerlink" href="#Boundary-segment-along-multiple-sides" title="Link to this heading">#</a></h3>
+<p>Create <code class="docutils literal notranslate"><span class="pre">BOUNDSPEC</span> <span class="pre">SEGMENT</span></code> type SWAN boundary with the points defined along multiple, contiguous sides of the computational grid.</p>
+<p>The boundary is defined as <code class="docutils literal notranslate"><span class="pre">TPAR</span></code> files by selecting from the nearest points in the source spectra dataset along the sides at the resolution defined by the <code class="docutils literal notranslate"><span class="pre">spacing</span></code> parameter which by default corresponds to the grid spacing itself (use <code class="docutils literal notranslate"><span class="pre">&quot;parent&quot;</span></code> to define the spacing based on spacing of points in the source spectra dataset, or set a custom spacing if desired).</p>
+<div class="alert alert-block alert-warning"><p>⚠️ When using SIDES, the order at which each side is provided matters. Ensure the order and direction of each side are such that segments defined by each pair of points will all be contiguous.</p>
+</div><div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">workspace</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">mkdtemp</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">))</span>
+
+<span class="n">bnd</span> <span class="o">=</span> <span class="n">BoundspecSegmentXY</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;wa&quot;</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+    <span class="n">sel_method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">sel_method_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+    <span class="n">location</span><span class="o">=</span><span class="n">SIDES</span><span class="p">(</span>
+        <span class="n">sides</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;south&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;clockwise&quot;</span><span class="p">),</span>
+            <span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;west&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;clockwise&quot;</span><span class="p">),</span>
+            <span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;north&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;clockwise&quot;</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">bnd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="o">=</span><span class="n">workspace</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">times</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ls -l </span><span class="si">{</span><span class="n">workspace</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;BOUNDSPEC SEGMENT XY 115.28892417 -27.80292950 114.81907786 -27.97393957 CONSTANT FILE fname=&#39;wa_tpar_000.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.81907786 -27.97393957 114.34923155 -28.14494964 CONSTANT FILE fname=&#39;wa_tpar_001.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.34923155 -28.14494964 113.87938524 -28.31595971 CONSTANT FILE fname=&#39;wa_tpar_002.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.87938524 -28.31595971 113.40953893 -28.48696979 CONSTANT FILE fname=&#39;wa_tpar_003.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.40953893 -28.48696979 112.93969262 -28.65797986 CONSTANT FILE fname=&#39;wa_tpar_004.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.93969262 -28.65797986 112.46984631 -28.82898993 CONSTANT FILE fname=&#39;wa_tpar_005.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.46984631 -28.82898993 112.00000000 -29.00000000 CONSTANT FILE fname=&#39;wa_tpar_006.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.00000000 -29.00000000 111.82898993 -28.53015369 CONSTANT FILE fname=&#39;wa_tpar_007.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.82898993 -28.53015369 111.65797986 -28.06030738 CONSTANT FILE fname=&#39;wa_tpar_008.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.65797986 -28.06030738 111.48696979 -27.59046107 CONSTANT FILE fname=&#39;wa_tpar_009.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.48696979 -27.59046107 111.31595971 -27.12061476 CONSTANT FILE fname=&#39;wa_tpar_010.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.31595971 -27.12061476 111.14494964 -26.65076845 CONSTANT FILE fname=&#39;wa_tpar_011.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.14494964 -26.65076845 110.97393957 -26.18092214 CONSTANT FILE fname=&#39;wa_tpar_012.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.97393957 -26.18092214 110.80292950 -25.71107583 CONSTANT FILE fname=&#39;wa_tpar_013.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.80292950 -25.71107583 110.63191943 -25.24122952 CONSTANT FILE fname=&#39;wa_tpar_014.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.63191943 -25.24122952 111.10176574 -25.07021945 CONSTANT FILE fname=&#39;wa_tpar_015.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.10176574 -25.07021945 111.57161205 -24.89920937 CONSTANT FILE fname=&#39;wa_tpar_016.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.57161205 -24.89920937 112.04145836 -24.72819930 CONSTANT FILE fname=&#39;wa_tpar_017.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.04145836 -24.72819930 112.51130467 -24.55718923 CONSTANT FILE fname=&#39;wa_tpar_018.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.51130467 -24.55718923 112.98115098 -24.38617916 CONSTANT FILE fname=&#39;wa_tpar_019.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.98115098 -24.38617916 113.45099729 -24.21516909 CONSTANT FILE fname=&#39;wa_tpar_020.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.45099729 -24.21516909 113.92084360 -24.04415902 CONSTANT FILE fname=&#39;wa_tpar_021.bnd&#39; seq=1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+total 88
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_000.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_001.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_002.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_003.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_004.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:56 wa_tpar_005.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_006.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_007.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_008.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_009.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_010.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_011.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_012.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_013.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_014.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_015.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_016.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_017.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_018.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_019.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_020.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_021.bnd
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load boundaries for each segment into dataframes</span>
+
+<span class="n">tpars</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)):</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">read_tpar</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">tpars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">pd</span><span class="o">.</span><span class="n">option_context</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="mi">999</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hs</th>
+      <th>tp</th>
+      <th>dpm</th>
+      <th>dspr</th>
+      <th>x0</th>
+      <th>x1</th>
+      <th>y0</th>
+      <th>y1</th>
+    </tr>
+    <tr>
+      <th>0</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01 00:00:00</th>
+      <td>1.31</td>
+      <td>14.08</td>
+      <td>241.64</td>
+      <td>20.66</td>
+      <td>113.450997</td>
+      <td>113.920844</td>
+      <td>-24.215169</td>
+      <td>-24.044159</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 06:00:00</th>
+      <td>1.31</td>
+      <td>13.89</td>
+      <td>241.93</td>
+      <td>21.96</td>
+      <td>113.450997</td>
+      <td>113.920844</td>
+      <td>-24.215169</td>
+      <td>-24.044159</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 12:00:00</th>
+      <td>1.37</td>
+      <td>13.93</td>
+      <td>242.71</td>
+      <td>22.38</td>
+      <td>113.450997</td>
+      <td>113.920844</td>
+      <td>-24.215169</td>
+      <td>-24.044159</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 18:00:00</th>
+      <td>1.43</td>
+      <td>14.17</td>
+      <td>243.00</td>
+      <td>21.91</td>
+      <td>113.450997</td>
+      <td>113.920844</td>
+      <td>-24.215169</td>
+      <td>-24.044159</td>
+    </tr>
+    <tr>
+      <th>2023-01-02 00:00:00</th>
+      <td>1.56</td>
+      <td>14.33</td>
+      <td>243.23</td>
+      <td>21.32</td>
+      <td>113.450997</td>
+      <td>113.920844</td>
+      <td>-24.215169</td>
+      <td>-24.044159</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot boundary stats</span>
+
+<span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="mi">2</span><span class="p">]:</span>
+    <span class="n">plot_boundary_side</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="n">tpars</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_18_0.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_18_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_18_1.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_18_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_18_2.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_18_2.png" />
+</div>
+</div>
+</section>
+<section id="Boundary-segment-along-multiple-sides-with-custom-spacing">
+<h3>Boundary segment along multiple sides with custom spacing<a class="headerlink" href="#Boundary-segment-along-multiple-sides-with-custom-spacing" title="Link to this heading">#</a></h3>
+<p>Use a custom spacing of 1.0 degree to set the segment sizes. Notice the last segment is adjsted to ensure the grid length is respected.</p>
+<div class="alert alert-block alert-info"><p>⚠️ In this example, sides are specified in the opposite order north-west-south with an appropriate direction <code class="docutils literal notranslate"><span class="pre">ccw</span></code> that ensures contiguous segments.</p>
+</div><div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">workspace</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">mkdtemp</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">))</span>
+
+<span class="n">bnd</span> <span class="o">=</span> <span class="n">BoundspecSegmentXY</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;wa&quot;</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+    <span class="n">sel_method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">sel_method_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="n">SIDES</span><span class="p">(</span>
+        <span class="n">sides</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;north&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">),</span>
+            <span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;west&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">),</span>
+            <span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;south&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">bnd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="o">=</span><span class="n">workspace</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">times</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ls -l </span><span class="si">{</span><span class="n">workspace</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;BOUNDSPEC SEGMENT XY 113.92084360 -24.04415902 112.98115098 -24.38617916 CONSTANT FILE fname=&#39;wa_tpar_000.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.98115098 -24.38617916 112.04145836 -24.72819930 CONSTANT FILE fname=&#39;wa_tpar_001.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.04145836 -24.72819930 111.10176574 -25.07021945 CONSTANT FILE fname=&#39;wa_tpar_002.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.10176574 -25.07021945 110.63191943 -25.24122952 CONSTANT FILE fname=&#39;wa_tpar_003.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.63191943 -25.24122952 110.97393957 -26.18092214 CONSTANT FILE fname=&#39;wa_tpar_004.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.97393957 -26.18092214 111.31595971 -27.12061476 CONSTANT FILE fname=&#39;wa_tpar_005.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.31595971 -27.12061476 111.65797986 -28.06030738 CONSTANT FILE fname=&#39;wa_tpar_006.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.65797986 -28.06030738 112.00000000 -29.00000000 CONSTANT FILE fname=&#39;wa_tpar_007.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.00000000 -29.00000000 112.00000000 -29.00000000 CONSTANT FILE fname=&#39;wa_tpar_008.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.00000000 -29.00000000 112.93969262 -28.65797986 CONSTANT FILE fname=&#39;wa_tpar_009.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.93969262 -28.65797986 113.87938524 -28.31595971 CONSTANT FILE fname=&#39;wa_tpar_010.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.87938524 -28.31595971 114.81907786 -27.97393957 CONSTANT FILE fname=&#39;wa_tpar_011.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.81907786 -27.97393957 115.28892417 -27.80292950 CONSTANT FILE fname=&#39;wa_tpar_012.bnd&#39; seq=1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+total 52
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_000.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_001.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_002.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_003.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_004.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_005.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_006.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_007.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_008.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_009.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_010.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_011.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_012.bnd
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load boundaries for each segment and plot boundary stats</span>
+
+<span class="n">tpars</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)):</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">read_tpar</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">tpars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">pd</span><span class="o">.</span><span class="n">option_context</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="mi">999</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="mi">2</span><span class="p">]:</span>
+    <span class="n">plot_boundary_side</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="n">tpars</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hs</th>
+      <th>tp</th>
+      <th>dpm</th>
+      <th>dspr</th>
+      <th>x0</th>
+      <th>x1</th>
+      <th>y0</th>
+      <th>y1</th>
+    </tr>
+    <tr>
+      <th>0</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01 00:00:00</th>
+      <td>1.94</td>
+      <td>13.82</td>
+      <td>225.0</td>
+      <td>14.52</td>
+      <td>114.819078</td>
+      <td>115.288924</td>
+      <td>-27.97394</td>
+      <td>-27.80293</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 06:00:00</th>
+      <td>1.95</td>
+      <td>14.09</td>
+      <td>225.0</td>
+      <td>14.38</td>
+      <td>114.819078</td>
+      <td>115.288924</td>
+      <td>-27.97394</td>
+      <td>-27.80293</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 12:00:00</th>
+      <td>2.34</td>
+      <td>14.06</td>
+      <td>225.0</td>
+      <td>18.83</td>
+      <td>114.819078</td>
+      <td>115.288924</td>
+      <td>-27.97394</td>
+      <td>-27.80293</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 18:00:00</th>
+      <td>2.22</td>
+      <td>13.91</td>
+      <td>225.0</td>
+      <td>16.48</td>
+      <td>114.819078</td>
+      <td>115.288924</td>
+      <td>-27.97394</td>
+      <td>-27.80293</td>
+    </tr>
+    <tr>
+      <th>2023-01-02 00:00:00</th>
+      <td>2.05</td>
+      <td>13.85</td>
+      <td>225.0</td>
+      <td>13.39</td>
+      <td>114.819078</td>
+      <td>115.288924</td>
+      <td>-27.97394</td>
+      <td>-27.80293</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_21_1.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_21_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_21_2.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_21_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_21_3.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_21_3.png" />
+</div>
+</div>
+</section>
+<section id="Boundary-segment-along-multiple-sides-with-parent-spacing">
+<h3>Boundary segment along multiple sides with parent spacing<a class="headerlink" href="#Boundary-segment-along-multiple-sides-with-parent-spacing" title="Link to this heading">#</a></h3>
+<p>Set spacing from the minimum distance between spectral points in the source dataset.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">workspace</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">mkdtemp</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">))</span>
+
+<span class="n">bnd</span> <span class="o">=</span> <span class="n">BoundspecSegmentXY</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;wa&quot;</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+    <span class="n">sel_method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">sel_method_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="n">SIDES</span><span class="p">(</span>
+        <span class="n">sides</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;north&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">),</span>
+            <span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;west&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">),</span>
+            <span class="n">SIDE</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;south&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;ccw&quot;</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">bnd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="o">=</span><span class="n">workspace</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">times</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ls -l </span><span class="si">{</span><span class="n">workspace</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;BOUNDSPEC SEGMENT XY 113.92084360 -24.04415902 113.25638058 -24.28600378 CONSTANT FILE fname=&#39;wa_tpar_000.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.25638058 -24.28600378 112.59191755 -24.52784854 CONSTANT FILE fname=&#39;wa_tpar_001.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.59191755 -24.52784854 111.92745453 -24.76969330 CONSTANT FILE fname=&#39;wa_tpar_002.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.92745453 -24.76969330 111.26299150 -25.01153807 CONSTANT FILE fname=&#39;wa_tpar_003.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.26299150 -25.01153807 110.63191943 -25.24122952 CONSTANT FILE fname=&#39;wa_tpar_004.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.63191943 -25.24122952 110.87376419 -25.90569254 CONSTANT FILE fname=&#39;wa_tpar_005.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.87376419 -25.90569254 111.11560895 -26.57015557 CONSTANT FILE fname=&#39;wa_tpar_006.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.11560895 -26.57015557 111.35745371 -27.23461859 CONSTANT FILE fname=&#39;wa_tpar_007.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.35745371 -27.23461859 111.59929848 -27.89908161 CONSTANT FILE fname=&#39;wa_tpar_008.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.59929848 -27.89908161 111.84114324 -28.56354464 CONSTANT FILE fname=&#39;wa_tpar_009.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.84114324 -28.56354464 112.00000000 -29.00000000 CONSTANT FILE fname=&#39;wa_tpar_010.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.00000000 -29.00000000 112.66446302 -28.75815524 CONSTANT FILE fname=&#39;wa_tpar_011.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.66446302 -28.75815524 113.32892605 -28.51631047 CONSTANT FILE fname=&#39;wa_tpar_012.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.32892605 -28.51631047 113.99338907 -28.27446571 CONSTANT FILE fname=&#39;wa_tpar_013.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.99338907 -28.27446571 114.65785210 -28.03262095 CONSTANT FILE fname=&#39;wa_tpar_014.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.65785210 -28.03262095 115.28892417 -27.80292950 CONSTANT FILE fname=&#39;wa_tpar_015.bnd&#39; seq=1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+total 64
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_000.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_001.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_002.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_003.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_004.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_005.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_006.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_007.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_008.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_009.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_010.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_011.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_012.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_013.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_014.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_015.bnd
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load boundaries for each segment and plot boundary stats</span>
+
+<span class="n">tpars</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)):</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">read_tpar</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">tpars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">pd</span><span class="o">.</span><span class="n">option_context</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="mi">999</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="mi">2</span><span class="p">]:</span>
+    <span class="n">plot_boundary_side</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="n">tpars</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hs</th>
+      <th>tp</th>
+      <th>dpm</th>
+      <th>dspr</th>
+      <th>x0</th>
+      <th>x1</th>
+      <th>y0</th>
+      <th>y1</th>
+    </tr>
+    <tr>
+      <th>0</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01 00:00:00</th>
+      <td>1.94</td>
+      <td>13.82</td>
+      <td>225.0</td>
+      <td>14.52</td>
+      <td>114.657852</td>
+      <td>115.288924</td>
+      <td>-28.032621</td>
+      <td>-27.80293</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 06:00:00</th>
+      <td>1.95</td>
+      <td>14.09</td>
+      <td>225.0</td>
+      <td>14.38</td>
+      <td>114.657852</td>
+      <td>115.288924</td>
+      <td>-28.032621</td>
+      <td>-27.80293</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 12:00:00</th>
+      <td>2.34</td>
+      <td>14.06</td>
+      <td>225.0</td>
+      <td>18.83</td>
+      <td>114.657852</td>
+      <td>115.288924</td>
+      <td>-28.032621</td>
+      <td>-27.80293</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 18:00:00</th>
+      <td>2.22</td>
+      <td>13.91</td>
+      <td>225.0</td>
+      <td>16.48</td>
+      <td>114.657852</td>
+      <td>115.288924</td>
+      <td>-28.032621</td>
+      <td>-27.80293</td>
+    </tr>
+    <tr>
+      <th>2023-01-02 00:00:00</th>
+      <td>2.05</td>
+      <td>13.85</td>
+      <td>225.0</td>
+      <td>13.39</td>
+      <td>114.657852</td>
+      <td>115.288924</td>
+      <td>-28.032621</td>
+      <td>-27.80293</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_24_1.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_24_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_24_2.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_24_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_24_3.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_24_3.png" />
+</div>
+</div>
+</section>
+<section id="User-specified-boundary-points">
+<h3>User-specified boundary points<a class="headerlink" href="#User-specified-boundary-points" title="Link to this heading">#</a></h3>
+<p>Users are free to set segments explicitly using the XY type</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">workspace</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">mkdtemp</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">))</span>
+
+<span class="c1"># Define the grid vertices as boundary points</span>
+<span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">boundary_points</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+<span class="n">bnd</span> <span class="o">=</span> <span class="n">BoundspecSegmentXY</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;wa&quot;</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+    <span class="n">sel_method</span><span class="o">=</span><span class="s2">&quot;idw&quot;</span><span class="p">,</span>
+    <span class="n">sel_method_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+    <span class="n">location</span><span class="o">=</span><span class="n">XY</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xb</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">yb</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">bnd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="o">=</span><span class="n">workspace</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">times</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ls -l </span><span class="si">{</span><span class="n">workspace</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(112.0, -29.0)
+(112.46984631039295, -28.828989928337165)
+(112.9396926207859, -28.65797985667433)
+(113.40953893117886, -28.486969785011496)
+(113.87938524157181, -28.31595971334866)
+(114.34923155196478, -28.144949641685827)
+(114.81907786235773, -27.973939570022992)
+(115.28892417275068, -27.80292949836016)
+(115.11791410108785, -27.333083187967205)
+(114.94690402942501, -26.863236877574252)
+(114.77589395776218, -26.393390567181296)
+(114.60488388609934, -25.923544256788343)
+(114.43387381443651, -25.453697946395387)
+(114.26286374277367, -24.983851636002434)
+(114.09185367111084, -24.51400532560948)
+(113.920843599448, -24.044159015216525)
+(113.45099728905505, -24.21516908687936)
+(112.9811509786621, -24.386179158542195)
+(112.51130466826915, -24.55718923020503)
+(112.0414583578762, -24.728199301867864)
+(111.57161204748323, -24.8992093735307)
+(111.10176573709028, -25.070219445193533)
+(110.63191942669732, -25.241229516856365)
+(110.80292949836016, -25.71107582724932)
+(110.97393957002299, -26.180922137642273)
+(111.14494964168583, -26.65076844803523)
+(111.31595971334866, -27.120614758428182)
+(111.4869697850115, -27.59046106882114)
+(111.65797985667433, -28.06030737921409)
+(111.82898992833717, -28.530153689607047)
+(112.0, -29.0)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;BOUNDSPEC SEGMENT XY 112.00000000 -29.00000000 112.46984631 -28.82898993 CONSTANT FILE fname=&#39;wa_tpar_000.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.46984631 -28.82898993 112.93969262 -28.65797986 CONSTANT FILE fname=&#39;wa_tpar_001.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.93969262 -28.65797986 113.40953893 -28.48696979 CONSTANT FILE fname=&#39;wa_tpar_002.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.40953893 -28.48696979 113.87938524 -28.31595971 CONSTANT FILE fname=&#39;wa_tpar_003.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.87938524 -28.31595971 114.34923155 -28.14494964 CONSTANT FILE fname=&#39;wa_tpar_004.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.34923155 -28.14494964 114.81907786 -27.97393957 CONSTANT FILE fname=&#39;wa_tpar_005.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.81907786 -27.97393957 115.28892417 -27.80292950 CONSTANT FILE fname=&#39;wa_tpar_006.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 115.28892417 -27.80292950 115.11791410 -27.33308319 CONSTANT FILE fname=&#39;wa_tpar_007.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 115.11791410 -27.33308319 114.94690403 -26.86323688 CONSTANT FILE fname=&#39;wa_tpar_008.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.94690403 -26.86323688 114.77589396 -26.39339057 CONSTANT FILE fname=&#39;wa_tpar_009.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.77589396 -26.39339057 114.60488389 -25.92354426 CONSTANT FILE fname=&#39;wa_tpar_010.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.60488389 -25.92354426 114.43387381 -25.45369795 CONSTANT FILE fname=&#39;wa_tpar_011.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.43387381 -25.45369795 114.26286374 -24.98385164 CONSTANT FILE fname=&#39;wa_tpar_012.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.26286374 -24.98385164 114.09185367 -24.51400533 CONSTANT FILE fname=&#39;wa_tpar_013.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 114.09185367 -24.51400533 113.92084360 -24.04415902 CONSTANT FILE fname=&#39;wa_tpar_014.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.92084360 -24.04415902 113.45099729 -24.21516909 CONSTANT FILE fname=&#39;wa_tpar_015.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 113.45099729 -24.21516909 112.98115098 -24.38617916 CONSTANT FILE fname=&#39;wa_tpar_016.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.98115098 -24.38617916 112.51130467 -24.55718923 CONSTANT FILE fname=&#39;wa_tpar_017.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.51130467 -24.55718923 112.04145836 -24.72819930 CONSTANT FILE fname=&#39;wa_tpar_018.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 112.04145836 -24.72819930 111.57161205 -24.89920937 CONSTANT FILE fname=&#39;wa_tpar_019.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.57161205 -24.89920937 111.10176574 -25.07021945 CONSTANT FILE fname=&#39;wa_tpar_020.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.10176574 -25.07021945 110.63191943 -25.24122952 CONSTANT FILE fname=&#39;wa_tpar_021.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.63191943 -25.24122952 110.80292950 -25.71107583 CONSTANT FILE fname=&#39;wa_tpar_022.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.80292950 -25.71107583 110.97393957 -26.18092214 CONSTANT FILE fname=&#39;wa_tpar_023.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 110.97393957 -26.18092214 111.14494964 -26.65076845 CONSTANT FILE fname=&#39;wa_tpar_024.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.14494964 -26.65076845 111.31595971 -27.12061476 CONSTANT FILE fname=&#39;wa_tpar_025.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.31595971 -27.12061476 111.48696979 -27.59046107 CONSTANT FILE fname=&#39;wa_tpar_026.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.48696979 -27.59046107 111.65797986 -28.06030738 CONSTANT FILE fname=&#39;wa_tpar_027.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.65797986 -28.06030738 111.82898993 -28.53015369 CONSTANT FILE fname=&#39;wa_tpar_028.bnd&#39; seq=1\nBOUNDSPEC SEGMENT XY 111.82898993 -28.53015369 112.00000000 -29.00000000 CONSTANT FILE fname=&#39;wa_tpar_029.bnd&#39; seq=1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+total 120
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_000.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_001.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_002.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_003.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_004.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_005.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_006.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_007.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_008.bnd
+-rw-rw-r-- 1 rguedes rguedes 170 Apr 19 11:57 wa_tpar_009.bnd
+-rw-rw-r-- 1 rguedes rguedes 170 Apr 19 11:57 wa_tpar_010.bnd
+-rw-rw-r-- 1 rguedes rguedes 170 Apr 19 11:57 wa_tpar_011.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_012.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_013.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_014.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_015.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_016.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_017.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_018.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_019.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_020.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_021.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_022.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_023.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_024.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_025.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_026.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_027.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_028.bnd
+-rw-rw-r-- 1 rguedes rguedes 205 Apr 19 11:57 wa_tpar_029.bnd
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load boundaries for each segment and plot boundary stats</span>
+
+<span class="n">tpars</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)):</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">read_tpar</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">tpars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Display the contents of one of the TPAR files</span>
+<span class="k">with</span> <span class="n">pd</span><span class="o">.</span><span class="n">option_context</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="mi">999</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Plot source and boundary stats</span>
+<span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="mi">2</span><span class="p">]:</span>
+    <span class="n">plot_boundary_side</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="n">tpars</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hs</th>
+      <th>tp</th>
+      <th>dpm</th>
+      <th>dspr</th>
+      <th>x0</th>
+      <th>x1</th>
+      <th>y0</th>
+      <th>y1</th>
+    </tr>
+    <tr>
+      <th>0</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01 00:00:00</th>
+      <td>2.91</td>
+      <td>14.14</td>
+      <td>224.35</td>
+      <td>25.31</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 06:00:00</th>
+      <td>2.99</td>
+      <td>14.11</td>
+      <td>224.08</td>
+      <td>26.31</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 12:00:00</th>
+      <td>3.35</td>
+      <td>14.25</td>
+      <td>223.91</td>
+      <td>28.19</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-01 18:00:00</th>
+      <td>3.62</td>
+      <td>14.31</td>
+      <td>224.13</td>
+      <td>29.76</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02 00:00:00</th>
+      <td>3.59</td>
+      <td>14.18</td>
+      <td>224.47</td>
+      <td>30.52</td>
+      <td>111.82899</td>
+      <td>112.0</td>
+      <td>-28.530154</td>
+      <td>-29.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_27_1.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_27_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_27_2.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_27_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/notebooks_swan_boundary_boundspec_segment_27_3.png" src="../../../_images/notebooks_swan_boundary_boundspec_segment_27_3.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Helper-functions">Helper functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Define-rompy-objects">Define rompy objects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Boundary-segment-along-one-side">Boundary segment along one side</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Boundary-segment-along-multiple-sides">Boundary segment along multiple sides</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Boundary-segment-along-multiple-sides-with-custom-spacing">Boundary segment along multiple sides with custom spacing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Boundary-segment-along-multiple-sides-with-parent-spacing">Boundary segment along multiple sides with parent spacing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#User-specified-boundary-points">User-specified boundary points</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../../_sources/notebooks/swan/boundary/boundspec_segment.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

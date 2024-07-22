@@ -1,0 +1,913 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rompy.schism.config &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/rompy/schism/config';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">rompy.schism.config</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for rompy.schism.config</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">PrivateAttr</span><span class="p">,</span> <span class="n">model_validator</span>
+
+<span class="kn">from</span> <span class="nn">rompy.core</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BaseConfig</span><span class="p">,</span> <span class="n">DataBlob</span><span class="p">,</span> <span class="n">RompyBaseModel</span><span class="p">,</span> <span class="n">Spectrum</span><span class="p">,</span>
+                        <span class="n">TimeRange</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">SCHISMData</span>
+<span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">SCHISMGrid</span>
+<span class="kn">from</span> <span class="nn">.namelists</span> <span class="kn">import</span> <span class="n">COSINE</span><span class="p">,</span> <span class="n">ICE</span><span class="p">,</span> <span class="n">ICM</span><span class="p">,</span> <span class="n">MICE</span><span class="p">,</span> <span class="n">PARAM</span><span class="p">,</span> <span class="n">SEDIMENT</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">HERE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+
+<span class="n">CSIRO_TEMPLATE</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;templates&quot;</span> <span class="o">/</span> <span class="s2">&quot;schism&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Inputs</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+    <span class="n">filewave</span><span class="p">:</span> <span class="n">DataBlob</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">staging_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">staging_dir</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">forcing</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">forcing</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">forcing</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">forcing</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+
+<div class="viewcode-block" id="SchismCSIROConfig">
+<a class="viewcode-back" href="../../../schism/_generated/rompy.schism.config.SchismCSIROConfig.html#rompy.schism.config.SchismCSIROConfig">[docs]</a>
+<span class="k">class</span> <span class="nc">SchismCSIROConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">):</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;schismcsiro&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;schismcsiro&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The model type for SCHISM.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">grid</span><span class="p">:</span> <span class="n">SCHISMGrid</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The model grid&quot;</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">SCHISMData</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model inputs&quot;</span><span class="p">)</span>
+    <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;WAXA&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">utc_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">time_step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">120.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">msc2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;same as msc in .nml ... for consitency check between SCHISM and WWM&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">mdc2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;same as mdc in .nml&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">36</span><span class="p">)</span>
+    <span class="n">ihfskip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;stack spool; every ihfskip steps will be put into 1_*, 2_*, etc... use 22320.0 for 31 days; 5040 for 7 days; 21600 for 30 days; 20880 for 29 days&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">720</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">icou_elfe_wwm</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;If WWM is used, set coupling/decoupling flag. Not used if USE_WWM is distabled in Makefile. 0: decoupled so 2 models will run independently; 1: full coupled (elevation, vel, and wind are all passed to WWM); 2: elevation and currents in wwm, no wave force in SCHISM; 3: no elevation and no currents in wwm, wave force in SCHISM; 4: elevation but no currents in wwm, wave force in SCHISM; 5: elevation but no currents in wwm, no wave force in SCHISM; 6: no elevation but currents in wwm, wave force in SCHISM; 7: no elevation but currents in wwm, no wave force in SCHISM; Note that all these parameters must be present in this file (even though not used).&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">nstep_wwm</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">3</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;call WWM every this many time steps. If /=1, consider using quasi-steady mode in WWM&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">deltc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">h1_bcc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">50.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Baroclinicity calculation in off/nearshore with iunder_deep=ibc=0. The &#39;below-bottom&#39; gradient is zeroed out if h&gt;=h2_bcc (i.e. like Z) or uses const extrap (i.e. like terrain-following) if h&lt;=h1_bcc(&lt;h2_bcc) (and linear transition in between based on local depth)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">h2_bcc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">100.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Baroclinicity calculation in off/nearshore with iunder_deep=ibc=0. The &#39;below-bottom&#39; gradient is zeroed out if h&gt;=h2_bcc (i.e. like Z) or uses const extrap (i.e. like terrain-following) if h&lt;=h1_bcc(&lt;h2_bcc) (and linear transition in between based on local depth)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">h_bcc1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Cut-off depth for cubic spline interpolation near bottom when computing horizontal gradients&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">thetai</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Implicitness factor (0.5&lt;thetai&lt;=1).&quot;</span><span class="p">)</span>
+    <span class="n">iwbl</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;wave boundary layer formulation (used only if USE_WMM and icou_elfe_wwm/=0 and nchi=1. If icou_elfe_wwm=0, set iwbl=0): 1-modified Grant-Madsen formulation; 2-Soulsby (1997)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">slam0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">120.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reference latitude for beta-plane approximation when ncor=1 (not used if ics=2)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">sfea0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">-</span><span class="mf">29.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reference latitude for beta-plane approximation when ncor=1 (not used if ics=2)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">nchi</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;bottom friction&quot;</span><span class="p">)</span>
+    <span class="n">dzb_decayYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">rlatitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">-</span><span class="mi">29</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;if ncor=-1&quot;</span><span class="p">)</span>
+    <span class="n">ic_elev</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;elevation initial condition flag for cold start only&quot;</span>
+    <span class="p">)</span>
+    <span class="n">inv_atm_bnd</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">ibtrack_openbndYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">iwindoffYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">iwind_form</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Needed if nws/=0   !usually use -1, trialling -2 to see if makes a difference&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">sav_cdYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Save current direction (T/F)&quot;</span><span class="p">)</span>
+    <span class="n">iout_sta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Station output option&quot;</span><span class="p">)</span>
+    <span class="n">lindsprdeg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Linear interpolation of directional spread (T/F)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wbdm</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave boundary data mode (1-4)&quot;</span><span class="p">)</span>
+    <span class="n">extrapYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Extrapolation of wave boundary data (T/F)&quot;</span><span class="p">)</span>
+    <span class="n">extrap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Extrapolation of wave boundary data (T/F)&quot;</span><span class="p">)</span>
+    <span class="n">windYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wind data (T/F)&quot;</span><span class="p">)</span>
+    <span class="n">filewind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;wind.dat&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the wind data file&quot;</span><span class="p">)</span>
+    <span class="n">currYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Current data (T/F)&quot;</span><span class="p">)</span>
+    <span class="n">walvYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave-induced current data (T/F)&quot;</span><span class="p">)</span>
+    <span class="n">mesin</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Input message level (0-2)&quot;</span><span class="p">)</span>
+    <span class="n">mesbf</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Output message level (0-2)&quot;</span><span class="p">)</span>
+    <span class="n">fricc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">0.11</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Bottom friction factor&quot;</span><span class="p">)</span>
+    <span class="n">ibreak</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave breaking parameterization (1-3)&quot;</span><span class="p">)</span>
+    <span class="n">brcrYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave breaking parameterization (T/F)&quot;</span><span class="p">)</span>
+    <span class="n">melim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave energy limit (1-3)&quot;</span><span class="p">)</span>
+    <span class="n">limfak</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave energy limit factor&quot;</span><span class="p">)</span>
+    <span class="n">lsourceswam</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Source term for SWAN (T/F)&quot;</span><span class="p">)</span>
+    <span class="n">deltc_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">3600</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Output time step (s)&quot;</span><span class="p">)</span>
+    <span class="n">definetc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Definition of output time step (1-3)&quot;</span><span class="p">)</span>
+    <span class="n">outstyle</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;NC&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Output style (NC/WW3)&quot;</span><span class="p">)</span>
+    <span class="n">wwm1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sig. height (m) </span><span class="si">{sigWaveHeight}</span><span class="s2">   2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mean average period (sec) - TM01 </span><span class="si">{meanWavePeriod}</span><span class="s2">  2D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm3</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Zero down crossing period for comparison with buoy (s) - TM02 </span><span class="si">{zeroDowncrossPeriod}</span><span class="s2">  2D&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm4</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Average period of wave runup/overtopping - TM10 </span><span class="si">{TM10}</span><span class="s2">  2D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm5</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mean wave number (1/m) </span><span class="si">{meanWaveNumber}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm6</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mean wave length (m) </span><span class="si">{meanWaveLength}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm7</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mean average energy transport direction (degr) - MWD in NDBC? </span><span class="si">{meanWaveDirection}</span><span class="s2">  2D&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm8</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mean directional spreading (degr) </span><span class="si">{meanDirSpreading}</span><span class="s2">  2D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm9</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Discrete peak period (sec) - Tp </span><span class="si">{peakPeriod}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm10</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Continuous peak period based on higher order moments (sec) </span><span class="si">{continuousPeakPeriod}</span><span class="s2">  2D&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm11</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Peak phase vel. (m/s) </span><span class="si">{peakPhaseVel}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm12</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Peak n-factor </span><span class="si">{peakNFactor}</span><span class="s2">   2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm13</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Peak group vel. (m/s) </span><span class="si">{peakGroupVel}</span><span class="s2">   2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm14</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Peak wave number </span><span class="si">{peakWaveNumber}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm15</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Peak wave length </span><span class="si">{peakWaveLength}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm16</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Peak (dominant) direction (degr) </span><span class="si">{dominantDirection}</span><span class="s2">  2D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm17</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Peak directional spreading </span><span class="si">{peakSpreading}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm18</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Discrete peak direction (radian?) </span><span class="si">{discretePeakDirectio}</span><span class="s2">  2D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm19</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Orbital vel. (m/s) </span><span class="si">{orbitalVelocity}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm20</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RMS Orbital vel. (m/s) </span><span class="si">{rmsOrbitalVelocity}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm21</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Bottom excursion period (sec?) </span><span class="si">{bottomExcursionPerio}</span><span class="s2">  2D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm22</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Bottom wave period (sec) </span><span class="si">{bottomWavePeriod}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm23</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Uresell number based on peak period </span><span class="si">{UresellNumber}</span><span class="s2">  2D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm24</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Friction velocity (m/s?) </span><span class="si">{frictionalVelocity}</span><span class="s2">  2D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm25</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Charnock coefficient </span><span class="si">{CharnockCoeff}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm26</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Rougness length </span><span class="si">{rougnessLength}</span><span class="s2">  2D&quot;</span><span class="p">)</span>
+    <span class="n">wwm27</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Roller energy dissipation rate (W/m²) @nodes </span><span class="si">{Drol}</span><span class="s2"> 2D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm28</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Total wave energy dissipation rate by depth-induced breaking (W/m²) @nodes </span><span class="si">{wave_sbrtot}</span><span class="s2">  2D&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm29</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Total wave energy dissipation rate by bottom friction (W/m²) @nodes </span><span class="si">{wave_sbftot}</span><span class="s2"> 2D&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm30</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Total wave energy dissipation rate by whitecapping (W/m²) @nodes </span><span class="si">{wave_sdstot}</span><span class="s2"> 2D&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm31</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Total wave energy dissipation rate by vegetation (W/m²) @nodes </span><span class="si">{wave_svegtot}</span><span class="s2"> 2D&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm32</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Total wave energy input rate from atmospheric forcing (W/m²) @nodes </span><span class="si">{wave_sintot}</span><span class="s2"> 2D&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm33</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;WWM_energy vector {waveEnergyDirX,Y}  2D vector&quot;</span><span class="p">)</span>
+    <span class="n">wwm34</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Vertical Stokes velocity (m.s-1) @sides and whole levels </span><span class="si">{stokes_wvel}</span><span class="s2">  3D&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm35</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave force vector (m.s-2) computed by wwm @side centers and whole levels {waveForceX,Y}   3D vector&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm36</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Horizontal Stokes velocity (m.s-1) @nodes and whole levels </span><span class="si">{stokes_hvel}</span><span class="s2"> 3D vector&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm37</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Roller contribution to horizontal Stokes velocity (m.s-1) @nodes and whole levels </span><span class="si">{roller_stokes_hvel}</span><span class="s2"> 3D vector&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm31YN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Total wave energy dissipation rate by vegetation (W/m2) @nodes </span><span class="si">{wave_svegtot}</span><span class="s2"> 2D&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;!&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm32YN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Total wave energy input rate from atmospheric forcing (W/m2) @nodes </span><span class="si">{wave_sintot}</span><span class="s2"> 2D&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;!&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm33YN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;WWM_energy vector {waveEnergyDirX,Y}  2D vector&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;!&quot;</span>
+    <span class="p">)</span>
+    <span class="n">wwm34YN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Vertical Stokes velocity (m.s-1) @sides and whole levels </span><span class="si">{stokes_wvel}</span><span class="s2">  3D&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;!&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm35YN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave force vector (m.s-2) computed by wwm @side centers and whole levels {waveForceX,Y}   3D vector&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;!&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm36YN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Horizontal Stokes velocity (m.s-1) @nodes and whole levels </span><span class="si">{stokes_hvel}</span><span class="s2"> 3D vector&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;!&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwm37YN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Roller contribution to horizontal Stokes velocity (m.s-1) @nodes and whole levels </span><span class="si">{roller_stokes_hvel}</span><span class="s2"> 3D vector &quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;!&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">HS</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;significant wave height&quot;</span><span class="p">)</span>
+    <span class="n">TM01</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;mean period&quot;</span><span class="p">)</span>
+    <span class="n">TM02</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;zero-crossing mean period&quot;</span><span class="p">)</span>
+    <span class="n">DM</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;mean wave direction&quot;</span><span class="p">)</span>
+    <span class="n">DSPR</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;directional spreading&quot;</span><span class="p">)</span>
+    <span class="n">TPP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;peak period&quot;</span><span class="p">)</span>
+    <span class="n">TPPD</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;direaction of the peak ... check source code&quot;</span><span class="p">)</span>
+    <span class="n">CPP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;peak phase velocity&quot;</span><span class="p">)</span>
+    <span class="n">WNPP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;peak wave number&quot;</span><span class="p">)</span>
+    <span class="n">CGPP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;peak group speed&quot;</span><span class="p">)</span>
+    <span class="n">KPP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;peak wave number&quot;</span><span class="p">)</span>
+    <span class="n">LPP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;peak wave length&quot;</span><span class="p">)</span>
+    <span class="n">PEAKD</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;peak direction&quot;</span><span class="p">)</span>
+    <span class="n">DPEAK</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;peak direction&quot;</span><span class="p">)</span>
+    <span class="n">PEAKDSPR</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;peak directional spreading&quot;</span><span class="p">)</span>
+    <span class="n">UBOT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;bottom exc. velocity&quot;</span><span class="p">)</span>
+    <span class="n">ORBITAL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;bottom orbital velocity&quot;</span><span class="p">)</span>
+    <span class="n">iouts</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">nouts</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;&#39;AWAC_in&#39;,&#39;AWAC_mid&#39;,&#39;AWAC_off&#39;,&#39;SPOT_1002&#39;,&#39;SPOT_1011&#39;,&#39;SPOT_1018&#39;,&#39;SPOT_1026&#39;&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">xouts</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;115.6208687,115.5941886,115.58077,115.5942931,115.5830497,115.5807825,115.5960683&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">youts</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;-32.611605,-32.611605,-32.613682,-32.6253914,-32.6135870,-32.6294226,-32.6096741&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">lsp2d</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">ac</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The path to the model template&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">CSIRO_TEMPLATE</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">drampwafo</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">nadv</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">drampwind</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">dramp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_history_DEP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_history_TAUW</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_history_TAUHF</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_history_TAUTOT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_history_STOKESSURFX</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_history_STOKESSURFY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_history_STOKESBAROX</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_history_STOKESBAROY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_station_DEP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_station_TAUW</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_station_TAUHF</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_station_TAUTOT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_station_STOKESSURFX</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_station_STOKESSURFY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_station_STOKESBAROX</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_station_STOKESBAROY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_station_OUTSTYLE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;NO&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&#39;NO&#39; no output &#39;STE&#39; classic station output (default) &#39;NC&#39; for netcdf output&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_LHOTF</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;wwminput Write hotfile&quot;</span><span class="p">)</span>
+    <span class="n">param_nhot</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;use 1 to write out hotstart: output *_hotstart every &#39;hotout_write&#39; steps&quot;</span><span class="p">)</span>
+    <span class="n">param_nhot_writeYN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;enables or disables (!) the nhot write field&quot;</span><span class="p">)</span>
+    <span class="n">param_nhot_write</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">22320.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;if enabled when nhot and nhotwriteYN enabled then must be a multiple of ihfskip if nhot=1&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_LHOTR</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Use hotstart file (see &amp;HOTFILE section)&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_LINID</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot; Initial condition; F for default; use T if using WW3 as i.c. etc&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - elev. [m]  </span><span class="si">{elev}</span><span class="s2"> 2D - Default 1&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - air pressure [Pa]  </span><span class="si">{air_pressure}</span><span class="s2"> 2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro3</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - air temperature [C] </span><span class="si">{air_temperature}</span><span class="s2"> 2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro4</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - Specific humidity [-] </span><span class="si">{specific_humidity}</span><span class="s2">  2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro5</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - solar (shortwave) radiation [W/m/m] </span><span class="si">{solar_radiation}</span><span class="s2">  2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro6</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - sensible flux (positive upward) [W/m/m]  </span><span class="si">{sensible_flux}</span><span class="s2">  2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro7</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - latent heat flux (positive upward) [W/m/m] </span><span class="si">{latent_heat}</span><span class="s2">   2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro8</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - upward longwave radiation (positive upward) [W/m/m] </span><span class="si">{upward_longwave}</span><span class="s2"> 2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro9</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - downward longwave radiation (positive downward) [W/m/m] </span><span class="si">{downward_longwave}</span><span class="s2">  2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro10</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - total flux=-flsu-fllu-(radu-radd) [W/m/m] </span><span class="si">{total_heat_flux}</span><span class="s2">  2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro11</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - evaporation rate [kg/m/m/s] </span><span class="si">{evaporation}</span><span class="s2">  2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro12</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - precipitation rate [kg/m/m/s] </span><span class="si">{precipitation}</span><span class="s2">  2D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro13</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - Bottom stress vector [kg/m/s^2(Pa)] </span><span class="si">{bottom_stress}</span><span class="s2"> 2D vector - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro14</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - wind velocity vector [m/s] </span><span class="si">{wind_speed}</span><span class="s2">  2D vector - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro15</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - wind stress vector [m^2/s/s] </span><span class="si">{wind_stress}</span><span class="s2">  2D vector - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro16</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - depth-averaged vel vector [m/s] </span><span class="si">{dahv}</span><span class="s2">  2D vector - Default 1&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro17</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - vertical velocity [m/s] </span><span class="si">{vertical_velocity}</span><span class="s2">  3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro18</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - water temperature [C] </span><span class="si">{temp}</span><span class="s2">  3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro19</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - water salinity [PSU] </span><span class="si">{salt}</span><span class="s2">   3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro20</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - water density [kg/m^3] </span><span class="si">{water_density}</span><span class="s2">   3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro21</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - eddy diffusivity [m^2/s] </span><span class="si">{diffusivity}</span><span class="s2">   3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro22</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - eddy viscosity [m^2/s] </span><span class="si">{viscosity}</span><span class="s2">      3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro23</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - turbulent kinetic energy </span><span class="si">{TKE}</span><span class="s2">   3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro24</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - turbulent mixing length [m] </span><span class="si">{mixing_length}</span><span class="s2">   3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro25</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - horizontal vel vector [m/s] </span><span class="si">{hvel}</span><span class="s2">   3D vector - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro26</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - horizontal vel vector defined @side [m/s] </span><span class="si">{hvel_side}</span><span class="s2">   3D vector  - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro27</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - vertical vel. @elem [m/s] </span><span class="si">{wvel_elem}</span><span class="s2">   3D vector  - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro28</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - T @prism centers [C] </span><span class="si">{temp_elem}</span><span class="s2">   3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro29</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - S @prism centers [PSU] </span><span class="si">{salt_elem}</span><span class="s2">   3D - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">param_iof_hydro30</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - Barotropic pressure gradient force vector (m.s-2) @side centers  </span><span class="si">{pressure_gradient}</span><span class="s2">  2D vector  - Default 0&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_history_OUTSTYLE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;NC&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&#39;output option - use &#39;NO&#39; for no output&quot;</span><span class="p">)</span>
+    <span class="n">param_nspool_sta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;needed if iout_sta/=0; mod(nhot_write,nspool_sta) must=0 defaults to 30&quot;</span><span class="p">),</span>
+    <span class="n">ihot</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;hotstart 0: off; 1: on - whether to expect hotstarts - Default - 0-&quot;</span><span class="p">)</span>
+    <span class="n">wwminput_hotfile_deltc_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">3600</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;hotfile time in UNITC (typically seconds) when hotfile should be written, defaults to 3600&quot;</span><span class="p">)</span>
+
+    <span class="c1"># validator example - ensure the following</span>
+    <span class="c1"># Bottom friction.</span>
+    <span class="c1">#           nchi=0: drag coefficients specified in drag.gr3; nchi=-1: Manning&#39;s</span>
+    <span class="c1">#           formulation (even for 3D prisms) with n specified in manning.gr3.</span>
+    <span class="c1">#           nchi=1: bottom roughness (in meters) specified in rough.gr3 (and in this case, negative</span>
+    <span class="c1">#           or 0 depths in rough.gr3 indicate time-independent Cd, not roughness!).</span>
+    <span class="c1">#           Cd is calculated using the log law, when dzb&gt;=dzb_min; when dzb&lt;dzb_min,</span>
+    <span class="c1">#           Cd=Cdmax*exp[dzb_decay*(1-dzb/dzb_min)], where Cdmax=Cd(dzb=dzb_min),</span>
+    <span class="c1">#           and dzb_decay (&lt;=0) is a decay const specified below. We recommend dzb_decay=0</span>
+    <span class="c1">#           and may remove this constant in the future.</span>
+    <span class="c1">#           If iwbl/=0, nchi must =1.</span>
+    <span class="c1">#   nchi = -1</span>
+    <span class="c1">#   dzb_min = 0.5 !needed if nchi=1; min. bottom boundary layer thickness [m].</span>
+    <span class="c1">#   dzb_decay = 0. !needed if nchi=1; a decay const. [-]. should =0</span>
+    <span class="c1">#   hmin_man = 1.0 !needed if nchi=-1: min. depth in Manning&#39;s formulation [m]</span>
+
+<div class="viewcode-block" id="SchismCSIROConfig.validate_bottom_friction">
+<a class="viewcode-back" href="../../../schism/_generated/rompy.schism.config.SchismCSIROConfig.html#rompy.schism.config.SchismCSIROConfig.validate_bottom_friction">[docs]</a>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_bottom_friction</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">nchi</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">drag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;drag.gr3 must be specified when nchi=0&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">nchi</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">manning</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;manning.gr3 must be specified when nchi=-1&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">nchi</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">rough</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;rough.gr3 must be specified when nchi=1&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;nchi must be 0, -1, or 1&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="c1"># Copy grid files</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;_rnday&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">period</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">86400</span>
+        <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">runtime</span><span class="o">.</span><span class="n">staging_dir</span><span class="p">)</span>
+        <span class="c1"># TODO Still need to link up these maybe?</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">destdir</span><span class="o">=</span><span class="n">runtime</span><span class="o">.</span><span class="n">staging_dir</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">runtime</span><span class="o">.</span><span class="n">period</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+
+<span class="c1"># class SCHISMConfig(BaseConfig):</span>
+<span class="c1">#     model_type: Literal[&quot;schism&quot;] = Field(</span>
+<span class="c1">#         &quot;schism&quot;, description=&quot;The model type for SCHISM.&quot;</span>
+<span class="c1">#     )</span>
+<span class="c1">#     param: Optional[PARAM] = Field(description=&quot;Model paramaters&quot;)</span>
+<span class="c1">#     ice: Optional[ICE] = Field(description=&quot;Ice model parameters&quot;, default=None)</span>
+<span class="c1">#     icm: Optional[ICM] = Field(description=&quot;Ice model parameters&quot;, default=None)</span>
+<span class="c1">#     mice: Optional[ICM] = Field(description=&quot;Ice model parameters&quot;, default=None)</span>
+<span class="c1">#     sediment: Optional[SEDIMENT] = Field(</span>
+<span class="c1">#         description=&quot;Sediment model parameters&quot;, default=None</span>
+<span class="c1">#     )</span>
+<span class="c1">#     cosine: Optional[COSINE] = Field(</span>
+<span class="c1">#         description=&quot;Sediment model parameters&quot;, default=None</span>
+<span class="c1">#     )</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

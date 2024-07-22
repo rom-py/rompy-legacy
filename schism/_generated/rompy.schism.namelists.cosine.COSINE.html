@@ -1,0 +1,762 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>rompy.schism.namelists.cosine.COSINE &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'schism/_generated/rompy.schism.namelists.cosine.COSINE';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Demonstration notebooks" href="../../demo.html" />
+    <link rel="prev" title="rompy.schism.namelists.sediment.SEDIMENT" href="rompy.schism.namelists.sediment.SEDIMENT.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../models.html">Models</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../swan/index.html">SWAN</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">SCHISM</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#grids">Grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data">Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#config-minimal">Config Minimal</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#full-namelist-implementation">Full Namelist Implementation</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#param">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#ice">Ice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#icm">ICM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#sediment">SEDIMENT</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#cosine">COSINE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#config-object">Config Object</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../models.html" class="nav-link">Models</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SCHISM</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">rompy.schism...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="rompy-schism-namelists-cosine-cosine">
+<h1>rompy.schism.namelists.cosine.COSINE<a class="headerlink" href="#rompy-schism-namelists-cosine-cosine" title="Link to this heading">#</a></h1>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.schism.namelists.cosine.COSINE">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.schism.namelists.cosine.</span></span><span class="sig-name descname"><span class="pre">COSINE</span></span><a class="reference internal" href="../../_modules/rompy/schism/namelists/cosine.html#COSINE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.cosine.COSINE" title="Link to this definition">#</a></dt>
+<dd><p>This file was auto generated from a schism namelist file on 2023-11-20.
+The full contents of the namelist file are shown below providing
+associated documentation for the objects:</p>
+<p>!parameter inputs via namelist convention.
+!(1) Use ‘ ‘ (single quotes) for chars;
+!(2) integer values are fine for real vars/arrays;
+!(3) if multiple entries for a parameter are found, the last one wins - please avoid this
+!(4) array inputs follow column major (like FORTRAN) and can spill to multiple lines
+!(5) space allowed before/after ‘=’</p>
+<p>&amp;MARCO
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!switches and marco parameters
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
+<p>!———————————————————————–
+!idelay: a 7-day delay for zooplankton predation
+!———————————————————————–
+idelay = 0
+ndelay = 7</p>
+<p>!———————————————————————–
+!ibgraze: bottom grazing function
+!———————————————————————–
+ibgraze = 0</p>
+<p>!———————————————————————–
+!idapt: light adaptation
+!———————————————————————–
+idapt = 0
+alpha_corr= 1.25
+zeptic= 10.0</p>
+<p>!———————————————————————–
+!iz2graze=0 : shut down Z2 grazing on S2, Z1, and DN
+!———————————————————————–
+iz2graze = 1</p>
+<p>!———————————————————————–
+!CoSiNE model station output option (need cstation.in with <a href="#id1"><span class="problematic" id="id2">*</span></a>.bp format)
+! iout_cosine=0: turn off this option
+! iout_cosine=1: all available diagnostic variables
+! iout_cosine=2: state variables
+! iout_cosine=3: state variables + source/sink terms
+! iout_cosine=4: state variables + misc diagnostics
+! iout_cosine=5: state variables + surface/bottom fluxes
+! nspool_cosine: output interval (number of time step)
+!———————————————————————–
+iout_cosine=0
+nspool_cosine=30</p>
+<p>!———————————————————————–
+!ico2s=0: no CO2 limitation on phytoplankton growth
+!———————————————————————–
+ico2s = 0</p>
+<p>!———————————————————————–
+!ispm=0: constant Suspended Particlate Matter spm0 is used for while domain
+!ispm=1: spatial varying SPM from SPM.gr3 is used
+!ispm=2: use SED model to calculate SPM
+!———————————————————————–
+ispm = 0
+spm0 = 20.0</p>
+<p>!———————————————————————–
+!ised=1 : sediment flux model
+!———————————————————————–
+ised = 1
+/</p>
+<p>&amp;CORE
+!————————————————————————
+!phytoplankton
+!————————————————————————
+gmaxs  = 2.0   2.5    !maximum growth rate
+gammas = 0.2   0.075  !mortality rate
+pis    = 1.5   1.5    !ammonium inhibition
+kno3s  = 1.0   3.0    !NO3 half saturation
+knh4s  = 0.15  0.45   !NH4 half saturation
+kpo4s  = 0.1   0.1    !PO4 half saturation
+kco2s  = 50.0  50.0   !CO2 half saturation
+ksio4  = 4.5          !SiO4 half saturation for diatom
+kns    = 0.0   0.0    !nighttime uptake rate of NH4
+alphas = 0.1   0.1    !initial slopes of P-I curve
+betas  = 0.0   0.0    !slope for photo-inhibition
+aks    = 0.75  0.03  0.066  !light extinction coefficients: rKe=ak1+ak2*(S1+S2)+ak3*SPM</p>
+<p>!————————————————————————
+!zooplankton
+!————————————————————————
+betaz  = 1.35  0.4    !maximum grazing rate
+alphaz = 0.75  0.75   !assimilation rate
+gammaz = 0.2   0.2    !mortality rate
+kez    = 0.2   0.2    !excretion rate
+kgz    = 0.5   0.25   !reference prey concentration for grazing
+rhoz   = 0.6   0.3   0.1  !prey preference factors of Z2 on (S2,Z1,DN)</p>
+<p>!————————————————————————
+!other
+!————————————————————————
+ipo4  = 1      !add additional PO4 from biogenic silica dissolution
+TR    = 20.0   !Reference temperature for temperature adjust for CoSiNE sink and source
+kox   = 30.0   !reference oxygen concentration for oxidation
+wss2  = 0.2    !settling velocity of S2
+wsdn  = 1.0    !settling velocity of DN
+wsdsi = 1.0    !settling velocity of DSi
+si2n  = 1.2    !silica to nitrogen conversion coefficient
+p2n   = 0.0625 !phosphorus to nitrogen conversion coefficient (1/16)
+o2no  = 8.625  !oxygen to nitrogen (NO3) conversion coefficient (138/16)
+o2nh  = 6.625  !oxygen to nitrogen (NH4) conversion coefficient (106/16)
+c2n   = 7.3    !carbon to nitrogen conversion coefficient
+gamman= 0.07   !nitrification coefficent
+pco2a = 391.63 !atmospheric CO2 concentration
+kmdn  = 0.009   0.075  !remineralization coefficients for DN: rate=kmdn(1)*T+kmdn(2)
+kmdsi = 0.0114  0.015  !remineralization coefficients for DSi: rate=kmdsi(1)*T+kmdsi(2)
+/</p>
+<p>&amp;MISC
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!diatom sinking velocity depends on NO3
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+iws=0
+NO3c=2.0 !mmol/m3
+ws1=2.5
+ws2=2.0</p>
+<p>!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!clam grazing model
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+iclam=0
+deltaZ= 1 !meter
+kcex=0.002  !day-1
+Nperclam=0.39032 !mmol[N]
+Wclam=5.45e-3  !clam weigh (g)
+Fclam=40  !L.g[AFDW]-1.day-1, filtration rate
+nclam0=2000</p>
+<p>!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!sediment model
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
+<p>!———————————————————————–
+!parameters related to S2 in sediment
+!fS2:  partitioning coefficient from S2 in water column into sediment S2
+!rkS2: changing rate of remineralization rate for sediment S2
+!mkS2: maximum remineralization rate for sediment S2
+!———————————————————————–
+fS2=  0.1    0.1     0.8
+rkS2= 4e-3   1.0e-4  0.0   !time delay of 63 day
+mkS2= 0.1    0.01    0.0</p>
+<p>!———————————————————————–
+!parameters related to DN in sediment
+!fdDN: partitioning coefficient from DN in water column into sediment DN
+!rkDN: changing rate of remineralization rate for sediment DN
+!mkDN: maximum remineralization rate for sediment DN
+!———————————————————————–
+fDN=  0.15   0.10    0.75
+rkDN= 4e-3   1.0e-4  0.0 !time delay of 63 day
+mkDN= 0.1    0.01    0.0</p>
+<p>!———————————————————————–
+!parameters related to DSi in sediment
+!fDSi:  partitioning coefficient from DSi in water column into sediment DSi
+!rkDSi: changing rate of remineralization rate for sediment DSi
+!mkDSi: maximum remineralization rate for sediment DSi
+!———————————————————————–
+fDSi=  0.3   0.3   0.4
+rkDSi= 0.004 1e-4  0.0 !time delay of about half a month
+mkDSi= 0.1   0.01  0.0
+/</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.namelists.cosine.COSINE.core" title="rompy.schism.namelists.cosine.COSINE.core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core</span> <span class="pre">(rompy.schism.namelists.cosine.CORE)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.cosine.COSINE.marco" title="rompy.schism.namelists.cosine.COSINE.marco"><code class="xref py py-obj docutils literal notranslate"><span class="pre">marco</span> <span class="pre">(rompy.schism.namelists.cosine.MARCO)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.cosine.COSINE.misc" title="rompy.schism.namelists.cosine.COSINE.misc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">misc</span> <span class="pre">(rompy.schism.namelists.cosine.MISC)</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.cosine.COSINE.core">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">core</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">CORE</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CORE(gmaxs=[2.0,</span> <span class="pre">2.5],</span> <span class="pre">gammas=[0.2,</span> <span class="pre">0.075],</span> <span class="pre">pis=[1.5,</span> <span class="pre">1.5],</span> <span class="pre">kno3s=[1.0,</span> <span class="pre">3.0],</span> <span class="pre">knh4s=[0.15,</span> <span class="pre">0.45],</span> <span class="pre">kpo4s=[0.1,</span> <span class="pre">0.1],</span> <span class="pre">kco2s=[50.0,</span> <span class="pre">50.0],</span> <span class="pre">ksio4=4.5,</span> <span class="pre">kns=[0.0,</span> <span class="pre">0.0],</span> <span class="pre">alphas=[0.1,</span> <span class="pre">0.1],</span> <span class="pre">betas=[0.0,</span> <span class="pre">0.0],</span> <span class="pre">aks=[0.75,</span> <span class="pre">0.03,</span> <span class="pre">0.066],</span> <span class="pre">betaz=[1.35,</span> <span class="pre">0.4],</span> <span class="pre">alphaz=[0.75,</span> <span class="pre">0.75],</span> <span class="pre">gammaz=[0.2,</span> <span class="pre">0.2],</span> <span class="pre">kez=[0.2,</span> <span class="pre">0.2],</span> <span class="pre">kgz=[0.5,</span> <span class="pre">0.25],</span> <span class="pre">rhoz=[0.6,</span> <span class="pre">0.3,</span> <span class="pre">0.1],</span> <span class="pre">ipo4=1,</span> <span class="pre">TR=20.0,</span> <span class="pre">kox=30.0,</span> <span class="pre">wss2=0.2,</span> <span class="pre">wsdn=1.0,</span> <span class="pre">wsdsi=1.0,</span> <span class="pre">si2n=1.2,</span> <span class="pre">p2n=0.0625,</span> <span class="pre">o2no=8.625,</span> <span class="pre">o2nh=6.625,</span> <span class="pre">c2n=7.3,</span> <span class="pre">gamman=0.07,</span> <span class="pre">pco2a=391.63,</span> <span class="pre">kmdn=[0.009,</span> <span class="pre">0.075],</span> <span class="pre">kmdsi=[0.0114,</span> <span class="pre">0.015])</span></em><a class="headerlink" href="#rompy.schism.namelists.cosine.COSINE.core" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.cosine.COSINE.marco">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">marco</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MARCO</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">MARCO(idelay=0,</span> <span class="pre">ndelay=7,</span> <span class="pre">ibgraze=0,</span> <span class="pre">idapt=0,</span> <span class="pre">alpha_corr=1.25,</span> <span class="pre">zeptic=10.0,</span> <span class="pre">iz2graze=1,</span> <span class="pre">iout_cosine=0,</span> <span class="pre">nspool_cosine=30,</span> <span class="pre">ico2s=0,</span> <span class="pre">ispm=0,</span> <span class="pre">spm0=20.0,</span> <span class="pre">ised=1)</span></em><a class="headerlink" href="#rompy.schism.namelists.cosine.COSINE.marco" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.cosine.COSINE.misc">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">misc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MISC</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">MISC(iws=0,</span> <span class="pre">NO3c=2.0,</span> <span class="pre">ws1=2.5,</span> <span class="pre">ws2=2.0,</span> <span class="pre">iclam=0,</span> <span class="pre">deltaZ=1,</span> <span class="pre">kcex=0.002,</span> <span class="pre">Nperclam=0.39032,</span> <span class="pre">Wclam='5.45e-3',</span> <span class="pre">Fclam=40,</span> <span class="pre">nclam0=2000,</span> <span class="pre">fS2=[0.1,</span> <span class="pre">0.1,</span> <span class="pre">0.8],</span> <span class="pre">rkS2=['4e-3',</span> <span class="pre">'1.0e-4',</span> <span class="pre">0.0],</span> <span class="pre">mkS2=[0.1,</span> <span class="pre">0.01,</span> <span class="pre">0.0],</span> <span class="pre">fDN=[0.15,</span> <span class="pre">0.1,</span> <span class="pre">0.75],</span> <span class="pre">rkDN=['4e-3',</span> <span class="pre">'1.0e-4',</span> <span class="pre">0.0],</span> <span class="pre">mkDN=[0.1,</span> <span class="pre">0.01,</span> <span class="pre">0.0],</span> <span class="pre">fDSi=[0.3,</span> <span class="pre">0.3,</span> <span class="pre">0.4],</span> <span class="pre">rkDSi=[0.004,</span> <span class="pre">'1e-4',</span> <span class="pre">0.0],</span> <span class="pre">mkDSi=[0.1,</span> <span class="pre">0.01,</span> <span class="pre">0.0])</span></em><a class="headerlink" href="#rompy.schism.namelists.cosine.COSINE.misc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="rompy.schism.namelists.sediment.SEDIMENT.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">rompy.schism.namelists.sediment.SEDIMENT</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../demo.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Demonstration notebooks</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.cosine.COSINE"><code class="docutils literal notranslate"><span class="pre">COSINE</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.cosine.COSINE.core"><code class="docutils literal notranslate"><span class="pre">COSINE.core</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.cosine.COSINE.marco"><code class="docutils literal notranslate"><span class="pre">COSINE.marco</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.cosine.COSINE.misc"><code class="docutils literal notranslate"><span class="pre">COSINE.misc</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/schism/_generated/rompy.schism.namelists.cosine.COSINE.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

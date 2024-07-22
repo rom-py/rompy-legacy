@@ -1,0 +1,793 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rompy.schism.namelists.cosine &#8212; rompy 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/rompy/schism/namelists/cosine';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">rompy.schism...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for rompy.schism.namelists.cosine</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span>
+
+<span class="kn">from</span> <span class="nn">rompy.schism.namelists.basemodel</span> <span class="kn">import</span> <span class="n">NamelistBaseModel</span>
+
+
+<span class="k">class</span> <span class="nc">MARCO</span><span class="p">(</span><span class="n">NamelistBaseModel</span><span class="p">):</span>
+    <span class="n">idelay</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">ndelay</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">ibgraze</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">idapt</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">alpha_corr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">1.25</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">zeptic</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">iz2graze</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">iout_cosine</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">nspool_cosine</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">ico2s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">ispm</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">spm0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">ised</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">CORE</span><span class="p">(</span><span class="n">NamelistBaseModel</span><span class="p">):</span>
+    <span class="n">gmaxs</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;maximum growth rate&quot;</span><span class="p">)</span>
+    <span class="n">gammas</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.075</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;mortality rate&quot;</span><span class="p">)</span>
+    <span class="n">pis</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;ammonium inhibition&quot;</span><span class="p">)</span>
+    <span class="n">kno3s</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;NO3 half saturation&quot;</span><span class="p">)</span>
+    <span class="n">knh4s</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;NH4 half saturation&quot;</span><span class="p">)</span>
+    <span class="n">kpo4s</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;PO4 half saturation&quot;</span><span class="p">)</span>
+    <span class="n">kco2s</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;CO2 half saturation&quot;</span><span class="p">)</span>
+    <span class="n">ksio4</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">4.5</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SiO4 half saturation for diatom&quot;</span><span class="p">)</span>
+    <span class="n">kns</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;nighttime uptake rate of NH4&quot;</span><span class="p">)</span>
+    <span class="n">alphas</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;initial slopes of P-I curve&quot;</span><span class="p">)</span>
+    <span class="n">betas</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;slope for photo-inhibition&quot;</span><span class="p">)</span>
+    <span class="n">aks</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.066</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;light extinction coefficients: rKe=ak1+ak2*(S1+S2)+ak3*SPM&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">betaz</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">1.35</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;maximum grazing rate&quot;</span><span class="p">)</span>
+    <span class="n">alphaz</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;assimilation rate&quot;</span><span class="p">)</span>
+    <span class="n">gammaz</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;mortality rate&quot;</span><span class="p">)</span>
+    <span class="n">kez</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;excretion rate&quot;</span><span class="p">)</span>
+    <span class="n">kgz</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;reference prey concentration for grazing&quot;</span>
+    <span class="p">)</span>
+    <span class="n">rhoz</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;prey preference factors of Z2 on (S2,Z1,DN)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">ipo4</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;add additional PO4 from biogenic silica dissolution&quot;</span>
+    <span class="p">)</span>
+    <span class="n">TR</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">20.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reference temperature for temperature adjust for CoSiNE sink and source&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">kox</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;reference oxygen concentration for oxidation&quot;</span><span class="p">)</span>
+    <span class="n">wss2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;settling velocity of S2&quot;</span><span class="p">)</span>
+    <span class="n">wsdn</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;settling velocity of DN&quot;</span><span class="p">)</span>
+    <span class="n">wsdsi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;settling velocity of DSi&quot;</span><span class="p">)</span>
+    <span class="n">si2n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;silica to nitrogen conversion coefficient&quot;</span><span class="p">)</span>
+    <span class="n">p2n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">0.0625</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;phosphorus to nitrogen conversion coefficient (1/16)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">o2no</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">8.625</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;oxygen to nitrogen (NO3) conversion coefficient (138/16)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">o2nh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">6.625</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;oxygen to nitrogen (NH4) conversion coefficient (106/16)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">c2n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">7.3</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;carbon to nitrogen conversion coefficient&quot;</span><span class="p">)</span>
+    <span class="n">gamman</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;nitrification coefficent&quot;</span><span class="p">)</span>
+    <span class="n">pco2a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">391.63</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;atmospheric CO2 concentration&quot;</span><span class="p">)</span>
+    <span class="n">kmdn</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">0.009</span><span class="p">,</span> <span class="mf">0.075</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;remineralization coefficients for DN: rate=kmdn(1)*T+kmdn(2)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">kmdsi</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">0.0114</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;remineralization coefficients for DSi: rate=kmdsi(1)*T+kmdsi(2)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MISC</span><span class="p">(</span><span class="n">NamelistBaseModel</span><span class="p">):</span>
+    <span class="n">iws</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">NO3c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;mmol/m3&quot;</span><span class="p">)</span>
+    <span class="n">ws1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">ws2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">iclam</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">deltaZ</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span>
+    <span class="n">kcex</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">0.002</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;day-1&quot;</span><span class="p">)</span>
+    <span class="n">Nperclam</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">0.39032</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;mmol[N]&quot;</span><span class="p">)</span>
+    <span class="n">Wclam</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;5.45e-3&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;clam weigh (g)&quot;</span><span class="p">)</span>
+    <span class="n">Fclam</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;L.g[AFDW]-1.day-1, filtration rate&quot;</span><span class="p">)</span>
+    <span class="n">nclam0</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">fS2</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">rkS2</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="s2">&quot;4e-3&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0e-4&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;time delay of 63 day&quot;</span><span class="p">)</span>
+    <span class="n">mkS2</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">fDN</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">rkDN</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="s2">&quot;4e-3&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0e-4&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;time delay of 63 day&quot;</span><span class="p">)</span>
+    <span class="n">mkDN</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">fDSi</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+    <span class="n">rkDSi</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">0.004</span><span class="p">,</span> <span class="s2">&quot;1e-4&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;time delay of about half a month&quot;</span>
+    <span class="p">)</span>
+    <span class="n">mkDSi</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="COSINE">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.cosine.COSINE.html#rompy.schism.namelists.cosine.COSINE">[docs]</a>
+<span class="k">class</span> <span class="nc">COSINE</span><span class="p">(</span><span class="n">NamelistBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    This file was auto generated from a schism namelist file on 2023-11-20.</span>
+<span class="sd">    The full contents of the namelist file are shown below providing</span>
+<span class="sd">    associated documentation for the objects:</span>
+
+<span class="sd">    !parameter inputs via namelist convention.</span>
+<span class="sd">    !(1) Use &#39; &#39; (single quotes) for chars;</span>
+<span class="sd">    !(2) integer values are fine for real vars/arrays;</span>
+<span class="sd">    !(3) if multiple entries for a parameter are found, the last one wins - please avoid this</span>
+<span class="sd">    !(4) array inputs follow column major (like FORTRAN) and can spill to multiple lines</span>
+<span class="sd">    !(5) space allowed before/after &#39;=&#39;</span>
+
+<span class="sd">    &amp;MARCO</span>
+<span class="sd">    !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="sd">    !switches and marco parameters</span>
+<span class="sd">    !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !idelay: a 7-day delay for zooplankton predation</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    idelay = 0</span>
+<span class="sd">    ndelay = 7</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !ibgraze: bottom grazing function</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    ibgraze = 0</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !idapt: light adaptation</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    idapt = 0</span>
+<span class="sd">    alpha_corr= 1.25</span>
+<span class="sd">    zeptic= 10.0</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !iz2graze=0 : shut down Z2 grazing on S2, Z1, and DN</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    iz2graze = 1</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !CoSiNE model station output option (need cstation.in with *.bp format)</span>
+<span class="sd">    ! iout_cosine=0: turn off this option</span>
+<span class="sd">    ! iout_cosine=1: all available diagnostic variables</span>
+<span class="sd">    ! iout_cosine=2: state variables</span>
+<span class="sd">    ! iout_cosine=3: state variables + source/sink terms</span>
+<span class="sd">    ! iout_cosine=4: state variables + misc diagnostics</span>
+<span class="sd">    ! iout_cosine=5: state variables + surface/bottom fluxes</span>
+<span class="sd">    ! nspool_cosine: output interval (number of time step)</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    iout_cosine=0</span>
+<span class="sd">    nspool_cosine=30</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !ico2s=0: no CO2 limitation on phytoplankton growth</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    ico2s = 0</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !ispm=0: constant Suspended Particlate Matter spm0 is used for while domain</span>
+<span class="sd">    !ispm=1: spatial varying SPM from SPM.gr3 is used</span>
+<span class="sd">    !ispm=2: use SED model to calculate SPM</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    ispm = 0</span>
+<span class="sd">    spm0 = 20.0</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !ised=1 : sediment flux model</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    ised = 1</span>
+<span class="sd">    /</span>
+
+<span class="sd">    &amp;CORE</span>
+<span class="sd">    !------------------------------------------------------------------------</span>
+<span class="sd">    !phytoplankton</span>
+<span class="sd">    !------------------------------------------------------------------------</span>
+<span class="sd">    gmaxs  = 2.0   2.5    !maximum growth rate</span>
+<span class="sd">    gammas = 0.2   0.075  !mortality rate</span>
+<span class="sd">    pis    = 1.5   1.5    !ammonium inhibition</span>
+<span class="sd">    kno3s  = 1.0   3.0    !NO3 half saturation</span>
+<span class="sd">    knh4s  = 0.15  0.45   !NH4 half saturation</span>
+<span class="sd">    kpo4s  = 0.1   0.1    !PO4 half saturation</span>
+<span class="sd">    kco2s  = 50.0  50.0   !CO2 half saturation</span>
+<span class="sd">    ksio4  = 4.5          !SiO4 half saturation for diatom</span>
+<span class="sd">    kns    = 0.0   0.0    !nighttime uptake rate of NH4</span>
+<span class="sd">    alphas = 0.1   0.1    !initial slopes of P-I curve</span>
+<span class="sd">    betas  = 0.0   0.0    !slope for photo-inhibition</span>
+<span class="sd">    aks    = 0.75  0.03  0.066  !light extinction coefficients: rKe=ak1+ak2*(S1+S2)+ak3*SPM</span>
+
+<span class="sd">    !------------------------------------------------------------------------</span>
+<span class="sd">    !zooplankton</span>
+<span class="sd">    !------------------------------------------------------------------------</span>
+<span class="sd">    betaz  = 1.35  0.4    !maximum grazing rate</span>
+<span class="sd">    alphaz = 0.75  0.75   !assimilation rate</span>
+<span class="sd">    gammaz = 0.2   0.2    !mortality rate</span>
+<span class="sd">    kez    = 0.2   0.2    !excretion rate</span>
+<span class="sd">    kgz    = 0.5   0.25   !reference prey concentration for grazing</span>
+<span class="sd">    rhoz   = 0.6   0.3   0.1  !prey preference factors of Z2 on (S2,Z1,DN)</span>
+
+<span class="sd">    !------------------------------------------------------------------------</span>
+<span class="sd">    !other</span>
+<span class="sd">    !------------------------------------------------------------------------</span>
+<span class="sd">    ipo4  = 1      !add additional PO4 from biogenic silica dissolution</span>
+<span class="sd">    TR    = 20.0   !Reference temperature for temperature adjust for CoSiNE sink and source</span>
+<span class="sd">    kox   = 30.0   !reference oxygen concentration for oxidation</span>
+<span class="sd">    wss2  = 0.2    !settling velocity of S2</span>
+<span class="sd">    wsdn  = 1.0    !settling velocity of DN</span>
+<span class="sd">    wsdsi = 1.0    !settling velocity of DSi</span>
+<span class="sd">    si2n  = 1.2    !silica to nitrogen conversion coefficient</span>
+<span class="sd">    p2n   = 0.0625 !phosphorus to nitrogen conversion coefficient (1/16)</span>
+<span class="sd">    o2no  = 8.625  !oxygen to nitrogen (NO3) conversion coefficient (138/16)</span>
+<span class="sd">    o2nh  = 6.625  !oxygen to nitrogen (NH4) conversion coefficient (106/16)</span>
+<span class="sd">    c2n   = 7.3    !carbon to nitrogen conversion coefficient</span>
+<span class="sd">    gamman= 0.07   !nitrification coefficent</span>
+<span class="sd">    pco2a = 391.63 !atmospheric CO2 concentration</span>
+<span class="sd">    kmdn  = 0.009   0.075  !remineralization coefficients for DN: rate=kmdn(1)*T+kmdn(2)</span>
+<span class="sd">    kmdsi = 0.0114  0.015  !remineralization coefficients for DSi: rate=kmdsi(1)*T+kmdsi(2)</span>
+<span class="sd">    /</span>
+
+<span class="sd">    &amp;MISC</span>
+<span class="sd">    !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="sd">    !diatom sinking velocity depends on NO3</span>
+<span class="sd">    !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="sd">    iws=0</span>
+<span class="sd">    NO3c=2.0 !mmol/m3</span>
+<span class="sd">    ws1=2.5</span>
+<span class="sd">    ws2=2.0</span>
+
+<span class="sd">    !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="sd">    !clam grazing model</span>
+<span class="sd">    !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="sd">    iclam=0</span>
+<span class="sd">    deltaZ= 1 !meter</span>
+<span class="sd">    kcex=0.002  !day-1</span>
+<span class="sd">    Nperclam=0.39032 !mmol[N]</span>
+<span class="sd">    Wclam=5.45e-3  !clam weigh (g)</span>
+<span class="sd">    Fclam=40  !L.g[AFDW]-1.day-1, filtration rate</span>
+<span class="sd">    nclam0=2000</span>
+
+<span class="sd">    !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="sd">    !sediment model</span>
+<span class="sd">    !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !parameters related to S2 in sediment</span>
+<span class="sd">    !fS2:  partitioning coefficient from S2 in water column into sediment S2</span>
+<span class="sd">    !rkS2: changing rate of remineralization rate for sediment S2</span>
+<span class="sd">    !mkS2: maximum remineralization rate for sediment S2</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    fS2=  0.1    0.1     0.8</span>
+<span class="sd">    rkS2= 4e-3   1.0e-4  0.0   !time delay of 63 day</span>
+<span class="sd">    mkS2= 0.1    0.01    0.0</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !parameters related to DN in sediment</span>
+<span class="sd">    !fdDN: partitioning coefficient from DN in water column into sediment DN</span>
+<span class="sd">    !rkDN: changing rate of remineralization rate for sediment DN</span>
+<span class="sd">    !mkDN: maximum remineralization rate for sediment DN</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    fDN=  0.15   0.10    0.75</span>
+<span class="sd">    rkDN= 4e-3   1.0e-4  0.0 !time delay of 63 day</span>
+<span class="sd">    mkDN= 0.1    0.01    0.0</span>
+
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    !parameters related to DSi in sediment</span>
+<span class="sd">    !fDSi:  partitioning coefficient from DSi in water column into sediment DSi</span>
+<span class="sd">    !rkDSi: changing rate of remineralization rate for sediment DSi</span>
+<span class="sd">    !mkDSi: maximum remineralization rate for sediment DSi</span>
+<span class="sd">    !-----------------------------------------------------------------------</span>
+<span class="sd">    fDSi=  0.3   0.3   0.4</span>
+<span class="sd">    rkDSi= 0.004 1e-4  0.0 !time delay of about half a month</span>
+<span class="sd">    mkDSi= 0.1   0.01  0.0</span>
+<span class="sd">    /</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">marco</span><span class="p">:</span> <span class="n">MARCO</span> <span class="o">=</span> <span class="n">MARCO</span><span class="p">()</span>
+    <span class="n">core</span><span class="p">:</span> <span class="n">CORE</span> <span class="o">=</span> <span class="n">CORE</span><span class="p">()</span>
+    <span class="n">misc</span><span class="p">:</span> <span class="n">MISC</span> <span class="o">=</span> <span class="n">MISC</span><span class="p">()</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
