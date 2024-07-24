@@ -15,7 +15,7 @@ concepts:
     rompy.core.BaseConfig
 
 There is information about each of these in the documentation of each object, but at a
-high level, is the high level framework that renders the config object and controls the
+high level, ModelRun is the high level framework that renders the config object and controls the
 period of which the model is run, and the config object is responsible for producing
 model configuration. 
 
@@ -55,7 +55,6 @@ following base classes for data objects:
     rompy.core.data.DataBlob
     rompy.core.data.DataGrid
     rompy.core.data.SourceBase
-    rompy.core.data.SourceDataset
     rompy.core.data.SourceFile
     rompy.core.data.SourceIntake
 
