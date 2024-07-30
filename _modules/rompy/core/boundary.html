@@ -581,10 +581,6 @@ document.write(`
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Spacing must be greater than zero&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
-    <span class="k">def</span> <span class="nf">_filter_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overwrite DataGrid&#39;s which assumes a regular grid.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
     <span class="k">def</span> <span class="nf">_source_grid_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the lowest grid spacing in the source dataset.</span>
 
@@ -704,16 +700,20 @@ document.write(`
             <span class="s2">&quot;Wavespectra method to use for selecting boundary points from the dataset&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
+    <span class="n">buffer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Space to buffer the grid bounding box if `filter_grid` is True&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-<div class="viewcode-block" id="BoundaryWaveStation.assert_has_wavespectra_accessor">
-<a class="viewcode-back" href="../../../_generated/rompy.core.boundary.BoundaryWaveStation.html#rompy.core.boundary.BoundaryWaveStation.assert_has_wavespectra_accessor">[docs]</a>
-    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">assert_has_wavespectra_accessor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BoundaryWaveStation&quot;</span><span class="p">:</span>
-        <span class="n">dset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="s2">&quot;spec&quot;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wavespectra compatible source is required&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
+    <span class="k">def</span> <span class="nf">model_post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__context</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;efth&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">]</span>
 
+    <span class="c1"># @model_validator(mode=&quot;after&quot;)</span>
+    <span class="c1"># def assert_has_wavespectra_accessor(self) -&gt; &quot;BoundaryWaveStation&quot;:</span>
+    <span class="c1">#     dset = self.source.open()</span>
+    <span class="c1">#     if not hasattr(dset, &quot;spec&quot;):</span>
+    <span class="c1">#         raise ValueError(f&quot;Wavespectra compatible source is required&quot;)</span>
+    <span class="c1">#     return self</span>
 
     <span class="k">def</span> <span class="nf">_source_grid_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the lowest spacing between points in the source dataset.&quot;&quot;&quot;</span>
@@ -785,8 +785,11 @@ document.write(`
 <span class="sd">            Path to the netcdf file.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_data</span> <span class="ow">and</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_filter_time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filter_time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filter_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel_boundary</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
         <span class="n">outfile</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.nc&quot;</span>
         <span class="n">ds</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
