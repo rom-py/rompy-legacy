@@ -429,6 +429,7 @@ document.write(`
                   
   <h1>Source code for rompy.core.data</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Rompy core data objects.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
@@ -719,11 +720,11 @@ document.write(`
 <span class="k">class</span> <span class="nc">DataBlob</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Data source for model ingestion.</span>
 
-<span class="sd">    Generic data source for files that simply need to be copied to the model directory.</span>
-
+<span class="sd">    Generic data source for files that either need to be copied to the model directory</span>
+<span class="sd">    or linked if `link` is set to True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;data_blob&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;data_blob&quot;</span><span class="p">,</span> <span class="s2">&quot;data_link&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;data_blob&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -731,40 +732,66 @@ document.write(`
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Unique identifier for this data source&quot;</span>
     <span class="p">)</span>
     <span class="n">source</span><span class="p">:</span> <span class="n">AnyPath</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;URI of the data source, either a local file path or a remote uri&quot;</span>
-        <span class="p">),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;URI of the data source, either a local file path or a remote uri&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">link</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to create a symbolic link instead of copying the file&quot;</span>
     <span class="p">)</span>
     <span class="n">_copied</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DataBlob.get">
 <a class="viewcode-back" href="../../../api.html#rompy.core.data.DataBlob.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copy the data source to a new directory.</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destdir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copy or link the data source to a new directory.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        destdir : str | Path</span>
-<span class="sd">            The destination directory to copy the data source to.</span>
+<span class="sd">            The destination directory to copy or link the data source to.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        outfile: Path</span>
-<span class="sd">            The path to the copied file.</span>
-
+<span class="sd">        Path</span>
+<span class="sd">            The path to the copied file or created symlink.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-            <span class="c1"># copy directory</span>
-            <span class="n">outfile</span> <span class="o">=</span> <span class="n">copytree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">destdir</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="n">destdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">:</span>
+            <span class="c1"># Create a symbolic link</span>
             <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-                <span class="n">outfile</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span> <span class="o">/</span> <span class="n">name</span>
+                <span class="n">symlink_path</span> <span class="o">=</span> <span class="n">destdir</span> <span class="o">/</span> <span class="n">name</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">outfile</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">name</span>
-            <span class="k">if</span> <span class="n">outfile</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">resolve</span><span class="p">():</span>
-                <span class="n">outfile</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_copied</span> <span class="o">=</span> <span class="n">outfile</span>
-        <span class="k">return</span> <span class="n">outfile</span></div>
+                <span class="n">symlink_path</span> <span class="o">=</span> <span class="n">destdir</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">name</span>
+
+            <span class="c1"># Ensure the destination directory exists</span>
+            <span class="n">destdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># Remove existing symlink/file if it exists</span>
+            <span class="k">if</span> <span class="n">symlink_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">symlink_path</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+
+            <span class="c1"># Compute the relative path from destdir to self.source</span>
+            <span class="n">relative_source_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span> <span class="n">destdir</span><span class="p">)</span>
+
+            <span class="c1"># Create symlink</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">relative_source_path</span><span class="p">,</span> <span class="n">symlink_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_copied</span> <span class="o">=</span> <span class="n">symlink_path</span>
+
+            <span class="k">return</span> <span class="n">symlink_path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Copy the data source</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="c1"># Copy directory</span>
+                <span class="n">outfile</span> <span class="o">=</span> <span class="n">copytree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">destdir</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+                    <span class="n">outfile</span> <span class="o">=</span> <span class="n">destdir</span> <span class="o">/</span> <span class="n">name</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">outfile</span> <span class="o">=</span> <span class="n">destdir</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">name</span>
+                <span class="k">if</span> <span class="n">outfile</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">resolve</span><span class="p">():</span>
+                    <span class="n">outfile</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_copied</span> <span class="o">=</span> <span class="n">outfile</span>
+            <span class="k">return</span> <span class="n">outfile</span></div>
 </div>
 
 
@@ -803,6 +830,7 @@ document.write(`
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Source reader, must return an xarray dataset in the open method&quot;</span><span class="p">,</span>
         <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+    
     <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default_factory</span><span class="o">=</span><span class="n">Filter</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Optional filter specification to apply to the dataset&quot;</span><span class="p">,</span>

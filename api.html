@@ -753,12 +753,12 @@ beyond the arguments provided by the user..</p>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_duration_interval</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">interval</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">duration</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.valid_duration_interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_duration_interval</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">duration</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">interval</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.valid_duration_interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_start_end</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">start</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">end</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.validate_start_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_start_end</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">end</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">start</span></em><a class="reference internal" href="_modules/rompy/core/time.html#TimeRange.validate_start_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <dl class="py method pydantic_validator">
@@ -1139,12 +1139,14 @@ specified spacing, otherwise all points are returned.</p></li>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.core.data.</span></span><span class="sig-name descname"><span class="pre">DataBlob</span></span><a class="reference internal" href="_modules/rompy/core/data.html#DataBlob"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Data source for model ingestion.</p>
-<p>Generic data source for files that simply need to be copied to the model directory.</p>
+<p>Generic data source for files that either need to be copied to the model directory
+or linked if <cite>link</cite> is set to True.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob.id" title="rompy.core.data.DataBlob.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob.model_type" title="rompy.core.data.DataBlob.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['data_blob'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob.link" title="rompy.core.data.DataBlob.link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link</span> <span class="pre">(bool)</span></code></a></p></li>
+<li><p><a class="reference internal" href="_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob.model_type" title="rompy.core.data.DataBlob.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['data_blob',</span> <span class="pre">'data_link'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob.source" title="rompy.core.data.DataBlob.source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span> <span class="pre">(cloudpathlib.anypath.AnyPath)</span></code></a></p></li>
 </ul>
 </dd>
@@ -1157,7 +1159,13 @@ specified spacing, otherwise all points are returned.</p></li>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'data_blob'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data_blob'</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
+<dd><p>Whether to create a symbolic link instead of copying the file</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'data_blob'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'data_link'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data_blob'</span></em></dt>
 <dd><p>Model type discriminator</p>
 </dd></dl>
 
@@ -1169,14 +1177,14 @@ specified spacing, otherwise all points are returned.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/rompy/core/data.html#DataBlob.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Copy the data source to a new directory.</p>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/rompy/core/data.html#DataBlob.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Copy or link the data source to a new directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>destdir</strong> (<em>str</em><em> | </em><em>Path</em>) – The destination directory to copy the data source to.</p>
+<dd class="field-odd"><p><strong>destdir</strong> (<em>str</em><em> | </em><em>Path</em>) – The destination directory to copy or link the data source to.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>outfile</strong> – The path to the copied file.</p>
+<dd class="field-even"><p>The path to the copied file or created symlink.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Path</p>
@@ -1207,6 +1215,7 @@ range as the model run.</p>
 <li><p><a class="reference internal" href="_generated/rompy.core.data.DataGrid.html#rompy.core.data.DataGrid.crop_data" title="rompy.core.data.DataGrid.crop_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crop_data</span> <span class="pre">(bool)</span></code></a></p></li>
 <li><p><a class="reference internal" href="_generated/rompy.core.data.DataGrid.html#rompy.core.data.DataGrid.filter" title="rompy.core.data.DataGrid.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">(rompy.core.filters.Filter</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(str)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link</span> <span class="pre">(bool)</span></code></p></li>
 <li><p><a class="reference internal" href="_generated/rompy.core.data.DataGrid.html#rompy.core.data.DataGrid.model_type" title="rompy.core.data.DataGrid.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['data_grid'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="_generated/rompy.core.data.DataGrid.html#rompy.core.data.DataGrid.source" title="rompy.core.data.DataGrid.source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span> <span class="pre">(rompy.core.data.SourceDataset</span> <span class="pre">|</span> <span class="pre">rompy.core.data.SourceFile</span> <span class="pre">|</span> <span class="pre">rompy.core.data.SourceIntake</span> <span class="pre">|</span> <span class="pre">rompy.core.data.SourceDatamesh)</span></code></a></p></li>
 <li><p><a class="reference internal" href="_generated/rompy.core.data.DataGrid.html#rompy.core.data.DataGrid.time_buffer" title="rompy.core.data.DataGrid.time_buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_buffer</span> <span class="pre">(list[int])</span></code></a></p></li>
@@ -1242,6 +1251,12 @@ range as the model run.</p>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data'</span></em></dt>
 <dd><p>Unique identifier for this data source</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
+<dd><p>Whether to create a symbolic link instead of copying the file</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
@@ -3084,6 +3099,7 @@ functions.</p>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.fac" title="rompy.swan.data.SwanDataGrid.fac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fac</span> <span class="pre">(float)</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.filter" title="rompy.swan.data.SwanDataGrid.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.id" title="rompy.swan.data.SwanDataGrid.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.link" title="rompy.swan.data.SwanDataGrid.link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.model_type" title="rompy.swan.data.SwanDataGrid.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.source" title="rompy.swan.data.SwanDataGrid.source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.time_buffer" title="rompy.swan.data.SwanDataGrid.time_buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_buffer</span> <span class="pre">()</span></code></a></p></li>
@@ -3168,6 +3184,19 @@ functions.</p>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data'</span></em></dt>
 <dd><p>Unique identifier for this data source</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="swan/_generated/rompy.swan.data.SwanDataGrid.html#rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars" title="rompy.swan.data.SwanDataGrid.ensure_z1_in_data_vars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_z1_in_data_vars</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
+<dd><p>Whether to create a symbolic link instead of copying the file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -3355,6 +3384,7 @@ same as the rotation of the data.</p>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.Boundnest1.html#rompy.swan.boundary.Boundnest1.filter" title="rompy.swan.boundary.Boundnest1.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.Boundnest1.html#rompy.swan.boundary.Boundnest1.grid_type" title="rompy.swan.boundary.Boundnest1.grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.Boundnest1.html#rompy.swan.boundary.Boundnest1.id" title="rompy.swan.boundary.Boundnest1.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.Boundnest1.html#rompy.swan.boundary.Boundnest1.link" title="rompy.swan.boundary.Boundnest1.link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.Boundnest1.html#rompy.swan.boundary.Boundnest1.model_type" title="rompy.swan.boundary.Boundnest1.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['boundnest1',</span> <span class="pre">'BOUNDNEST1'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.Boundnest1.html#rompy.swan.boundary.Boundnest1.rectangle" title="rompy.swan.boundary.Boundnest1.rectangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rectangle</span> <span class="pre">(Literal['closed',</span> <span class="pre">'open'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="swan/_generated/rompy.swan.boundary.Boundnest1.html#rompy.swan.boundary.Boundnest1.sel_method" title="rompy.swan.boundary.Boundnest1.sel_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sel_method</span> <span class="pre">()</span></code></a></p></li>
@@ -3441,6 +3471,19 @@ same as the rotation of the data.</p>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
 <dd><p>Unique identifier for this data source</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
+<dd><p>Whether to create a symbolic link instead of copying the file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -3626,6 +3669,7 @@ same as the rotation of the data.</p>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['boundspecbase',</span> <span class="pre">'BOUNDSPECBASE'])</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sel_method</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sel_method_kwargs</span> <span class="pre">()</span></code></p></li>
@@ -3728,6 +3772,19 @@ same as the rotation of the data.</p>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
 <dd><p>Unique identifier for this data source</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
+<dd><p>Whether to create a symbolic link instead of copying the file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -3969,6 +4026,7 @@ which each side is prescribed.</p>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span> <span class="pre">(rompy.swan.subcomponents.boundary.SIDE</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.boundary.SIDES</span> <span class="pre">|</span> <span class="pre">rompy.swan.subcomponents.base.XY)</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['boundspecside',</span> <span class="pre">'BOUNDSPECSIDE'])</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sel_method</span> <span class="pre">()</span></code></p></li>
@@ -4072,6 +4130,19 @@ which each side is prescribed.</p>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
 <dd><p>Unique identifier for this data source</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
+<dd><p>Whether to create a symbolic link instead of copying the file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -4319,6 +4390,7 @@ TODO: Does PAR need to be supported? Guess not as nonstationary isn’t supporte
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">()</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link</span> <span class="pre">()</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span> <span class="pre">(rompy.swan.subcomponents.boundary.SIDE)</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['boundspecside',</span> <span class="pre">'BOUNDSPECSIDE'])</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sel_method</span> <span class="pre">()</span></code></p></li>
@@ -4422,6 +4494,19 @@ TODO: Does PAR need to be supported? Guess not as nonstationary isn’t supporte
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
 <dd><p>Unique identifier for this data source</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_has_wavespectra_accessor</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
+<dd><p>Whether to create a symbolic link instead of copying the file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -22062,8 +22147,8 @@ pp.1329-1346.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dimensions</strong> = 2</p></li>
 <li><p><strong>strict_data_typing</strong> = False</p></li>
-<li><p><strong>serialize_numpy_array_to_json</strong> = &lt;function pd_np_native_numpy_array_to_data_dict_serializer at 0x7fa9974d5120&gt;</p></li>
-<li><p><strong>json_schema_from_type_data</strong> = &lt;function pd_np_native_numpy_array_json_schema_from_type_data at 0x7fa99729e680&gt;</p></li>
+<li><p><strong>serialize_numpy_array_to_json</strong> = &lt;function pd_np_native_numpy_array_to_data_dict_serializer at 0x7f5e9212ce50&gt;</p></li>
+<li><p><strong>json_schema_from_type_data</strong> = &lt;function pd_np_native_numpy_array_json_schema_from_type_data at 0x7f5e91d697e0&gt;</p></li>
 <li><p><strong>__module__</strong> = pydantic_numpy.helper.annotation</p></li>
 </ul>
 </dd>

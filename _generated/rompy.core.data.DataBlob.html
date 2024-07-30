@@ -457,12 +457,14 @@ document.write(`
 <dt class="sig sig-object py" id="rompy.core.data.DataBlob">
 <em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.core.data.</span></span><span class="sig-name descname"><span class="pre">DataBlob</span></span><a class="reference internal" href="../_modules/rompy/core/data.html#DataBlob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.data.DataBlob" title="Link to this definition">#</a></dt>
 <dd><p>Data source for model ingestion.</p>
-<p>Generic data source for files that simply need to be copied to the model directory.</p>
+<p>Generic data source for files that either need to be copied to the model directory
+or linked if <cite>link</cite> is set to True.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="#rompy.core.data.DataBlob.id" title="rompy.core.data.DataBlob.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.core.data.DataBlob.model_type" title="rompy.core.data.DataBlob.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['data_blob'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.data.DataBlob.link" title="rompy.core.data.DataBlob.link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link</span> <span class="pre">(bool)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.core.data.DataBlob.model_type" title="rompy.core.data.DataBlob.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['data_blob',</span> <span class="pre">'data_link'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.core.data.DataBlob.source" title="rompy.core.data.DataBlob.source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span> <span class="pre">(cloudpathlib.anypath.AnyPath)</span></code></a></p></li>
 </ul>
 </dd>
@@ -474,8 +476,14 @@ document.write(`
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.core.data.DataBlob.link">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#rompy.core.data.DataBlob.link" title="Link to this definition">#</a></dt>
+<dd><p>Whether to create a symbolic link instead of copying the file</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.core.data.DataBlob.model_type">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'data_blob'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data_blob'</span></em><a class="headerlink" href="#rompy.core.data.DataBlob.model_type" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'data_blob'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'data_link'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'data_blob'</span></em><a class="headerlink" href="#rompy.core.data.DataBlob.model_type" title="Link to this definition">#</a></dt>
 <dd><p>Model type discriminator</p>
 </dd></dl>
 
@@ -487,14 +495,14 @@ document.write(`
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rompy.core.data.DataBlob.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/rompy/core/data.html#DataBlob.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.data.DataBlob.get" title="Link to this definition">#</a></dt>
-<dd><p>Copy the data source to a new directory.</p>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/rompy/core/data.html#DataBlob.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.core.data.DataBlob.get" title="Link to this definition">#</a></dt>
+<dd><p>Copy or link the data source to a new directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>destdir</strong> (<em>str</em><em> | </em><em>Path</em>) – The destination directory to copy the data source to.</p>
+<dd class="field-odd"><p><strong>destdir</strong> (<em>str</em><em> | </em><em>Path</em>) – The destination directory to copy or link the data source to.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>outfile</strong> – The path to the copied file.</p>
+<dd class="field-even"><p>The path to the copied file or created symlink.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Path</p>
@@ -569,6 +577,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob"><code class="docutils literal notranslate"><span class="pre">DataBlob</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob.id"><code class="docutils literal notranslate"><span class="pre">DataBlob.id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob.link"><code class="docutils literal notranslate"><span class="pre">DataBlob.link</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob.model_type"><code class="docutils literal notranslate"><span class="pre">DataBlob.model_type</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob.source"><code class="docutils literal notranslate"><span class="pre">DataBlob.source</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.core.data.DataBlob.get"><code class="docutils literal notranslate"><span class="pre">DataBlob.get()</span></code></a></li>
