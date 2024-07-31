@@ -429,6 +429,7 @@ document.write(`
                   
   <h1>Source code for rompy.core.boundary</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Boundary classes.&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
@@ -436,12 +437,20 @@ document.write(`
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">wavespectra</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span><span class="p">,</span> <span class="n">field_validator</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span>
 
-<span class="kn">from</span> <span class="nn">rompy.core.data</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DataGrid</span><span class="p">,</span> <span class="n">SourceBase</span><span class="p">,</span> <span class="n">SourceDatamesh</span><span class="p">,</span>
-                             <span class="n">SourceDataset</span><span class="p">,</span> <span class="n">SourceFile</span><span class="p">,</span> <span class="n">SourceIntake</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">rompy.core.data</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DataGrid</span><span class="p">,</span>
+    <span class="n">SourceBase</span><span class="p">,</span>
+    <span class="n">SourceDatamesh</span><span class="p">,</span>
+    <span class="n">SourceDataset</span><span class="p">,</span>
+    <span class="n">SourceFile</span><span class="p">,</span>
+    <span class="n">SourceIntake</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">rompy.core.grid</span> <span class="kn">import</span> <span class="n">RegularGrid</span>
 <span class="kn">from</span> <span class="nn">rompy.core.time</span> <span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="kn">from</span> <span class="nn">rompy.settings</span> <span class="kn">import</span> <span class="n">BOUNDARY_SOURCE_TYPES</span><span class="p">,</span> <span class="n">SPEC_BOUNDARY_SOURCE_TYPES</span>
+<span class="kn">from</span> <span class="nn">rompy.utils</span> <span class="kn">import</span> <span class="n">process_setting</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -530,19 +539,8 @@ document.write(`
 
 
 
-<span class="n">BOUNDARY_SOURCE_TYPES</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
-    <span class="n">SourceDataset</span><span class="p">,</span>
-    <span class="n">SourceFile</span><span class="p">,</span>
-    <span class="n">SourceIntake</span><span class="p">,</span>
-    <span class="n">SourceDatamesh</span><span class="p">,</span>
-<span class="p">]</span>
-<span class="n">SPEC_BOUNDARY_SOURCE_TYPES</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
-    <span class="n">SourceDataset</span><span class="p">,</span>
-    <span class="n">SourceFile</span><span class="p">,</span>
-    <span class="n">SourceIntake</span><span class="p">,</span>
-    <span class="n">SourceDatamesh</span><span class="p">,</span>
-    <span class="n">SourceWavespectra</span><span class="p">,</span>
-<span class="p">]</span>
+<span class="n">BOUNDARY_SOURCE_MODELS</span> <span class="o">=</span> <span class="n">process_setting</span><span class="p">(</span><span class="n">BOUNDARY_SOURCE_TYPES</span><span class="p">)</span>
+<span class="n">SPEC_BOUNDARY_SOURCE_MODELS</span> <span class="o">=</span> <span class="n">process_setting</span><span class="p">(</span><span class="n">SPEC_BOUNDARY_SOURCE_TYPES</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">DataBoundary</span><span class="p">(</span><span class="n">DataGrid</span><span class="p">):</span>
@@ -687,7 +685,7 @@ document.write(`
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;boundary_wave_station&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">source</span><span class="p">:</span> <span class="n">SPEC_BOUNDARY_SOURCE_TYPES</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">source</span><span class="p">:</span> <span class="n">SPEC_BOUNDARY_SOURCE_MODELS</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
             <span class="s2">&quot;Dataset source reader, must return a wavespectra-enabled &quot;</span>
             <span class="s2">&quot;xarray dataset in the open method&quot;</span>
