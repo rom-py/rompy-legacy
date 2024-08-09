@@ -885,10 +885,20 @@ document.write(`
         <span class="mi">0</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;hotstart 0: off; 1: on - whether to expect hotstarts - Default - 0-&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">wwminput_hotfile_deltc_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="mi">3600</span><span class="p">,</span>
+    <span class="n">wwminput_hotfile_DELTC</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;hotfile time in UNITC (typically seconds) when hotfile should be written, defaults to 3600&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">wwminput_station_DELTC</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">3600</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time step for output; if smaller than simulation time step, the latter is used (output every step for better 1D 2D spectra analysis)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wwminput_history_DELTC</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">3600</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time step for output; if smaller than simulation time step, the latter is used (output every step for better 1D 2D spectra analysis)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
 
     <span class="c1"># validator example - ensure the following</span>
     <span class="c1"># Bottom friction.</span>
