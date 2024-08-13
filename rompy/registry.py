@@ -1,23 +1,34 @@
-from typing import Dict, Type
-from pydantic import BaseModel
+# registry.py
+from typing import Dict, Optional, Type
+
+from pydantic import BaseModel, Field, create_model
 
 
 class TypeRegistry:
-    """A registry to store the types of the models."""
     _types: Dict[str, Type[BaseModel]] = {}
+    _model_run: Optional[Type[BaseModel]] = None
 
     @classmethod
-    def register(cls, model_type: str, model_class: Type[BaseModel]):
-        cls._types[model_type] = model_class
+    def register(cls, name: str):
+        def decorator(model: Type[BaseModel]):
+            cls._types[name] = model
+            cls._model_run = None  # Reset ModelRun to force recreation
+            return model
+
+        return decorator
 
     @classmethod
     def get_types(cls):
         return cls._types
 
+    @classmethod
+    def create_model_run(cls):
+        from typing import Union
 
-def register_type(model_type: str):
-    """A decorator to register a new type in the registry."""
-    def decorator(cls):
-        TypeRegistry.register(model_type, cls)
-        return cls
-    return decorator
+        if not cls._types:
+            raise ValueError("No models registered")
+
+        config_type = Union[tuple(cls._types.values())]
+        return create_model(
+            "ModelRun", config=(config_type, Field(..., discriminator="model_type"))
+        )
