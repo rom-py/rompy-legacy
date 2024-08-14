@@ -1,17 +1,18 @@
 import os
-import intake
 from pathlib import Path
-from pydantic import ValidationError
+
+import intake
 import numpy as np
 import pandas as pd
 import pytest
 import xarray as xr
+from pydantic import ValidationError
 
+from rompy.core import DataBlob, DataGrid, RegularGrid, TimeRange
+from rompy.core.data import (SourceDatamesh, SourceDataset, SourceFile,
+                             SourceIntake)
 from rompy.core.filters import Filter
 from rompy.core.types import DatasetCoords
-from rompy.core.data import SourceDataset, SourceFile, SourceIntake, SourceDatamesh
-from rompy.core import BaseGrid, DataBlob, DataGrid, TimeRange
-
 
 HERE = Path(__file__).parent
 DATAMESH_TOKEN = os.environ.get("DATAMESH_TOKEN")
@@ -25,6 +26,11 @@ def txt_data_source(tmp_path):
     with open(source, "w") as f:
         f.write("hello world")
     return DataBlob(id="test", source=source)
+
+
+@pytest.fixture
+def grid():
+    return RegularGrid(x0=2, y0=3, dx=1, dy=1, nx=5, ny=4)
 
 
 @pytest.fixture
@@ -98,8 +104,7 @@ def test_netcdf_grid(nc_data_source):
     assert data.ds.longitude.min() == 0
 
 
-def test_grid_filter(nc_data_source):
-    grid = BaseGrid(x=np.arange(2, 7), y=np.arange(3, 7))
+def test_grid_filter(nc_data_source, grid):
     nc_data_source._filter_grid(grid)
     assert nc_data_source.ds.latitude.max() == 6
     assert nc_data_source.ds.latitude.min() == 3
@@ -107,18 +112,16 @@ def test_grid_filter(nc_data_source):
     assert nc_data_source.ds.longitude.min() == 2
 
 
-def test_grid_filter_buffer(nc_data_source):
-    grid = BaseGrid(x=np.arange(3, 7), y=np.arange(3, 7))
+def test_grid_filter_buffer(nc_data_source, grid):
     nc_data_source.buffer = 1.0
     nc_data_source._filter_grid(grid)
     assert nc_data_source.ds.latitude.max() == 7
     assert nc_data_source.ds.latitude.min() == 2
     assert nc_data_source.ds.longitude.max() == 7
-    assert nc_data_source.ds.longitude.min() == 2
+    assert nc_data_source.ds.longitude.min() == 1
 
 
-def test_time_filter(nc_data_source):
-    grid = BaseGrid(x=np.arange(3, 7), y=np.arange(3, 7))
+def test_time_filter(nc_data_source, grid):
     nc_data_source._filter_time(TimeRange(start="2000-01-02", end="2000-01-03"))
     assert nc_data_source.ds.time.max() == np.datetime64("2000-01-03")
     assert nc_data_source.ds.time.min() == np.datetime64("2000-01-02")
@@ -167,10 +170,9 @@ def test_source_intake_uri_or_yaml():
 
 def test_intake_grid_plot(grid_data_source):
     data = grid_data_source
-    data.plot(param='u10', isel={'time': 0})
+    data.plot(param="u10", isel={"time": 0})
 
 
-@pytest.mark.skip(reason="This won't work with pydantic<2, fix once migrated")
 @pytest.mark.skipif(DATAMESH_TOKEN is None, reason="Datamesh token required")
 def test_source_datamesh():
     dataset = SourceDatamesh(datasource="era5_wind10m", token=DATAMESH_TOKEN)
@@ -179,6 +181,9 @@ def test_source_datamesh():
     filters.crop.update(
         dict(longitude=slice(115.5, 116.0), latitude=slice(-33.0, -32.5))
     )
-    dset = dataset.open(variables=["u10"], filters=filters, coords=DatasetCoords(x="longitude", y="latitude"))
-    assert(isinstance(dset, xr.Dataset))
-
+    dset = dataset.open(
+        variables=["u10"],
+        filters=filters,
+        coords=DatasetCoords(x="longitude", y="latitude"),
+    )
+    assert isinstance(dset, xr.Dataset)

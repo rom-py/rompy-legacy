@@ -9,10 +9,7 @@ from rompy.swan.subcomponents.readgrid import GRIDREGULAR
 # test class based on pytest fixtures
 @pytest.fixture
 def grid():
-    x = np.arange(10)
-    y = np.arange(10)
-    xx, yy = np.meshgrid(x, y)
-    return SwanGrid(x=xx, y=yy)
+    return SwanGrid(x0=0, y0=0, nx=10, ny=10, dx=1, dy=1)
 
 
 @pytest.fixture

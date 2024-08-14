@@ -315,13 +315,13 @@ class SCHISMGrid(BaseGrid):
             v = VgridGenerator()
         return v
 
-    @model_validator(mode="after")
-    def set_xy(cls, v):
-        if v.hgrid is not None:
-            v._pyschism_hgrid = Hgrid.open(v.hgrid._copied or v.hgrid.source, crs=v.crs)
-            v.x = v._pyschism_hgrid.x
-            v.y = v._pyschism_hgrid.y
-        return v
+    @property
+    def x(self) -> np.ndarray:
+        return self.pyschism_hgrid.x
+
+    @property
+    def y(self) -> np.ndarray:
+        return self.pyschism_hgrid.y
 
     @property
     def pyschism_hgrid(self):

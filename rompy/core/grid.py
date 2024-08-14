@@ -6,7 +6,6 @@ import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import numpy as np
 from pydantic import Field, model_validator
-from pydantic_numpy.typing import Np1DArray, Np2DArray
 from shapely.geometry import MultiPoint, Polygon
 
 from rompy.core.types import Bbox, RompyBaseModel
@@ -24,13 +23,15 @@ class BaseGrid(RompyBaseModel):
 
     """
 
-    x: Optional[Union[Np1DArray, Np2DArray]] = Field(
-        default=None, description="The x coordinates"
-    )
-    y: Optional[Union[Np1DArray, Np2DArray]] = Field(
-        default=None, description="The y coordinates"
-    )
     grid_type: Literal["base"] = "base"
+
+    @property
+    def x(self) -> np.ndarray:
+        raise NotImplementedError
+
+    @property
+    def y(self) -> np.ndarray:
+        raise NotImplementedError
 
     @property
     def minx(self) -> float:
@@ -221,21 +222,20 @@ class RegularGrid(BaseGrid):
     def generate(self) -> "RegularGrid":
         """Generate the grid from the provided parameters."""
         keys = ["x0", "y0", "dx", "dy", "nx", "ny"]
-        if self.x is not None and self.y is not None:
-            for key in keys:
-                if getattr(self, key) is not None:
-                    logger.warning(f"x, y provided explicitly, can't process {key}")
-            self._attrs_from_xy()
-        elif None in [getattr(self, key) for key in keys]:
+        if None in [getattr(self, key) for key in keys]:
             raise ValueError(f"All of {','.join(keys)} must be provided for REG grid")
         # Ensure x, y 2D coordinates are defined
-        self._regen_grid()
         return self
 
-    def _regen_grid(self):
-        _x, _y = self._gen_reg_cgrid()
-        self.x = _x
-        self.y = _y
+    @property
+    def x(self) -> np.ndarray:
+        x, y = self._gen_reg_cgrid()
+        return x
+
+    @property
+    def y(self) -> np.ndarray:
+        x, y = self._gen_reg_cgrid()
+        return y
 
     def _attrs_from_xy(self):
         """Generate regular grid attributes from x, y coordinates."""

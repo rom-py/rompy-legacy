@@ -5,13 +5,31 @@ import shapely
 from rompy.core import BaseGrid, RegularGrid
 
 
+class CustomGrid(BaseGrid):
+    xsize: int = 10
+    ysize: int = 10
+
+    def meshgrid(self):
+        x = np.arange(self.xsize)
+        y = np.arange(self.ysize)
+        xx, yy = np.meshgrid(x, y)
+        return xx, yy
+
+    @property
+    def x(self):
+        xx, yy = self.meshgrid()
+        return xx
+
+    @property
+    def y(self):
+        xx, yy = self.meshgrid()
+        return yy
+
+
 # test class based on pytest fixtures
 @pytest.fixture
 def grid():
-    x = np.arange(10)
-    y = np.arange(10)
-    xx, yy = np.meshgrid(x, y)
-    return BaseGrid(x=xx, y=yy)
+    return CustomGrid()
 
 
 @pytest.fixture
@@ -23,13 +41,12 @@ def regulargrid():
 
 
 def test_regulargrid_xy(regulargrid):
-    grid = RegularGrid(x=regulargrid.x, y=regulargrid.y)
-    assert np.array_equal(grid.x, regulargrid.x)
-    assert np.array_equal(grid.y, regulargrid.y)
-    assert grid.nx == regulargrid.nx
-    assert grid.ny == regulargrid.ny
-    for attr in ["x0", "y0", "dx", "dy", "rot"]:
-        assert getattr(grid, attr) == pytest.approx(getattr(regulargrid, attr))
+    xx, yy = np.meshgrid(np.arange(10), np.arange(10))
+    assert np.array_equal(regulargrid.x, xx)
+    assert np.array_equal(regulargrid.y, yy)
+    assert regulargrid.nx == 10
+    assert regulargrid.ny == 10
+
 
 def test_bbox(grid):
     assert grid.bbox() == [0.0, 0.0, 9.0, 9.0]

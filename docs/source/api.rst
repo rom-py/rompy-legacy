@@ -8,7 +8,7 @@ Core Classes
 
 Model
 ~~~~~
-.. automodule:: rompy.model
+.. automodule:: rompy.model.ModelRun
     :members:
     :inherited-members: BaseModel
     :no-index:

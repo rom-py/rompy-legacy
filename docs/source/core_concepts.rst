@@ -13,6 +13,7 @@ concepts:
 
     rompy.model.ModelRun
     rompy.core.BaseConfig
+    rompy.core.dummy.DemoModel
 
 There is information about each of these in the documentation of each object, but at a
 high level, ModelRun is the high level framework that renders the config object and controls the
