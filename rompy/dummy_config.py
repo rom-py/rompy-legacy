@@ -38,3 +38,7 @@ if __name__ == "__main__":
         print(ModelRun(**kwargs))
     except ValidationError as e:
         print(e)
+
+    kwargs = {"config": {"model_type": "xbeach"}}
+    mr = ModelRun(**kwargs)
+    print(mr.dummy_property)

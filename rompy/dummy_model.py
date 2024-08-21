@@ -23,4 +23,10 @@ class ModelRunProxy:
 
 
 class ModelRun(metaclass=ModelRunMeta):
-    pass
+
+    def dummy_method(self):
+        print("dummy")
+
+    @property
+    def dummy_property(self):
+        return "dummy"
