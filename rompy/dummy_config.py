@@ -1,40 +1,24 @@
-from typing import Literal
+from typing import List, Literal
 
 from pydantic import BaseModel
 
-from rompy.dummy_model import ModelRun
-from rompy.registry import TypeRegistry
+from rompy.registry import Registry
 
 
-@TypeRegistry.register("swan")
-class SwanConfig(BaseModel):
-    model_type: Literal["swan"] = "swan"
+class ConfigModel(BaseModel):
+    config_type: str
 
 
-@TypeRegistry.register("schism")
-class SchismConfig(BaseModel):
-    model_type: Literal["schism"] = "schism"
+@Registry.register_config("swan")
+class SwanConfig(ConfigModel):
+    config_type: Literal["swan"] = "swan"
 
 
-@TypeRegistry.register("xbeach")
-class XbeachConfig(BaseModel):
-    model_type: Literal["xbeach"] = "xbeach"
+@Registry.register_config("schism")
+class SchismConfig(ConfigModel):
+    config_type: Literal["schism"] = "schism"
 
 
-if __name__ == "__main__":
-    kwargs = {"config": {"model_type": "swan"}}
-    print(ModelRun(**kwargs))
-
-    kwargs = {"config": {"model_type": "schism"}}
-    print(ModelRun(**kwargs))
-
-    kwargs = {"config": {"model_type": "xbeach"}}
-    print(ModelRun(**kwargs))
-
-    from pydantic import ValidationError
-
-    try:
-        kwargs = {"config": {"model_type": "foo"}}
-        print(ModelRun(**kwargs))
-    except ValidationError as e:
-        print(e)
+@Registry.register_config("xbeach")
+class XbeachConfig(ConfigModel):
+    config_type: Literal["xbeach"] = "xbeach"

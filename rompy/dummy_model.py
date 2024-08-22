@@ -1,5 +1,6 @@
-# dummy_model.py
-from rompy.registry import TypeRegistry
+# In model_run.py
+
+from rompy.registry import Registry
 
 
 class ModelRunMeta(type):
@@ -9,16 +10,16 @@ class ModelRunMeta(type):
 
 class ModelRunProxy:
     def __new__(cls, *args, **kwargs):
-        actual_model_run = TypeRegistry.create_model_run()
+        actual_model_run = Registry.create_model_run()
         return actual_model_run(*args, **kwargs)
 
     def __getattr__(name):
-        actual_model_run = TypeRegistry.create_model_run()
+        actual_model_run = Registry.create_model_run()
         return getattr(actual_model_run, name)
 
     @classmethod
     def __class_getitem__(cls, key):
-        actual_model_run = TypeRegistry.create_model_run()
+        actual_model_run = Registry.create_model_run()
         return actual_model_run.__class_getitem__(key)
 
 
