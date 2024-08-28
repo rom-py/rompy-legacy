@@ -1,6 +1,7 @@
 """Boundary classes."""
 
 import logging
+from importlib.metadata import entry_points
 from pathlib import Path
 from typing import Literal, Optional, Union
 
@@ -10,6 +11,7 @@ import xarray as xr
 from pydantic import Field, field_validator, model_validator
 
 from rompy.core.data import (
+    DATA_SOURCE_TYPES,
     DataGrid,
     SourceBase,
     SourceDatamesh,
@@ -19,8 +21,6 @@ from rompy.core.data import (
 )
 from rompy.core.grid import RegularGrid
 from rompy.core.time import TimeRange
-from rompy.settings import BOUNDARY_SOURCE_TYPES, SPEC_BOUNDARY_SOURCE_TYPES
-from rompy.utils import process_setting
 
 logger = logging.getLogger(__name__)
 
@@ -106,8 +106,10 @@ class SourceWavespectra(SourceBase):
         return getattr(wavespectra, self.reader)(self.uri, **self.kwargs)
 
 
-BOUNDARY_SOURCE_MODELS = process_setting(BOUNDARY_SOURCE_TYPES)
-SPEC_BOUNDARY_SOURCE_MODELS = process_setting(SPEC_BOUNDARY_SOURCE_TYPES)
+boundary_source_eps = entry_points(group="rompy.boundary_source")
+SPEC_BOUNDARY_SOURCE_MODELS = (
+    tuple(eps.load() for eps in boundary_source_eps) + DATA_SOURCE_TYPES
+)
 
 
 class DataBoundary(DataGrid):

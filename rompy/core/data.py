@@ -2,8 +2,9 @@
 
 import logging
 import os
-from functools import cached_property
 from abc import ABC, abstractmethod
+from functools import cached_property
+from importlib.metadata import entry_points
 from pathlib import Path
 from shutil import copytree
 from typing import Literal, Optional, Union
@@ -20,14 +21,11 @@ from intake.catalog import Catalog
 from intake.catalog.local import YAMLFileCatalog
 from oceanum.datamesh import Connector
 from pydantic import ConfigDict, Field, PrivateAttr, model_validator
-from importlib.metadata import entry_points
 
 from rompy.core.filters import Filter
 from rompy.core.grid import BaseGrid, RegularGrid
 from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords, RompyBaseModel, Slice
-# from rompy.settings import DATA_SOURCE_TYPES
-# from rompy.utils import process_setting
 
 logger = logging.getLogger(__name__)
 
@@ -334,14 +332,10 @@ class DataBlob(RompyBaseModel):
 
 GRID_TYPES = Union[BaseGrid, RegularGrid]
 
-# DATA_SOURCE_TYPES = process_setting(DATA_SOURCE_TYPES)
 
 # Plugin for the source types
 data_source_eps = entry_points(group="rompy.data_source")
-# We could move these out of the module and specify them also with the entry-point
-DATA_SOURCE_TYPES = (SourceDataset, SourceFile, SourceIntake, SourceDatamesh)
-# Append any additional data source types from entry points
-DATA_SOURCE_TYPES = DATA_SOURCE_TYPES + tuple(eps.load() for eps in data_source_eps)
+DATA_SOURCE_TYPES = tuple(eps.load() for eps in data_source_eps)
 
 
 class DataGrid(DataBlob):
