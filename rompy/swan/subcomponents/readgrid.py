@@ -252,9 +252,11 @@ class READCOORD(READGRID):
     def cmd(self) -> str:
         repr = (
             f"READGRID COORDINATES fac={self.fac} fname='{self.fname}' "
-            f"idla={self.idla} nhedf={self.nhedf} nhedvec={self.nhedvec} "
-            f"{self.format_repr}"
+            f"idla={self.idla} nhedf={self.nhedf}"
         )
+        if self.nhedvec != 0:
+            repr += f" nhedvec={self.nhedvec}"
+        repr += f" {self.format_repr}"
         return repr
 
 
@@ -327,5 +329,8 @@ class READINP(READGRID):
         repr = f"READINP {self.grid_type.upper()} fac={self.fac} fname1='{self.fname1}'"
         if self.fname2:
             repr += f" SERIES fname2='{self.fname2}'"
-        repr += f" idla={self.idla} nhedf={self.nhedf} nhedt={self.nhedt} nhedvec={self.nhedvec} {self.format_repr}"
+        repr += f" idla={self.idla} nhedf={self.nhedf} nhedt={self.nhedt}"
+        if self.nhedvec != 0:
+            repr += f" nhedvec={self.nhedvec}"
+        repr += f" {self.format_repr}"
         return repr
