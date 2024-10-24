@@ -404,58 +404,49 @@ class SCHISMGrid(BaseGrid):
         # open boundary nodes/info as geopandas df
         gdf_open_boundary = self.pyschism_hgrid.boundaries.open
 
-        # make a pandas dataframe for easier lon/lat referencing during forcing condition generation
-        df_open_boundary = pd.DataFrame(
-            {
-                "schism_index": gdf_open_boundary.index_id[0],
-                "index": gdf_open_boundary.indexes[0],
-                "lon": gdf_open_boundary.get_coordinates().x,
-                "lat": gdf_open_boundary.get_coordinates().y,
-            }
-        ).reset_index(drop=True)
+        # Handle all open boundaries
+        for boundary_idx in range(len(gdf_open_boundary)):
+            coords = gdf_open_boundary.get_coordinates()
+            boundary_mask = coords.index == boundary_idx
+            boundary_coords = coords[boundary_mask]
+            
+            df_boundary = pd.DataFrame({
+                "schism_index": gdf_open_boundary.index_id[boundary_idx],
+                "index": gdf_open_boundary.indexes[boundary_idx],
+                "lon": boundary_coords.x,
+                "lat": boundary_coords.y,
+            }).reset_index(drop=True)
 
-        # create sub-sampled wave boundary
-        # #wave_boundary = redistribute_vertices(gdf_open_boundary.geometry[0], 0.2)
-        #
-        # df_wave_boundary = pd.DataFrame(
-        #     {"lon": wave_boundary.xy[0], "lat": wave_boundary.xy[1]}
-        # ).reset_index(drop=True)
+            # Plot markers for this boundary
+            ax.plot(
+                df_boundary["lon"],
+                df_boundary["lat"],
+                "+k",
+                transform=ccrs.PlateCarree(),
+                zorder=10,
+            )
+            ax.plot(
+                df_boundary["lon"],
+                df_boundary["lat"],
+                "xr",
+                transform=ccrs.PlateCarree(),
+                zorder=10,
+            )
+
+        # Plot the boundary lines
         gdf_open_boundary.plot(ax=ax, color="b")
-        ax.add_geometries(
-            self.pyschism_hgrid.boundaries.land.geometry.values,
-            facecolor="none",
-            edgecolor="g",
-            linewidth=2,
-            crs=ccrs.PlateCarree(),
-        )
-        ax.plot(
-            df_open_boundary["lon"],
-            df_open_boundary["lat"],
-            "+k",
-            transform=ccrs.PlateCarree(),
-            zorder=10,
-        )
-        ax.plot(
-            df_open_boundary["lon"],
-            df_open_boundary["lat"],
-            "xr",
-            transform=ccrs.PlateCarree(),
-            zorder=10,
-        )
-        # ax.plot(
-        #     df_wave_boundary["lon"],
-        #     df_wave_boundary["lat"],
-        #     "+k",
-        #     transform=ccrs.PlateCarree(),
-        #     zorder=10,
-        # )
-        # ax.plot(
-        #     df_wave_boundary["lon"],
-        #     df_wave_boundary["lat"],
-        #     "xr",
-        #     transform=ccrs.PlateCarree(),
-        #     zorder=10,
-        # )
+        
+        # Plot land boundaries if they exist
+        if hasattr(self.pyschism_hgrid.boundaries, 'land') and \
+        self.pyschism_hgrid.boundaries.land is not None:
+            ax.add_geometries(
+                self.pyschism_hgrid.boundaries.land.geometry.values,
+                facecolor="none",
+                edgecolor="g",
+                linewidth=2,
+                crs=ccrs.PlateCarree(),
+            )
+
         ax.coastlines()
         return fig, ax
 
