@@ -10,7 +10,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 from cloudpathlib import AnyPath
-from pydantic import Field, PrivateAttr
+from pydantic import Field, PrivateAttr, field_validator
 from importlib.metadata import entry_points
 
 from rompy.core.filters import Filter
@@ -156,6 +156,14 @@ class DataGrid(DataBlob):
             "if `filter_time` is True"
         ),
     )
+
+    @field_validator("variables")
+    @classmethod
+    def variables_as_list(cls, v: Union[list, str]) -> list:
+        """Ensure variables is a list."""
+        if isinstance(v, str):
+            return [v]
+        return v
 
     def _filter_grid(self, grid: GRID_TYPES):
         """Define the filters to use to extract data to this grid"""
