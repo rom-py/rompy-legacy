@@ -2,6 +2,8 @@
 title: "Relocatable Ocean Modelling in PYthon (rompy)"
 ---
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14849029.svg)](https://doi.org/10.5281/zenodo.14849029)
+
 [![GitHub Pages](https://github.com/rom-py/rompy/actions/workflows/sphinx_docs_to_gh_pages.yaml/badge.svg)](https://rom-py.github.io/rompy/)
 
 # Introduction
