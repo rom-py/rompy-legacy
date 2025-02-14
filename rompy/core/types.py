@@ -1,14 +1,9 @@
 """Rompy types."""
 
-from typing import Any, Optional, Union
 from datetime import datetime
-from pydantic import (
-    field_validator,
-    model_validator,
-    ConfigDict,
-    BaseModel,
-    Field,
-)
+from typing import Any, Optional, Union
+
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class RompyBaseModel(BaseModel):
@@ -312,8 +307,8 @@ class DatasetCoords(RompyBaseModel):
     t: Optional[str] = Field("time", description="Name of the time coordinate")
     x: Optional[str] = Field("longitude", description="Name of the x coordinate")
     y: Optional[str] = Field("latitude", description="Name of the y coordinate")
-    z: Optional[str] = Field("depth", description="Name of the z coordinate")
-    s: Optional[str] = Field("site", description="Name of the site coordinate")
+    z: Optional[str | None] = Field(None, description="Name of the z coordinate")
+    s: Optional[str | None] = Field(None, description="Name of the site coordinate")
 
 
 class Slice(BaseModel):
