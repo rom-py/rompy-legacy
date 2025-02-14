@@ -362,6 +362,7 @@ class SCHISMDataWave(BoundaryWaveStation):
         ds = self._sel_boundary(grid)
         outfile = Path(destdir) / f"{self.id}.nc"
         ds.spec.to_ww3(outfile)
+        logger.info(f"\tSaved to {outfile}")
         return outfile
 
     @property
@@ -395,7 +396,7 @@ class SCHISMDataBoundary(DataBoundary):
         description="SCHISM th id of the source",
         choices=["elev2D", "uv3D", "TEM_3D", "SAL_3D", "bnd"],
     )
-    variable: str = Field(..., description="variable name in the dataset")
+    variables: list[str] = Field(..., description="variable name in the dataset")
     sel_method: Literal["sel", "interp"] = Field(
         default="interp",
         description=(
@@ -410,10 +411,10 @@ class SCHISMDataBoundary(DataBoundary):
         description="Number of source data timesteps to buffer the time range if `filter_time` is True",
     )
 
-    @model_validator(mode="after")
-    def _set_variables(self) -> "SCHISMDataBoundary":
-        self.variables = [self.variable]
-        return self
+    # @model_validator(mode="after")
+    # def _set_variables(self) -> "SCHISMDataBoundary":
+    #     self.variables = [self.variable]
+    #     return self
 
     # @property
     # def ds(self):
@@ -458,6 +459,7 @@ class SCHISMDataBoundary(DataBoundary):
         outfile = Path(destdir) / f"{self.id}.th.nc"
         boundary_ds = self.boundary_ds(grid, time)
         boundary_ds.to_netcdf(outfile, "w", "NETCDF3_CLASSIC", unlimited_dims="time")
+        logger.info(f"\tSaved to {outfile}")
         return outfile
 
     def boundary_ds(self, grid: SCHISMGrid, time: Optional[TimeRange]) -> xr.Dataset:
@@ -469,28 +471,53 @@ class SCHISMDataBoundary(DataBoundary):
             dt = total_seconds((ds.time[1] - ds.time[0]).values)
         else:
             dt = 3600
-
-        data = ds[self.variable].values
-        if self.interpolate_missing_coastal:
-            for i in range(data.shape[0]):
-                data[i, :] = fill_tails(data[i, :])
-        time_series = np.expand_dims(data, axis=(2, 3))
-
-        schism_ds = xr.Dataset(
-            coords={
-                "time": ds.time,
-                "nOpenBndNodes": np.arange(0, ds.xlon.size),
-                "nComponents": np.array([1]),
-                "one": np.array([1]),
-            },
-            data_vars={
-                "time_step": (("one"), np.array([dt])),
-                "time_series": (
-                    ("time", "nOpenBndNodes", "nLevels", "nComponents"),
-                    time_series,
-                ),
-            },
-        )
+        # TODO loop over variables when implimenting u and v
+        data = ds[self.variables[0]].values
+        if self.coords.z is not None:
+            if self.interpolate_missing_coastal:
+                # switch dimensions for time, depth, site to time, site, depth
+                # TODO this is unlikely to work in the general case. Use named xarray dims instead
+                data = np.swapaxes(data, 1, 2)
+                for i in range(data.shape[0]):
+                    for j in range(data.shape[2]):
+                        data[i, :, j] = fill_tails(data[i, :, j])
+            time_series = np.expand_dims(data, axis=(3))
+            schism_ds = xr.Dataset(
+                coords={
+                    "time": ds.time,
+                    "nOpenBndNodes": np.arange(0, ds[self.coords.x].size),
+                    "nLevels": np.arange(0, ds[self.coords.z].size),
+                    "nComponents": np.array([1]),
+                    "one": np.array([1]),
+                },
+                data_vars={
+                    "time_step": (("one"), np.array([dt])),
+                    "time_series": (
+                        ("time", "nOpenBndNodes", "nLevels", "nComponents"),
+                        time_series,
+                    ),
+                },
+            )
+        else:
+            if self.interpolate_missing_coastal:
+                for i in range(data.shape[0]):
+                    data[i, :] = fill_tails(data[i, :])
+            time_series = np.expand_dims(data, axis=(2, 3))
+            schism_ds = xr.Dataset(
+                coords={
+                    "time": ds.time,
+                    "nOpenBndNodes": np.arange(0, ds[self.coords.x].size),
+                    "nComponents": np.array([1]),
+                    "one": np.array([1]),
+                },
+                data_vars={
+                    "time_step": (("one"), np.array([dt])),
+                    "time_series": (
+                        ("time", "nOpenBndNodes", "nLevels", "nComponents"),
+                        time_series,
+                    ),
+                },
+            )
         schism_ds.time_step.assign_attrs({"long_name": "time_step"})
         basedate = pd.to_datetime(ds.time.values[0])
         unit = f"days since {basedate.strftime('%Y-%m-%d %H:%M:%S')}"
@@ -509,7 +536,6 @@ class SCHISMDataBoundary(DataBoundary):
                     ]
                 )
             ),
-            # "units": unit,
         }
         schism_ds.time.encoding["units"] = unit
         schism_ds.time.encoding["calendar"] = "proleptic_gregorian"
@@ -569,7 +595,7 @@ class SCHISMDataOcean(RompyBaseModel):
 
     @model_validator(mode="after")
     def not_yet_implemented(cls, v):
-        for variable in ["uv3D", "TEM_3D", "SAL_3D"]:
+        for variable in ["uv3D"]:
             if getattr(v, variable) is not None:
                 raise NotImplementedError(f"Variable {variable} is not yet implemented")
         return v
@@ -739,6 +765,13 @@ class SCHISMData(RompyBaseModel):
     tides: Optional[Union[DataBlob, SCHISMDataTides]] = Field(
         None, description="tidal data"
     )
+
+    # @model_validator(mode="after")
+    # def check_bctides_flags(cls, v):
+    #     # TODO Add check fro bc flags in teh event of 3d inputs
+    #     # SHould possibly move this these flags out of SCHISMDataTides class as they cover more than
+    #     # just tides
+    #     return cls
 
     def get(
         self,
