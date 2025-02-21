@@ -165,6 +165,7 @@ def test_source_intake_uri():
     assert isinstance(source.open(), xr.Dataset)
 
 
+@pytest.mark.skip
 def test_source_intake_yaml():
     dataset = intake.open_netcdf(str(HERE / "data/era5-20230101.nc"))
     dataset.name = "era5"

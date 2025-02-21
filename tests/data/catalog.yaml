@@ -5,6 +5,7 @@ sources:
         args:
             urlpath: '{{CATALOG_DIR}}/gebco-1deg.nc'
             chunks: {lon: 32, lat: 32}
+            engine: 'netcdf4'
     era5:
         driver: netcdf
         description: 'Subsample 5km of ERA5 wind 10m over 1-day'
@@ -18,3 +19,4 @@ sources:
         args:
             urlpath: '{{CATALOG_DIR}}/aus-20230101.nc'
             chunks: {time: 1, lon: 32, lat: 32}
+            engine: 'netcdf4'
