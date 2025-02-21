@@ -8,12 +8,13 @@ from typing import Literal, Optional
 
 import fsspec
 import intake
+import pandas as pd
 import xarray as xr
 import wavespectra
 from intake.catalog import Catalog
 from intake.catalog.local import YAMLFileCatalog
 from oceanum.datamesh import Connector
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import ConfigDict, Field, model_validator, field_validator
 
 from rompy.core.filters import Filter
 from rompy.core.types import DatasetCoords, RompyBaseModel
@@ -267,3 +268,76 @@ class SourceWavespectra(SourceBase):
 
     def _open(self):
         return getattr(wavespectra, self.reader)(self.uri, **self.kwargs)
+
+
+class SourceTimeseriesCSV(SourceBase):
+    """Timeseries source class from CSV file.
+
+    This class should return a timeseries from a CSV file. The dataset variables are
+    defined from the column headers, therefore the appropriate read_csv kwargs must be
+    passed to allow defining the columns. The time index is defined from column name
+    identified by the tcol field.
+
+    """
+
+    model_type: Literal["csv"] = Field(
+        default="csv",
+        description="Model type discriminator",
+    )
+    filename: str | Path = Field(description="Path to the csv file")
+    tcol: str = Field(
+        default="time",
+        description="Name of the column containing the time data",
+    )
+    read_csv_kwargs: dict = Field(
+        default={},
+        description="Keyword arguments to pass to pandas.read_csv",
+    )
+
+    @model_validator(mode="after")
+    def validate_kwargs(self) -> "SourceTimeseriesCSV":
+        """Validate the keyword arguments."""
+        if "parse_dates" not in self.read_csv_kwargs:
+            self.read_csv_kwargs["parse_dates"] = [self.tcol]
+        if "index_col" not in self.read_csv_kwargs:
+            self.read_csv_kwargs["index_col"] = self.tcol
+        return self
+
+    def _open_dataframe(self) -> pd.DataFrame:
+        """Read the data from the csv file."""
+        return pd.read_csv(self.filename, **self.read_csv_kwargs)
+
+    def _open(self) -> xr.Dataset:
+        """Interpolate the xyz data onto a regular grid."""
+        df = self._open_dataframe()
+        ds = xr.Dataset.from_dataframe(df).rename({self.tcol: "time"})
+        return ds
+
+
+class SourceTimeseriesDataFrame(SourceBase):
+    """Source dataset from an existing pandas DataFrame timeseries object."""
+
+    model_type: Literal["dataframe"] = Field(
+        default="dataframe",
+        description="Model type discriminator",
+    )
+    obj: pd.DataFrame = Field(
+        description="pandas DataFrame object",
+    )
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    @field_validator("obj")
+    @classmethod
+    def is_timeseries(cls, obj: pd.DataFrame) -> pd.DataFrame:
+        """Check if the DataFrame is a timeseries."""
+        if not pd.api.types.is_datetime64_any_dtype(obj.index):
+            raise ValueError("The DataFrame index must be datetime dtype")
+        if obj.index.name is None:
+            raise ValueError("The DataFrame index must have a name")
+        return obj
+
+    def __str__(self) -> str:
+        return f"SourceTimeseriesDataFrame(obj={self.obj})"
+
+    def _open(self) -> xr.Dataset:
+        return xr.Dataset.from_dataframe(self.obj).rename({self.obj.index.name: "time"})

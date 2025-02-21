@@ -12,6 +12,7 @@ from pydantic import Field, field_validator
 from rompy.core.data import DataGrid
 from rompy.core.grid import RegularGrid
 from rompy.core.time import TimeRange
+from rompy.utils import load_entry_points
 
 logger = logging.getLogger(__name__)
 
@@ -193,7 +194,7 @@ class DataBoundary(DataGrid):
 
 
 # Plugin for the source types
-SOURCE_TYPES = tuple([eps.load() for eps in entry_points(group="rompy.source")])
+SOURCE_TYPES = load_entry_points("rompy.source")
 
 
 class BoundaryWaveStation(DataBoundary):

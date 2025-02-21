@@ -11,12 +11,12 @@ import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 from cloudpathlib import AnyPath
 from pydantic import Field, PrivateAttr
-from importlib.metadata import entry_points
 
 from rompy.core.filters import Filter
 from rompy.core.grid import BaseGrid, RegularGrid
 from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords, RompyBaseModel, Slice
+from rompy.utils import load_entry_points
 
 
 logger = logging.getLogger(__name__)
@@ -101,33 +101,26 @@ class DataBlob(RompyBaseModel):
 GRID_TYPES = Union[BaseGrid, RegularGrid]
 
 # Plugin for the source types
-SOURCE_TYPES = tuple([eps.load() for eps in entry_points(group="rompy.source")])
+SOURCE_TYPES = load_entry_points("rompy.source")
+SOURCE_TYPES_TS = load_entry_points("rompy.source", etype="timeseries")
 
 
-class DataGrid(DataBlob):
-    """Data object for model ingestion.
+class DataTimeseries(DataBlob):
+    """Data object for timeseries source data.
 
-    Generic data object for xarray datasets that need to be filtered and written to
-    netcdf.
-
-    Note
-    ----
-    The fields `filter_grid` and `filter_time` trigger updates to the crop filter from
-    the grid and time range objects passed to the get method. This is useful for data
-    sources that are not defined on the same grid as the model grid or the same time
-    range as the model run.
+    Generic data object for xarray datasets that only have time as a dimension and do
+    not need to be cropped to a specific grid.
 
     """
 
-    model_type: Literal["data_grid"] = Field(
-        default="data_grid",
+    model_type: Literal["timeseries"] = Field(
+        default="timeseries",
         description="Model type discriminator",
     )
-    source: Union[SOURCE_TYPES] = Field(
-        description="Source reader, must return an xarray dataset in the open method",
+    source: Union[SOURCE_TYPES_TS] = Field(
+        description="Source reader, must return an xarray timeseries dataset in the open method",
         discriminator="model_type",
     )
-
     filter: Optional[Filter] = Field(
         default_factory=Filter,
         description="Optional filter specification to apply to the dataset",
@@ -158,14 +151,8 @@ class DataGrid(DataBlob):
     )
 
     def _filter_grid(self, grid: GRID_TYPES):
-        """Define the filters to use to extract data to this grid"""
-        x0, y0, x1, y1 = grid.bbox(buffer=self.buffer)
-        self.filter.crop.update(
-            {
-                self.coords.x: Slice(start=x0, stop=x1),
-                self.coords.y: Slice(start=y0, stop=y1),
-            }
-        )
+        """No spatial selection is required for timeseries data."""
+        pass
 
     def _filter_time(self, time: TimeRange, end_buffer=1):
         """Define the filters to use to extract data to this grid"""
@@ -188,6 +175,76 @@ class DataGrid(DataBlob):
             variables=self.variables, filters=self.filter, coords=self.coords
         )
         return ds
+
+    @property
+    def outfile(self) -> str:
+        return f"{self.id}.nc"
+
+    def get(
+        self,
+        destdir: str | Path,
+        grid: Optional[GRID_TYPES] = None,
+        time: Optional[TimeRange] = None,
+    ) -> Path:
+        """Write the data source to a new location.
+
+        Parameters
+        ----------
+        destdir : str | Path
+            The destination directory to write the netcdf data to.
+        grid: GRID_TYPES, optional
+            The grid to filter the data to, only used if `self.crop_data` is True.
+        time: TimeRange, optional
+            The times to filter the data to, only used if `self.crop_data` is True.
+
+        Returns
+        -------
+        outfile: Path
+            The path to the written file.
+
+        """
+        if self.crop_data:
+            if grid is not None:
+                self._filter_grid(grid)
+            if time is not None:
+                self._filter_time(time)
+        outfile = Path(destdir) / self.outfile
+        self.ds.to_netcdf(outfile)
+        return outfile
+
+
+class DataGrid(DataTimeseries):
+    """Data object for gridded source data.
+
+    Generic data object for xarray datasets that with gridded spatial dimensions
+
+    Note
+    ----
+    The fields `filter_grid` and `filter_time` trigger updates to the crop filter from
+    the grid and time range objects passed to the get method. This is useful for data
+    sources that are not defined on the same grid as the model grid or the same time
+    range as the model run.
+
+    """
+
+    model_type: Literal["grid"] = Field(
+        default="grid",
+        description="Model type discriminator",
+    )
+    source: Union[SOURCE_TYPES] = Field(
+        description="Source reader, must return an xarray gridded dataset in the open method",
+        discriminator="model_type",
+    )
+
+    def _filter_grid(self, grid: GRID_TYPES):
+        """Define the filters to use to extract data to this grid"""
+        x0, y0, x1, y1 = grid.bbox(buffer=self.buffer)
+        self.filter.crop.update(
+            {
+                self.coords.x: Slice(start=x0, stop=x1),
+                self.coords.y: Slice(start=y0, stop=y1),
+            }
+        )
 
     def _figsize(self, x0, x1, y0, y1, fscale):
         xlen = abs(x1 - x0)
@@ -264,39 +321,3 @@ class DataGrid(DataBlob):
             ax.add_patch(poly)
             ax.plot(bx, by, lw=2, color="k")
         return fig, ax
-
-    @property
-    def outfile(self) -> str:
-        return f"{self.id}.nc"
-
-    def get(
-        self,
-        destdir: str | Path,
-        grid: Optional[GRID_TYPES] = None,
-        time: Optional[TimeRange] = None,
-    ) -> Path:
-        """Write the data source to a new location.
-
-        Parameters
-        ----------
-        destdir : str | Path
-            The destination directory to write the netcdf data to.
-        grid: GRID_TYPES, optional
-            The grid to filter the data to, only used if `self.crop_data` is True.
-        time: TimeRange, optional
-            The times to filter the data to, only used if `self.crop_data` is True.
-
-        Returns
-        -------
-        outfile: Path
-            The path to the written file.
-
-        """
-        if self.crop_data:
-            if grid is not None:
-                self._filter_grid(grid)
-            if time is not None:
-                self._filter_time(time)
-        outfile = Path(destdir) / self.outfile
-        self.ds.to_netcdf(outfile)
-        return outfile

@@ -7,18 +7,18 @@ import zipfile as zf
 from datetime import datetime
 from pathlib import Path
 from typing import Union
+
 from pydantic import Field
-from importlib.metadata import entry_points
 
 from .core import BaseConfig, RompyBaseModel, TimeRange
 from .core.render import render
+from rompy.utils import load_entry_points
 
 logger = logging.getLogger(__name__)
 
 
 # Accepted config types are defined in the entry points of the rompy.config group
-CONFIG_TYPES = tuple(eps.load() for eps in entry_points(group="rompy.config"))
-
+CONFIG_TYPES = load_entry_points("rompy.config")
 
 class ModelRun(RompyBaseModel):
     """A model run.
@@ -46,7 +46,9 @@ class ModelRun(RompyBaseModel):
         description="The configuration object",
         discriminator="model_type",
     )
+    delete_existing: bool = Field(False, description="Delete existing output directory")
     _datefmt: str = "%Y%m%d.%H%M%S"
+    _staging_dir: Path = None
 
     @property
     def staging_dir(self):
@@ -57,7 +59,14 @@ class ModelRun(RompyBaseModel):
         staging_dir : str
         """
 
+        if self._staging_dir is None:
+            self._staging_dir = self._create_staging_dir()
+        return self._staging_dir
+
+    def _create_staging_dir(self):
         odir = Path(self.output_dir) / self.run_id
+        if self.delete_existing and odir.exists():
+            shutil.rmtree(odir)
         odir.mkdir(parents=True, exist_ok=True)
         return odir
 
@@ -102,7 +111,7 @@ class ModelRun(RompyBaseModel):
         )
 
         logger.info("")
-        logger.info(f"Successfully generated project in {self.output_dir}")
+        logger.info(f"Successfully generated project in {staging_dir}")
         logger.info("-----------------------------------------------------")
         return staging_dir
 

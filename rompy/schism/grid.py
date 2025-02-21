@@ -5,20 +5,23 @@ from typing import Literal, Optional, Union
 import numpy as np
 import pandas as pd
 from pydantic import Field, PrivateAttr, field_validator, model_validator
-from pyschism.mesh import Hgrid
-from pyschism.mesh.prop import Tvdflag
-from pyschism.mesh.vgrid import LSC2, SZ, Vgrid
 from shapely.geometry import MultiPoint, Polygon
 
 from rompy.core import DataBlob, RompyBaseModel
 from rompy.core.grid import BaseGrid
+# from pyschism.mesh import Hgrid
+# from pyschism.mesh.prop import Tvdflag
+# from pyschism.mesh.vgrid import LSC2, SZ, Vgrid
+from rompy.schism.pyschism.mesh import Hgrid
+from rompy.schism.pyschism.mesh.base import Gr3
+from rompy.schism.pyschism.mesh.prop import Tvdflag
+from rompy.schism.pyschism.mesh.vgrid import LSC2, SZ, Vgrid
 
 logger = logging.getLogger(__name__)
 
 import os
 
 from pydantic import BaseModel, field_validator
-from pyschism.mesh.hgrid import Gr3
 
 G3ACCEPT = ["albedo", "diffmin", "diffmax", "watertype", "windrot_geo2proj"]
 G3WARN = ["manning", "rough", "drag"]

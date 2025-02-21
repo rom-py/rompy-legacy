@@ -8,10 +8,10 @@ from time import time
 
 import xarray as xr
 from matplotlib.transforms import Bbox
-from pyschism.forcing.hycom.hycom2schism import DownloadHycom
-from pyschism.mesh.hgrid import Hgrid
 
 from rompy.schism.namelists.generate_models import nml_to_dict
+from rompy.schism.pyschism.forcing.hycom.hycom2schism import DownloadHycom
+from rompy.schism.pyschism.mesh.hgrid import Hgrid
 
 """
 Download hycom data for Fortran scripts.

@@ -330,15 +330,12 @@ class Init(NamelistBaseModel):
         description="Specifies the method for initializing wave conditions. 1 for Parametric Jonswap, 2 for reading from Global NETCDF files. Option 2 only works if IBOUNDFORMAT is set to 3.",
     )
 
-    @field_validator("lhotr")
-    @classmethod
-    def validate_lhotr(cls, v):
-        return v
-
-    @field_validator("linid")
-    @classmethod
-    def validate_linid(cls, v):
-        return v
+    # validator to ensure thatn only one of lhotr and linid is True
+    @model_validator(mode="after")
+    def check_init(self):
+        if self.lhotr and self.linid:
+            raise ValueError("Only one of LHOTR and LINID can be True")
+        return self
 
     @field_validator("initstyle")
     @classmethod

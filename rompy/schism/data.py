@@ -8,13 +8,14 @@ import pandas as pd
 import xarray as xr
 from cloudpathlib import AnyPath
 from pydantic import Field, model_validator
-from pyschism.forcing.bctides import Bctides
 
 from rompy.core import DataGrid, RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
 from rompy.schism.grid import SCHISMGrid
+# from pyschism.forcing.bctides import Bctides
+from rompy.schism.pyschism.forcing.bctides import Bctides
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs

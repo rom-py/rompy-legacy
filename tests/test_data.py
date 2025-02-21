@@ -9,7 +9,14 @@ import xarray as xr
 from pydantic import ValidationError
 
 from rompy.core import DataBlob, DataGrid, RegularGrid, TimeRange
-from rompy.core.source import SourceDatamesh, SourceDataset, SourceFile, SourceIntake
+from rompy.core.source import (
+    SourceDatamesh,
+    SourceDataset,
+    SourceFile,
+    SourceIntake,
+    SourceTimeseriesCSV,
+    SourceTimeseriesDataFrame,
+)
 from rompy.core.filters import Filter
 from rompy.core.types import DatasetCoords
 
@@ -135,6 +142,19 @@ def test_source_dataset():
 def test_source_file():
     source = SourceFile(uri=HERE / "data" / "aus-20230101.nc")
     assert isinstance(source.open(), xr.Dataset)
+
+
+def test_source_csv():
+    source = SourceTimeseriesCSV(filename=HERE / "data" / "wind.csv")
+    assert isinstance(source.open(), xr.Dataset)
+    assert list(source.open().dims) == ["time"]
+
+
+def test_source_dataframe():
+    df = pd.read_csv(HERE / "data" / "wind.csv", parse_dates=["time"], index_col="time")
+    source = SourceTimeseriesDataFrame(obj=df)
+    assert isinstance(source.open(), xr.Dataset)
+    assert list(source.open().dims) == ["time"]
 
 
 def test_source_intake_uri():

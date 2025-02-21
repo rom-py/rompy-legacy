@@ -8,7 +8,8 @@
 
 import importlib
 import logging
-
+from typing import Optional
+from importlib.metadata import entry_points
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -16,6 +17,37 @@ from scipy.spatial import KDTree
 
 
 logger = logging.getLogger(__name__)
+
+
+def load_entry_points(egroup: str, etype: Optional[str] = None):
+    """Load entry points from the rompy.source group.
+
+    Parameters
+    ----------
+    egroup : str
+        Entry point group to load entry point classes from, e.g. "rompy.source".
+    etype : str, optional
+        Entry point type name to filter, defined after the colon in the entry point
+        name, by default None meaning all entry points in this group are returned.
+
+    Returns
+    -------
+    sources : tuple
+        Tuple of classes filtered from the entrypoints.
+
+    """
+    if etype is None:
+        return tuple([eps.load() for eps in entry_points(group=f"{egroup}")])
+
+    eps = entry_points().select(group=f"{egroup}")
+    sources = []
+    for ep in eps:
+        enames = ep.name.split(":")
+        if len(enames) == 1:
+            continue
+        if enames[1] == etype:
+            sources.append(ep.load())
+    return tuple(sources)
 
 
 def dict_product(d):

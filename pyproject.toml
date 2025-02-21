@@ -82,6 +82,8 @@ file = "rompy.core.source:SourceFile"
 intake = "rompy.core.source:SourceIntake"
 datamesh = "rompy.core.source:SourceDatamesh"
 wavespectra = "rompy.core.source:SourceWavespectra"
+"csv:timeseries" = "rompy.core.source:SourceTimeseriesCSV"
+"dataframe:timeseries" = "rompy.core.source:SourceTimeseriesDataFrame"
 
 [project.entry-points."intake.catalogs"]
 "rompy_data" = "rompy:cat"
@@ -96,8 +98,10 @@ extra = [
     "zarr",
 ]
 schism = [
-    "pyschism @ git+https://github.com/oceanum/pyschism.git",
-    "fiona", # missing pyschism dependency
+    "appdirs", # pyschism subpackage dependency
+    "tqdm_logging_wrapper", # pyschism subpackage dependency
+    "seawater", # pyschism subpackage dependency
+    "xmltodict", # pyschism subpackage dependency
 ]
 docs = [
     "autodoc_pydantic",
