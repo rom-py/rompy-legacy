@@ -39,7 +39,7 @@ def grid_atmos_source():
 
 
 @pytest.fixture
-def hycom_bnd():
+def hycom_bnd2d():
     hycomdata = HERE / "test_data" / "hycom.nc"
     if not hycomdata.exists():
         from utils import download_hycom
@@ -52,7 +52,25 @@ def hycom_bnd():
         source=SourceFile(
             uri=HERE / "test_data" / "hycom.nc",
         ),
-        variable="surf_el",
+        variables=["surf_el"],
+        coords={"t": "time", "y": "ylat", "x": "xlon"},
+    )
+
+
+def hycom_bnd3d():
+    hycomdata = HERE / "test_data" / "hycom.nc"
+    if not hycomdata.exists():
+        from utils import download_hycom
+
+        logging.info("Hycom test data not found, downloading...")
+        logging.info("This may take a while...only has to be done once.")
+        download_hycom(dest=HERE / "test_data", hgrid=HERE / "test_data" / "hgrid.gr3")
+    return SCHISMDataBoundary(
+        id="hycom",
+        source=SourceFile(
+            uri=HERE / "test_data" / "hycom.nc",
+        ),
+        variables=["surf_el"],
         coords={"t": "time", "y": "ylat", "x": "xlon", "z": "depth"},
     )
 
@@ -77,8 +95,8 @@ def test_atmos(tmp_path, grid_atmos_source):
     data.get(tmp_path)
 
 
-def test_oceandataboundary(tmp_path, grid2d, hycom_bnd):
-    hycom_bnd.get(tmp_path, grid2d)
+def test_oceandataboundary(tmp_path, grid2d, hycom_bnd2d):
+    hycom_bnd2d.get(tmp_path, grid2d)
     with xr.open_dataset(tmp_path / "hycom.th.nc") as bnd:
         assert "one" in bnd.dims
         assert "time" in bnd.dims
@@ -86,10 +104,11 @@ def test_oceandataboundary(tmp_path, grid2d, hycom_bnd):
         assert "nLevels" in bnd.dims
         assert "nComponents" in bnd.dims
         assert len(bnd.nOpenBndNodes) == len(grid2d.ocean_boundary()[0])
+        assert bnd.time_series.isnull().sum() == 0
 
 
-def test_oceandata(tmp_path, grid2d, hycom_bnd):
-    oceandata = SCHISMDataOcean(elev2D=hycom_bnd)
+def test_oceandata(tmp_path, grid2d, hycom_bnd2d):
+    oceandata = SCHISMDataOcean(elev2D=hycom_bnd2d)
     oceandata.get(tmp_path, grid2d)
 
 
