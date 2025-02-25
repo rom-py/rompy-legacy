@@ -31,6 +31,15 @@ def grid2d():
 
 
 @pytest.fixture
+def grid3d():
+    return SCHISMGrid(
+        hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"),
+        vgrid=DataBlob(source=HERE / "test_data/vgrid.in"),
+        drag=1,
+    )
+
+
+@pytest.fixture
 def grid_atmos_source():
     return SourceIntake(
         dataset_id="era5",
@@ -57,7 +66,8 @@ def hycom_bnd2d():
     )
 
 
-def hycom_bnd3d():
+@pytest.fixture
+def hycom_bnd_temp_3d():
     hycomdata = HERE / "test_data" / "hycom.nc"
     if not hycomdata.exists():
         from utils import download_hycom
@@ -70,7 +80,7 @@ def hycom_bnd3d():
         source=SourceFile(
             uri=HERE / "test_data" / "hycom.nc",
         ),
-        variables=["surf_el"],
+        variables=["temperature"],
         coords={"t": "time", "y": "ylat", "x": "xlon", "z": "depth"},
     )
 
@@ -104,6 +114,18 @@ def test_oceandataboundary(tmp_path, grid2d, hycom_bnd2d):
         assert "nLevels" in bnd.dims
         assert "nComponents" in bnd.dims
         assert len(bnd.nOpenBndNodes) == len(grid2d.ocean_boundary()[0])
+        assert bnd.time_series.isnull().sum() == 0
+
+
+def test_oceandataboundary3d(tmp_path, grid3d, hycom_bnd_temp_3d):
+    hycom_bnd_temp_3d.get(tmp_path, grid3d)
+    with xr.open_dataset(tmp_path / "hycom.th.nc") as bnd:
+        assert "one" in bnd.dims
+        assert "time" in bnd.dims
+        assert "nOpenBndNodes" in bnd.dims
+        assert "nLevels" in bnd.dims
+        assert "nComponents" in bnd.dims
+        assert len(bnd.nOpenBndNodes) == len(grid3d.ocean_boundary()[0])
         assert bnd.time_series.isnull().sum() == 0
 
 
