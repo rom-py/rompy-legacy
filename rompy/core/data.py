@@ -105,7 +105,7 @@ SOURCE_TYPES = load_entry_points("rompy.source")
 SOURCE_TYPES_TS = load_entry_points("rompy.source", etype="timeseries")
 
 
-class DataTimeseries(DataBlob):
+class DataPoint(DataBlob):
     """Data object for timeseries source data.
 
     Generic data object for xarray datasets that only have time as a dimension and do
@@ -113,12 +113,15 @@ class DataTimeseries(DataBlob):
 
     """
 
-    model_type: Literal["timeseries"] = Field(
-        default="timeseries",
+    model_type: Literal["point"] = Field(
+        default="point",
         description="Model type discriminator",
     )
     source: Union[SOURCE_TYPES_TS] = Field(
-        description="Source reader, must return an xarray timeseries dataset in the open method",
+        description=(
+            "Source reader, must return an xarray timeseries point dataset "
+            "in the open method"
+        ),
         discriminator="model_type",
     )
     filter: Optional[Filter] = Field(
@@ -213,7 +216,7 @@ class DataTimeseries(DataBlob):
         return outfile
 
 
-class DataGrid(DataTimeseries):
+class DataGrid(DataPoint):
     """Data object for gridded source data.
 
     Generic data object for xarray datasets that with gridded spatial dimensions
