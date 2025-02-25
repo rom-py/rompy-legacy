@@ -459,10 +459,15 @@ class SCHISMGrid(BaseGrid):
 
     @property
     def is_3d(self):
-        if self.vgrid is not None:
-            return True
-        else:
+        if self.vgrid == None:
             return False
+        elif isinstance(self.vgrid, DataBlob):
+            return True
+        elif isinstance(self.vgrid, VgridGenerator):
+            if isinstance(self.vgrid.vgrid, Vgrid2D):
+                return False
+            else:
+                return True
 
     def get(self, destdir: Path) -> dict:
         ret = {}
