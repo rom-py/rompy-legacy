@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from importlib.metadata import entry_points
 
 import click
 import yaml
-from importlib.metadata import entry_points
-from rompy import installed
 
 from .model import ModelRun
 
 logging.basicConfig(level=logging.INFO)
 
 installed = entry_points(group="rompy.config").names
+
 
 @click.command()
 @click.argument("model", type=click.Choice(installed))
