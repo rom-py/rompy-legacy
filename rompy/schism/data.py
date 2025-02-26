@@ -474,7 +474,7 @@ class SCHISMDataBoundary(DataBoundary):
             dt = 3600
         # TODO loop over variables when implimenting u and v
         data = ds[self.variables[0]].values
-        if self.coords.z is not None:
+        if grid.is_3d and self.coords.z is not None:
             if self.interpolate_missing_coastal:
                 # switch dimensions for time, depth, site to time, site, depth
                 # TODO this is unlikely to work in the general case. Use named xarray dims instead
