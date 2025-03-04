@@ -1414,8 +1414,11 @@ class Schout(NamelistBaseModel):
 
     @model_validator(mode="after")
     def validate_nhot_write_multiple(self):
-        if self.nhot == 1 and self.nhot_write % self.ihfskip != 0:
-            raise ValueError("nhot_write must be a multiple of ihfskip when nhot=1")
+        if self.nhot == 1:
+            if self.nhot_write % self.ihfskip != 0:
+                raise ValueError("nhot_write must be a multiple of ihfskip when nhot=1")
+            if self.ihfskip % self.dt != 0:
+                raise ValueError("ihfskip must be a multiple of dt")
         return self
 
     @model_validator(mode="after")
