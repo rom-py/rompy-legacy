@@ -2,6 +2,7 @@ import logging
 import os
 from pathlib import Path
 from typing import Literal, Optional, Union
+import scipy as sp
 
 import numpy as np
 import pandas as pd
@@ -16,6 +17,8 @@ from rompy.core.time import TimeRange
 from rompy.schism.grid import SCHISMGrid
 # from pyschism.forcing.bctides import Bctides
 from rompy.schism.pyschism.forcing.bctides import Bctides
+# from rompy.schism.pyschism.forcing.hycom.hycom2schism import (
+#     interp_to_points_2d, interp_to_points_3d, transform_ll_to_cpp)
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
@@ -464,30 +467,206 @@ class SCHISMDataBoundary(DataBoundary):
         return outfile
 
     def boundary_ds(self, grid: SCHISMGrid, time: Optional[TimeRange]) -> xr.Dataset:
+        """Generate SCHISM boundary dataset from source data.
+
+        This function extracts and formats boundary data for SCHISM from a source dataset.
+        For 3D models, it handles vertical interpolation to the SCHISM sigma levels.
+
+        Parameters
+        ----------
+        grid : SCHISMGrid
+            The SCHISM grid to extract boundary data for
+        time : Optional[TimeRange]
+            The time range to filter data to, if crop_data is True
+
+        Returns
+        -------
+        xr.Dataset
+            Dataset formatted for SCHISM boundary input
+        """
         logger.info(f"Fetching {self.id}")
         if self.crop_data and time is not None:
             self._filter_time(time)
+
+        # Extract boundary data from source
         ds = self._sel_boundary(grid)
+
+        # Calculate time step
         if len(ds.time) > 1:
             dt = total_seconds((ds.time[1] - ds.time[0]).values)
         else:
             dt = 3600
-        # TODO loop over variables when implimenting u and v
+
+        # Get the variable data
         data = ds[self.variables[0]].values
-        if grid.is_3d and self.coords.z is not None:
+
+        # Determine if we're working with 3D data
+        is_3d_data = grid.is_3d and self.coords.z is not None
+
+        # Handle different data dimensions based on 2D or 3D
+        if is_3d_data:
+            # Try to determine the dimension order
+            if hasattr(ds[self.variables[0]], "dims"):
+                # Get dimension names
+                dims = list(ds[self.variables[0]].dims)
+
+                # Find indices of time, z, and x dimensions
+                time_dim_idx = dims.index(ds.time.dims[0])
+                z_dim_idx = (
+                    dims.index(ds[self.coords.z].dims[0]) if self.coords.z in ds else 1
+                )
+                x_dim_idx = (
+                    dims.index(ds[self.coords.x].dims[0]) if self.coords.x in ds else 2
+                )
+
+                logger.debug(
+                    f"Dimension order: time={time_dim_idx}, z={z_dim_idx}, x={x_dim_idx}"
+                )
+
+                # Reshape data to expected format if needed (time, x, z)
+                if not (time_dim_idx == 0 and x_dim_idx == 1 and z_dim_idx == 2):
+                    trans_dims = list(range(data.ndim))
+                    trans_dims[time_dim_idx] = 0
+                    trans_dims[x_dim_idx] = 1
+                    trans_dims[z_dim_idx] = 2
+
+                    data = np.transpose(data, trans_dims)
+                    logger.debug(f"Transposed data shape: {data.shape}")
+
+            # Add the component dimension for SCHISM
+            time_series = np.expand_dims(data, axis=3)
+
+            # calculate zcor for 3D
+            sigma = grid.pyschism_vgrid.sigma
+
+            # Get the boundary node indices
+            # Get the boundary points from the grid
+            boundary_nodes = grid.pyschism_hgrid.boundaries.open.indexes
+            if boundary_nodes.empty:
+                raise ValueError("No open boundary nodes found in the grid")
+            
+            # Extract all boundary node indices
+            # Since this is a pandas Series where each item is a list of indices
+            boundary_indices = []
+            for node_list in boundary_nodes:
+                boundary_indices.extend(node_list)
+            
+            # Get bathymetry for boundary nodes only
+            depth = grid.pyschism_hgrid.values
+            boundary_depths = depth[boundary_indices]
+            
+            # Get the sigma values and fixed z levels from the SCHISM grid
+            sigma_levels = sigma.copy()  # Copy to avoid modifying the original
+            num_sigma_levels = len(sigma_levels)
+            
+            # Get the fixed z levels
+            z_levels = grid.pyschism_vgrid.ztot
+            
+            # For each boundary point, determine the total number of vertical levels
+            # and create appropriate zcor arrays
+            all_zcors = []
+            all_nvrt = []
+            
+            for i, (node_idx, depth) in enumerate(zip(boundary_indices, boundary_depths)):
+                # Check if we're in deep water (depth > first z level)
+                if z_levels.size > 0 and depth > z_levels[0]:
+                    # In deep water, find applicable z levels (between first z level and actual depth)
+                    first_z_level = z_levels[0]
+                    z_mask = (z_levels > first_z_level) & (z_levels < depth)
+                    applicable_z = z_levels[z_mask] if np.any(z_mask) else []
+                    
+                    # Total levels = sigma levels + applicable z levels
+                    total_levels = num_sigma_levels + len(applicable_z)
+                    
+                    # Create zcor for this boundary point
+                    node_zcor = np.zeros(total_levels)
+                    
+                    # First, calculate sigma levels using the first z level as the "floor"
+                    for j in range(num_sigma_levels):
+                        node_zcor[j] = first_z_level * sigma[j]
+                    
+                    # Then, add the fixed z levels below the sigma levels
+                    for j, z_val in enumerate(applicable_z):
+                        node_zcor[num_sigma_levels + j] = z_val
+                    
+                else:
+                    # In shallow water, just use sigma levels scaled to the actual depth
+                    total_levels = num_sigma_levels
+                    
+                    # Create zcor for this boundary point
+                    node_zcor = np.zeros(total_levels)
+                    
+                    for j in range(total_levels):
+                        node_zcor[j] = depth * sigma[j]
+                
+                # Store this boundary point's zcor and number of levels
+                all_zcors.append(node_zcor)
+                all_nvrt.append(total_levels)
+            
+            # Now we have a list of zcor arrays with potentially different lengths
+            # Find the maximum number of levels across all boundary points
+            max_nvrt = max(all_nvrt) if all_nvrt else num_sigma_levels
+            
+            # Create a uniform zcor array with the maximum number of levels
+            zcor = np.zeros((len(boundary_indices), max_nvrt))
+            
+            # Fill in the values, leaving zeros for levels beyond a particular boundary point's total
+            for i, (node_zcor, nvrt_i) in enumerate(zip(all_zcors, all_nvrt)):
+                zcor[i, :nvrt_i] = node_zcor
+            
+            # Get source z-levels and prepare for interpolation
+            z_src = ds[self.coords.z].values
+            data_shape = data.shape
+            
+            # Initialize interpolated data array with the maximum number of vertical levels
+            interpolated_data = np.zeros((data_shape[0], data_shape[1], max_nvrt))
+            
+            # For each time step and boundary point
+            for t in range(data_shape[0]):  # time
+                for n in range(data_shape[1]):  # boundary points
+                    # Get z-coordinates for this point
+                    z_dest = zcor[n, :]
+                    nvrt_n = all_nvrt[n]  # Get the number of vertical levels for this point
+                    
+                    # Extract vertical profile
+                    profile = data[t, n, :]
+                    
+                    # Create interpolator for this profile
+                    interp = sp.interpolate.interp1d(
+                        z_src, profile, 
+                        kind='linear',
+                        bounds_error=False,
+                        fill_value='extrapolate'
+                    )
+                    
+                    # Interpolate to SCHISM levels for this boundary point
+                    # Only interpolate up to the actual number of levels for this point
+                    interpolated_data[t, n, :nvrt_n] = interp(z_dest[:nvrt_n])
+            
+            # Replace data with interpolated values
+            data = interpolated_data
+            time_series = np.expand_dims(data, axis=3)
+            
+            # Handle coastal interpolation
             if self.interpolate_missing_coastal:
-                # switch dimensions for time, depth, site to time, site, depth
-                # TODO this is unlikely to work in the general case. Use named xarray dims instead
-                data = np.swapaxes(data, 1, 2)
-                for i in range(data.shape[0]):
-                    for j in range(data.shape[2]):
+                # Apply fill_tails to each vertical slice at each time step
+                for i in range(data.shape[0]):  # time
+                    for j in range(data.shape[2]):  # depth level
                         data[i, :, j] = fill_tails(data[i, :, j])
-            time_series = np.expand_dims(data, axis=(3))
+            
+            # Store the variable vertical levels in the output dataset
+            # Create a 2D array where each row contains the vertical levels for a boundary node
+            # For nodes with fewer levels, pad with NaN
+            vert_levels = np.full((len(boundary_indices), max_nvrt), np.nan)
+            for i, (node_zcor, nvrt_i) in enumerate(zip(all_zcors, all_nvrt)):
+                vert_levels[i, :nvrt_i] = node_zcor
+            
+            # Create output dataset
             schism_ds = xr.Dataset(
                 coords={
                     "time": ds.time,
-                    "nOpenBndNodes": np.arange(0, ds[self.coords.x].size),
-                    "nLevels": np.arange(0, ds[self.coords.z].size),
+                    "nOpenBndNodes": np.arange(data.shape[1]),
+                    "nLevels": np.arange(max_nvrt),
                     "nComponents": np.array([1]),
                     "one": np.array([1]),
                 },
@@ -496,18 +675,32 @@ class SCHISMDataBoundary(DataBoundary):
                     "time_series": (
                         ("time", "nOpenBndNodes", "nLevels", "nComponents"),
                         time_series,
+                    ),
+                    "vertical_levels": (
+                        ("nOpenBndNodes", "nLevels"),
+                        vert_levels,
+                    ),
+                    "num_levels": (
+                        ("nOpenBndNodes"),
+                        np.array(all_nvrt),
                     ),
                 },
             )
         else:
+            # 2D case - simpler handling
             if self.interpolate_missing_coastal:
-                for i in range(data.shape[0]):
+                for i in range(data.shape[0]):  # time
                     data[i, :] = fill_tails(data[i, :])
+
+            # Add level and component dimensions for SCHISM
             time_series = np.expand_dims(data, axis=(2, 3))
+
+            # Create output dataset
             schism_ds = xr.Dataset(
                 coords={
                     "time": ds.time,
-                    "nOpenBndNodes": np.arange(0, ds[self.coords.x].size),
+                    "nOpenBndNodes": np.arange(data.shape[1]),
+                    "nLevels": np.array([0]),  # Single level for 2D
                     "nComponents": np.array([1]),
                     "one": np.array([1]),
                 },
@@ -519,6 +712,8 @@ class SCHISMDataBoundary(DataBoundary):
                     ),
                 },
             )
+
+        # Set attributes and encoding
         schism_ds.time_step.assign_attrs({"long_name": "time_step"})
         basedate = pd.to_datetime(ds.time.values[0])
         unit = f"days since {basedate.strftime('%Y-%m-%d %H:%M:%S')}"
@@ -540,18 +735,43 @@ class SCHISMDataBoundary(DataBoundary):
         }
         schism_ds.time.encoding["units"] = unit
         schism_ds.time.encoding["calendar"] = "proleptic_gregorian"
-        if schism_ds.time_series.isnull().any():
-            msg = "Some values are null. This will cause SCHISM to crash. Please check your data."
-            logger.warning(msg)
 
-        # If the variable has scale_factor or add_offset attributes, remove them
-        # and set the data variable encoding to Float64
+        # Handle missing values more robustly
+        if schism_ds.time_series.isnull().any():
+            logger.warning(
+                "Some values are null. Attempting to interpolate missing values..."
+            )
+
+            # Try interpolating along different dimensions
+            for dim in ["nOpenBndNodes", "time", "nLevels"]:
+                if dim in schism_ds.dims and len(schism_ds[dim]) > 1:
+                    schism_ds["time_series"] = schism_ds.time_series.interpolate_na(
+                        dim=dim
+                    )
+                    if not schism_ds.time_series.isnull().any():
+                        logger.info(
+                            f"Successfully interpolated all missing values along {dim} dimension"
+                        )
+                        break
+
+            # If still have NaNs, use more aggressive filling methods
+            if schism_ds.time_series.isnull().any():
+                logger.warning("Using constant value for remaining missing data points")
+                # Find a reasonable fill value (median of non-NaN values)
+                valid_values = schism_ds.time_series.values[
+                    ~np.isnan(schism_ds.time_series.values)
+                ]
+                fill_value = np.median(valid_values) if len(valid_values) > 0 else 0.0
+                schism_ds["time_series"] = schism_ds.time_series.fillna(fill_value)
+
+        # Clean up encoding
         for var in schism_ds.data_vars:
             if "scale_factor" in schism_ds[var].encoding:
                 del schism_ds[var].encoding["scale_factor"]
             if "add_offset" in schism_ds[var].encoding:
                 del schism_ds[var].encoding["add_offset"]
             schism_ds[var].encoding["dtype"] = np.dtypes.Float64DType()
+
         return schism_ds
 
 
