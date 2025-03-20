@@ -2,8 +2,17 @@
 title: "Relocatable Ocean Modelling in PYthon (rompy)"
 ---
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14849029.svg)](https://doi.org/10.5281/zenodo.14849029)
 [![GitHub Pages](https://github.com/rom-py/rompy/actions/workflows/sphinx_docs_to_gh_pages.yaml/badge.svg)](https://rom-py.github.io/rompy/)
+
+[![PyPI version](https://img.shields.io/pypi/v/rompy.svg)](https://pypi.org/project/rompy/)
+
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/rom-py/rompy/python-publish.yml)](https://github.com/rom-py/rompy/actions)
+
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/rompy)](https://pypistats.org/packages/rompy)
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/rompy)](https://pypi.org/project/rompy/)
 
 # Introduction
 
@@ -12,5 +21,3 @@ Relocatable Ocean Modelling in PYthon (rompy) combines templated cookie-cutter m
 # Documentation
 
 See https://rom-py.github.io/rompy/
-
- 
