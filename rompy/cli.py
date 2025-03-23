@@ -14,9 +14,9 @@ installed = entry_points(group="rompy.config").names
 
 
 @click.command()
-@click.argument("model", type=click.Choice(installed))
-@click.argument("config", type=click.File("r"))
-@click.option("zip", "--zip/--no-zip", default=False)
+@click.argument("model", type=click.Choice(installed), envvar="ROMPY_MODEL")
+@click.argument("config", envvar="ROMPY_CONFIG")
+@click.option("zip", "--zip/--no-zip", default=False, envvar="ROMPY_ZIP")
 @click.option(
     "--kwargs",
     "-k",
@@ -30,7 +30,13 @@ def main(model, config, zip, kwargs):
         model(str): model type
         config(str): yaml config file
     """
-    args = yaml.load(config, Loader=yaml.Loader)
+    try:
+        # First try to open it as a file
+        with open(config, "r") as f:
+            args = yaml.load(f, Loader=yaml.Loader)
+    except (FileNotFoundError, IsADirectoryError, OSError):
+        # If not a file, treat it as raw YAML content
+        args = yaml.load(config, Loader=yaml.Loader)
 
     kw = {}
     for item in kwargs:
