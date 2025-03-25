@@ -1239,7 +1239,7 @@ class BLOCK(BaseWrite):
     @field_validator("idla")
     @classmethod
     def validate_idla(cls, idla: IDLA) -> IDLA:
-        if idla not in (1, 3, 4):
+        if idla is not None and idla not in (1, 3, 4):
             raise ValueError(
                 f"Only IDLA options (1, 3, 4) are supported in BLOCK, got {idla}"
             )
