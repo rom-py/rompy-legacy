@@ -1,7 +1,15 @@
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union
+from typing import Any, Callable, Dict, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_validator,
+    model_serializer,
+)
+from pydantic.json_schema import core_schema
 
 time_units = {
     "h": "hours",
@@ -121,15 +129,20 @@ class TimeRange(BaseModel):
             self.start = self.end - self.duration
         return self
 
-    def model_dump(self, *args, **kwargs):
-        excludable_fields = {"duration"} if self.start and self.end else set()
-        return super().model_dump(*args, **{**kwargs, "exclude": excludable_fields})
+    model_config = ConfigDict(validate_default=True)
 
-    def model_dump_json(self, *args, **kwargs):
-        excludable_fields = {"duration"} if self.start and self.end else set()
-        return super().model_dump_json(
-            *args, **{**kwargs, "exclude": excludable_fields}
-        )
+    @model_serializer
+    def serialize_model(self) -> dict:
+        # This replaces default serialization for the whole model
+        # It works for both direct serialization and nested serialization
+        result = {}
+        for key, value in self.__dict__.items():
+            # Skip 'duration' if both start and end are present
+            if key == "duration" and self.start and self.end:
+                continue
+            # Include all other fields
+            result[key] = value
+        return result
 
     @property
     def date_range(self) -> list[datetime]:
