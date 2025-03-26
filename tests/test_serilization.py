@@ -10,7 +10,7 @@ from rompy.swan.config import SwanConfigComponents
 from rompy.core import DataBlob
 
 here = Path(__file__).parent
-os.environ["ROMPY_PATH"] = str(here.parent.parent)
+os.environ["ROMPY_PATH"] = str(here.parent)
 
 
 
