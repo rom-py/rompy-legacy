@@ -1,15 +1,16 @@
 """Test swan_config class."""
 
 import logging
-from pathlib import Path
-import pytest
 import os
+from pathlib import Path
+
+import pytest
 from envyaml import EnvYAML
 
 from rompy.core.source import SourceIntake
 from rompy.model import ModelRun
-from rompy.swan.config import SwanConfigComponents
 from rompy.swan import Boundnest1
+from rompy.swan.config import SwanConfigComponents
 from rompy.swan.interface import BoundaryInterface
 
 logger = logging.getLogger(__name__)
