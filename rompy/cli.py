@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import json
 import logging
 from importlib.metadata import entry_points
 
@@ -17,34 +18,27 @@ installed = entry_points(group="rompy.config").names
 @click.argument("model", type=click.Choice(installed), envvar="ROMPY_MODEL")
 @click.argument("config", envvar="ROMPY_CONFIG")
 @click.option("zip", "--zip/--no-zip", default=False, envvar="ROMPY_ZIP")
-@click.option(
-    "--kwargs",
-    "-k",
-    multiple=True,
-    help="additional key value pairs in the format key:value",
-)
-def main(model, config, zip, kwargs):
+def main(model, config, zip):
     """Run model
     Usage: rompy <model> config.yml
     Args:
         model(str): model type
-        config(str): yaml config file
+        config(str): yaml or json config file
     """
     try:
         # First try to open it as a file
         with open(config, "r") as f:
-            args = yaml.load(f, Loader=yaml.Loader)
+            content = f.read()
     except (FileNotFoundError, IsADirectoryError, OSError):
-        # If not a file, treat it as raw YAML content
-        args = yaml.load(config, Loader=yaml.Loader)
+        # If not a file, treat it as raw content
+        content = config
 
-    kw = {}
-    for item in kwargs:
-        split = item.split(":")
-        kw.update({split[0]: split[1]})
-        current = getattr(instance, split[0])
-        setattr(instance, split[0], type(current)(split[1]))
-    model = ModelRun(**args, **kw)
+    try:
+        # Try to parse as yaml
+        args = yaml.load(content, Loader=yaml.Loader)
+        model = ModelRun(**args)
+    except TypeError:
+        model = ModelRun.model_validate_json(json.loads(content))
     model()
     if zip:
         model.zip()
