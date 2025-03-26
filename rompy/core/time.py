@@ -1,13 +1,14 @@
 from datetime import datetime, timedelta
 from typing import Any, Callable, Dict, Optional, Set, Union
 
+import isodate
 from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
     field_validator,
-    model_validator,
     model_serializer,
+    model_validator,
 )
 from pydantic.json_schema import core_schema
 
@@ -70,13 +71,16 @@ class TimeRange(BaseModel):
         if isinstance(v, timedelta):
             return v
         elif isinstance(v, str):
-            if v[-1] not in time_units:
-                raise ValueError(
-                    "Invalid duration unit. Must be one of: h, m, s, d, w, y"
-                )
-            time_delta_unit = v[-1]
-            time_delta_value = int(v[:-1])
-            return timedelta(**{time_units[time_delta_unit]: time_delta_value})
+            try:
+                return isodate.parse_duration(v)
+            except isodate.ISO8601Error:
+                if v[-1] not in time_units:
+                    raise ValueError(
+                        "Invalid duration unit. Must be one isoformat or one of: h, m, s, d, w, y"
+                    )
+                time_delta_unit = v[-1]
+                time_delta_value = int(v[:-1])
+                return timedelta(**{time_units[time_delta_unit]: time_delta_value})
 
     @field_validator("start", "end", mode="before")
     @classmethod
