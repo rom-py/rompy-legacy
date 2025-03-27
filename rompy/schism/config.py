@@ -4,7 +4,8 @@ from typing import Literal, Optional, Union
 
 from pydantic import Field, model_validator, model_serializer
 
-from rompy.core import BaseConfig, DataBlob, RompyBaseModel, Spectrum, TimeRange
+from rompy.core import DataBlob, RompyBaseModel, Spectrum, TimeRange
+from rompy.core.config import BaseConfig, BaseResponse
 
 from .data import SCHISMData
 from .grid import SCHISMGrid
@@ -165,7 +166,7 @@ class SchismCSIROConfig(BaseConfig):
         1, description="Discrete peak direction (radian?) {discretePeakDirectio}  2D"
     )
     wwm19: int = Field(0, description="Orbital vel. (m/s) {orbitalVelocity}  2D")
-    wwm20: int = Field(0, description="RMS Orbital vel. (m/s) {rmsOrbitalVelocity}  2D")
+    wwm20: int = Field(1, description="RMS Orbital vel. (m/s) {rmsOrbitalVelocity}  2D")
     wwm21: int = Field(
         0, description="Bottom excursion period (sec?) {bottomExcursionPerio}  2D"
     )

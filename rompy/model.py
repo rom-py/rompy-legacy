@@ -86,6 +86,7 @@ class ModelRun(RompyBaseModel):
         staging_dir : str
 
         """
+        start = datetime.now()
         logger.info("")
         logger.info("-----------------------------------------------------")
         logger.info("Model settings:")
@@ -113,7 +114,15 @@ class ModelRun(RompyBaseModel):
         logger.info("")
         logger.info(f"Successfully generated project in {staging_dir}")
         logger.info("-----------------------------------------------------")
-        return staging_dir
+        response = ModelRunResponse(
+            model_type=self.config.model_type,
+            output_dir=staging_dir,
+            config_response=ret.get('response', {}),
+            execution_start_time=start.isoformat(),
+            execution_end_time=datetime.now().isoformat(),
+            duration=(datetime.now() - start).total_seconds()
+        )
+        return response
 
     def zip(self) -> str:
         """Zip the input files for the model run
@@ -141,6 +150,7 @@ class ModelRun(RompyBaseModel):
                     )
         shutil.rmtree(self.staging_dir)
         logger.info(f"Successfully zipped project to {zip_fn}")
+        self.zip_path = zip_fn
         return zip_fn
 
     def __call__(self):
@@ -152,3 +162,31 @@ class ModelRun(RompyBaseModel):
         repr += f"\noutput_dir: {self.output_dir}"
         repr += f"\nconfig: {type(self.config)}\n"
         return repr
+
+
+
+class ModelRunResponse(RompyBaseModel):
+    """Response model for ModelRun.
+    
+    Includes all config response data along with execution timing information.
+    """
+    model_type: str = Field(
+        description="The model type for the run",
+    )
+    output_dir: Path = Field(
+        description="The output directory for the run",
+    )
+    config_response: Union[BaseResponse, SwanResponse, SchismResponse] = Field(
+        description="The config response containing output paths",
+    )
+    execution_start_time: datetime = Field(
+        description="The time when model execution started",
+    )
+    execution_end_time: datetime = Field(
+        description="The time when model execution completed",
+    )
+    duration: timedelta = Field(
+        description="The duration of the model execution",
+    )
+
+        

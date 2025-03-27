@@ -4,7 +4,7 @@ from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field, model_validator
 
-from rompy.core import BaseConfig
+from rompy.core.config import BaseConfig, BaseResponse
 
 from rompy.swan.interface import (
     DataInterface,
@@ -230,5 +230,18 @@ class SwanConfigComponents(BaseConfig):
             ret["boundary"] = self.boundary.render(staging_dir, self.grid, period)
         elif self.boundary:
             ret["boundary"] = self.boundary.render()
+        ret["response"] = SwanResponse(
+            outputs=dict(
+                wave_spectra = self.output.specout.fname,
+                wave_parameters= self.output.block.fname,
+                wave_hotfile= self.lockup.hotfile.fname
+                )
+            )
 
         return ret
+
+class SwanResponse(BaseResponse):
+    """Response model for SWAN model outputs.
+    
+    Includes paths to wave spectra and wave parameters output files.
+    """

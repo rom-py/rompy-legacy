@@ -11,6 +11,38 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_TEMPLATE = str(Path(__file__).parent.parent / "templates" / "base")
 
+class BaseOutputsResponse(RompyBaseModel):
+    """Response model for model outputs.
+    
+    Includes paths to wave spectra and wave parameters output files.
+    """
+    wave_spectra: Path = Field(
+        description="Paths to wave spectra output files",
+        default_factory=dict,
+    )
+    wave_parameters: Path = Field(
+        description="Paths to wave parameters output files",
+        default_factory=dict,
+    )
+    wave_hotfiles: Path = Field(
+        description="Paths to wave hotfiles output files",
+        default_factory=dict,
+    )
+
+
+class BaseResponse(RompyBaseModel):
+    """Base response model for config outputs.
+    
+    Contains common fields for all model responses: outputs and hotfiles paths.
+    Specific model implementations will extend this class with model-specific outputs.
+    """
+    outputs: BaseOutputsResponse = Field(
+        description="The outputs of the model run",
+        default_factory=dict,
+    )
+
+
+
 
 class BaseConfig(RompyBaseModel):
     """Base class for model templates.
@@ -44,3 +76,27 @@ class BaseConfig(RompyBaseModel):
 
     def __call__(self, *args, **kwargs):
         return self
+
+
+
+
+
+
+class SchismResponse(BaseResponse):
+    """Response model for SCHISM model outputs.
+    
+    Includes paths to spectra, parameters, and oceanum_parameters output files.
+    """
+    spectra: dict[str, str] = Field(
+        description="Paths to spectra output files",
+        default_factory=dict,
+    )
+    parameters: dict[str, str] = Field(
+        description="Paths to parameters output files",
+        default_factory=dict,
+    )
+    oceanum_parameters: dict[str, str] = Field(
+        description="Paths to oceanum parameters output files",
+        default_factory=dict,
+    )
+
