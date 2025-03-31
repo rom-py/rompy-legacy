@@ -15,10 +15,10 @@ installed = entry_points(group="rompy.config").names
 
 
 @click.command()
-@click.argument("model", type=click.Choice(installed), envvar="ROMPY_MODEL")
+# @click.argument("model", type=click.Choice(installed), envvar="ROMPY_MODEL")
 @click.argument("config", envvar="ROMPY_CONFIG")
 @click.option("zip", "--zip/--no-zip", default=False, envvar="ROMPY_ZIP")
-def main(model, config, zip):
+def main(config, zip):
     """Run model
     Usage: rompy <model> config.yml
     Args:
