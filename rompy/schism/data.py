@@ -14,11 +14,10 @@ from rompy.core import DataGrid, RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
-from rompy.schism.grid import SCHISMGrid
-# from pyschism.forcing.bctides import Bctides
-from rompy.schism.pyschism.forcing.bctides import Bctides
-# from rompy.schism.pyschism.forcing.hycom.hycom2schism import (
-#     interp_to_points_2d, interp_to_points_3d, transform_ll_to_cpp)
+# Use PyLibs adapters instead of PySchism components
+from rompy.schism.pylibs_adapter.bctides import Bctides
+from rompy.schism.pylibs_adapter.boundary import BoundaryData, Boundary3D
+from rompy.schism.pylibs_adapter.grid import SCHISMGrid
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
@@ -536,31 +535,44 @@ class SCHISMDataBoundary(DataBoundary):
             # Add the component dimension for SCHISM
             time_series = np.expand_dims(data, axis=3)
 
-            # calculate zcor for 3D
-            sigma = grid.pyschism_vgrid.sigma
-
-            # Get the boundary node indices
-            # Get the boundary points from the grid
-            boundary_nodes = grid.pyschism_hgrid.boundaries.open.indexes
-            if boundary_nodes.empty:
+            # Calculate zcor for 3D
+            # For PyLibs vgrid, extract sigma coordinates differently
+            gd = grid.pylibs_hgrid
+            vgd = grid.pylibs_vgrid
+            
+            # Make sure boundaries are computed
+            if hasattr(gd, 'compute_bnd') and not hasattr(gd, 'nob'):
+                gd.compute_bnd()
+            
+            # Extract boundary information
+            if not hasattr(gd, 'nob') or gd.nob is None or gd.nob == 0:
                 raise ValueError("No open boundary nodes found in the grid")
-            
-            # Extract all boundary node indices
-            # Since this is a pandas Series where each item is a list of indices
+                
+            # Collect all boundary nodes
             boundary_indices = []
-            for node_list in boundary_nodes:
-                boundary_indices.extend(node_list)
+            for i in range(gd.nob):
+                boundary_indices.extend(gd.iobn[i])
+                
+            # Get bathymetry for boundary nodes
+            boundary_depths = gd.dp[boundary_indices]
             
-            # Get bathymetry for boundary nodes only
-            depth = grid.pyschism_hgrid.values
-            boundary_depths = depth[boundary_indices]
-            
-            # Get the sigma values and fixed z levels from the SCHISM grid
-            sigma_levels = sigma.copy()  # Copy to avoid modifying the original
-            num_sigma_levels = len(sigma_levels)
-            
-            # Get the fixed z levels
-            z_levels = grid.pyschism_vgrid.ztot
+            # Get sigma levels from vgrid
+            # Note: This assumes a simple sigma or SZ grid format
+            # For more complex vgrids, more sophisticated extraction would be needed
+            if vgd is not None:
+                if hasattr(vgd, 'sigma'):
+                    sigma_levels = vgd.sigma.copy()
+                    num_sigma_levels = len(sigma_levels)
+                else:
+                    # Default sigma levels if not available
+                    sigma_levels = np.array([-1.0, 0.0])
+                    num_sigma_levels = 2
+                    
+                # Get fixed z levels if available
+                if hasattr(vgd, 'ztot'):
+                    z_levels = vgd.ztot
+                else:
+                    z_levels = np.array([])
             
             # For each boundary point, determine the total number of vertical levels
             # and create appropriate zcor arrays
@@ -583,7 +595,7 @@ class SCHISMDataBoundary(DataBoundary):
                     
                     # First, calculate sigma levels using the first z level as the "floor"
                     for j in range(num_sigma_levels):
-                        node_zcor[j] = first_z_level * sigma[j]
+                        node_zcor[j] = first_z_level * sigma_levels[j]
                     
                     # Then, add the fixed z levels below the sigma levels
                     for j, z_val in enumerate(applicable_z):
@@ -947,7 +959,7 @@ class SCHISMDataTides(RompyBaseModel):
         self.tidal_data.get(destdir)
         logger.info(f"Generating tides")
         bctides = Bctides(
-            hgrid=grid.pyschism_hgrid,
+            hgrid=grid.pylibs_hgrid,
             flags=self.flags,
             constituents=self.constituents,
             database=self.database,

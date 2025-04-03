@@ -9,13 +9,9 @@ from shapely.geometry import MultiPoint, Polygon
 
 from rompy.core import DataBlob, RompyBaseModel
 from rompy.core.grid import BaseGrid
-# from pyschism.mesh import Hgrid
-# from pyschism.mesh.prop import Tvdflag
-# from pyschism.mesh.vgrid import LSC2, SZ, Vgrid
-from rompy.schism.pyschism.mesh import Hgrid
-from rompy.schism.pyschism.mesh.base import Gr3
-from rompy.schism.pyschism.mesh.prop import Tvdflag
-from rompy.schism.pyschism.mesh.vgrid import LSC2, SZ, Vgrid
+
+# Import PyLibs for SCHISM grid handling
+from pylib import read_schism_hgrid, schism_grid, read_schism_vgrid
 
 logger = logging.getLogger(__name__)
 
@@ -74,12 +70,76 @@ class GR3Generator(GeneratorBase):
             ref = self.hgrid._copied
         else:
             ref = self.hgrid
+            
+        # Determine the output filename
         dest = Path(destdir) / f"{self.gr3_type}.gr3"
-        hgrid = Gr3.open(ref, crs=self.crs)
-        grd = hgrid.copy()
-        grd.description = self.gr3_type
-        grd.nodes.values[:] = self.value
-        grd.write(dest, overwrite=True)
+        
+        # Load the grid with PyLibs
+        try:
+            gd = schism_grid(ref)
+        except Exception:
+            gd = read_schism_hgrid(ref)
+        
+        # Generate a standard gr3 file that matches PySchism format
+        # This follows the same format as hgrid.gr3: description, NE NP, node list, element list
+        logger.info(f"Generating {self.gr3_type}.gr3 with constant value {self.value}")
+        
+        with open(dest, 'w') as f:
+            # First line: Description
+            f.write(f"{self.gr3_type} gr3 file\n")
+            
+            # Second line: NE NP (# of elements, # of nodes)
+            f.write(f"{gd.ne} {gd.np}\n")
+            
+            # Write node information with the constant value
+            # Format: node_id x y value
+            for i in range(gd.np):
+                f.write(f"{i+1} {gd.x[i]:.8f} {gd.y[i]:.8f} {self.value:.8f}\n")
+            
+            # Write element connectivity
+            # Format: element_id num_vertices vertex1 vertex2 ...
+            for i in range(gd.ne):
+                if hasattr(gd, 'i34') and gd.i34 is not None:
+                    num_vertices = gd.i34[i]
+                elif hasattr(gd, 'elnode') and gd.elnode is not None:
+                    # Count non-negative values for number of vertices
+                    num_vertices = sum(1 for x in gd.elnode[i] if x >= 0)
+                else:
+                    num_vertices = 3  # Default to triangles
+                
+                # Write element connectivity line
+                if hasattr(gd, 'elnode') and gd.elnode is not None:
+                    vertices = ' '.join(str(gd.elnode[i, j]+1) for j in range(num_vertices))
+                    f.write(f"{i+1} {num_vertices} {vertices}\n")
+            
+            # Add empty line at the end (part of PySchism gr3 format)
+            f.write("\n")
+            self._copied = dest
+            return dest
+                
+        # For all other gr3 files (e.g., albedo, diffmin, diffmax, etc.), use standard node-based gr3 format
+        with open(dest, 'w') as f:
+            f.write(f"{self.gr3_type} gr3 file\n")
+            f.write(f"{gd.np} {gd.ne}\n")
+            
+            # Write node information with constant value
+            for i in range(gd.np):
+                f.write(f"{i+1} {gd.x[i]} {gd.y[i]} {self.value}\n")
+            
+            # Write element connectivity
+            for i in range(gd.ne):
+                if hasattr(gd, 'i34') and gd.i34 is not None:
+                    num_vertices = gd.i34[i]
+                elif hasattr(gd, 'elnode') and gd.elnode is not None:
+                    # For triangular elements, count non-negative values
+                    num_vertices = sum(1 for x in gd.elnode[i] if x >= 0)
+                else:
+                    num_vertices = 3  # Default to triangles
+                
+                if hasattr(gd, 'elnode') and gd.elnode is not None:
+                    vertices = ' '.join(str(gd.elnode[i, j]+1) for j in range(num_vertices))
+                    f.write(f"{i+1} {num_vertices} {vertices}\n")
+                
         logger.info(f"Generated {self.gr3_type} with constant value of {self.value}")
         self._copied = dest
         return dest
@@ -115,6 +175,82 @@ class Vgrid2D(GeneratorBase):
             )
         self._copied = dest
         return dest
+
+
+# Stub implementations of vertical grid types for PyLibs migration
+class LSC2:
+    """Stub implementation of the LSC2 vertical grid type from PySchism."""
+    
+    def __init__(self, hsm, nv, h_c, theta_b, theta_f):
+        self.hsm = hsm
+        self.nv = nv
+        self.h_c = h_c
+        self.theta_b = theta_b
+        self.theta_f = theta_f
+        self.m_grid = None
+        self.lsc2_att = None
+    
+    def calc_m_grid(self):
+        """Calculate the master grid."""
+        logger.info("Calculating master grid (stub implementation)")
+        self.m_grid = {'depth': self.hsm, 'levels': self.nv}
+    
+    def calc_lsc2_att(self, hgrid, crs="epsg:4326"):
+        """Calculate the LSC2 attributes."""
+        logger.info("Calculating LSC2 attributes (stub implementation)")
+        self.lsc2_att = {'h_c': self.h_c, 'theta_b': self.theta_b, 'theta_f': self.theta_f}
+    
+    def write(self, path):
+        """Write the vgrid.in file."""
+        logger.info(f"Writing vgrid.in to {path}")
+        with open(path, 'w') as f:
+            f.write(f"LSC2 vertical grid with {len(self.hsm)} master grids\n")
+            f.write(f"{len(self.hsm)}  !number of master grids\n")
+            
+            # Write master grid depths
+            for i, depth in enumerate(self.hsm):
+                f.write(f"{i+1} {depth}  !master grid {i+1} depth\n")
+            
+            # Write number of levels
+            for i, levels in enumerate(self.nv):
+                f.write(f"{i+1} {levels}  !master grid {i+1} levels\n")
+            
+            # Write h_c, theta_b, theta_f
+            f.write(f"{self.h_c} {self.theta_b} {self.theta_f}  !h_c, theta_b, theta_f\n")
+        return path
+
+
+class SZ:
+    """Stub implementation of the SZ vertical grid type from PySchism."""
+    
+    def __init__(self, h_s, ztot, h_c, theta_b, theta_f, sigma):
+        self.h_s = h_s
+        self.ztot = ztot
+        self.h_c = h_c
+        self.theta_b = theta_b
+        self.theta_f = theta_f
+        self.sigma = sigma
+    
+    def write(self, path):
+        """Write the vgrid.in file."""
+        logger.info(f"Writing vgrid.in to {path}")
+        with open(path, 'w') as f:
+            f.write(f"SZ vertical grid\n")
+            f.write(f"2 {len(self.ztot)} {self.h_s}  !nvrt (# of S-Z levels) (=Nz); kz (# of Z-levels); h_s (transition depth between S and Z)\n")
+            
+            # Write Z levels
+            f.write("Z levels   !Z-levels in the lower portion\n")
+            for i, z in enumerate(self.ztot):
+                f.write(f"{i+1} {-z}   !level index, z-coordinates\n")
+            
+            # Write S levels
+            f.write("S levels      !S-levels\n")
+            f.write(f"{self.h_c} {self.theta_b} {self.theta_f}  !constants used in S-transformation: h_c, theta_b, theta_f\n")
+            
+            # Write sigma levels
+            for i, s in enumerate(self.sigma):
+                f.write(f"{i+1} {s}    !sigma-coordinate\n")
+        return path
 
 
 class Vgrid3D_LSC2(GeneratorBase):
@@ -390,8 +526,8 @@ class SCHISMGrid(BaseGrid):
         validate_default=True,
     )
     crs: str = Field("epsg:4326", description="Coordinate reference system")
-    _pyschism_hgrid: Optional[Hgrid] = None
-    _pyschism_vgrid: Optional[Vgrid] = None
+    _pylibs_hgrid: Optional[schism_grid] = None
+    _pylibs_vgrid: Optional[object] = None
 
     @model_validator(mode="after")
     def validate_rough_drag_manning(cls, v):
@@ -435,27 +571,52 @@ class SCHISMGrid(BaseGrid):
 
     @property
     def x(self) -> np.ndarray:
-        return self.pyschism_hgrid.x
+        return self.pylibs_hgrid.x
 
     @property
     def y(self) -> np.ndarray:
-        return self.pyschism_hgrid.y
+        return self.pylibs_hgrid.y
 
     @property
-    def pyschism_hgrid(self):
-        if self._pyschism_hgrid is None:
-            self._pyschism_hgrid = Hgrid.open(
-                self.hgrid._copied or self.hgrid.source, crs=self.crs
-            )
-        return self._pyschism_hgrid
+    def pylibs_hgrid(self):
+        if self._pylibs_hgrid is None:
+            grid_path = self.hgrid._copied or self.hgrid.source
+            try:
+                # Try to load as schism_grid first
+                self._pylibs_hgrid = schism_grid(grid_path)
+            except Exception:
+                # Fall back to read_schism_hgrid
+                self._pylibs_hgrid = read_schism_hgrid(grid_path)
+            
+            # Compute all grid properties to ensure they're available
+            if hasattr(self._pylibs_hgrid, 'compute_all'):
+                self._pylibs_hgrid.compute_all()
+            
+            # Calculate boundary information
+            if hasattr(self._pylibs_hgrid, 'compute_bnd'):
+                self._pylibs_hgrid.compute_bnd()
+                
+        return self._pylibs_hgrid
 
     @property
-    def pyschism_vgrid(self):
+    def pylibs_vgrid(self):
         if self.vgrid is None:
             return None
-        if self._pyschism_vgrid is None:
-            self._pyschism_vgrid = Vgrid.open(self.vgrid._copied or self.vgrid.source)
-        return self._pyschism_vgrid
+        if self._pylibs_vgrid is None:
+            vgrid_path = self.vgrid._copied or self.vgrid.source
+            self._pylibs_vgrid = read_schism_vgrid(vgrid_path)
+        return self._pylibs_vgrid
+        
+    # Legacy properties for backward compatibility
+    @property
+    def pyschism_hgrid(self):
+        logger.warning("pyschism_hgrid is deprecated, use pylibs_hgrid instead")
+        return self.pylibs_hgrid
+        
+    @property
+    def pyschism_vgrid(self):
+        logger.warning("pyschism_vgrid is deprecated, use pylibs_vgrid instead")
+        return self.pylibs_vgrid
 
     @property
     def is_3d(self):
@@ -488,20 +649,41 @@ class SCHISMGrid(BaseGrid):
             destdir (Path): Destination directory
 
         Returns:
-            iath: Path to tvprop.in file
+            Path: Path to tvd.prop file
         """
-        # TODO - should this be handled in the same way as the gr3 files? i.e. would you
-        # ever want to provide a file path to tvprop.in?
-        tvdflag = Tvdflag(
-            self.pyschism_hgrid, np.array([1] * len(self.pyschism_hgrid.elements))
-        )
+        # With PyLibs, we create a simple tvd.prop file directly
         dest = destdir / "tvd.prop"
-        tvdflag.write(dest)
+        
+        # Get number of elements
+        num_elements = self.pylibs_hgrid.ne
+        
+        # Write tvd.prop file with all 1's (upwind TVD)
+        with open(dest, 'w') as f:
+            f.write(f"{num_elements}\n")
+            for i in range(num_elements):
+                f.write(f"{i+1} 1\n")
+                
         return dest
 
     def boundary(self, tolerance=None) -> Polygon:
-        bnd = self.pyschism_hgrid.boundaries.open.get_coordinates()
-        polygon = Polygon(zip(bnd.x.values, bnd.y.values))
+        gd = self.pylibs_hgrid
+        
+        # Make sure boundaries are computed
+        if hasattr(gd, 'compute_bnd') and not hasattr(gd, 'nob'):
+            gd.compute_bnd()
+            
+        if not hasattr(gd, 'nob') or gd.nob is None or gd.nob == 0:
+            logger.warning("No open boundaries found in grid")
+            # Return an empty polygon
+            return Polygon()
+            
+        # Extract coordinates for the first open boundary
+        boundary_nodes = gd.iobn[0]
+        x = gd.x[boundary_nodes]
+        y = gd.y[boundary_nodes]
+        
+        # Create a polygon
+        polygon = Polygon(zip(x, y))
         if tolerance:
             polygon = polygon.simplify(tolerance=tolerance)
         return polygon
@@ -517,59 +699,71 @@ class SCHISMGrid(BaseGrid):
         else:
             fig = plt.gcf()
 
+        gd = self.pylibs_hgrid
+        
+        # Create a triangulation for plotting
+        elements_array = gd.i34info.astype(int)
+        if hasattr(gd, 'elnode'):
+            elements_array = gd.elnode
+        
         meshtri = Triangulation(
-            self.pyschism_hgrid.x,
-            self.pyschism_hgrid.y,
-            self.pyschism_hgrid.elements.array,
+            gd.x,
+            gd.y,
+            elements_array,
         )
         ax.triplot(meshtri, color="k", alpha=0.3)
-
-        # open boundary nodes/info as geopandas df
-        gdf_open_boundary = self.pyschism_hgrid.boundaries.open
-
-        # make a pandas dataframe for easier lon/lat referencing during forcing condition generation
-        df_open_boundary = pd.DataFrame(
-            {
-                "schism_index": gdf_open_boundary.index_id[0],
-                "index": gdf_open_boundary.indexes[0],
-                "lon": gdf_open_boundary.get_coordinates().x,
-                "lat": gdf_open_boundary.get_coordinates().y,
-            }
-        ).reset_index(drop=True)
-
-        # create sub-sampled wave boundary
-        # #wave_boundary = redistribute_vertices(gdf_open_boundary.geometry[0], 0.2)
-        #
-        # df_wave_boundary = pd.DataFrame(
-        #     {"lon": wave_boundary.xy[0], "lat": wave_boundary.xy[1]}
-        # ).reset_index(drop=True)
-        gdf_open_boundary.plot(ax=ax, color="b")
-        ax.add_geometries(
-            self.pyschism_hgrid.boundaries.land.geometry.values,
-            facecolor="none",
-            edgecolor="g",
-            linewidth=2,
-            crs=ccrs.PlateCarree(),
-        )
-        ax.plot(
-            df_open_boundary["lon"],
-            df_open_boundary["lat"],
-            "+k",
-            transform=ccrs.PlateCarree(),
-            zorder=10,
-        )
-        ax.plot(
-            df_open_boundary["lon"],
-            df_open_boundary["lat"],
-            "xr",
-            transform=ccrs.PlateCarree(),
-            zorder=10,
-        )
-        # ax.plot(
-        #     df_wave_boundary["lon"],
-        #     df_wave_boundary["lat"],
-        #     "+k",
-        #     transform=ccrs.PlateCarree(),
+        
+        # Make sure boundaries are computed
+        if hasattr(gd, 'compute_bnd') and not hasattr(gd, 'nob'):
+            gd.compute_bnd()
+            
+        # Plot open boundaries if they exist
+        if hasattr(gd, 'nob') and gd.nob is not None and gd.nob > 0:
+            # Plot each open boundary
+            for i in range(gd.nob):
+                boundary_nodes = gd.iobn[i]
+                x_boundary = gd.x[boundary_nodes]
+                y_boundary = gd.y[boundary_nodes]
+                
+                # Plot the line
+                ax.plot(x_boundary, y_boundary, '-b', linewidth=2, transform=ccrs.PlateCarree())
+                
+                # Plot the points
+                ax.plot(x_boundary, y_boundary, '+k', markersize=6, transform=ccrs.PlateCarree(), zorder=10)
+                
+                # Create a dataframe for reference
+                df_open_boundary = pd.DataFrame(
+                    {
+                        "boundary_id": i,
+                        "node_index": boundary_nodes,
+                        "lon": x_boundary,
+                        "lat": y_boundary,
+                    }
+                )
+        
+        # Plot land boundaries if they exist
+        if hasattr(gd, 'nlb') and gd.nlb is not None and gd.nlb > 0:
+            # Plot each land boundary
+            for i in range(gd.nlb):
+                boundary_nodes = gd.ilbn[i]
+                x_boundary = gd.x[boundary_nodes]
+                y_boundary = gd.y[boundary_nodes]
+                
+                # Check if this is an island
+                is_island = False
+                if hasattr(gd, 'island') and gd.island is not None and i < len(gd.island):
+                    is_island = gd.island[i] == 1
+                    
+                # Plot the land boundary with different color for islands
+                color = 'r' if is_island else 'g'  # Red for islands, green for land
+                ax.plot(x_boundary, y_boundary, f'-{color}', linewidth=2, transform=ccrs.PlateCarree())
+                
+        # Add coastlines and borders to the map for context
+        ax.coastlines()
+        ax.gridlines(draw_labels=True)
+        
+        # Return the figure and axis for further customization
+        return fig, ax
         #     zorder=10,
         # )
         # ax.plot(
@@ -599,12 +793,48 @@ class SCHISMGrid(BaseGrid):
         ax.set_title("Mesh")
 
     def ocean_boundary(self):
-        bnd = self.pyschism_hgrid.boundaries.open.get_coordinates()
-        return bnd.x.values, bnd.y.values
+        gd = self.pylibs_hgrid
+        
+        # Make sure boundaries are computed
+        if hasattr(gd, 'compute_bnd') and not hasattr(gd, 'nob'):
+            gd.compute_bnd()
+            
+        if not hasattr(gd, 'nob') or gd.nob is None or gd.nob == 0:
+            logger.warning("No open boundaries found in grid")
+            return np.array([]), np.array([])
+            
+        # Collect all open boundary coordinates
+        x_coords = []
+        y_coords = []
+        
+        for i in range(gd.nob):
+            boundary_nodes = gd.iobn[i]
+            x_coords.extend(gd.x[boundary_nodes])
+            y_coords.extend(gd.y[boundary_nodes])
+            
+        return np.array(x_coords), np.array(y_coords)
 
     def land_boundary(self):
-        bnd = self.pyschism_hgrid.boundaries.land.get_coordinates()
-        return bnd.x.values, bnd.y.values
+        gd = self.pylibs_hgrid
+        
+        # Make sure boundaries are computed
+        if hasattr(gd, 'compute_bnd') and not hasattr(gd, 'nob'):
+            gd.compute_bnd()
+            
+        if not hasattr(gd, 'nlb') or gd.nlb is None or gd.nlb == 0:
+            logger.warning("No land boundaries found in grid")
+            return np.array([]), np.array([])
+            
+        # Collect all land boundary coordinates
+        x_coords = []
+        y_coords = []
+        
+        for i in range(gd.nlb):
+            boundary_nodes = gd.ilbn[i]
+            x_coords.extend(gd.x[boundary_nodes])
+            y_coords.extend(gd.y[boundary_nodes])
+            
+        return np.array(x_coords), np.array(y_coords)
 
     def boundary_points(self, spacing=None) -> tuple:
         return self.ocean_boundary()
