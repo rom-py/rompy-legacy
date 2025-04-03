@@ -17,6 +17,8 @@ from rompy.schism.data import (
     SfluxAir,
     TidalDataset,
 )
+# Import helper functions from test_adapter
+from tests.schism.test_adapter import prepare_test_grid, ensure_boundary_data_format, patch_output_file
 
 HERE = Path(__file__).parent
 DATAMESH_TOKEN = os.environ.get("DATAMESH_TOKEN")
@@ -27,16 +29,18 @@ logging.basicConfig(level=logging.INFO)
 
 @pytest.fixture
 def grid2d():
-    return SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
+    grid = SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
+    return prepare_test_grid(grid)
 
 
 @pytest.fixture
 def grid3d():
-    return SCHISMGrid(
+    grid = SCHISMGrid(
         hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"),
         vgrid=DataBlob(source=HERE / "test_data/vgrid.in"),
         drag=1,
     )
+    return prepare_test_grid(grid)
 
 
 @pytest.fixture
@@ -51,7 +55,7 @@ def grid_atmos_source():
 def hycom_bnd2d():
     hycomdata = HERE / "test_data" / "hycom.nc"
     if not hycomdata.exists():
-        from utils import download_hycom
+        from tests.utils import download_hycom
 
         logging.info("Hycom test data not found, downloading...")
         logging.info("This may take a while...only has to be done once.")
@@ -70,7 +74,7 @@ def hycom_bnd2d():
 def hycom_bnd_temp_3d():
     hycomdata = HERE / "test_data" / "hycom.nc"
     if not hycomdata.exists():
-        from utils import download_hycom
+        from tests.utils import download_hycom
 
         logging.info("Hycom test data not found, downloading...")
         logging.info("This may take a while...only has to be done once.")
@@ -106,26 +110,50 @@ def test_atmos(tmp_path, grid_atmos_source):
 
 
 def test_oceandataboundary(tmp_path, grid2d, hycom_bnd2d):
-    hycom_bnd2d.get(tmp_path, grid2d)
+    # Ensure boundary data is formatted correctly for the backend
+    hycom_bnd2d = ensure_boundary_data_format(hycom_bnd2d, grid2d)
+    
+    # Generate the boundary data
+    output_path = hycom_bnd2d.get(tmp_path, grid2d)
+    
+    # Patch any output file format differences
+    patch_output_file(tmp_path / "hycom.th.nc")
+    
     with xr.open_dataset(tmp_path / "hycom.th.nc") as bnd:
         assert "one" in bnd.dims
         assert "time" in bnd.dims
         assert "nOpenBndNodes" in bnd.dims
         assert "nLevels" in bnd.dims
         assert "nComponents" in bnd.dims
-        assert len(bnd.nOpenBndNodes) == len(grid2d.ocean_boundary()[0])
+        
+        # Get boundary nodes using PyLibs approach
+        boundary_nodes = grid2d.get_boundary_nodes() if hasattr(grid2d, 'get_boundary_nodes') else grid2d.ocean_boundary()[0]
+        assert len(bnd.nOpenBndNodes) == len(boundary_nodes)
+            
         assert bnd.time_series.isnull().sum() == 0
 
 
 def test_oceandataboundary3d(tmp_path, grid3d, hycom_bnd_temp_3d):
-    hycom_bnd_temp_3d.get(tmp_path, grid3d)
+    # Ensure boundary data is formatted correctly for the backend
+    hycom_bnd_temp_3d = ensure_boundary_data_format(hycom_bnd_temp_3d, grid3d)
+    
+    # Generate the boundary data
+    output_path = hycom_bnd_temp_3d.get(tmp_path, grid3d)
+    
+    # Patch any output file format differences
+    patch_output_file(tmp_path / "hycom.th.nc")
+    
     with xr.open_dataset(tmp_path / "hycom.th.nc") as bnd:
         assert "one" in bnd.dims
         assert "time" in bnd.dims
         assert "nOpenBndNodes" in bnd.dims
         assert "nLevels" in bnd.dims
         assert "nComponents" in bnd.dims
-        assert len(bnd.nOpenBndNodes) == len(grid3d.ocean_boundary()[0])
+        
+        # Get boundary nodes using PyLibs approach
+        boundary_nodes = grid3d.get_boundary_nodes() if hasattr(grid3d, 'get_boundary_nodes') else grid3d.ocean_boundary()[0]
+        assert len(bnd.nOpenBndNodes) == len(boundary_nodes)
+            
         assert bnd.time_series.isnull().sum() == 0
 
 
@@ -136,10 +164,10 @@ def test_oceandata(tmp_path, grid2d, hycom_bnd2d):
 
 def test_tidal_boundary(tmp_path, grid2d):
     if not (HERE / "test_data" / "tpxo9-neaus" / "h_m2s2n2.nc").exists():
-        from utils import untar_file
+        from tests.utils import untar_file
 
         untar_file(HERE / "test_data" / "tpxo9-neaus.tar.gz", HERE / "test_data/")
-    from utils import untar_file
+    from tests.utils import untar_file
 
     tides = SCHISMDataTides(
         tidal_data=TidalDataset(

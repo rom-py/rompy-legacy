@@ -9,6 +9,8 @@ from rompy.core import DataBlob
 from rompy.core.grid import BaseGrid
 from rompy.schism import SCHISMGrid
 from rompy.schism.grid import WWMBNDGR3Generator
+# Import helper functions from test_adapter
+from tests.schism.test_adapter import prepare_test_grid
 
 here = Path(__file__).parent
 
@@ -36,6 +38,9 @@ def test_SCHISMGrid2D(tmpdir):
         # hgrid_WWM=hgrid_WWM,
         # wwmbnd=wwmbnd,
     )
+    
+    # Ensure grid is properly prepared for testing with either backend
+    grid = prepare_test_grid(grid)
 
     assert grid.is_3d == False
     # # assert grid.drag == drag
@@ -71,6 +76,9 @@ def test_SCHISMGrid3D(tmpdir):
         vgrid=vgrid,
         drag=1,
     )
+    
+    # Ensure grid is properly prepared for testing with either backend
+    grid = prepare_test_grid(grid)
 
     assert grid.is_3d == True
 

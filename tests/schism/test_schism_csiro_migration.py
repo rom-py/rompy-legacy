@@ -3,7 +3,7 @@ from shutil import rmtree
 
 import pytest
 import yaml
-from utils import compare_nmls
+from tests.utils import compare_nmls
 
 pytest.importorskip("rompy.schism")
 

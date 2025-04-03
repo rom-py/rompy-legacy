@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 import xarray as xr
-from utils import compare_files
+from tests.utils import compare_files
 
 from rompy.model import ModelRun
 from rompy.core.source import SourceFile

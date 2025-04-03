@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-from utils import compare_nmls
+from tests.utils import compare_nmls
 
 pytest.importorskip("rompy.schism")
 

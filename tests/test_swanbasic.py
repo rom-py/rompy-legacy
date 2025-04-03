@@ -2,7 +2,7 @@ import pytest
 from pathlib import Path
 from datetime import datetime
 
-from utils import compare_files
+from tests.utils import compare_files
 
 from rompy.model import ModelRun
 from rompy.core import BaseConfig, TimeRange
