@@ -63,12 +63,6 @@ class SourceBase(RompyBaseModel, ABC):
             except KeyError as e:
                 dataset_variables = list(ds.data_vars.keys())
                 missing_variables = list(set(variables) - set(dataset_variables))
-                # raise ValueError(
-                #     f"Attempting to subset variables {variables} from the source "
-                #     f"dataset with variables {dataset_variables}, {missing_variables} "
-                #     "are not available. Are you correctly specifying the variables? "
-                #     "in your data object?"
-                # ) from e
                 raise ValueError(
                     f"Cannot find requested variables in dataset.\n\n"
                     f"Requested variables in the Data object: {variables}\n"
