@@ -13,8 +13,9 @@ from rompy.core import DataBlob, DataGrid, TimeRange
 from rompy.core.filters import Filter
 from rompy.core.types import DatasetCoords
 from rompy.core.source import SourceFile, SourceIntake
-# Import adapter classes directly for testing
-from rompy.schism.pylibs_adapter.grid import SCHISMGrid, SchismHGrid, SchismVGrid
+# Import directly from the new implementation
+from rompy.schism.grid import SCHISMGrid
+from rompy.schism.vgrid import VGrid as SchismVGrid
 from rompy.schism.data import (
     SCHISMDataBoundary,
     SCHISMDataOcean,
@@ -60,11 +61,11 @@ def hgrid_path(test_files_dir):
 @pytest.fixture
 def grid2d(test_files_dir):
     """Return a 2D SCHISM grid for testing."""
-    # Create a horizontal grid object directly
-    hgrid = SchismHGrid(path=test_files_dir / "hgrid.gr3")
-    
-    # Create the full SCHISM grid using the adapter class
-    grid = SCHISMGrid(hgrid=hgrid)
+    # Create a grid with DataBlob for hgrid
+    grid = SCHISMGrid(
+        hgrid=DataBlob(source=test_files_dir / "hgrid.gr3"),
+        drag=1.0,
+    )
     
     # Prepare the grid using helpers from test_adapter
     grid = prepare_test_grid(grid)
@@ -74,13 +75,10 @@ def grid2d(test_files_dir):
 @pytest.fixture
 def grid3d(test_files_dir):
     """Return a 3D SCHISM grid with vgrid for testing."""
-    # Create a horizontal grid object directly
-    hgrid = SchismHGrid(path=test_files_dir / "hgrid.gr3")
-    
-    # Create a vertical grid object
-    # Check if vgrid.in exists, otherwise create a basic one
-    if (test_files_dir / "vgrid.in").exists():
-        vgrid = SchismVGrid(path=test_files_dir / "vgrid.in")
+    # Prepare vgrid based on existence
+    vgrid_path = test_files_dir / "vgrid.in"
+    if vgrid_path.exists():
+        vgrid = DataBlob(source=vgrid_path)
     else:
         # Create a basic vertical grid with default values
         vgrid = SchismVGrid(
@@ -91,8 +89,12 @@ def grid3d(test_files_dir):
             theta_f=5.0
         )
     
-    # Create the full SCHISM grid using the adapter class
-    grid = SCHISMGrid(hgrid=hgrid, vgrid=vgrid)
+    # Create the grid with both hgrid and vgrid
+    grid = SCHISMGrid(
+        hgrid=DataBlob(source=test_files_dir / "hgrid.gr3"),
+        vgrid=vgrid,
+        drag=1.0,
+    )
     
     # Prepare the grid using helpers from test_adapter
     grid = prepare_test_grid(grid)

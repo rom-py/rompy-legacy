@@ -23,13 +23,13 @@ class TestSCHISMGrid:
     
     def test_vgrid_model(self):
         """Test the SchismVGrid model class."""
-        from rompy.schism.pylibs_adapter.grid import SchismVGrid
+        from rompy.schism.vgrid import VGrid
         
         # Create vertical grid
-        vgrid = SchismVGrid(
-            ivcor=2,  # LSC2 type
+        vgrid = VGrid(
+            ivcor=2,  # SZ type
             nvrt=10,
-            h_s=20.0,
+            h_c=20.0,
             theta_b=0.5,
             theta_f=5.0
         )
@@ -37,7 +37,7 @@ class TestSCHISMGrid:
         # Validate properties
         assert hasattr(vgrid, 'ivcor')
         assert hasattr(vgrid, 'nvrt')
-        assert hasattr(vgrid, 'h_s')
+        assert hasattr(vgrid, 'h_c')
         assert hasattr(vgrid, 'theta_b')
         assert hasattr(vgrid, 'theta_f')
         
@@ -48,7 +48,7 @@ class TestSCHISMGrid:
     
     def test_grid_model_structure(self):
         """Test the model class structure (not the instantiation)."""
-        from rompy.schism.pylibs_adapter.grid import SCHISMGrid
+        from rompy.schism.grid import SCHISMGrid
         
         # Just test the class structure and model fields, not instantiation
         assert hasattr(SCHISMGrid, 'model_fields')

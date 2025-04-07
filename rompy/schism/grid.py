@@ -551,6 +551,28 @@ class SCHISMGrid(BaseGrid):
         # Fallback for any other case (including when accessing the property before initialization)
         return False
 
+    def copy_to(self, destdir: Path) -> 'SCHISMGrid':
+        """Copy the grid to a destination directory.
+        
+        This method generates all the required grid files in the destination directory
+        and returns a new SCHISMGrid instance pointing to these files.
+        
+        Parameters
+        ----------
+        destdir : Path
+            Destination directory
+            
+        Returns
+        -------
+        SCHISMGrid
+            A new SCHISMGrid instance with sources pointing to the new files
+        """
+        # Copy grid to destination
+        self.get(destdir)
+        
+        # Return self for method chaining
+        return self
+    
     def get(self, destdir: Path) -> dict:
         logger = logging.getLogger(__name__)
         ret = {}

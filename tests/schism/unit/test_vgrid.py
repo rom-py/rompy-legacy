@@ -13,7 +13,6 @@ from rompy.core import DataBlob
 from rompy.schism import SCHISMGrid
 from rompy.schism.grid import VGRID_TYPE_2D, VGRID_TYPE_LSC2, VGRID_TYPE_SZ, VgridGenerator
 from rompy.schism.vgrid import VGrid
-from rompy.schism.pylibs_adapter.grid import SchismHGrid, SchismVGrid
 
 pytest.importorskip("rompy.schism")
 
