@@ -7,3 +7,4 @@ while maintaining ROMPY's Pydantic interfaces.
 
 from .bctides import Bctides
 from .boundary import BoundaryData
+from .grid import SCHISMGrid, SchismHGrid, SchismVGrid

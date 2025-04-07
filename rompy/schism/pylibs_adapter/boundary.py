@@ -1,13 +1,14 @@
 """
-Boundary data adapter for PyLibs.
+Boundary data adapter for PyLib.
 
 This module provides adapters for handling SCHISM boundary data,
-particularly focusing on 3D boundary data using PyLibs under the hood
+particularly focusing on 3D boundary data using PyLib under the hood
 while maintaining ROMPY's Pydantic interfaces.
 """
 
 import logging
 import os
+import sys
 from pathlib import Path
 from typing import List, Optional, Union, Dict, Any
 
@@ -15,38 +16,59 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
+# Add PyLib to the path if needed
+sys.path.append('/home/tdurrant/source/pylibs')
+
 logger = logging.getLogger(__name__)
 
-# Import PyLibs functions (required dependency)
-from pylib import read_schism_hgrid
+# Import PyLib functions
+try:
+    # Import PyLib actual implementations
+    from pylib import *
+    from src.schism_file import (
+        read_schism_hgrid,
+        read_schism_bpfile,
+        schism_grid,
+        read_schism_vgrid,
+        compute_zcor
+    )
+    logger.info("Successfully imported PyLib functions")
+except ImportError as e:
+    logger.error(f"Error importing PyLib functions: {e}")
+    
+    # Fallback to stub implementations
+    def stub_read_schism_bpfile(*args, **kwargs):
+        logger.warning("Using stub implementation of read_schism_bpfile")
+        return None
 
-# Create stub implementations for PyLibs functions
-def stub_read_schism_bpfile(*args, **kwargs):
-    logger.warning("Using stub implementation of read_schism_bpfile")
-    return None
+    def stub_schism_grid(*args, **kwargs):
+        logger.warning("Using stub implementation of schism_grid")
+        # Create a minimal grid object with required attributes
+        grid = type('schism_grid', (), {})()
+        grid.x = np.array([])
+        grid.y = np.array([])
+        grid.dp = np.array([])
+        grid.i34 = np.array([])
+        return grid
 
-def stub_schism_grid(*args, **kwargs):
-    logger.warning("Using stub implementation of schism_grid")
-    return None
+    def stub_interp_schism_3d(*args, **kwargs):
+        logger.warning("Using stub implementation of interp_schism_3d")
+        return None
 
-def stub_interp_schism_3d(*args, **kwargs):
-    logger.warning("Using stub implementation of interp_schism_3d")
-    return None
+    def stub_interp_vertical(*args, **kwargs):
+        logger.warning("Using stub implementation of interp_vertical")
+        return None
 
-def stub_interp_vertical(*args, **kwargs):
-    logger.warning("Using stub implementation of interp_vertical")
-    return None
+    def stub_interpolate(*args, **kwargs):
+        logger.warning("Using stub implementation of interpolate")
+        return None
 
-def stub_interpolate(*args, **kwargs):
-    logger.warning("Using stub implementation of interpolate")
-    return None
-
-# Use stubs instead of actual implementations
-read_schism_bpfile = stub_read_schism_bpfile
-schism_grid = stub_schism_grid
-interp_schism_3d = stub_interp_schism_3d
-interp_vertical = stub_interp_vertical
-interpolate = stub_interpolate
+    # Use stubs instead of actual implementations
+    read_schism_bpfile = stub_read_schism_bpfile
+    schism_grid = stub_schism_grid
+    interp_schism_3d = stub_interp_schism_3d
+    interp_vertical = stub_interp_vertical
+    interpolate = stub_interpolate
 
 
 class BoundaryData:

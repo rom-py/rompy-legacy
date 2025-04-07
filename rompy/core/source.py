@@ -4,7 +4,7 @@ import logging
 from functools import cached_property
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
 import fsspec
 import intake
@@ -90,17 +90,22 @@ class SourceFile(SourceBase):
         default="file",
         description="Model type discriminator",
     )
-    uri: str | Path = Field(description="Path to the dataset")
+    uri: Union[str, Path] = Field(description="Path to the dataset")
     kwargs: dict = Field(
         default={},
         description="Keyword arguments to pass to xarray.open_dataset",
     )
+    
+    # Enable arbitrary types for Path objects
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def __str__(self) -> str:
         return f"SourceFile(uri={self.uri})"
 
     def _open(self) -> xr.Dataset:
-        return xr.open_dataset(self.uri, **self.kwargs)
+        # Handle Path objects by using str() to ensure compatibility 
+        uri_str = str(self.uri) if isinstance(self.uri, Path) else self.uri
+        return xr.open_dataset(uri_str, **self.kwargs)
 
 
 class SourceIntake(SourceBase):
