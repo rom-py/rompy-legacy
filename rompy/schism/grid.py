@@ -496,6 +496,14 @@ class SCHISMGrid(BaseGrid):
         return self.pylibs_hgrid.y
 
     @property
+    def ne(self) -> int:
+        return self.pylibs_hgrid.ne
+
+    @property
+    def np(self) -> int:
+        return self.pylibs_hgrid.np
+
+    @property
     def pylibs_hgrid(self):
         if self._pylibs_hgrid is None:
             grid_path = self.hgrid._copied or self.hgrid.source
@@ -551,17 +559,17 @@ class SCHISMGrid(BaseGrid):
         # Fallback for any other case (including when accessing the property before initialization)
         return False
 
-    def copy_to(self, destdir: Path) -> 'SCHISMGrid':
+    def copy_to(self, destdir: Path) -> "SCHISMGrid":
         """Copy the grid to a destination directory.
-        
+
         This method generates all the required grid files in the destination directory
         and returns a new SCHISMGrid instance pointing to these files.
-        
+
         Parameters
         ----------
         destdir : Path
             Destination directory
-            
+
         Returns
         -------
         SCHISMGrid
@@ -569,10 +577,10 @@ class SCHISMGrid(BaseGrid):
         """
         # Copy grid to destination
         self.get(destdir)
-        
+
         # Return self for method chaining
         return self
-    
+
     def get(self, destdir: Path) -> dict:
         logger = logging.getLogger(__name__)
         ret = {}
@@ -599,6 +607,8 @@ class SCHISMGrid(BaseGrid):
                     ret[filetype] = source.get(destdir)
                 except Exception as e:
                     logger.error(f"Error generating {filetype}: {e}")
+
+        ret["vgrid"] = self.vgrid.get(destdir)
 
         # Create symlinks for special grid files
         try:
@@ -698,132 +708,214 @@ class SCHISMGrid(BaseGrid):
             polygon = polygon.simplify(tolerance=tolerance)
         return polygon
 
-    def plot(self, ax=None, **kwargs):
+    def plot_bnd(self, ax=None, add_coastlines=True, **kwargs):
+
+        # Make sure boundaries are computed if needed
+        if hasattr(self.pylibs_hgrid, "compute_bnd") and not hasattr(
+            self.pylibs_hgrid, "nob"
+        ):
+            self.pylibs_hgrid.compute_bnd()
+
+        # Use the native pylibs plotting function
+        return self.plot(fmt=3, **kwargs)
+
+    def plot_grid(self, ax=None, add_coastlines=True, **kwargs):
+        """
+        Plot just the grid triangulation.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes, optional
+            The axes to plot on. If None, a new figure is created.
+        add_coastlines : bool, optional:w
+
+            Whether to add coastlines to the plot (requires cartopy).
+        **kwargs : dict
+            Additional keyword arguments to pass to the pylibs plot functions.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+        """
+        return self.plot(fmt=0, **kwargs)
+
+    def plot_bathymetry(self, ax=None, add_coastlines=True, **kwargs):
+        """
+        Plot filled contours of depth/bathymetry.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes, optional
+            The axes to plot on. If None, a new figure is created.
+        add_coastlines : bool, optional
+            Whether to add coastlines to the plot (requires cartopy).
+        **kwargs : dict
+            Additional keyword arguments to pass to the pylibs plot functions.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+        """
+        return self.plot(fmt=1, **kwargs)
+
+    def plot_contours(self, ax=None, add_coastlines=True, **kwargs):
+        """
+        Plot contour lines of depth/bathymetry.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes, optional
+            The axes to plot on. If None, a new figure is created.
+        add_coastlines : bool, optional
+            Whether to add coastlines to the plot (requires cartopy).
+        **kwargs : dict
+            Additional keyword arguments to pass to the pylibs plot functions.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+        """
+        return self.plot(fmt=2, **kwargs)
+
+    def plot(self, ax=None, plot_type="domain", add_coastlines=True, **kwargs):
+        """
+        Plot the SCHISM grid using native pylibs plotting functionality.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes, optional
+            The axes to plot on. If None, a new figure is created.
+        plot_type : str, optional
+            Type of plot to create. Options are:
+            - 'domain': Plot the full domain with boundaries (default)
+            - 'grid': Plot just the grid triangulation
+            - 'bnd': Plot just the boundaries
+        add_coastlines : bool, optional
+            Whether to add coastlines to the plot (requires cartopy).
+        fmt : int, optional
+            Plotting format. Options are:
+            - 0: Plot grid only (default)
+            - 1: Plot filled contours of depth/bathymetry
+            - 2: Plot contour lines of depth/bathymetry
+            - 3: Plot boundaries only
+        value : numpy.ndarray, optional
+            Color values for plotting. If None, grid depth is used.
+        levels : int or array-like, optional
+            If int, number of contour levels to use (default 51).
+            If array-like, specific levels to plot.
+        clim : [min, max], optional
+            Value range for plot/colorbar. If None, determined from data.
+        cmap : str, optional
+            Colormap to use for depth visualization (default 'jet').
+        cb : bool, optional
+            Whether to add a colorbar to the plot (default True).
+        **kwargs : dict
+            Additional keyword arguments to pass to the pylibs plot functions.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+
+        Examples
+        --------
+        # Plot grid with bathymetry as filled contours
+        >>> grid.plot(fmt=1, cmap='viridis', levels=20)
+
+        # Plot specific depth contours with custom range
+        >>> grid.plot(fmt=2, clim=[-100, 0], levels=[-100, -50, -20, -10, 0])
+        """
         import matplotlib.pyplot as plt
-        from cartopy import crs as ccrs
-        from matplotlib.tri import Triangulation
 
         if ax is None:
-            fig = plt.figure(figsize=(20, 10))
-            ax = fig.add_subplot(111, projection=ccrs.PlateCarree())
+            fig = plt.figure(figsize=(12, 10))
+            try:
+                # Try to create a cartopy axis if available
+                from cartopy import crs as ccrs
+
+                ax = fig.add_subplot(111, projection=ccrs.PlateCarree())
+                if add_coastlines:
+                    ax.coastlines()
+                    ax.gridlines(draw_labels=True)
+            except ImportError:
+                # Fall back to regular axis if cartopy isn't available
+                ax = fig.add_subplot(111)
         else:
             fig = plt.gcf()
-
-        gd = self.pylibs_hgrid
-
-        # Create a triangulation for plotting
-        elements_array = gd.i34info.astype(int)
-        if hasattr(gd, "elnode"):
-            elements_array = gd.elnode
-
-        meshtri = Triangulation(
-            gd.x,
-            gd.y,
-            elements_array,
-        )
-        ax.triplot(meshtri, color="k", alpha=0.3)
-
-        # Make sure boundaries are computed
-        if hasattr(gd, "compute_bnd") and not hasattr(gd, "nob"):
-            gd.compute_bnd()
-
-        # Plot open boundaries if they exist
-        if hasattr(gd, "nob") and gd.nob is not None and gd.nob > 0:
-            # Plot each open boundary
-            for i in range(gd.nob):
-                boundary_nodes = gd.iobn[i]
-                x_boundary = gd.x[boundary_nodes]
-                y_boundary = gd.y[boundary_nodes]
-
-                # Plot the line
-                ax.plot(
-                    x_boundary,
-                    y_boundary,
-                    "-b",
-                    linewidth=2,
-                    transform=ccrs.PlateCarree(),
-                )
-
-                # Plot the points
-                ax.plot(
-                    x_boundary,
-                    y_boundary,
-                    "+k",
-                    markersize=6,
-                    transform=ccrs.PlateCarree(),
-                    zorder=10,
-                )
-
-                # Create a dataframe for reference
-                df_open_boundary = pd.DataFrame(
-                    {
-                        "boundary_id": i,
-                        "node_index": boundary_nodes,
-                        "lon": x_boundary,
-                        "lat": y_boundary,
-                    }
-                )
-
-        # Plot land boundaries if they exist
-        if hasattr(gd, "nlb") and gd.nlb is not None and gd.nlb > 0:
-            # Plot each land boundary
-            for i in range(gd.nlb):
-                boundary_nodes = gd.ilbn[i]
-                x_boundary = gd.x[boundary_nodes]
-                y_boundary = gd.y[boundary_nodes]
-
-                # Check if this is an island
-                is_island = False
-                if (
-                    hasattr(gd, "island")
-                    and gd.island is not None
-                    and i < len(gd.island)
-                ):
-                    is_island = gd.island[i] == 1
-
-                # Plot the land boundary with different color for islands
-                color = "r" if is_island else "g"  # Red for islands, green for land
-                ax.plot(
-                    x_boundary,
-                    y_boundary,
-                    f"-{color}",
-                    linewidth=2,
-                    transform=ccrs.PlateCarree(),
-                )
-
-        # Add coastlines and borders to the map for context
-        ax.coastlines()
-        ax.gridlines(draw_labels=True)
-
-        # Return the figure and axis for further customization
-        return fig, ax
-        #     zorder=10,
-        # )
-        # ax.plot(
-        #     df_wave_boundary["lon"],
-        #     df_wave_boundary["lat"],
-        #     "xr",
-        #     transform=ccrs.PlateCarree(),
-        #     zorder=10,
-        # )
-        ax.coastlines()
+        self.pylibs_hgrid.plot(**kwargs)
+        self.pylibs_hgrid.plot_bnd()
         return fig, ax
 
-    def plot_hgrid(self):
+    def plot_hgrid(self, figsize=(20, 10)):
+        """
+        Create a comprehensive two-panel visualization of the SCHISM grid.
+
+        Left panel shows bathymetry/depth, right panel shows the mesh and boundaries.
+
+        Parameters
+        ----------
+        figsize : tuple, optional
+            Size of the figure (width, height). Default is (20, 10).
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object containing both panels.
+        (ax1, ax2) : tuple of matplotlib.axes.Axes
+            The axes objects for the bathymetry and mesh panels.
+        """
         import matplotlib.pyplot as plt
-        from cartopy import crs as ccrs
+        import numpy as np
         from matplotlib.tri import Triangulation
 
-        fig = plt.figure(figsize=(20, 10))
-        ax = fig.add_subplot(121)
-        ax.set_title("Bathymetry")
+        # Create figure with two subplots
+        fig = plt.figure(figsize=figsize)
 
-        hgrid = Hgrid.open(self.hgrid._copied or self.hgrid.source)
-        self.pyschism_hgrid.make_plot(axes=ax)
+        # Left panel: Bathymetry
+        try:
+            from cartopy import crs as ccrs
 
-        ax = fig.add_subplot(122, projection=ccrs.PlateCarree())
-        self.plot(ax=ax)
-        ax.set_title("Mesh")
+            ax1 = fig.add_subplot(121, projection=ccrs.PlateCarree())
+            ax1.coastlines()
+        except ImportError:
+            ax1 = fig.add_subplot(121)
+
+        # Plot bathymetry using pylibs
+        gd = self.pylibs_hgrid
+        tri = Triangulation(gd.x, gd.y, triangles=gd.i34)
+        depth = -gd.dp  # Convert to positive for depth
+        cs = ax1.tricontourf(tri, depth, cmap="viridis")
+        plt.colorbar(cs, ax=ax1, label="Depth (m)")
+        ax1.set_title("Bathymetry")
+        ax1.set_xlabel("Longitude")
+        ax1.set_ylabel("Latitude")
+
+        # Right panel: Mesh and boundaries
+        try:
+            ax2 = fig.add_subplot(122, projection=ccrs.PlateCarree())
+            ax2.coastlines()
+        except ImportError:
+            ax2 = fig.add_subplot(122)
+
+        # Use the main plot method for the mesh
+        _, ax2 = self.plot(ax=ax2, plot_type="domain", linewidth=0.5, color="gray")
+        ax2.set_title("Grid Mesh and Boundaries")
+        ax2.set_xlabel("Longitude")
+        ax2.set_ylabel("Latitude")
+
+        plt.tight_layout()
+        return fig, (ax1, ax2)
 
     def ocean_boundary(self):
         gd = self.pylibs_hgrid
