@@ -609,35 +609,10 @@ class SCHISMDataBoundary(DataBoundary):
             "Xarray method to use for selecting boundary points from the dataset"
         ),
     )
-    interpolate_missing_coastal: bool = Field(
-        True, description="interpolate_missing coastal data points"
-    )
     time_buffer: list[int] = Field(
         default=[0, 1],
         description="Number of source data timesteps to buffer the time range if `filter_time` is True",
     )
-
-    # @model_validator(mode="after")
-    # def _set_variables(self) -> "SCHISMDataBoundary":
-    #     self.variables = [self.variable]
-    #     return self
-
-    # @property
-    # def ds(self):
-    #     """Return the xarray dataset for this data source."""
-    #     # I don't like this approach, as its no longer lazy
-    #     ds = super().ds
-    #     if self.extrapolate_to_coast:
-    #         for var in ds.data_vars:
-    #             ds[var] = (
-    #                 ds[var].interpolate_na(
-    #                     method="linear", fill_value="extrapolate", dim=self.coords.x
-    #                 )
-    #                 + ds[var].interpolate_na(
-    #                     method="linear", fill_value="extrapolate", dim=self.coords.y
-    #                 )
-    #             ) / 2
-    #     return ds
 
     def get(
         self,
@@ -867,13 +842,6 @@ class SCHISMDataBoundary(DataBoundary):
             data = interpolated_data
             time_series = np.expand_dims(data, axis=3)
 
-            # Handle coastal interpolation
-            if self.interpolate_missing_coastal:
-                # Apply fill_tails to each vertical slice at each time step
-                for i in range(data.shape[0]):  # time
-                    for j in range(data.shape[2]):  # depth level
-                        data[i, :, j] = fill_tails(data[i, :, j])
-
             # Store the variable vertical levels in the output dataset
             # Create a 2D array where each row contains the vertical levels for a boundary node
             # For nodes with fewer levels, pad with NaN
@@ -907,10 +875,7 @@ class SCHISMDataBoundary(DataBoundary):
                 },
             )
         else:
-            # 2D case - simpler handling
-            if self.interpolate_missing_coastal:
-                for i in range(data.shape[0]):  # time
-                    data[i, :] = fill_tails(data[i, :])
+            # # 2D case - simpler handling
 
             # Add level and component dimensions for SCHISM
             time_series = np.expand_dims(data, axis=(2, 3))
@@ -1033,13 +998,6 @@ class SCHISMDataOcean(RompyBaseModel):
         None,
         description="SAL_3D",
     )
-
-    @model_validator(mode="after")
-    def not_yet_implemented(cls, v):
-        for variable in ["uv3D"]:
-            if getattr(v, variable) is not None:
-                raise NotImplementedError(f"Variable {variable} is not yet implemented")
-        return v
 
     @model_validator(mode="after")
     def set_id(cls, v):
