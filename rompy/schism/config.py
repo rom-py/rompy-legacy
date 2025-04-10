@@ -13,6 +13,11 @@ from .interface import TimeInterface
 from .namelists import NML
 from .namelists.param import Param
 
+# Import plotting functions
+from .config_plotting import plot_sflux_spatial, plot_sflux_timeseries
+from .config_plotting_boundary import plot_boundary_points, plot_boundary_timeseries, plot_boundary_profile
+from .config_plotting_tides import plot_tidal_boundaries, plot_tidal_stations, plot_tidal_rose, plot_tidal_dataset
+
 logger = logging.getLogger(__name__)
 
 HERE = Path(__file__).parent
@@ -531,6 +536,22 @@ class SCHISMConfig(BaseConfig):
 
     # Enable arbitrary types and validation from instances in Pydantic v2
     model_config = ConfigDict(arbitrary_types_allowed=True, from_attributes=True)
+    
+    # Add data visualization methods
+    # Atmospheric (sflux) plotting
+    plot_sflux_spatial = plot_sflux_spatial
+    plot_sflux_timeseries = plot_sflux_timeseries
+    
+    # Boundary data plotting
+    plot_boundary_points = plot_boundary_points
+    plot_boundary_timeseries = plot_boundary_timeseries
+    plot_boundary_profile = plot_boundary_profile
+    
+    # Tidal data plotting
+    plot_tidal_boundaries = plot_tidal_boundaries
+    plot_tidal_stations = plot_tidal_stations
+    plot_tidal_rose = plot_tidal_rose
+    plot_tidal_dataset = plot_tidal_dataset
 
     def __call__(self, runtime) -> str:
         logger = logging.getLogger(__name__)
