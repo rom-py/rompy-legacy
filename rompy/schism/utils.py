@@ -51,6 +51,7 @@ def schism_plot(
     contours=[10, 30, 50],
     pscale=20,
     cmap=plt.cm.jet,
+    add_coastlines=True,
 ):
     """
     plot output variable in xarray dataset (schout) using mesh information meshtri.
@@ -188,6 +189,8 @@ def schism_plot(
     cbar = plt.colorbar(mappable=cax, shrink=0.5)
     cbar.set_ticks(np.round(np.linspace(vmin, vmax, 5) * 100) / 100)
     cbar.set_label(varname)
+    if add_coastlines:
+        ax.coastlines()
 
     return fig, ax
 
