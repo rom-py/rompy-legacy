@@ -17,8 +17,12 @@ from .numpy_types import NumpyBool, NumpyFloat, NumpyInt, to_python_type
 # Import PyLibs directly
 sys.path.append("/home/tdurrant/source/pylibs")
 from pylib import *
-from src.schism_file import (compute_zcor, read_schism_bpfile,
-                             read_schism_hgrid, read_schism_vgrid)
+from src.schism_file import (
+    compute_zcor,
+    read_schism_bpfile,
+    read_schism_hgrid,
+    read_schism_vgrid,
+)
 
 from rompy.core import DataGrid, RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
@@ -27,8 +31,7 @@ from rompy.core.time import TimeRange
 from rompy.schism.bctides import Bctides  # Using direct implementation
 from rompy.schism.boundary import Boundary3D  # Using direct implementation
 from rompy.schism.boundary import BoundaryData
-from rompy.schism.grid import \
-    SCHISMGrid  # Now imported directly from grid module
+from rompy.schism.grid import SCHISMGrid  # Now imported directly from grid module
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
@@ -958,21 +961,6 @@ class SCHISMDataBoundary(DataBoundary):
             schism_ds[var].encoding["dtype"] = np.dtypes.Float64DType()
 
         return schism_ds
-
-
-def fill_tails(arr):
-    """If the tails of  1d array are nan, fill with the last non nan value."""
-    mask = np.isnan(arr)
-    idx = np.where(~mask, np.arange(mask.shape[0]), 0)
-    np.maximum.accumulate(idx, axis=0, out=idx)
-    out = arr[idx]
-    # repoat the same from the other end
-    reverse = out[::-1]
-    mask = np.isnan(reverse)
-    idx = np.where(~mask, np.arange(mask.shape[0]), 0)
-    np.maximum.accumulate(idx, axis=0, out=idx)
-    out = reverse[idx]
-    return out[::-1]
 
 
 class SCHISMDataOcean(RompyBaseModel):
