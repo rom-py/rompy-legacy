@@ -25,8 +25,8 @@ from rompy.core.boundary import BoundaryWaveStation, DataBoundary
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
 from rompy.schism.bctides import Bctides  # Using direct implementation
-from rompy.schism.boundary import (Boundary3D,  # Using direct implementation
-                                   BoundaryData)
+from rompy.schism.boundary import Boundary3D  # Using direct implementation
+from rompy.schism.boundary import BoundaryData
 from rompy.schism.grid import \
     SCHISMGrid  # Now imported directly from grid module
 from rompy.utils import total_seconds
@@ -1114,30 +1114,12 @@ class SCHISMDataTides(RompyBaseModel):
     # Allow arbitrary types for schema generation
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    @model_validator(mode="before")
-    @classmethod
-    def convert_numpy_types(cls, data):
-        """Convert any numpy values to Python native types"""
-        if not isinstance(data, dict):
-            return data
-
-        for key, value in list(data.items()):
-            if isinstance(value, (np.bool_, np.integer, np.floating, np.ndarray)):
-                data[key] = to_python_type(value)
-        return data
-
     data_type: Literal["tides"] = Field(
         default="tide",
         description="Model type discriminator",
     )
     tidal_data: Optional[TidalDataset] = Field(None, description="tidal dataset")
     # Fields below are used to construct a default TidalDataset if none is provided
-    tidal_elevations: Optional[AnyPath] = Field(
-        None, description="Path to elevations file"
-    )
-    tidal_velocities: Optional[AnyPath] = Field(
-        None, description="Path to velocities file"
-    )
     # Parameters for Bctides
     constituents: Optional[List[str]] = Field(
         None, description="Tidal constituents to include"
@@ -1169,66 +1151,17 @@ class SCHISMDataTides(RompyBaseModel):
     sobc: Optional[List[float]] = Field(None, description="Salinity OBC values")
     relax: Optional[List[float]] = Field(None, description="Relaxation parameters")
 
-    @model_validator(mode="after")
-    def validate_tidal_data(self):
-        """Create a default TidalDataset if not provided but paths are available."""
-        if self.tidal_data is None:
-            if self.tidal_elevations and self.tidal_velocities:
-                self.tidal_data = TidalDataset(
-                    elevations=self.tidal_elevations, velocities=self.tidal_velocities
-                )
-            else:
-                # For integration tests, use dummy paths if not provided
-                # but only in test environments
-                import os
+    @model_validator(mode="before")
+    @classmethod
+    def convert_numpy_types(cls, data):
+        """Convert any numpy values to Python native types"""
+        if not isinstance(data, dict):
+            return data
 
-                if "PYTEST_CURRENT_TEST" in os.environ:
-                    self.tidal_data = TidalDataset(
-                        elevations=Path("/tmp/dummy_elevation.nc"),
-                        velocities=Path("/tmp/dummy_velocity.nc"),
-                    )
-                else:
-                    raise ValueError(
-                        "Either tidal_data or both tidal_elevations and tidal_velocities must be provided"
-                    )
-        return self
-
-    cutoff_depth: float = Field(
-        50.0,
-        description="cutoff depth for tides",
-    )
-    flags: Optional[list] = Field([[5, 3, 0, 0]], description="nested list of bctypes")
-    constituents: Union[str, list] = Field("major", description="constituents")
-    database: str = Field(
-        "tpxo",
-        description="database",
-        json_schema_extra={"choices": ["tpxo", "fes2014"]},
-    )
-    add_earth_tidal: bool = Field(True, description="add_earth_tidal")
-    ethconst: Optional[list] = Field(
-        [], description="constant elevation value for each open boundary"
-    )
-    vthconst: Optional[list] = Field(
-        [], description="constant discharge value for each open boundary"
-    )
-    tthconst: Optional[list] = Field(
-        [], description="constant temperature value for each open boundary"
-    )
-
-    # Add field validators for numpy types
-    # No validation needed for ntip and tip_dp as they are scalar values
-    sthconst: Optional[list] = Field(
-        [], description="constant salinity value for each open boundary"
-    )
-    tobc: Optional[list[float]] = Field(
-        [1], description="nuding factor of temperature for each open boundary"
-    )
-    sobc: Optional[list[float]] = Field(
-        [1], description="nuding factor of salinity for each open boundary"
-    )
-    relax: Optional[list[float]] = Field(
-        [], description="relaxation constants for inflow and outflow"
-    )
+        for key, value in list(data.items()):
+            if isinstance(value, (np.bool_, np.integer, np.floating, np.ndarray)):
+                data[key] = to_python_type(value)
+        return data
 
     def get(self, destdir: str | Path, grid: SCHISMGrid, time: TimeRange) -> str:
         """Write all inputs to netcdf files.
@@ -1283,17 +1216,11 @@ class SCHISMDataTides(RompyBaseModel):
         tidal_elevations = None
         tidal_velocities = None
         if self.tidal_data:
-            if hasattr(self.tidal_data, 'elevations') and self.tidal_data.elevations:
+            if hasattr(self.tidal_data, "elevations") and self.tidal_data.elevations:
                 tidal_elevations = str(self.tidal_data.elevations)
-            if hasattr(self.tidal_data, 'velocities') and self.tidal_data.velocities:
+            if hasattr(self.tidal_data, "velocities") and self.tidal_data.velocities:
                 tidal_velocities = str(self.tidal_data.velocities)
-        else:
-            # Use directly provided paths
-            if self.tidal_elevations:
-                tidal_elevations = str(self.tidal_elevations)
-            if self.tidal_velocities:
-                tidal_velocities = str(self.tidal_velocities)
-                
+
         logger.info(f"Using tidal elevation file: {tidal_elevations}")
         logger.info(f"Using tidal velocity file: {tidal_velocities}")
 
@@ -1366,11 +1293,12 @@ class SCHISMDataTides(RompyBaseModel):
                 / "bctides.in"
             )
             test_path.parent.mkdir(parents=True, exist_ok=True)
-            
+
             # Only if the main bctides was successfully created, copy it
             if bctides_path.exists():
                 # Copy the file instead of creating a new one with different content
                 import shutil
+
                 shutil.copy2(bctides_path, test_path)
                 logger.info(f"Copied bctides.in to alternate location: {test_path}")
         except Exception as e:
@@ -1556,20 +1484,6 @@ class SCHISMData(RompyBaseModel):
                 logger.info(f"Tides data: {data}")
                 if hasattr(data, "tidal_data") and data.tidal_data is None:
                     logger.info(f"Creating tidal dataset for {datatype}")
-                    # Try to create tidal_data if tidal_elevations and tidal_velocities are provided
-                    if hasattr(data, "tidal_elevations") and hasattr(
-                        data, "tidal_velocities"
-                    ):
-                        if data.tidal_elevations and data.tidal_velocities:
-                            logger.info(
-                                f"Creating TidalDataset from {data.tidal_elevations} and {data.tidal_velocities}"
-                            )
-                            data.tidal_data = TidalDataset(
-                                data_type="tidal_dataset",
-                                elevations=data.tidal_elevations,
-                                velocities=data.tidal_velocities,
-                            )
-
                 # Ensure constituents is set
                 if hasattr(data, "constituents") and not data.constituents:
                     logger.info(f"Setting default constituents for {datatype}")
