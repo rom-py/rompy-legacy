@@ -134,6 +134,10 @@ class VGrid(BaseModel):
             logger.error(f"Error creating vgrid.in: {e}")
             raise
 
+    def get(self, destdir: Union[str, Path]) -> Path:
+        """Compatitibilty helper function"""
+        return self.generate(destdir)
+
     def _create_manually(self, vgrid_path: Path) -> None:
         """Create vgrid.in file manually as a fallback method.
 
