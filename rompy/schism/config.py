@@ -4,21 +4,16 @@ from typing import Any, Literal, Optional, Union
 
 from pydantic import ConfigDict, Field, model_serializer, model_validator
 
-from rompy.core import BaseConfig, DataBlob, RompyBaseModel, Spectrum, TimeRange
+from rompy.core import (BaseConfig, DataBlob, RompyBaseModel, Spectrum,
+                        TimeRange)
 
 # Import plotting functions
 from .config_plotting import plot_sflux_spatial, plot_sflux_timeseries
-from .config_plotting_boundary import (
-    plot_boundary_points,
-    plot_boundary_profile,
-    plot_boundary_timeseries,
-)
-from .config_plotting_tides import (
-    plot_tidal_boundaries,
-    plot_tidal_dataset,
-    plot_tidal_rose,
-    plot_tidal_stations,
-)
+from .config_plotting_boundary import (plot_boundary_points,
+                                       plot_boundary_profile,
+                                       plot_boundary_timeseries)
+from .config_plotting_tides import (plot_tidal_boundaries, plot_tidal_dataset,
+                                    plot_tidal_rose, plot_tidal_stations)
 from .data import SCHISMData
 from .grid import SCHISMGrid
 from .interface import TimeInterface
@@ -600,14 +595,8 @@ class SCHISMConfig(BaseConfig):
     def __call__(self, runtime) -> str:
         logger = logging.getLogger(__name__)
 
-        # Grid is already initialized properly during __init__, just call get() if available
-        if (
-            self.grid is not None
-            and hasattr(self.grid, "get")
-            and callable(self.grid.get)
-        ):
-            logger.info(f"Generating grid files using {type(self.grid).__name__}")
-            self.grid.get(runtime.staging_dir)
+        logger.info(f"Generating grid files using {type(self.grid).__name__}")
+        self.grid.get(runtime.staging_dir)
 
         if self.data is not None:
             self.nml.update_data_sources(
@@ -616,20 +605,10 @@ class SCHISMConfig(BaseConfig):
                 )
             )
         self.nml.update_times(period=runtime.period)
+
         self.nml.write_nml(runtime.staging_dir)
 
-        # Config should only call the get methods of the grid and data classes
-        # It should not directly create files
-        staging_dir = Path(runtime.staging_dir)
-
-        # The necessary files should be created by the respective classes
-        # through their get() methods
-
         return str(runtime.staging_dir)
-
-        # Note: Required grid files like drag.gr3, windrot_geo2proj.gr3, etc., and symlinks
-        # like hgrid.ll and hgrid_WWM.gr3, are handled by the SCHISMGrid.get() method,
-        # which is called earlier in this process
 
 
 class SchismCSIROMigrationConfig(SchismCSIROConfig):

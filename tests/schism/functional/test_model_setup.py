@@ -11,6 +11,7 @@ import pytest
 import yaml
 
 from rompy.core import DataBlob, TimeRange
+from rompy.core.source import SourceFile
 from rompy.schism import SCHISMGrid
 from rompy.schism.data import (
     SCHISMDataBoundary,
@@ -75,7 +76,7 @@ class TestFullModelSetup:
         assert config["grid"]["gr3_files"][0]["type"] == "drag"
 
     def test_realistic_model_setup(
-        self, grid2d, hycom_bnd2d, grid_atmos_source, tmp_path
+        self, grid2d, test_files_dir, grid_atmos_source, tmp_path
     ):
         """Test a realistic model setup with multiple components."""
         # Create model directory
@@ -94,13 +95,12 @@ class TestFullModelSetup:
         # Here we would generate all gr3 files
         # For now, just check that we have the data we need
         assert grid2d is not None
-        assert hycom_bnd2d is not None
         assert grid_atmos_source is not None
 
         # 2. Set up boundaries
         ocean_data = SCHISMDataOcean(
             elev2D=SCHISMDataBoundary(
-                source=hycom_bnd2d,
+                source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
                 variables=["surf_el"],
             ),
         )

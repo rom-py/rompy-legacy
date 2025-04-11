@@ -563,9 +563,6 @@ class SCHISMDataBoundary(DataBoundary):
     """This class is used to extract ocean boundary data from a griddd dataset at all open
     boundary nodes."""
 
-    # Allow arbitrary types including numpy types
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
     data_type: Literal["boundary"] = Field(
         default="boundary",
         description="Model type discriminator",
@@ -580,23 +577,6 @@ class SCHISMDataBoundary(DataBoundary):
     data_grid_source: Optional[DataGrid] = Field(
         None, description="DataGrid source for boundary data"
     )
-
-    @model_validator(mode="before")
-    @classmethod
-    def validate_source_field(cls, data):
-        """Handle DataGrid objects passed as 'source' for compatibility with tests.
-        This is needed because Pydantic v2 has stricter validation than v1."""
-        # Get the source value from the data dictionary
-        source = data.get("source")
-
-        # If source is a DataGrid, move it to data_grid_source and use its source instead
-        if source and isinstance(source, DataGrid):
-            data["data_grid_source"] = source
-            if hasattr(source, "source"):
-                data["source"] = source.source
-
-        return data
-
     variables: list[str] = Field(..., description="variable name in the dataset")
     sel_method: Literal["sel", "interp"] = Field(
         default="interp",
