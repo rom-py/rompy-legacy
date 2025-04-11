@@ -2,14 +2,8 @@ from datetime import datetime, timedelta
 from typing import Any, Callable, Dict, Optional, Set, Union
 
 import isodate
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field,
-    field_validator,
-    model_serializer,
-    model_validator,
-)
+from pydantic import (BaseModel, ConfigDict, Field, field_validator,
+                      model_serializer, model_validator)
 from pydantic.json_schema import core_schema
 
 time_units = {
