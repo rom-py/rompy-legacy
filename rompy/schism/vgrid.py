@@ -31,6 +31,10 @@ class VGrid(BaseModel):
     This class directly mirrors the PyLibs create_schism_vgrid API.
     """
 
+    model_type: Literal["schism_vgrid"] = Field(
+        "schism_vgrid", description="Model discriminator"
+    )
+
     # Type of vertical coordinate: 1=LSC2, 2=SZ
     ivcor: int = Field(default=1, description="Vertical coordinate type (1=LSC2, 2=SZ)")
 
@@ -64,6 +68,7 @@ class VGrid(BaseModel):
         Path
             Path to the created vgrid.in file
         """
+        # TODO cleanup
         destdir = Path(destdir)
         destdir.mkdir(parents=True, exist_ok=True)
 

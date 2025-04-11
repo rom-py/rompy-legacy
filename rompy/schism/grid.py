@@ -28,9 +28,10 @@ from shapely.geometry import MultiPoint, Polygon
 from rompy.core import DataBlob, RompyBaseModel
 from rompy.core.grid import BaseGrid
 
+from .vgrid import VGrid, create_2d_vgrid
+
 logger = logging.getLogger(__name__)
 
-import os
 
 G3ACCEPT = ["albedo", "diffmin", "diffmax", "watertype", "windrot_geo2proj"]
 G3WARN = ["manning", "rough", "drag"]
@@ -198,8 +199,6 @@ class GR3Generator(GeneratorBase):
         return dest
 
 
-from rompy.schism.vgrid import VGrid, create_2d_vgrid
-
 # Vertical grid type constants (module level for easy importing)
 VGRID_TYPE_2D = "2d"
 VGRID_TYPE_LSC2 = "lsc2"
@@ -213,6 +212,9 @@ class VgridGenerator(GeneratorBase):
     """
 
     # VGrid configuration parameters
+    model_type: Literal["vgridgenerator"] = Field(
+        "vgridgenerator", description="Model discriminator"
+    )
     vgrid_type: str = Field(
         default="2d",
         description="Type of vertical grid to generate (2d, lsc2, or sz)",
@@ -474,7 +476,7 @@ class SCHISMGrid(BaseGrid):
 
     grid_type: Literal["schism"] = Field("schism", description="Model descriminator")
     hgrid: DataBlob = Field(..., description="Path to hgrid.gr3 file")
-    vgrid: Optional[DataBlob | VgridGenerator] = Field(
+    vgrid: Optional[DataBlob | VgridGenerator | VGrid] = Field(
         description="Path to vgrid.in file",
         default_factory=create_2d_vgrid,
     )
