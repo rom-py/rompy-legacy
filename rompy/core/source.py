@@ -58,7 +58,21 @@ class SourceBase(RompyBaseModel, ABC):
         """
         ds = self._open()
         if variables:
-            ds = ds[variables]
+            try:
+                ds = ds[variables]
+            except KeyError as e:
+                dataset_variables = list(ds.data_vars.keys())
+                missing_variables = list(set(variables) - set(dataset_variables))
+                raise ValueError(
+                    f"Cannot find requested variables in dataset.\n\n"
+                    f"Requested variables in the Data object: {variables}\n"
+                    f"Available variables in source dataset: {dataset_variables}\n"
+                    f"Missing variables: {missing_variables}\n\n"
+                    f"Please check:\n"
+                    f"1. The variable names in your Data object, make sure you check for default values\n"
+                    f"2. The data source contains the expected variables\n"
+                    f"3. If using a custom data source, ensure it creates variables with the correct names"
+                ) from e
         if filters:
             ds = filters(ds)
         return ds
