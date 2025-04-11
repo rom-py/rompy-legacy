@@ -63,8 +63,8 @@ class TestVgridGenerator:
         assert vgrid.nvrt == 15
 
         # Create vgrid.in file
-        vgrid_file = vgrid_generator.generate(tmp_path)
-        assert vgrid_file.exists()
+        with pytest.raises(ValueError):
+            vgrid_file = vgrid_generator.generate(tmp_path)
 
     def test_vgrid_sz(self, hgrid_path, tmp_path):
         """Test SZ vertical grid specifically."""

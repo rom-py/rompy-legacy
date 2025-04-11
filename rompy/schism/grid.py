@@ -237,22 +237,6 @@ class VgridGenerator(GeneratorBase):
         default=1.0, description="Surface theta parameter for SZ vertical grid"
     )
 
-    @model_serializer
-    def serialize_model(self, **kwargs):
-        """Custom serializer to handle proper serialization of the vgrid field."""
-        result = {
-            field_name: getattr(self, field_name)
-            for field_name in self.model_fields
-            if getattr(self, field_name, None) is not None
-        }
-
-        # Remove private attributes
-        for key in list(result.keys()):
-            if key.startswith("_"):
-                del result[key]
-
-        return result
-
     def generate(self, destdir: str | Path) -> Path:
         logger = logging.getLogger(__name__)
         dest_path = Path(destdir) / "vgrid.in"
@@ -260,20 +244,15 @@ class VgridGenerator(GeneratorBase):
             f"Generating vgrid.in at {dest_path} using unified VGrid implementation"
         )
 
-        try:
-            # Create appropriate VGrid instance based on vgrid_type
-            vgrid = self._create_vgrid_instance()
-            return vgrid.generate(destdir)
-        except Exception as e:
-            logger.warning(f"Failed to generate vgrid using unified VGrid: {e}")
-            return self._create_minimal_vgrid(destdir)
+        vgrid = self._create_vgrid_instance()
+        return vgrid.generate(destdir)
 
     def _create_vgrid_instance(self) -> "VGrid":
         """Create the appropriate VGrid instance based on configuration."""
         from rompy.schism.vgrid import VGrid
 
         if self.vgrid_type.lower() == "2d":
-            return VGrid.create_lsc2(nvrt=2, h_s=-1.0e6)
+            return create_2d_vgrid()
         elif self.vgrid_type.lower() == "lsc2":
             return VGrid.create_lsc2(nvrt=self.nvrt, h_s=self.hsm)
         elif self.vgrid_type.lower() == "sz":
@@ -294,55 +273,6 @@ class VgridGenerator(GeneratorBase):
         except Exception as e:
             logger.error(f"Error using VGrid.create_2d_vgrid: {e}")
             return self._create_minimal_vgrid(destdir)
-
-    def _create_minimal_vgrid(self, destdir: str | Path) -> Path:
-        """Create a minimal vgrid.in file as a last resort."""
-        logger.info(f"Creating minimal vgrid.in directly as last resort")
-        dest_path = Path(destdir) / "vgrid.in"
-
-        try:
-            # Ensure directory exists
-            Path(destdir).mkdir(parents=True, exist_ok=True)
-
-            # Write a basic vgrid.in file suitable for 2D models
-            with open(dest_path, "w") as f:
-                f.write("1 !ivcor (1: LSC2; 2: SZ)\n")  # Use LSC2 which is more stable
-                f.write(
-                    "2 1 1000000.0 !nvrt (# of S-levels), kz (# of Z-levels), h_s (transition depth)\n"
-                )
-                f.write("Z levels\n")
-                f.write("1 -1000000.0  !level index, z-coordinates\n")
-                f.write("S levels\n")
-                f.write("2 1.0  !level index, sigma-value\n")
-
-            # Also create in test directory which may be what the test script is looking for
-            test_path = (
-                Path(destdir).parent
-                / "schism_declaritive"
-                / "test_schism_nml"
-                / "vgrid.in"
-            )
-            if not test_path.exists():
-                test_path.parent.mkdir(parents=True, exist_ok=True)
-
-                with open(test_path, "w") as f:
-                    f.write(
-                        "1 !ivcor (1: LSC2; 2: SZ)\n"
-                    )  # Use LSC2 which is more stable
-                    f.write(
-                        "2 1 1000000.0 !nvrt (# of S-levels), kz (# of Z-levels), h_s (transition depth)\n"
-                    )
-                    f.write("Z levels\n")
-                    f.write("1 -1000000.0  !level index, z-coordinates\n")
-                    f.write("S levels\n")
-                    f.write("2 1.0  !level index, sigma-value\n")
-                logger.info(f"Also created vgrid.in at test location: {test_path}")
-
-            logger.info(f"Successfully created minimal vgrid.in at {dest_path}")
-            return dest_path
-        except Exception as e:
-            logger.error(f"Failed to create minimal vgrid.in: {e}")
-            raise
 
 
 class WWMBNDGR3Generator(GeneratorBase):

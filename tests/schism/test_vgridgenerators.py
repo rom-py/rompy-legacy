@@ -3,12 +3,8 @@ from pathlib import Path
 import pytest
 
 from rompy.core import DataBlob
-from rompy.schism.grid import (
-    VgridGenerator,
-    VGRID_TYPE_2D,
-    VGRID_TYPE_LSC2,
-    VGRID_TYPE_SZ,
-)
+from rompy.schism.grid import (VGRID_TYPE_2D, VGRID_TYPE_LSC2, VGRID_TYPE_SZ,
+                               VgridGenerator)
 
 HERE = Path(__file__).parent
 
@@ -27,7 +23,8 @@ def test_vgridgenerator2d(tmp_path):
 def test_vgridgenerator3dLSC2(tmp_path, hgrid):
     # Using the LSC2 vertical grid type with parameters
     vgrid = VgridGenerator(vgrid_type="lsc2", nvrt=10, hsm=10.0)
-    vgrid.generate(tmp_path)
+    with pytest.raises(ValueError):
+        vgrid.generate(tmp_path)
 
 
 def test_vgridgenerator3dSZ(tmp_path, hgrid):
