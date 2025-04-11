@@ -10,7 +10,8 @@ import scipy as sp
 import xarray as xr
 from cloudpathlib import AnyPath
 from pydantic import ConfigDict, Field, field_validator, model_validator
-from pylib import compute_zcor, read_schism_bpfile, read_schism_hgrid, read_schism_vgrid
+from pylib import (compute_zcor, read_schism_bpfile, read_schism_hgrid,
+                   read_schism_vgrid)
 
 from rompy.core import DataGrid, RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
@@ -19,13 +20,13 @@ from rompy.core.time import TimeRange
 from rompy.schism.bctides import Bctides  # Using direct implementation
 from rompy.schism.boundary import Boundary3D  # Using direct implementation
 from rompy.schism.boundary import BoundaryData
-from rompy.schism.grid import SCHISMGrid  # Now imported directly from grid module
+from rompy.schism.grid import \
+    SCHISMGrid  # Now imported directly from grid module
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
-
 # Import numpy type handlers to enable proper Pydantic validation with numpy types
-from .numpy_types import NumpyBool, NumpyFloat, NumpyInt, to_python_type
+from .numpy_types import to_python_type
 
 logger = logging.getLogger(__name__)
 
@@ -1289,38 +1290,14 @@ class SCHISMData(RompyBaseModel):
 
             logger.info(f"{datatype} data type: {type(data).__name__}")
 
-            # # For tides specifically, ensure tidal_data exists and constituents are set
-            # if datatype == "tides" and data is not None:
-            #     logger.info(f"Tides data: {data}")
-            #     if hasattr(data, "tidal_data") and data.tidal_data is None:
-            #         logger.info(f"Creating tidal dataset for {datatype}")
-            #     # Ensure constituents is set
-            #     if hasattr(data, "constituents") and not data.constituents:
-            #         logger.info(f"Setting default constituents for {datatype}")
-            #         data.constituents = ["M2", "S2", "N2"]  # Default constituents
-            #
-            #     # Ensure flags is set
-            #     if hasattr(data, "flags") and not data.flags:
-            #         logger.info(f"Setting default flags for {datatype}")
-            #         data.flags = [[5, 3, 0, 0]]  # Default flags
-            #
-            # try:
-            #     if type(data) is DataBlob:
-            #         logger.info(f"Calling get on DataBlob for {datatype}")
-            #         output = data.get(destdir)
-            #     else:
-            #         logger.info(f"Calling get on {type(data).__name__} for {datatype}")
-            #         output = data.get(destdir, grid, time)
-            #     ret.update({datatype: output})
-            #     logger.info(f"Successfully processed {datatype} data")
-            # except Exception as e:
-            #     logger.error(f"Error processing {datatype} data: {e}")
-            #     import traceback
-            #
-            #     logger.error(traceback.format_exc())
-            # # ret[
-            # #     "wave"
-            # # ] = "dummy"  # Just to make cookiecutter happy if excluding wave forcing
+            if type(data) is DataBlob:
+                logger.info(f"Calling get on DataBlob for {datatype}")
+                output = data.get(destdir)
+            else:
+                logger.info(f"Calling get on {type(data).__name__} for {datatype}")
+                output = data.get(destdir, grid, time)
+            ret.update({datatype: output})
+            logger.info(f"Successfully processed {datatype} data")
         return ret
 
 
