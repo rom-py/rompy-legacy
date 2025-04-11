@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any, List, Optional, Tuple, Union
 
 import numpy as np
-from pylib import *
+from pylib import ReadNC
 
 logger = logging.getLogger(__name__)
 
@@ -178,9 +178,9 @@ class Bctides:
 
         # Try to get tidal constituent information directly from TPXO file
         if self.tidal_elevations and os.path.exists(self.tidal_elevations):
-            logger.info(f"Getting tidal constituents from {self.tidal_elevations}")
-            # Open the TPXO elevation file
             try:
+                logger.info(f"Getting tidal constituents from {self.tidal_elevations}")
+                # Open the TPXO elevation file
                 nc = ReadNC(self.tidal_elevations, 1)
                 # Get list of tidal constituents from the file
                 if hasattr(nc, "variables") and "con" in nc.variables:
@@ -517,67 +517,63 @@ class Bctides:
             if not os.path.exists(tpxo_file):
                 raise FileNotFoundError(f"TPXO file not found: {tpxo_file}")
 
-            try:
-                # Open the TPXO file
-                nc = ReadNC(tpxo_file, 1)
+            # Open the TPXO file
+            nc = ReadNC(tpxo_file, 1)
 
-                # Get the list of constituents in the file
-                cons = nc.variables["con"][:]
-                file_constituents = []
-                for i in range(len(cons)):
-                    const_name = "".join([c.decode("utf-8") for c in cons[i]]).strip()
-                    file_constituents.append(const_name)
+            # Get the list of constituents in the file
+            cons = nc.variables["con"][:]
+            file_constituents = []
+            for i in range(len(cons)):
+                const_name = "".join([c.decode("utf-8") for c in cons[i]]).strip()
+                file_constituents.append(const_name)
 
-                # Find the index of the requested constituent
-                const_idx = None
-                for i, c in enumerate(file_constituents):
-                    if c.upper() == constituent.upper():
-                        const_idx = i
-                        break
+            # Find the index of the requested constituent
+            const_idx = None
+            for i, c in enumerate(file_constituents):
+                if c.upper() == constituent.upper():
+                    const_idx = i
+                    break
 
-                if const_idx is None:
-                    raise ValueError(
-                        f"Constituent {constituent} not found in TPXO file {tpxo_file}"
-                    )
+            if const_idx is None:
+                raise ValueError(
+                    f"Constituent {constituent} not found in TPXO file {tpxo_file}"
+                )
 
-                # Get the grid coordinates
-                lon = np.array(nc.variables["lon_z"][:])
-                lat = np.array(nc.variables["lat_z"][:])
+            # Get the grid coordinates
+            lon = np.array(nc.variables["lon_z"][:])
+            lat = np.array(nc.variables["lat_z"][:])
 
-                # Get the tidal data
-                if data_type == "h":
-                    # Elevation data
-                    amp = np.array(nc.variables["ha"][const_idx]).squeeze()
-                    pha = np.array(nc.variables["hp"][const_idx]).squeeze()
+            # Get the tidal data
+            if data_type == "h":
+                # Elevation data
+                amp = np.array(nc.variables["ha"][const_idx]).squeeze()
+                pha = np.array(nc.variables["hp"][const_idx]).squeeze()
 
-                    # Ensure phase is positive
-                    pha[pha < 0] += 360
+                # Ensure phase is positive
+                pha[pha < 0] += 360
 
-                    # Interpolate to boundary points
-                    result = self._tpxo_interpolate(xi, yi, lon, lat, amp, pha)
-                else:  # data_type == "uv"
-                    # Velocity data
-                    u_amp = np.array(nc.variables["ua"][const_idx]).squeeze()
-                    u_pha = np.array(nc.variables["up"][const_idx]).squeeze()
-                    v_amp = np.array(nc.variables["va"][const_idx]).squeeze()
-                    v_pha = np.array(nc.variables["vp"][const_idx]).squeeze()
+                # Interpolate to boundary points
+                result = self._tpxo_interpolate(xi, yi, lon, lat, amp, pha)
+            else:  # data_type == "uv"
+                # Velocity data
+                u_amp = np.array(nc.variables["ua"][const_idx]).squeeze()
+                u_pha = np.array(nc.variables["up"][const_idx]).squeeze()
+                v_amp = np.array(nc.variables["va"][const_idx]).squeeze()
+                v_pha = np.array(nc.variables["vp"][const_idx]).squeeze()
 
-                    # Ensure phases are positive
-                    u_pha[u_pha < 0] += 360
-                    v_pha[v_pha < 0] += 360
+                # Ensure phases are positive
+                u_pha[u_pha < 0] += 360
+                v_pha[v_pha < 0] += 360
 
-                    # Interpolate to boundary points
-                    result_u = self._tpxo_interpolate(xi, yi, lon, lat, u_amp, u_pha)
-                    result_v = self._tpxo_interpolate(xi, yi, lon, lat, v_amp, v_pha)
+                # Interpolate to boundary points
+                result_u = self._tpxo_interpolate(xi, yi, lon, lat, u_amp, u_pha)
+                result_v = self._tpxo_interpolate(xi, yi, lon, lat, v_amp, v_pha)
 
-                    # Combine results
-                    result[:, 0:2] = result_u
-                    result[:, 2:4] = result_v
+                # Combine results
+                result[:, 0:2] = result_u
+                result[:, 2:4] = result_v
 
-                nc.close()
-            except Exception as e:
-                logger.error(f"Error processing TPXO data for {constituent}: {e}")
-                raise
+            nc.close()
 
         elif self.tidal_database.lower() == "fes2014" and "FES2014_DIR" in os.environ:
             # Use FES2014 database

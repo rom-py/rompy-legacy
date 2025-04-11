@@ -10,19 +10,7 @@ import scipy as sp
 import xarray as xr
 from cloudpathlib import AnyPath
 from pydantic import ConfigDict, Field, field_validator, model_validator
-
-# Import numpy type handlers to enable proper Pydantic validation with numpy types
-from .numpy_types import NumpyBool, NumpyFloat, NumpyInt, to_python_type
-
-# Import PyLibs directly
-sys.path.append("/home/tdurrant/source/pylibs")
-from pylib import *
-from src.schism_file import (
-    compute_zcor,
-    read_schism_bpfile,
-    read_schism_hgrid,
-    read_schism_vgrid,
-)
+from pylib import compute_zcor, read_schism_bpfile, read_schism_hgrid, read_schism_vgrid
 
 from rompy.core import DataGrid, RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
@@ -35,6 +23,9 @@ from rompy.schism.grid import SCHISMGrid  # Now imported directly from grid modu
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
+
+# Import numpy type handlers to enable proper Pydantic validation with numpy types
+from .numpy_types import NumpyBool, NumpyFloat, NumpyInt, to_python_type
 
 logger = logging.getLogger(__name__)
 
@@ -1145,11 +1136,6 @@ class SCHISMDataTides(RompyBaseModel):
 
         logger.info(f"Generating tides with constituents={self.constituents}")
 
-        # Check if grid has open boundaries, if not, create them
-        if not hasattr(grid.pylibs_hgrid, "nob") or grid.pylibs_hgrid.nob <= 0:
-            logger.warning("Grid has no open boundaries, attempting to create them")
-            self._ensure_grid_has_boundaries(grid.pylibs_hgrid)
-
         logger.info(f"Creating bctides with hgrid: {grid.pylibs_hgrid}")
         logger.info(f"Grid has nob: {hasattr(grid.pylibs_hgrid, 'nob')}")
         if hasattr(grid.pylibs_hgrid, "nob"):
@@ -1204,6 +1190,7 @@ class SCHISMDataTides(RompyBaseModel):
         result = bctides.write_bctides(bctides_path)
         logger.info(f"write_bctides returned: {result}")
 
+        # TODO remove
         # Check if the file was created
         if bctides_path.exists():
             logger.info(f"bctides.in file was created successfully")
@@ -1251,129 +1238,6 @@ class SCHISMDataTides(RompyBaseModel):
             logger.error(f"Failed to copy bctides.in to alternate location: {e}")
 
         return str(bctides_path)
-
-    def _ensure_grid_has_boundaries(self, hg):
-        """Add open boundaries to a grid if it doesn't have any."""
-        logger.info("Attempting to add open boundaries to grid")
-
-        # First method: Find nodes on the edges of the domain
-        try:
-            import numpy as np
-
-            # Get the min/max coordinates to find boundary nodes
-            x_min, x_max = np.min(hg.x), np.max(hg.x)
-            y_min, y_max = np.min(hg.y), np.max(hg.y)
-
-            # Find nodes on the left edge (minimum x) as our primary boundary
-            boundary_tolerance = 0.001
-            left_boundary_nodes = [
-                i + 1
-                for i, (x, y) in enumerate(zip(hg.x, hg.y))
-                if abs(x - x_min) < boundary_tolerance
-            ]
-
-            # Sort nodes by y coordinate to ensure they're continuous
-            left_boundary_nodes.sort(key=lambda i: hg.y[i - 1])
-
-            # Also find nodes on other edges as potential additional boundaries
-            right_boundary_nodes = [
-                i + 1
-                for i, (x, y) in enumerate(zip(hg.x, hg.y))
-                if abs(x - x_max) < boundary_tolerance
-            ]
-            right_boundary_nodes.sort(key=lambda i: hg.y[i - 1])
-
-            bottom_boundary_nodes = [
-                i + 1
-                for i, (x, y) in enumerate(zip(hg.x, hg.y))
-                if abs(y - y_min) < boundary_tolerance
-            ]
-            bottom_boundary_nodes.sort(key=lambda i: hg.x[i - 1])
-
-            top_boundary_nodes = [
-                i + 1
-                for i, (x, y) in enumerate(zip(hg.x, hg.y))
-                if abs(y - y_max) < boundary_tolerance
-            ]
-            top_boundary_nodes.sort(key=lambda i: hg.x[i - 1])
-
-            # Collect all valid boundaries (with at least 2 nodes)
-            boundaries = []
-            if len(left_boundary_nodes) >= 2:
-                boundaries.append(left_boundary_nodes)
-            if len(right_boundary_nodes) >= 2:
-                boundaries.append(right_boundary_nodes)
-            if len(bottom_boundary_nodes) >= 2:
-                boundaries.append(bottom_boundary_nodes)
-            if len(top_boundary_nodes) >= 2:
-                boundaries.append(top_boundary_nodes)
-
-            if len(boundaries) > 0:
-                # Set the open boundaries
-                hg.nob = len(boundaries)  # Number of open boundaries
-                hg.iobn = boundaries  # List of node lists for each boundary
-
-                # Calculate total number of open boundary nodes
-                hg.nobn = sum(len(nodes) for nodes in boundaries)
-
-                # Set the starting index for each boundary
-                hg.iob = [1]  # Starting index of the first boundary
-                for i in range(1, len(boundaries)):
-                    hg.iob.append(hg.iob[i - 1] + len(boundaries[i - 1]))
-
-                # Set the number of nodes on each boundary
-                hg.nvdll = [len(nodes) for nodes in boundaries]
-
-                logger.info(
-                    f"Successfully created {hg.nob} open boundaries with {hg.nobn} total nodes"
-                )
-                return True
-            else:
-                logger.warning(
-                    "No edge boundaries found, falling back to minimal configuration"
-                )
-                # Fallback to minimal configuration
-                return self._create_minimal_boundaries(hg)
-
-        except Exception as e:
-            import traceback
-
-            logger.error(f"Error finding boundary nodes: {e}")
-            logger.error(traceback.format_exc())
-            # Try fallback method
-            return self._create_minimal_boundaries(hg)
-
-    def _create_minimal_boundaries(self, hg):
-        """Create minimal open boundaries as a last resort."""
-        try:
-            logger.info("Creating minimal open boundary configuration")
-
-            # Just use the first few nodes as a boundary
-            num_nodes = len(hg.x)
-            boundary_size = min(
-                10, num_nodes // 4
-            )  # Use at most 10 nodes or 1/4 of total nodes
-
-            if boundary_size >= 2:  # Need at least 2 nodes for a boundary
-                boundary_nodes = [i + 1 for i in range(boundary_size)]  # 1-indexed
-
-                # Set boundary properties
-                hg.nob = 1  # One open boundary
-                hg.nobn = boundary_size  # Number of nodes in the boundary
-                hg.iobn = [boundary_nodes]  # List of node indices
-                hg.iob = [1]  # Index of first node
-                hg.nvdll = [boundary_size]  # Number of nodes on the boundary
-
-                logger.info(
-                    f"Successfully created minimal open boundary with {boundary_size} nodes"
-                )
-                return True
-            else:
-                logger.error("Grid has too few nodes to create boundaries")
-                return False
-        except Exception as e:
-            logger.error(f"Failed to create minimal boundaries: {e}")
-            return False
 
 
 class SCHISMData(RompyBaseModel):
@@ -1425,38 +1289,38 @@ class SCHISMData(RompyBaseModel):
 
             logger.info(f"{datatype} data type: {type(data).__name__}")
 
-            # For tides specifically, ensure tidal_data exists and constituents are set
-            if datatype == "tides" and data is not None:
-                logger.info(f"Tides data: {data}")
-                if hasattr(data, "tidal_data") and data.tidal_data is None:
-                    logger.info(f"Creating tidal dataset for {datatype}")
-                # Ensure constituents is set
-                if hasattr(data, "constituents") and not data.constituents:
-                    logger.info(f"Setting default constituents for {datatype}")
-                    data.constituents = ["M2", "S2", "N2"]  # Default constituents
-
-                # Ensure flags is set
-                if hasattr(data, "flags") and not data.flags:
-                    logger.info(f"Setting default flags for {datatype}")
-                    data.flags = [[5, 3, 0, 0]]  # Default flags
-
-            try:
-                if type(data) is DataBlob:
-                    logger.info(f"Calling get on DataBlob for {datatype}")
-                    output = data.get(destdir)
-                else:
-                    logger.info(f"Calling get on {type(data).__name__} for {datatype}")
-                    output = data.get(destdir, grid, time)
-                ret.update({datatype: output})
-                logger.info(f"Successfully processed {datatype} data")
-            except Exception as e:
-                logger.error(f"Error processing {datatype} data: {e}")
-                import traceback
-
-                logger.error(traceback.format_exc())
-            # ret[
-            #     "wave"
-            # ] = "dummy"  # Just to make cookiecutter happy if excluding wave forcing
+            # # For tides specifically, ensure tidal_data exists and constituents are set
+            # if datatype == "tides" and data is not None:
+            #     logger.info(f"Tides data: {data}")
+            #     if hasattr(data, "tidal_data") and data.tidal_data is None:
+            #         logger.info(f"Creating tidal dataset for {datatype}")
+            #     # Ensure constituents is set
+            #     if hasattr(data, "constituents") and not data.constituents:
+            #         logger.info(f"Setting default constituents for {datatype}")
+            #         data.constituents = ["M2", "S2", "N2"]  # Default constituents
+            #
+            #     # Ensure flags is set
+            #     if hasattr(data, "flags") and not data.flags:
+            #         logger.info(f"Setting default flags for {datatype}")
+            #         data.flags = [[5, 3, 0, 0]]  # Default flags
+            #
+            # try:
+            #     if type(data) is DataBlob:
+            #         logger.info(f"Calling get on DataBlob for {datatype}")
+            #         output = data.get(destdir)
+            #     else:
+            #         logger.info(f"Calling get on {type(data).__name__} for {datatype}")
+            #         output = data.get(destdir, grid, time)
+            #     ret.update({datatype: output})
+            #     logger.info(f"Successfully processed {datatype} data")
+            # except Exception as e:
+            #     logger.error(f"Error processing {datatype} data: {e}")
+            #     import traceback
+            #
+            #     logger.error(traceback.format_exc())
+            # # ret[
+            # #     "wave"
+            # # ] = "dummy"  # Just to make cookiecutter happy if excluding wave forcing
         return ret
 
 

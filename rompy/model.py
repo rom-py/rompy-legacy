@@ -8,17 +8,19 @@ from datetime import datetime
 from pathlib import Path
 from typing import Union
 
-from pydantic import Field
+from pydantic import Field, model_validator
+
+from rompy.utils import load_entry_points
 
 from .core import BaseConfig, RompyBaseModel, TimeRange
 from .core.render import render
-from rompy.utils import load_entry_points
 
 logger = logging.getLogger(__name__)
 
 
 # Accepted config types are defined in the entry points of the rompy.config group
 CONFIG_TYPES = load_entry_points("rompy.config")
+
 
 class ModelRun(RompyBaseModel):
     """A model run.
