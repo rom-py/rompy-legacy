@@ -9,16 +9,9 @@ import xarray as xr
 from rompy.core import DataBlob, TimeRange
 from rompy.core.source import SourceFile, SourceIntake
 from rompy.schism import SCHISMGrid
-from rompy.schism.data import (
-    SCHISMDataBoundary,
-    SCHISMDataOcean,
-    SCHISMDataSflux,
-    SCHISMDataTides,
-    SfluxAir,
-    TidalDataset,
-)
-# Import helper functions from test_adapter
-from tests.schism.test_adapter import prepare_test_grid, ensure_boundary_data_format, patch_output_file
+from rompy.schism.data import (SCHISMDataBoundary, SCHISMDataOcean,
+                               SCHISMDataSflux, SCHISMDataTides, SfluxAir,
+                               TidalDataset)
 
 HERE = Path(__file__).parent
 DATAMESH_TOKEN = os.environ.get("DATAMESH_TOKEN")
@@ -30,7 +23,7 @@ logging.basicConfig(level=logging.INFO)
 @pytest.fixture
 def grid2d():
     grid = SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
-    return prepare_test_grid(grid)
+    return grid
 
 
 @pytest.fixture
@@ -40,7 +33,7 @@ def grid3d():
         vgrid=DataBlob(source=HERE / "test_data/vgrid.in"),
         drag=1,
     )
-    return prepare_test_grid(grid)
+    return grid
 
 
 @pytest.fixture
@@ -109,191 +102,95 @@ def test_atmos(tmp_path, grid_atmos_source):
     data.get(tmp_path)
 
 
-def test_oceandataboundary(tmp_path, grid2d, hycom_bnd2d, monkeypatch):
+def test_oceandataboundary(tmp_path, grid2d, hycom_bnd2d):
     # Ensure boundary data is formatted correctly for the backend
-    hycom_bnd2d = ensure_boundary_data_format(hycom_bnd2d, grid2d)
-    
-    # Debug statements to help identify the issue
-    import logging
-    import traceback
-    import numpy as np
-    from rompy.core.boundary import DataBoundary
-    
+
     logging.info(f"Debug: grid2d type is {type(grid2d)}")
-    logging.info(f"Debug: grid2d has get_boundary_nodes: {hasattr(grid2d, 'get_boundary_nodes')}")
-    logging.info(f"Debug: grid2d has ocean_boundary: {hasattr(grid2d, 'ocean_boundary')}")
-    logging.info(f"Debug: grid2d has boundary_points: {hasattr(grid2d, 'boundary_points')}")
-    
-    if hasattr(grid2d, 'ocean_boundary'):
-        try:
-            # Debug the ocean_boundary return values
-            result = grid2d.ocean_boundary()
-            logging.info(f"Debug: ocean_boundary returned type: {type(result)}")
-            logging.info(f"Debug: ocean_boundary result length: {len(result) if isinstance(result, tuple) else 'not a tuple'}")
-            
-            # Get boundary nodes
-            boundary_nodes = result[0]
-            
-            # Get coordinates of these nodes
-            x = grid2d.pylibs_hgrid.x[boundary_nodes]
-            y = grid2d.pylibs_hgrid.y[boundary_nodes]
-            
-            # Create a special boundary points method that returns our coordinates
-            def mock_boundary_points(self, grid):
-                logging.info("Using mocked _boundary_points method")
-                return x, y
-                
-            # Apply the monkey patch to bypass the issue
-            monkeypatch.setattr(DataBoundary, "_boundary_points", mock_boundary_points)
-            
-        except Exception as e:
-            logging.error(f"Debug: ocean_boundary call failed with error: {str(e)}")
-    
-    # Generate the boundary data with detailed error tracing
-    try:
-        output_path = hycom_bnd2d.get(tmp_path, grid2d)
-        
-        # Patch any output file format differences
-        patch_output_file(tmp_path / "hycom.th.nc")
-        
-        with xr.open_dataset(tmp_path / "hycom.th.nc") as bnd:
-            assert "one" in bnd.dims
-            assert "time" in bnd.dims
-            assert "nOpenBndNodes" in bnd.dims
-            assert "nLevels" in bnd.dims
-            assert "nComponents" in bnd.dims
-            
-            # Instead of comparing length, just log the values
-            logging.info(f"NetCDF has {len(bnd.nOpenBndNodes)} boundary nodes")
-            
-            # Get boundary nodes using PyLibs approach - try a safer approach
-            if hasattr(grid2d, 'get_boundary_nodes'):
-                boundary_nodes = grid2d.get_boundary_nodes()
-                # Extract all boundary nodes 
-                all_nodes = []
-                for nodes in boundary_nodes.values():
-                    all_nodes.extend(nodes)
-                boundary_nodes = all_nodes
-            else:
-                # Handle the ocean_boundary call more safely
-                ob_result = grid2d.ocean_boundary()
-                if isinstance(ob_result, tuple) and len(ob_result) > 0:
-                    boundary_nodes = ob_result[0]
-                else:
-                    logging.error(f"Debug: Unexpected ocean_boundary result: {ob_result}")
-                    boundary_nodes = []
-                    
-            logging.info(f"Grid has {len(boundary_nodes)} boundary nodes")
-            
-            # Skip this assertion for now as we have a mismatch in node count
-            # The important thing is that the file gets created properly
-            # assert len(bnd.nOpenBndNodes) == len(boundary_nodes)
-    except ValueError as e:
-        logging.error(f"Error details: {str(e)}")
-        logging.error(f"Error traceback: {traceback.format_exc()}")
-        raise
-            
+    logging.info(
+        f"Debug: grid2d has get_boundary_nodes: {hasattr(grid2d, 'get_boundary_nodes')}"
+    )
+    logging.info(
+        f"Debug: grid2d has ocean_boundary: {hasattr(grid2d, 'ocean_boundary')}"
+    )
+    logging.info(
+        f"Debug: grid2d has boundary_points: {hasattr(grid2d, 'boundary_points')}"
+    )
+
+    output_path = hycom_bnd2d.get(tmp_path, grid2d)
+
+    with xr.open_dataset(output_path) as bnd:
+        assert "one" in bnd.dims
+        assert "time" in bnd.dims
+        assert "nOpenBndNodes" in bnd.dims
+        assert "nLevels" in bnd.dims
+        assert "nComponents" in bnd.dims
+
+        # Instead of comparing length, just log the values
+        logging.info(f"NetCDF has {len(bnd.nOpenBndNodes)} boundary nodes")
+
+        assert bnd.nOpenBndNodes.size == grid2d.nobn
+        assert grid2d.nvrt == None
+
+        logging.info(f"Grid has {len(bnd.nOpenBndNodes)} boundary nodes")
         assert bnd.time_series.isnull().sum() == 0
 
 
-def test_oceandataboundary3d(tmp_path, grid3d, hycom_bnd_temp_3d, monkeypatch):
+def test_oceandataboundary3d(tmp_path, grid3d, hycom_bnd_temp_3d):
     # Ensure boundary data is formatted correctly for the backend
-    hycom_bnd_temp_3d = ensure_boundary_data_format(hycom_bnd_temp_3d, grid3d)
-    
-    # Debug statements to help identify the issue
-    import logging
-    import traceback
-    import numpy as np
-    from rompy.core.boundary import DataBoundary
-    
-    # Apply monkey patch for boundary points
-    if hasattr(grid3d, 'ocean_boundary'):
-        try:
-            # Get boundary nodes
-            boundary_nodes = grid3d.ocean_boundary()[0]
-            
-            # Get coordinates of these nodes
-            x = grid3d.pylibs_hgrid.x[boundary_nodes]
-            y = grid3d.pylibs_hgrid.y[boundary_nodes]
-            
-            # Create a special boundary points method that returns our coordinates
-            def mock_boundary_points(self, grid):
-                logging.info("Using mocked _boundary_points method in 3D test")
-                return x, y
-                
-            # Apply the monkey patch to bypass the issue
-            monkeypatch.setattr(DataBoundary, "_boundary_points", mock_boundary_points)
-            
-        except Exception as e:
-            logging.error(f"Debug: ocean_boundary call failed with error: {str(e)}")
-    
-    try:
-        # Generate the boundary data
-        output_path = hycom_bnd_temp_3d.get(tmp_path, grid3d)
-        
-        # Patch any output file format differences
-        patch_output_file(tmp_path / "hycom.th.nc")
-        
-        with xr.open_dataset(tmp_path / "hycom.th.nc") as bnd:
-            assert "one" in bnd.dims
-            assert "time" in bnd.dims
-            assert "nOpenBndNodes" in bnd.dims
-            assert "nLevels" in bnd.dims
-            assert "nComponents" in bnd.dims
-            
-            # Log information about boundary nodes
-            logging.info(f"NetCDF has {len(bnd.nOpenBndNodes)} boundary nodes in 3D test")
-            
-            # Get boundary nodes using PyLibs approach
-            if hasattr(grid3d, 'get_boundary_nodes'):
-                boundary_dict = grid3d.get_boundary_nodes()
-                all_nodes = []
-                for nodes in boundary_dict.values():
-                    all_nodes.extend(nodes)
-                boundary_nodes = all_nodes
-            else:
-                boundary_nodes = grid3d.ocean_boundary()[0]
-                
-            logging.info(f"Grid has {len(boundary_nodes)} boundary nodes in 3D test")
-            
-            # Skip node count assertion for now
-            # assert len(bnd.nOpenBndNodes) == len(boundary_nodes)
-                
-            assert bnd.time_series.isnull().sum() == 0
-    except ValueError as e:
-        logging.error(f"Error details in 3D test: {str(e)}")
-        logging.error(f"Error traceback in 3D test: {traceback.format_exc()}")
-        raise
+
+    # Generate the boundary data
+    output_path = hycom_bnd_temp_3d.get(tmp_path, grid3d)
+
+    with xr.open_dataset(output_path) as bnd:
+        assert "one" in bnd.dims
+        assert "time" in bnd.dims
+        assert "nOpenBndNodes" in bnd.dims
+        assert "nLevels" in bnd.dims
+        assert "nComponents" in bnd.dims
+
+        # Log information about boundary nodes
+        logging.info(f"NetCDF has {len(bnd.nOpenBndNodes)} boundary nodes in 3D test")
+        assert bnd.nOpenBndNodes.size == grid3d.nobn
+        assert bnd.nLevels.size == grid3d.nvrt
+
+        logging.info(f"Grid has {len(grid3d.nobn)} boundary nodes in 3D test")
+
+        # Skip node count assertion for now
+        # assert len(bnd.nOpenBndNodes) == len(boundary_nodes)
+
+        assert bnd.time_series.isnull().sum() == 0
 
 
 def test_oceandata(tmp_path, grid2d, hycom_bnd2d, monkeypatch):
     # Debug statements to help identify the issue
     import logging
     import traceback
+
     import numpy as np
+
     from rompy.core.boundary import DataBoundary
-    
+
     # Apply monkey patch for boundary points
-    if hasattr(grid2d, 'ocean_boundary'):
+    if hasattr(grid2d, "ocean_boundary"):
         try:
             # Get boundary nodes
             boundary_nodes = grid2d.ocean_boundary()[0]
-            
+
             # Get coordinates of these nodes
             x = grid2d.pylibs_hgrid.x[boundary_nodes]
             y = grid2d.pylibs_hgrid.y[boundary_nodes]
-            
+
             # Create a special boundary points method that returns our coordinates
             def mock_boundary_points(self, grid):
                 logging.info("Using mocked _boundary_points method in oceandata test")
                 return x, y
-                
+
             # Apply the monkey patch to bypass the issue
             monkeypatch.setattr(DataBoundary, "_boundary_points", mock_boundary_points)
-            
+
         except Exception as e:
             logging.error(f"Debug: ocean_boundary call failed with error: {str(e)}")
-    
+
     try:
         oceandata = SCHISMDataOcean(elev2D=hycom_bnd2d)
         oceandata.get(tmp_path, grid2d)
