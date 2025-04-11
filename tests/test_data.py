@@ -8,7 +8,7 @@ import pytest
 import xarray as xr
 from pydantic import ValidationError
 
-from rompy.core import DataBlob, DataGrid, RegularGrid, TimeRange
+from rompy.core import DataBlob, DataGrid, DataPoint, RegularGrid, TimeRange
 from rompy.core.source import (
     SourceDatamesh,
     SourceDataset,
@@ -19,6 +19,7 @@ from rompy.core.source import (
 )
 from rompy.core.filters import Filter
 from rompy.core.types import DatasetCoords
+
 
 HERE = Path(__file__).parent
 DATAMESH_TOKEN = os.environ.get("DATAMESH_TOKEN")
@@ -207,3 +208,11 @@ def test_source_datamesh():
         coords=DatasetCoords(x="longitude", y="latitude"),
     )
     assert isinstance(dset, xr.Dataset)
+
+
+def test_data_point(tmp_path, grid):
+    source = SourceTimeseriesCSV(filename=HERE / "data" / "wind.csv")
+    times = TimeRange(start="2023-01-01", end="2023-01-01T12")
+    data = DataPoint(id="wind", source=source)
+    outfile = data.get(tmp_path, grid, times)
+    assert outfile.is_file()

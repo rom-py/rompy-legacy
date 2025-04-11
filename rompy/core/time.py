@@ -1,7 +1,16 @@
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union
+from typing import Any, Callable, Dict, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+import isodate
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_serializer,
+    model_validator,
+)
+from pydantic.json_schema import core_schema
 
 time_units = {
     "h": "hours",
@@ -62,13 +71,16 @@ class TimeRange(BaseModel):
         if isinstance(v, timedelta):
             return v
         elif isinstance(v, str):
-            if v[-1] not in time_units:
-                raise ValueError(
-                    "Invalid duration unit. Must be one of: h, m, s, d, w, y"
-                )
-            time_delta_unit = v[-1]
-            time_delta_value = int(v[:-1])
-            return timedelta(**{time_units[time_delta_unit]: time_delta_value})
+            try:
+                return isodate.parse_duration(v)
+            except isodate.ISO8601Error:
+                if v[-1] not in time_units:
+                    raise ValueError(
+                        "Invalid duration unit. Must be one isoformat or one of: h, m, s, d, w, y"
+                    )
+                time_delta_unit = v[-1]
+                time_delta_value = int(v[:-1])
+                return timedelta(**{time_units[time_delta_unit]: time_delta_value})
 
     @field_validator("start", "end", mode="before")
     @classmethod
@@ -121,15 +133,20 @@ class TimeRange(BaseModel):
             self.start = self.end - self.duration
         return self
 
-    def model_dump(self, *args, **kwargs):
-        excludable_fields = {"duration"} if self.start and self.end else set()
-        return super().model_dump(*args, **{**kwargs, "exclude": excludable_fields})
+    model_config = ConfigDict(validate_default=True)
 
-    def model_dump_json(self, *args, **kwargs):
-        excludable_fields = {"duration"} if self.start and self.end else set()
-        return super().model_dump_json(
-            *args, **{**kwargs, "exclude": excludable_fields}
-        )
+    @model_serializer
+    def serialize_model(self) -> dict:
+        # This replaces default serialization for the whole model
+        # It works for both direct serialization and nested serialization
+        result = {}
+        for key, value in self.__dict__.items():
+            # Skip 'duration' if both start and end are present
+            if key == "duration" and self.start and self.end:
+                continue
+            # Include all other fields
+            result[key] = value
+        return result
 
     @property
     def date_range(self) -> list[datetime]:

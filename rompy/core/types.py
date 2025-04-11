@@ -1,5 +1,6 @@
 """Rompy types."""
 
+import json
 from datetime import datetime
 from typing import Any, Optional, Union
 
@@ -9,6 +10,18 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 class RompyBaseModel(BaseModel):
     # The config below prevents https://github.com/pydantic/pydantic/discussions/7121
     model_config = ConfigDict(protected_namespaces=(), extra="forbid")
+
+    def __init__(self, **data: Any):
+        super().__init__(**data)
+        self._original_inputs = data
+
+    def dump_inputs_dict(self) -> dict:
+        """Return the original inputs as a dictionary."""
+        return self._original_inputs
+
+    def dump_inputs_json(self) -> str:
+        """Return the original inputs as a JSON string."""
+        return json.dumps((self._original_inputs))
 
 
 class Latitude(BaseModel):
