@@ -8,13 +8,9 @@ import numpy as np
 import pandas as pd
 from pydantic import (ConfigDict, Field, PrivateAttr, field_validator,
                       model_validator)
-
-sys.path.append("/home/tdurrant/source/pylibs")
-from pylib import *
+from pylib import (compute_zcor, create_schism_vgrid, read_schism_hgrid,
+                   read_schism_vgrid, save_schism_grid, schism_grid)
 from shapely.geometry import MultiPoint, Polygon
-from src.schism_file import (compute_zcor, create_schism_vgrid,
-                             read_schism_hgrid, read_schism_vgrid,
-                             save_schism_grid, schism_grid)
 
 from rompy.core import DataBlob, RompyBaseModel
 from rompy.core.grid import BaseGrid
@@ -153,9 +149,6 @@ class GR3Generator(GeneratorBase):
         return dest
 
 
-from typing import ClassVar
-
-# Import vgrid components from the refactored vgrid module
 from rompy.schism.vgrid import VGrid, create_2d_vgrid
 
 # Vertical grid type constants (module level for easy importing)
@@ -558,6 +551,25 @@ class SCHISMGrid(BaseGrid):
                 return True
         # Fallback for any other case (including when accessing the property before initialization)
         return False
+
+    @property
+    def nob(self):
+        if not hasattr(self.pylibs_hgrid, "nobn"):
+            self.pylibs_hgrid.compute_bnd()
+        return self.pylibs_hgrid.nob
+
+    @property
+    def nobn(self):
+        if not hasattr(self.pylibs_hgrid, "nobn"):
+            self.pylibs_hgrid.compute_bnd()
+        return self.pylibs_hgrid.nobn
+
+    @property
+    def nvrt(self):
+        if self.is_3d:
+            return self.pylibs_vgrid.nvrt
+        else:
+            return None
 
     def copy_to(self, destdir: Path) -> "SCHISMGrid":
         """Copy the grid to a destination directory.
