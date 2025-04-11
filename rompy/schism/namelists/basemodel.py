@@ -103,7 +103,7 @@ class NamelistBaseModel(RompyBaseModel):
 
     def write_nml(self, workdir: Path | str) -> None:
         """Write the namelist to a file
-        
+
         Args:
             workdir (Path|str): Working directory to write to
         """
