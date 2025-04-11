@@ -13,8 +13,14 @@ import xarray as xr
 from rompy.core import DataBlob, TimeRange
 from rompy.core.source import SourceFile
 from rompy.schism import SCHISMGrid
-from rompy.schism.data import (SCHISMDataBoundary, SCHISMDataOcean,
-                               SCHISMDataSflux, SCHISMDataTides, SfluxAir)
+from rompy.schism.data import (
+    SCHISMDataBoundary,
+    SCHISMDataOcean,
+    SCHISMDataSflux,
+    SCHISMDataTides,
+    SfluxAir,
+)
+
 # Import our stub class from test_namelist instead of the non-existent module
 from tests.schism.integration.test_namelist import SCHISMNamelist
 

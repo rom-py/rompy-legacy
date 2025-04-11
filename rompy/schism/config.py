@@ -4,16 +4,21 @@ from typing import Any, Literal, Optional, Union
 
 from pydantic import ConfigDict, Field, model_serializer, model_validator
 
-from rompy.core import (BaseConfig, DataBlob, RompyBaseModel, Spectrum,
-                        TimeRange)
+from rompy.core import BaseConfig, DataBlob, RompyBaseModel, Spectrum, TimeRange
 
 # Import plotting functions
 from .config_plotting import plot_sflux_spatial, plot_sflux_timeseries
-from .config_plotting_boundary import (plot_boundary_points,
-                                       plot_boundary_profile,
-                                       plot_boundary_timeseries)
-from .config_plotting_tides import (plot_tidal_boundaries, plot_tidal_dataset,
-                                    plot_tidal_rose, plot_tidal_stations)
+from .config_plotting_boundary import (
+    plot_boundary_points,
+    plot_boundary_profile,
+    plot_boundary_timeseries,
+)
+from .config_plotting_tides import (
+    plot_tidal_boundaries,
+    plot_tidal_dataset,
+    plot_tidal_rose,
+    plot_tidal_stations,
+)
 from .data import SCHISMData
 from .grid import SCHISMGrid
 from .interface import TimeInterface

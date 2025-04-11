@@ -14,6 +14,7 @@ NumpyBool = bool  # We'll use validators instead of Union types
 NumpyInt = int
 NumpyFloat = float
 
+
 # Function to convert numpy types to Python native types
 def to_python_type(value: Any) -> Any:
     """Convert numpy types to Python native types."""
@@ -28,6 +29,7 @@ def to_python_type(value: Any) -> Any:
         return to_python_type(value.item())
     return value
 
+
 # Reusable validators for Pydantic models
 def numpy_bool_validator(v: Any) -> bool:
     """Validate and convert numpy boolean to Python boolean."""
@@ -35,17 +37,20 @@ def numpy_bool_validator(v: Any) -> bool:
         return bool(v)
     return v
 
+
 def numpy_int_validator(v: Any) -> int:
     """Validate and convert numpy integer to Python integer."""
     if isinstance(v, np.integer):
         return int(v)
     return v
 
+
 def numpy_float_validator(v: Any) -> float:
     """Validate and convert numpy float to Python float."""
     if isinstance(v, np.floating):
         return float(v)
     return v
+
 
 # Create decorator functions for easy use in models
 def validate_numpy_types(cls):
@@ -54,10 +59,16 @@ def validate_numpy_types(cls):
         # Add appropriate validators based on field type
         field_info = cls.model_fields[field_name]
         if field_info.annotation == bool or field_info.annotation == NumpyBool:
-            cls.model_validators[f"_validate_{field_name}"] = field_validator(field_name)(numpy_bool_validator)
+            cls.model_validators[f"_validate_{field_name}"] = field_validator(
+                field_name
+            )(numpy_bool_validator)
         elif field_info.annotation == int or field_info.annotation == NumpyInt:
-            cls.model_validators[f"_validate_{field_name}"] = field_validator(field_name)(numpy_int_validator)
+            cls.model_validators[f"_validate_{field_name}"] = field_validator(
+                field_name
+            )(numpy_int_validator)
         elif field_info.annotation == float or field_info.annotation == NumpyFloat:
-            cls.model_validators[f"_validate_{field_name}"] = field_validator(field_name)(numpy_float_validator)
-    
+            cls.model_validators[f"_validate_{field_name}"] = field_validator(
+                field_name
+            )(numpy_float_validator)
+
     return cls

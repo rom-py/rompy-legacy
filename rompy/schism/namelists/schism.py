@@ -32,18 +32,18 @@ class NML(NamelistBaseModel):
     wwminput: Optional[Wwminput] = Field(
         description="Wave model input parameters", default=None
     )
-    
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to handle proper serialization of namelist components."""
         result = {}
-        
+
         # Include only non-None fields in the serialized output
         for field_name in self.model_fields:
             value = getattr(self, field_name, None)
             if value is not None:
                 result[field_name] = value
-                
+
         return result
 
     def update_times(self, period=TimeRange):

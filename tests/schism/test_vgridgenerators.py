@@ -3,7 +3,12 @@ from pathlib import Path
 import pytest
 
 from rompy.core import DataBlob
-from rompy.schism.grid import VgridGenerator, VGRID_TYPE_2D, VGRID_TYPE_LSC2, VGRID_TYPE_SZ
+from rompy.schism.grid import (
+    VgridGenerator,
+    VGRID_TYPE_2D,
+    VGRID_TYPE_LSC2,
+    VGRID_TYPE_SZ,
+)
 
 HERE = Path(__file__).parent
 

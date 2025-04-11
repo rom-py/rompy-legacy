@@ -109,7 +109,7 @@ class SourceFile(SourceBase):
         default={},
         description="Keyword arguments to pass to xarray.open_dataset",
     )
-    
+
     # Enable arbitrary types for Path objects
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -117,7 +117,7 @@ class SourceFile(SourceBase):
         return f"SourceFile(uri={self.uri})"
 
     def _open(self) -> xr.Dataset:
-        # Handle Path objects by using str() to ensure compatibility 
+        # Handle Path objects by using str() to ensure compatibility
         uri_str = str(self.uri) if isinstance(self.uri, Path) else self.uri
         return xr.open_dataset(uri_str, **self.kwargs)
 

@@ -43,7 +43,7 @@ def compare_nmls_values(nml1, nml2, raise_missing=False):
                 raise ValueError(f"Missing key {key} in nml2")
             else:
                 continue
-        
+
         value = nml1[key]
         if isinstance(value, dict):
             # If dictionary size is 2, extract value from 'default' key
@@ -63,15 +63,15 @@ def compare_nmls(nml1, nml2, raise_missing=False):
     """Compare two namelists."""
     # Import here to avoid circular imports
     from rompy.schism.namelists.generate_models import nml_to_dict
-    
+
     # Convert namelists to dictionaries if they're not already
     d1 = nml_to_dict(nml1) if not isinstance(nml1, dict) else nml1
     d2 = nml_to_dict(nml2) if not isinstance(nml2, dict) else nml2
-    
+
     # Pop description fields if they exist
     if "description" in d1:
         d1.pop("description")
     if "description" in d2:
         d2.pop("description")
-        
+
     compare_nmls_values(d1, d2, raise_missing=raise_missing)

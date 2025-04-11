@@ -55,31 +55,31 @@ def test_date_range_daily(dtr_daily):
 def test_nested_serialization():
     """Test that duration is excluded during serialization when nested in another model."""
     from pydantic import BaseModel
-    
+
     # Create a TimeRange with both start and end
     tr = TimeRange(start="2020-01-01", end="2020-01-02")
-    
+
     # Verify that duration is computed but excluded from direct serialization
     assert tr.duration == timedelta(days=1)
-    assert 'duration' not in tr.model_dump()
-    
+    assert "duration" not in tr.model_dump()
+
     # Create a container class with a TimeRange field
     class Container(BaseModel):
         time_range: TimeRange
-    
+
     # Test that duration is excluded when TimeRange is nested inside another model
     container = Container(time_range=tr)
     serialized = container.model_dump()
-    
+
     # Verify that duration is excluded from nested serialization
-    assert 'duration' not in serialized['time_range']
-    
+    assert "duration" not in serialized["time_range"]
+
     # Ensure other fields are still present
-    assert 'start' in serialized['time_range']
-    assert 'end' in serialized['time_range']
-    assert 'interval' in serialized['time_range']
-    assert 'include_end' in serialized['time_range']
-    
+    assert "start" in serialized["time_range"]
+    assert "end" in serialized["time_range"]
+    assert "interval" in serialized["time_range"]
+    assert "include_end" in serialized["time_range"]
+
     # Verify we can deserialize back without issues
     container2 = Container(**serialized)
     assert container2.time_range.start == datetime(2020, 1, 1, 0, 0)
