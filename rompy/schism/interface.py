@@ -11,7 +11,8 @@ from typing import Any, Literal, Optional, Union
 
 from pydantic import Field, ValidationInfo, field_validator, model_validator
 
-from rompy.core import RompyBaseModel, TimeRange
+from rompy.core.types import RompyBaseModel
+from rompy.core.time import TimeRange
 from rompy.schism.data import SCHISMData
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.namelists import NML

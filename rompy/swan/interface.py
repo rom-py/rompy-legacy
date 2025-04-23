@@ -6,7 +6,8 @@ from typing import Any, Literal, Optional, Union
 
 from pydantic import Field, ValidationInfo, field_validator, model_validator
 
-from rompy.core import RompyBaseModel, TimeRange
+from rompy.core.types import RompyBaseModel
+from rompy.core.time import TimeRange
 from rompy.swan.boundary import Boundnest1, BoundspecSegmentXY, BoundspecSide
 from rompy.swan.data import SwanDataGrid
 from rompy.swan.grid import SwanGrid

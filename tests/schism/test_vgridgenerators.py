@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from rompy.core import DataBlob
+from rompy.core.data import DataBlob
 from rompy.schism.grid import Vgrid3D_LSC2, Vgrid3D_SZ, VgridGenerator
 
 HERE = Path(__file__).parent

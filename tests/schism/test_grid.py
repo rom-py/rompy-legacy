@@ -4,7 +4,7 @@ import pytest
 
 pytest.importorskip("rompy.schism")
 
-from rompy.core import DataBlob
+from rompy.core.data import DataBlob
 from rompy.core.grid import BaseGrid
 from rompy.schism import SCHISMGrid
 from rompy.schism.grid import WWMBNDGR3Generator
