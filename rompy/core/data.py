@@ -105,7 +105,7 @@ SOURCE_TYPES = load_entry_points("rompy.source")
 SOURCE_TYPES_TS = load_entry_points("rompy.source", etype="timeseries")
 
 
-class DataPoint(DataBlob):
+class DataPoint(RompyBaseModel):
     """Data object for timeseries source data.
 
     Generic data object for xarray datasets that only have time as a dimension and do
