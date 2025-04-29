@@ -774,8 +774,8 @@ class SCHISMData(RompyBaseModel):
         for datatype in ["atmos", "ocean", "wave", "tides"]:
             data = getattr(self, datatype)
             if data is None:
-                continue
-            if type(data) is DataBlob:
+                output = None
+            elif type(data) is DataBlob:
                 output = data.get(destdir)
             else:
                 output = data.get(destdir, grid, time)
