@@ -261,18 +261,29 @@ class SCHISMDataSflux(RompyBaseModel):
 
         """
         ret = {}
-        destdir = Path(destdir) / "sflux"
+        destdir = Path(destdir) 
         destdir.mkdir(parents=True, exist_ok=True)
         namelistargs = {}
+        anydatablobs = False
         for variable in ["air_1", "air_2", "rad_1", "rad_2", "prc_1", "prc_2"]:
             data = getattr(self, variable)
             if data is None:
                 continue
             data.id = variable
             logger.info(f"Fetching {variable}")
-            namelistargs.update(data.namelist)
-            ret[variable] = data.get(destdir, grid, time)
-        ret["nml"] = Sflux_Inputs(**namelistargs).write_nml(destdir)
+            if isinstance(data, DataBlob): 
+                anydatablobs = True
+                ret[variable] = data.get(destdir, name='sflux')
+                existing_nml = ret[variable] / 'sflux_inputs.txt'
+            else:
+                dd = destdir / "sflux"
+                dd.mkdir(parents=True, exist_ok=True)
+                ret[variable] = data.get(dd, grid, time)
+                namelistargs.update(data.namelist)
+        if anydatablobs:
+            ret["nml"] = existing_nml
+        else:
+            ret["nml"] = Sflux_Inputs(**namelistargs).write_nml(destdir)
         return ret
 
     @model_validator(mode="after")
@@ -287,11 +298,15 @@ class SCHISMDataSflux(RompyBaseModel):
             ValueError: If the relative weights for any variable do not add up to 1.0.
 
         """
+
         for variable in ["air", "rad", "prc"]:
             weight = 0
             active = False
             for i in [1, 2]:
                 data = getattr(v, f"{variable}_{i}")
+                # Check if DataBlob is used
+                if isinstance(data, DataBlob):
+                    continue
                 if data is None:
                     continue
                 if data.fail_if_missing:
