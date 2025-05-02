@@ -175,7 +175,7 @@ class Opt(NamelistBaseModel):
     )
     start_day: Optional[int] = Field(1, description="int")
     start_hour: Optional[int] = Field(0, description="double")
-    utc_start: Optional[int] = Field(8, description="double")
+    utc_start: Optional[int] = Field(0, description="double")
     ics: Optional[int] = Field(2, description="Coordinate option")
     ihot: Optional[int] = Field(0, description="")
     ieos_type: Optional[int] = Field(0, description="")
