@@ -21,13 +21,13 @@ logger = logging.getLogger(__name__)
 class NML(NamelistBaseModel):
     param: Optional[Param] = Field(description="Model paramaters", default=None)
     ice: Optional[Ice] = Field(description="Ice model parameters", default=None)
-    icm: Optional[Icm] = Field(description="Ice model parameters", default=None)
-    mice: Optional[Mice] = Field(description="Ice model parameters", default=None)
+    icm: Optional[Icm] = Field(description="Icm model parameters", default=None)
+    mice: Optional[Mice] = Field(description="Mice model parameters", default=None)
     sediment: Optional[Sediment] = Field(
         description="Sediment model parameters", default=None
     )
     cosine: Optional[Cosine] = Field(
-        description="Sediment model parameters", default=None
+        description="Cosine model parameters", default=None
     )
     wwminput: Optional[Wwminput] = Field(
         description="Wave model input parameters", default=None
