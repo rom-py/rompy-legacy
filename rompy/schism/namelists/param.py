@@ -51,6 +51,10 @@ class Core(NamelistBaseModel):
         864,
         description="Stack spool for global output controls. Every ihfskip steps will be put into 1_*, 2_*, etc.",
     )
+    nbins_veg_vert: Optional[int] = Field(
+        2,
+        description="Number of vertical bins for vegetation model. Only used if iveg=1.",
+    )
 
     @field_validator("ipre")
     @classmethod
@@ -271,7 +275,8 @@ class Opt(NamelistBaseModel):
         2,
         description="needed if if_source/=0; ramp-up period in days for source/sinks (no ramp-up if <=0)",
     )
-    meth_sink: Optional[int] = Field(1, description="options to treat sinks @ dry elem")
+    # Removed in SCHISM 5.12
+    # meth_sink: Optional[int] = Field(1, description="options to treat sinks @ dry elem")
     lev_tr_source__1: Optional[int] = Field(-9, description="T")
     lev_tr_source__2: Optional[int] = Field(-9, description="S")
     lev_tr_source__3: Optional[int] = Field(-9, description="GEN")
@@ -297,7 +302,7 @@ class Opt(NamelistBaseModel):
     hmin_man: Optional[float] = Field(
         1.0, description="needed if nchi=-1: min. depth in Manning's formulation [m]"
     )
-    ncor: Optional[int] = Field(0, description="should usually be 1 if ics=2")
+    ncor: Optional[int] = Field(1, description="should usually be 1 if ics=2")
     rlatitude: Optional[int] = Field(46, description="if ncor=-1")
     coricoef: Optional[int] = Field(0, description="if ncor=0")
     ic_elev: Optional[int] = Field(0, description="")
@@ -515,6 +520,101 @@ class Opt(NamelistBaseModel):
             raise ValueError("loadtide_coef must be set when iloadtide is 2 or 3")
         return self
 
+class Vegetation(NamelistBaseModel):
+    # isav: Optional[int] = Field(
+    #     0,
+    #     description="Flag for vegetation model. 0: off, 1: on. Requires additional input files if enabled.",
+    # )
+    iveg: Optional[int] = Field(
+        0,
+        description="""
+        !----------------------------------------------------------------------
+        ! Vegetation model
+        ! If iveg/=0, need 4 extra inputs: (1) veg_D.gr3 (depth is stem diameter in meters);
+        ! (2) veg_N.gr3 (depth is # of stems per m^2);
+        ! (3) veg_h.gr3 (height of canopy in meters);
+        ! (4) veg_cd.gr3 (drag coefficient).
+        ! With iveg=1, the vertical scaling is given by veg_vert_scale_[cd,N,D](1:nbins_veg_vert+1) below.
+        ! veg_vert_z(:) specify the distance from bed for each bin (ascending order starting from 0).
+        ! iveg=2: flex vegeation using Ganthy (2011) fomulation
+
+        ! If one of these depths=0 at a node, the code will set all to 0. 
+        ! If USE_MARSH is on and isav=1, all .gr3 must have constant depths!
+        !----------------------------------------------------------------------
+        """,
+    )
+    veg_vert_z: Optional[List[float]] = Field(
+        [0.,0.5,1.],
+        description="Depths for vertical scaling of vegetation model (in meters).",
+    )
+    veg_vert_scale_cd: Optional[List[float]] = Field(
+        [1.0, 1.0, 1.0],
+        description="Vertical scaling for drag coefficient. Only used if iveg=1.",
+    )
+    veg_vert_scale_N: Optional[List[float]] = Field(
+        [1.0, 1.0, 1.0],
+        description="Vertical scaling for number of stems per m^2. Only used if iveg=1.",
+    )
+    veg_vert_scale_D: Optional[List[float]] = Field(
+        [1.0, 1.0, 1.0],
+        description="Vertical scaling for stem diameter. Only used if iveg=1.",
+    )
+    veg_lai: Optional[float] = Field(
+        1.0,
+        description="Leaf Area Index [-]; used if iveg=2. Ganthy suggests 0-10?",
+    )
+    veg_cw: Optional[float] = Field(
+        1.5,
+        description="calibration coefficient in diameter of bent leaf [-]; used if iveg=2. Ganthy suggests 0-25?",
+    )
+
+    @field_validator("iveg")
+    @classmethod
+    def validate_iveg(cls, v):
+        if v not in [0, 1, 2]:
+            raise ValueError("iveg must be 0, 1, or 2")
+        return v
+    
+    @field_validator("veg_vert_z")
+    @classmethod
+    def validate_veg_vert_z(cls, v):
+        # Check if the list is in ascending order and contains floats
+        if not all(isinstance(i, float) for i in v):
+            raise ValueError("All elements in veg_vert_z must be floats")
+        if not all(v[i] < v[i + 1] for i in range(len(v) - 1)):
+            raise ValueError("veg_vert_z must be in ascending order")
+        return v
+    @field_validator("veg_vert_scale_cd")
+    @classmethod
+    def validate_veg_vert_scale_cd(cls, v, values):
+        if not all(isinstance(i, float) for i in v):
+            raise ValueError("All elements in veg_vert_scale_cd must be floats")
+        return v
+    @field_validator("veg_vert_scale_N")
+    @classmethod
+    def validate_veg_vert_scale_N(cls, v, values):
+        if not all(isinstance(i, float) for i in v):
+            raise ValueError("All elements in veg_vert_scale_N must be floats")
+        return v
+    @field_validator("veg_vert_scale_D")
+    @classmethod
+    def validate_veg_vert_scale_D(cls, v, values):
+        if not all(isinstance(i, float) for i in v):
+            raise ValueError("All elements in veg_vert_scale_D must be floats")
+        return v
+    @field_validator("veg_lai")
+    @classmethod
+    def validate_veg_lai(cls, v):
+        if v < 0:
+            raise ValueError("veg_lai must be non-negative")
+        return v
+    @field_validator("veg_cw")
+    @classmethod
+    def validate_veg_cw(cls, v):
+        if v < 0:
+            raise ValueError("veg_cw must be non-negative")
+        return v
+
 
 class Vertical(NamelistBaseModel):
     vnh1: Optional[int] = Field(
@@ -576,10 +676,6 @@ class Vertical(NamelistBaseModel):
         120.0,
         description="Sea-level rise rate in mm/year for marsh model. Only used if USE_MARSH is on.",
     )
-    isav: Optional[int] = Field(
-        0,
-        description="Flag for vegetation model. 0: off, 1: on. Requires additional input files if enabled.",
-    )
     nstep_ice: Optional[int] = Field(
         1, description="Number of SCHISM steps between calls to the ICE module."
     )
@@ -589,11 +685,11 @@ class Vertical(NamelistBaseModel):
     rearth_eq: Optional[float] = Field(
         6378206.4, description="Earth's radius at the equator in meters."
     )
-    shw: Optional[str] = Field(
-        "4184.d0", description="Specific heat of water (C_p) in J/kg/K."
+    shw: Optional[float] = Field(
+        4184.0, description="Specific heat of water (C_p) in J/kg/K."
     )
-    rho0: Optional[str] = Field(
-        "1000.d0",
+    rho0: Optional[float] = Field(
+        1000.0,
         description="Reference water density for Boussinesq approximation in kg/m^3.",
     )
     vclose_surf_frac: Optional[float] = Field(
@@ -727,13 +823,6 @@ class Vertical(NamelistBaseModel):
             raise ValueError("slr_rate must be non-negative")
         return v
 
-    @field_validator("isav")
-    @classmethod
-    def check_isav(cls, v):
-        if v not in [0, 1]:
-            raise ValueError("isav must be 0 or 1")
-        return v
-
     @field_validator("nstep_ice")
     @classmethod
     def check_nstep_ice(cls, v):
@@ -758,14 +847,16 @@ class Vertical(NamelistBaseModel):
     @field_validator("shw")
     @classmethod
     def check_shw(cls, v):
-        if float(v.replace("d", "")) <= 0:
+        # if float(v.replace("d", "")) <= 0:
+        if v <= 0:
             raise ValueError("shw must be positive")
         return v
 
     @field_validator("rho0")
     @classmethod
     def check_rho0(cls, v):
-        if float(v.replace("d", "")) <= 0:
+        if v <= 900:
+        # if float(v.replace("d", "")) <= 0:
             raise ValueError("rho0 must be positive")
         return v
 
@@ -872,7 +963,7 @@ class Schout(NamelistBaseModel):
         0, description="wind stress vector [m^2/s/s] {windStressX,Y}  2D vector"
     )
     iof_hydro__16: Optional[int] = Field(
-        0, description="depth-averaged vel vector [m/s] {depthAverageVelX,Y}  2D vector"
+        1, description="depth-averaged vel vector [m/s] {depthAverageVelX,Y}  2D vector"
     )
     iof_hydro__17: Optional[int] = Field(
         0, description="vertical velocity [m/s] {verticalVelocity}  3D"
@@ -1432,4 +1523,5 @@ class Param(NamelistBaseModel):
     core: Optional[Core] = Field(default_factory=Core)
     opt: Optional[Opt] = Field(default_factory=Opt)
     vertical: Optional[Vertical] = Field(default_factory=Vertical)
+    vegetation: Optional[Vegetation] = Field(default_factory=Vegetation)
     schout: Optional[Schout] = Field(default_factory=Schout)
