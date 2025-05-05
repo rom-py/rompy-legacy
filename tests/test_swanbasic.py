@@ -1,11 +1,12 @@
-import pytest
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
+import pytest
 from utils import compare_files
 
+from rompy.core.config import BaseConfig
+from rompy.core.time import TimeRange
 from rompy.model import ModelRun
-from rompy.core import BaseConfig, TimeRange
 
 here = Path(__file__).parent
 

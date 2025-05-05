@@ -6,7 +6,8 @@ import pytest
 pytest.importorskip("rompy.schism")
 import xarray as xr
 
-from rompy.core import DataBlob, TimeRange
+from rompy.core.data import DataBlob
+from rompy.core.time import TimeRange
 from rompy.core.source import SourceFile, SourceIntake
 from rompy.schism import SCHISMGrid
 from rompy.schism.data import (

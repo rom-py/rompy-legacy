@@ -3,8 +3,8 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-from rompy.core.types import DatasetCoords
 from rompy.core.source import SourceFile
+from rompy.core.types import DatasetCoords
 from rompy.swan.data import SwanDataGrid
 from rompy.swan.grid import SwanGrid
 

@@ -1,14 +1,15 @@
 from datetime import datetime
 from pathlib import Path
+
 import numpy as np
 import pytest
 import xarray as xr
 from utils import compare_files
 
-from rompy.model import ModelRun
 from rompy.core.source import SourceFile
-from rompy.core import TimeRange
+from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords
+from rompy.model import ModelRun
 from rompy.swan import Boundnest1, SwanConfig, SwanDataGrid, SwanGrid
 
 HERE = Path(__file__).parent

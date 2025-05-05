@@ -1,14 +1,13 @@
-import pytest
 from pathlib import Path
+
+import pytest
 import xarray as xr
 from wavespectra import read_swan
 
+from rompy.core.source import SourceFile, SourceIntake, SourceWavespectra
 from rompy.core.time import TimeRange
+from rompy.swan.boundary import Boundnest1, BoundspecSegmentXY, BoundspecSide
 from rompy.swan.grid import SwanGrid
-from rompy.core.source import SourceFile, SourceIntake
-from rompy.core.source import SourceWavespectra
-from rompy.swan.boundary import Boundnest1, BoundspecSide, BoundspecSegmentXY
-
 
 HERE = Path(__file__).parent
 

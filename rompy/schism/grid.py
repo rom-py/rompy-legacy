@@ -7,7 +7,8 @@ import pandas as pd
 from pydantic import Field, PrivateAttr, field_validator, model_validator, model_serializer
 from shapely.geometry import MultiPoint, Polygon
 
-from rompy.core import DataBlob, RompyBaseModel
+from rompy.core.data import DataBlob
+from rompy.core.types import RompyBaseModel
 from rompy.core.grid import BaseGrid
 # from pyschism.mesh import Hgrid
 # from pyschism.mesh.prop import Tvdflag

@@ -8,7 +8,8 @@ import pytest
 # pytest.importorskip("rompy.schism")
 from utils import compare_files
 
-from rompy.core import DataBlob, TimeRange
+from rompy.core.data import DataBlob
+from rompy.core.time import TimeRange
 from rompy.model import ModelRun
 from rompy.schism import SCHISMConfig, SCHISMGrid
 from rompy.schism.namelists import NML, Param, Wwminput

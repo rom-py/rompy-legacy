@@ -9,7 +9,8 @@ import xarray as xr
 from cloudpathlib import AnyPath
 from pydantic import Field, model_validator
 
-from rompy.core import DataGrid, RompyBaseModel
+from rompy.core.data import DataGrid
+from rompy.core.types import RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
