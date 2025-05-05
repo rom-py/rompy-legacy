@@ -1,0 +1,1077 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>rompy.schism.namelists.param.Core &#8212; rompy 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'schism/_generated/rompy.schism.namelists.param.Core';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="rompy.schism.namelists.param.Opt" href="rompy.schism.namelists.param.Opt.html" />
+    <link rel="prev" title="rompy.schism.config.SchismCSIROConfig" href="rompy.schism.config.SchismCSIROConfig.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../models.html">Models</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../swan/index.html">SWAN</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">SCHISM</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#grids">Grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data">Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#config-minimal">Config Minimal</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#full-namelist-implementation">Full Namelist Implementation</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#param">PARAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#ice">ICE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#mice">MICE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#icm">ICM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#sediment">SEDIMENT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#cosine">COSINE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#wwminput">WWMINPUT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#nml">NML</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#config-object">Config Object</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../models.html" class="nav-link">Models</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SCHISM</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">rompy.schism.namelists.param.Core</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="rompy-schism-namelists-param-core">
+<h1>rompy.schism.namelists.param.Core<a class="headerlink" href="#rompy-schism-namelists-param-core" title="Link to this heading">#</a></h1>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.schism.namelists.param.</span></span><span class="sig-name descname"><span class="pre">Core</span></span><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core" title="Link to this definition">#</a></dt>
+<dd><p><details  class="autodoc_pydantic_collapsable_json">
+<summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Core&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;ipre&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pre-processor flag (1: on; 0: off). Useful for checking grid errors etc. Use 1 core only for compute (plus necessary scribe cores) when enabled. Under scribe I/O, the code (scribe part) will hang but outputs will be available. Job should be manually terminated.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ipre&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;ibc&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Baroclinic option flag. If set to 0 (baroclinic model), ibtp is not used.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ibc&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;ibtp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Barotropic option flag. Only used when ibc is not 0.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ibtp&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;rnday&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Total run time in days.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rnday&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;dt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">100.0</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Time step in seconds.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dt&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;msc2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of spectral frequencies for WWM grid. Must be the same as msc in .nml for consistency between SCHISM and WWM.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Msc2&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;mdc2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of directional bins for WWM grid. Must be the same as mdc in .nml for consistency between SCHISM and WWM.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mdc2&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;ntracer_gen&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of tracers in user-defined module (USE_GEN).&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ntracer Gen&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;ntracer_age&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of tracers for age calculation (USE_AGE). Must be equal to 2*N where N is the number of age tracers.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ntracer Age&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;sed_class&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of sediment classes for SED3D module (USE_SED).&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sed Class&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;eco_class&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of ecological variables for EcoSim module (USE_ECO). Must be between 25 and 60, inclusive.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Eco Class&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;nspool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">36</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Output step spool for global output controls.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nspool&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;ihfskip&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">864</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Stack spool for global output controls. Every ihfskip steps will be put into 1_*, 2_*, etc.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ihfskip&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</details></p><dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.dt" title="rompy.schism.namelists.param.Core.dt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dt</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.eco_class" title="rompy.schism.namelists.param.Core.eco_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eco_class</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.ibc" title="rompy.schism.namelists.param.Core.ibc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ibc</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.ibtp" title="rompy.schism.namelists.param.Core.ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ibtp</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.ihfskip" title="rompy.schism.namelists.param.Core.ihfskip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ihfskip</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.ipre" title="rompy.schism.namelists.param.Core.ipre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipre</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.mdc2" title="rompy.schism.namelists.param.Core.mdc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mdc2</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.msc2" title="rompy.schism.namelists.param.Core.msc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msc2</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.nspool" title="rompy.schism.namelists.param.Core.nspool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nspool</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.ntracer_age" title="rompy.schism.namelists.param.Core.ntracer_age"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ntracer_age</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.ntracer_gen" title="rompy.schism.namelists.param.Core.ntracer_gen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ntracer_gen</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.rnday" title="rompy.schism.namelists.param.Core.rnday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rnday</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.sed_class" title="rompy.schism.namelists.param.Core.sed_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sed_class</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_dt" title="rompy.schism.namelists.param.Core.validate_dt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_dt</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.dt" title="rompy.schism.namelists.param.Core.dt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dt</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_eco_class" title="rompy.schism.namelists.param.Core.validate_eco_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_eco_class</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.eco_class" title="rompy.schism.namelists.param.Core.eco_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eco_class</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc" title="rompy.schism.namelists.param.Core.validate_ibc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.ibc" title="rompy.schism.namelists.param.Core.ibc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ibc</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibtp" title="rompy.schism.namelists.param.Core.validate_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibtp</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.ibtp" title="rompy.schism.namelists.param.Core.ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ihfskip" title="rompy.schism.namelists.param.Core.validate_ihfskip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ihfskip</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.ihfskip" title="rompy.schism.namelists.param.Core.ihfskip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ihfskip</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ipre" title="rompy.schism.namelists.param.Core.validate_ipre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ipre</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.ipre" title="rompy.schism.namelists.param.Core.ipre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipre</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_mdc2" title="rompy.schism.namelists.param.Core.validate_mdc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_mdc2</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.mdc2" title="rompy.schism.namelists.param.Core.mdc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mdc2</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_msc2" title="rompy.schism.namelists.param.Core.validate_msc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_msc2</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.msc2" title="rompy.schism.namelists.param.Core.msc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msc2</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_nspool" title="rompy.schism.namelists.param.Core.validate_nspool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nspool</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.nspool" title="rompy.schism.namelists.param.Core.nspool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nspool</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ntracer_age" title="rompy.schism.namelists.param.Core.validate_ntracer_age"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ntracer_age</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.ntracer_age" title="rompy.schism.namelists.param.Core.ntracer_age"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ntracer_age</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ntracer_gen" title="rompy.schism.namelists.param.Core.validate_ntracer_gen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ntracer_gen</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.ntracer_gen" title="rompy.schism.namelists.param.Core.ntracer_gen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ntracer_gen</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_rnday" title="rompy.schism.namelists.param.Core.validate_rnday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rnday</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.rnday" title="rompy.schism.namelists.param.Core.rnday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rnday</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_sed_class" title="rompy.schism.namelists.param.Core.validate_sed_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_sed_class</span></code></a> » <a class="reference internal" href="#rompy.schism.namelists.param.Core.sed_class" title="rompy.schism.namelists.param.Core.sed_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sed_class</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.dt">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">100.0</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.dt" title="Link to this definition">#</a></dt>
+<dd><p>Time step in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_dt" title="rompy.schism.namelists.param.Core.validate_dt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_dt</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.eco_class">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eco_class</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">27</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.eco_class" title="Link to this definition">#</a></dt>
+<dd><p>Number of ecological variables for EcoSim module (USE_ECO). Must be between 25 and 60, inclusive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_eco_class" title="rompy.schism.namelists.param.Core.validate_eco_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_eco_class</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.ibc">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ibc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.ibc" title="Link to this definition">#</a></dt>
+<dd><p>Baroclinic option flag. If set to 0 (baroclinic model), ibtp is not used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc" title="rompy.schism.namelists.param.Core.validate_ibc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.ibtp">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ibtp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.ibtp" title="Link to this definition">#</a></dt>
+<dd><p>Barotropic option flag. Only used when ibc is not 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibtp" title="rompy.schism.namelists.param.Core.validate_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibtp</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.ihfskip">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ihfskip</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">864</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.ihfskip" title="Link to this definition">#</a></dt>
+<dd><p>Stack spool for global output controls. Every ihfskip steps will be put into 1_*, 2_*, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ihfskip" title="rompy.schism.namelists.param.Core.validate_ihfskip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ihfskip</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.ipre">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ipre</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.ipre" title="Link to this definition">#</a></dt>
+<dd><p>Pre-processor flag (1: on; 0: off). Useful for checking grid errors etc. Use 1 core only for compute (plus necessary scribe cores) when enabled. Under scribe I/O, the code (scribe part) will hang but outputs will be available. Job should be manually terminated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ipre" title="rompy.schism.namelists.param.Core.validate_ipre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ipre</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.mdc2">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mdc2</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.mdc2" title="Link to this definition">#</a></dt>
+<dd><p>Number of directional bins for WWM grid. Must be the same as mdc in .nml for consistency between SCHISM and WWM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_mdc2" title="rompy.schism.namelists.param.Core.validate_mdc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_mdc2</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.msc2">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">msc2</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.msc2" title="Link to this definition">#</a></dt>
+<dd><p>Number of spectral frequencies for WWM grid. Must be the same as msc in .nml for consistency between SCHISM and WWM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_msc2" title="rompy.schism.namelists.param.Core.validate_msc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_msc2</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.nspool">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nspool</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">36</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.nspool" title="Link to this definition">#</a></dt>
+<dd><p>Output step spool for global output controls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_nspool" title="rompy.schism.namelists.param.Core.validate_nspool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nspool</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.ntracer_age">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ntracer_age</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.ntracer_age" title="Link to this definition">#</a></dt>
+<dd><p>Number of tracers for age calculation (USE_AGE). Must be equal to 2*N where N is the number of age tracers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ntracer_age" title="rompy.schism.namelists.param.Core.validate_ntracer_age"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ntracer_age</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.ntracer_gen">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ntracer_gen</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.ntracer_gen" title="Link to this definition">#</a></dt>
+<dd><p>Number of tracers in user-defined module (USE_GEN).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ntracer_gen" title="rompy.schism.namelists.param.Core.validate_ntracer_gen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ntracer_gen</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.rnday">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rnday</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">30</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.rnday" title="Link to this definition">#</a></dt>
+<dd><p>Total run time in days.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_rnday" title="rompy.schism.namelists.param.Core.validate_rnday"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rnday</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.sed_class">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sed_class</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.sed_class" title="Link to this definition">#</a></dt>
+<dd><p>Number of sediment classes for SED3D module (USE_SED).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_sed_class" title="rompy.schism.namelists.param.Core.validate_sed_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_sed_class</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_dt">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_dt</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.dt" title="rompy.schism.namelists.param.Core.dt"><em class="xref py py-obj"><span class="pre">dt</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_dt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_dt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_eco_class">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_eco_class</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.eco_class" title="rompy.schism.namelists.param.Core.eco_class"><em class="xref py py-obj"><span class="pre">eco_class</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_eco_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_eco_class" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_ibc">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_ibc</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.ibc" title="rompy.schism.namelists.param.Core.ibc"><em class="xref py py-obj"><span class="pre">ibc</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_ibc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_ibc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_ibc_ibtp">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_ibc_ibtp</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_ibc_ibtp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_ibtp">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_ibtp</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.ibtp" title="rompy.schism.namelists.param.Core.ibtp"><em class="xref py py-obj"><span class="pre">ibtp</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_ibtp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_ibtp" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_ihfskip">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_ihfskip</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.ihfskip" title="rompy.schism.namelists.param.Core.ihfskip"><em class="xref py py-obj"><span class="pre">ihfskip</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_ihfskip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_ihfskip" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_ipre">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_ipre</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.ipre" title="rompy.schism.namelists.param.Core.ipre"><em class="xref py py-obj"><span class="pre">ipre</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_ipre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_ipre" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_mdc2">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_mdc2</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.mdc2" title="rompy.schism.namelists.param.Core.mdc2"><em class="xref py py-obj"><span class="pre">mdc2</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_mdc2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_mdc2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_msc2">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_msc2</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.msc2" title="rompy.schism.namelists.param.Core.msc2"><em class="xref py py-obj"><span class="pre">msc2</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_msc2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_msc2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_nspool">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_nspool</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.nspool" title="rompy.schism.namelists.param.Core.nspool"><em class="xref py py-obj"><span class="pre">nspool</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_nspool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_nspool" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_ntracer_age">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_ntracer_age</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.ntracer_age" title="rompy.schism.namelists.param.Core.ntracer_age"><em class="xref py py-obj"><span class="pre">ntracer_age</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_ntracer_age"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_ntracer_age" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_ntracer_gen">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_ntracer_gen</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.ntracer_gen" title="rompy.schism.namelists.param.Core.ntracer_gen"><em class="xref py py-obj"><span class="pre">ntracer_gen</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_ntracer_gen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_ntracer_gen" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_rnday">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_rnday</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.rnday" title="rompy.schism.namelists.param.Core.rnday"><em class="xref py py-obj"><span class="pre">rnday</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_rnday"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_rnday" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.validate_sed_class">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_sed_class</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.namelists.param.Core.sed_class" title="rompy.schism.namelists.param.Core.sed_class"><em class="xref py py-obj"><span class="pre">sed_class</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/namelists/param.html#Core.validate_sed_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.namelists.param.Core.validate_sed_class" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="rompy.schism.config.SchismCSIROConfig.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">rompy.schism.config.SchismCSIROConfig</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rompy.schism.namelists.param.Opt.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">rompy.schism.namelists.param.Opt</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core"><code class="docutils literal notranslate"><span class="pre">Core</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.dt"><code class="docutils literal notranslate"><span class="pre">Core.dt</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.eco_class"><code class="docutils literal notranslate"><span class="pre">Core.eco_class</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.ibc"><code class="docutils literal notranslate"><span class="pre">Core.ibc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.ibtp"><code class="docutils literal notranslate"><span class="pre">Core.ibtp</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.ihfskip"><code class="docutils literal notranslate"><span class="pre">Core.ihfskip</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.ipre"><code class="docutils literal notranslate"><span class="pre">Core.ipre</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.mdc2"><code class="docutils literal notranslate"><span class="pre">Core.mdc2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.msc2"><code class="docutils literal notranslate"><span class="pre">Core.msc2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.nspool"><code class="docutils literal notranslate"><span class="pre">Core.nspool</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.ntracer_age"><code class="docutils literal notranslate"><span class="pre">Core.ntracer_age</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.ntracer_gen"><code class="docutils literal notranslate"><span class="pre">Core.ntracer_gen</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.rnday"><code class="docutils literal notranslate"><span class="pre">Core.rnday</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.sed_class"><code class="docutils literal notranslate"><span class="pre">Core.sed_class</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_dt"><code class="docutils literal notranslate"><span class="pre">Core.validate_dt</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_eco_class"><code class="docutils literal notranslate"><span class="pre">Core.validate_eco_class</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_ibc"><code class="docutils literal notranslate"><span class="pre">Core.validate_ibc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="docutils literal notranslate"><span class="pre">Core.validate_ibc_ibtp</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_ibtp"><code class="docutils literal notranslate"><span class="pre">Core.validate_ibtp</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_ihfskip"><code class="docutils literal notranslate"><span class="pre">Core.validate_ihfskip</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_ipre"><code class="docutils literal notranslate"><span class="pre">Core.validate_ipre</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_mdc2"><code class="docutils literal notranslate"><span class="pre">Core.validate_mdc2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_msc2"><code class="docutils literal notranslate"><span class="pre">Core.validate_msc2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_nspool"><code class="docutils literal notranslate"><span class="pre">Core.validate_nspool</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_ntracer_age"><code class="docutils literal notranslate"><span class="pre">Core.validate_ntracer_age</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_ntracer_gen"><code class="docutils literal notranslate"><span class="pre">Core.validate_ntracer_gen</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_rnday"><code class="docutils literal notranslate"><span class="pre">Core.validate_rnday</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.validate_sed_class"><code class="docutils literal notranslate"><span class="pre">Core.validate_sed_class</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/schism/_generated/rompy.schism.namelists.param.Core.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

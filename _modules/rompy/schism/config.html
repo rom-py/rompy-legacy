@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>rompy.schism.config &#8212; rompy 0.1.0 documentation</title>
+    <title>rompy.schism.config &#8212; rompy 0.2.8 documentation</title>
   
   
   
@@ -15,27 +15,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/documentation_options.js?v=b01fafc3"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -44,6 +47,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
   </head>
   
   
@@ -59,19 +63,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -79,7 +72,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -87,8 +79,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -117,7 +109,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.1.0 documentation</p>
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
   
 </a></div>
     
@@ -166,7 +158,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -191,29 +185,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -238,15 +224,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -263,7 +245,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -331,15 +314,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -377,9 +356,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -397,8 +381,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -410,7 +392,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">rompy.schism.config</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">rompy.schism.config</span></li>
   </ul>
 </nav>
 </div>
@@ -428,38 +410,43 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for rompy.schism.config</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">PrivateAttr</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_serializer</span><span class="p">,</span> <span class="n">model_validator</span>
 
-<span class="kn">from</span> <span class="nn">rompy.core</span> <span class="kn">import</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">DataBlob</span><span class="p">,</span> <span class="n">RompyBaseModel</span><span class="p">,</span> <span class="n">Spectrum</span><span class="p">,</span> <span class="n">TimeRange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataBlob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">RompyBaseModel</span><span class="p">,</span> <span class="n">Spectrum</span>
 
-<span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">SCHISMData</span>
-<span class="kn">from</span> <span class="nn">.grid</span> <span class="kn">import</span> <span class="n">SCHISMGrid</span>
-<span class="kn">from</span> <span class="nn">.namelists</span> <span class="kn">import</span> <span class="n">COSINE</span><span class="p">,</span> <span class="n">ICE</span><span class="p">,</span> <span class="n">ICM</span><span class="p">,</span> <span class="n">MICE</span><span class="p">,</span> <span class="n">PARAM</span><span class="p">,</span> <span class="n">SEDIMENT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeInterface</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.namelists</span><span class="w"> </span><span class="kn">import</span> <span class="n">NML</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">HERE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 
-<span class="n">CSIRO_TEMPLATE</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;templates&quot;</span> <span class="o">/</span> <span class="s2">&quot;schism&quot;</span><span class="p">)</span>
+<span class="n">CSIRO_TEMPLATE</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;templates&quot;</span> <span class="o">/</span> <span class="s2">&quot;schismcsiro&quot;</span><span class="p">)</span>
+<span class="n">SCHISM_TEMPLATE</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;templates&quot;</span> <span class="o">/</span> <span class="s2">&quot;schism&quot;</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">Inputs</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Inputs</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
     <span class="n">filewave</span><span class="p">:</span> <span class="n">DataBlob</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TODO&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">staging_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">staging_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">ret</span><span class="p">[</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">staging_dir</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
         <span class="k">return</span> <span class="n">ret</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">forcing</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">forcing</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
@@ -469,7 +456,7 @@ document.write(`
 
 <div class="viewcode-block" id="SchismCSIROConfig">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.config.SchismCSIROConfig.html#rompy.schism.config.SchismCSIROConfig">[docs]</a>
-<span class="k">class</span> <span class="nc">SchismCSIROConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchismCSIROConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">):</span>
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;schismcsiro&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="s2">&quot;schismcsiro&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The model type for SCHISM.&quot;</span>
     <span class="p">)</span>
@@ -756,7 +743,7 @@ document.write(`
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot; Initial condition; F for default; use T if using WW3 as i.c. etc&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">param_iof_hydro1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - elev. [m]  </span><span class="si">{elev}</span><span class="s2"> 2D - Default 1&quot;</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;output 0: off; 1: on - elev. [m]  </span><span class="si">{elev}</span><span class="s2"> 2D - Default 1&quot;</span>
     <span class="p">)</span>
     <span class="n">param_iof_hydro2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="mi">0</span><span class="p">,</span>
@@ -898,8 +885,6 @@ document.write(`
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Time step for output; if smaller than simulation time step, the latter is used (output every step for better 1D 2D spectra analysis)&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-
-
     <span class="c1"># validator example - ensure the following</span>
     <span class="c1"># Bottom friction.</span>
     <span class="c1">#           nchi=0: drag coefficients specified in drag.gr3; nchi=-1: Manning&#39;s</span>
@@ -919,7 +904,7 @@ document.write(`
 <div class="viewcode-block" id="SchismCSIROConfig.validate_bottom_friction">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.config.SchismCSIROConfig.html#rompy.schism.config.SchismCSIROConfig.validate_bottom_friction">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">validate_bottom_friction</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_bottom_friction</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">nchi</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">drag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;drag.gr3 must be specified when nchi=0&quot;</span><span class="p">)</span>
@@ -934,7 +919,7 @@ document.write(`
         <span class="k">return</span> <span class="n">v</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># Copy grid files</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
         <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;_rnday&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">period</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">86400</span>
@@ -949,20 +934,216 @@ document.write(`
 
 
 
-<span class="c1"># class SCHISMConfig(BaseConfig):</span>
-<span class="c1">#     model_type: Literal[&quot;schism&quot;] = Field(</span>
-<span class="c1">#         &quot;schism&quot;, description=&quot;The model type for SCHISM.&quot;</span>
-<span class="c1">#     )</span>
-<span class="c1">#     param: Optional[PARAM] = Field(description=&quot;Model paramaters&quot;)</span>
-<span class="c1">#     ice: Optional[ICE] = Field(description=&quot;Ice model parameters&quot;, default=None)</span>
-<span class="c1">#     icm: Optional[ICM] = Field(description=&quot;Ice model parameters&quot;, default=None)</span>
-<span class="c1">#     mice: Optional[ICM] = Field(description=&quot;Ice model parameters&quot;, default=None)</span>
-<span class="c1">#     sediment: Optional[SEDIMENT] = Field(</span>
-<span class="c1">#         description=&quot;Sediment model parameters&quot;, default=None</span>
-<span class="c1">#     )</span>
-<span class="c1">#     cosine: Optional[COSINE] = Field(</span>
-<span class="c1">#         description=&quot;Sediment model parameters&quot;, default=None</span>
-<span class="c1">#     )</span>
+<div class="viewcode-block" id="SCHISMConfig">
+<a class="viewcode-back" href="../../../schism/_generated/rompy.schism.config.SCHISMConfig.html#rompy.schism.config.SCHISMConfig">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SCHISMConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">):</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;schism&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;schism&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The model type for SCHISM.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">grid</span><span class="p">:</span> <span class="n">SCHISMGrid</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The model grid&quot;</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SCHISMData</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model inputs&quot;</span><span class="p">)</span>
+    <span class="n">nml</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NML</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">NML</span><span class="p">(),</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The namelist&quot;</span><span class="p">)</span>
+    <span class="n">template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The path to the model template&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">SCHISM_TEMPLATE</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="SCHISMConfig.serialize_model">
+<a class="viewcode-back" href="../../../schism/_generated/rompy.schism.config.SCHISMConfig.html#rompy.schism.config.SCHISMConfig.serialize_model">[docs]</a>
+    <span class="nd">@model_serializer</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">serialize_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Custom serializer to handle proper serialization of nested components.&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">GR3Generator</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Explicitly handle required fields</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_type</span>
+
+        <span class="c1"># Handle grid separately to process GR3Generator objects</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">grid_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">model_fields</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+                <span class="c1"># Special handling for GR3Generator objects</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">GR3Generator</span><span class="p">):</span>
+                    <span class="c1"># For GR3Generator objects, extract just the value field</span>
+                    <span class="n">grid_dict</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span>
+                <span class="k">elif</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">field_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+                    <span class="n">grid_dict</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_dict</span>
+
+        <span class="c1"># Add optional fields that are not None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nml</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;nml&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nml</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;template&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">runtime</span><span class="o">.</span><span class="n">staging_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nml</span><span class="o">.</span><span class="n">update_data_sources</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="n">destdir</span><span class="o">=</span><span class="n">runtime</span><span class="o">.</span><span class="n">staging_dir</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">runtime</span><span class="o">.</span><span class="n">period</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nml</span><span class="o">.</span><span class="n">update_times</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">runtime</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nml</span><span class="o">.</span><span class="n">write_nml</span><span class="p">(</span><span class="n">runtime</span><span class="o">.</span><span class="n">staging_dir</span><span class="p">)</span></div>
+
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SchismCSIROMigrationConfig</span><span class="p">(</span><span class="n">SchismCSIROConfig</span><span class="p">):</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;schismcsiromigration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;schismcsiromigration&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The model type for SCHISM.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The path to the model template&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">SCHISM_TEMPLATE</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="c1"># Create translation dictionary</span>
+        <span class="n">config_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;opt&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;ihot&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ihot</span><span class="p">,</span>
+                    <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                    <span class="s2">&quot;utc_start&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">utc_start</span><span class="p">,</span>
+                    <span class="s2">&quot;time_step&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_step</span><span class="p">,</span>
+                    <span class="s2">&quot;msc2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">msc2</span><span class="p">,</span>
+                    <span class="s2">&quot;mdc2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdc2</span><span class="p">,</span>
+                    <span class="s2">&quot;ihfskip&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ihfskip</span><span class="p">,</span>
+                    <span class="s2">&quot;icou_elfe_wwm&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">icou_elfe_wwm</span><span class="p">,</span>
+                    <span class="s2">&quot;nstep_wwm&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nstep_wwm</span><span class="p">,</span>
+                    <span class="s2">&quot;deltc&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltc</span><span class="p">,</span>
+                    <span class="s2">&quot;h1_bcc&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">h1_bcc</span><span class="p">,</span>
+                    <span class="s2">&quot;h2_bcc&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">h2_bcc</span><span class="p">,</span>
+                    <span class="s2">&quot;h_bcc1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_bcc1</span><span class="p">,</span>
+                    <span class="s2">&quot;thetai&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">thetai</span><span class="p">,</span>
+                    <span class="s2">&quot;iwbl&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">iwbl</span><span class="p">,</span>
+                    <span class="s2">&quot;slam0&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">slam0</span><span class="p">,</span>
+                    <span class="s2">&quot;sfea0&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sfea0</span><span class="p">,</span>
+                    <span class="s2">&quot;nchi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nchi</span><span class="p">,</span>
+                    <span class="s2">&quot;dzb_decayYN&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dzb_decayYN</span><span class="p">,</span>
+                    <span class="s2">&quot;rlatitude&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rlatitude</span><span class="p">,</span>
+                    <span class="s2">&quot;ic_elev&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ic_elev</span><span class="p">,</span>
+                    <span class="s2">&quot;inv_atm_bnd&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_atm_bnd</span><span class="p">,</span>
+                    <span class="s2">&quot;ibtrack_openbndYN&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ibtrack_openbndYN</span><span class="p">,</span>
+                    <span class="s2">&quot;iwindoffYN&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">iwindoffYN</span><span class="p">,</span>
+                    <span class="s2">&quot;iwind_form&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">iwind_form</span><span class="p">,</span>
+                    <span class="s2">&quot;param_nhot&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_nhot</span><span class="p">,</span>
+                    <span class="s2">&quot;param_nhot_writeYN&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_nhot_writeYN</span><span class="p">,</span>
+                    <span class="s2">&quot;param_nhot_write&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_nhot_write</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;schout&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;param_nspool_sta&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_nspool_sta</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro1</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro2</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro3&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro3</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro4&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro4</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro5&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro5</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro6&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro6</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro7&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro7</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro8&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro8</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro9&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro9</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro10&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro10</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro11&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro11</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro12&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro12</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro13&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro13</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro14&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro14</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro15&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro15</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro16&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro16</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro17&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro17</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro18&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro18</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro19&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro19</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro20&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro20</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro21&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro21</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro22&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro22</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro23&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro23</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro24&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro24</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro25&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro25</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro26&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro26</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro27&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro27</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro28&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro28</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro29&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro29</span><span class="p">,</span>
+                    <span class="s2">&quot;param_iof_hydro30&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_iof_hydro30</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;wwminput_WW3&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;proc&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;PROCNAME&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;history&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;HS&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">HS</span><span class="p">,</span>
+                    <span class="s2">&quot;TM01&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">TM01</span><span class="p">,</span>
+                    <span class="s2">&quot;TM02&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">TM02</span><span class="p">,</span>
+                    <span class="s2">&quot;DM&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DM</span><span class="p">,</span>
+                    <span class="s2">&quot;DSPR&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DSPR</span><span class="p">,</span>
+                    <span class="s2">&quot;TPP&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">TPP</span><span class="p">,</span>
+                    <span class="s2">&quot;TPPD&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">TPPD</span><span class="p">,</span>
+                    <span class="s2">&quot;CPP&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">CPP</span><span class="p">,</span>
+                    <span class="s2">&quot;WNPP&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">WNPP</span><span class="p">,</span>
+                    <span class="s2">&quot;CGPP&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">CGPP</span><span class="p">,</span>
+                    <span class="s2">&quot;KPP&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">KPP</span><span class="p">,</span>
+                    <span class="s2">&quot;LPP&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">LPP</span><span class="p">,</span>
+                    <span class="s2">&quot;PEAKD&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">PEAKD</span><span class="p">,</span>
+                    <span class="s2">&quot;DPEAK&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DPEAK</span><span class="p">,</span>
+                    <span class="s2">&quot;PEAKDSPR&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">PEAKDSPR</span><span class="p">,</span>
+                    <span class="s2">&quot;UBOT&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">UBOT</span><span class="p">,</span>
+                    <span class="s2">&quot;ORBITAL&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ORBITAL</span><span class="p">,</span>
+                    <span class="s2">&quot;DEP&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_DEP</span><span class="p">,</span>
+                    <span class="s2">&quot;TAUW&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_TAUW</span><span class="p">,</span>
+                    <span class="s2">&quot;TAUHF&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_TAUHF</span><span class="p">,</span>
+                    <span class="s2">&quot;TAUTOT&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_TAUTOT</span><span class="p">,</span>
+                    <span class="s2">&quot;STOKESSURFX&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_STOKESSURFX</span><span class="p">,</span>
+                    <span class="s2">&quot;STOKESSURFY&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_STOKESSURFY</span><span class="p">,</span>
+                    <span class="s2">&quot;STOKESBAROX&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_STOKESBAROX</span><span class="p">,</span>
+                    <span class="s2">&quot;STOKESBAROY&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_STOKESBAROY</span><span class="p">,</span>
+                    <span class="s2">&quot;DELTC&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_DELTC</span><span class="p">,</span>
+                    <span class="s2">&quot;OUTSTYLE&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_history_OUTSTYLE</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;station&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;iouts&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">iouts</span><span class="p">,</span>
+                    <span class="s2">&quot;nouts&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nouts</span><span class="p">,</span>
+                    <span class="s2">&quot;xouts&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xouts</span><span class="p">,</span>
+                    <span class="s2">&quot;youts&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">youts</span><span class="p">,</span>
+                    <span class="s2">&quot;lsp2d&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lsp2d</span><span class="p">,</span>
+                    <span class="s2">&quot;ac&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ac</span><span class="p">,</span>
+                    <span class="s2">&quot;drampwafo&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">drampwafo</span><span class="p">,</span>
+                    <span class="s2">&quot;nadv&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nadv</span><span class="p">,</span>
+                    <span class="s2">&quot;drampwind&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">drampwind</span><span class="p">,</span>
+                    <span class="s2">&quot;dramp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dramp</span><span class="p">,</span>
+                    <span class="s2">&quot;DEP&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_DEP</span><span class="p">,</span>
+                    <span class="s2">&quot;TAUW&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_TAUW</span><span class="p">,</span>
+                    <span class="s2">&quot;TAUHF&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_TAUHF</span><span class="p">,</span>
+                    <span class="s2">&quot;TAUTOT&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_TAUTOT</span><span class="p">,</span>
+                    <span class="s2">&quot;STOKESSURFX&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_STOKESSURFX</span><span class="p">,</span>
+                    <span class="s2">&quot;STOKESSURFY&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_STOKESSURFY</span><span class="p">,</span>
+                    <span class="s2">&quot;STOKESBAROX&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_STOKESBAROX</span><span class="p">,</span>
+                    <span class="s2">&quot;STOKESBAROY&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_STOKESBAROY</span><span class="p">,</span>
+                    <span class="s2">&quot;OUTSTYLE&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_OUTSTYLE</span><span class="p">,</span>
+                    <span class="s2">&quot;DELTC&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_station_DELTC</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;hotfile&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;LHOTF&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_LHOTF</span><span class="p">,</span>
+                    <span class="s2">&quot;hotfile_DELTC&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wwminput_hotfile_DELTC</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">schism_config</span> <span class="o">=</span> <span class="n">SCHISMConfig</span><span class="p">(</span>
+            <span class="n">grid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">nml</span><span class="o">=</span><span class="n">NML</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">schism_config</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">runtime</span><span class="p">)</span>
 </pre></div>
 
                 </article>
@@ -992,8 +1173,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1026,7 +1207,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

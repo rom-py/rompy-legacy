@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>rompy.swan.components.output.QUANTITIES &#8212; rompy 0.1.0 documentation</title>
+    <title>rompy.swan.components.output.QUANTITIES &#8212; rompy 0.2.8 documentation</title>
   
   
   
@@ -16,27 +16,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/documentation_options.js?v=b01fafc3"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -47,6 +50,7 @@
     <link rel="prev" title="rompy.swan.components.output.QUANTITY" href="rompy.swan.components.output.QUANTITY.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
   </head>
   
   
@@ -62,19 +66,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -82,7 +75,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -90,8 +82,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -120,7 +112,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.1.0 documentation</p>
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
   
 </a></div>
     
@@ -169,7 +161,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -194,29 +188,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -241,15 +227,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -268,7 +250,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -336,15 +319,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -405,9 +384,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -425,10 +409,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -441,12 +421,12 @@ document.write(`
     <li class="breadcrumb-item"><a href="../../../models.html" class="nav-link">Models</a></li>
     
     
-    <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">SWAN</a></li>
     
     
     <li class="breadcrumb-item"><a href="../output.html" class="nav-link">Output</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">rompy.swan.c...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">rompy.swan.components.output.QUANTITIES</span></li>
   </ul>
 </nav>
 </div>
@@ -476,7 +456,7 @@ QUANTITY &lt; output &gt; ...
 </div>
 <p>This component can be used to prescribe and render multiple QUANTITY components.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.output</span> <span class="kn">import</span> <span class="n">QUANTITY</span><span class="p">,</span> <span class="n">QUANTITIES</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.output</span><span class="w"> </span><span class="kn">import</span> <span class="n">QUANTITY</span><span class="p">,</span> <span class="n">QUANTITIES</span>
 
 <span class="gp">In [2]: </span><span class="n">q1</span> <span class="o">=</span> <span class="n">QUANTITY</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;xp&quot;</span><span class="p">],</span> <span class="n">hexp</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 
@@ -501,7 +481,310 @@ QUANTITY &lt; output &gt; ...
 <span class="go">QUANTITY TRANSP FORCE FRAME</span>
 </pre></div>
 </div>
-<dl class="field-list simple">
+<p><details  class="autodoc_pydantic_collapsable_json">
+<summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;QUANTITIES&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Define output settings for multiple output.\n\n.. code-block:: text\n\n    QUANTITY &lt; output &gt; ...\n    QUANTITY &lt; output &gt; ...\n    ..\n\nThis component can be used to prescribe and render multiple QUANTITY components.\n\nExamples\n--------\n\n.. ipython:: python\n    :okwarning:\n\n    from rompy.swan.components.output import QUANTITY, QUANTITIES\n    q1 = QUANTITY(output=[\&quot;xp\&quot;], hexp=100)\n    q2 = QUANTITY(output=[\&quot;hsign\&quot;, \&quot;tm01\&quot;, \&quot;rtmm10\&quot;], excv=-9)\n    q3 = QUANTITY(output=[\&quot;hsign\&quot;, \&quot;tm02\&quot;, \&quot;fspr\&quot;], fmin=0.03, fmax=0.5)\n    q4 = QUANTITY(output=[\&quot;hsign\&quot;], fswell=0.08)\n    q5 = QUANTITY(output=[\&quot;per\&quot;], short=\&quot;Tm-1,0\&quot;, power=0)\n    q6 = QUANTITY(output=[\&quot;transp\&quot;, \&quot;force\&quot;], coord=\&quot;frame\&quot;)\n    quantities = QUANTITIES(quantities=[q1, q2, q3, q4, q5, q6])\n    print(quantities.render())&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;quantities&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;quantities&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;QUANTITIES&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;quantities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;QUANTITY components&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/QUANTITY&quot;</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Quantities&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nt">&quot;$defs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;BlockOptions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Valid options for block output parameters.\n\nAttributes\n----------\nHSIGN: \&quot;hsign\&quot;\n    Significant wave height (in m).\nHSWELL: \&quot;hswell\&quot;\n    Swell wave height (in m).\nDIR: \&quot;dir\&quot;\n    Mean wave direction (in degrees).\nPDIR: \&quot;pdir\&quot;\n    Peak wave direction (in degrees).\nTDIR: \&quot;tdir\&quot;\n    Direction of energy transport (in degrees).\nTM01: \&quot;tm01\&quot;\n    Mean absolute wave period (in s).\nRTM01: \&quot;rtm01\&quot;\n    Mean relative wave period (in s).\nRTP: \&quot;rtp\&quot;\n    Peak period of the (relative frequency) variance density spectrum (in s).\nTPS: \&quot;tps\&quot;\n    Smoothed peak period (in s).\nPER: \&quot;per\&quot;\n    Mean absolute wave period (in s).\nRPER: \&quot;rper\&quot;\n    Mean relative wave period (in s).\nTMM10: \&quot;tmm10\&quot;\n    Mean absolute wave period (in s).\nRTMM10: \&quot;rtmm10\&quot;\n    Mean relative wave period (in s).\nTM02: \&quot;tm02\&quot;\n    Mean absolute zero-crossing period (in s).\nFSPR: \&quot;fspr\&quot;\n    The normalised width of the frequency spectrum.\nDSPR: \&quot;dspr\&quot;\n    Directional spreading of the waves (in degrees).\nQP: \&quot;qp\&quot;\n    Peakedness of the wave spectrum (dimensionless).\nDEPTH: \&quot;depth\&quot;\n    Water depth (in m).\nWATLEV: \&quot;watlev\&quot;\n    Water level (in m).\nBOTLEV: \&quot;botlev\&quot;\n    Bottom level (in m).\nVEL: \&quot;vel\&quot;\n    Current velocity (vector; in m/s).\nFRCOEF: \&quot;frcoef\&quot;\n    Friction coefficient (equal to `cfw` or `kn` in command `FRICTION`).\nWIND: \&quot;wind\&quot;\n    Wind velocity (vector; in m/s).\nAICE: \&quot;aice\&quot;\n    Ice concentration (as a fraction from 0 to 1).\nPROPAGAT: \&quot;propagat\&quot;\n    Sum of PROPXY, PROPTHETA and PROPSIGMA (in W/m2 or m2/s).\nPROPXY: \&quot;propxy\&quot;\n    Energy propagation in geographic space; sum of x- and y-direction\n    (in W/m2 or m2/s).\nPROPTHETA: \&quot;proptheta\&quot;\n    Energy propagation in theta space (in W/m2 or m2/s).\nPROPSIGMA: \&quot;propsigma\&quot;\n    Energy propagation in sigma space (in W/m2 or m2/s).\nGENERAT: \&quot;generat\&quot;\n    Total energy generation (in W/m2 or m2/s).\nGENWIND: \&quot;genwind\&quot;\n    Energy generation due to wind (in W/m2 or m2/s).\nREDIST: \&quot;redist\&quot;\n    Total energy redistribution (in W/m2 or m2/s).\nREDQUAD: \&quot;redquad\&quot;\n    Energy redistribution due to quadruplets (in W/m2 or m2/s).\nREDTRIAD: \&quot;redtriad\&quot;\n    Energy redistribution due to triads (in W/m2 or m2/s).\nDISSIP: \&quot;dissip\&quot;\n    Total energy dissipation (in W/m2 or m2/s).\nDISBOT: \&quot;disbot\&quot;\n    Energy dissipation due to bottom friction (in W/m2 or m2/s).\nDISSURF: \&quot;dissurf\&quot;\n    Energy dissipation due to surf breaking (in W/m2 or m2/s).\nDISWCAP: \&quot;diswcap\&quot;\n    Energy dissipation due to whitecapping (in W/m2 or m2/s).\nDISSWELL: \&quot;disswell\&quot;\n    Energy dissipation due to swell dissipation (in W/m2 or m2/s).\nDISVEG: \&quot;disveg\&quot;\n    Energy dissipation due to vegetation (in W/m2 or m2/s).\nDISMUD: \&quot;dismud\&quot;\n    Energy dissipation due to mud (in W/m2 or m2/s).\nDISICE: \&quot;disice\&quot;\n    Energy dissipation due to sea ice (in W/m2 or m2/s).\nRADSTR: \&quot;radstr\&quot;\n    Energy transfer between waves and currents due to radiation stress\n    (in W/m2 or m2/s).\nQB: \&quot;qb\&quot;\n    Fraction of breaking waves due to depth-induced breaking.\nTRANSP: \&quot;transp\&quot;\n    Transport of energy (vector; in W/m2 or m2/s).\nFORCE: \&quot;force\&quot;\n    Wave-induced force per unit surface area (vector; in N/m2).\nUBOT: \&quot;ubot\&quot;\n    The rms-value of the maxima of the orbital velocity near the bottom (in m/s).\nURMS: \&quot;urms\&quot;\n    The rms-value of the orbital velocity near the bottom (in m/s).\nTMBOT: \&quot;tmbot\&quot;\n    The bottom wave period (in s).\nWLENGTH: \&quot;wlength\&quot;\n    Average wave length (in m).\nLWAVP: \&quot;lwavp\&quot;\n    Peak wave length (in m).\nSTEEPNESS: \&quot;steepness\&quot;\n    Average wave steepness (dimensionless).\nBFI: \&quot;bfi\&quot;\n    Benjamin-Feir index (dimensionless).\nNPLANTS: \&quot;nplants\&quot;\n    Number of plants per square meter.\nDHSIGN: \&quot;dhsign\&quot;\n    Difference in significant wave height from the last two iterations (in m).\nDRTM01: \&quot;drtm01\&quot;\n    Difference in average wave period (RTM01) from the last two iterations (in s).\nLEAK: \&quot;leak\&quot;\n    Numerical loss of energy equal to `cthetaE(omega,theta)` across boundaries.\nTIME: \&quot;time\&quot;\n    Full date-time string as part of line used in TABLE only.\nTSEC: \&quot;tsec\&quot;\n    Time in seconds with respect to a reference time (see command QUANTITY).\nXP: \&quot;xp\&quot;\n    The x-coordinate in the problem coordinate system of the output location.\nYP: \&quot;yp\&quot;\n    The y-coordinate in the problem coordinate system of the output location.\nDIST: \&quot;dist\&quot;\n    If output has been requested along a curve then the distance along the curve\n    can be obtained with the command TABLE. DIST is the distance along the curve\n    measured from teh first point on the curve to the output location on the curve\n    in meters (also in the case of spherical coordinates).\nSETUP: \&quot;setup\&quot;\n    Set-up due to waves (in m).\nPTHSIGN: \&quot;pthsign\&quot;\n    Watershed partitions of the significant wave height (in m).\nPTRTP: \&quot;ptrtp\&quot;\n    Watershed partitions of the relative peak period (in s).\nPTWLEN: \&quot;ptwlen\&quot;\n    Watershed partitions of the average wave length (in m).\nPTDIR: \&quot;ptdir\&quot;\n    Watershed partitions of the peak wave direction (in degrees).\nPTDSPR: \&quot;ptdspr\&quot;\n    Watershed partitions of the directional spreading (in degrees).\nPTWFRAC: \&quot;ptwfrac\&quot;\n    Watershed partitions of the wind fraction (dimensionless).\nPTSTEEPNE: \&quot;ptsteepne\&quot;\n    Watershed partition of the wave steepness (dimensionless).\nPARTITION: \&quot;partition\&quot;\n    The raw spectral partition for wave system tracking post-processing.\n\nNote\n----\nEnergy given in W/m2 or m2/s depending on command SET.\n\nNote\n----\nUBOT and URMS required command `FRICTION` to be used. If friction is ignored in the\ncomputation, then one should use the command `FRICTION` with the value of the\nfriction set to zero (e.g., `FRICTION COLLINS 0`).&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;hsign&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;hswell&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dir&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;pdir&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tdir&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tm01&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;rtm01&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;rtp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tps&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;per&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;rper&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tmm10&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;rtmm10&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tm02&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;fspr&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dspr&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;qp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;watlev&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;botlev&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;vel&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;frcoef&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;wind&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;aice&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;propagat&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;propxy&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;proptheta&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;propsigma&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;generat&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;genwind&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;redist&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;redquad&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;redtriad&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dissip&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;disbot&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dissurf&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;diswcap&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;disswell&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;disveg&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dismud&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;disice&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;radstr&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;qb&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;transp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;force&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ubot&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;urms&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tmbot&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;wlength&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;lwavp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;steepness&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;bfi&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;nplants&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dhsign&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;drtm01&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;leak&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tsec&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;xp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;yp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dist&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;setup&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;pthsign&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptrtp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptwlen&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptdir&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptdspr&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptwfrac&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptsteepne&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;partition&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BlockOptions&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;QUANTITY&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Define output settings.\n\n.. code-block:: text\n\n    QUANTITY &lt; output &gt; &#39;short&#39; &#39;long&#39; [lexp] [hexp] [excv] [power] [ref] &amp;\n        [fswell] [fmin] [fmax] -&gt;PROBLEMCOORD|FRAME\n\n    Examples:\n    ---------\n    QUANTITY Xp hexp=100.\n    QUANTITY HS TM01 RTMM10 excv=-9.\n    QUANTITY HS TM02 FSPR fmin=0.03 fmax=0.5\n    QUANTITY Hswell fswell=0.08\n    QUANTITY Per short=&#39;Tm-1,0&#39; power=0.\n    QUANTITY Transp Force Frame\n\nWith this command the user can influence:\n\n* The naming of output quantities\n* The accuracy of writing output quantities\n* The definition of some output quantities\n* Reference direction for vectors\n\nNote\n----\nThe following data are accepted only in combination with some specific quantities:\n\n* power\n* ref\n* fswell\n* fmin\n* fmax\n* PROBLEMCOORD\n* FRAME\n\nNote\n----\n**PROBLEMCOORD**: Vector components are relative to the x- and y-axes of the\nproblem coordinate system (see command `SET`):\n\n* Directions are counterclockwise relative to the positive x-axis of the problem\n  coordinate system if Cartesian direction convention is used.\n* Directions are relative to North (clockwise) if Nautical direction convention is\n  used.\n\nNote\n----\n**FRAME**: If output is requested on sets created by command FRAME or\nautomatically (see command `SET`) (`COMPGRID` or `BOTTGRID`):\n\n* Vector components are relative to the x- and y-axes of the frame coordinate\n  system.\n* Directions are counterclockwise relative to the positive x-axis of the frame\n  coordinate system if Cartesian direction convention is used.\n* Directions are relative to North (clockwise) if Nautical direction convention\n  is used.\n\nExamples\n--------\n\n.. ipython:: python\n    :okwarning:\n\n    from rompy.swan.components.output import QUANTITY\n    quant = QUANTITY(output=[\&quot;xp\&quot;], hexp=100)\n    print(quant.render())\n    quant = QUANTITY(output=[\&quot;hsign\&quot;, \&quot;tm01\&quot;, \&quot;rtmm10\&quot;], excv=-9)\n    print(quant.render())\n    quant = QUANTITY(output=[\&quot;hsign\&quot;, \&quot;tm02\&quot;, \&quot;fspr\&quot;], fmin=0.03, fmax=0.5)\n    print(quant.render())\n    quant = QUANTITY(output=[\&quot;hsign\&quot;], fswell=0.08)\n    print(quant.render())\n    quant = QUANTITY(output=[\&quot;per\&quot;], short=\&quot;Tm-1,0\&quot;, power=0)\n    print(quant.render())\n    quant = QUANTITY(output=[\&quot;transp\&quot;, \&quot;force\&quot;], coord=\&quot;frame\&quot;)\n    print(quant.render())&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;quantity&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="s2">&quot;quantity&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="s2">&quot;QUANTITY&quot;</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The output variables to define settings for&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/BlockOptions&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="nt">&quot;minItems&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Output&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;short&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;maxLength&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Short name of the output quantity (e.g. the name in the heading of a table written by SWAN). If this option is not used, SWAN will use a realistic name&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Short&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;long&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;maxLength&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Long name of the output quantity (e.g. the name in the heading of a block output written by SWAN). If this option is not used, SWAN will use a realistic name&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Long&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;lexp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lowest expected value of the output quantity&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lexp&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;hexp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Highest expected value of the output quantity; the highest expected value is used by SWAN to determine the number of decimals in a table with heading. So the `QUANTITY` command can be used in case the default number of decimals in a table is unsatisfactory&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hexp&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;excv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;In case there is no valid value (e.g. wave height in a dry point) this exception value is written in a table or block output&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Excv&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;power&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;power `p` appearing in the definition of `PER`, `RPER` and `WLEN`. Note that the value for `power` given for `PER` affects also the value of `RPER`; the power for `WLEN` is independent of that of `PER` or `RPER` (SWAN default: 1)&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Power&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Reference time used for the quantity `TSEC`. Default value: starting time of the first computation, except in cases where this is later than the time of the earliest input. In these cases, the time of the earliest input is used&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ref&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;fswell&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Upper limit of frequency range used for computing the quantity HSWELL (SWAN default: 0.1 Hz)&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fswell&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;noswll&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of swells to output for watershed quantities &quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Noswll&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;fmin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lower limit of frequency range used for computing integral parameters (SWAN Default: 0.0 Hz)&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fmin&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;fmax&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Upper limit of frequency range used for computing integral parameters (SWAN default: 1000.0 Hz, acts as infinity)&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fmax&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;coord&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                        </span><span class="s2">&quot;problemcoord&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="s2">&quot;frame&quot;</span>
+<span class="w">                     </span><span class="p">],</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Define if vectors and directions refer to the problem coordinate system (&#39;problemcoord&#39;) or sets created by command FRAME (&#39;frame&#39;) (SWAN default: problemcoord)&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Coord&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;output&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;QUANTITY&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;quantities&quot;</span>
+<span class="w">   </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</details></p><dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="#rompy.swan.components.output.QUANTITIES.model_type" title="rompy.swan.components.output.QUANTITIES.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['quantities',</span> <span class="pre">'QUANTITIES'])</span></code></a></p></li>
@@ -566,7 +849,8 @@ QUANTITY &lt; output &gt; ...
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -587,13 +871,13 @@ QUANTITY &lt; output &gt; ...
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../../../_sources/swan/components/_generated/rompy.swan.components.output.QUANTITIES.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/swan/components/_generated/rompy.swan.components.output.QUANTITIES.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -608,8 +892,8 @@ QUANTITY &lt; output &gt; ...
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -642,7 +926,8 @@ QUANTITY &lt; output &gt; ...
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

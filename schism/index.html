@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>SCHISM &#8212; rompy 0.1.0 documentation</title>
+    <title>SCHISM &#8212; rompy 0.2.8 documentation</title>
   
   
   
@@ -16,37 +16,41 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../_static/documentation_options.js?v=b01fafc3"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'schism/index';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="rompy.schism.data.SCHISMDataSflux" href="_generated/rompy.schism.data.SCHISMDataSflux.html" />
+    <link rel="next" title="rompy.schism.grid.SCHISMGrid" href="_generated/rompy.schism.grid.SCHISMGrid.html" />
     <link rel="prev" title="rompy.swan.types.BlockOptions" href="../swan/_generated/rompy.swan.types.BlockOptions.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
   </head>
   
   
@@ -62,19 +66,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -82,7 +75,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -90,8 +82,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -120,7 +112,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.1.0 documentation</p>
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
   
 </a></div>
     
@@ -169,7 +161,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -194,29 +188,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -241,15 +227,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -268,7 +250,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -336,15 +319,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -376,7 +355,10 @@ document.write(`
 <li class="toctree-l1 current"><a class="reference internal" href="../models.html">Models</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../swan/index.html">SWAN</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SCHISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#grids">Grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grids">Grids</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.schism.grid.SCHISMGrid.html">rompy.schism.grid.SCHISMGrid</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#data">Data</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="_generated/rompy.schism.data.SCHISMDataSflux.html">rompy.schism.data.SCHISMDataSflux</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_generated/rompy.schism.data.SCHISMDataWave.html">rompy.schism.data.SCHISMDataWave</a></li>
@@ -390,11 +372,14 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#full-namelist-implementation">Full Namelist Implementation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#param">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ice">Ice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#param">PARAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ice">ICE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mice">MICE</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#icm">ICM</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sediment">SEDIMENT</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cosine">COSINE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wwminput">WWMINPUT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nml">NML</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#config-object">Config Object</a></li>
 </ul>
 </li>
@@ -410,9 +395,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -430,8 +420,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -443,7 +431,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../models.html" class="nav-link">Models</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">SCHISM</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">SCHISM</span></li>
   </ul>
 </nav>
 </div>
@@ -466,6 +454,9 @@ document.write(`
 <h2>Grids<a class="headerlink" href="#grids" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.grid.SCHISMGrid.html#rompy.schism.grid.SCHISMGrid" title="rompy.schism.grid.SCHISMGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.grid.SCHISMGrid</span></code></a></p></td>
+<td><p>SCHISM grid in geographic space.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -477,11 +468,7 @@ document.write(`
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.data.SCHISMDataSflux.html#rompy.schism.data.SCHISMDataSflux" title="rompy.schism.data.SCHISMDataSflux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.data.SCHISMDataSflux</span></code></a></p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">Fields<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.data.SCHISMDataWave.html#rompy.schism.data.SCHISMDataWave" title="rompy.schism.data.SCHISMDataWave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.data.SCHISMDataWave</span></code></a></p></td>
 <td><p>This class is used to write wave spectral boundary data.</p></td>
@@ -505,11 +492,7 @@ document.write(`
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.config.SchismCSIROConfig.html#rompy.schism.config.SchismCSIROConfig" title="rompy.schism.config.SchismCSIROConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.config.SchismCSIROConfig</span></code></a></p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">Fields<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -519,22 +502,48 @@ document.write(`
 <h2>Full Namelist Implementation<a class="headerlink" href="#full-namelist-implementation" title="Link to this heading">#</a></h2>
 <p>This object implements a set of models for each namelist and assembles a config object using this group of models.  This is curently only partly implemented.</p>
 <section id="param">
-<h3>Param<a class="headerlink" href="#param" title="Link to this heading">#</a></h3>
+<h3>PARAM<a class="headerlink" href="#param" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.param.PARAM.html#rompy.schism.namelists.param.PARAM" title="rompy.schism.namelists.param.PARAM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.param.PARAM</span></code></a></p></td>
-<td><p>This file was auto generated from a schism namelist file on 2023-11-20.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.param.Core.html#rompy.schism.namelists.param.Core" title="rompy.schism.namelists.param.Core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.param.Core</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.param.Opt.html#rompy.schism.namelists.param.Opt" title="rompy.schism.namelists.param.Opt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.param.Opt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.param.Schout.html#rompy.schism.namelists.param.Schout" title="rompy.schism.namelists.param.Schout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.param.Schout</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.param.Vertical.html#rompy.schism.namelists.param.Vertical" title="rompy.schism.namelists.param.Vertical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.param.Vertical</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.param.Param.html#rompy.schism.namelists.param.Param" title="rompy.schism.namelists.param.Param"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.param.Param</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
 <section id="ice">
-<h3>Ice<a class="headerlink" href="#ice" title="Link to this heading">#</a></h3>
+<h3>ICE<a class="headerlink" href="#ice" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.ice.ICE.html#rompy.schism.namelists.ice.ICE" title="rompy.schism.namelists.ice.ICE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.ice.ICE</span></code></a></p></td>
-<td><p>This file was auto generated from a schism namelist file on 2023-11-20.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.ice.Ice_in.html#rompy.schism.namelists.ice.Ice_in" title="rompy.schism.namelists.ice.Ice_in"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.ice.Ice_in</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.ice.Ice.html#rompy.schism.namelists.ice.Ice" title="rompy.schism.namelists.ice.Ice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.ice.Ice</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="mice">
+<h3>MICE<a class="headerlink" href="#mice" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.mice.Mice.html#rompy.schism.namelists.mice.Mice" title="rompy.schism.namelists.mice.Mice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.mice.Mice</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -544,8 +553,44 @@ document.write(`
 <h3>ICM<a class="headerlink" href="#icm" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.ICM.html#rompy.schism.namelists.icm.ICM" title="rompy.schism.namelists.icm.ICM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.ICM</span></code></a></p></td>
-<td><p>This file was auto generated from a schism namelist file on 2023-11-20.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Bag.html#rompy.schism.namelists.icm.Bag" title="rompy.schism.namelists.icm.Bag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Bag</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Core.html#rompy.schism.namelists.icm.Core" title="rompy.schism.namelists.icm.Core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Core</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Ero.html#rompy.schism.namelists.icm.Ero" title="rompy.schism.namelists.icm.Ero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Ero</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Marco.html#rompy.schism.namelists.icm.Marco" title="rompy.schism.namelists.icm.Marco"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Marco</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Ph_icm.html#rompy.schism.namelists.icm.Ph_icm" title="rompy.schism.namelists.icm.Ph_icm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Ph_icm</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Poc.html#rompy.schism.namelists.icm.Poc" title="rompy.schism.namelists.icm.Poc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Poc</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Sav.html#rompy.schism.namelists.icm.Sav" title="rompy.schism.namelists.icm.Sav"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Sav</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Sfm.html#rompy.schism.namelists.icm.Sfm" title="rompy.schism.namelists.icm.Sfm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Sfm</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Silica.html#rompy.schism.namelists.icm.Silica" title="rompy.schism.namelists.icm.Silica"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Silica</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Stem.html#rompy.schism.namelists.icm.Stem" title="rompy.schism.namelists.icm.Stem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Stem</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Veg.html#rompy.schism.namelists.icm.Veg" title="rompy.schism.namelists.icm.Veg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Veg</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Zb.html#rompy.schism.namelists.icm.Zb" title="rompy.schism.namelists.icm.Zb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Zb</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.icm.Icm.html#rompy.schism.namelists.icm.Icm" title="rompy.schism.namelists.icm.Icm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.icm.Icm</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -555,8 +600,14 @@ document.write(`
 <h3>SEDIMENT<a class="headerlink" href="#sediment" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.sediment.SEDIMENT.html#rompy.schism.namelists.sediment.SEDIMENT" title="rompy.schism.namelists.sediment.SEDIMENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.sediment.SEDIMENT</span></code></a></p></td>
-<td><p>This file was auto generated from a schism namelist file on 2023-11-20.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.sediment.Sed_opt.html#rompy.schism.namelists.sediment.Sed_opt" title="rompy.schism.namelists.sediment.Sed_opt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.sediment.Sed_opt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.sediment.Sed_core.html#rompy.schism.namelists.sediment.Sed_core" title="rompy.schism.namelists.sediment.Sed_core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.sediment.Sed_core</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.sediment.Sediment.html#rompy.schism.namelists.sediment.Sediment" title="rompy.schism.namelists.sediment.Sediment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.sediment.Sediment</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -566,8 +617,73 @@ document.write(`
 <h3>COSINE<a class="headerlink" href="#cosine" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.cosine.COSINE.html#rompy.schism.namelists.cosine.COSINE" title="rompy.schism.namelists.cosine.COSINE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.cosine.COSINE</span></code></a></p></td>
-<td><p>This file was auto generated from a schism namelist file on 2023-11-20.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.cosine.Core.html#rompy.schism.namelists.cosine.Core" title="rompy.schism.namelists.cosine.Core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.cosine.Core</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.cosine.Marco.html#rompy.schism.namelists.cosine.Marco" title="rompy.schism.namelists.cosine.Marco"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.cosine.Marco</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.cosine.Misc.html#rompy.schism.namelists.cosine.Misc" title="rompy.schism.namelists.cosine.Misc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.cosine.Misc</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.cosine.Cosine.html#rompy.schism.namelists.cosine.Cosine" title="rompy.schism.namelists.cosine.Cosine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.cosine.Cosine</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="wwminput">
+<h3>WWMINPUT<a class="headerlink" href="#wwminput" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Coupl.html#rompy.schism.namelists.wwminput.Coupl" title="rompy.schism.namelists.wwminput.Coupl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Coupl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Engs.html#rompy.schism.namelists.wwminput.Engs" title="rompy.schism.namelists.wwminput.Engs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Engs</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Grid.html#rompy.schism.namelists.wwminput.Grid" title="rompy.schism.namelists.wwminput.Grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Grid</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.History.html#rompy.schism.namelists.wwminput.History" title="rompy.schism.namelists.wwminput.History"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.History</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Hotfile.html#rompy.schism.namelists.wwminput.Hotfile" title="rompy.schism.namelists.wwminput.Hotfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Hotfile</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Init.html#rompy.schism.namelists.wwminput.Init" title="rompy.schism.namelists.wwminput.Init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Init</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Nesting.html#rompy.schism.namelists.wwminput.Nesting" title="rompy.schism.namelists.wwminput.Nesting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Nesting</span></code></a></p></td>
+<td><p>Empty class to fill empty nesting namelist</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Nums.html#rompy.schism.namelists.wwminput.Nums" title="rompy.schism.namelists.wwminput.Nums"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Nums</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Petscoptions.html#rompy.schism.namelists.wwminput.Petscoptions" title="rompy.schism.namelists.wwminput.Petscoptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Petscoptions</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Proc.html#rompy.schism.namelists.wwminput.Proc" title="rompy.schism.namelists.wwminput.Proc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Proc</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Station.html#rompy.schism.namelists.wwminput.Station" title="rompy.schism.namelists.wwminput.Station"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Station</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.wwminput.Wwminput.html#rompy.schism.namelists.wwminput.Wwminput" title="rompy.schism.namelists.wwminput.Wwminput"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.wwminput.Wwminput</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="nml">
+<h3>NML<a class="headerlink" href="#nml" title="Link to this heading">#</a></h3>
+<p>This is the full namelist object that is the container for all the other namelist objects.</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.namelists.NML.html#rompy.schism.namelists.NML" title="rompy.schism.namelists.NML"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.namelists.NML</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -577,6 +693,9 @@ document.write(`
 <h3>Config Object<a class="headerlink" href="#config-object" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_generated/rompy.schism.config.SCHISMConfig.html#rompy.schism.config.SCHISMConfig" title="rompy.schism.config.SCHISMConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rompy.schism.config.SCHISMConfig</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -604,11 +723,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="_generated/rompy.schism.data.SCHISMDataSflux.html"
+       href="_generated/rompy.schism.grid.SCHISMGrid.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">rompy.schism.data.SCHISMDataSflux</p>
+        <p class="prev-next-title">rompy.schism.grid.SCHISMGrid</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -619,7 +738,8 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -634,11 +754,14 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#config-minimal">Config Minimal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-namelist-implementation">Full Namelist Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#param">Param</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ice">Ice</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#param">PARAM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ice">ICE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mice">MICE</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icm">ICM</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sediment">SEDIMENT</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cosine">COSINE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wwminput">WWMINPUT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nml">NML</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#config-object">Config Object</a></li>
 </ul>
 </li>
@@ -646,13 +769,13 @@ document.write(`
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../_sources/schism/index.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/schism/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -667,8 +790,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -701,7 +824,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

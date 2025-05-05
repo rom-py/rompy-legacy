@@ -1,0 +1,1609 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>rompy.schism.grid.SCHISMGrid &#8212; rompy 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'schism/_generated/rompy.schism.grid.SCHISMGrid';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="rompy.schism.data.SCHISMDataSflux" href="rompy.schism.data.SCHISMDataSflux.html" />
+    <link rel="prev" title="SCHISM" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../models.html">Models</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../swan/index.html">SWAN</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">SCHISM</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#grids">Grids</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rompy.schism.grid.SCHISMGrid</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data">Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#config-minimal">Config Minimal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#full-namelist-implementation">Full Namelist Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../models.html" class="nav-link">Models</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SCHISM</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">rompy.schism.grid.SCHISMGrid</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="rompy-schism-grid-schismgrid">
+<h1>rompy.schism.grid.SCHISMGrid<a class="headerlink" href="#rompy-schism-grid-schismgrid" title="Link to this heading">#</a></h1>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.schism.grid.</span></span><span class="sig-name descname"><span class="pre">SCHISMGrid</span></span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid" title="Link to this definition">#</a></dt>
+<dd><p>SCHISM grid in geographic space.</p>
+<p><details  class="autodoc_pydantic_collapsable_json">
+<summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SCHISMGrid&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SCHISM grid in geographic space.&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;grid_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schism&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schism&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model descriminator&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Grid Type&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;hgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid.gr3 file&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;vgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/VgridGenerator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to vgrid.in file&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;drag&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GR3Generator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to drag.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Drag&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;rough&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GR3Generator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to rough.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rough&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;manning&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GR3Generator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to manning.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Manning&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;hgridll&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GridLinker&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid.ll file&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hgridll&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;diffmin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GR3Generator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1e-06</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to diffmax.gr3 file or constant value&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Diffmin&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;diffmax&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GR3Generator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to diffmax.gr3 file or constant value&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Diffmax&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;albedo&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GR3Generator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.15</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to albedo.gr3 file or constant value&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Albedo&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;watertype&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GR3Generator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to watertype.gr3 file or constant value&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Watertype&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;windrot_geo2proj&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GR3Generator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to windrot_geo2proj.gr3 file or constant value&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Windrot Geo2Proj&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;hgrid_WWM&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/GridLinker&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid_WWM.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hgrid Wwm&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;wwmbnd&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/WWMBNDGR3Generator&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to wwmbnd.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Wwmbnd&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;crs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;epsg:4326&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Coordinate reference system&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Crs&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nt">&quot;$defs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;DataBlob&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Data source for model ingestion.\n\nGeneric data source for files that either need to be copied to the model directory\nor linked if `link` is set to True.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data_blob&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="s2">&quot;data_blob&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="s2">&quot;data_link&quot;</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Unique identifier for this data source&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Id&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;URI of the data source, either a local file path or a remote uri&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Source&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;link&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Whether to create a symbolic link instead of copying the file&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Link&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;boolean&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;source&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DataBlob&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;GR3Generator&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gr3_generator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gr3_generator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model discriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;hgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hgrid&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;gr3_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Type of gr3 file. Must be one of &#39;albedo&#39;, &#39;diffmin&#39;, &#39;diffmax&#39;, &#39;watertype&#39;, &#39;windrot_geo2proj&#39;&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Gr3 Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant value to set in gr3 file&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;crs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;epsg:4326&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Coordinate reference system&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Crs&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;hgrid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;gr3_type&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GR3Generator&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;GridLinker&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;hgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hgrid&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;gridtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Type of grid to link&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Gridtype&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;hgrid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;gridtype&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GridLinker&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Vgrid2D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid2D_generator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid2D_generator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model descriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid2D&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Vgrid3D_LSC2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid3D_lsc2&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid3D_lsc2&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model descriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;hgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hgrid&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;hsm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Depth for each master grid&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hsm&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;nv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Total number of vertical levels&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nv&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;h_c&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transition depth between sigma and z-coordinates&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;H C&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;theta_b&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical resolution near the surface&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta B&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;theta_f&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical resolution near the seabed&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta F&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;crs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;epsg:4326&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Coordinate reference system&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Crs&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;hgrid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;hsm&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;nv&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;h_c&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;theta_b&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;theta_f&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid3D_LSC2&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Vgrid3D_SZ&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid3D_sz&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid3D_sz&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model descriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;hgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hgrid&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;h_s&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Depth for each master grid&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;H S&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;ztot&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Total number of vertical levels&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ztot&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;h_c&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transition depth between sigma and z-coordinates&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;H C&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;theta_b&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical resolution near the surface&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta B&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;theta_f&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical resolution near the seabed&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta F&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;sigma&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sigma levels&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sigma&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;hgrid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;h_s&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ztot&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;h_c&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;theta_b&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;theta_f&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;sigma&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid3D_SZ&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;VgridGenerator&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Generate vgrid.in.\nThis is all hardcoded for now, may look at making this more flexible in the future.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid_generator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid_generator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model descriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;vgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/Vgrid2D&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/Vgrid3D_LSC2&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/Vgrid3D_SZ&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Type of vgrid to generate. 2d will create the minimum required for a 2d model. LSC2 will create a full vgrid for a 3d model using pyschsim&#39;s LSC2 class&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;VgridGenerator&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;WWMBNDGR3Generator&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wwmbnd_generator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wwmbnd_generator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model discriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;hgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid.gr3 file&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hgrid&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;bcflags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List of boundary condition flags. This replicates the functionality of the gen_wwmbnd.in file. Must be the same length as the number of open boundaries in the hgrid.gr3 file. If not specified, it is assumed that all open hgrid files are open to waves&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bcflags&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;hgrid&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;WWMBNDGR3Generator&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;hgrid&quot;</span>
+<span class="w">   </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</details></p><dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.albedo" title="rompy.schism.grid.SCHISMGrid.albedo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">albedo</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.crs" title="rompy.schism.grid.SCHISMGrid.crs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crs</span> <span class="pre">(str)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmax" title="rompy.schism.grid.SCHISMGrid.diffmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffmax</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmin" title="rompy.schism.grid.SCHISMGrid.diffmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffmin</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.drag" title="rompy.schism.grid.SCHISMGrid.drag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drag</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.grid_type" title="rompy.schism.grid.SCHISMGrid.grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span> <span class="pre">(Literal['schism'])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgrid" title="rompy.schism.grid.SCHISMGrid.hgrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hgrid</span> <span class="pre">(rompy.core.data.DataBlob)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgrid_WWM" title="rompy.schism.grid.SCHISMGrid.hgrid_WWM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hgrid_WWM</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GridLinker</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgridll" title="rompy.schism.grid.SCHISMGrid.hgridll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hgridll</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GridLinker</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.manning" title="rompy.schism.grid.SCHISMGrid.manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manning</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.rough" title="rompy.schism.grid.SCHISMGrid.rough"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rough</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.vgrid" title="rompy.schism.grid.SCHISMGrid.vgrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vgrid</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.VgridGenerator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.watertype" title="rompy.schism.grid.SCHISMGrid.watertype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watertype</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.windrot_geo2proj" title="rompy.schism.grid.SCHISMGrid.windrot_geo2proj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windrot_geo2proj</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.wwmbnd" title="rompy.schism.grid.SCHISMGrid.wwmbnd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wwmbnd</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.WWMBNDGR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.albedo" title="rompy.schism.grid.SCHISMGrid.albedo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">albedo</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmax" title="rompy.schism.grid.SCHISMGrid.diffmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffmax</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmin" title="rompy.schism.grid.SCHISMGrid.diffmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffmin</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.drag" title="rompy.schism.grid.SCHISMGrid.drag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drag</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.manning" title="rompy.schism.grid.SCHISMGrid.manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manning</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.rough" title="rompy.schism.grid.SCHISMGrid.rough"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rough</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.watertype" title="rompy.schism.grid.SCHISMGrid.watertype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watertype</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.windrot_geo2proj" title="rompy.schism.grid.SCHISMGrid.windrot_geo2proj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windrot_geo2proj</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gridlink_validator" title="rompy.schism.grid.SCHISMGrid.gridlink_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridlink_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgrid_WWM" title="rompy.schism.grid.SCHISMGrid.hgrid_WWM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hgrid_WWM</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gridlink_validator" title="rompy.schism.grid.SCHISMGrid.gridlink_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridlink_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgridll" title="rompy.schism.grid.SCHISMGrid.hgridll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hgridll</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.vgrid_validator" title="rompy.schism.grid.SCHISMGrid.vgrid_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vgrid_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.vgrid" title="rompy.schism.grid.SCHISMGrid.vgrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vgrid</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.wwmbnd_validator" title="rompy.schism.grid.SCHISMGrid.wwmbnd_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wwmbnd_validator</span></code></a> » <a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.wwmbnd" title="rompy.schism.grid.SCHISMGrid.wwmbnd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wwmbnd</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.albedo">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">albedo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GR3Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.15</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.albedo" title="Link to this definition">#</a></dt>
+<dd><p>Path to albedo.gr3 file or constant value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.crs">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">crs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'epsg:4326'</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.crs" title="Link to this definition">#</a></dt>
+<dd><p>Coordinate reference system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.diffmax">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diffmax</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GR3Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.diffmax" title="Link to this definition">#</a></dt>
+<dd><p>Path to diffmax.gr3 file or constant value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.diffmin">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diffmin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GR3Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1e-06</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.diffmin" title="Link to this definition">#</a></dt>
+<dd><p>Path to diffmax.gr3 file or constant value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.drag">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">drag</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GR3Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.drag" title="Link to this definition">#</a></dt>
+<dd><p>Path to drag.gr3 file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.grid_type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'schism'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'schism'</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.grid_type" title="Link to this definition">#</a></dt>
+<dd><p>Model descriminator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.hgrid">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hgrid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.hgrid" title="Link to this definition">#</a></dt>
+<dd><p>Path to hgrid.gr3 file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.hgrid_WWM">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hgrid_WWM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GridLinker</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.hgrid_WWM" title="Link to this definition">#</a></dt>
+<dd><p>Path to hgrid_WWM.gr3 file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gridlink_validator" title="rompy.schism.grid.SCHISMGrid.gridlink_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridlink_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.hgridll">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hgridll</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GridLinker</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.hgridll" title="Link to this definition">#</a></dt>
+<dd><p>Path to hgrid.ll file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gridlink_validator" title="rompy.schism.grid.SCHISMGrid.gridlink_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridlink_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.manning">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">manning</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GR3Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.manning" title="Link to this definition">#</a></dt>
+<dd><p>Path to manning.gr3 file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.rough">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rough</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GR3Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.rough" title="Link to this definition">#</a></dt>
+<dd><p>Path to rough.gr3 file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.vgrid">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vgrid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">VgridGenerator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.vgrid" title="Link to this definition">#</a></dt>
+<dd><p>Path to vgrid.in file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.vgrid_validator" title="rompy.schism.grid.SCHISMGrid.vgrid_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vgrid_validator</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.watertype">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">watertype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GR3Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.watertype" title="Link to this definition">#</a></dt>
+<dd><p>Path to watertype.gr3 file or constant value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.windrot_geo2proj">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">windrot_geo2proj</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">GR3Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.windrot_geo2proj" title="Link to this definition">#</a></dt>
+<dd><p>Path to windrot_geo2proj.gr3 file or constant value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gr3_source_validator</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.wwmbnd">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wwmbnd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">WWMBNDGR3Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.wwmbnd" title="Link to this definition">#</a></dt>
+<dd><p>Path to wwmbnd.gr3 file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_gr3_fields</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rough_drag_manning</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.wwmbnd_validator" title="rompy.schism.grid.SCHISMGrid.wwmbnd_validator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wwmbnd_validator</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.boundary">
+<span class="sig-name descname"><span class="pre">boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Polygon</span></span></span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.boundary" title="Link to this definition">#</a></dt>
+<dd><p>Returns the convex hull boundary polygon from the grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tolerance</strong> (<em>float</em>) – Simplify polygon shape based on maximum distance from original geometry,
+see <a class="reference external" href="https://shapely.readthedocs.io/en/stable/manual.html#object.simplify">https://shapely.readthedocs.io/en/stable/manual.html#object.simplify</a>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>polygon</strong> – See <a class="reference external" href="https://shapely.readthedocs.io/en/stable/manual.html#Polygon">https://shapely.readthedocs.io/en/stable/manual.html#Polygon</a></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>shapely.Polygon</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.boundary_points">
+<span class="sig-name descname"><span class="pre">boundary_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.boundary_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.boundary_points" title="Link to this definition">#</a></dt>
+<dd><p>Returns array of coordinates from boundary polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tolerance</strong> (<em>float</em>) – Simplify polygon shape based on maximum distance from original geometry,
+see <a class="reference external" href="https://shapely.readthedocs.io/en/stable/manual.html#object.simplify">https://shapely.readthedocs.io/en/stable/manual.html#object.simplify</a>.</p></li>
+<li><p><strong>spacing</strong> (<em>float</em>) – If specified, points are returned evenly spaced along the boundary at the
+specified spacing, otherwise all points are returned.</p></li>
+<li><p><strong>Returns</strong></p></li>
+<li><p><strong>--------</strong></p></li>
+<li><p><strong>points</strong> (<em>tuple</em>) – Tuple of x and y coordinates of the boundary points.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.generate_tvprop">
+<span class="sig-name descname"><span class="pre">generate_tvprop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.generate_tvprop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.generate_tvprop" title="Link to this definition">#</a></dt>
+<dd><p>Generate tvprop.in file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>destdir</strong> (<em>Path</em>) – Destination directory</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to tvprop.in file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>iath</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.get" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.gr3_source_validator">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gr3_source_validator</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmin" title="rompy.schism.grid.SCHISMGrid.diffmin"><em class="xref py py-obj"><span class="pre">diffmin</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.rough" title="rompy.schism.grid.SCHISMGrid.rough"><em class="xref py py-obj"><span class="pre">rough</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.manning" title="rompy.schism.grid.SCHISMGrid.manning"><em class="xref py py-obj"><span class="pre">manning</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.windrot_geo2proj" title="rompy.schism.grid.SCHISMGrid.windrot_geo2proj"><em class="xref py py-obj"><span class="pre">windrot_geo2proj</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmax" title="rompy.schism.grid.SCHISMGrid.diffmax"><em class="xref py py-obj"><span class="pre">diffmax</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.albedo" title="rompy.schism.grid.SCHISMGrid.albedo"><em class="xref py py-obj"><span class="pre">albedo</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.watertype" title="rompy.schism.grid.SCHISMGrid.watertype"><em class="xref py py-obj"><span class="pre">watertype</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.drag" title="rompy.schism.grid.SCHISMGrid.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.gr3_source_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.gridlink_validator">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gridlink_validator</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgrid_WWM" title="rompy.schism.grid.SCHISMGrid.hgrid_WWM"><em class="xref py py-obj"><span class="pre">hgrid_WWM</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgridll" title="rompy.schism.grid.SCHISMGrid.hgridll"><em class="xref py py-obj"><span class="pre">hgridll</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.gridlink_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.gridlink_validator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.land_boundary">
+<span class="sig-name descname"><span class="pre">land_boundary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.land_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.land_boundary" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.model_post_init" title="Link to this definition">#</a></dt>
+<dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
+<p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> – The BaseModel instance.</p></li>
+<li><p><strong>context</strong> – The context.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.ocean_boundary">
+<span class="sig-name descname"><span class="pre">ocean_boundary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.ocean_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.ocean_boundary" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the grid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.plot_hgrid">
+<span class="sig-name descname"><span class="pre">plot_hgrid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot_hgrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot_hgrid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.serialize_model">
+<span class="sig-name descname"><span class="pre">serialize_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.serialize_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.serialize_model" title="Link to this definition">#</a></dt>
+<dd><p>Custom serializer to handle optional fields properly during serialization.</p>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.validate_gr3_fields">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_gr3_fields</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.validate_gr3_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields" title="Link to this definition">#</a></dt>
+<dd><p>Custom validator to handle GR3Generator conversion during deserialization.</p>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_rough_drag_manning</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.validate_rough_drag_manning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.vgrid_validator">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vgrid_validator</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.vgrid" title="rompy.schism.grid.SCHISMGrid.vgrid"><em class="xref py py-obj"><span class="pre">vgrid</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.vgrid_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.vgrid_validator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.wwmbnd_validator">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wwmbnd_validator</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.wwmbnd" title="rompy.schism.grid.SCHISMGrid.wwmbnd"><em class="xref py py-obj"><span class="pre">wwmbnd</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.wwmbnd_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.wwmbnd_validator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.is_3d">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_3d</span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.is_3d" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.pyschism_hgrid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pyschism_hgrid</span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.pyschism_hgrid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.pyschism_vgrid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pyschism_vgrid</span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.pyschism_vgrid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.x" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.y" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SCHISM</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rompy.schism.data.SCHISMDataSflux.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">rompy.schism.data.SCHISMDataSflux</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.albedo"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.albedo</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.crs"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.crs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.diffmax"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.diffmax</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.diffmin"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.diffmin</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.drag"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.drag</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.grid_type"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.grid_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.hgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.hgrid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.hgrid_WWM"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.hgrid_WWM</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.hgridll"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.hgridll</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.manning"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.manning</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.rough"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.rough</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.vgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.vgrid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.watertype"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.watertype</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.windrot_geo2proj"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.windrot_geo2proj</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.wwmbnd"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.wwmbnd</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.boundary"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.boundary()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.boundary_points"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.boundary_points()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.generate_tvprop"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.generate_tvprop()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.get"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.gr3_source_validator</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.gridlink_validator"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.gridlink_validator</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.land_boundary"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.land_boundary()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.model_post_init"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.model_post_init()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.ocean_boundary"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.ocean_boundary()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.plot"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.plot_hgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.plot_hgrid()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.serialize_model"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.serialize_model()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.validate_gr3_fields</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.validate_rough_drag_manning"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.validate_rough_drag_manning</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.vgrid_validator"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.vgrid_validator</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.wwmbnd_validator"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.wwmbnd_validator</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.is_3d"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.is_3d</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.pyschism_hgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.pyschism_hgrid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.pyschism_vgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.pyschism_vgrid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.x"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.x</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.y"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.y</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/schism/_generated/rompy.schism.grid.SCHISMGrid.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

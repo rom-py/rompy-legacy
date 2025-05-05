@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Basic demonstration &#8212; rompy 0.1.0 documentation</title>
+    <title>Basic demonstration &#8212; rompy 0.2.8 documentation</title>
   
   
   
@@ -16,28 +16,31 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../_static/documentation_options.js?v=b01fafc3"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -50,6 +53,7 @@
     <link rel="prev" title="Demonstration notebooks" href="../demo.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
   </head>
   
   
@@ -65,19 +69,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -85,7 +78,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -93,8 +85,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -123,7 +115,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.1.0 documentation</p>
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
   
 </a></div>
     
@@ -172,7 +164,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -197,29 +191,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -244,15 +230,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -271,7 +253,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -339,15 +322,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -403,9 +382,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -423,8 +407,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -436,7 +418,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../demo.html" class="nav-link">Demonstration notebooks</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Basic demonstration</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Basic demonstration</span></li>
   </ul>
 </nav>
 </div>
@@ -502,17 +484,17 @@ document.write(`
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import some core objects</span>
-<span class="kn">from</span> <span class="nn">rompy</span> <span class="kn">import</span> <span class="n">ModelRun</span>
-<span class="kn">from</span> <span class="nn">rompy.core</span> <span class="kn">import</span> <span class="n">TimeRange</span><span class="p">,</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">BaseGrid</span><span class="p">,</span> <span class="n">RegularGrid</span><span class="p">,</span> <span class="n">DatasetXarray</span>
-<span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">SwanConfig</span><span class="p">,</span> <span class="n">SwanDataGrid</span><span class="p">,</span> <span class="n">SwanGrid</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.data</span> <span class="kn">import</span> <span class="n">SwanDataGrid</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span><span class="p">,</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">BaseGrid</span><span class="p">,</span> <span class="n">RegularGrid</span><span class="p">,</span> <span class="n">DatasetXarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanConfig</span><span class="p">,</span> <span class="n">SwanDataGrid</span><span class="p">,</span> <span class="n">SwanGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanDataGrid</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -764,7 +746,7 @@ Raises ValidationError if the input data cannot be parsed to form a valid model.
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now lets look at some on the the swan specific classes that inherit from these base classes</span>
-<span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">SwanDataGrid</span><span class="p">,</span> <span class="n">SwanGrid</span><span class="p">,</span> <span class="n">SwanConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanDataGrid</span><span class="p">,</span> <span class="n">SwanGrid</span><span class="p">,</span> <span class="n">SwanConfig</span>
 </pre></div>
 </div>
 </div>
@@ -855,7 +837,7 @@ Raises ValidationError if the input data cannot be parsed to form a valid model.
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># So we can see that the SwanConfig is a BaseConfig with some additional arguments.</span>
 <span class="c1"># These arguments are broken up into several compoents, lets examine these individually.</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.config</span> <span class="kn">import</span> <span class="n">SwanSpectrum</span><span class="p">,</span> <span class="n">ForcingData</span><span class="p">,</span> <span class="n">SwanPhysics</span><span class="p">,</span> <span class="n">Outputs</span><span class="p">,</span> <span class="n">SwanDataGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanSpectrum</span><span class="p">,</span> <span class="n">ForcingData</span><span class="p">,</span> <span class="n">SwanPhysics</span><span class="p">,</span> <span class="n">Outputs</span><span class="p">,</span> <span class="n">SwanDataGrid</span>
 </pre></div>
 </div>
 </div>
@@ -1092,11 +1074,11 @@ Raises ValidationError if the input data cannot be parsed to form a valid model.
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here we are creating some dummy data here to use as a bathymetry input</span>
-<span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">SwanDataGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanDataGrid</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;simulations/test_swantemplate/datasets&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">datagrid</span> <span class="o">=</span> <span class="n">SwanGrid</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="mf">115.68</span><span class="p">,</span> <span class="n">y0</span><span class="o">=-</span><span class="mf">32.76</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">77</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">391</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">151</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">exc</span><span class="o">=-</span><span class="mf">99.0</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">nc_bathy</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">datagrid</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nc_bathy</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">datagrid</span><span class="p">):</span>
     <span class="c1"># touch temp netcdf file</span>
     <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
     <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span> <span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;bathy.nc&quot;</span><span class="p">)</span>
@@ -1116,7 +1098,7 @@ Raises ValidationError if the input data cannot be parsed to form a valid model.
     <span class="k">return</span> <span class="n">source</span>
 
 <span class="c1"># and same again for wind</span>
-<span class="k">def</span> <span class="nf">nc_data_source</span><span class="p">(</span><span class="n">wind_grid</span><span class="o">=</span><span class="n">datagrid</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nc_data_source</span><span class="p">(</span><span class="n">wind_grid</span><span class="o">=</span><span class="n">datagrid</span><span class="p">):</span>
     <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
     <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span> <span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;wind_inputs.nc&quot;</span><span class="p">)</span>
 
@@ -1296,7 +1278,7 @@ INFO:rompy.swan.data:   Writing wind to ./wind.grd
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The boundary object work in a similar way but is a little more complex as it must determine points around the boundary of the model domain.</span>
 <span class="c1"># First lets have a look at the boundary object</span>
-<span class="kn">from</span> <span class="nn">rompy.swan</span> <span class="kn">import</span> <span class="n">Boundnest1</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan</span><span class="w"> </span><span class="kn">import</span> <span class="n">Boundnest1</span>
 Boundnest1<span class="o">?</span>
 </pre></div>
 </div>
@@ -1805,9 +1787,9 @@ config:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initantiating a model run using this config</span>
-<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="n">args</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;demo.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">wavespectra</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">wavespectra</span>
 <span class="n">run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
 
 <span class="c1"># and then calling as before</span>
@@ -1968,7 +1950,8 @@ INFO:rompy.model:-----------------------------------------------------
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1986,13 +1969,13 @@ INFO:rompy.model:-----------------------------------------------------
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../_sources/notebooks/demo.ipynb.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/demo.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -2007,8 +1990,8 @@ INFO:rompy.model:-----------------------------------------------------
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -2041,7 +2024,8 @@ INFO:rompy.model:-----------------------------------------------------
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>rompy.schism.data &#8212; rompy 0.1.0 documentation</title>
+    <title>rompy.schism.data &#8212; rompy 0.2.8 documentation</title>
   
   
   
@@ -15,27 +15,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/documentation_options.js?v=b01fafc3"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -44,6 +47,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
   </head>
   
   
@@ -59,19 +63,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -79,7 +72,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -87,8 +79,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -117,7 +109,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.1.0 documentation</p>
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
   
 </a></div>
     
@@ -166,7 +158,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -191,29 +185,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -238,15 +224,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -263,7 +245,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -331,15 +314,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -377,9 +356,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -397,8 +381,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -410,7 +392,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">rompy.schism.data</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">rompy.schism.data</span></li>
   </ul>
 </nav>
 </div>
@@ -428,41 +410,35 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for rompy.schism.data</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">from</span> <span class="nn">cloudpathlib</span> <span class="kn">import</span> <span class="n">AnyPath</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
-<span class="kn">from</span> <span class="nn">pyschism.forcing.bctides</span> <span class="kn">import</span> <span class="n">Bctides</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cloudpathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyPath</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
 
-<span class="kn">from</span> <span class="nn">rompy.core</span> <span class="kn">import</span> <span class="n">DataGrid</span><span class="p">,</span> <span class="n">RompyBaseModel</span>
-<span class="kn">from</span> <span class="nn">rompy.core.boundary</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BoundaryWaveStation</span><span class="p">,</span> <span class="n">DataBoundary</span><span class="p">,</span> <span class="n">SourceFile</span><span class="p">,</span>
-                                 <span class="n">SourceWavespectra</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">rompy.core.data</span> <span class="kn">import</span> <span class="n">DATA_SOURCE_TYPES</span><span class="p">,</span> <span class="n">DataBlob</span>
-<span class="kn">from</span> <span class="nn">rompy.core.boundary</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">BoundaryWaveStation</span><span class="p">,</span>
-    <span class="n">DataBoundary</span><span class="p">,</span>
-    <span class="n">SourceFile</span><span class="p">,</span>
-    <span class="n">SourceWavespectra</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">rompy.core.data</span> <span class="kn">import</span> <span class="n">DataBlob</span>
-<span class="kn">from</span> <span class="nn">rompy.core.time</span> <span class="kn">import</span> <span class="n">TimeRange</span>
-<span class="kn">from</span> <span class="nn">rompy.schism.grid</span> <span class="kn">import</span> <span class="n">SCHISMGrid</span>
-<span class="kn">from</span> <span class="nn">rompy.utils</span> <span class="kn">import</span> <span class="n">total_seconds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">RompyBaseModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundaryWaveStation</span><span class="p">,</span> <span class="n">DataBoundary</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataBlob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMGrid</span>
+<span class="c1"># from pyschism.forcing.bctides import Bctides</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.pyschism.forcing.bctides</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bctides</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">total_seconds</span>
 
-<span class="kn">from</span> <span class="nn">.namelists</span> <span class="kn">import</span> <span class="n">Sflux_Inputs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.namelists</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sflux_Inputs</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="SfluxSource">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SfluxSource.html#rompy.schism.data.SfluxSource">[docs]</a>
-<span class="k">class</span> <span class="nc">SfluxSource</span><span class="p">(</span><span class="n">DataGrid</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SfluxSource</span><span class="p">(</span><span class="n">DataGrid</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a single variable source for and sflux input&quot;&quot;&quot;</span>
 
     <span class="n">data_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sflux&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -486,29 +462,54 @@ document.write(`
         <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of source data timesteps to buffer the time range if `filter_time` is True&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">_variable_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_variables</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">outfile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">outfile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># TODO - filenumber is. Hardcoded to 1 for now.</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">.nc&#39;</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">))</span>
+
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">namelist</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">namelist</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="c1"># ret = self.model_dump()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;relative_weight&quot;</span><span class="p">,</span> <span class="s2">&quot;max_window_hours&quot;</span><span class="p">,</span> <span class="s2">&quot;fail_if_missing&quot;</span><span class="p">]:</span>
                 <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">varname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_names</span><span class="p">:</span>
+            <span class="n">var</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">varname</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">var</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">varname</span><span class="p">:</span> <span class="n">var</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">varname</span><span class="p">:</span> <span class="n">varname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)})</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">_file&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the xarray dataset for this data source.&quot;&quot;&quot;</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">open</span><span class="p">(</span>
             <span class="n">variables</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span>
         <span class="p">)</span>
-        <span class="c1"># rename latitude and longitide to lat and lon</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename_dims</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">y</span><span class="p">:</span> <span class="s2">&quot;ny_grid&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="s2">&quot;nx_grid&quot;</span><span class="p">})</span>
+        <span class="c1"># Define a dictionary for potential renaming</span>
+        <span class="n">rename_dict</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">y</span><span class="p">:</span> <span class="s2">&quot;ny_grid&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="s2">&quot;nx_grid&quot;</span><span class="p">}</span>
+
+        <span class="c1"># Construct a valid renaming dictionary</span>
+        <span class="n">valid_rename_dict</span> <span class="o">=</span> <span class="n">get_valid_rename_dict</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">rename_dict</span><span class="p">)</span>
+
+        <span class="c1"># Perform renaming if necessary</span>
+        <span class="k">if</span> <span class="n">valid_rename_dict</span><span class="p">:</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename_dims</span><span class="p">(</span><span class="n">valid_rename_dict</span><span class="p">)</span>
+
         <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">x</span><span class="p">],</span> <span class="n">ds</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">y</span><span class="p">])</span>
         <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;ny_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;nx_grid&quot;</span><span class="p">),</span> <span class="n">lon</span><span class="p">)</span>
         <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;ny_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;nx_grid&quot;</span><span class="p">),</span> <span class="n">lat</span><span class="p">)</span>
@@ -533,13 +534,25 @@ document.write(`
         <span class="p">}</span>
         <span class="n">ds</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit</span>
         <span class="n">ds</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;calendar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;proleptic_gregorian&quot;</span>
+        <span class="c1"># open bad dataset</span>
+
+        <span class="c1"># SCHISM doesn&#39;t like scale_factor and add_offset attributes and requires Float64 values</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+            <span class="c1"># If the variable has scale_factor or add_offset attributes, remove them</span>
+            <span class="k">if</span> <span class="s2">&quot;scale_factor&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;scale_factor&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;add_offset&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;add_offset&quot;</span><span class="p">]</span>
+            <span class="c1"># set the data variable encoding to Float64</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">Float64DType</span><span class="p">()</span>
+
         <span class="k">return</span> <span class="n">ds</span></div>
 
 
 
 <div class="viewcode-block" id="SfluxAir">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SfluxAir.html#rompy.schism.data.SfluxAir">[docs]</a>
-<span class="k">class</span> <span class="nc">SfluxAir</span><span class="p">(</span><span class="n">SfluxSource</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SfluxAir</span><span class="p">(</span><span class="n">SfluxSource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a single variable source for and sflux input&quot;&quot;&quot;</span>
 
     <span class="n">data_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sflux_air&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -547,122 +560,119 @@ document.write(`
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">uwind_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;u10&quot;</span><span class="p">,</span>
+        <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of zonal wind variable in source&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">vwind_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;v10&quot;</span><span class="p">,</span>
+    <span class="n">vwind_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of meridional wind variable in source&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">prmsl_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;mslp&quot;</span><span class="p">,</span>
+    <span class="n">prmsl_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of mean sea level pressure variable in source&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">stmp_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;stmp&quot;</span><span class="p">,</span>
+    <span class="n">stmp_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of surface air temperature variable in source&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">spfh_name</span><span class="p">:</span> <span class="n">SfluxSource</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;spfh&quot;</span><span class="p">,</span>
+    <span class="n">spfh_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of specific humidity variable in source&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="s2">&quot;uwind_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;vwind_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;prmsl_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;stmp_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;spfh_name&quot;</span><span class="p">,</span>
-        <span class="p">]:</span>
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">))</span>
+    <span class="n">_variable_names</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;uwind_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;vwind_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prmsl_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;stmp_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spfh_name&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the xarray dataset for this data source.&quot;&quot;&quot;</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">ds</span>
-        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="s2">&quot;uwind_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;vwind_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;prmsl_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;stmp_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;spfh_name&quot;</span><span class="p">,</span>
-        <span class="p">]:</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_names</span><span class="p">:</span>
             <span class="n">data_var</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">data_var</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
-                <span class="n">ds</span><span class="p">[</span><span class="n">data_var</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">uwind_name</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">data_var</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">proxy_var</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">proxy_var</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">uwind_name</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">variable</span> <span class="o">==</span> <span class="s2">&quot;spfh_name&quot;</span><span class="p">:</span>
                     <span class="n">missing</span> <span class="o">=</span> <span class="mf">0.01</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">missing</span> <span class="o">=</span> <span class="o">-</span><span class="mi">999</span>
-                <span class="n">ds</span><span class="p">[</span><span class="n">data_var</span><span class="p">][:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">missing</span>
-                <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">[</span><span class="n">data_var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_var</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">proxy_var</span><span class="p">][:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">missing</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">[</span><span class="n">proxy_var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proxy_var</span>
         <span class="k">return</span> <span class="n">ds</span></div>
 
 
 
 <div class="viewcode-block" id="SfluxRad">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SfluxRad.html#rompy.schism.data.SfluxRad">[docs]</a>
-<span class="k">class</span> <span class="nc">SfluxRad</span><span class="p">(</span><span class="n">SfluxSource</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SfluxRad</span><span class="p">(</span><span class="n">SfluxSource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a single variable source for and sflux input&quot;&quot;&quot;</span>
 
     <span class="n">data_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sflux_rad&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sflux_rad&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">dlwrf_name</span><span class="p">:</span> <span class="n">SfluxSource</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">dlwrf_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of downward long wave radiation variable in source&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">dswrf_name</span><span class="p">:</span> <span class="n">SfluxSource</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">dswrf_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of downward short wave radiation variable in source&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dlwrf_name&quot;</span><span class="p">,</span> <span class="s2">&quot;dswrf_name&quot;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">))</span></div>
+    <span class="n">_variable_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dlwrf_name&quot;</span><span class="p">,</span> <span class="s2">&quot;dswrf_name&quot;</span><span class="p">]</span></div>
 
 
 
 <div class="viewcode-block" id="SfluxPrc">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SfluxPrc.html#rompy.schism.data.SfluxPrc">[docs]</a>
-<span class="k">class</span> <span class="nc">SfluxPrc</span><span class="p">(</span><span class="n">SfluxSource</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SfluxPrc</span><span class="p">(</span><span class="n">SfluxSource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a single variable source for and sflux input&quot;&quot;&quot;</span>
 
     <span class="n">data_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sflux_prc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sflux_rad&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">prate_name</span><span class="p">:</span> <span class="n">SfluxSource</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">prate_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of precipitation rate variable in source&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prate_name</span><span class="p">]</span></div>
+    <span class="n">_variable_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;prate_name&quot;</span><span class="p">]</span></div>
 
 
 
 <div class="viewcode-block" id="SCHISMDataSflux">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataSflux.html#rompy.schism.data.SCHISMDataSflux">[docs]</a>
-<span class="k">class</span> <span class="nc">SCHISMDataSflux</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SCHISMDataSflux</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
     <span class="n">data_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sflux&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sflux&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">air_1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxAir</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux air source 1&quot;</span><span class="p">)</span>
-    <span class="n">air_2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxAir</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux air source 2&quot;</span><span class="p">)</span>
-    <span class="n">rad_1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxRad</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux rad source 1&quot;</span><span class="p">)</span>
-    <span class="n">rad_2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxRad</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux rad source 2&quot;</span><span class="p">)</span>
-    <span class="n">prc_1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxPrc</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux prc source 1&quot;</span><span class="p">)</span>
-    <span class="n">prc_2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxPrc</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux prc source 2&quot;</span><span class="p">)</span>
+    <span class="n">air_1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxAir</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux air source 1&quot;</span>
+    <span class="p">)</span>
+    <span class="n">air_2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxAir</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux air source 2&quot;</span>
+    <span class="p">)</span>
+    <span class="n">rad_1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxRad</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux rad source 1&quot;</span>
+    <span class="p">)</span>
+    <span class="n">rad_2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxRad</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux rad source 2&quot;</span>
+    <span class="p">)</span>
+    <span class="n">prc_1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxPrc</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux prc source 1&quot;</span>
+    <span class="p">)</span>
+    <span class="n">prc_2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SfluxPrc</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sflux prc source 2&quot;</span>
+    <span class="p">)</span>
 
 <div class="viewcode-block" id="SCHISMDataSflux.get">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataSflux.html#rompy.schism.data.SCHISMDataSflux.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
         <span class="n">grid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SCHISMGrid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -679,6 +689,7 @@ document.write(`
 <span class="sd">            Path: The path to the written sflux data.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">destdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;sflux&quot;</span>
         <span class="n">destdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">namelistargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -689,14 +700,15 @@ document.write(`
             <span class="n">data</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">variable</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching </span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">namelistargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">namelist</span><span class="p">)</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
-        <span class="n">Sflux_Inputs</span><span class="p">(</span><span class="o">**</span><span class="n">namelistargs</span><span class="p">)</span><span class="o">.</span><span class="n">write_nml</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span></div>
+            <span class="n">ret</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+        <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;nml&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Sflux_Inputs</span><span class="p">(</span><span class="o">**</span><span class="n">namelistargs</span><span class="p">)</span><span class="o">.</span><span class="n">write_nml</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
 
 
 <div class="viewcode-block" id="SCHISMDataSflux.check_weights">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataSflux.html#rompy.schism.data.SCHISMDataSflux.check_weights">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">check_weights</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_weights</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that relative weights for each pair add to 1.</span>
 
 <span class="sd">        Args:</span>
@@ -722,14 +734,23 @@ document.write(`
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Relative weights for </span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2"> do not add to 1.0: </span><span class="si">{</span><span class="n">weight</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
-            <span class="k">return</span> <span class="n">v</span></div>
+            <span class="k">return</span> <span class="n">v</span>
+        <span class="c1"># SCHISM doesn&#39;t like scale_factor and add_offset attributes and requires Float64 values</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+            <span class="c1"># If the variable has scale_factor or add_offset attributes, remove them</span>
+            <span class="k">if</span> <span class="s2">&quot;scale_factor&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;scale_factor&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;add_offset&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;add_offset&quot;</span><span class="p">]</span>
+            <span class="c1"># set the data variable encoding to Float64</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">Float64DType</span><span class="p">()</span></div>
 </div>
 
 
 
 <div class="viewcode-block" id="SCHISMDataWave">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataWave.html#rompy.schism.data.SCHISMDataWave">[docs]</a>
-<span class="k">class</span> <span class="nc">SCHISMDataWave</span><span class="p">(</span><span class="n">BoundaryWaveStation</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SCHISMDataWave</span><span class="p">(</span><span class="n">BoundaryWaveStation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class is used to write wave spectral boundary data. Spectral data is extracted</span>
 <span class="sd">    from the nearest points along the grid boundary&quot;&quot;&quot;</span>
 
@@ -752,7 +773,7 @@ document.write(`
 
 <div class="viewcode-block" id="SCHISMDataWave.get">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataWave.html#rompy.schism.data.SCHISMDataWave.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
         <span class="n">grid</span><span class="p">:</span> <span class="n">SCHISMGrid</span><span class="p">,</span>
@@ -783,14 +804,28 @@ document.write(`
         <span class="k">return</span> <span class="n">outfile</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the filtered xarray dataset instance.&quot;&quot;&quot;</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">ds</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+            <span class="c1"># If the variable has scale_factor or add_offset attributes, remove them</span>
+            <span class="k">if</span> <span class="s2">&quot;scale_factor&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;scale_factor&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;add_offset&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;add_offset&quot;</span><span class="p">]</span>
+            <span class="c1"># set the data variable encoding to Float64</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">Float64DType</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ds</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SCHISMDataWave&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="SCHISMDataBoundary">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataBoundary.html#rompy.schism.data.SCHISMDataBoundary">[docs]</a>
-<span class="k">class</span> <span class="nc">SCHISMDataBoundary</span><span class="p">(</span><span class="n">DataBoundary</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SCHISMDataBoundary</span><span class="p">(</span><span class="n">DataBoundary</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class is used to extract ocean boundary data from a griddd dataset at all open</span>
 <span class="sd">    boundary nodes.&quot;&quot;&quot;</span>
 
@@ -819,7 +854,7 @@ document.write(`
     <span class="p">)</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SCHISMDataBoundary&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SCHISMDataBoundary&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -842,7 +877,7 @@ document.write(`
 
 <div class="viewcode-block" id="SCHISMDataBoundary.get">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataBoundary.html#rompy.schism.data.SCHISMDataBoundary.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
         <span class="n">grid</span><span class="p">:</span> <span class="n">SCHISMGrid</span><span class="p">,</span>
@@ -873,7 +908,7 @@ document.write(`
 
 <div class="viewcode-block" id="SCHISMDataBoundary.boundary_ds">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataBoundary.html#rompy.schism.data.SCHISMDataBoundary.boundary_ds">[docs]</a>
-    <span class="k">def</span> <span class="nf">boundary_ds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">SCHISMGrid</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeRange</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">boundary_ds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">SCHISMGrid</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeRange</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_data</span> <span class="ow">and</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter_time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
@@ -929,12 +964,21 @@ document.write(`
         <span class="k">if</span> <span class="n">schism_ds</span><span class="o">.</span><span class="n">time_series</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Some values are null. This will cause SCHISM to crash. Please check your data.&quot;</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># If the variable has scale_factor or add_offset attributes, remove them</span>
+        <span class="c1"># and set the data variable encoding to Float64</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">schism_ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;scale_factor&quot;</span> <span class="ow">in</span> <span class="n">schism_ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">schism_ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;scale_factor&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;add_offset&quot;</span> <span class="ow">in</span> <span class="n">schism_ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">schism_ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;add_offset&quot;</span><span class="p">]</span>
+            <span class="n">schism_ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">Float64DType</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">schism_ds</span></div>
 </div>
 
 
 
-<span class="k">def</span> <span class="nf">fill_tails</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fill_tails</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;If the tails of  1d array are nan, fill with the last non nan value.&quot;&quot;&quot;</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">~</span><span class="n">mask</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">0</span><span class="p">)</span>
@@ -951,7 +995,7 @@ document.write(`
 
 <div class="viewcode-block" id="SCHISMDataOcean">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataOcean.html#rompy.schism.data.SCHISMDataOcean">[docs]</a>
-<span class="k">class</span> <span class="nc">SCHISMDataOcean</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SCHISMDataOcean</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class is used define all ocean boundary forcing&quot;&quot;&quot;</span>
 
     <span class="n">data_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;ocean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -978,7 +1022,7 @@ document.write(`
 <div class="viewcode-block" id="SCHISMDataOcean.not_yet_implemented">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataOcean.html#rompy.schism.data.SCHISMDataOcean.not_yet_implemented">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">not_yet_implemented</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">not_yet_implemented</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;uv3D&quot;</span><span class="p">,</span> <span class="s2">&quot;TEM_3D&quot;</span><span class="p">,</span> <span class="s2">&quot;SAL_3D&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Variable </span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2"> is not yet implemented&quot;</span><span class="p">)</span>
@@ -988,7 +1032,7 @@ document.write(`
 <div class="viewcode-block" id="SCHISMDataOcean.set_id">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataOcean.html#rompy.schism.data.SCHISMDataOcean.set_id">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">set_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;elev2D&quot;</span><span class="p">,</span> <span class="s2">&quot;uv3D&quot;</span><span class="p">,</span> <span class="s2">&quot;TEM_3D&quot;</span><span class="p">,</span> <span class="s2">&quot;SAL_3D&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="nb">getattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">variable</span>
@@ -997,7 +1041,7 @@ document.write(`
 
 <div class="viewcode-block" id="SCHISMDataOcean.get">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataOcean.html#rompy.schism.data.SCHISMDataOcean.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
         <span class="n">grid</span><span class="p">:</span> <span class="n">SCHISMGrid</span><span class="p">,</span>
@@ -1026,12 +1070,12 @@ document.write(`
             <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SCHISMDataOcean&quot;</span></div>
 
 
 
-<span class="k">class</span> <span class="nc">TidalDataset</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TidalDataset</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class is used to define the tidal dataset&quot;&quot;&quot;</span>
 
     <span class="n">data_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;tidal_dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -1041,7 +1085,7 @@ document.write(`
     <span class="n">elevations</span><span class="p">:</span> <span class="n">AnyPath</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to elevations file&quot;</span><span class="p">)</span>
     <span class="n">velocities</span><span class="p">:</span> <span class="n">AnyPath</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to currents file&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write all inputs to netcdf files.</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1061,7 +1105,7 @@ document.write(`
 
 <div class="viewcode-block" id="SCHISMDataTides">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataTides.html#rompy.schism.data.SCHISMDataTides">[docs]</a>
-<span class="k">class</span> <span class="nc">SCHISMDataTides</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SCHISMDataTides</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class is used to define the tidal forcing for SCHISM.&quot;&quot;&quot;</span>
 
     <span class="n">data_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;tides&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -1101,7 +1145,7 @@ document.write(`
 
 <div class="viewcode-block" id="SCHISMDataTides.get">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMDataTides.html#rompy.schism.data.SCHISMDataTides.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">SCHISMGrid</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">TimeRange</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">SCHISMGrid</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">TimeRange</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write all inputs to netcdf files.</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1148,7 +1192,7 @@ document.write(`
 
 <div class="viewcode-block" id="SCHISMData">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMData.html#rompy.schism.data.SCHISMData">[docs]</a>
-<span class="k">class</span> <span class="nc">SCHISMData</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SCHISMData</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class is used to gather all required input forcing for SCHISM</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1159,12 +1203,16 @@ document.write(`
     <span class="p">)</span>
     <span class="n">atmos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SCHISMDataSflux</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;atmospheric data&quot;</span><span class="p">)</span>
     <span class="n">ocean</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SCHISMDataOcean</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;ocean data&quot;</span><span class="p">)</span>
-    <span class="n">wave</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SCHISMDataWave</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;wave data&quot;</span><span class="p">)</span>
-    <span class="n">tides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SCHISMDataTides</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;tidal data&quot;</span><span class="p">)</span>
+    <span class="n">wave</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SCHISMDataWave</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;wave data&quot;</span>
+    <span class="p">)</span>
+    <span class="n">tides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">SCHISMDataTides</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;tidal data&quot;</span>
+    <span class="p">)</span>
 
 <div class="viewcode-block" id="SCHISMData.get">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.data.SCHISMData.html#rompy.schism.data.SCHISMData.get">[docs]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">destdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
         <span class="n">grid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SCHISMGrid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1194,6 +1242,15 @@ document.write(`
         <span class="k">return</span> <span class="n">ret</span></div>
 </div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_valid_rename_dict</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">rename_dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct a valid renaming dictionary that only includes names which need renaming.&quot;&quot;&quot;</span>
+    <span class="n">valid_rename_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">old_name</span><span class="p">,</span> <span class="n">new_name</span> <span class="ow">in</span> <span class="n">rename_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">old_name</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">dims</span> <span class="ow">and</span> <span class="n">new_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+            <span class="n">valid_rename_dict</span><span class="p">[</span><span class="n">old_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_name</span>
+    <span class="k">return</span> <span class="n">valid_rename_dict</span>
 </pre></div>
 
                 </article>
@@ -1223,8 +1280,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1257,7 +1314,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

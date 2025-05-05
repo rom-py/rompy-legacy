@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>rompy.swan.components.group &#8212; rompy 0.1.0 documentation</title>
+    <title>rompy.swan.components.group &#8212; rompy 0.2.8 documentation</title>
   
   
   
@@ -15,27 +15,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../../_static/documentation_options.js?v=b01fafc3"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -44,6 +47,7 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
   </head>
   
   
@@ -59,19 +63,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../../search.html"
       method="get">
@@ -79,7 +72,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -87,8 +79,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -117,7 +109,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.1.0 documentation</p>
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
   
 </a></div>
     
@@ -166,7 +158,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -191,29 +185,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -238,15 +224,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -263,7 +245,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -331,15 +314,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -377,9 +356,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -397,8 +381,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -410,7 +392,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">rompy.swan.c...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">rompy.swan.components.group</span></li>
   </ul>
 </nav>
 </div>
@@ -429,21 +411,22 @@ document.write(`
                   
   <h1>Source code for rompy.swan.components.group</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;SWAN group components.&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span><span class="p">,</span> <span class="n">field_validator</span>
 
-<span class="kn">from</span> <span class="nn">rompy.swan.types</span> <span class="kn">import</span> <span class="n">PhysicsOff</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.components.base</span> <span class="kn">import</span> <span class="n">BaseComponent</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.components.startup</span> <span class="kn">import</span> <span class="n">PROJECT</span><span class="p">,</span> <span class="n">SET</span><span class="p">,</span> <span class="n">MODE</span><span class="p">,</span> <span class="n">COORDINATES</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.components.inpgrid</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span><span class="p">,</span> <span class="n">field_validator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhysicsOff</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseComponent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.startup</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROJECT</span><span class="p">,</span> <span class="n">SET</span><span class="p">,</span> <span class="n">MODE</span><span class="p">,</span> <span class="n">COORDINATES</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.inpgrid</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">REGULAR</span><span class="p">,</span>
     <span class="n">CURVILINEAR</span><span class="p">,</span>
     <span class="n">UNSTRUCTURED</span><span class="p">,</span>
     <span class="n">WIND</span><span class="p">,</span>
     <span class="n">ICE</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.components.physics</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.physics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">GEN1</span><span class="p">,</span>
     <span class="n">GEN2</span><span class="p">,</span>
     <span class="n">GEN3</span><span class="p">,</span>
@@ -484,7 +467,7 @@ document.write(`
     <span class="n">OFF</span><span class="p">,</span>
     <span class="n">OFFS</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.components.output</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.output</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">FRAME</span><span class="p">,</span>
     <span class="n">GROUP</span><span class="p">,</span>
     <span class="n">RAY</span><span class="p">,</span>
@@ -497,13 +480,14 @@ document.write(`
     <span class="n">QUANTITIES</span><span class="p">,</span>
     <span class="n">OUTPUT_OPTIONS</span><span class="p">,</span>
     <span class="n">BLOCK</span><span class="p">,</span>
+    <span class="n">BLOCKS</span><span class="p">,</span>
     <span class="n">TABLE</span><span class="p">,</span>
     <span class="n">SPECOUT</span><span class="p">,</span>
     <span class="n">NESTOUT</span><span class="p">,</span>
     <span class="n">TEST</span><span class="p">,</span>
     <span class="n">SPECIAL_NAMES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">rompy.swan.components.lockup</span> <span class="kn">import</span> <span class="n">COMPUTE_STAT</span><span class="p">,</span> <span class="n">COMPUTE_NONSTAT</span><span class="p">,</span> <span class="n">STOP</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.lockup</span><span class="w"> </span><span class="kn">import</span> <span class="n">COMPUTE_STAT</span><span class="p">,</span> <span class="n">COMPUTE_NONSTAT</span><span class="p">,</span> <span class="n">STOP</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -511,7 +495,7 @@ document.write(`
 
 <div class="viewcode-block" id="BaseGroupComponent">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.BaseGroupComponent.html#rompy.swan.components.group.BaseGroupComponent">[docs]</a>
-<span class="k">class</span> <span class="nc">BaseGroupComponent</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseGroupComponent</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base group component.</span>
 
 <span class="sd">    Base class for SWAN group components. This base class modifies the `render()`</span>
@@ -526,7 +510,7 @@ document.write(`
 
 <div class="viewcode-block" id="BaseGroupComponent.render">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.BaseGroupComponent.html#rompy.swan.components.group.BaseGroupComponent.render">[docs]</a>
-    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Override base class to allow rendering list of components.&quot;&quot;&quot;</span>
         <span class="n">cmds</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">():</span>
@@ -547,7 +531,7 @@ document.write(`
 
 <div class="viewcode-block" id="STARTUP">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.STARTUP.html#rompy.swan.components.group.STARTUP">[docs]</a>
-<span class="k">class</span> <span class="nc">STARTUP</span><span class="p">(</span><span class="n">BaseGroupComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">STARTUP</span><span class="p">(</span><span class="n">BaseGroupComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Startup group component.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -592,7 +576,7 @@ document.write(`
 
 <div class="viewcode-block" id="STARTUP.cmd">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.STARTUP.html#rompy.swan.components.group.STARTUP.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -611,15 +595,15 @@ document.write(`
 <span class="c1"># =====================================================================================</span>
 <span class="c1"># Inpgrid</span>
 <span class="c1"># =====================================================================================</span>
-<span class="n">INPGRID_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
-    <span class="nb">list</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">CURVILINEAR</span><span class="p">,</span> <span class="n">UNSTRUCTURED</span><span class="p">,</span> <span class="n">WIND</span><span class="p">,</span> <span class="n">ICE</span><span class="p">]],</span>
+<span class="n">INPGRID_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">CURVILINEAR</span><span class="p">,</span> <span class="n">UNSTRUCTURED</span><span class="p">,</span> <span class="n">WIND</span><span class="p">,</span> <span class="n">ICE</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="INPGRIDS">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.INPGRIDS.html#rompy.swan.components.group.INPGRIDS">[docs]</a>
-<span class="k">class</span> <span class="nc">INPGRIDS</span><span class="p">(</span><span class="n">BaseGroupComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">INPGRIDS</span><span class="p">(</span><span class="n">BaseGroupComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;SWAN input grids group component.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -682,7 +666,7 @@ document.write(`
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;inpgrids&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;inpgrids&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
-    <span class="n">inpgrids</span><span class="p">:</span> <span class="n">INPGRID_TYPES</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">inpgrids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">INPGRID_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of input grid components&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -691,7 +675,7 @@ document.write(`
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.INPGRIDS.html#rompy.swan.components.group.INPGRIDS.ensure_unique_grid_type">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;inpgrids&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">ensure_unique_grid_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inpgrids</span><span class="p">:</span> <span class="n">INPGRID_TYPES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">INPGRID_TYPES</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ensure_unique_grid_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inpgrids</span><span class="p">:</span> <span class="n">INPGRID_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">INPGRID_TYPE</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure that each grid type is unique.&quot;&quot;&quot;</span>
         <span class="n">grid_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">inp</span><span class="o">.</span><span class="n">grid_type</span> <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">inpgrids</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="s2">&quot;grid_type&quot;</span><span class="p">)]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid_types</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">grid_types</span><span class="p">)):</span>
@@ -701,7 +685,7 @@ document.write(`
 
 <div class="viewcode-block" id="INPGRIDS.cmd">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.INPGRIDS.html#rompy.swan.components.group.INPGRIDS.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">inpgrid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inpgrids</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="n">inpgrid</span><span class="o">.</span><span class="n">cmd</span><span class="p">()]</span>
@@ -725,35 +709,35 @@ document.write(`
 <span class="n">SURFBEAT_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SURFBEAT</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Surfbeat component&quot;</span><span class="p">)]</span>
 <span class="n">SCAT_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SCAT</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Scattering component&quot;</span><span class="p">)]</span>
 <span class="n">OFF_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">OFFS</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Deactivate components&quot;</span><span class="p">)]</span>
-<span class="n">GEN_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">GEN_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">GEN1</span><span class="p">,</span> <span class="n">GEN2</span><span class="p">,</span> <span class="n">GEN3</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave generation component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">SSWELL_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">SSWELL_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">SSWELL_ROGERS</span><span class="p">,</span> <span class="n">SSWELL_ARDHUIN</span><span class="p">,</span> <span class="n">SSWELL_ZIEGER</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Swell dissipation component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">WCAPPING_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">WCAPPING_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">WCAPPING_KOMEN</span><span class="p">,</span> <span class="n">WCAPPING_AB</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whitecapping component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">BREAKING_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">BREAKING_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">BREAKING_CONSTANT</span><span class="p">,</span> <span class="n">BREAKING_BKD</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wave breaking component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">FRICTION_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">FRICTION_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">FRICTION_JONSWAP</span><span class="p">,</span> <span class="n">FRICTION_COLLINS</span><span class="p">,</span> <span class="n">FRICTION_MADSEN</span><span class="p">,</span> <span class="n">FRICTION_RIPPLES</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Bottom friction component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">TRIAD_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">TRIAD_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">TRIAD</span><span class="p">,</span> <span class="n">TRIAD_DCTA</span><span class="p">,</span> <span class="n">TRIAD_LTA</span><span class="p">,</span> <span class="n">TRIAD_SPB</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Triad interactions component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">SICE_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">SICE_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">SICE</span><span class="p">,</span> <span class="n">SICE_R19</span><span class="p">,</span> <span class="n">SICE_D15</span><span class="p">,</span> <span class="n">SICE_M18</span><span class="p">,</span> <span class="n">SICE_R21B</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Sea ice component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">BRAGG_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">BRAGG_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">BRAGG</span><span class="p">,</span> <span class="n">BRAGG_FT</span><span class="p">,</span> <span class="n">BRAGG_FILE</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Bragg scattering component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
@@ -761,7 +745,7 @@ document.write(`
 
 <div class="viewcode-block" id="PHYSICS">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.PHYSICS.html#rompy.swan.components.group.PHYSICS">[docs]</a>
-<span class="k">class</span> <span class="nc">PHYSICS</span><span class="p">(</span><span class="n">BaseGroupComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PHYSICS</span><span class="p">(</span><span class="n">BaseGroupComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Physics group component.</span>
 
 <span class="sd">    The physics group component is a convenience to allow specifying several individual</span>
@@ -791,19 +775,19 @@ document.write(`
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;physics&quot;</span><span class="p">,</span> <span class="s2">&quot;PHYSICS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;physics&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
-    <span class="n">gen</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GEN_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">sswell</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SSWELL_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">gen</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GEN_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">sswell</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SSWELL_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">negatinp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NEGATINP_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">wcapping</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">WCAPPING_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">wcapping</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">WCAPPING_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">quadrupl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QUADRUPL_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">breaking</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BREAKING_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">friction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FRICTION_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">triad</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TRIAD_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">breaking</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BREAKING_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">friction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FRICTION_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">triad</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TRIAD_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">vegetation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VEGETATION_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">mud</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MUD_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">sice</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SICE_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">sice</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SICE_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">turbulence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TURBULENCE_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">bragg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BRAGG_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">bragg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BRAGG_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">limiter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LIMITER_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">obstacle</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">OBSTACLE_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">setup</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SETUP_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -816,7 +800,7 @@ document.write(`
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.PHYSICS.html#rompy.swan.components.group.PHYSICS.deactivate_physics">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;deactivate&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">deactivate_physics</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">off</span><span class="p">:</span> <span class="n">OFF_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OFF_TYPE</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deactivate_physics</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">off</span><span class="p">:</span> <span class="n">OFF_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OFF_TYPE</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert OFF to OFFS so list is rendered.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">phys</span> <span class="ow">in</span> <span class="n">PhysicsOff</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">phys</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
@@ -826,7 +810,7 @@ document.write(`
 <div class="viewcode-block" id="PHYSICS.negatinp_only_with_zieger">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.PHYSICS.html#rompy.swan.components.group.PHYSICS.negatinp_only_with_zieger">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">negatinp_only_with_zieger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PHYSICS&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">negatinp_only_with_zieger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PHYSICS&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Log a warning if NEGATINP is used with a non-ZIEGER SSWELL.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">negatinp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
@@ -846,7 +830,7 @@ document.write(`
 
 <div class="viewcode-block" id="PHYSICS.cmd">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.PHYSICS.html#rompy.swan.components.group.PHYSICS.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="n">cmd</span><span class="p">()]</span>
@@ -903,16 +887,19 @@ document.write(`
 <span class="n">ISOLINE_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ISOLINE</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Isoline locations component&quot;</span><span class="p">)]</span>
 <span class="n">QUANTITY_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">QUANTITIES</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantity component&quot;</span><span class="p">)]</span>
 <span class="n">OUTOPT_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">OUTPUT_OPTIONS</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Output options component&quot;</span><span class="p">)]</span>
-<span class="n">BLOCK_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">BLOCK</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Block write component&quot;</span><span class="p">)]</span>
 <span class="n">TABLE_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">TABLE</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Table write component&quot;</span><span class="p">)]</span>
 <span class="n">SPECOUT_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SPECOUT</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Spectra write component&quot;</span><span class="p">)]</span>
 <span class="n">NESTOUT_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">NESTOUT</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nest write component&quot;</span><span class="p">)]</span>
 <span class="n">TEST_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">TEST</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Intermediate write component&quot;</span><span class="p">)]</span>
-<span class="n">POINTS_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">BLOCK_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span><span class="n">BLOCK</span><span class="p">,</span> <span class="n">BLOCKS</span><span class="p">],</span>
+    <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Block write component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">POINTS_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">POINTS</span><span class="p">,</span> <span class="n">POINTS_FILE</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Points locations component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">NGRID_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">NGRID_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">NGRID</span><span class="p">,</span> <span class="n">NGRID_UNSTRUCTURED</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Ngrid locations component&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
@@ -920,7 +907,7 @@ document.write(`
 
 <div class="viewcode-block" id="OUTPUT">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.OUTPUT.html#rompy.swan.components.group.OUTPUT">[docs]</a>
-<span class="k">class</span> <span class="nc">OUTPUT</span><span class="p">(</span><span class="n">BaseGroupComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OUTPUT</span><span class="p">(</span><span class="n">BaseGroupComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Output group component.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1001,8 +988,8 @@ document.write(`
     <span class="n">curve</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CURVE_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">ray</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RAY_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">isoline</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ISOLINE_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">points</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">POINTS_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">ngrid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NGRID_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">POINTS_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">ngrid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NGRID_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QUANTITY_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">output_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">OUTOPT_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">block</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BLOCK_TYPE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -1016,29 +1003,30 @@ document.write(`
 <div class="viewcode-block" id="OUTPUT.write_locations_exists">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.OUTPUT.html#rompy.swan.components.group.OUTPUT.write_locations_exists">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">write_locations_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_locations_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure the location component requested by a write component exists.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">write</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_set</span><span class="p">:</span>
             <span class="n">obj</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">sname</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">sname</span>
-            <span class="k">if</span> <span class="n">sname</span> <span class="ow">in</span> <span class="n">SPECIAL_NAMES</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_filter_location</span><span class="p">(</span><span class="n">sname</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Write component &#39;</span><span class="si">{</span><span class="n">write</span><span class="si">}</span><span class="s2">&#39; specified with sname=&#39;</span><span class="si">{</span><span class="n">sname</span><span class="si">}</span><span class="s2">&#39; but no &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;location component with sname=&#39;</span><span class="si">{</span><span class="n">sname</span><span class="si">}</span><span class="s2">&#39; has been defined&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+            <span class="n">snames</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">sname</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">sname</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">sname</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">sname</span> <span class="ow">in</span> <span class="n">snames</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sname</span> <span class="ow">in</span> <span class="n">SPECIAL_NAMES</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_filter_location</span><span class="p">(</span><span class="n">sname</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Write component &#39;</span><span class="si">{</span><span class="n">write</span><span class="si">}</span><span class="s2">&#39; specified with sname=&#39;</span><span class="si">{</span><span class="n">sname</span><span class="si">}</span><span class="s2">&#39; but &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;no location component with sname=&#39;</span><span class="si">{</span><span class="n">sname</span><span class="si">}</span><span class="s2">&#39; has been defined&quot;</span>
+                    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="OUTPUT.locations_sname_unique">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.OUTPUT.html#rompy.swan.components.group.OUTPUT.locations_sname_unique">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">locations_sname_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">locations_sname_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure same `sname` isn&#39;t used in more than one set of output locations.&quot;&quot;&quot;</span>
         <span class="n">duplicates</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">snames</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">snames</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">duplicates</span><span class="p">:</span>
@@ -1053,26 +1041,29 @@ document.write(`
 <div class="viewcode-block" id="OUTPUT.block_with_frame_or_group">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.OUTPUT.html#rompy.swan.components.group.OUTPUT.block_with_frame_or_group">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">block_with_frame_or_group</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">block_with_frame_or_group</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure Block is only defined for FRAME or GROUP locations.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">sname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">sname</span>
-            <span class="k">if</span> <span class="n">sname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;BOTTGRID&quot;</span><span class="p">,</span> <span class="s2">&quot;COMPGRID&quot;</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="bp">self</span>
-            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_location</span><span class="p">(</span><span class="n">sname</span><span class="p">)</span>
-            <span class="n">component</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;FRAME&quot;</span><span class="p">,</span> <span class="s2">&quot;GROUP&quot;</span><span class="p">]:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Block sname=&#39;</span><span class="si">{</span><span class="n">sname</span><span class="si">}</span><span class="s2">&#39; specified with </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> Location &quot;</span>
-                    <span class="s2">&quot;component but only only FRAME or GROUP components are supported&quot;</span>
-                <span class="p">)</span>
+            <span class="n">snames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">sname</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">snames</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">snames</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">sname</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">sname</span> <span class="ow">in</span> <span class="n">snames</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;BOTTGRID&quot;</span><span class="p">,</span> <span class="s2">&quot;COMPGRID&quot;</span><span class="p">]:</span>
+                    <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_location</span><span class="p">(</span><span class="n">sname</span><span class="p">)</span>
+                    <span class="n">component</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;FRAME&quot;</span><span class="p">,</span> <span class="s2">&quot;GROUP&quot;</span><span class="p">]:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Block sname=&#39;</span><span class="si">{</span><span class="n">sname</span><span class="si">}</span><span class="s2">&#39; specified with </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> &quot;</span>
+                            <span class="s2">&quot;location component but only only FRAME or GROUP &quot;</span>
+                            <span class="s2">&quot;components are supported&quot;</span>
+                        <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="OUTPUT.isoline_ray_defined">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.OUTPUT.html#rompy.swan.components.group.OUTPUT.isoline_ray_defined">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">isoline_ray_defined</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isoline_ray_defined</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure the isoline ray has been defined.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isoline</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ray</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1091,7 +1082,7 @@ document.write(`
 <div class="viewcode-block" id="OUTPUT.ngrid_and_nestout">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.OUTPUT.html#rompy.swan.components.group.OUTPUT.ngrid_and_nestout">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">ngrid_and_nestout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ngrid_and_nestout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure NGRID and NESTOUT are specified together.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngrid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">nestout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -1111,17 +1102,17 @@ document.write(`
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">locations_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">locations_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;List of specified location fields.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">fld</span> <span class="k">for</span> <span class="n">fld</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">if</span> <span class="n">fld</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location_fields</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">write_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;List of specified write fields.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">fld</span> <span class="k">for</span> <span class="n">fld</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">if</span> <span class="n">fld</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_fields</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">snames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">snames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;List of snames from specified location components.&quot;&quot;&quot;</span>
         <span class="n">snames</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations_set</span><span class="p">:</span>
@@ -1134,7 +1125,7 @@ document.write(`
             <span class="n">snames</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sname</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">snames</span>
 
-    <span class="k">def</span> <span class="nf">_filter_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sname</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_filter_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sname</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter the location component defined with the specified sname.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations_set</span><span class="p">:</span>
             <span class="n">obj</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
@@ -1148,7 +1139,7 @@ document.write(`
 
 <div class="viewcode-block" id="OUTPUT.cmd">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.OUTPUT.html#rompy.swan.components.group.OUTPUT.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this component.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1156,7 +1147,8 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span>  <span class="c1"># Component renders a list</span>
+            <span class="c1"># Component renders a list</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ray</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ray</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isoline</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1166,11 +1158,17 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngrid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ngrid</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span>  <span class="c1"># Component renders a list</span>
+            <span class="c1"># Component renders a list</span>
+            <span class="nb">repr</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">output_options</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+            <span class="c1"># Component may or may not render a list, handles both</span>
+            <span class="n">cmds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmds</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">cmds</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmds</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span>
+                <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">specout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1187,7 +1185,7 @@ document.write(`
 <span class="c1"># =====================================================================================</span>
 <span class="c1"># Lockup</span>
 <span class="c1"># =====================================================================================</span>
-<span class="n">COMPUTE_TYPES</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+<span class="n">COMPUTE_TYPE</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="n">COMPUTE_STAT</span><span class="p">,</span> <span class="n">COMPUTE_NONSTAT</span><span class="p">],</span>
     <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Compute components&quot;</span><span class="p">,</span> <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">),</span>
 <span class="p">]</span>
@@ -1195,7 +1193,7 @@ document.write(`
 
 <div class="viewcode-block" id="LOCKUP">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.LOCKUP.html#rompy.swan.components.group.LOCKUP">[docs]</a>
-<span class="k">class</span> <span class="nc">LOCKUP</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LOCKUP</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Lockup group component.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1239,11 +1237,11 @@ document.write(`
     <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;lockup&quot;</span><span class="p">,</span> <span class="s2">&quot;LOCKUP&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;lockup&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Model type discriminator&quot;</span>
     <span class="p">)</span>
-    <span class="n">compute</span><span class="p">:</span> <span class="n">COMPUTE_TYPES</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Compute components&quot;</span><span class="p">)</span>
+    <span class="n">compute</span><span class="p">:</span> <span class="n">COMPUTE_TYPE</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Compute components&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LOCKUP.cmd">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.group.LOCKUP.html#rompy.swan.components.group.LOCKUP.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file strings for this component.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">cmd</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">STOP</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">()]</span></div>
 </div>
@@ -1277,8 +1275,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1311,7 +1309,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

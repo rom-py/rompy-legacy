@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>rompy.swan.components.output.TABLE &#8212; rompy 0.1.0 documentation</title>
+    <title>rompy.swan.components.output.TABLE &#8212; rompy 0.2.8 documentation</title>
   
   
   
@@ -16,27 +16,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/documentation_options.js?v=b01fafc3"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -47,6 +50,7 @@
     <link rel="prev" title="rompy.swan.components.output.BLOCK" href="rompy.swan.components.output.BLOCK.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
   </head>
   
   
@@ -62,19 +66,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -82,7 +75,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -90,8 +82,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -120,7 +112,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.1.0 documentation</p>
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
   
 </a></div>
     
@@ -169,7 +161,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -194,29 +188,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -241,15 +227,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -268,7 +250,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -336,15 +319,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -405,9 +384,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -425,10 +409,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -441,12 +421,12 @@ document.write(`
     <li class="breadcrumb-item"><a href="../../../models.html" class="nav-link">Models</a></li>
     
     
-    <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">SWAN</a></li>
     
     
     <li class="breadcrumb-item"><a href="../output.html" class="nav-link">Output</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">rompy.swan.c...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">rompy.swan.components.output.TABLE</span></li>
   </ul>
 </nav>
 </div>
@@ -492,7 +472,7 @@ give two TABLE commands, one to produce one file with <cite>XP</cite> and <cite>
 quantities, the other with <cite>HS</cite>, <cite>RTM01</cite> or other output quantities.</p>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">rompy.swan.components.output</span> <span class="kn">import</span> <span class="n">TABLE</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.output</span><span class="w"> </span><span class="kn">import</span> <span class="n">TABLE</span>
 
 <span class="gp">In [2]: </span><span class="n">table</span> <span class="o">=</span> <span class="n">TABLE</span><span class="p">(</span>
 <span class="gp">   ...: </span>    <span class="n">sname</span><span class="o">=</span><span class="s2">&quot;outpts&quot;</span><span class="p">,</span>
@@ -515,7 +495,233 @@ quantities, the other with <cite>HS</cite>, <cite>RTM01</cite> or other output q
 <span class="go">    OUTPUT tbegtbl=20120101.000000 delttbl=30.0 MIN</span>
 </pre></div>
 </div>
-<dl class="field-list simple">
+<p><details  class="autodoc_pydantic_collapsable_json">
+<summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TABLE&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Write spatial distributions.\n\n.. code-block:: text\n\n    TABLE &#39;sname&#39; -&gt;HEADER|NOHEADER|INDEXED &#39;fname&#39;  &lt; output &gt; &amp;\n        (OUTPUT [tbegblk] [deltblk]) SEC|MIN|HR|DAY\n\nWith this optional command the user indicates that for each location of the output\nlocation set &#39;sname&#39; (see commands `POINTS`, `CURVE`, `FRAME` or `GROUP`) one or\nmore variables should be written to a file. The keywords `HEADER` and `NOHEADER`\ndetermine the appearance of the table; the filename determines the destination of\nthe data.\n\nNote\n----\n**HEADER**:\noutput is written in fixed format to file with headers giving name of variable\nand unit per column (numbers too large to be written will be shown as `****`.\nThe number of header lines is 4.\n\n**NOHEADER**:\noutput is written in floating point format to file and has no headers.\n\n**INDEXED**:\noutput compatible with GIS tools such as ARCVIEW, ARCINFO, etc. The user should\ngive two TABLE commands, one to produce one file with `XP` and `YP` as output\nquantities, the other with `HS`, `RTM01` or other output quantities.\n\n\nExamples\n--------\n\n.. ipython:: python\n    :okwarning:\n\n    from rompy.swan.components.output import TABLE\n    table = TABLE(\n        sname=\&quot;outpts\&quot;,\n        format=\&quot;noheader\&quot;,\n        fname=\&quot;./output_table.nc\&quot;,\n        output=[\&quot;hsign\&quot;, \&quot;hswell\&quot;, \&quot;dir\&quot;, \&quot;tps\&quot;, \&quot;tm01\&quot;, \&quot;watlev\&quot;, \&quot;qp\&quot;],\n        times=dict(tbeg=\&quot;2012-01-01T00:00:00\&quot;, delt=\&quot;PT30M\&quot;, dfmt=\&quot;min\&quot;),\n    )\n    print(table.render())&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;table&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;table&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;TABLE&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;sname&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Name of the set of output locations in which the output is to be written&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;maxLength&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sname&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;fname&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Name of the data file where the output is written to The file format is defined by the file extension, use `.mat` for MATLAB binary (single precision) or `.nc` for netCDF format. If any other extension is used the ASCII format is assumed&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fname&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;times&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/TimeRangeOpen&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Time specification if the user requires output at various times. If this option is not specified data will be written for the last time step of the computation&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="s2">&quot;header&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="s2">&quot;noheader&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="s2">&quot;indexed&quot;</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Indicate if the table should be written to a file as a HEADER, NOHEADER or INDEXED table format (SWAN default: HEADER)&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Format&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The output variables to output to block file&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/BlockOptions&quot;</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;minItems&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Output&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nt">&quot;$defs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;BlockOptions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Valid options for block output parameters.\n\nAttributes\n----------\nHSIGN: \&quot;hsign\&quot;\n    Significant wave height (in m).\nHSWELL: \&quot;hswell\&quot;\n    Swell wave height (in m).\nDIR: \&quot;dir\&quot;\n    Mean wave direction (in degrees).\nPDIR: \&quot;pdir\&quot;\n    Peak wave direction (in degrees).\nTDIR: \&quot;tdir\&quot;\n    Direction of energy transport (in degrees).\nTM01: \&quot;tm01\&quot;\n    Mean absolute wave period (in s).\nRTM01: \&quot;rtm01\&quot;\n    Mean relative wave period (in s).\nRTP: \&quot;rtp\&quot;\n    Peak period of the (relative frequency) variance density spectrum (in s).\nTPS: \&quot;tps\&quot;\n    Smoothed peak period (in s).\nPER: \&quot;per\&quot;\n    Mean absolute wave period (in s).\nRPER: \&quot;rper\&quot;\n    Mean relative wave period (in s).\nTMM10: \&quot;tmm10\&quot;\n    Mean absolute wave period (in s).\nRTMM10: \&quot;rtmm10\&quot;\n    Mean relative wave period (in s).\nTM02: \&quot;tm02\&quot;\n    Mean absolute zero-crossing period (in s).\nFSPR: \&quot;fspr\&quot;\n    The normalised width of the frequency spectrum.\nDSPR: \&quot;dspr\&quot;\n    Directional spreading of the waves (in degrees).\nQP: \&quot;qp\&quot;\n    Peakedness of the wave spectrum (dimensionless).\nDEPTH: \&quot;depth\&quot;\n    Water depth (in m).\nWATLEV: \&quot;watlev\&quot;\n    Water level (in m).\nBOTLEV: \&quot;botlev\&quot;\n    Bottom level (in m).\nVEL: \&quot;vel\&quot;\n    Current velocity (vector; in m/s).\nFRCOEF: \&quot;frcoef\&quot;\n    Friction coefficient (equal to `cfw` or `kn` in command `FRICTION`).\nWIND: \&quot;wind\&quot;\n    Wind velocity (vector; in m/s).\nAICE: \&quot;aice\&quot;\n    Ice concentration (as a fraction from 0 to 1).\nPROPAGAT: \&quot;propagat\&quot;\n    Sum of PROPXY, PROPTHETA and PROPSIGMA (in W/m2 or m2/s).\nPROPXY: \&quot;propxy\&quot;\n    Energy propagation in geographic space; sum of x- and y-direction\n    (in W/m2 or m2/s).\nPROPTHETA: \&quot;proptheta\&quot;\n    Energy propagation in theta space (in W/m2 or m2/s).\nPROPSIGMA: \&quot;propsigma\&quot;\n    Energy propagation in sigma space (in W/m2 or m2/s).\nGENERAT: \&quot;generat\&quot;\n    Total energy generation (in W/m2 or m2/s).\nGENWIND: \&quot;genwind\&quot;\n    Energy generation due to wind (in W/m2 or m2/s).\nREDIST: \&quot;redist\&quot;\n    Total energy redistribution (in W/m2 or m2/s).\nREDQUAD: \&quot;redquad\&quot;\n    Energy redistribution due to quadruplets (in W/m2 or m2/s).\nREDTRIAD: \&quot;redtriad\&quot;\n    Energy redistribution due to triads (in W/m2 or m2/s).\nDISSIP: \&quot;dissip\&quot;\n    Total energy dissipation (in W/m2 or m2/s).\nDISBOT: \&quot;disbot\&quot;\n    Energy dissipation due to bottom friction (in W/m2 or m2/s).\nDISSURF: \&quot;dissurf\&quot;\n    Energy dissipation due to surf breaking (in W/m2 or m2/s).\nDISWCAP: \&quot;diswcap\&quot;\n    Energy dissipation due to whitecapping (in W/m2 or m2/s).\nDISSWELL: \&quot;disswell\&quot;\n    Energy dissipation due to swell dissipation (in W/m2 or m2/s).\nDISVEG: \&quot;disveg\&quot;\n    Energy dissipation due to vegetation (in W/m2 or m2/s).\nDISMUD: \&quot;dismud\&quot;\n    Energy dissipation due to mud (in W/m2 or m2/s).\nDISICE: \&quot;disice\&quot;\n    Energy dissipation due to sea ice (in W/m2 or m2/s).\nRADSTR: \&quot;radstr\&quot;\n    Energy transfer between waves and currents due to radiation stress\n    (in W/m2 or m2/s).\nQB: \&quot;qb\&quot;\n    Fraction of breaking waves due to depth-induced breaking.\nTRANSP: \&quot;transp\&quot;\n    Transport of energy (vector; in W/m2 or m2/s).\nFORCE: \&quot;force\&quot;\n    Wave-induced force per unit surface area (vector; in N/m2).\nUBOT: \&quot;ubot\&quot;\n    The rms-value of the maxima of the orbital velocity near the bottom (in m/s).\nURMS: \&quot;urms\&quot;\n    The rms-value of the orbital velocity near the bottom (in m/s).\nTMBOT: \&quot;tmbot\&quot;\n    The bottom wave period (in s).\nWLENGTH: \&quot;wlength\&quot;\n    Average wave length (in m).\nLWAVP: \&quot;lwavp\&quot;\n    Peak wave length (in m).\nSTEEPNESS: \&quot;steepness\&quot;\n    Average wave steepness (dimensionless).\nBFI: \&quot;bfi\&quot;\n    Benjamin-Feir index (dimensionless).\nNPLANTS: \&quot;nplants\&quot;\n    Number of plants per square meter.\nDHSIGN: \&quot;dhsign\&quot;\n    Difference in significant wave height from the last two iterations (in m).\nDRTM01: \&quot;drtm01\&quot;\n    Difference in average wave period (RTM01) from the last two iterations (in s).\nLEAK: \&quot;leak\&quot;\n    Numerical loss of energy equal to `cthetaE(omega,theta)` across boundaries.\nTIME: \&quot;time\&quot;\n    Full date-time string as part of line used in TABLE only.\nTSEC: \&quot;tsec\&quot;\n    Time in seconds with respect to a reference time (see command QUANTITY).\nXP: \&quot;xp\&quot;\n    The x-coordinate in the problem coordinate system of the output location.\nYP: \&quot;yp\&quot;\n    The y-coordinate in the problem coordinate system of the output location.\nDIST: \&quot;dist\&quot;\n    If output has been requested along a curve then the distance along the curve\n    can be obtained with the command TABLE. DIST is the distance along the curve\n    measured from teh first point on the curve to the output location on the curve\n    in meters (also in the case of spherical coordinates).\nSETUP: \&quot;setup\&quot;\n    Set-up due to waves (in m).\nPTHSIGN: \&quot;pthsign\&quot;\n    Watershed partitions of the significant wave height (in m).\nPTRTP: \&quot;ptrtp\&quot;\n    Watershed partitions of the relative peak period (in s).\nPTWLEN: \&quot;ptwlen\&quot;\n    Watershed partitions of the average wave length (in m).\nPTDIR: \&quot;ptdir\&quot;\n    Watershed partitions of the peak wave direction (in degrees).\nPTDSPR: \&quot;ptdspr\&quot;\n    Watershed partitions of the directional spreading (in degrees).\nPTWFRAC: \&quot;ptwfrac\&quot;\n    Watershed partitions of the wind fraction (dimensionless).\nPTSTEEPNE: \&quot;ptsteepne\&quot;\n    Watershed partition of the wave steepness (dimensionless).\nPARTITION: \&quot;partition\&quot;\n    The raw spectral partition for wave system tracking post-processing.\n\nNote\n----\nEnergy given in W/m2 or m2/s depending on command SET.\n\nNote\n----\nUBOT and URMS required command `FRICTION` to be used. If friction is ignored in the\ncomputation, then one should use the command `FRICTION` with the value of the\nfriction set to zero (e.g., `FRICTION COLLINS 0`).&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;hsign&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;hswell&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dir&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;pdir&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tdir&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tm01&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;rtm01&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;rtp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tps&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;per&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;rper&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tmm10&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;rtmm10&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tm02&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;fspr&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dspr&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;qp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;watlev&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;botlev&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;vel&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;frcoef&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;wind&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;aice&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;propagat&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;propxy&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;proptheta&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;propsigma&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;generat&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;genwind&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;redist&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;redquad&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;redtriad&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dissip&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;disbot&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dissurf&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;diswcap&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;disswell&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;disveg&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dismud&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;disice&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;radstr&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;qb&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;transp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;force&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ubot&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;urms&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tmbot&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;wlength&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;lwavp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;steepness&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;bfi&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;nplants&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dhsign&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;drtm01&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;leak&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;tsec&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;xp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;yp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;dist&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;setup&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;pthsign&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptrtp&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptwlen&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptdir&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptdspr&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptwfrac&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;ptsteepne&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;partition&quot;</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BlockOptions&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;TimeRangeOpen&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Regular times with an open boundary.\n\n.. code-block:: text\n\n    [tbeg] [delt] SEC|MIN|HR|DAY\n\nTime is rendered in one of the following formats:\n\n* 1: ISO-notation 19870530.153000\n* 2: (as in HP compiler) &#39;30-May-87 15:30:00&#39;\n* 3: (as in Lahey compiler) 05/30/87.15:30:00\n* 4: 15:30:00\n* 5: 87/05/30 15:30:00&#39;\n* 6: as in WAM 8705301530\n\nNote\n----\nThe `tbeg` field can be specified as:\n\n* existing datetime object\n* int or float, assumed as Unix time, i.e. seconds (if &gt;= -2e10 or &lt;= 2e10) or\n  milliseconds (if &lt; -2e10 or &gt; 2e10) since 1 January 1970.\n* ISO 8601 time string.\n\nNote\n----\nThe `tdelta` field can be specified as:\n\n* existing timedelta object\n* int or float, assumed as seconds\n* ISO 8601 duration string, following formats work:\n\n    * `[-][DD ][HH:MM]SS[.ffffff]`\n    * `[\u00b1]P[DD]DT[HH]H[MM]M[SS]S` (ISO 8601 format for timedelta)\n\nNote\n----\nDefault values for the time specification fields are provided for the case where\nthe user wants to set times dynamically after instantiating this subcomponent.\n\nExamples\n--------\n\n.. ipython:: python\n    :okwarning:\n\n    from rompy.swan.subcomponents.time import TimeRangeOpen\n    from datetime import datetime, timedelta\n    times = TimeRangeOpen(\n        tbeg=datetime(1990, 1, 1), delt=timedelta(minutes=30), dfmt=\&quot;min\&quot;\n    )\n    print(times.render())\n    times = TimeRangeOpen(\n        tbeg=\&quot;2012-01-01T00:00:00\&quot;, delt=\&quot;PT1H\&quot;, tfmt=2, dfmt=\&quot;hr\&quot;, suffix=\&quot;blk\&quot;\n    )\n    print(times.render())&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;open&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model type discriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="s2">&quot;open&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="s2">&quot;OPEN&quot;</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;tbeg&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1970-01-01T00:00:00&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Start time&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;date-time&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tbeg&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;delt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PT1H&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Time interval&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;duration&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Delt&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;tfmt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                        </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                        </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">                        </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">                        </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">                        </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">                        </span><span class="mi">6</span>
+<span class="w">                     </span><span class="p">],</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Format to render time specification&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tfmt&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;dfmt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sec&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Format to render time interval specification&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="s2">&quot;sec&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="s2">&quot;min&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="s2">&quot;hr&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="s2">&quot;day&quot;</span>
+<span class="w">               </span><span class="p">],</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dfmt&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;suffix&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Suffix to prepend to argument names when rendering&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Suffix&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TimeRangeOpen&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;sname&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;fname&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;output&quot;</span>
+<span class="w">   </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</details></p><dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="#rompy.swan.components.output.TABLE.format" title="rompy.swan.components.output.TABLE.format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format</span> <span class="pre">(Literal['header',</span> <span class="pre">'noheader',</span> <span class="pre">'indexed']</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
@@ -623,7 +829,8 @@ quantities, the other with <cite>HS</cite>, <cite>RTM01</cite> or other output q
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -646,13 +853,13 @@ quantities, the other with <cite>HS</cite>, <cite>RTM01</cite> or other output q
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../../../_sources/swan/components/_generated/rompy.swan.components.output.TABLE.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/swan/components/_generated/rompy.swan.components.output.TABLE.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -667,8 +874,8 @@ quantities, the other with <cite>HS</cite>, <cite>RTM01</cite> or other output q
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -701,7 +908,8 @@ quantities, the other with <cite>HS</cite>, <cite>RTM01</cite> or other output q
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

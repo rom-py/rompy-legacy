@@ -37,6 +37,7 @@ The final main component of the library is an intake driver that builds on the i
     models
     demo
     api
+    relational_diagrams
 
 Indices and tables
 ==================

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>rompy.swan.subcomponents.physics &#8212; rompy 0.1.0 documentation</title>
+    <title>rompy.swan.subcomponents.physics &#8212; rompy 0.2.8 documentation</title>
   
   
   
@@ -15,27 +15,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../../_static/documentation_options.js?v=b01fafc3"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -44,6 +47,7 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
   </head>
   
   
@@ -59,19 +63,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../../search.html"
       method="get">
@@ -79,7 +72,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -87,8 +79,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -117,7 +109,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.1.0 documentation</p>
+    <p class="title logo__title">rompy 0.2.8 documentation</p>
   
 </a></div>
     
@@ -166,7 +158,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -191,29 +185,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -238,15 +224,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -263,7 +245,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -331,15 +314,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -377,9 +356,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -397,8 +381,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -410,7 +392,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">rompy.swan.s...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">rompy.swan.subcomponents.physics</span></li>
   </ul>
 </nav>
 </div>
@@ -429,12 +411,13 @@ document.write(`
                   
   <h1>Source code for rompy.swan.subcomponents.physics</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;SWAN physics subcomponents.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
-<span class="kn">from</span> <span class="nn">pydantic_numpy.typing</span> <span class="kn">import</span> <span class="n">Np2DArray</span>
 
-<span class="kn">from</span> <span class="nn">rompy.swan.subcomponents.base</span> <span class="kn">import</span> <span class="n">BaseSubComponent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic_numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Np2DArray</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.subcomponents.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSubComponent</span>
 
 
 <span class="c1"># ======================================================================================</span>
@@ -442,7 +425,7 @@ document.write(`
 <span class="c1"># ======================================================================================</span>
 <div class="viewcode-block" id="SourceTerms">
 <a class="viewcode-back" href="../../../../api.html#rompy.swan.subcomponents.physics.SourceTerms">[docs]</a>
-<span class="k">class</span> <span class="nc">SourceTerms</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SourceTerms</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Source term subcomponent base class.&quot;&quot;&quot;</span>
 
     <span class="n">wind_drag</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;wu&quot;</span><span class="p">,</span> <span class="s2">&quot;fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -465,7 +448,7 @@ document.write(`
 
 <div class="viewcode-block" id="JANSSEN">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.JANSSEN.html#rompy.swan.subcomponents.physics.JANSSEN">[docs]</a>
-<span class="k">class</span> <span class="nc">JANSSEN</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">JANSSEN</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Janssen source terms subcomponent.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -518,7 +501,7 @@ document.write(`
 
 <div class="viewcode-block" id="JANSSEN.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.JANSSEN.html#rompy.swan.subcomponents.physics.JANSSEN.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;JANSSEN&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cds1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cds1=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cds1</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -536,7 +519,7 @@ document.write(`
 
 <div class="viewcode-block" id="KOMEN">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.KOMEN.html#rompy.swan.subcomponents.physics.KOMEN">[docs]</a>
-<span class="k">class</span> <span class="nc">KOMEN</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">KOMEN</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Komen source terms subcomponent.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -582,7 +565,7 @@ document.write(`
 
 <div class="viewcode-block" id="KOMEN.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.KOMEN.html#rompy.swan.subcomponents.physics.KOMEN.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;KOMEN&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cds2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cds2=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cds2</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -600,7 +583,7 @@ document.write(`
 
 <div class="viewcode-block" id="WESTHUYSEN">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.WESTHUYSEN.html#rompy.swan.subcomponents.physics.WESTHUYSEN">[docs]</a>
-<span class="k">class</span> <span class="nc">WESTHUYSEN</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WESTHUYSEN</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Westhuysen source terms subcomponent.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -651,7 +634,7 @@ document.write(`
 
 <div class="viewcode-block" id="WESTHUYSEN.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.WESTHUYSEN.html#rompy.swan.subcomponents.physics.WESTHUYSEN.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;WESTHUYSEN&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cds2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; cds2=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cds2</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -669,7 +652,7 @@ document.write(`
 
 <div class="viewcode-block" id="ST6">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ST6.html#rompy.swan.subcomponents.physics.ST6">[docs]</a>
-<span class="k">class</span> <span class="nc">ST6</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ST6</span><span class="p">(</span><span class="n">SourceTerms</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;St6 source terms subcomponent.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -787,7 +770,7 @@ document.write(`
 <div class="viewcode-block" id="ST6.debias_only_with_hwang">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ST6.html#rompy.swan.subcomponents.physics.ST6.debias_only_with_hwang">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">debias_only_with_hwang</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ST6&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">debias_only_with_hwang</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ST6&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdfac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">wind_drag</span> <span class="o">!=</span> <span class="s2">&quot;hwang&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Debias is only supported with hwang wind drag, not </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wind_drag</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -796,7 +779,7 @@ document.write(`
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">u10_cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">u10_cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">u10</span> <span class="o">==</span> <span class="s2">&quot;true10&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;TRUE10&quot;</span>
         <span class="k">else</span><span class="p">:</span>
@@ -804,7 +787,7 @@ document.write(`
 
 <div class="viewcode-block" id="ST6.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ST6.html#rompy.swan.subcomponents.physics.ST6.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ST6 a1sds=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a1sds</span><span class="si">}</span><span class="s2"> a2sds=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a2sds</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p1sds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; p1sds=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p1sds</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -827,7 +810,7 @@ document.write(`
 
 <div class="viewcode-block" id="ST6C1">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C1.html#rompy.swan.subcomponents.physics.ST6C1">[docs]</a>
-<span class="k">class</span> <span class="nc">ST6C1</span><span class="p">(</span><span class="n">ST6</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ST6C1</span><span class="p">(</span><span class="n">ST6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;First ST6 calibration in the SWAN user manual.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -858,7 +841,7 @@ document.write(`
 
 <div class="viewcode-block" id="ST6C2">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C2.html#rompy.swan.subcomponents.physics.ST6C2">[docs]</a>
-<span class="k">class</span> <span class="nc">ST6C2</span><span class="p">(</span><span class="n">ST6C1</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ST6C2</span><span class="p">(</span><span class="n">ST6C1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Second ST6 calibration in the SWAN user manual.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -886,7 +869,7 @@ document.write(`
 
 <div class="viewcode-block" id="ST6C3">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C3.html#rompy.swan.subcomponents.physics.ST6C3">[docs]</a>
-<span class="k">class</span> <span class="nc">ST6C3</span><span class="p">(</span><span class="n">ST6C1</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ST6C3</span><span class="p">(</span><span class="n">ST6C1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Third ST6 calibration in the SWAN user manual.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -914,7 +897,7 @@ document.write(`
 
 <div class="viewcode-block" id="ST6C4">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C4.html#rompy.swan.subcomponents.physics.ST6C4">[docs]</a>
-<span class="k">class</span> <span class="nc">ST6C4</span><span class="p">(</span><span class="n">ST6C3</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ST6C4</span><span class="p">(</span><span class="n">ST6C3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fourth ST6 calibration in the SWAN user manual.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -940,7 +923,7 @@ document.write(`
 
 <div class="viewcode-block" id="ST6C5">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ST6C5.html#rompy.swan.subcomponents.physics.ST6C5">[docs]</a>
-<span class="k">class</span> <span class="nc">ST6C5</span><span class="p">(</span><span class="n">ST6C1</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ST6C5</span><span class="p">(</span><span class="n">ST6C1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fifth ST6 calibration in the SWAN user manual.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -972,7 +955,7 @@ document.write(`
 <span class="c1"># =====================================================================================</span>
 <div class="viewcode-block" id="ELDEBERKY">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ELDEBERKY.html#rompy.swan.subcomponents.physics.ELDEBERKY">[docs]</a>
-<span class="k">class</span> <span class="nc">ELDEBERKY</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ELDEBERKY</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Biphase of Eldeberky (1999).</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1024,7 +1007,7 @@ document.write(`
 
 <div class="viewcode-block" id="ELDEBERKY.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.ELDEBERKY.html#rompy.swan.subcomponents.physics.ELDEBERKY.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;BIPHASE ELDEBERKY&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">urcrit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; urcrit=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">urcrit</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1035,7 +1018,7 @@ document.write(`
 
 <div class="viewcode-block" id="DEWIT">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.DEWIT.html#rompy.swan.subcomponents.physics.DEWIT">[docs]</a>
-<span class="k">class</span> <span class="nc">DEWIT</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DEWIT</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Biphase of De Wit (2022).</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1078,7 +1061,7 @@ document.write(`
 
 <div class="viewcode-block" id="DEWIT.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.DEWIT.html#rompy.swan.subcomponents.physics.DEWIT.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;BIPHASE DEWIT&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lpar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; lpar=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lpar</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1092,7 +1075,7 @@ document.write(`
 <span class="c1"># =====================================================================================</span>
 <div class="viewcode-block" id="TRANSM">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.TRANSM.html#rompy.swan.subcomponents.physics.TRANSM">[docs]</a>
-<span class="k">class</span> <span class="nc">TRANSM</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TRANSM</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Constant transmission coefficient.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1129,7 +1112,7 @@ document.write(`
 
 <div class="viewcode-block" id="TRANSM.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.TRANSM.html#rompy.swan.subcomponents.physics.TRANSM.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;TRANSM&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trcoef</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1141,7 +1124,7 @@ document.write(`
 
 <div class="viewcode-block" id="TRANS1D">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS1D.html#rompy.swan.subcomponents.physics.TRANS1D">[docs]</a>
-<span class="k">class</span> <span class="nc">TRANS1D</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TRANS1D</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Frequency dependent transmission.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1173,7 +1156,7 @@ document.write(`
 
 <div class="viewcode-block" id="TRANS1D.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS1D.html#rompy.swan.subcomponents.physics.TRANS1D.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;TRANS1D </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">trcoef</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div>
 </div>
@@ -1182,7 +1165,7 @@ document.write(`
 
 <div class="viewcode-block" id="TRANS2D">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS2D.html#rompy.swan.subcomponents.physics.TRANS2D">[docs]</a>
-<span class="k">class</span> <span class="nc">TRANS2D</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TRANS2D</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Frequency-direction dependent transmission.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1217,7 +1200,7 @@ document.write(`
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS2D.html#rompy.swan.subcomponents.physics.TRANS2D.constrained_0_1">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;trcoef&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">constrained_0_1</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">constrained_0_1</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure all directions have the same number of frequencies.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">value</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transmission coefficients must be between 0.0 and 1.0&quot;</span><span class="p">)</span>
@@ -1226,7 +1209,7 @@ document.write(`
 
 <div class="viewcode-block" id="TRANS2D.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.TRANS2D.html#rompy.swan.subcomponents.physics.TRANS2D.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;TRANS2D&quot;</span>
         <span class="k">for</span> <span class="n">coef</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trcoef</span><span class="p">:</span>
@@ -1238,7 +1221,7 @@ document.write(`
 
 <div class="viewcode-block" id="GODA">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.GODA.html#rompy.swan.subcomponents.physics.GODA">[docs]</a>
-<span class="k">class</span> <span class="nc">GODA</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GODA</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;DAM transmission of Goda/Seelig (1979).</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1298,7 +1281,7 @@ document.write(`
 
 <div class="viewcode-block" id="GODA.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.GODA.html#rompy.swan.subcomponents.physics.GODA.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DAM </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> hgt=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hgt</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1312,7 +1295,7 @@ document.write(`
 
 <div class="viewcode-block" id="DANGREMOND">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.DANGREMOND.html#rompy.swan.subcomponents.physics.DANGREMOND">[docs]</a>
-<span class="k">class</span> <span class="nc">DANGREMOND</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DANGREMOND</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;DAM transmission of d&#39;Angremond et al. (1996).</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1356,7 +1339,7 @@ document.write(`
 
 <div class="viewcode-block" id="DANGREMOND.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.DANGREMOND.html#rompy.swan.subcomponents.physics.DANGREMOND.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DAM </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="nb">repr</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; hgt=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hgt</span><span class="si">}</span><span class="s2"> slope=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slope</span><span class="si">}</span><span class="s2"> Bk=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Bk</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1367,7 +1350,7 @@ document.write(`
 
 <div class="viewcode-block" id="REFL">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.REFL.html#rompy.swan.subcomponents.physics.REFL">[docs]</a>
-<span class="k">class</span> <span class="nc">REFL</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">REFL</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Obstacle reflections.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1401,7 +1384,7 @@ document.write(`
 
 <div class="viewcode-block" id="REFL.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.REFL.html#rompy.swan.subcomponents.physics.REFL.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;REFL&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reflc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1413,7 +1396,7 @@ document.write(`
 
 <div class="viewcode-block" id="RSPEC">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.RSPEC.html#rompy.swan.subcomponents.physics.RSPEC">[docs]</a>
-<span class="k">class</span> <span class="nc">RSPEC</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RSPEC</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Specular reflection.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1438,7 +1421,7 @@ document.write(`
 
 <div class="viewcode-block" id="RSPEC.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.RSPEC.html#rompy.swan.subcomponents.physics.RSPEC.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;RSPEC&quot;</span></div>
 </div>
@@ -1447,7 +1430,7 @@ document.write(`
 
 <div class="viewcode-block" id="RDIFF">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.RDIFF.html#rompy.swan.subcomponents.physics.RDIFF">[docs]</a>
-<span class="k">class</span> <span class="nc">RDIFF</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RDIFF</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Diffuse reflection.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1484,7 +1467,7 @@ document.write(`
 
 <div class="viewcode-block" id="RDIFF.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.RDIFF.html#rompy.swan.subcomponents.physics.RDIFF.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;RDIFF&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pown</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1496,7 +1479,7 @@ document.write(`
 
 <div class="viewcode-block" id="FREEBOARD">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.FREEBOARD.html#rompy.swan.subcomponents.physics.FREEBOARD">[docs]</a>
-<span class="k">class</span> <span class="nc">FREEBOARD</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FREEBOARD</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Freeboard dependent transmission and reflection.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1571,7 +1554,7 @@ document.write(`
 
 <div class="viewcode-block" id="FREEBOARD.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.FREEBOARD.html#rompy.swan.subcomponents.physics.FREEBOARD.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;FREEBOARD&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hgt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1589,7 +1572,7 @@ document.write(`
 
 <div class="viewcode-block" id="LINE">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.LINE.html#rompy.swan.subcomponents.physics.LINE">[docs]</a>
-<span class="k">class</span> <span class="nc">LINE</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LINE</span><span class="p">(</span><span class="n">BaseSubComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Line of points to define obstacle location.</span>
 
 <span class="sd">    .. code-block:: text</span>
@@ -1631,7 +1614,7 @@ document.write(`
 <div class="viewcode-block" id="LINE.check_length">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.LINE.html#rompy.swan.subcomponents.physics.LINE.check_length">[docs]</a>
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">check_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LINE&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LINE&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the length of xp and yp are the same.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xp</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yp</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;xp and yp must be the same length&quot;</span><span class="p">)</span>
@@ -1640,7 +1623,7 @@ document.write(`
 
 <div class="viewcode-block" id="LINE.cmd">
 <a class="viewcode-back" href="../../../../swan/subcomponents/_generated/rompy.swan.subcomponents.physics.LINE.html#rompy.swan.subcomponents.physics.LINE.cmd">[docs]</a>
-    <span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cmd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Command file string for this subcomponent.&quot;&quot;&quot;</span>
         <span class="nb">repr</span> <span class="o">=</span> <span class="s2">&quot;LINE&quot;</span>
         <span class="k">for</span> <span class="n">xp</span><span class="p">,</span> <span class="n">yp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yp</span><span class="p">):</span>
@@ -1677,8 +1660,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1711,7 +1694,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
