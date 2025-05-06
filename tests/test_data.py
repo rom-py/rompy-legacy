@@ -8,18 +8,15 @@ import pytest
 import xarray as xr
 from pydantic import ValidationError
 
-from rompy.core import DataBlob, DataGrid, DataPoint, RegularGrid, TimeRange
-from rompy.core.source import (
-    SourceDatamesh,
-    SourceDataset,
-    SourceFile,
-    SourceIntake,
-    SourceTimeseriesCSV,
-    SourceTimeseriesDataFrame,
-)
+import rompy
+from rompy.core.data import DataBlob, DataGrid, DataPoint
+from rompy.core.grid import RegularGrid
+from rompy.core.time import TimeRange
+from rompy.utils import load_entry_points
+
+load_entry_points("rompy.source")
 from rompy.core.filters import Filter
 from rompy.core.types import DatasetCoords
-
 
 HERE = Path(__file__).parent
 DATAMESH_TOKEN = os.environ.get("DATAMESH_TOKEN")
@@ -44,7 +41,7 @@ def grid():
 def grid_data_source():
     return DataGrid(
         id="wind",
-        source=SourceIntake(
+        source=rompy.core.source.SourceIntake(
             dataset_id="era5",
             catalog_uri=HERE / "data" / "catalog.yaml",
         ),
@@ -77,7 +74,7 @@ def nc_data_source(tmp_path):
         }
     )
     ds.to_netcdf(source)
-    return DataGrid(id="grid", source=SourceFile(uri=source))
+    return DataGrid(id="grid", source=rompy.core.source.SourceFile(uri=source))
 
 
 def test_get(tmp_path, txt_data_source):
@@ -134,32 +131,19 @@ def test_time_filter(nc_data_source, grid):
     assert nc_data_source.ds.time.min() == np.datetime64("2000-01-02")
 
 
-def test_source_dataset():
-    dset = xr.open_dataset(HERE / "data" / "aus-20230101.nc")
-    source = SourceDataset(obj=dset)
-    assert isinstance(source.open(), xr.Dataset)
-
-
 def test_source_file():
-    source = SourceFile(uri=HERE / "data" / "aus-20230101.nc")
+    source = rompy.core.source.SourceFile(uri=HERE / "data" / "aus-20230101.nc")
     assert isinstance(source.open(), xr.Dataset)
 
 
 def test_source_csv():
-    source = SourceTimeseriesCSV(filename=HERE / "data" / "wind.csv")
-    assert isinstance(source.open(), xr.Dataset)
-    assert list(source.open().dims) == ["time"]
-
-
-def test_source_dataframe():
-    df = pd.read_csv(HERE / "data" / "wind.csv", parse_dates=["time"], index_col="time")
-    source = SourceTimeseriesDataFrame(obj=df)
+    source = rompy.core.source.SourceTimeseriesCSV(filename=HERE / "data" / "wind.csv")
     assert isinstance(source.open(), xr.Dataset)
     assert list(source.open().dims) == ["time"]
 
 
 def test_source_intake_uri():
-    source = SourceIntake(
+    source = rompy.core.source.SourceIntake(
         dataset_id="ausspec",
         catalog_uri=HERE / "data" / "catalog.yaml",
     )
@@ -170,7 +154,7 @@ def test_source_intake_uri():
 def test_source_intake_yaml():
     dataset = intake.open_netcdf(str(HERE / "data/era5-20230101.nc"))
     dataset.name = "era5"
-    source = SourceIntake(
+    source = rompy.core.source.SourceIntake(
         dataset_id="era5",
         catalog_yaml=dataset.yaml(),
     )
@@ -181,8 +165,8 @@ def test_source_intake_uri_or_yaml():
     dataset = intake.open_netcdf(str(HERE / "data/era5-20230101.nc"))
     dataset.name = "era5"
     with pytest.raises(ValidationError):
-        SourceIntake(dataset_id="era5")
-        SourceIntake(
+        rompy.core.source.SourceIntake(dataset_id="era5")
+        rompy.core.source.SourceIntake(
             dataset_id="era5",
             catalog_uri=HERE / "data" / "catalog.yaml",
             catalog_yaml=dataset.yaml(),
@@ -196,7 +180,9 @@ def test_intake_grid_plot(grid_data_source):
 
 @pytest.mark.skipif(DATAMESH_TOKEN is None, reason="Datamesh token required")
 def test_source_datamesh():
-    dataset = SourceDatamesh(datasource="era5_wind10m", token=DATAMESH_TOKEN)
+    dataset = rompy.core.source.SourceDatamesh(
+        datasource="era5_wind10m", token=DATAMESH_TOKEN
+    )
     filters = Filter()
     filters.crop.update(dict(time=slice("2000-01-01T00:00:00", "2000-01-01T03:00:00")))
     filters.crop.update(
@@ -211,7 +197,7 @@ def test_source_datamesh():
 
 
 def test_data_point(tmp_path, grid):
-    source = SourceTimeseriesCSV(filename=HERE / "data" / "wind.csv")
+    source = rompy.core.source.SourceTimeseriesCSV(filename=HERE / "data" / "wind.csv")
     times = TimeRange(start="2023-01-01", end="2023-01-01T12")
     data = DataPoint(id="wind", source=source)
     outfile = data.get(tmp_path, grid, times)

@@ -2,9 +2,12 @@ import logging
 from pathlib import Path
 from typing import Literal, Optional, Union
 
-from pydantic import Field, model_validator, model_serializer
+from pydantic import Field, model_serializer, model_validator
 
-from rompy.core import BaseConfig, DataBlob, RompyBaseModel, Spectrum, TimeRange
+from rompy.core.config import BaseConfig
+from rompy.core.data import DataBlob
+from rompy.core.time import TimeRange
+from rompy.core.types import RompyBaseModel, Spectrum
 
 from .data import SCHISMData
 from .grid import SCHISMGrid
@@ -524,42 +527,42 @@ class SCHISMConfig(BaseConfig):
         description="The path to the model template",
         default=SCHISM_TEMPLATE,
     )
-    
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to handle proper serialization of nested components."""
         from rompy.schism.grid import GR3Generator
-        
+
         result = {}
-        
+
         # Explicitly handle required fields
         result["model_type"] = self.model_type
-        
+
         # Handle grid separately to process GR3Generator objects
         if self.grid is not None:
             grid_dict = {}
             for field_name in self.grid.model_fields:
                 value = getattr(self.grid, field_name, None)
-                
+
                 # Special handling for GR3Generator objects
                 if value is not None and isinstance(value, GR3Generator):
                     # For GR3Generator objects, extract just the value field
                     grid_dict[field_name] = value.value
-                elif value is not None and not field_name.startswith('_'):
+                elif value is not None and not field_name.startswith("_"):
                     grid_dict[field_name] = value
-            
+
             result["grid"] = grid_dict
-        
+
         # Add optional fields that are not None
         if self.data is not None:
             result["data"] = self.data
-            
+
         if self.nml is not None:
             result["nml"] = self.nml
-            
+
         if self.template is not None:
             result["template"] = self.template
-            
+
         return result
 
     def __call__(self, runtime) -> str:

@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 import shapely
 
-from rompy.core import BaseGrid, RegularGrid
+from rompy.core.grid import BaseGrid, RegularGrid
 
 
 class CustomGrid(BaseGrid):

@@ -8,7 +8,7 @@ import pandas as pd
 import xarray as xr
 from pydantic import field_validator, Field, model_validator
 
-from rompy.core import DataGrid
+from rompy.core.data import DataGrid
 from rompy.core.time import TimeRange
 
 from rompy.swan.grid import SwanGrid

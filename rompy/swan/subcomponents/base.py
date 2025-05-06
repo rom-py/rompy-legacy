@@ -4,7 +4,7 @@ from typing import Literal, Optional
 from abc import ABC
 from pydantic import ConfigDict, Field, model_validator
 
-from rompy.core import RompyBaseModel
+from rompy.core.types import RompyBaseModel
 
 
 class BaseSubComponent(RompyBaseModel, ABC):
