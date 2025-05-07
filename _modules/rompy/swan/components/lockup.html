@@ -593,12 +593,21 @@
     <span class="p">)</span>
     <span class="n">fname</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the file to which the wave field is written&quot;</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="nb">format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;free&quot;</span><span class="p">,</span> <span class="s2">&quot;unformatted&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Choose between free (SWAN ASCII) or unformatted (binary) format&quot;</span><span class="p">),</span>
     <span class="p">)</span>
+
+<div class="viewcode-block" id="HOTFILE.max_length">
+<a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.HOTFILE.html#rompy.swan.components.lockup.HOTFILE.max_length">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;fname&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">max_length</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">36</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;fname must be less than 36 characters&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fname</span></div>
+
 
 <div class="viewcode-block" id="HOTFILE.cmd">
 <a class="viewcode-back" href="../../../../swan/components/_generated/rompy.swan.components.lockup.HOTFILE.html#rompy.swan.components.lockup.HOTFILE.cmd">[docs]</a>
