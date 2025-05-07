@@ -1221,9 +1221,6 @@ class SCHISMDataTides(RompyBaseModel):
         return str(bctides_path)
 
 
-
-
-
 class SCHISMData(RompyBaseModel):
     """
     This class is used to gather all required input forcing for SCHISM
@@ -1241,9 +1238,7 @@ class SCHISMData(RompyBaseModel):
     tides: Optional[Union[DataBlob, SCHISMDataTides]] = Field(
         None, description="tidal data"
     )
-    hotstart: Optional[SCHISMDataHotstart] = Field(
-        None, description="hotstart data"
-    )
+    hotstart: Optional[SCHISMDataHotstart] = Field(None, description="hotstart data")
 
     # @model_validator(mode="after")
     # def check_bctides_flags(cls, v):
