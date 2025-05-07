@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from shutil import copytree
 from typing import Literal, Optional, Union
-
+from abc import ABC, abstractmethod
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
@@ -22,19 +22,35 @@ from rompy.utils import load_entry_points
 logger = logging.getLogger(__name__)
 
 
-class DataBlob(RompyBaseModel):
+class DataBase(ABC, RompyBaseModel):
+    """Base class for data objects."""
+
+    model_type: Literal["base"] = Field(
+        default="base",
+        description="Model type discriminator",
+    )
+    id: str = Field(
+        default="data",
+        description="Unique identifier for this data source"
+    )
+
+    @abstractmethod
+    def get(self, destdir: Union[str, Path], *args, **kwargs) -> Path:
+        """Abstract method to get the data."""
+        pass
+
+
+class DataBlob(DataBase):
     """Data source for model ingestion.
 
     Generic data source for files that either need to be copied to the model directory
     or linked if `link` is set to True.
+
     """
 
     model_type: Literal["data_blob", "data_link"] = Field(
         default="data_blob",
         description="Model type discriminator",
-    )
-    id: str = Field(
-        default="data", description="Unique identifier for this data source"
     )
     source: AnyPath = Field(
         description="URI of the data source, either a local file path or a remote uri",
@@ -105,7 +121,7 @@ SOURCE_TYPES = load_entry_points("rompy.source")
 SOURCE_TYPES_TS = load_entry_points("rompy.source", etype="timeseries")
 
 
-class DataPoint(DataBlob):
+class DataPoint(DataBase):
     """Data object for timeseries source data.
 
     Generic data object for xarray datasets that only have time as a dimension and do
