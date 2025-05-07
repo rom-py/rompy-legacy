@@ -20,6 +20,7 @@ from rompy.schism.bctides import Bctides  # Using direct implementation
 from rompy.schism.boundary import Boundary3D  # Using direct implementation
 from rompy.schism.boundary import BoundaryData
 from rompy.schism.grid import SCHISMGrid  # Now imported directly from grid module
+from rompy.schism.hotstart import SCHISMDataHotstart  # Import from dedicated module
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
@@ -1220,6 +1221,9 @@ class SCHISMDataTides(RompyBaseModel):
         return str(bctides_path)
 
 
+
+
+
 class SCHISMData(RompyBaseModel):
     """
     This class is used to gather all required input forcing for SCHISM
@@ -1236,6 +1240,9 @@ class SCHISMData(RompyBaseModel):
     )
     tides: Optional[Union[DataBlob, SCHISMDataTides]] = Field(
         None, description="tidal data"
+    )
+    hotstart: Optional[SCHISMDataHotstart] = Field(
+        None, description="hotstart data"
     )
 
     # @model_validator(mode="after")
@@ -1260,7 +1267,7 @@ class SCHISMData(RompyBaseModel):
         #         interval=time.interval,
         #         include_end=time.include_end,
         #     )
-        for datatype in ["atmos", "ocean", "wave", "tides"]:
+        for datatype in ["atmos", "ocean", "wave", "tides", "hotstart"]:
             logger.info(f"Processing {datatype} data")
             data = getattr(self, datatype)
             if data is None:
