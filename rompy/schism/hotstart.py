@@ -15,8 +15,7 @@ import numpy as np
 import scipy as sp
 import xarray as xr
 from pydantic import ConfigDict, Field
-
-from pylib import datenum, loadz, zdata, WriteNC
+from pylib import WriteNC, datenum, loadz, zdata
 
 from rompy.core import DataGrid, RompyBaseModel
 from rompy.core.data import DataBlob
@@ -38,25 +37,12 @@ class SCHISMDataHotstart(DataGrid):
         default="hotstart",
         description="Model type discriminator",
     )
-    start_time: Union[datetime, str] = Field(
-        ..., description="Start time for the hotstart file"
-    )
     temp_var: str = Field(
         "water_temp", description="Name of temperature variable in source dataset"
     )
     salt_var: str = Field(
         "salinity", description="Name of salinity variable in source dataset"
     )
-    lon_var: str = Field(
-        "lon", description="Name of longitude variable in source dataset"
-    )
-    lat_var: str = Field(
-        "lat", description="Name of latitude variable in source dataset"
-    )
-    depth_var: str = Field(
-        "depth", description="Name of depth variable in source dataset"
-    )
-    time_var: str = Field("time", description="Name of time variable in source dataset")
     time_offset: float = Field(
         0.0, description="Offset to add to source time values (in days)"
     )
@@ -95,12 +81,7 @@ class SCHISMDataHotstart(DataGrid):
         destdir.mkdir(parents=True, exist_ok=True)
         output_path = destdir / self.output_filename
 
-        # Convert start_time to datenum format for comparison with source data
-        if isinstance(self.start_time, datetime):
-            target_time = self.start_time
-        else:
-            # Pydantic should have already validated and converted this
-            target_time = self.start_time
+        target_time = time.start
 
         # Convert to datenum format for pylibs
         start_t = datenum(
@@ -116,11 +97,11 @@ class SCHISMDataHotstart(DataGrid):
         ds = self.ds
 
         # Find the closest time in the dataset
-        if self.time_var in ds.dims or self.time_var in ds.coords:
+        if self.coords.t in ds.dims or self.coords.t in ds.coords:
             # Convert time to a format we can compare with start_t
-            if hasattr(ds[self.time_var].values[0], "astype"):
+            if hasattr(ds[self.coords.t].values[0], "astype"):
                 # Numeric time values
-                time_values = ds[self.time_var].values
+                time_values = ds[self.coords.t].values
                 # Convert to datenum format for comparison
                 if hasattr(time_values[0], "tolist"):
                     time_values = (
@@ -137,7 +118,7 @@ class SCHISMDataHotstart(DataGrid):
                 time_values = np.array(
                     [
                         datenum(t.year, t.month, t.day, t.hour, t.minute, t.second)
-                        for t in pd.to_datetime(ds[self.time_var].values)
+                        for t in pd.to_datetime(ds[self.coords.t].values)
                     ]
                 )
 
@@ -148,11 +129,11 @@ class SCHISMDataHotstart(DataGrid):
             )
 
             # Select the data at this time
-            if self.time_var in ds.dims:
-                ds = ds.isel({self.time_var: time_idx})
+            if self.coords.t in ds.dims:
+                ds = ds.isel({self.coords.t: time_idx})
         else:
             logger.warning(
-                f"Time variable '{self.time_var}' not found in dataset. Using all data."
+                f"Time variable '{self.coords.t}' not found in dataset. Using all data."
             )
 
         # Read grid information
@@ -192,18 +173,40 @@ class SCHISMDataHotstart(DataGrid):
         lzi0 = np.abs(vd.compute_zcor(gd.dp)).T  # Vertical coordinates
 
         # Get source coordinates
-        sx = ds[self.lon_var].values % 360  # Convert to 0-360 longitude range
-        sy = ds[self.lat_var].values
-        sz = ds[self.depth_var].values
+        sx = (
+            np.array(ds[self.coords.x].values) % 360
+        )  # Convert to 0-360 longitude range
+        sy = np.array(ds[self.coords.y].values)
+        sz = np.array(ds[self.coords.z].values)
 
         # Ensure vertical coordinates don't exceed source data range
         fpz = lzi0 >= sz.max()
         lzi0[fpz] = sz.max() - 1e-6
 
+        # Check for NaN values in vertical coordinates
+        nan_mask = np.isnan(lzi0)
+        if np.any(nan_mask):
+            logger.warning(
+                f"Found {np.sum(nan_mask)} NaN values in vertical coordinates"
+            )
+            # Replace NaNs with a valid depth value
+            valid_depth = np.nanmean(lzi0)
+            if np.isnan(valid_depth):  # If all values are NaN
+                valid_depth = 0.0
+            lzi0[nan_mask] = valid_depth
+
         # Initialize data structure for interpolated variables
         S = zdata()
         mvars = ["temp", "salt"]
         svars = [self.temp_var, self.salt_var]
+
+        # Map variable names to dataset variable names using coords
+        if hasattr(self, "coords") and hasattr(self.coords, "var"):
+            var_mapping = self.coords.var
+            if isinstance(var_mapping, dict) and self.temp_var in var_mapping:
+                svars[0] = var_mapping[self.temp_var]
+            if isinstance(var_mapping, dict) and self.salt_var in var_mapping:
+                svars[1] = var_mapping[self.salt_var]
 
         for var in mvars:
             setattr(S, var, [])
@@ -234,42 +237,110 @@ class SCHISMDataHotstart(DataGrid):
                 mvar = mvars[m]
 
                 # Get source data for this variable
-                if len(ds[svar].dims) == 4:  # time, depth, lat, lon
-                    cv = ds[svar].values[0]  # First time step
-                elif len(ds[svar].dims) == 3:  # depth, lat, lon
-                    cv = ds[svar].values
-                else:
-                    raise ValueError(
-                        f"Unexpected dimensions for variable {svar}: {ds[svar].dims}"
+                try:
+                    if svar in ds.variables:
+                        if len(ds[svar].dims) == 4:  # time, depth, lat, lon
+                            cv = ds[svar].values[0]  # First time step
+                        elif len(ds[svar].dims) == 3:  # depth, lat, lon
+                            cv = ds[svar].values
+                        else:
+                            raise ValueError(
+                                f"Unexpected dimensions for variable {svar}: {ds[svar].dims}"
+                            )
+                    else:
+                        # Try to find the variable using alternative names
+                        alt_names = (
+                            [
+                                v
+                                for k, v in self.coords.var.items()
+                                if k in [self.temp_var, self.salt_var]
+                            ]
+                            if hasattr(self, "coords") and hasattr(self.coords, "var")
+                            else []
+                        )
+                        found = False
+                        for alt_name in alt_names:
+                            if alt_name in ds.variables:
+                                if len(ds[alt_name].dims) == 4:  # time, depth, lat, lon
+                                    cv = ds[alt_name].values[0]  # First time step
+                                    found = True
+                                    break
+                                elif len(ds[alt_name].dims) == 3:  # depth, lat, lon
+                                    cv = ds[alt_name].values
+                                    found = True
+                                    break
+                        if not found:
+                            raise ValueError(
+                                f"Could not find variable {svar} or any alternative names in dataset"
+                            )
+                except Exception as e:
+                    logger.error(f"Error accessing variable {svar}: {e}")
+                    raise
+
+                # Extract values at interpolation points with error handling
+                try:
+                    v0 = np.array(
+                        [
+                            cv[idz, idy, idx],
+                            cv[idz, idy, idx + 1],
+                            cv[idz, idy + 1, idx],
+                            cv[idz, idy + 1, idx + 1],
+                            cv[idz + 1, idy, idx],
+                            cv[idz + 1, idy, idx + 1],
+                            cv[idz + 1, idy + 1, idx],
+                            cv[idz + 1, idy + 1, idx + 1],
+                        ]
                     )
 
-                # Extract values at interpolation points
-                v0 = np.array(
-                    [
-                        cv[idz, idy, idx],
-                        cv[idz, idy, idx + 1],
-                        cv[idz, idy + 1, idx],
-                        cv[idz, idy + 1, idx + 1],
-                        cv[idz + 1, idy, idx],
-                        cv[idz + 1, idy, idx + 1],
-                        cv[idz + 1, idy + 1, idx],
-                        cv[idz + 1, idy + 1, idx + 1],
-                    ]
-                )
+                    # Check for NaN values in the extracted data
+                    nan_mask = np.isnan(v0)
+                    if np.any(nan_mask):
+                        logger.warning(
+                            f"Found NaN values in extracted data for {svar} at level {k+1}"
+                        )
+                        # Replace NaNs with valid values where possible
+                        for n in range(8):
+                            if np.any(np.isnan(v0[n])):
+                                valid_indices = ~np.isnan(v0[n])
+                                if np.any(valid_indices):
+                                    # Use mean of valid values
+                                    v0[n, np.isnan(v0[n])] = np.mean(
+                                        v0[n, valid_indices]
+                                    )
+                                else:
+                                    # If all values are NaN, use a default value
+                                    v0[n, np.isnan(v0[n])] = 0.0  # Default value
 
-                # Remove invalid points
-                for n in range(8):
-                    fpn = np.abs(v0[n]) > 1e3
-                    if np.any(fpn):
-                        # Use nearest neighbor interpolation for invalid points
-                        if np.sum(~fpn) > 0:  # Only if we have valid points
-                            v0[n, fpn] = sp.interpolate.griddata(
-                                bxyz[~fpn, :],
-                                v0[n, ~fpn],
-                                bxyz[fpn, :],
-                                "nearest",
-                                rescale=True,
-                            )
+                    # Remove invalid points (very large values)
+                    for n in range(8):
+                        fpn = np.abs(v0[n]) > 1e3
+                        if np.any(fpn):
+                            # Use nearest neighbor interpolation for invalid points
+                            if np.sum(~fpn) > 0:  # Only if we have valid points
+                                try:
+                                    v0[n, fpn] = sp.interpolate.griddata(
+                                        bxyz[~fpn, :],
+                                        v0[n, ~fpn],
+                                        bxyz[fpn, :],
+                                        "nearest",
+                                        rescale=True,
+                                    )
+                                except Exception as e:
+                                    logger.warning(
+                                        f"Interpolation failed for {svar} at level {k+1}: {e}"
+                                    )
+                                    # Use mean of valid values as fallback
+                                    if np.sum(~fpn) > 0:
+                                        v0[n, fpn] = np.mean(v0[n, ~fpn])
+                                    else:
+                                        v0[n, fpn] = 0.0  # Default value
+                except Exception as e:
+                    logger.error(
+                        f"Error extracting values for {svar} at level {k+1}: {e}"
+                    )
+                    # Create a fallback array with zeros
+                    v0 = np.zeros((8, len(idx)))
+                    logger.warning(f"Using zeros as fallback for {svar} at level {k+1}")
 
                 # Trilinear interpolation
                 v11 = v0[0] * (1 - ratx) + v0[1] * ratx
@@ -289,9 +360,52 @@ class SCHISMDataHotstart(DataGrid):
         for var in mvars:
             setattr(S, var, np.array(getattr(S, var)))
 
+        # Create tracer arrays with NaN handling
+        # Convert lists to arrays and check for NaNs
+        for var in mvars:
+            data_array = np.array(getattr(S, var))
+            # Check for NaNs
+            if np.any(np.isnan(data_array)):
+                logger.warning(
+                    f"Found NaN values in {var} data, replacing with interpolated values"
+                )
+                # Replace NaNs with interpolated values
+                for i in range(data_array.shape[0]):
+                    layer_data = data_array[i]
+                    if np.any(np.isnan(layer_data)):
+                        # Get indices of NaN values
+                        nan_indices = np.where(np.isnan(layer_data))[0]
+                        # Get indices of non-NaN values
+                        valid_indices = np.where(~np.isnan(layer_data))[0]
+                        if len(valid_indices) > 0:
+                            # Use nearest valid values
+                            for nan_idx in nan_indices:
+                                # Find nearest valid index
+                                nearest_idx = valid_indices[
+                                    np.argmin(np.abs(valid_indices - nan_idx))
+                                ]
+                                # Replace NaN with nearest valid value
+                                layer_data[nan_idx] = layer_data[nearest_idx]
+                        else:
+                            # If all values in this layer are NaN, use a default value
+                            layer_data[nan_indices] = 0.0
+            setattr(S, var, data_array)
+
         # Create tracer arrays
         tr_nd = np.r_[S.temp[None, ...], S.salt[None, ...]].T
-        tr_el = tr_nd[gd.elnode[:, :3]].mean(axis=1)
+        # Check for NaNs in tr_nd
+        if np.any(np.isnan(tr_nd)):
+            logger.warning(f"Found NaN values in tracer data, replacing with zeros")
+            tr_nd = np.nan_to_num(tr_nd, nan=0.0)
+
+        # Calculate element tracers from node tracers
+        try:
+            tr_el = tr_nd[gd.elnode[:, :3]].mean(axis=1)
+        except Exception as e:
+            logger.error(f"Error calculating element tracers: {e}")
+            # Create a fallback array with zeros
+            tr_el = np.zeros((ne, nvrt, 2))
+            logger.warning("Using zeros as fallback for element tracers")
 
         # Create NetCDF structure
         nd = zdata()

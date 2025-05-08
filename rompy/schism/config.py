@@ -4,21 +4,16 @@ from typing import Any, Literal, Optional, Union
 
 from pydantic import ConfigDict, Field, model_serializer, model_validator
 
-from rompy.core import BaseConfig, DataBlob, RompyBaseModel, Spectrum, TimeRange
+from rompy.core import (BaseConfig, DataBlob, RompyBaseModel, Spectrum,
+                        TimeRange)
 
 # Import plotting functions
 from .config_plotting import plot_sflux_spatial, plot_sflux_timeseries
-from .config_plotting_boundary import (
-    plot_boundary_points,
-    plot_boundary_profile,
-    plot_boundary_timeseries,
-)
-from .config_plotting_tides import (
-    plot_tidal_boundaries,
-    plot_tidal_dataset,
-    plot_tidal_rose,
-    plot_tidal_stations,
-)
+from .config_plotting_boundary import (plot_boundary_points,
+                                       plot_boundary_profile,
+                                       plot_boundary_timeseries)
+from .config_plotting_tides import (plot_tidal_boundaries, plot_tidal_dataset,
+                                    plot_tidal_rose, plot_tidal_stations)
 from .data import SCHISMData
 from .grid import SCHISMGrid
 from .interface import TimeInterface
@@ -540,6 +535,17 @@ class SCHISMConfig(BaseConfig):
         description="The path to the model template",
         default=SCHISM_TEMPLATE,
     )
+
+    # add a validator that checks that nml.param.ihot is 1 if data.hotstart is not none
+    @model_validator(mode="after")
+    def check_hotstart(self):
+        if (
+            self.data is not None
+            and hasattr(self.data, "hotstart")
+            and self.data.hotstart is not None
+        ):
+            self.nml.param.opt.ihot = 1
+        return self
 
     @model_serializer
     def serialize_model(self, **kwargs):

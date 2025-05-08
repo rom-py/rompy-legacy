@@ -22,6 +22,8 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
+time_range = TimeRange(start="2023-01-01", end="2023-01-02", dt=3600)
+
 
 @pytest.fixture
 def grid3d():
@@ -53,13 +55,14 @@ def test_hotstart_creation(tmp_path, grid3d, hycom_path):
     # Create a SCHISMDataHotstart instance
     hotstart = SCHISMDataHotstart(
         source=SourceFile(uri=hycom_path),
-        start_time=datetime(2023, 1, 1),
         temp_var="temperature",
         salt_var="salinity",
-        lon_var="xlon",
-        lat_var="ylat",
-        depth_var="depth",
-        time_var="time",
+        coords={
+            "x": "xlon",
+            "y": "ylat",
+            "t": "time",
+            "z": "depth",
+        },
         time_base=datetime(
             2000, 1, 1
         ),  # Based on the time_origin attribute in the HYCOM file
@@ -67,7 +70,7 @@ def test_hotstart_creation(tmp_path, grid3d, hycom_path):
     )
 
     # Generate the hotstart file
-    output_path = hotstart.get(tmp_path, grid3d)
+    output_path = hotstart.get(tmp_path, grid3d, time=time_range)
 
     # Verify the output file exists
     assert Path(output_path).exists()
@@ -133,19 +136,20 @@ def test_hotstart_with_sourcefile(tmp_path, grid3d, hycom_path):
     # Create a SCHISMDataHotstart instance with SourceFile
     hotstart = SCHISMDataHotstart(
         source=SourceFile(uri=hycom_path),
-        start_time=datetime(2023, 1, 1),
         temp_var="temperature",
         salt_var="salinity",
-        lon_var="xlon",
-        lat_var="ylat",
-        depth_var="depth",
-        time_var="time",
+        coords={
+            "x": "xlon",
+            "y": "ylat",
+            "t": "time",
+            "z": "depth",
+        },
         time_base=datetime(2000, 1, 1),
         output_filename="test_hotstart_file.nc",
     )
 
     # Generate the hotstart file
-    output_path = hotstart.get(tmp_path, grid3d)
+    output_path = hotstart.get(tmp_path, grid3d, time=time_range)
 
     # Verify the output file exists
     assert Path(output_path).exists()
@@ -154,18 +158,18 @@ def test_hotstart_with_sourcefile(tmp_path, grid3d, hycom_path):
 def test_hotstart_with_time_range(tmp_path, grid3d, hycom_path):
     """Test creating a hotstart file with a TimeRange object."""
     # Create a TimeRange
-    time_range = TimeRange(start="2023-01-01", end="2023-01-02", dt=3600)
 
     # Create a SCHISMDataHotstart instance
     hotstart = SCHISMDataHotstart(
         source=SourceFile(uri=hycom_path),
-        start_time=datetime(2023, 1, 1),
         temp_var="temperature",
         salt_var="salinity",
-        lon_var="xlon",
-        lat_var="ylat",
-        depth_var="depth",
-        time_var="time",
+        coords={
+            "x": "xlon",
+            "y": "ylat",
+            "t": "time",
+            "z": "depth",
+        },
         time_base=datetime(2000, 1, 1),
         output_filename="test_hotstart_timerange.nc",
     )
