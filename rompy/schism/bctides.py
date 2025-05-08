@@ -1010,9 +1010,9 @@ class Bctides:
                         for n in range(num_nodes):
                             f.write("0.0 0.0 0.0 0.0\n")
 
-            # Add remaining sections
-            f.write("0 !ncbn: total # of flow bnd segments with discharge\n")
-            f.write("0 !nfluxf: total # of flux boundary segments\n")
+            # # Add remaining sections
+            # f.write("0 !ncbn: total # of flow bnd segments with discharge\n")
+            # f.write("0 !nfluxf: total # of flux boundary segments\n")
 
         logger.info(f"Successfully wrote bctides.in to {output_file}")
         return output_file

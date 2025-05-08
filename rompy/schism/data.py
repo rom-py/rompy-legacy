@@ -10,7 +10,8 @@ import scipy as sp
 import xarray as xr
 from cloudpathlib import AnyPath
 from pydantic import ConfigDict, Field, field_validator, model_validator
-from pylib import compute_zcor, read_schism_bpfile, read_schism_hgrid, read_schism_vgrid
+from pylib import (compute_zcor, read_schism_bpfile, read_schism_hgrid,
+                   read_schism_vgrid)
 
 from rompy.core import DataGrid, RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
@@ -19,12 +20,13 @@ from rompy.core.time import TimeRange
 from rompy.schism.bctides import Bctides  # Using direct implementation
 from rompy.schism.boundary import Boundary3D  # Using direct implementation
 from rompy.schism.boundary import BoundaryData
-from rompy.schism.grid import SCHISMGrid  # Now imported directly from grid module
-from rompy.schism.hotstart import SCHISMDataHotstart  # Import from dedicated module
+from rompy.schism.grid import \
+    SCHISMGrid  # Now imported directly from grid module
+from rompy.schism.hotstart import \
+    SCHISMDataHotstart  # Import from dedicated module
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
-
 # Import numpy type handlers to enable proper Pydantic validation with numpy types
 from .numpy_types import to_python_type
 
@@ -1238,7 +1240,9 @@ class SCHISMData(RompyBaseModel):
     tides: Optional[Union[DataBlob, SCHISMDataTides]] = Field(
         None, description="tidal data"
     )
-    hotstart: Optional[SCHISMDataHotstart] = Field(None, description="hotstart data")
+    hotstart: Optional[SCHISMDataHotstart] = Field(
+        None, description="hotstart data"
+    )  # TODO this will probably move from here when more general hotstart generation is in place
 
     # @model_validator(mode="after")
     # def check_bctides_flags(cls, v):
