@@ -54,6 +54,15 @@ config:
           uri: "../../tests/schism/test_data/hycom.nc"
         variables: 
          - salinity
+    hotstart:
+      temp_var: water_temp
+      salt_var: salinity
+      coords:
+        t: time
+        x: xlon
+        y: ylat
+        z: depth
+        
       # uv3d:
       #   buffer: 0.0
       #   coords:
@@ -113,6 +122,8 @@ config:
         iof_hydro__2: 1 # mslp
         iof_hydro__14: 1 # wind speed
         iof_hydro__16: 1 # surface velocities
+        iof_hydro__18: 1 # water temperature
+        iof_hydro__19: 1 # salinity
         iof_wwm__18: 1 # peak wave direction
         iof_wwm__1: 1 # significant wave height
         iof_wwm__9: 1 # peak period
