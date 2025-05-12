@@ -1,12 +1,15 @@
 import logging
+import os
 from pathlib import Path
 from typing import Literal, Optional
 
 from pydantic import ConfigDict, Field
 
 from .types import RompyBaseModel
+from rompy import ROMPY_ASCII_MODE
 
 logger = logging.getLogger(__name__)
+
 
 
 DEFAULT_TEMPLATE = str(Path(__file__).parent.parent / "templates" / "base")
@@ -44,3 +47,78 @@ class BaseConfig(RompyBaseModel):
 
     def __call__(self, *args, **kwargs):
         return self
+        
+    def __str__(self):
+        """Return a formatted string representation of the config.
+        
+        This method provides a human-readable representation of the configuration 
+        that can be used in logs and other output.
+        """
+        # Get all fields excluding internal ones
+        fields = {
+            k: v for k, v in self.__dict__.items() 
+            if not k.startswith('_') and k != 'model_config'
+        }
+        
+        # Format with tabular headers
+        lines = []
+        
+        # Use helper function to avoid circular imports
+        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
+        
+        if USE_ASCII_ONLY:
+            # ASCII version
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("|                       BASE CONFIGURATION                               |")
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("+-----------------------------+-------------------------------------+")
+            lines.append(f"| MODEL TYPE                  | {self.model_type:<35} |")
+            lines.append("+-----------------------------+-------------------------------------+")
+            
+            # Add configuration parameters
+            if len(fields) > 1:  # If we have more fields than just model_type
+                lines.append("+------------------------------------------------------------------------+")
+                lines.append("| CONFIGURATION PARAMETERS                                                |")
+                lines.append("+------------------------------------------------------------------------+")
+                
+                for key, value in fields.items():
+                    if key == 'model_type':
+                        continue
+                    
+                    if hasattr(value, '__str__') and not isinstance(value, (str, int, float, bool)):
+                        # For complex objects that have their own __str__ method
+                        lines.append(f"   * {key}")
+                        str_val = str(value).replace('\n', '\n     ')
+                        lines.append(f"     {str_val}")
+                    else:
+                        # For simple values
+                        lines.append(f"   * {key:<20}: {value}")
+        else:
+            # Unicode version
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃                       BASE CONFIGURATION                           ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append(f"┃ MODEL TYPE                  ┃ {self.model_type:<35} ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            
+            # Add configuration parameters
+            if len(fields) > 1:  # If we have more fields than just model_type
+                lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+                lines.append("┃ CONFIGURATION PARAMETERS                                          ┃")
+                lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+                
+                for key, value in fields.items():
+                    if key == 'model_type':
+                        continue
+                    
+                    if hasattr(value, '__str__') and not isinstance(value, (str, int, float, bool)):
+                        # For complex objects that have their own __str__ method
+                        lines.append(f"   • {key}")
+                        str_val = str(value).replace('\n', '\n     ')
+                        lines.append(f"     {str_val}")
+                    else:
+                        # For simple values
+                        lines.append(f"   • {key:<20}: {value}")
+                
+        return "\n".join(lines)
