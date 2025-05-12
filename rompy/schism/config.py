@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import Dict, Literal, Optional, Union
 
 from pydantic import Field, model_serializer, model_validator
 
@@ -730,7 +730,10 @@ class SchismResponse(BaseConfigResponse):
 
     TODO placehoder, needs to be completed
     """
-    oceanum_parameters: dict[str, str] = Field(
+    # Class attribute to identify the model types this response is for
+    _model_type = "schism"  # This will be used by the entry points system
+    
+    oceanum_parameters: Dict[str, str] = Field(
         description="Paths to oceanum parameters output files",
         default_factory=dict,
     )
