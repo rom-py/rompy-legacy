@@ -50,7 +50,6 @@ class ModelRun(RompyBaseModel):
         description="The configuration object",
         discriminator="model_type",
     )
-    use_fixed_output_dir: bool = Field(False, description="Use output_dir as is, without appending run_id")
     delete_existing: bool = Field(False, description="Delete existing output directory")
     _datefmt: str = "%Y%m%d.%H%M%S"
     _staging_dir: Path = None
@@ -69,11 +68,7 @@ class ModelRun(RompyBaseModel):
         return self._staging_dir
 
     def _create_staging_dir(self):
-        if self.use_fixed_output_dir:
-            odir = Path(self.output_dir)
-        else:
-            odir = Path(self.output_dir) / self.run_id
-
+        odir = Path(self.output_dir) / self.run_id
         if self.delete_existing and odir.exists():
             shutil.rmtree(odir)
         odir.mkdir(parents=True, exist_ok=True)
@@ -159,6 +154,5 @@ class ModelRun(RompyBaseModel):
         repr = f"\nrun_id: {self.run_id}"
         repr += f"\nperiod: {self.period}"
         repr += f"\noutput_dir: {self.output_dir}"
-        repr += f"\nuse_fixed_output_dir: {self.use_fixed_output_dir}"
         repr += f"\nconfig: {type(self.config)}\n"
         return repr
