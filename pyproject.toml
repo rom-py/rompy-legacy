@@ -56,6 +56,7 @@ dependencies = [
     "xarray",
     "wavespectra",
     "isodate",
+    "appdirs", # pyschism subpackage dependency. Moved here becuase its breaking something on the base install. Will be removed shortly with migration ot pylib
 ]
 dynamic = ["version"]
 
@@ -80,13 +81,11 @@ schism = "rompy.schism.config:SCHISMConfig"
 schismcsiromigration = "rompy.schism.config:SchismCSIROMigrationConfig"
 
 [project.entry-points."rompy.source"]
-dataset = "rompy.core.source:SourceDataset"
 file = "rompy.core.source:SourceFile"
 intake = "rompy.core.source:SourceIntake"
 datamesh = "rompy.core.source:SourceDatamesh"
 wavespectra = "rompy.core.source:SourceWavespectra"
 "csv:timeseries" = "rompy.core.source:SourceTimeseriesCSV"
-"dataframe:timeseries" = "rompy.core.source:SourceTimeseriesDataFrame"
 
 [project.entry-points."intake.catalogs"]
 "rompy_data" = "rompy:cat"
@@ -101,7 +100,6 @@ extra = [
     "zarr",
 ]
 schism = [
-    "appdirs", # pyschism subpackage dependency
     "tqdm_logging_wrapper", # pyschism subpackage dependency
     "seawater", # pyschism subpackage dependency
     "xmltodict", # pyschism subpackage dependency

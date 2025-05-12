@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import json
 import logging
 from importlib.metadata import entry_points
@@ -7,11 +5,10 @@ from importlib.metadata import entry_points
 import click
 import yaml
 
-from .model import ModelRun
-
-logging.basicConfig(level=logging.INFO)
+from rompy.model import ModelRun
 
 installed = entry_points(group="rompy.config").names
+logger = logging.getLogger(__name__)
 
 
 @click.command()
@@ -26,23 +23,33 @@ def main(model, config, zip):
         config(str): yaml or json config file
     """
     try:
-        # First try to open it as a file
         with open(config, "r") as f:
             content = f.read()
     except (FileNotFoundError, IsADirectoryError, OSError):
-        # If not a file, treat it as raw content
+        # Not a file, treat as raw string
         content = config
 
+    logger.info("Loading config...")
+
+    args = None
+    # Try JSON first
     try:
-        # Try to parse as yaml
-        args = yaml.load(content, Loader=yaml.Loader)
-        model = ModelRun(**args)
-    except TypeError:
-        model = ModelRun.model_validate_json(json.loads(content))
+        args = json.loads(content)
+        logger.info("Parsed config as JSON")
+    except json.JSONDecodeError:
+        pass
+
+    # If JSON failed, try YAML
+    if args is None:
+        try:
+            args = yaml.safe_load(content)
+            logger.info("Parsed config as YAML")
+        except yaml.YAMLError as e:
+            logger.error(f"Failed to parse config as JSON or YAML: {e}")
+            raise click.UsageError("Config file is not valid JSON or YAML")
+
+    model = ModelRun(**args)
+    logger.info("Running model...")
     model()
     if zip:
         model.zip()
-
-
-if __name__ == "__main__":
-    main()

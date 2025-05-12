@@ -13,7 +13,7 @@ from typing import Literal, Optional
 from abc import abstractmethod
 from pydantic import ConfigDict, Field
 
-from rompy.core import RompyBaseModel
+from rompy.core.types import RompyBaseModel
 
 
 logger = logging.getLogger(__name__)

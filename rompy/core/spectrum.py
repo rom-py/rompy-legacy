@@ -4,7 +4,7 @@ import numpy as np
 from pydantic import Field, model_validator
 from pydantic_numpy.typing import Np1DArray
 
-from rompy.core import RompyBaseModel
+from rompy.core.types import RompyBaseModel
 
 
 logger = logging.getLogger(__name__)

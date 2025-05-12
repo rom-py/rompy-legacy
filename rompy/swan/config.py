@@ -5,21 +5,16 @@ from typing import Annotated, Literal, Optional, Union
 from pydantic import Field, model_validator
 
 from rompy.core.config import BaseConfig, BaseResponse
-
-from rompy.swan.interface import (
-    DataInterface,
-    BoundaryInterface,
-    OutputInterface,
-    LockupInterface,
-)
-
-from rompy.swan.legacy import ForcingData, SwanSpectrum, SwanPhysics, Outputs
-
 from rompy.swan.components import boundary, cgrid, numerics
-from rompy.swan.components.group import STARTUP, INPGRIDS, PHYSICS, OUTPUT, LOCKUP
-
+from rompy.swan.components.group import INPGRIDS, LOCKUP, OUTPUT, PHYSICS, STARTUP
 from rompy.swan.grid import SwanGrid
-
+from rompy.swan.interface import (
+    BoundaryInterface,
+    DataInterface,
+    LockupInterface,
+    OutputInterface,
+)
+from rompy.swan.legacy import ForcingData, Outputs, SwanPhysics, SwanSpectrum
 
 logger = logging.getLogger(__name__)
 
@@ -232,16 +227,17 @@ class SwanConfigComponents(BaseConfig):
             ret["boundary"] = self.boundary.render()
         ret["response"] = SwanResponse(
             outputs=dict(
-                wave_spectra = self.output.specout.fname,
-                wave_parameters= self.output.block.fname,
-                wave_hotfile= self.lockup.hotfile.fname
-                )
+                wave_spectra=self.output.specout.fname,
+                wave_parameters=self.output.block.fname,
+                wave_hotfile=self.lockup.hotfile.fname,
             )
+        )
 
         return ret
 
+
 class SwanResponse(BaseResponse):
     """Response model for SWAN model outputs.
-    
+
     Includes paths to wave spectra and wave parameters output files.
     """

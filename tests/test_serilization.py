@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 from envyaml import EnvYAML
 
-from rompy.core import DataBlob
+from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
 from rompy.schism.config import SCHISMConfig, SCHISMGrid
 from rompy.schism.namelists import NML, Param, Wwminput

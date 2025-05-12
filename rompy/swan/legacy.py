@@ -1,15 +1,16 @@
 """Legacy objects in SwanConfig."""
 
 import logging
-from typing import Union, Annotated, Optional, Literal
 from pathlib import Path
+from typing import Annotated, Literal, Optional, Union
+
 from pydantic import Field, field_validator
 
-from rompy.core import RompyBaseModel, TimeRange, Coordinate, Spectrum
-from rompy.swan.grid import SwanGrid
-from rompy.swan.data import SwanDataGrid
+from rompy.core.time import TimeRange
+from rompy.core.types import Coordinate, RompyBaseModel, Spectrum
 from rompy.swan.boundary import Boundnest1
-
+from rompy.swan.data import SwanDataGrid
+from rompy.swan.grid import SwanGrid
 
 logger = logging.getLogger(__name__)
 
