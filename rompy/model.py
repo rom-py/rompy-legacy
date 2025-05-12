@@ -171,7 +171,7 @@ class ModelRun(RompyBaseModel):
 
 class ModelRunResponse(RompyBaseModel):
     """Response model for ModelRun.
-    
+
     Includes all config response data along with execution timing information.
     """
     model_type: str = Field(
@@ -180,7 +180,7 @@ class ModelRunResponse(RompyBaseModel):
     output_dir: Path = Field(
         description="The output directory for the run",
     )
-    config_response: Union[BaseResponse, SwanResponse, SchismResponse] = Field(
+    config_response: Union[BaseConfigResponse, SwanResponse, SchismResponse] = Field(
         description="The config response containing output paths",
     )
     execution_start_time: datetime = Field(
@@ -192,5 +192,3 @@ class ModelRunResponse(RompyBaseModel):
     duration: timedelta = Field(
         description="The duration of the model execution",
     )
-
-        

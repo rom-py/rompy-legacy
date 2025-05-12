@@ -13,7 +13,7 @@ DEFAULT_TEMPLATE = str(Path(__file__).parent.parent / "templates" / "base")
 
 class BaseOutputsResponse(RompyBaseModel):
     """Response model for model outputs.
-    
+
     Includes paths to wave spectra and wave parameters output files.
     """
     wave_spectra: Path = Field(
@@ -30,9 +30,9 @@ class BaseOutputsResponse(RompyBaseModel):
     )
 
 
-class BaseResponse(RompyBaseModel):
+class BaseConfigResponse(RompyBaseModel):
     """Base response model for config outputs.
-    
+
     Contains common fields for all model responses: outputs and hotfiles paths.
     Specific model implementations will extend this class with model-specific outputs.
     """
@@ -76,27 +76,3 @@ class BaseConfig(RompyBaseModel):
 
     def __call__(self, *args, **kwargs):
         return self
-
-
-
-
-
-
-class SchismResponse(BaseResponse):
-    """Response model for SCHISM model outputs.
-    
-    Includes paths to spectra, parameters, and oceanum_parameters output files.
-    """
-    spectra: dict[str, str] = Field(
-        description="Paths to spectra output files",
-        default_factory=dict,
-    )
-    parameters: dict[str, str] = Field(
-        description="Paths to parameters output files",
-        default_factory=dict,
-    )
-    oceanum_parameters: dict[str, str] = Field(
-        description="Paths to oceanum parameters output files",
-        default_factory=dict,
-    )
-

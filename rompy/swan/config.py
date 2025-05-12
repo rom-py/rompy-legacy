@@ -4,7 +4,7 @@ from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field, model_validator
 
-from rompy.core.config import BaseConfig, BaseResponse
+from rompy.core.config import BaseConfig, BaseConfigResponse
 from rompy.swan.components import boundary, cgrid, numerics
 from rompy.swan.components.group import INPGRIDS, LOCKUP, OUTPUT, PHYSICS, STARTUP
 from rompy.swan.grid import SwanGrid
@@ -236,7 +236,7 @@ class SwanConfigComponents(BaseConfig):
         return ret
 
 
-class SwanResponse(BaseResponse):
+class SwanConfigResponse(BaseConfigResponse):
     """Response model for SWAN model outputs.
 
     Includes paths to wave spectra and wave parameters output files.

@@ -4,7 +4,7 @@ from typing import Literal, Optional, Union
 
 from pydantic import Field, model_serializer, model_validator
 
-from rompy.core.config import BaseConfig
+from rompy.core.config import BaseConfig, BaseConfigResponse
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel, Spectrum
@@ -720,3 +720,17 @@ class SchismCSIROMigrationConfig(SchismCSIROConfig):
             grid=self.grid, data=self.data, nml=NML(**config_dict)
         )
         schism_config.__call__(runtime)
+
+
+
+class SchismResponse(BaseConfigResponse):
+    """Response model for SCHISM model outputs.
+
+    Includes paths to spectra, parameters, and oceanum_parameters output files.
+
+    TODO placehoder, needs to be completed
+    """
+    oceanum_parameters: dict[str, str] = Field(
+        description="Paths to oceanum parameters output files",
+        default_factory=dict,
+    )
