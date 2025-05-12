@@ -73,13 +73,167 @@ class SwanConfig(BaseConfig):
         return ret
 
     def __str__(self):
-        ret = f"grid: \n\t{self.grid}\n"
-        ret += f"spectral_resolution: \n\t{self.spectral_resolution}\n"
-        ret += f"forcing: \n{self.forcing}\n"
-        ret += f"physics: \n\t{self.physics}\n"
-        ret += f"outputs: \n{self.outputs}\n"
-        ret += f"template: \n\t{self.template}\n"
-        return ret
+        """Return a formatted string representation of the SwanConfig.
+
+        This provides a human-readable representation of the configuration
+        that can be used in logs and other output.
+        """
+        # Use helper function to avoid circular imports
+        from rompy import ROMPY_ASCII_MODE
+        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
+
+        # Format header
+        lines = []
+        if USE_ASCII_ONLY:
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("|                       SWAN MODEL CONFIGURATION                         |")
+            lines.append("+------------------------------------------------------------------------+")
+
+            # Format grid info
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("| GRID CONFIGURATION                                                     |")
+            lines.append("+------------------------------------------------------------------------+")
+        else:
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃                       SWAN MODEL CONFIGURATION                    ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+            # Format grid info
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃ GRID CONFIGURATION                                                ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+        # Extract grid attributes
+        grid_attrs = {}
+        for attr_name in dir(self.grid):
+            if not attr_name.startswith('_') and not callable(getattr(self.grid, attr_name)):
+                grid_attrs[attr_name] = getattr(self.grid, attr_name)
+
+        # Format grid attributes
+        for attr, value in grid_attrs.items():
+            if isinstance(value, (int, float, str, bool)):
+                bullet = "*" if USE_ASCII_ONLY else "•"
+                lines.append(f"   {bullet} {attr:<15} : {str(value)}")
+
+        # Format spectral resolution
+        lines.append("")
+        if USE_ASCII_ONLY:
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("| SPECTRAL RESOLUTION                                                   |")
+            lines.append("+------------------------------------------------------------------------+")
+        else:
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃ SPECTRAL RESOLUTION                                               ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+        spec_attrs = {}
+        for attr_name in dir(self.spectral_resolution):
+            if not attr_name.startswith('_') and not callable(getattr(self.spectral_resolution, attr_name)):
+                spec_attrs[attr_name] = getattr(self.spectral_resolution, attr_name)
+
+        # Format spectral attributes
+        for attr, value in spec_attrs.items():
+            if isinstance(value, (int, float, str, bool)):
+                bullet = "*" if USE_ASCII_ONLY else "•"
+                lines.append(f"   {bullet} {attr:<15} : {str(value)}")
+
+        # Format forcing data
+        lines.append("")
+        if USE_ASCII_ONLY:
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("| FORCING DATA                                                           |")
+            lines.append("+------------------------------------------------------------------------+")
+        else:
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃ FORCING DATA                                                      ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+        bullet = "*" if USE_ASCII_ONLY else "•"
+        if hasattr(self.forcing, "bottom") and self.forcing.bottom:
+            lines.append(f"   {bullet} Bottom       : {getattr(self.forcing.bottom, 'source', 'Enabled')}")
+        if hasattr(self.forcing, "current") and self.forcing.current:
+            lines.append(f"   {bullet} Current      : {getattr(self.forcing.current, 'source', 'Enabled')}")
+        if hasattr(self.forcing, "wind") and self.forcing.wind:
+            lines.append(f"   {bullet} Wind         : {getattr(self.forcing.wind, 'source', 'Enabled')}")
+        if hasattr(self.forcing, "boundary") and self.forcing.boundary:
+            lines.append(f"   {bullet} Boundary     : {getattr(self.forcing.boundary, 'source', 'Enabled')}")
+
+        # Format physics settings
+        lines.append("")
+        if USE_ASCII_ONLY:
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("| PHYSICS SETTINGS                                                       |")
+            lines.append("+------------------------------------------------------------------------+")
+        else:
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃ PHYSICS SETTINGS                                                  ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+        phys_attrs = {}
+        for attr_name in dir(self.physics):
+            if not attr_name.startswith('_') and not callable(getattr(self.physics, attr_name)):
+                phys_attrs[attr_name] = getattr(self.physics, attr_name)
+
+        # Format physics attributes
+        for attr, value in phys_attrs.items():
+            if isinstance(value, (int, float, str, bool)):
+                bullet = "*" if USE_ASCII_ONLY else "•"
+                lines.append(f"   {bullet} {attr:<15} : {str(value)}")
+
+        # Format outputs
+        lines.append("")
+        if USE_ASCII_ONLY:
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("| OUTPUT CONFIGURATION                                                   |")
+            lines.append("+------------------------------------------------------------------------+")
+        else:
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃ OUTPUT CONFIGURATION                                              ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+        bullet = "*" if USE_ASCII_ONLY else "•"
+        sub_bullet = "-" if USE_ASCII_ONLY else "•"
+
+        # Add grid output info
+        if hasattr(self.outputs, "grid"):
+            lines.append("   Grid Outputs:")
+            grid_out_attrs = {}
+            for attr_name in dir(self.outputs.grid):
+                if not attr_name.startswith('_') and not callable(getattr(self.outputs.grid, attr_name)):
+                    grid_out_attrs[attr_name] = getattr(self.outputs.grid, attr_name)
+
+            for attr, value in grid_out_attrs.items():
+                if isinstance(value, (int, float, str, bool)):
+                    lines.append(f"     {sub_bullet} {attr:<13} : {str(value)}")
+
+        # Add spec output info
+        if hasattr(self.outputs, "spec"):
+            lines.append("   Spectral Outputs:")
+            spec_out_attrs = {}
+            for attr_name in dir(self.outputs.spec):
+                if not attr_name.startswith('_') and not callable(getattr(self.outputs.spec, attr_name)):
+                    spec_out_attrs[attr_name] = getattr(self.outputs.spec, attr_name)
+
+            for attr, value in spec_out_attrs.items():
+                if isinstance(value, (int, float, str, bool)) and attr != "locations":
+                    lines.append(f"     {sub_bullet} {attr:<13} : {str(value)}")
+
+        # Format template information
+        lines.append("")
+        if USE_ASCII_ONLY:
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("| TEMPLATE INFORMATION                                                   |")
+            lines.append("+------------------------------------------------------------------------+")
+        else:
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃ TEMPLATE INFORMATION                                              ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+        template_path = self.template
+        if len(template_path) > 70:
+            template_path = "..." + template_path[-67:]
+        lines.append(f"   {template_path}")
+
+        return "\n".join(lines)
 
 
 STARTUP_TYPE = Annotated[STARTUP, Field(description="Startup components")]
@@ -193,6 +347,117 @@ class SwanConfigComponents(BaseConfig):
     def grid(self):
         """Define a SwanGrid from the cgrid field."""
         return SwanGrid.from_component(self.cgrid.grid)
+
+    def __str__(self):
+        """Return a formatted string representation of the SwanConfigComponents.
+
+        This provides a human-readable representation that can be used in logs and other output.
+        """
+        # Use helper function to avoid circular imports
+        from rompy import ROMPY_ASCII_MODE
+        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
+
+        # Format header
+        lines = []
+        if USE_ASCII_ONLY:
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("|                     SWAN COMPONENTS CONFIGURATION                      |")
+            lines.append("+------------------------------------------------------------------------+")
+
+            # Add grid information - formatted as a table
+            lines.append("+-----------------------------+-------------------------------------+")
+            lines.append(f"| COMPUTATIONAL GRID          | {type(self.cgrid).__name__:<35} |")
+            lines.append("+-----------------------------+-------------------------------------+")
+        else:
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃                     SWAN COMPONENTS CONFIGURATION                  ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+            # Add grid information - formatted as a table
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append(f"┃ COMPUTATIONAL GRID          ┃ {type(self.cgrid).__name__:<35} ┃")
+            lines.append("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫")
+
+        # Extract grid attributes
+        grid = self.cgrid.grid
+        grid_attrs = {}
+        for attr_name in dir(grid):
+            if not attr_name.startswith('_') and not callable(getattr(grid, attr_name)):
+                grid_attrs[attr_name] = getattr(grid, attr_name)
+
+        # Format grid attributes as table rows
+        for attr, value in grid_attrs.items():
+            if isinstance(value, (int, float, str, bool)):
+                if USE_ASCII_ONLY:
+                    lines.append(f"| {attr:<28} | {str(value):<35} |")
+                else:
+                    lines.append(f"┃ {attr:<28} ┃ {str(value):<35} ┃")
+
+        if USE_ASCII_ONLY:
+            lines.append("+-----------------------------+-------------------------------------+")
+        else:
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+        # Add information for each component if present - formatted as sections
+        components = {
+            "STARTUP": self.startup,
+            "INPUT GRID": self.inpgrid,
+            "BOUNDARY": self.boundary,
+            "INITIAL CONDITION": self.initial,
+            "PHYSICS": self.physics,
+            "PROPAGATION": self.prop,
+            "NUMERICS": self.numeric,
+            "OUTPUT": self.output,
+            "LOCK-UP": self.lockup
+        }
+
+        for name, component in components.items():
+            if component is not None:
+                # Add component header
+                lines.append("")
+                if USE_ASCII_ONLY:
+                    lines.append("+-----------------------------+-------------------------------------+")
+                    lines.append(f"| {name:<28} | {type(component).__name__:<35} |")
+                    lines.append("+-----------------------------+-------------------------------------+")
+                else:
+                    lines.append(f"┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+                    lines.append(f"┃ {name:<28} ┃ {type(component).__name__:<35} ┃")
+                    lines.append(f"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+                # Get component attributes
+                comp_attrs = {}
+                for attr_name in dir(component):
+                    if not attr_name.startswith('_') and not callable(getattr(component, attr_name)):
+                        attr_value = getattr(component, attr_name)
+                        if not isinstance(attr_value, (dict, list)) or attr_name == "model_type":
+                            comp_attrs[attr_name] = attr_value
+
+                # Format component attributes
+                if comp_attrs:
+                    max_attr_len = max(len(attr) for attr in comp_attrs.keys())
+                    for attr, value in comp_attrs.items():
+                        if isinstance(value, (int, float, str, bool)):
+                            if attr != "model_type":  # Skip model_type as it's in the header
+                                bullet = "*" if USE_ASCII_ONLY else "•"
+                                lines.append(f"   {bullet} {attr:<{max_attr_len}} : {str(value)}")
+
+        # Add template info
+        lines.append("")
+        if USE_ASCII_ONLY:
+            lines.append("+------------------------------------------------------------------------+")
+            lines.append("| TEMPLATE INFORMATION                                                  |")
+            lines.append("+------------------------------------------------------------------------+")
+        else:
+            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            lines.append("┃ TEMPLATE INFORMATION                                              ┃")
+            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+        template_path = self.template
+        if len(template_path) > 70:
+            template_path = "..." + template_path[-67:]
+        lines.append(f"   {template_path}")
+
+        return "\n".join(lines)
 
     def __call__(self, runtime) -> str:
         period = runtime.period

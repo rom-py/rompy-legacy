@@ -175,11 +175,43 @@ class TimeRange(BaseModel):
     def common_times(self, date_range: "TimeRange") -> list[datetime]:
         return [date for date in self.date_range if date_range.contains(date)]
 
+    def format_duration(self, duration: timedelta) -> str:
+        """Format a timedelta object as a human-readable string.
+        
+        This method formats a timedelta in a way that's suitable for display
+        in logs and other output.
+        
+        Args:
+            duration: The timedelta object to format
+            
+        Returns:
+            A formatted string representation of the duration
+        """
+        if not duration:
+            return "None"
+            
+        days = duration.days
+        seconds = duration.seconds
+        hours, remainder = divmod(seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        
+        parts = []
+        if days > 0:
+            parts.append(f"{days} day{'s' if days != 1 else ''}")
+        if hours > 0:
+            parts.append(f"{hours} hour{'s' if hours != 1 else ''}")
+        if minutes > 0:
+            parts.append(f"{minutes} minute{'s' if minutes != 1 else ''}")
+        if seconds > 0 or not parts:
+            parts.append(f"{seconds} second{'s' if seconds != 1 else ''}")
+            
+        return ", ".join(parts)
+    
     def __str__(self):
         return (
             f"\n\tStart: {self.start}\n"
             f"\tEnd: {self.end}\n"
-            f"\tDuration: {self.duration}\n"
-            f"\tInterval: {self.interval}\n"
+            f"\tDuration: {self.format_duration(self.duration)}\n"
+            f"\tInterval: {str(self.interval)}\n"
             f"\tInclude End: {self.include_end}\n"
         )
