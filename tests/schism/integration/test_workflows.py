@@ -6,8 +6,9 @@ This module tests common end-to-end workflows for SCHISM model setup and configu
 
 import pytest
 
-from rompy.core import DataBlob, TimeRange
+from rompy.core.data import DataBlob
 from rompy.core.source import SourceFile
+from rompy.core.time import TimeRange
 from rompy.schism import SCHISMGrid
 from rompy.schism.data import (
     SCHISMDataBoundary,

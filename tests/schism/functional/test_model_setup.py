@@ -10,8 +10,9 @@ from pathlib import Path
 import pytest
 import yaml
 
-from rompy.core import DataBlob, TimeRange
+from rompy.core.data import DataBlob
 from rompy.core.source import SourceFile
+from rompy.core.time import TimeRange
 from rompy.schism import SCHISMGrid
 from rompy.schism.data import (
     SCHISMDataBoundary,

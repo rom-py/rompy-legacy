@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from rompy.core import TimeRange
+from rompy.core.time import TimeRange
 
 
 @pytest.fixture

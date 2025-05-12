@@ -25,7 +25,8 @@ from pylib import (
 )
 from shapely.geometry import MultiPoint, Polygon
 
-from rompy.core import DataBlob, RompyBaseModel
+from rompy.core.data import DataBlob
+from rompy.core.types import RompyBaseModel
 from rompy.core.grid import BaseGrid
 
 from .vgrid import VGrid, create_2d_vgrid

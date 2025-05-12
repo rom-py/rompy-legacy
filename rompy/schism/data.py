@@ -13,7 +13,8 @@ from pydantic import ConfigDict, Field, field_validator, model_validator
 from pylib import (compute_zcor, read_schism_bpfile, read_schism_hgrid,
                    read_schism_vgrid)
 
-from rompy.core import DataGrid, RompyBaseModel
+from rompy.core.data import DataGrid
+from rompy.core.types import RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange

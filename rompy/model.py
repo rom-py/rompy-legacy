@@ -12,8 +12,10 @@ from pydantic import Field, model_validator
 
 from rompy.utils import load_entry_points
 
-from .core import BaseConfig, RompyBaseModel, TimeRange
+from .core.config import BaseConfig
 from .core.render import render
+from .core.time import TimeRange
+from .core.types import RompyBaseModel
 
 logger = logging.getLogger(__name__)
 

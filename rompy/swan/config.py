@@ -4,7 +4,7 @@ from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field, model_validator
 
-from rompy.core import BaseConfig
+from rompy.core.config import BaseConfig
 
 from rompy.swan.interface import (
     DataInterface,

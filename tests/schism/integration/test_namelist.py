@@ -9,12 +9,11 @@ from pathlib import Path
 
 import pytest
 import yaml
-
-from rompy.core import DataBlob
-from rompy.schism import SCHISMGrid
-
 # Since rompy.schism.nml doesn't exist, we'll create stub classes for testing
 from pydantic import BaseModel, Field, model_validator
+
+from rompy.core.data import DataBlob
+from rompy.schism import SCHISMGrid
 
 
 # Stub classes for testing

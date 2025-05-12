@@ -17,9 +17,9 @@ import xarray as xr
 from pydantic import ConfigDict, Field
 from pylib import WriteNC, datenum, loadz, zdata
 
-from rompy.core import DataGrid, RompyBaseModel
-from rompy.core.data import DataBlob
+from rompy.core.data import DataBlob, DataGrid
 from rompy.core.time import TimeRange
+from rompy.core.types import RompyBaseModel
 from rompy.schism.grid import SCHISMGrid
 
 logger = logging.getLogger(__name__)

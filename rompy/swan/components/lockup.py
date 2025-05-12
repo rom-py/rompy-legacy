@@ -170,12 +170,18 @@ class HOTFILE(BaseComponent):
     )
     fname: Path = Field(
         description="Name of the file to which the wave field is written",
-        max_length=36,
     )
     format: Optional[Literal["free", "unformatted"]] = Field(
         default=None,
         description=("Choose between free (SWAN ASCII) or unformatted (binary) format"),
     )
+
+    @field_validator("fname")
+    @classmethod
+    def max_length(cls, fname: Path) -> Path:
+        if len(str(fname)) > 36:
+            raise ValueError("fname must be less than 36 characters")
+        return fname
 
     def cmd(self) -> str:
         """Command file string for this component."""

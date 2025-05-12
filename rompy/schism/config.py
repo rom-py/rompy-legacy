@@ -4,8 +4,10 @@ from typing import Any, Literal, Optional, Union
 
 from pydantic import ConfigDict, Field, model_serializer, model_validator
 
-from rompy.core import (BaseConfig, DataBlob, RompyBaseModel, Spectrum,
-                        TimeRange)
+from rompy.core.config import BaseConfig
+from rompy.core.data import DataBlob
+from rompy.core.time import TimeRange
+from rompy.core.types import RompyBaseModel, Spectrum
 
 # Import plotting functions
 from .config_plotting import plot_sflux_spatial, plot_sflux_timeseries
