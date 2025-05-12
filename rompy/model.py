@@ -6,14 +6,15 @@ import shutil
 import zipfile as zf
 from datetime import datetime
 from pathlib import Path
-from typing import Union
+from typing import Union, Optional
 
 from pydantic import Field
 
 from rompy.utils import load_entry_points
 
-from .core.config import BaseConfig
+from .core.config import BaseConfig, BaseConfigResponse
 from .core.render import render
+from .core.response import ModelRunResponse, get_response_class
 from .core.time import TimeRange
 from .core.types import RompyBaseModel
 
@@ -118,13 +119,29 @@ class ModelRun(RompyBaseModel):
         logger.info("")
         logger.info(f"Successfully generated project in {staging_dir}")
         logger.info("-----------------------------------------------------")
+
+        # Get the appropriate response class based on model type
+        config_response = ret.get("response", {})
+
+        if not isinstance(config_response, BaseConfigResponse):
+            try:
+                # Try to get the registered response class for this model type
+                ResponseClass = get_response_class(self.config.model_type)
+                if not isinstance(config_response, ResponseClass):
+                    # Convert dict to the appropriate response class if needed
+                    config_response = ResponseClass.model_validate(config_response)
+            except KeyError:
+                # Fallback to base response class if model type not registered
+                if not isinstance(config_response, BaseConfigResponse):
+                    config_response = BaseConfigResponse.model_validate(config_response)
+
         response = ModelRunResponse(
             model_type=self.config.model_type,
             output_dir=staging_dir,
-            config_response=ret.get('response', {}),
+            config_response=config_response,
             execution_start_time=start.isoformat(),
             execution_end_time=datetime.now().isoformat(),
-            duration=(datetime.now() - start).total_seconds()
+            duration=(datetime.now() - start).total_seconds(),
         )
         return response
 
@@ -168,27 +185,4 @@ class ModelRun(RompyBaseModel):
         return repr
 
 
-
-class ModelRunResponse(RompyBaseModel):
-    """Response model for ModelRun.
-
-    Includes all config response data along with execution timing information.
-    """
-    model_type: str = Field(
-        description="The model type for the run",
-    )
-    output_dir: Path = Field(
-        description="The output directory for the run",
-    )
-    config_response: Union[BaseConfigResponse, SwanResponse, SchismResponse] = Field(
-        description="The config response containing output paths",
-    )
-    execution_start_time: datetime = Field(
-        description="The time when model execution started",
-    )
-    execution_end_time: datetime = Field(
-        description="The time when model execution completed",
-    )
-    duration: timedelta = Field(
-        description="The duration of the model execution",
-    )
+# ModelRunResponse is now imported from core.response

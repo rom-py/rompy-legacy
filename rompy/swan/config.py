@@ -1,10 +1,11 @@
 import logging
 from pathlib import Path
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, Dict, Literal, Optional, Union
 
 from pydantic import Field, model_validator
 
 from rompy.core.config import BaseConfig, BaseConfigResponse
+
 from rompy.swan.components import boundary, cgrid, numerics
 from rompy.swan.components.group import INPGRIDS, LOCKUP, OUTPUT, PHYSICS, STARTUP
 from rompy.swan.grid import SwanGrid
@@ -225,15 +226,25 @@ class SwanConfigComponents(BaseConfig):
             ret["boundary"] = self.boundary.render(staging_dir, self.grid, period)
         elif self.boundary:
             ret["boundary"] = self.boundary.render()
-        ret["response"] = SwanResponse(
+        response = SwanResponse(
             outputs=dict(
                 wave_spectra=self.output.specout.fname,
                 wave_parameters=self.output.block.fname,
-                wave_hotfile=self.lockup.hotfile.fname,
+                wave_hotfiles=self.lockup.hotfile.fname,
             )
         )
+        ret["response"] = response
 
         return ret
+
+
+class SwanResponse(BaseConfigResponse):
+    """Response model for SWAN model outputs.
+
+    Includes paths to wave spectra and wave parameters output files.
+    """
+    # Class attribute to identify the model type this response is for
+    _model_type = "swan"
 
 
 class SwanConfigResponse(BaseConfigResponse):

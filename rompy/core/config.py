@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Dict, Literal, Optional
 
 from pydantic import ConfigDict, Field
 
@@ -16,15 +16,15 @@ class BaseOutputsResponse(RompyBaseModel):
 
     Includes paths to wave spectra and wave parameters output files.
     """
-    wave_spectra: Path = Field(
+    wave_spectra: Dict[str, Path] = Field(
         description="Paths to wave spectra output files",
         default_factory=dict,
     )
-    wave_parameters: Path = Field(
+    wave_parameters: Dict[str, Path] = Field(
         description="Paths to wave parameters output files",
         default_factory=dict,
     )
-    wave_hotfiles: Path = Field(
+    wave_hotfiles: Dict[str, Path] = Field(
         description="Paths to wave hotfiles output files",
         default_factory=dict,
     )
@@ -36,9 +36,12 @@ class BaseConfigResponse(RompyBaseModel):
     Contains common fields for all model responses: outputs and hotfiles paths.
     Specific model implementations will extend this class with model-specific outputs.
     """
+    # Class attribute to identify the model type this response is for
+    _model_type = "base"
+    
     outputs: BaseOutputsResponse = Field(
         description="The outputs of the model run",
-        default_factory=dict,
+        default_factory=BaseOutputsResponse,
     )
 
 
