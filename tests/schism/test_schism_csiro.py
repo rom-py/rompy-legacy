@@ -5,12 +5,13 @@ from pathlib import Path
 import pytest
 
 pytest.importorskip("rompy.schism")
-from tests.utils import compare_files
-
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
 from rompy.model import ModelRun
-from rompy.schism import Inputs, SchismCSIROConfig, SCHISMGrid
+from rompy.schism.config import SchismCSIROConfig
+from rompy.schism.config_legacy import Inputs
+from rompy.schism.grid import SCHISMGrid
+from tests.utils import compare_files
 
 here = Path(__file__).parent
 
