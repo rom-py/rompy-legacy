@@ -57,39 +57,39 @@ cc_generate.find_template = find_template
 
 def render(context, template, output_dir, checkout=None):
     """Render the template with the given context.
-    
+
     This function handles the rendering process and provides detailed progress
     information during the rendering.
-    
+
     Args:
         context (dict): The context to use for rendering
         template (str): The template directory or URL
         output_dir (str): The output directory
         checkout (str, optional): The branch, tag or commit to checkout
-        
+
     Returns:
         str: The path to the rendered template
     """
     # Use helper function to avoid circular imports
     from rompy import ROMPY_ASCII_MODE
     USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-    
+
     start_time = time_module.time()
-    
+
     if USE_ASCII_ONLY:
         logger.info("+------------------------------------------------------------------------+")
-        logger.info("|                      TEMPLATE RENDERING PROCESS                         |")
+        logger.info("|                         RENDERING TEMPLATE                             |")
         logger.info("+------------------------------------------------------------------------+")
     else:
         logger.info("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-        logger.info("┃                      TEMPLATE RENDERING PROCESS                   ┃")
+        logger.info("┃                         RENDERING TEMPLATE                        ┃")
         logger.info("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-        
+
     logger.info(f"Template source: {template}")
     logger.info(f"Output directory: {output_dir}")
     if checkout:
         logger.info(f"Using template version: {checkout}")
-    
+
     # Initialize context for cookiecutter
     context["cookiecutter"] = {}
     config_dict = cc_config.get_user_config(
@@ -102,7 +102,7 @@ def render(context, template, output_dir, checkout=None):
         logger.info("Locating template repository...")
     else:
         logger.info("🔍 Locating template repository...")
-        
+
     repo_dir, cleanup = cc_repository.determine_repo_dir(
         template=template,
         abbreviations=config_dict["abbreviations"],
@@ -125,31 +125,23 @@ def render(context, template, output_dir, checkout=None):
         overwrite_if_exists=True,
         output_dir=output_dir,
     )
-    
+
     # Log completion information
     elapsed = time_module.time() - start_time
     render_time = time_module.time() - render_start
-    
+
     # Get number of files created
     file_count = sum([len(files) for _, _, files in os.walk(staging_dir)])
-    
+
     if USE_ASCII_ONLY:
-        logger.info("+------------------------------------------------------------------------+")
-        logger.info("|                        TEMPLATE RENDERING COMPLETE                      |")
-        logger.info("+------------------------------------------------------------------------+")
         logger.info(f"Rendering time:      {render_time:.2f} seconds")
         logger.info(f"Total process time:  {elapsed:.2f} seconds")
         logger.info(f"Files created:       {file_count}")
         logger.info(f"Output location:     {staging_dir}")
-        logger.info("+------------------------------------------------------------------------+")
     else:
-        logger.info("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-        logger.info("┃                        TEMPLATE RENDERING COMPLETE                 ┃")
-        logger.info("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
         logger.info(f"⏱️ Rendering time:      {render_time:.2f} seconds")
         logger.info(f"⏱️ Total process time:  {elapsed:.2f} seconds")
         logger.info(f"📄 Files created:       {file_count}")
         logger.info(f"📂 Output location:     {staging_dir}")
-        logger.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-    
+
     return staging_dir
