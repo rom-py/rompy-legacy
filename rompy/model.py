@@ -11,6 +11,7 @@ from typing import Union
 import textwrap
 import sys
 
+import ipdb
 from pydantic import Field
 
 from rompy.utils import load_entry_points
@@ -138,7 +139,7 @@ class ModelRun(RompyBaseModel):
         logger.info("")
         if USE_ASCII_ONLY:
             logger.info("+------------------------------------------------------------------------+")
-            logger.info("|                       MODEL RUN CONFIGURATION                           |")
+            logger.info("|                       MODEL RUN CONFIGURATION                          |")
             logger.info("+------------------------------------------------------------------------+")
         else:
             logger.info("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
@@ -153,22 +154,22 @@ class ModelRun(RompyBaseModel):
 
         if USE_ASCII_ONLY:
             logger.info("+-----------------------------+-------------------------------------+")
-            logger.info(f"| Run ID                     | {self.run_id:<35} |")
-            logger.info(f"| Model Type                 | {config_type:<35} |")
-            logger.info(f"| Start Time                 | {self.period.start.isoformat():<35} |")
-            logger.info(f"| End Time                   | {self.period.end.isoformat():<35} |")
-            logger.info(f"| Duration                   | {formatted_duration:<35} |")
-            logger.info(f"| Time Interval              | {str(self.period.interval):<35} |")
-            logger.info(f"| Output Directory           | {str(self.output_dir):<35} |")
+            logger.info(f"| Run ID                      | {self.run_id:<35} |")
+            logger.info(f"| Model Type                  | {config_type:<35} |")
+            logger.info(f"| Start Time                  | {self.period.start.isoformat():<35} |")
+            logger.info(f"| End Time                    | {self.period.end.isoformat():<35} |")
+            logger.info(f"| Duration                    | {formatted_duration:<35} |")
+            logger.info(f"| Time Interval               | {str(self.period.interval):<35} |")
+            logger.info(f"| Output Directory            | {str(self.output_dir):<35} |")
         else:
-            logger.info("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            logger.info(f"┃ Run ID                     ┃ {self.run_id:<35} ┃")
-            logger.info(f"┃ Model Type                 ┃ {config_type:<35} ┃")
-            logger.info(f"┃ Start Time                 ┃ {self.period.start:<35} ┃")
-            logger.info(f"┃ End Time                   ┃ {self.period.end:<35} ┃")
-            logger.info(f"┃ Duration                   ┃ {formatted_duration:<35} ┃")
-            logger.info(f"┃ Time Interval              ┃ {str(self.period.interval):<35} ┃")
-            logger.info(f"┃ Output Directory           ┃ {str(self.output_dir):<35} ┃")
+            logger.info( "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            logger.info(f"┃ Run ID                      ┃ {self.run_id:<35} ┃")
+            logger.info(f"┃ Model Type                  ┃ {config_type:<35} ┃")
+            logger.info(f"┃ Start Time                  ┃ {self.period.start.isoformat():<35} ┃")
+            logger.info(f"┃ End Time                    ┃ {self.period.end.isoformat():<35} ┃")
+            logger.info(f"┃ Duration                    ┃ {formatted_duration:<35} ┃")
+            logger.info(f"┃ Time Interval               ┃ {str(self.period.interval):<35} ┃")
+            logger.info(f"┃ Output Directory            ┃ {str(self.output_dir):<35} ┃")
 
         if hasattr(self.config, 'description') and self.config.description:
             if USE_ASCII_ONLY:
@@ -186,18 +187,9 @@ class ModelRun(RompyBaseModel):
         if hasattr(self.config, '__str__'):
             logger.info("")
             logger.info(f"Configuration type: {type(self.config).__name__}")
-            # Only log the first section to provide minimal context
             try:
                 config_lines = str(self.config).split('\n')
-                first_section = []
-                for i, line in enumerate(config_lines):
-                    if i < 5:  # Header lines
-                        first_section.append(line)
-                    else:
-                        break
-                # Add indication that there's more
-                first_section.append("...")
-                for line in first_section:
+                for line in config_lines:
                     logger.info(line)
             except Exception:
                 # If anything goes wrong with config formatting, just log minimal info
@@ -210,7 +202,7 @@ class ModelRun(RompyBaseModel):
 
         if USE_ASCII_ONLY:
             logger.info("+------------------------------------------------------------------------+")
-            logger.info("|                      STARTING MODEL GENERATION                          |")
+            logger.info("|                     STARTING MODEL GENERATION                          |")
             logger.info("+------------------------------------------------------------------------+")
         else:
             logger.info("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")

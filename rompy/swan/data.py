@@ -100,25 +100,25 @@ class SwanDataGrid(DataGrid):
         # Use helper function to avoid circular imports
         from rompy import ROMPY_ASCII_MODE
         USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
+
         # Get current ASCII mode
         from rompy import ROMPY_ASCII_MODE
         USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
+
         # Use global ASCII flag
         arrow = "->" if USE_ASCII_ONLY else "→"
-        
+
         if USE_ASCII_ONLY:
             logger.info("+------------------------------------------------------------------------+")
-            logger.info(f"| WRITING {self.var.value.upper()} GRID DATA" + " " * (58 - len(self.var.value)) + "|")
+            logger.info(f"| WRITING {self.var.value.upper()} GRID DATA" + " " * (53 - len(self.var.value)) + "|")
             logger.info("+------------------------------------------------------------------------+")
         else:
             logger.info("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            logger.info(f"┃ WRITING {self.var.value.upper()} GRID DATA" + " " * (58 - len(self.var.value)) + "┃")
+            logger.info(f"┃ WRITING {self.var.value.upper()} GRID DATA" + " " * (48 - len(self.var.value)) + "┃")
             logger.info("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-            
+
         logger.info(f"  {arrow} Output file: {output_file}")
-        
+
         # Log additional information about the dataset
         if self.z1:
             shape_info = f"{self.ds[self.z1].shape}"
@@ -127,7 +127,7 @@ class SwanDataGrid(DataGrid):
             shape_info = f"{self.ds[self.z2].shape}"
             logger.info(f"  {arrow} Variable: {self.z2} with shape {shape_info}")
         logger.info(f"  {arrow} Scaling factor: {self.fac}")
-        
+
         start_time = time_module.time()
         if self.var.value == "bottom":
             inpgrid, readgrid = self.ds.swan.to_bottom_grid(
@@ -151,31 +151,26 @@ class SwanDataGrid(DataGrid):
                 rot=0.0,
                 var=self.var.name,
             )
-            
+
         # Log completion and processing time
         elapsed_time = time_module.time() - start_time
         file_size = Path(output_file).stat().st_size / (1024 * 1024)  # Size in MB
-        
+
         # Use helper function to avoid circular imports
         from rompy import ROMPY_ASCII_MODE
         USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
+
         # Use global ASCII flag
         arrow = "->" if USE_ASCII_ONLY else "→"
-        
+
         logger.info(f"  {arrow} Completed in {elapsed_time:.2f} seconds")
         logger.info(f"  {arrow} File size: {file_size:.2f} MB")
-        
+
         # Get latest ASCII mode
         from rompy import ROMPY_ASCII_MODE
         USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
-        # Summary line
-        if USE_ASCII_ONLY:
-            logger.info("+------------------------------------------------------------------------+")
-        else:
-            logger.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        
+
+
         return f"{inpgrid}\n{readgrid}\n"
 
     def __str__(self):
@@ -224,11 +219,11 @@ def dset_to_swan(
 
     # Write to ascii
     logger.debug(f"Writing SWAN ASCII file: {output_file}")
-    
+
     # Use helper function to avoid circular imports
     from rompy import ROMPY_ASCII_MODE
     USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-    
+
     # Check for ASCII-only mode
     if USE_ASCII_ONLY:
         logger.debug("+------------------------------------------------------------------------+")
@@ -238,11 +233,11 @@ def dset_to_swan(
         logger.debug("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
         logger.debug("┃ WRITING SWAN ASCII DATA                                            ┃")
         logger.debug("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-    
+
     start_time = time_module.time()
     file_size = 0
     total_times = len(dset[time_dim])
-    
+
     with open(output_file, "w") as stream:
         for i, t in enumerate(dset[time_dim]):
             time_str = pd.to_datetime(t.values)
@@ -254,25 +249,25 @@ def dset_to_swan(
                 logger.debug(
                     f"Appending Time {time_str} to {output_file}"
                 )
-                
+
             for data_var in variables:
                 logger.debug(f"Appending Variable {data_var} to {output_file}")
                 data = dset[data_var].sel(time=t).fillna(fill_value).values
                 np.savetxt(fname=stream, X=data, fmt=fmt, delimiter="\t")
-    
+
     elapsed_time = time_module.time() - start_time
     file_size = Path(output_file).stat().st_size / (1024 * 1024)  # Size in MB
-    
+
     # Use helper function to avoid circular imports
     from rompy import ROMPY_ASCII_MODE
     USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-    
+
     # Format the completion message
     elapsed_str = f"{elapsed_time:.2f}"
     size_str = f"{file_size:.2f}"
     completion_msg = f"COMPLETED: {elapsed_str} seconds, File size: {size_str} MB"
     padding = 28 # Adjust padding as needed
-    
+
     if USE_ASCII_ONLY:
         logger.debug("+------------------------------------------------------------------------+")
         logger.debug(f"| {completion_msg}" + " " * max(0, 70 - len(completion_msg)) + "|")
@@ -281,7 +276,7 @@ def dset_to_swan(
         logger.debug("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
         logger.debug(f"┃ {completion_msg}" + " " * max(0, 70 - len(completion_msg)) + "┃")
         logger.debug("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-    
+
     logger.debug(f"SWAN ASCII file written successfully to {output_file}")
 
     return output_file
@@ -472,7 +467,7 @@ class Swan_accessor(object):
 
         inpgrid = f"INPGRID {var} {grid.inpgrid} NONSTATION {inptimes[0]} {dt_str} HR"
         readinp = f"READINP {var} {fac} '{Path(output_file).name}' 3 0 1 0 FREE"
-        
+
         # Log detailed information about the generated grid
         logger.debug(f"Created {var} grid with:")
         logger.debug(f"  → Grid size: {grid.nx}x{grid.ny} points")
@@ -533,7 +528,7 @@ class Swan_accessor(object):
                     logger.debug(f"Writing boundary point {j} to {output_tpar}")
                     logger.debug(f"  → Location: ({xp:.5f}, {yp:.5f})")
                     logger.debug(f"  → Time points: {len(ds_point.time)}")
-                    
+
                     with open(output_tpar, "wt") as f:
                         f.write("TPAR\n")
                         for t in range(len(ds_point.time)):

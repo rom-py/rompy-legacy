@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 def configure_logging(verbosity=0):
     """Configure logging based on verbosity level.
-    
+
     Args:
         verbosity (int): 0=WARNING, 1=INFO, 2=DEBUG
     """
@@ -25,18 +25,18 @@ def configure_logging(verbosity=0):
         log_level = logging.INFO
     if verbosity >= 2:
         log_level = logging.DEBUG
-        
+
     # Create a custom formatter with timestamp and level
     # Format the logger name to a fixed width to align messages
     formatter = logging.Formatter(
         '%(asctime)s [%(levelname)s] %(name)-20s: %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
-    
+
     # Configure console handler
     console = logging.StreamHandler(sys.stdout)
     console.setFormatter(formatter)
-    
+
     # Configure file handler if output directory exists
     log_file = None
     output_dir = os.environ.get('ROMPY_LOG_DIR', None)
@@ -46,22 +46,22 @@ def configure_logging(verbosity=0):
         file_handler = logging.FileHandler(log_file)
         file_handler.setFormatter(formatter)
         logging.root.addHandler(file_handler)
-    
+
     # Configure root logger
     logging.root.setLevel(log_level)
     logging.root.handlers = []  # Remove existing handlers
     logging.root.addHandler(console)
-    
+
     # Suppress specific warnings
     if log_level != logging.DEBUG:
         logging.getLogger('pydantic').setLevel(logging.ERROR)
         logging.getLogger('intake').setLevel(logging.WARNING)
-        
+
         # Filter out common warnings
         warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
         warnings.filterwarnings("ignore", category=UserWarning, module="intake.readers.readers")
         warnings.filterwarnings("ignore", message="A custom validator is returning a value other than `self`")
-    
+
     return log_file
 
 
@@ -76,16 +76,16 @@ def configure_logging(verbosity=0):
 @click.option("--version", is_flag=True, help="Show version information and exit")
 def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, version):
     """Run ROMPY model with the specified configuration.
-    
-    ROMPY (Regional Ocean Modeling PYthon) is a tool for generating and running 
+
+    ROMPY (Regional Ocean Modeling PYthon) is a tool for generating and running
     ocean, wave, and hydrodynamic model configurations.
-    
+
     Usage: rompy <model> config.yml
-    
+
     Args:
         model: Model type to use (one of: {models})
         config: YAML or JSON configuration file
-        
+
     Options:
         --zip/--no-zip          Create a zip archive of the model files
         -v, --verbose           Increase verbosity (can be used multiple times)
@@ -93,7 +93,7 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, versio
         --show-warnings         Show Python warnings
         --ascii-only            Use ASCII-only characters in output
         --version               Show version information and exit
-        
+
     Examples:
         rompy swan config.yml
         rompy schism my_config.json --ascii-only
@@ -104,31 +104,31 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, versio
     if not show_warnings:
         # Capture warnings to prevent them from being displayed
         warnings.filterwarnings("ignore")
-    
+
     # Set ASCII-only environment variable globally
     ascii_value = 'true' if ascii_only else 'false'
     os.environ['ROMPY_ASCII_ONLY'] = ascii_value
-    
-    # Force reloading of the ASCII_MODE value 
+
+    # Force reloading of the ASCII_MODE value
     import rompy
     reload_value = rompy.ROMPY_ASCII_MODE()
-    
+
     # Log the ascii mode setting
     logger.debug(f"ASCII mode set to: {ascii_only}")
-    
+
     # Configure logging
     if log_dir:
         os.environ['ROMPY_LOG_DIR'] = log_dir
     log_file = configure_logging(verbose)
-    
+
     # Import here to avoid circular imports
     import rompy
-    
+
     # If --version flag is specified, show version and exit
     if version:
         logger.info(f"ROMPY Version: {rompy.__version__}")
         return
-        
+
     # If no model or config is provided, show help and available models
     if not model or not config:
         logger.info(f"ROMPY Version: {rompy.__version__}")
@@ -137,7 +137,7 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, versio
         ctx = click.get_current_context()
         click.echo(ctx.get_help())
         ctx.exit()
-    
+
     try:
         with open(config, "r") as f:
             content = f.read()
@@ -174,23 +174,23 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, versio
         logger.warning(f"ASCII mode setting inconsistency detected - requested: {ascii_only}, actual: {actual_mode}")
     logger.info(f"Running model: {model}")
     logger.info(f"Configuration: {config}")
-    
+
     # Create and run the model
     try:
         start_time = datetime.now()
         logger.info("Running model...")
         model = ModelRun(**args)
         model()
-        
+
         if zip:
             logger.info("Zipping model outputs...")
             zip_file = model.zip()
             logger.info(f"Model archive created: {zip_file}")
-            
+
         # Log completion time
         elapsed = datetime.now() - start_time
         logger.info(f"Model run completed in {elapsed.total_seconds():.2f} seconds")
-        
+
         if log_file:
             logger.info(f"Log file saved to: {log_file}")
     except TypeError as e:

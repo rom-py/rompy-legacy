@@ -370,7 +370,7 @@ class SwanConfigComponents(BaseConfig):
             lines.append("+-----------------------------+-------------------------------------+")
         else:
             lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃                     SWAN COMPONENTS CONFIGURATION                  ┃")
+            lines.append("┃                    SWAN COMPONENTS CONFIGURATION                  ┃")
             lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
             # Add grid information - formatted as a table
@@ -387,11 +387,12 @@ class SwanConfigComponents(BaseConfig):
 
         # Format grid attributes as table rows
         for attr, value in grid_attrs.items():
+            import ipdb
             if isinstance(value, (int, float, str, bool)):
                 if USE_ASCII_ONLY:
-                    lines.append(f"| {attr:<28} | {str(value):<35} |")
+                    lines.append(f"| {attr:<27} | {str(value):<35} |")
                 else:
-                    lines.append(f"┃ {attr:<28} ┃ {str(value):<35} ┃")
+                    lines.append(f"┃ {attr:<27} ┃ {str(value):<35} ┃")
 
         if USE_ASCII_ONLY:
             lines.append("+-----------------------------+-------------------------------------+")
@@ -421,7 +422,7 @@ class SwanConfigComponents(BaseConfig):
                     lines.append("+-----------------------------+-------------------------------------+")
                 else:
                     lines.append(f"┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-                    lines.append(f"┃ {name:<28} ┃ {type(component).__name__:<35} ┃")
+                    lines.append(f"┃ {name:<27} ┃ {type(component).__name__:<35} ┃")
                     lines.append(f"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
                 # Get component attributes
