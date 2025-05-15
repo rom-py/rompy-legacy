@@ -212,6 +212,7 @@ class SCHISMDataHotstart(DataGrid):
             setattr(S, var, [])
 
         # Interpolate for each vertical level
+        logger.info(f"interpolating all variables to required {nvrt} levels")
         for k in range(nvrt):
             lzi = lzi0[k]
             bxyz = np.c_[lxi, lyi, lzi]
@@ -233,7 +234,7 @@ class SCHISMDataHotstart(DataGrid):
 
             # For each variable
             for m, svar in enumerate(svars):
-                logger.info(f"Interpolating {svar} at level {k+1}/{nvrt}")
+                logger.debug(f"Interpolating {svar} at level {k+1}/{nvrt}")
                 mvar = mvars[m]
 
                 # Get source data for this variable
@@ -295,7 +296,7 @@ class SCHISMDataHotstart(DataGrid):
                     # Check for NaN values in the extracted data
                     nan_mask = np.isnan(v0)
                     if np.any(nan_mask):
-                        logger.warning(
+                        logger.debug(
                             f"Found NaN values in extracted data for {svar} at level {k+1}"
                         )
                         # Replace NaNs with valid values where possible
