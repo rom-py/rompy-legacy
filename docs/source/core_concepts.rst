@@ -2,6 +2,11 @@
 Core Concepts
 =================================
 
+.. note::
+   For information about Rompy's formatting and logging system, see :doc:`formatting`.
+   
+   For details on using the command line interface, see :doc:`cli`.
+
 Rompy is a Python library for generating ocean model control files and required input
 data ready for ingestion into the model. The framework is separated into two broad
 concepts:
@@ -12,7 +17,7 @@ concepts:
     :toctree: _generated/
 
     rompy.model.ModelRun
-    rompy.core.BaseConfig
+    rompy.core.config.BaseConfig
 
 There is information about each of these in the documentation of each object, but at a
 high level, ModelRun is the high level framework that renders the config object and controls the
