@@ -539,12 +539,11 @@ class Bctides:
                     f"Constituent {constituent} not found in TPXO file {tpxo_file}"
                 )
 
-            # Get the grid coordinates
-            lon = np.array(nc.variables["lon_z"][:])
-            lat = np.array(nc.variables["lat_z"][:])
-
             # Get the tidal data
             if data_type == "h":
+                # Get the grid coordinates
+                lon = np.array(nc.variables["lon_z"][:])
+                lat = np.array(nc.variables["lat_z"][:])
                 # Elevation data
                 amp = np.array(nc.variables["ha"][const_idx]).squeeze()
                 pha = np.array(nc.variables["hp"][const_idx]).squeeze()
@@ -555,6 +554,9 @@ class Bctides:
                 # Interpolate to boundary points
                 result = self._tpxo_interpolate(xi, yi, lon, lat, amp, pha)
             else:  # data_type == "uv"
+                # Get the grid coordinates
+                lon = np.array(nc.variables["lon_u"][:])
+                lat = np.array(nc.variables["lat_u"][:])
                 # Velocity data
                 u_amp = np.array(nc.variables["ua"][const_idx]).squeeze()
                 u_pha = np.array(nc.variables["up"][const_idx]).squeeze()
@@ -980,33 +982,20 @@ class Bctides:
                     f.write(f"{tname.lower()}\n")
 
                     # Try to interpolate velocity data
-                    try:
-                        if self.tidal_velocities and os.path.exists(
-                            self.tidal_velocities
-                        ):
-                            vel_data = self._interpolate_tidal_data(
-                                lons, lats, tname, "uv"
-                            )
+                    if self.tidal_velocities and os.path.exists(self.tidal_velocities):
+                        vel_data = self._interpolate_tidal_data(lons, lats, tname, "uv")
 
-                            # Write u/v amplitude and phase for each node
-                            for n in range(num_nodes):
-                                f.write(
-                                    f"{vel_data[n,0]:8.6f} {vel_data[n,1]:.6f} "
-                                    f"{vel_data[n,2]:8.6f} {vel_data[n,3]:.6f}\n"
-                                )
-                        else:
-                            # If no velocity file, use zeros to ensure file structure is complete
-                            logger.warning(
-                                f"No velocity data available for {tname}, using zeros"
+                        # Write u/v amplitude and phase for each node
+                        for n in range(num_nodes):
+                            f.write(
+                                f"{vel_data[n,0]:8.6f} {vel_data[n,1]:.6f} "
+                                f"{vel_data[n,2]:8.6f} {vel_data[n,3]:.6f}\n"
                             )
-                            for n in range(num_nodes):
-                                f.write("0.0 0.0 0.0 0.0\n")
-                    except Exception as e:
-                        # Log error and use zeros as fallback for this constituent
-                        logger.error(
-                            f"Error processing velocity for tide {tname}, boundary {ibnd+1}: {e}"
+                    else:
+                        # If no velocity file, use zeros to ensure file structure is complete
+                        logger.warning(
+                            f"No velocity data available for {tname}, using zeros"
                         )
-                        logger.warning(f"Using zeros for velocity data for {tname}")
                         for n in range(num_nodes):
                             f.write("0.0 0.0 0.0 0.0\n")
 
