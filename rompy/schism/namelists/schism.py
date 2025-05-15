@@ -42,7 +42,12 @@ class NML(NamelistBaseModel):
         for field_name in self.model_fields:
             value = getattr(self, field_name, None)
             if value is not None:
-                result[field_name] = value
+                # Ensure we're returning the model object, not a dict
+                if hasattr(value, 'model_dump'):
+                    # This ensures we maintain the model instance for proper serialization
+                    result[field_name] = value
+                else:
+                    result[field_name] = value
 
         return result
 
