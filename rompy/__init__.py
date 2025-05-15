@@ -8,7 +8,6 @@
 
 import logging
 import warnings
-import os
 from pathlib import Path
 
 # from . import _version
@@ -23,19 +22,16 @@ warnings.filterwarnings("ignore", message="A custom validator is returning a val
 # __version__ = _version.get_versions()["version"]
 __version__ = "0.3.1"
 
-# Check if we should use ASCII-only formatting (globally accessible)
-USE_ASCII_ONLY = os.environ.get('ROMPY_ASCII_ONLY', '').lower() in ('1', 'true', 'yes')
+# Import and re-export formatting utilities for backward compatibility
+from .formatting import (
+    USE_ASCII_ONLY,
+    USE_SIMPLE_LOGS,
+    get_ascii_mode as ROMPY_ASCII_MODE,
+    get_simple_logs as ROMPY_SIMPLE_LOGS,
+    get_formatted_box,
+    get_formatted_header_footer
+)
 
-def ROMPY_ASCII_MODE():
-    """Return the current ASCII mode setting.
-    
-    This helper function makes it easier to access the ASCII mode setting
-    from any module without potential circular import issues.
-    
-    Returns:
-        bool: True if ASCII-only mode is enabled, False otherwise
-    """
-    return os.environ.get('ROMPY_ASCII_ONLY', '').lower() in ('1', 'true', 'yes')
-
+# Root directory and templates directory paths
 ROOT_DIR = Path(__file__).parent.resolve()
 TEMPLATES_DIR = ROOT_DIR / "templates"

@@ -23,6 +23,100 @@ class RompyBaseModel(BaseModel):
     def dump_inputs_json(self) -> str:
         """Return the original inputs as a JSON string."""
         return json.dumps((self._original_inputs))
+        
+    def __str__(self) -> str:
+        """Return a hierarchical string representation of the model.
+        
+        This generic implementation provides a consistent string formatting
+        for all RompyBaseModel objects, handling nested models recursively.
+        Classes can override this if they need custom string representations.
+        """
+        lines = []
+        self._str_helper(lines, name=self.__class__.__name__, obj=self, level=0)
+        return "\n".join(lines)
+    
+    def _format_value(self, obj: Any) -> Optional[str]:
+        """Format a value for string representation.
+        
+        This method can be overridden by subclasses to customize how specific types
+        are formatted in the string representation.
+        
+        Args:
+            obj: The object to format
+            
+        Returns:
+            A string representation of the object, or None to use default formatting
+        """
+        return None
+    
+    def _str_helper(self, lines: list, name: str, obj: Any, level: int) -> None:
+        """Helper method to build a hierarchical string representation.
+        
+        Args:
+            lines: List to append formatted string lines
+            name: Name of the current object/field
+            obj: The object to format
+            level: Current indentation level
+        """
+        indent = "  " * level
+        
+        # Handle None values
+        if obj is None:
+            lines.append(f"{indent}{name}: None")
+            return
+        
+        # Check if there's a custom formatter in the current class
+        custom_format = self._format_value(obj)
+        if custom_format is not None:
+            if "\n" in custom_format:
+                # For multi-line string representations
+                lines.append(f"{indent}{name}:")
+                for line in custom_format.split("\n"):
+                    lines.append(f"{indent}  {line}")
+            else:
+                lines.append(f"{indent}{name}: {custom_format}")
+            return
+            
+        # Check for objects with their own __str__ method (not inherited from object or base classes)
+        # But don't use it for RompyBaseModel instances (use our hierarchical formatting instead)
+        str_method = getattr(obj.__class__, "__str__", None)
+        base_str_method = getattr(RompyBaseModel, "__str__", None)
+        object_str_method = getattr(object, "__str__", None)
+        
+        if (not isinstance(obj, RompyBaseModel) and 
+            str_method is not None and 
+            str_method is not object_str_method):
+            # Use the object's custom __str__ if it has one
+            str_val = str(obj)
+            if "\n" in str_val:
+                # For multi-line string representations
+                lines.append(f"{indent}{name}:")
+                for line in str_val.split("\n"):
+                    lines.append(f"{indent}  {line}")
+            else:
+                lines.append(f"{indent}{name}: {str_val}")
+        elif isinstance(obj, RompyBaseModel):
+            lines.append(f"{indent}{name}:")
+            for field_name, field_value in obj.model_dump().items():
+                if field_name.startswith("_"):
+                    continue
+                self._str_helper(lines, field_name, field_value, level + 1)
+        elif isinstance(obj, dict):
+            if not obj:
+                lines.append(f"{indent}{name}: {{}}")
+            else:
+                lines.append(f"{indent}{name}:")
+                for key, value in obj.items():
+                    self._str_helper(lines, str(key), value, level + 1)
+        elif isinstance(obj, (list, tuple)):
+            if not obj:
+                lines.append(f"{indent}{name}: []")
+            else:
+                lines.append(f"{indent}{name}:")
+                for i, item in enumerate(obj):
+                    self._str_helper(lines, f"[{i}]", item, level + 1)
+        else:
+            lines.append(f"{indent}{name}: {obj}")
 
 
 class Latitude(BaseModel):
@@ -135,10 +229,10 @@ class Bbox(BaseModel):
 
     @model_validator(mode="after")
     def validate_coords(self) -> "Bbox":
-        if self.minlon >= self.maxlon:
+        if self.minlon.lon >= self.maxlon.lon:
             raise ValueError("minlon must be less than maxlon")
-        if self.minlat >= self.maxlat:
-            raise ValueError("minlat must be less than maxlon")
+        if self.minlat.lat >= self.maxlat.lat:
+            raise ValueError("minlat must be less than maxlat")
         return self
 
     @property

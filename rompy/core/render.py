@@ -3,12 +3,20 @@ import os
 import time as time_module
 from pathlib import Path
 from datetime import datetime
+from typing import Any, Dict, Optional
 
 import cookiecutter.config as cc_config
 import cookiecutter.generate as cc_generate
 import cookiecutter.repository as cc_repository
 from cookiecutter.exceptions import NonTemplatedInputDirException
 from cookiecutter.find import find_template
+
+from rompy.core.types import RompyBaseModel
+from rompy.formatting import (
+    USE_ASCII_ONLY,
+    get_formatted_box,
+    get_formatted_header_footer
+)
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +63,64 @@ cc_repository.repository_has_cookiecutter_json = repository_has_cookiecutter_jso
 cc_generate.find_template = find_template
 
 
+class TemplateRenderer(RompyBaseModel):
+    """Template renderer class that provides enhanced logging and formatting.
+
+    This class wraps the cookiecutter template rendering process and provides
+    detailed formatting through the _format_value method.
+    """
+    template: str | Path
+    output_dir: str | Path
+    context: Dict[str, Any]
+    checkout: Optional[str] = None
+
+    def _format_value(self, obj) -> Optional[str]:
+        """Format specific types of values for display.
+
+        This method formats template rendering information with rich details.
+
+        Args:
+            obj: The object to format
+
+        Returns:
+            A formatted string or None to use default formatting
+        """
+        # Use formatting utilities imported at the top of the file
+
+        # Format TemplateRenderer object
+        if isinstance(obj, TemplateRenderer):
+            header, footer, bullet = get_formatted_header_footer(
+                title="TEMPLATE RENDERING DETAILS", 
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+            lines.append(f"  {bullet} Template source: {obj.template}")
+            lines.append(f"  {bullet} Output directory: {obj.output_dir}")
+
+            if obj.checkout:
+                lines.append(f"  {bullet} Template version: {obj.checkout}")
+
+            # Add context summary if available
+            context_items = len(obj.context)
+            if context_items > 0:
+                lines.append(f"  {bullet} Context items: {context_items}")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Use default formatting for other types
+        return None
+
+    def __call__(self) -> str:
+        """Render the template with the given context.
+
+        Returns:
+            str: The path to the rendered template
+        """
+        return render(self.context, self.template, self.output_dir, self.checkout)
+
+
 def render(context, template, output_dir, checkout=None):
     """Render the template with the given context.
 
@@ -70,25 +136,40 @@ def render(context, template, output_dir, checkout=None):
     Returns:
         str: The path to the rendered template
     """
-    # Use helper function to avoid circular imports
-    from rompy import ROMPY_ASCII_MODE
-    USE_ASCII_ONLY = ROMPY_ASCII_MODE()
+    # Use formatting utilities imported at the top of the file
 
     start_time = time_module.time()
 
-    if USE_ASCII_ONLY:
-        logger.info("+------------------------------------------------------------------------+")
-        logger.info("|                         RENDERING TEMPLATE                             |")
-        logger.info("+------------------------------------------------------------------------+")
-    else:
-        logger.info("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-        logger.info("┃                         RENDERING TEMPLATE                        ┃")
-        logger.info("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+    # Create renderer object for nice formatting
+    renderer = TemplateRenderer(
+        template=template,
+        output_dir=output_dir,
+        context=context,
+        checkout=checkout
+    )
 
-    logger.info(f"Template source: {template}")
-    logger.info(f"Output directory: {output_dir}")
-    if checkout:
-        logger.info(f"Using template version: {checkout}")
+    # Format renderer info
+    renderer_info = renderer._format_value(renderer)
+
+    # Use the formatted box utility
+    box = get_formatted_box(
+        title="RENDERING TEMPLATE",
+        use_ascii=USE_ASCII_ONLY,
+        width=72 if USE_ASCII_ONLY else 70
+    )
+    for line in box.split("\n"):
+        logger.info(line)
+
+    # Log detailed renderer info
+    if renderer_info:
+        for line in renderer_info.split("\n"):
+            logger.info(line)
+    else:
+        # Fall back to simple logging if formatting failed
+        logger.info(f"Template source: {template}")
+        logger.info(f"Output directory: {output_dir}")
+        if checkout:
+            logger.info(f"Using template version: {checkout}")
 
     # Initialize context for cookiecutter
     context["cookiecutter"] = {}
@@ -133,15 +214,67 @@ def render(context, template, output_dir, checkout=None):
     # Get number of files created
     file_count = sum([len(files) for _, _, files in os.walk(staging_dir)])
 
-    if USE_ASCII_ONLY:
-        logger.info(f"Rendering time:      {render_time:.2f} seconds")
-        logger.info(f"Total process time:  {elapsed:.2f} seconds")
-        logger.info(f"Files created:       {file_count}")
-        logger.info(f"Output location:     {staging_dir}")
+    # Create render results object for formatting
+    class RenderResults(RompyBaseModel):
+        """Render results information"""
+        staging_dir: str
+        render_time: float
+        elapsed_time: float
+        file_count: int
+
+        def _format_value(self, obj) -> Optional[str]:
+            """Format render results for display"""
+            # Use formatting utilities imported at the top of the file
+
+            if isinstance(obj, RenderResults):
+                header, footer, _ = get_formatted_header_footer(
+                    title="TEMPLATE RENDERING RESULTS", 
+                    use_ascii=USE_ASCII_ONLY
+                )
+            
+                if USE_ASCII_ONLY:
+                    return (
+                        f"{header}\n"
+                        f"  Rendering time:      {obj.render_time:.2f} seconds\n"
+                        f"  Total process time:  {obj.elapsed_time:.2f} seconds\n"
+                        f"  Files created:       {obj.file_count}\n"
+                        f"  Output location:     {obj.staging_dir}\n"
+                        f"{footer}"
+                    )
+                else:
+                    return (
+                        f"{header}\n"
+                        f"  ⏱️ Rendering time:      {obj.render_time:.2f} seconds\n"
+                        f"  ⏱️ Total process time:  {obj.elapsed_time:.2f} seconds\n"
+                        f"  📄 Files created:       {obj.file_count}\n"
+                        f"  📂 Output location:     {obj.staging_dir}\n"
+                        f"{footer}"
+                    )
+            return None
+
+    # Create and format results
+    results = RenderResults(
+        staging_dir=staging_dir,
+        render_time=render_time,
+        elapsed_time=elapsed,
+        file_count=file_count
+    )
+
+    results_info = results._format_value(results)
+    if results_info:
+        for line in results_info.split("\n"):
+            logger.info(line)
     else:
-        logger.info(f"⏱️ Rendering time:      {render_time:.2f} seconds")
-        logger.info(f"⏱️ Total process time:  {elapsed:.2f} seconds")
-        logger.info(f"📄 Files created:       {file_count}")
-        logger.info(f"📂 Output location:     {staging_dir}")
+        # Fallback to simple logging if formatting failed
+        if USE_ASCII_ONLY:
+            logger.info(f"Rendering time:      {render_time:.2f} seconds")
+            logger.info(f"Total process time:  {elapsed:.2f} seconds")
+            logger.info(f"Files created:       {file_count}")
+            logger.info(f"Output location:     {staging_dir}")
+        else:
+            logger.info(f"⏱️ Rendering time:      {render_time:.2f} seconds")
+            logger.info(f"⏱️ Total process time:  {elapsed:.2f} seconds")
+            logger.info(f"📄 Files created:       {file_count}")
+            logger.info(f"📂 Output location:     {staging_dir}")
 
     return staging_dir

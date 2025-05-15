@@ -10,6 +10,7 @@ import click
 import yaml
 
 from rompy.model import ModelRun
+from rompy.formatting import get_ascii_mode as ROMPY_ASCII_MODE
 
 installed = entry_points(group="rompy.config").names
 logger = logging.getLogger(__name__)
@@ -26,12 +27,19 @@ def configure_logging(verbosity=0):
     if verbosity >= 2:
         log_level = logging.DEBUG
 
-    # Create a custom formatter with timestamp and level
-    # Format the logger name to a fixed width to align messages
-    formatter = logging.Formatter(
-        '%(asctime)s [%(levelname)s] %(name)-20s: %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
+    # Check if simple logs are requested (no timestamps or module names)
+    simple_logs = os.environ.get('ROMPY_SIMPLE_LOGS', 'false').lower() == 'true'
+    
+    # Create a custom formatter with or without timestamp and level
+    if simple_logs:
+        # Simple format with just the message
+        formatter = logging.Formatter('%(message)s')
+    else:
+        # Detailed format with timestamp, level, and module name
+        formatter = logging.Formatter(
+            '%(asctime)s [%(levelname)s] %(name)-20s: %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
 
     # Configure console handler
     console = logging.StreamHandler(sys.stdout)
@@ -73,8 +81,9 @@ def configure_logging(verbosity=0):
 @click.option("--log-dir", envvar="ROMPY_LOG_DIR", help="Directory to save log files")
 @click.option("--show-warnings/--hide-warnings", default=False, help="Show Python warnings")
 @click.option("--ascii-only/--unicode", default=False, help="Use ASCII-only characters in output", envvar="ROMPY_ASCII_ONLY")
+@click.option("--simple-logs/--detailed-logs", default=False, help="Use simple log format without timestamps and module names", envvar="ROMPY_SIMPLE_LOGS")
 @click.option("--version", is_flag=True, help="Show version information and exit")
-def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, version):
+def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, simple_logs, version):
     """Run ROMPY model with the specified configuration.
 
     ROMPY (Regional Ocean Modeling PYthon) is a tool for generating and running
@@ -92,11 +101,13 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, versio
         --log-dir PATH          Directory to save log files
         --show-warnings         Show Python warnings
         --ascii-only            Use ASCII-only characters in output
+        --simple-logs           Use simple log format without timestamps and module names
         --version               Show version information and exit
 
     Examples:
         rompy swan config.yml
         rompy schism my_config.json --ascii-only
+        rompy swan config.yml --simple-logs -v
     """
     # Format the docstring with available models
     main.__doc__ = main.__doc__.format(models=", ".join(installed))
@@ -109,12 +120,16 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, versio
     ascii_value = 'true' if ascii_only else 'false'
     os.environ['ROMPY_ASCII_ONLY'] = ascii_value
 
-    # Force reloading of the ASCII_MODE value
-    import rompy
-    reload_value = rompy.ROMPY_ASCII_MODE()
+    # Set simple logs environment variable
+    simple_logs_value = 'true' if simple_logs else 'false'
+    os.environ['ROMPY_SIMPLE_LOGS'] = simple_logs_value
 
-    # Log the ascii mode setting
+    # Force reloading of the ASCII_MODE value
+    reload_value = ROMPY_ASCII_MODE()
+
+    # Log the settings
     logger.debug(f"ASCII mode set to: {ascii_only}")
+    logger.debug(f"Simple logs mode set to: {simple_logs} (no timestamps or module names)")
 
     # Configure logging
     if log_dir:
@@ -168,7 +183,6 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, versio
     logger.info(f"ROMPY Version: {rompy.__version__}")
     logger.info(f"ASCII Mode: {'Enabled' if ascii_only else 'Disabled'}")
     # Ensure we're actually using the correct mode by checking the helper function
-    from rompy import ROMPY_ASCII_MODE
     actual_mode = ROMPY_ASCII_MODE()
     if actual_mode != ascii_only:
         logger.warning(f"ASCII mode setting inconsistency detected - requested: {ascii_only}, actual: {actual_mode}")
