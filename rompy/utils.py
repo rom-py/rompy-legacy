@@ -8,7 +8,7 @@
 
 import importlib
 import logging
-from typing import Optional
+from typing import Optional, List, Tuple, Union
 from importlib.metadata import entry_points
 import numpy as np
 import pandas as pd
@@ -17,6 +17,57 @@ from scipy.spatial import KDTree
 
 
 logger = logging.getLogger(__name__)
+
+
+def get_formatted_box(title: str = None, 
+                     content: List[str] = None, 
+                     use_ascii: bool = None,
+                     width: int = 60) -> str:
+    """Create a formatted box with header, content, and footer.
+    
+    This utility function creates a nicely formatted box with optional title and content,
+    using either ASCII or Unicode characters. This helps standardize the formatting
+    across different components of ROMPY.
+    
+    Args:
+        title: Optional title to display in the box
+        content: Optional list of content lines to display in the box
+        use_ascii: Whether to use ASCII-only characters (True) or Unicode (False)
+                   If None, uses the global ROMPY_ASCII_MODE setting
+        width: Width of the box in characters
+        
+    Returns:
+        A formatted string with the complete box, ready to be split by newlines
+    """
+    # Import here to avoid circular imports
+    from rompy import get_formatted_box as core_get_formatted_box
+    
+    # Use the centralized function from __init__.py
+    return core_get_formatted_box(title, content, use_ascii, width)
+
+
+def get_formatted_header_footer(title: str = None, 
+                              use_ascii: bool = None, 
+                              width: int = 60) -> Tuple[str, str, str]:
+    """Get formatted header, footer, and bullet character.
+    
+    This utility function creates a matching header and footer for displaying
+    boxed content, using either ASCII or Unicode characters.
+    
+    Args:
+        title: Optional title to display in the header
+        use_ascii: Whether to use ASCII-only characters (True) or Unicode (False)
+                   If None, uses the global ROMPY_ASCII_MODE setting
+        width: Width of the box in characters
+        
+    Returns:
+        A tuple containing (header, footer, bullet_char)
+    """
+    # Import here to avoid circular imports
+    from rompy import get_formatted_header_footer as core_get_formatted_header_footer
+    
+    # Use the centralized function from __init__.py
+    return core_get_formatted_header_footer(title, use_ascii, width)
 
 
 def load_entry_points(egroup: str, etype: Optional[str] = None):

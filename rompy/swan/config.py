@@ -1,10 +1,16 @@
 import logging
+import os
 from pathlib import Path
 from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field, model_validator
 
 from rompy.core.config import BaseConfig
+from rompy.formatting import (
+    USE_ASCII_ONLY,
+    get_formatted_box,
+    get_formatted_header_footer
+)
 
 from rompy.swan.interface import (
     DataInterface,
@@ -21,8 +27,8 @@ from rompy.swan.components.group import STARTUP, INPGRIDS, PHYSICS, OUTPUT, LOCK
 from rompy.swan.grid import SwanGrid
 
 
+# Configure logger
 logger = logging.getLogger(__name__)
-
 
 HERE = Path(__file__).parent
 
@@ -58,6 +64,19 @@ class SwanConfig(BaseConfig):
         return output
 
     def __call__(self, runtime) -> str:
+        # Use formatting utilities imported at the top of the file
+        
+        # Log the process beginning
+        logger.info("")
+        box = get_formatted_box(
+            title="PROCESSING SWAN CONFIGURATION",
+            use_ascii=USE_ASCII_ONLY,
+            width=72 if USE_ASCII_ONLY else 70
+        )
+        for line in box.split("\n"):
+            logger.info(line)
+            
+        # Setup configuration
         ret = {}
         if not self.outputs.grid.period:
             self.outputs.grid.period = runtime.period
@@ -69,172 +88,147 @@ class SwanConfig(BaseConfig):
         )
         ret["physics"] = f"{self.physics.cmd}"
         ret["outputs"] = self.outputs.cmd
+        
+        # Log completion
+        logger.info("")
+        box = get_formatted_box(
+            title="SWAN CONFIGURATION PROCESSING COMPLETE",
+            use_ascii=USE_ASCII_ONLY,
+            width=72 if USE_ASCII_ONLY else 70
+        )
+        for line in box.split("\n"):
+            logger.info(line)
         ret["output_locs"] = self.outputs.spec.locations
         return ret
 
-    def __str__(self):
-        """Return a formatted string representation of the SwanConfig.
+    def _format_value(self, obj):
+        """Custom formatter for SwanConfig values.
 
-        This provides a human-readable representation of the configuration
-        that can be used in logs and other output.
+        This method provides special formatting for specific types used in
+        SwanConfig such as grid, forcing data, and physics components.
+
+        Args:
+            obj: The object to format
+
+        Returns:
+            A formatted string or None to use default formatting
         """
-        # Use helper function to avoid circular imports
-        from rompy import ROMPY_ASCII_MODE
-        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
+        from pathlib import Path
+        from datetime import datetime
+        # Use formatting utilities imported at the top of the file
 
-        # Format header
-        lines = []
-        if USE_ASCII_ONLY:
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("|                       SWAN MODEL CONFIGURATION                         |")
-            lines.append("+------------------------------------------------------------------------+")
+        # Format grid with relevant details and section header
+        if hasattr(obj, 'cgrid') and hasattr(obj, 'mxc'):
+            header, footer, _ = get_formatted_header_footer(
+                title="GRID CONFIGURATION", 
+                use_ascii=USE_ASCII_ONLY
+            )
 
-            # Format grid info
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("| GRID CONFIGURATION                                                     |")
-            lines.append("+------------------------------------------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃                       SWAN MODEL CONFIGURATION                    ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            return (
+                f"{header}\n"
+                f"  Resolution: {obj.mxc}x{obj.myc} cells\n"
+                f"  Origin:     ({obj.xpc}, {obj.ypc})\n"
+                f"  Rotation:   {obj.alpc}°\n"
+                f"  Size:       {obj.xlenc}x{obj.ylenc}\n"
+                f"{footer}"
+            )
 
-            # Format grid info
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃ GRID CONFIGURATION                                                ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+        # Format spectral resolution with section header
+        # Format spectrum with relevant details and section header
+        if hasattr(obj, 'fmin') and hasattr(obj, 'fmax'):
+            header, footer, _ = get_formatted_header_footer(
+                title="SPECTRAL RESOLUTION", 
+                use_ascii=USE_ASCII_ONLY
+            )
 
-        # Extract grid attributes
-        grid_attrs = {}
-        for attr_name in dir(self.grid):
-            if not attr_name.startswith('_') and not callable(getattr(self.grid, attr_name)):
-                grid_attrs[attr_name] = getattr(self.grid, attr_name)
+            return (
+                f"{header}\n"
+                f"  Frequency range: {obj.fmin}-{obj.fmax} Hz\n"
+                f"  Frequency bins:  {obj.nfreqs}\n"
+                f"  Direction bins:  {obj.ndirs}\n"
+                f"{footer}"
+            )
 
-        # Format grid attributes
-        for attr, value in grid_attrs.items():
-            if isinstance(value, (int, float, str, bool)):
-                bullet = "*" if USE_ASCII_ONLY else "•"
-                lines.append(f"   {bullet} {attr:<15} : {str(value)}")
+        # Format forcing components with section header
+        # Format forcing data with relevant details and section header
+        if hasattr(obj, 'wind') or hasattr(obj, 'boundary'):
+            header, footer, bullet = get_formatted_header_footer(
+                title="FORCING DATA", 
+                use_ascii=USE_ASCII_ONLY
+            )
+            lines = [header]
 
-        # Format spectral resolution
-        lines.append("")
-        if USE_ASCII_ONLY:
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("| SPECTRAL RESOLUTION                                                   |")
-            lines.append("+------------------------------------------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃ SPECTRAL RESOLUTION                                               ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            if hasattr(obj, 'wind') and obj.wind:
+                wind_source = getattr(obj.wind, 'source', 'Enabled')
+                lines.append(f"  {bullet} Wind:     {wind_source}")
+            if hasattr(obj, 'boundary') and obj.boundary:
+                boundary_source = getattr(obj.boundary, 'source', 'Enabled')
+                lines.append(f"  {bullet} Boundary: {boundary_source}")
+            if hasattr(obj, 'current') and obj.current:
+                current_source = getattr(obj.current, 'source', 'Enabled')
+                lines.append(f"  {bullet} Current:  {current_source}")
+            if hasattr(obj, 'bottom') and obj.bottom:
+                bottom_source = getattr(obj.bottom, 'source', 'Enabled')
+                lines.append(f"  {bullet} Bottom:   {bottom_source}")
 
-        spec_attrs = {}
-        for attr_name in dir(self.spectral_resolution):
-            if not attr_name.startswith('_') and not callable(getattr(self.spectral_resolution, attr_name)):
-                spec_attrs[attr_name] = getattr(self.spectral_resolution, attr_name)
+            lines.append(footer)
+            return "\n".join(lines)
 
-        # Format spectral attributes
-        for attr, value in spec_attrs.items():
-            if isinstance(value, (int, float, str, bool)):
-                bullet = "*" if USE_ASCII_ONLY else "•"
-                lines.append(f"   {bullet} {attr:<15} : {str(value)}")
+        # Format physics components with section header
+        # Format physics settings with relevant details and section header
+        if hasattr(obj, 'friction') and hasattr(obj, 'cmd'):
+            header, footer, bullet = get_formatted_header_footer(
+                title="PHYSICS SETTINGS", 
+                use_ascii=USE_ASCII_ONLY
+            )
+            friction = getattr(obj, 'friction', 'default')
 
-        # Format forcing data
-        lines.append("")
-        if USE_ASCII_ONLY:
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("| FORCING DATA                                                           |")
-            lines.append("+------------------------------------------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃ FORCING DATA                                                      ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            return (
+                f"{header}\n"
+                f"  {bullet} Friction: {friction}\n"
+                f"  {bullet} Command:  {obj.cmd}\n"
+                f"{footer}"
+            )
 
-        bullet = "*" if USE_ASCII_ONLY else "•"
-        if hasattr(self.forcing, "bottom") and self.forcing.bottom:
-            lines.append(f"   {bullet} Bottom       : {getattr(self.forcing.bottom, 'source', 'Enabled')}")
-        if hasattr(self.forcing, "current") and self.forcing.current:
-            lines.append(f"   {bullet} Current      : {getattr(self.forcing.current, 'source', 'Enabled')}")
-        if hasattr(self.forcing, "wind") and self.forcing.wind:
-            lines.append(f"   {bullet} Wind         : {getattr(self.forcing.wind, 'source', 'Enabled')}")
-        if hasattr(self.forcing, "boundary") and self.forcing.boundary:
-            lines.append(f"   {bullet} Boundary     : {getattr(self.forcing.boundary, 'source', 'Enabled')}")
+        # Format outputs with section header
+        # Format output settings with relevant details and section header
+        if hasattr(obj, 'grid') and hasattr(obj, 'spec'):
+            header, footer, bullet = get_formatted_header_footer(
+                title="OUTPUT CONFIGURATION", 
+                use_ascii=USE_ASCII_ONLY
+            )
+            sub_bullet = "-" if USE_ASCII_ONLY else "◦"
 
-        # Format physics settings
-        lines.append("")
-        if USE_ASCII_ONLY:
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("| PHYSICS SETTINGS                                                       |")
-            lines.append("+------------------------------------------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃ PHYSICS SETTINGS                                                  ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            lines = [header]
 
-        phys_attrs = {}
-        for attr_name in dir(self.physics):
-            if not attr_name.startswith('_') and not callable(getattr(self.physics, attr_name)):
-                phys_attrs[attr_name] = getattr(self.physics, attr_name)
+            # Grid outputs
+            lines.append(f"  {bullet} Grid Outputs:")
+            if hasattr(obj.grid, 'period'):
+                period_str = str(obj.grid.period)
+                lines.append(f"    {sub_bullet} Period: {period_str}")
 
-        # Format physics attributes
-        for attr, value in phys_attrs.items():
-            if isinstance(value, (int, float, str, bool)):
-                bullet = "*" if USE_ASCII_ONLY else "•"
-                lines.append(f"   {bullet} {attr:<15} : {str(value)}")
+            # Spec outputs
+            lines.append(f"  {bullet} Spectral Outputs:")
+            if hasattr(obj.spec, 'period'):
+                period_str = str(obj.spec.period)
+                lines.append(f"    {sub_bullet} Period: {period_str}")
+            if hasattr(obj.spec, 'locations'):
+                num_locs = len(obj.spec.locations)
+                lines.append(f"    {sub_bullet} Locations: {num_locs}")
 
-        # Format outputs
-        lines.append("")
-        if USE_ASCII_ONLY:
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("| OUTPUT CONFIGURATION                                                   |")
-            lines.append("+------------------------------------------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃ OUTPUT CONFIGURATION                                              ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            lines.append(footer)
+            return "\n".join(lines)
 
-        bullet = "*" if USE_ASCII_ONLY else "•"
-        sub_bullet = "-" if USE_ASCII_ONLY else "•"
+        # Format Path objects
+        if isinstance(obj, Path):
+            return str(obj)
 
-        # Add grid output info
-        if hasattr(self.outputs, "grid"):
-            lines.append("   Grid Outputs:")
-            grid_out_attrs = {}
-            for attr_name in dir(self.outputs.grid):
-                if not attr_name.startswith('_') and not callable(getattr(self.outputs.grid, attr_name)):
-                    grid_out_attrs[attr_name] = getattr(self.outputs.grid, attr_name)
+        # Format datetime objects
+        if isinstance(obj, datetime):
+            return obj.isoformat(' ')
 
-            for attr, value in grid_out_attrs.items():
-                if isinstance(value, (int, float, str, bool)):
-                    lines.append(f"     {sub_bullet} {attr:<13} : {str(value)}")
-
-        # Add spec output info
-        if hasattr(self.outputs, "spec"):
-            lines.append("   Spectral Outputs:")
-            spec_out_attrs = {}
-            for attr_name in dir(self.outputs.spec):
-                if not attr_name.startswith('_') and not callable(getattr(self.outputs.spec, attr_name)):
-                    spec_out_attrs[attr_name] = getattr(self.outputs.spec, attr_name)
-
-            for attr, value in spec_out_attrs.items():
-                if isinstance(value, (int, float, str, bool)) and attr != "locations":
-                    lines.append(f"     {sub_bullet} {attr:<13} : {str(value)}")
-
-        # Format template information
-        lines.append("")
-        if USE_ASCII_ONLY:
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("| TEMPLATE INFORMATION                                                   |")
-            lines.append("+------------------------------------------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃ TEMPLATE INFORMATION                                              ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-        template_path = self.template
-        if len(template_path) > 70:
-            template_path = "..." + template_path[-67:]
-        lines.append(f"   {template_path}")
-
-        return "\n".join(lines)
-
+        # Use default formatting for other types
+        return None
 
 STARTUP_TYPE = Annotated[STARTUP, Field(description="Startup components")]
 INITIAL_TYPE = Annotated[boundary.INITIAL, Field(description="Initial component")]
@@ -262,6 +256,8 @@ BOUNDARY_TYPES = Annotated[
     Field(description="Boundary component", discriminator="model_type"),
 ]
 
+
+logger = logging.getLogger(__name__)
 
 class SwanConfigComponents(BaseConfig):
     """SWAN config class.
@@ -348,153 +344,569 @@ class SwanConfigComponents(BaseConfig):
         """Define a SwanGrid from the cgrid field."""
         return SwanGrid.from_component(self.cgrid.grid)
 
-    def __str__(self):
-        """Return a formatted string representation of the SwanConfigComponents.
+    def _format_value(self, obj):
+        """Custom formatter for SwanConfigComponents values.
 
-        This provides a human-readable representation that can be used in logs and other output.
+        This method provides special formatting for specific types used in
+        SwanConfigComponents such as grid, boundary, and output components.
+
+        Args:
+            obj: The object to format
+
+        Returns:
+            A formatted string or None to use default formatting
         """
-        # Use helper function to avoid circular imports
+        # Import specific types if needed
+        from rompy.swan.grid import SwanGrid
+        from rompy import ROMPY_ASCII_MODE
+
+        # Get ASCII mode setting
+        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
+
+        # Format SwanConfigComponents (self-formatting)
+        if isinstance(obj, SwanConfigComponents):
+            header, footer, bullet = get_formatted_header_footer(
+                title="SWAN COMPONENTS CONFIGURATION",
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            # Add computational grid info if available
+            if hasattr(obj, 'cgrid') and obj.cgrid:
+                grid_name = type(obj.cgrid).__name__
+                lines.append(f"  {bullet} Computational Grid: {grid_name}")
+                # Try to add grid details
+                if hasattr(obj.cgrid, 'grid'):
+                    grid = obj.cgrid.grid
+                    if hasattr(grid, 'mx') and hasattr(grid, 'my'):
+                        lines.append(f"      Resolution: {grid.mx}x{grid.my} cells")
+                    if hasattr(grid, 'xp') and hasattr(grid, 'yp'):
+                        lines.append(f"      Origin: ({grid.xp}, {grid.yp})")
+                    if hasattr(grid, 'alp'):
+                        lines.append(f"      Rotation: {grid.alp}°")
+                    if hasattr(grid, 'xlen') and hasattr(grid, 'ylen'):
+                        lines.append(f"      Size: {grid.xlen}x{grid.ylen}")
+
+            # List all non-None components
+            components = {
+                "Startup": obj.startup,
+                "Input Grid": obj.inpgrid,
+                "Boundary": obj.boundary,
+                "Initial": obj.initial,
+                "Physics": obj.physics,
+                "Propagation": obj.prop,
+                "Numerics": obj.numeric,
+                "Output": obj.output,
+                "Lock-up": obj.lockup
+            }
+
+            for name, component in components.items():
+                if component is not None:
+                    if name == "Input Grid" and isinstance(component, list):
+                        lines.append(f"  {bullet} {name}: {len(component)} grid(s)")
+                        for i, ingrid in enumerate(component):
+                            lines.append(f"      Grid {i+1}: {type(ingrid).__name__}")
+                            # Try to add more details for each input grid
+                            var_name = getattr(ingrid, 'var', 'unknown')
+                            lines.append(f"          Variable: {var_name}")
+                    else:
+                        lines.append(f"  {bullet} {name}: {type(component).__name__}")
+                        # Add details for physics if available
+                        if name == "Physics" and hasattr(component, 'gen'):
+                            gen_type = type(component.gen).__name__
+                            lines.append(f"      Generation: {gen_type}")
+                            if hasattr(component, 'breaking'):
+                                break_type = type(component.breaking).__name__
+                                lines.append(f"      Breaking: {break_type}")
+                            if hasattr(component, 'friction'):
+                                fric_type = type(component.friction).__name__
+                                lines.append(f"      Friction: {fric_type}")
+                        # Add details for output if available
+                        if name == "Output" and hasattr(component, 'quantity'):
+                            if hasattr(component.quantity, 'quantities'):
+                                qtys = component.quantity.quantities
+                                qty_count = len(qtys) if isinstance(qtys, list) else 1
+                                lines.append(f"      Quantities: {qty_count} output group(s)")
+                            if hasattr(component, 'block'):
+                                lines.append(f"      Block output: Yes")
+                            if hasattr(component, 'specout'):
+                                lines.append(f"      Spectral output: Yes")
+
+            # Add template info if available
+            if hasattr(obj, 'template'):
+                template_path = obj.template
+                if len(template_path) > 50:  # Truncate long paths
+                    template_path = "..." + template_path[-47:]
+                lines.append(f"\n  {bullet} Template: {template_path}")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format SwanGrid with relevant grid details
+        if hasattr(obj, 'grid') and hasattr(obj, 'cgrid') and hasattr(obj.cgrid, 'grid'):
+            grid = obj.cgrid.grid
+
+            header, footer, _ = get_formatted_header_footer(
+                title="COMPUTATIONAL GRID",
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            return (
+                f"{header}\n"
+                f"  Type:       {getattr(grid, 'grid_type', 'REG')}\n"
+                f"  Resolution: {getattr(grid, 'mx', 0)}x{getattr(grid, 'my', 0)} cells\n"
+                f"  Origin:     ({getattr(grid, 'xp', 0.0)}, {getattr(grid, 'yp', 0.0)})\n"
+                f"  Rotation:   {getattr(grid, 'alp', 0.0)}°\n"
+                f"  Size:       {getattr(grid, 'xlen', 0.0)}x{getattr(grid, 'ylen', 0.0)}\n"
+                f"{footer}"
+            )
+
+        # Format CGRID component directly
+        from rompy.swan.components.cgrid import REGULAR
+        if isinstance(obj, REGULAR):
+            grid = obj.grid
+
+            header, footer, bullet = get_formatted_header_footer(
+                title="GRID CONFIGURATION",
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+            lines.append(f"  {bullet} Type:       {getattr(grid, 'grid_type', 'REG')}")
+            lines.append(f"  {bullet} Resolution: {getattr(grid, 'mx', 0)}x{getattr(grid, 'my', 0)} cells")
+            lines.append(f"  {bullet} Origin:     ({getattr(grid, 'xp', 0.0)}, {getattr(grid, 'yp', 0.0)})")
+            lines.append(f"  {bullet} Rotation:   {getattr(grid, 'alp', 0.0)}°")
+            lines.append(f"  {bullet} Size:       {getattr(grid, 'xlen', 0.0)}x{getattr(grid, 'ylen', 0.0)}")
+
+            # Add spectrum details if available
+            if hasattr(obj, 'spectrum'):
+                spectrum = obj.spectrum
+                lines.append("")
+                lines.append(f"  {bullet} Spectrum:")
+                if hasattr(spectrum, 'mdc'):
+                    lines.append(f"      Direction bins: {spectrum.mdc}")
+                if hasattr(spectrum, 'flow') and hasattr(spectrum, 'fhigh'):
+                    lines.append(f"      Frequency range: {spectrum.flow} - {spectrum.fhigh} Hz")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format grid directly
+        from rompy.swan.grid import SwanGrid
+        if isinstance(obj, SwanGrid):
+            header, footer, _ = get_formatted_header_footer(
+                title="SWAN GRID",
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            # Try to get values with fallback to None
+            mx = getattr(obj, 'mx', None)
+            my = getattr(obj, 'my', None)
+            xp = getattr(obj, 'xp', None)
+            yp = getattr(obj, 'yp', None)
+            alp = getattr(obj, 'alp', None)
+
+            lines = [header]
+            if mx and my:
+                lines.append(f"  Resolution: {mx}x{my} cells")
+            if xp and yp:
+                lines.append(f"  Origin:     ({xp}, {yp})")
+            if alp is not None:
+                lines.append(f"  Rotation:   {alp}°")
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format boundary components
+        if hasattr(obj, 'boundary') and obj.boundary is not None:
+            count = 1
+            if hasattr(obj.boundary, 'boundaries'):
+                count = len(obj.boundary.boundaries)
+
+            header, footer, _ = get_formatted_header_footer(
+                title="BOUNDARY CONDITIONS",
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            boundary_type = getattr(obj.boundary, 'type', 'spectral')
+            return (
+                f"{header}\n"
+                f"  Type:     {boundary_type}\n"
+                f"  Segments: {count}\n"
+                f"{footer}"
+            )
+
+        # Format output components
+        if hasattr(obj, 'output') and obj.output is not None:
+            locations = []
+            if hasattr(obj.output, 'locations'):
+                locations = obj.output.locations
+
+            header, footer, bullet = get_formatted_header_footer(
+                title="OUTPUT CONFIGURATION",
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+            lines.append(f"  {bullet} Locations: {len(locations)}")
+
+            if hasattr(obj.output, 'format'):
+                output_format = getattr(obj.output, 'format', 'default')
+                lines.append(f"  {bullet} Format:    {output_format}")
+
+            if hasattr(obj.output, 'variables'):
+                variables = getattr(obj.output, 'variables', [])
+                if variables:
+                    lines.append(f"  {bullet} Variables: {', '.join(variables) if len(variables) < 5 else f'{len(variables)} variables'}")
+
+            # Add detailed output info if available
+            if hasattr(obj.output, 'quantity'):
+                lines.append(f"  {bullet} Output quantities configuration available")
+
+            if hasattr(obj.output, 'block'):
+                lines.append(f"  {bullet} Block output configuration available")
+
+            if hasattr(obj.output, 'specout'):
+                lines.append(f"  {bullet} Spectral output configuration available")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format output component directly
+        if hasattr(obj, 'model_type') and getattr(obj, 'model_type') == 'output':
+            header, footer, bullet = get_formatted_header_footer(
+                title="OUTPUT CONFIGURATION",
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            # Points output
+            if hasattr(obj, 'points'):
+                points = obj.points
+                sname = getattr(points, 'sname', 'unknown')
+                xp = getattr(points, 'xp', [])
+                yp = getattr(points, 'yp', [])
+                if isinstance(xp, list) and isinstance(yp, list):
+                    num_points = min(len(xp), len(yp))
+                else:
+                    num_points = 1
+
+                lines.append(f"  {bullet} Output Points: {num_points}")
+                lines.append(f"      Name: {sname}")
+
+            # Output quantities
+            if hasattr(obj, 'quantity'):
+                qty = obj.quantity
+                if hasattr(qty, 'quantities') and isinstance(qty.quantities, list):
+                    lines.append(f"  {bullet} Output Quantities: {len(qty.quantities)} groups")
+                    for i, group in enumerate(qty.quantities):
+                        if hasattr(group, 'output') and len(group.output) > 0:
+                            outputs = group.output
+                            if len(outputs) < 5:
+                                lines.append(f"      Group {i+1}: {', '.join(outputs)}")
+                            else:
+                                lines.append(f"      Group {i+1}: {len(outputs)} variables")
+
+            # Table output
+            if hasattr(obj, 'table'):
+                table = obj.table
+                sname = getattr(table, 'sname', 'unknown')
+                fname = getattr(table, 'fname', 'unknown')
+                lines.append(f"  {bullet} Table Output:")
+                lines.append(f"      Name: {sname}")
+                lines.append(f"      File: {fname}")
+                if hasattr(table, 'output'):
+                    outputs = table.output
+                    if len(outputs) < 5:
+                        lines.append(f"      Variables: {', '.join(outputs)}")
+                    else:
+                        lines.append(f"      Variables: {len(outputs)} variables")
+
+            # Block output
+            if hasattr(obj, 'block'):
+                block = obj.block
+                sname = getattr(block, 'sname', 'unknown')
+                fname = getattr(block, 'fname', 'unknown')
+                lines.append(f"  {bullet} Block Output:")
+                lines.append(f"      Name: {sname}")
+                lines.append(f"      File: {fname}")
+                if hasattr(block, 'output'):
+                    outputs = block.output
+                    if len(outputs) < 5:
+                        lines.append(f"      Variables: {', '.join(outputs)}")
+                    else:
+                        lines.append(f"      Variables: {len(outputs)} variables")
+
+            # Spectral output
+            if hasattr(obj, 'specout'):
+                spec = obj.specout
+                sname = getattr(spec, 'sname', 'unknown')
+                fname = getattr(spec, 'fname', 'unknown')
+                lines.append(f"  {bullet} Spectral Output:")
+                lines.append(f"      Name: {sname}")
+                lines.append(f"      File: {fname}")
+                if hasattr(spec, 'dim'):
+                    dim_type = getattr(spec.dim, 'model_type', 'unknown')
+                    lines.append(f"      Dimension: {dim_type}")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format physics components
+        if hasattr(obj, 'physics') and obj.physics is not None:
+            physics_type = getattr(obj.physics, 'type', 'standard')
+
+            header, footer, bullet = get_formatted_header_footer(
+                title="PHYSICS CONFIGURATION",
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+            lines.append(f"  {bullet} Type:     {physics_type}")
+
+            if hasattr(obj.physics, 'friction'):
+                friction = getattr(obj.physics, 'friction', 'default')
+                lines.append(f"  {bullet} Friction: {friction}")
+
+            if hasattr(obj.physics, 'gen'):
+                gen = obj.physics.gen
+                gen_type = getattr(gen, 'model_type', 'unknown')
+                lines.append(f"  {bullet} Generation: {gen_type}")
+
+            if hasattr(obj.physics, 'breaking'):
+                breaking = obj.physics.breaking
+                break_type = getattr(breaking, 'model_type', 'unknown')
+                lines.append(f"  {bullet} Breaking: {break_type}")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format physics component directly
+        if hasattr(obj, 'model_type') and getattr(obj, 'model_type') == 'physics':
+            header, footer, bullet = get_formatted_header_footer(
+                title="PHYSICS CONFIGURATION",
+                use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            if hasattr(obj, 'gen'):
+                gen = obj.gen
+                gen_type = getattr(gen, 'model_type', 'unknown')
+                lines.append(f"  {bullet} Generation: {gen_type}")
+
+                if hasattr(gen, 'source_terms'):
+                    source_type = getattr(gen.source_terms, 'model_type', 'unknown')
+                    lines.append(f"      Source terms: {source_type}")
+
+            if hasattr(obj, 'breaking'):
+                breaking = obj.breaking
+                break_type = getattr(breaking, 'model_type', 'unknown')
+                gamma = getattr(breaking, 'gamma', None)
+                lines.append(f"  {bullet} Breaking: {break_type}")
+                if gamma:
+                    lines.append(f"      Gamma: {gamma}")
+
+            if hasattr(obj, 'friction'):
+                friction = obj.friction
+                fric_type = getattr(friction, 'model_type', 'unknown')
+                lines.append(f"  {bullet} Friction: {fric_type}")
+                if hasattr(friction, 'kn'):
+                    lines.append(f"      kn: {friction.kn}")
+
+            if hasattr(obj, 'triad'):
+                triad = obj.triad
+                triad_type = getattr(triad, 'model_type', 'unknown')
+                lines.append(f"  {bullet} Triad: {triad_type}")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Use default formatting for other types
+        return None
+
+    def __call__(self, runtime) -> str:
+        # Use helper functions to avoid circular imports
         from rompy import ROMPY_ASCII_MODE
         USE_ASCII_ONLY = ROMPY_ASCII_MODE()
 
-        # Format header
-        lines = []
-        if USE_ASCII_ONLY:
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("|                     SWAN COMPONENTS CONFIGURATION                      |")
-            lines.append("+------------------------------------------------------------------------+")
+        # Check for simple logs mode
+        SIMPLE_LOGS = os.environ.get('ROMPY_SIMPLE_LOGS', 'false').lower() == 'true'
 
-            # Add grid information - formatted as a table
-            lines.append("+-----------------------------+-------------------------------------+")
-            lines.append(f"| COMPUTATIONAL GRID          | {type(self.cgrid).__name__:<35} |")
-            lines.append("+-----------------------------+-------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃                    SWAN COMPONENTS CONFIGURATION                  ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+        logger.info("")
+        # Use the formatted box utility
+        box = get_formatted_box(
+            title="PROCESSING SWAN CONFIGURATION",
+            use_ascii=USE_ASCII_ONLY,
+            width=72 if USE_ASCII_ONLY else 70
+        )
+        for line in box.split("\n"):
+            logger.info(line)
 
-            # Add grid information - formatted as a table
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append(f"┃ COMPUTATIONAL GRID          ┃ {type(self.cgrid).__name__:<35} ┃")
-            lines.append("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫")
-
-        # Extract grid attributes
-        grid = self.cgrid.grid
-        grid_attrs = {}
-        for attr_name in dir(grid):
-            if not attr_name.startswith('_') and not callable(getattr(grid, attr_name)):
-                grid_attrs[attr_name] = getattr(grid, attr_name)
-
-        # Format grid attributes as table rows
-        for attr, value in grid_attrs.items():
-            import ipdb
-            if isinstance(value, (int, float, str, bool)):
-                if USE_ASCII_ONLY:
-                    lines.append(f"| {attr:<27} | {str(value):<35} |")
-                else:
-                    lines.append(f"┃ {attr:<27} ┃ {str(value):<35} ┃")
-
-        if USE_ASCII_ONLY:
-            lines.append("+-----------------------------+-------------------------------------+")
-        else:
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-
-        # Add information for each component if present - formatted as sections
-        components = {
-            "STARTUP": self.startup,
-            "INPUT GRID": self.inpgrid,
-            "BOUNDARY": self.boundary,
-            "INITIAL CONDITION": self.initial,
-            "PHYSICS": self.physics,
-            "PROPAGATION": self.prop,
-            "NUMERICS": self.numeric,
-            "OUTPUT": self.output,
-            "LOCK-UP": self.lockup
-        }
-
-        for name, component in components.items():
-            if component is not None:
-                # Add component header
-                lines.append("")
-                if USE_ASCII_ONLY:
-                    lines.append("+-----------------------------+-------------------------------------+")
-                    lines.append(f"| {name:<28} | {type(component).__name__:<35} |")
-                    lines.append("+-----------------------------+-------------------------------------+")
-                else:
-                    lines.append(f"┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-                    lines.append(f"┃ {name:<27} ┃ {type(component).__name__:<35} ┃")
-                    lines.append(f"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-
-                # Get component attributes
-                comp_attrs = {}
-                for attr_name in dir(component):
-                    if not attr_name.startswith('_') and not callable(getattr(component, attr_name)):
-                        attr_value = getattr(component, attr_name)
-                        if not isinstance(attr_value, (dict, list)) or attr_name == "model_type":
-                            comp_attrs[attr_name] = attr_value
-
-                # Format component attributes
-                if comp_attrs:
-                    max_attr_len = max(len(attr) for attr in comp_attrs.keys())
-                    for attr, value in comp_attrs.items():
-                        if isinstance(value, (int, float, str, bool)):
-                            if attr != "model_type":  # Skip model_type as it's in the header
-                                bullet = "*" if USE_ASCII_ONLY else "•"
-                                lines.append(f"   {bullet} {attr:<{max_attr_len}} : {str(value)}")
-
-        # Add template info
-        lines.append("")
-        if USE_ASCII_ONLY:
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("| TEMPLATE INFORMATION                                                  |")
-            lines.append("+------------------------------------------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃ TEMPLATE INFORMATION                                              ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-
-        template_path = self.template
-        if len(template_path) > 70:
-            template_path = "..." + template_path[-67:]
-        lines.append(f"   {template_path}")
-
-        return "\n".join(lines)
-
-    def __call__(self, runtime) -> str:
         period = runtime.period
         staging_dir = runtime.staging_dir
 
+        # Log configuration components
+        logger.info("Configuration components:")
+        if self.cgrid:
+            if SIMPLE_LOGS:
+                logger.info(f"CGRID: {type(self.cgrid).__name__}")
+            else:
+                logger.info(f"  - CGRID: {type(self.cgrid).__name__}")
+            # Log grid details using _format_value
+            grid_str = self._format_value(self.cgrid)
+            if grid_str:
+                for line in grid_str.split('\n'):
+                    if SIMPLE_LOGS:
+                        logger.info(f"{line}")
+                    else:
+                        logger.info(f"    {line}")
+        if self.startup:
+            if SIMPLE_LOGS:
+                logger.info(f"Startup: {type(self.startup).__name__}")
+            else:
+                logger.info(f"  - Startup: {type(self.startup).__name__}")
+            # Log startup details using _format_value
+            startup_str = self._format_value(self.startup)
+            if startup_str:
+                for line in startup_str.split('\n'):
+                    if SIMPLE_LOGS:
+                        logger.info(f"{line}")
+                    else:
+                        logger.info(f"    {line}")
+        if self.inpgrid:
+            if isinstance(self.inpgrid, list):
+                if SIMPLE_LOGS:
+                    logger.info(f"Input Grids: {len(self.inpgrid)} grid(s)")
+                else:
+                    logger.info(f"  - Input Grids: {len(self.inpgrid)} grid(s)")
+                # Log details for each input grid
+                for i, inpgrid in enumerate(self.inpgrid):
+                    if SIMPLE_LOGS:
+                        logger.info(f"Input Grid {i+1}: {type(inpgrid).__name__}")
+                    else:
+                        logger.info(f"    Input Grid {i+1}: {type(inpgrid).__name__}")
+                    inpgrid_str = self._format_value(inpgrid)
+                    if inpgrid_str:
+                        for line in inpgrid_str.split('\n'):
+                            if SIMPLE_LOGS:
+                                logger.info(f"  {line}")
+                            else:
+                                logger.info(f"      {line}")
+            else:
+                if SIMPLE_LOGS:
+                    logger.info(f"Input Grid: {type(self.inpgrid).__name__}")
+                else:
+                    logger.info(f"  - Input Grid: {type(self.inpgrid).__name__}")
+                # Log input grid details using _format_value
+                inpgrid_str = self._format_value(self.inpgrid)
+                if inpgrid_str:
+                    for line in inpgrid_str.split('\n'):
+                        if SIMPLE_LOGS:
+                            logger.info(f"  {line}")
+                        else:
+                            logger.info(f"    {line}")
+        if self.boundary:
+            if SIMPLE_LOGS:
+                logger.info(f"Boundary: {type(self.boundary).__name__}")
+            else:
+                logger.info(f"  - Boundary: {type(self.boundary).__name__}")
+            # Log boundary details using _format_value
+            boundary_str = self._format_value(self.boundary)
+            if boundary_str:
+                for line in boundary_str.split('\n'):
+                    if SIMPLE_LOGS:
+                        logger.info(f"{line}")
+                    else:
+                        logger.info(f"    {line}")
+        if self.physics:
+            if SIMPLE_LOGS:
+                logger.info(f"Physics: {type(self.physics).__name__}")
+            else:
+                logger.info(f"  - Physics: {type(self.physics).__name__}")
+            # Log physics details using _format_value
+            physics_str = self._format_value(self.physics)
+            if physics_str:
+                for line in physics_str.split('\n'):
+                    if SIMPLE_LOGS:
+                        logger.info(f"{line}")
+                    else:
+                        logger.info(f"    {line}")
+        if self.output:
+            if SIMPLE_LOGS:
+                logger.info(f"Output: {type(self.output).__name__}")
+            else:
+                logger.info(f"  - Output: {type(self.output).__name__}")
+            # Log output details using _format_value
+            output_str = self._format_value(self.output)
+            if output_str:
+                for line in output_str.split('\n'):
+                    if SIMPLE_LOGS:
+                        logger.info(f"{line}")
+                    else:
+                        logger.info(f"    {line}")
+
         # Interface the runtime with components that require times
         if self.output:
+
+            logger.debug("Configuring output interface with period")
             self.output = OutputInterface(group=self.output, period=period).group
         if self.lockup:
+
+            logger.debug("Configuring lockup interface with period")
             self.lockup = LockupInterface(group=self.lockup, period=period).group
 
         # Render each group component before passing to template
+        logger.info("Rendering SWAN configuration components")
+        logger.debug("Rendering CGRID configuration")
         ret = {"cgrid": self.cgrid.render()}
         if self.startup:
+            logger.debug("Rendering startup configuration")
             ret["startup"] = self.startup.render()
         if self.initial:
+            logger.debug("Rendering initial configuration")
             ret["initial"] = self.initial.render()
         if self.physics:
+            logger.debug("Rendering physics configuration")
             ret["physics"] = self.physics.render()
         if self.prop:
+            logger.debug("Rendering propagation configuration")
             ret["prop"] = self.prop.render()
         if self.numeric:
+            logger.debug("Rendering numeric configuration")
             ret["numeric"] = self.numeric.render()
         if self.output:
+            logger.debug("Rendering output configuration")
             ret["output"] = self.output.render()
         if self.lockup:
+            logger.debug("Rendering lockup configuration")
             ret["lockup"] = self.lockup.render()
 
         # inpgrid / boundary may use the Interface api so we need passing the args
         if self.inpgrid and isinstance(self.inpgrid, DataInterface):
+            logger.debug("Rendering inpgrid configuration with data interface")
             ret["inpgrid"] = self.inpgrid.render(staging_dir, self.grid, period)
         elif self.inpgrid:
+            logger.debug("Rendering inpgrid configuration")
             ret["inpgrid"] = self.inpgrid.render()
         if self.boundary and isinstance(self.boundary, BoundaryInterface):
+            logger.debug("Rendering boundary configuration with boundary interface")
             ret["boundary"] = self.boundary.render(staging_dir, self.grid, period)
         elif self.boundary:
+            logger.debug("Rendering boundary configuration")
             ret["boundary"] = self.boundary.render()
+
+        # Use formatting utilities imported at the top of the file
+
+        logger.info("")
+        # Use the formatted box utility
+        box = get_formatted_box(
+            title="SWAN CONFIGURATION RENDERING COMPLETE",
+            use_ascii=USE_ASCII_ONLY,
+            width=72 if USE_ASCII_ONLY else 70
+        )
+        for line in box.split("\n"):
+            logger.info(line)
 
         return ret
