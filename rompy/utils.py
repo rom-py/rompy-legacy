@@ -14,9 +14,33 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.spatial import KDTree
+from pydantic import BaseModel, ConfigDict, create_model
 
 
 logger = logging.getLogger(__name__)
+
+
+def create_import_error_class(class_name):
+    """
+    Create a Pydantic class that raises a helpful import error when instantiated.
+    """
+    error_message = (
+        f"{class_name} has been moved to the rompy_binary_datasources package.\n"
+        "Please install it using: pip install rompy_binary_datasources"
+    )
+
+    def __init__(self_model, *args, **kwargs):
+        raise ImportError(error_message)
+
+    model = create_model(
+        class_name,
+        __base__=BaseModel,
+        __config__=ConfigDict(arbitrary_types_allowed=True),
+    )
+    model.__init__ = __init__
+    model.__doc__ = error_message
+
+    return model
 
 
 def load_entry_points(egroup: str, etype: Optional[str] = None):
