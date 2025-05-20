@@ -35,7 +35,6 @@ def create_import_error_class(class_name):
 
     model = create_model(
         class_name,
-        __base__=BaseModel,
         __config__=ConfigDict(arbitrary_types_allowed=True),
         model_type=Literal["import_error"],
     )
