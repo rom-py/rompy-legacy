@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.spatial import KDTree
+from typing import Literal
 from pydantic import BaseModel, ConfigDict, create_model
 
 
@@ -36,6 +37,7 @@ def create_import_error_class(class_name):
         class_name,
         __base__=BaseModel,
         __config__=ConfigDict(arbitrary_types_allowed=True),
+        model_type=Literal["import_error"],
     )
     model.__init__ = __init__
     model.__doc__ = error_message
