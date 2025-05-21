@@ -21,10 +21,8 @@ from rompy.core.time import TimeRange
 from rompy.schism.bctides import Bctides  # Using direct implementation
 from rompy.schism.boundary import Boundary3D  # Using direct implementation
 from rompy.schism.boundary import BoundaryData
-from rompy.schism.grid import \
-    SCHISMGrid  # Now imported directly from grid module
-from rompy.schism.hotstart import \
-    SCHISMDataHotstart  # Import from dedicated module
+from rompy.schism.grid import SCHISMGrid
+from rompy.schism.hotstart import SCHISMDataHotstart
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
@@ -1238,7 +1236,7 @@ class SCHISMData(RompyBaseModel):
     wave: Optional[Union[DataBlob, SCHISMDataWave]] = Field(
         None, description="wave data"
     )
-    tides: Optional[Union[DataBlob, SCHISMDataTides]] = Field(
+    tides: Optional[Union[DataBlob, SCHISMDataTides, "SCHISMDataTidesEnhanced"]] = Field(
         None, description="tidal data"
     )
     hotstart: Optional[SCHISMDataHotstart] = Field(
@@ -1279,6 +1277,7 @@ class SCHISMData(RompyBaseModel):
             if type(data) is DataBlob:
                 logger.info(f"Calling get on DataBlob for {datatype}")
                 output = data.get(destdir)
+
             else:
                 logger.info(f"Calling get on {type(data).__name__} for {datatype}")
                 output = data.get(destdir, grid, time)
@@ -1294,3 +1293,12 @@ def get_valid_rename_dict(ds, rename_dict):
         if old_name in ds.dims and new_name not in ds.dims:
             valid_rename_dict[old_name] = new_name
     return valid_rename_dict
+
+# Import enhanced tides if available
+try:
+    from rompy.schism.tides_enhanced import SCHISMDataTidesEnhanced
+except ImportError:
+    SCHISMDataTidesEnhanced = None
+
+# Resolve forward references
+SCHISMData.model_rebuild()
