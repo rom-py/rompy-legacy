@@ -38,6 +38,27 @@ Main objects
    rompy.schism.data.SCHISMData
 
 
+Enhanced Tides
+--------------
+
+The enhanced tides module provides improved support for SCHISM tidal boundaries with more flexible configuration options.
+
+.. toctree::
+   :maxdepth: 2
+
+   enhanced_tides
+
+.. autosummary::
+   :nosignatures:
+   :toctree: _generated/
+
+   rompy.schism.tides_enhanced.TidalDataset
+   rompy.schism.tides_enhanced.BoundarySetup
+   rompy.schism.tides_enhanced.SCHISMDataTidesEnhanced
+   rompy.schism.tides_enhanced.create_tidal_only_config
+   rompy.schism.tides_enhanced.create_hybrid_config
+   rompy.schism.tides_enhanced.create_river_config
+   rompy.schism.tides_enhanced.create_nested_config
 
 
 Config Minimal
