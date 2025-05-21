@@ -148,3 +148,41 @@ def hycom_bnd_temp_3d(test_files_dir):
         filter=Filter(),
         crop_data=True,
     )
+
+
+
+@pytest.fixture
+def tidal_data_files(test_files_dir):
+    """Return paths to tidal elevation and velocity files for testing."""
+    tpxo_dir = test_files_dir / "tpxo9-neaus"
+    return {
+        "elevation": str(tpxo_dir / "h_m2s2n2.nc"),
+        "velocity": str(tpxo_dir / "u_m2s2n2.nc")
+    }
+
+@pytest.fixture
+def tidal_dataset(tidal_data_files):
+    """Return a tidal dataset instance for testing."""
+    from rompy.schism.tides_enhanced import TidalDataset
+    
+    return TidalDataset(
+        elevations=tidal_data_files["elevation"],
+        velocities=tidal_data_files["velocity"]
+    )
+
+@pytest.fixture
+def mock_tidal_data():
+    """Create mock tidal data for testing."""
+    import numpy as np
+    # Mock data for testing - enough for any boundary size
+    # For elevation: [amplitude, phase]
+    # For velocity: [u_amplitude, u_phase, v_amplitude, v_phase]
+    def mock_data(self, lons, lats, constituent, data_type="h"):
+        if data_type == "h":  # Elevation
+            return np.array([[0.5, 45.0] for _ in range(len(lons))])
+        elif data_type == "uv":  # Velocity
+            return np.array([[0.1, 30.0, 0.2, 60.0] for _ in range(len(lons))])
+        else:
+            raise ValueError(f"Unknown data type: {data_type}")
+    
+    return mock_data

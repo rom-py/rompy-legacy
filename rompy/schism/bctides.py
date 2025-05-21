@@ -954,8 +954,8 @@ class Bctides:
                             lons, lats, tname, "h"
                         )
 
-                        # Write header for constituent
-                        f.write(f"{tname.lower()}\n")
+                        # Write header for constituent - use original case for consistency
+                        f.write(f"{tname}\n")
 
                         # Write amplitude and phase for each node
                         for n in range(num_nodes):
@@ -978,8 +978,8 @@ class Bctides:
 
                 # Then write tidal constituents
                 for i, tname in enumerate(self.tnames):
-                    # Write header for constituent first
-                    f.write(f"{tname.lower()}\n")
+                    # Write header for constituent first - use original case for consistency
+                    f.write(f"{tname}\n")
 
                     # Try to interpolate velocity data
                     if self.tidal_velocities and os.path.exists(self.tidal_velocities):
