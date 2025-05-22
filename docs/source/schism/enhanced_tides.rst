@@ -371,7 +371,8 @@ Backward Compatibility and Legacy Integration
 
 The enhanced tides module is designed to be backward compatible with existing SCHISM configurations that use the standard ``SCHISMDataTides`` class. This compatibility is implemented in several practical ways:
 
-### Legacy Flags Support
+Legacy Flags Support
+~~~~~~~~~~~~~~~~~~~~
 
 One of the most important backward compatibility features is support for the legacy flags system. In the standard tides implementation, boundary types were configured using numeric flags:
 
@@ -428,7 +429,8 @@ Internally, the enhanced implementation converts these numeric flags to the corr
         salt_type=flags[i][3]   # 4 -> TracerType.SPACETIME
     )
 
-### YAML Configuration Comparison
+YAML Configuration Comparison
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here's how the configuration looks in both formats:
 
@@ -472,7 +474,8 @@ Here's how the configuration looks in both formats:
 
 Both configurations will work with the enhanced tides implementation, allowing for a gradual transition to the new format.
 
-### Integration with the Bctides Module
+Integration with the Bctides Module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The enhanced tides implementation builds upon and extends the functionality of the ``Bctides`` module, which is a direct implementation of SCHISM tidal boundary conditions based on the PyLibs approach. The relationship between these components is as follows:
 
@@ -491,7 +494,8 @@ The enhanced tides implementation uses the ``TidalBoundary`` class, which in tur
 
 The ``Bctides`` module is not redundant - it still handles the core functionality of generating the bctides.in file according to the SCHISM format specification. The enhanced tides implementation provides a more user-friendly interface on top of this core functionality.
 
-### Other Compatibility Features
+Other Compatibility Features
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. **Drop-in Replacement**: The ``SCHISMDataTidesEnhanced`` class implements the same interface as ``SCHISMDataTides``, allowing it to be used as a direct replacement in existing code:
 
@@ -526,7 +530,8 @@ The ``Bctides`` module is not redundant - it still handles the core functionalit
 
 These compatibility features ensure that existing SCHISM workflows can be gradually migrated to use the enhanced tides functionality without breaking changes, while still allowing access to the more advanced features when needed.
 
-### Why Not Rename to Bctides?
+Why Not Rename to Bctides?
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 While the enhanced tides implementation is closely related to the ``Bctides`` module, keeping them as separate components with different names serves several important purposes:
 
