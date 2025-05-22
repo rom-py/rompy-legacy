@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Dict, List, Literal, Optional, Union, Any, cast
 
 import numpy as np
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import ConfigDict, Field, model_validator, field_validator
 
 from rompy.core.config import BaseConfig
 from rompy.core.time import TimeRange
@@ -23,7 +23,7 @@ from rompy.schism.grid import SCHISMGrid
 
 # Import bctides and boundary modules
 from .bctides import Bctides
-from .boundary_tides import (
+from rompy.schism.boundary_tides import (
     TidalBoundary,
     BoundaryConfig,
     ElevationType,
@@ -34,6 +34,7 @@ from .boundary_tides import (
     create_river_boundary,
     create_nested_boundary
 )
+from rompy.schism.boundary_tides import ElevationType, VelocityType, TracerType
 
 logger = logging.getLogger(__name__)
 
@@ -242,6 +243,97 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             if isinstance(value, (np.bool_, np.integer, np.floating, np.ndarray)):
                 data[key] = to_python_type(value)
         return data
+        
+    @model_validator(mode="after")
+    def validate_tidal_data(self):
+        """Ensure tidal data is provided when needed for TIDAL or TIDALSPACETIME boundaries."""
+        boundaries = self.boundaries or {}
+        needs_tidal_data = False
+        
+        # Check setup_type first
+        if self.setup_type in ['tidal', 'hybrid']:
+            needs_tidal_data = True
+        
+        # Then check individual boundaries
+        for setup in boundaries.values():
+            if (hasattr(setup, 'elev_type') and setup.elev_type in [ElevationType.TIDAL, ElevationType.TIDALSPACETIME]) or \
+               (hasattr(setup, 'vel_type') and setup.vel_type in [VelocityType.TIDAL, VelocityType.TIDALSPACETIME]):
+                needs_tidal_data = True
+                break
+        
+        if needs_tidal_data and not self.tidal_data:
+            logger.warning("Tidal data is required for TIDAL or TIDALSPACETIME boundary types but was not provided")
+        
+        return self
+        
+    @model_validator(mode="after")
+    def validate_constant_values(self):
+        """Ensure constant values are provided when using CONSTANT boundary types."""
+        boundaries = self.boundaries or {}
+        
+        for idx, setup in boundaries.items():
+            if hasattr(setup, 'elev_type') and setup.elev_type == ElevationType.CONSTANT and setup.const_elev is None:
+                logger.warning(f"const_elev is required for CONSTANT elev_type in boundary {idx}")
+                
+            if hasattr(setup, 'vel_type') and setup.vel_type == VelocityType.CONSTANT and setup.const_flow is None:
+                logger.warning(f"const_flow is required for CONSTANT vel_type in boundary {idx}")
+                
+            if hasattr(setup, 'temp_type') and setup.temp_type == TracerType.CONSTANT and setup.const_temp is None:
+                logger.warning(f"const_temp is required for CONSTANT temp_type in boundary {idx}")
+                
+            if hasattr(setup, 'salt_type') and setup.salt_type == TracerType.CONSTANT and setup.const_salt is None:
+                logger.warning(f"const_salt is required for CONSTANT salt_type in boundary {idx}")
+        
+        return self
+        
+    @model_validator(mode="after")
+    def validate_relaxed_boundaries(self):
+        """Ensure relaxation parameters are provided for RELAXED velocity boundaries."""
+        boundaries = self.boundaries or {}
+        
+        for idx, setup in boundaries.items():
+            if hasattr(setup, 'vel_type') and setup.vel_type == VelocityType.RELAXED:
+                if not hasattr(setup, 'inflow_relax') or not hasattr(setup, 'outflow_relax'):
+                    logger.warning(f"inflow_relax and outflow_relax are required for RELAXED vel_type in boundary {idx}")
+        
+        return self
+        
+    @model_validator(mode="after")
+    def validate_flather_boundaries(self):
+        """Ensure mean_elev and mean_flow are provided for FLATHER boundaries."""
+        boundaries = self.boundaries or {}
+        
+        for idx, setup in boundaries.items():
+            if hasattr(setup, 'vel_type') and setup.vel_type == VelocityType.FLATHER:
+                if setup.mean_elev is None or setup.mean_flow is None:
+                    logger.warning(f"mean_elev and mean_flow are required for FLATHER vel_type in boundary {idx}")
+        
+        return self
+        
+    @model_validator(mode="after")
+    def validate_setup_type(self):
+        """Validate setup type specific requirements."""
+        if self.setup_type in ["tidal", "hybrid"]:
+            if not self.constituents:
+                logger.warning("constituents are required for tidal or hybrid setup_type")
+            if not self.tidal_data:
+                logger.warning("tidal_data is required for tidal or hybrid setup_type")
+                
+        elif self.setup_type == "river":
+            if self.boundaries:
+                has_flow = any(hasattr(s, 'const_flow') and s.const_flow is not None 
+                             for s in self.boundaries.values())
+                if not has_flow:
+                    logger.warning("At least one boundary should have const_flow for river setup_type")
+                    
+        elif self.setup_type == "nested":
+            if self.boundaries:
+                for idx, setup in self.boundaries.items():
+                    if hasattr(setup, 'vel_type') and setup.vel_type == VelocityType.RELAXED:
+                        if not hasattr(setup, 'inflow_relax') or not hasattr(setup, 'outflow_relax'):
+                            logger.warning(f"inflow_relax and outflow_relax are recommended for nested setup_type in boundary {idx}")
+        
+        return self
 
     def create_tidal_boundary(self, grid) -> TidalBoundary:
         """Create a TidalBoundary instance from this configuration.
