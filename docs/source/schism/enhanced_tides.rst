@@ -588,7 +588,8 @@ Each boundary type in the enhanced tides implementation has specific data input 
      - Both tidal and external files
      - ``TidalDataset`` + ``SCHISMDataOcean``
 
-### Velocity Types
+Velocity Types
+~~~~~~~~~~~~~
 
 .. list-table::
    :header-rows: 1
@@ -640,7 +641,8 @@ Each boundary type in the enhanced tides implementation has specific data input 
      - Relaxation parameters
      - ``BoundarySetup`` with relaxation parameters
 
-### Tracer Types (Temperature and Salinity)
+Tracer Types (Temperature and Salinity)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. list-table::
    :header-rows: 1
