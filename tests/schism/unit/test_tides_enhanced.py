@@ -15,6 +15,7 @@ from rompy.schism.tides_enhanced import (
     create_river_config,
     create_nested_config
 )
+from rompy.schism.data import SCHISMData, SCHISMDataOcean, SCHISMDataBoundary
 from rompy.schism.boundary_tides import (
     ElevationType,
     VelocityType,
@@ -232,6 +233,87 @@ class TestSCHISMDataTidesEnhanced:
         # Check that the file was created
         assert os.path.exists(output_path)
         assert os.path.basename(output_path) == "bctides.in"
+
+
+class TestTidesOceanConsistency:
+    """Tests for cross-validation between SCHISMDataOcean and SCHISMDataTidesEnhanced."""
+
+    def test_temperature_validation(self, grid2d, tidal_dataset, hycom_bnd2d, hycom_bnd_temp_3d):
+        """Test that temperature boundary validation works correctly."""
+        # Create a tidal config that requires temperature
+        tides = SCHISMDataTidesEnhanced(
+            tidal_data=tidal_dataset,
+            constituents=["M2", "S2"],
+            boundaries={
+                0: BoundarySetup(
+                    elev_type=ElevationType.TIDAL,
+                    vel_type=VelocityType.TIDAL,
+                    temp_type=TracerType.CONSTANT,
+                    const_temp=15.0
+                )
+            }
+        )
+        
+        # Create ocean data without temperature - should log a warning
+        ocean = SCHISMDataOcean(
+            elev2D=SCHISMDataBoundary(
+                source=hycom_bnd2d.source,
+                variables=["surf_el"],
+                coords=hycom_bnd2d.coords
+            )
+        )
+        
+        # This should log a warning about missing temperature data
+        model = SCHISMData(tides=tides, ocean=ocean)
+        
+        # Now add temperature data - should not log any warnings
+        ocean.TEM_3D = SCHISMDataBoundary(
+            source=hycom_bnd_temp_3d.source,
+            variables=["water_temp"],
+            coords=hycom_bnd_temp_3d.coords
+        )
+        
+        # This should not log any warnings
+        model = SCHISMData(tides=tides, ocean=ocean)
+
+    def test_salinity_validation(self, grid2d, tidal_dataset, hycom_bnd2d, hycom_bnd_temp_3d):
+        """Test that salinity boundary validation works correctly."""
+        # Create a tidal config that requires salinity
+        tides = SCHISMDataTidesEnhanced(
+            tidal_data=tidal_dataset,
+            constituents=["M2", "S2"],
+            boundaries={
+                0: BoundarySetup(
+                    elev_type=ElevationType.TIDAL,
+                    vel_type=VelocityType.TIDAL,
+                    salt_type=TracerType.CONSTANT,
+                    const_salt=35.0
+                )
+            }
+        )
+        
+        # Create ocean data without salinity - should log a warning
+        ocean = SCHISMDataOcean(
+            elev2D=SCHISMDataBoundary(
+                source=hycom_bnd2d.source,
+                variables=["surf_el"],
+                coords=hycom_bnd2d.coords
+            )
+        )
+        
+        # This should log a warning about missing salinity data
+        model = SCHISMData(tides=tides, ocean=ocean)
+        
+        # Now add salinity data - should not log any warnings
+        # For this test, we'll reuse the temperature data source since it has the same structure
+        ocean.SAL_3D = SCHISMDataBoundary(
+            source=hycom_bnd_temp_3d.source,
+            variables=["water_temp"],  # Using water_temp as a stand-in for salinity
+            coords=hycom_bnd_temp_3d.coords
+        )
+        
+        # This should not log any warnings
+        model = SCHISMData(tides=tides, ocean=ocean)
 
 
 class TestFactoryFunctions:

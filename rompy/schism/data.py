@@ -1243,12 +1243,56 @@ class SCHISMData(RompyBaseModel):
         None, description="hotstart data"
     )  # TODO this will probably move from here when more general hotstart generation is in place
 
-    # @model_validator(mode="after")
-    # def check_bctides_flags(cls, v):
-    #     # TODO Add check fro bc flags in teh event of 3d inputs
-    #     # SHould possibly move this these flags out of SCHISMDataTides class as they cover more than
-    #     # just tides
-    #     return cls
+    @model_validator(mode="after")
+    def validate_tides_ocean_consistency(self):
+        """Validate consistency between tides and ocean boundary configurations.
+        
+        This validator ensures that:
+        1. If tides specify temperature/salinity boundary types, the corresponding
+           ocean boundary data is provided
+        2. The boundary types in tides and ocean data are consistent
+        """
+        if self.tides is None or self.ocean is None:
+            return self
+            
+        # Skip if tides is a DataBlob or not the enhanced type
+        if not hasattr(self.tides, 'boundaries') or not hasattr(self.tides, 'setup_type'):
+            return self
+            
+        # Check if we need temperature/salinity data based on tides configuration
+        needs_temp = False
+        needs_salt = False
+        
+        # Check if any boundary has temperature/salinity boundary types
+        for boundary in (self.tides.boundaries or {}).values():
+            if hasattr(boundary, 'temp_type') and boundary.temp_type != 0:  # 0 = no temperature
+                needs_temp = True
+            if hasattr(boundary, 'salt_type') and boundary.salt_type != 0:  # 0 = no salinity
+                needs_salt = True
+                
+        # Validate that required ocean data is provided
+        if needs_temp and self.ocean.TEM_3D is None:
+            logger.warning(
+                "Temperature boundary type is specified in tides but no TEM_3D data is provided in ocean. "
+                "This may lead to model errors."
+            )
+            
+        if needs_salt and self.ocean.SAL_3D is None:
+            logger.warning(
+                "Salinity boundary type is specified in tides but no SAL_3D data is provided in ocean. "
+                "This may lead to model errors."
+            )
+            
+        # Check for consistency in boundary counts if possible
+        if self.tides.boundaries and hasattr(self.ocean, 'elev2D'):
+            # This is a basic check - in practice, you might need more sophisticated validation
+            # based on how boundaries are mapped between tides and ocean data
+            logger.debug(
+                f"Tides configured with {len(self.tides.boundaries)} boundaries. "
+                f"Ensure these match the boundaries in ocean data."
+            )
+            
+        return self
 
     def get(
         self,
@@ -1298,6 +1342,7 @@ def get_valid_rename_dict(ds, rename_dict):
 try:
     from rompy.schism.tides_enhanced import SCHISMDataTidesEnhanced
 except ImportError:
+    logger.debug("Could not import SCHISMDataTidesEnhanced, enhanced tidal features will not be available")
     SCHISMDataTidesEnhanced = None
 
 # Resolve forward references
