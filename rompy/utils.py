@@ -36,10 +36,11 @@ def create_import_error_class(class_name):
     model = create_model(
         class_name,
         __config__=ConfigDict(arbitrary_types_allowed=True),
-        model_type=(Literal, Literal["import_error"]),
+        __doc__=error_message,
+        __base__=BaseModel,
+        model_type=Literal["import_error"],
     )
     model.__init__ = __init__
-    model.__doc__ = error_message
 
     return model
 
