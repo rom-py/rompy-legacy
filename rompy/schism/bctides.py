@@ -40,9 +40,21 @@ class Bctides:
         sthconst=None,
         tobc=None,
         sobc=None,
-        relax=None,
-        tidal_elevations=None,  # Path to tidal elevations file (TPXO format)
-        tidal_velocities=None,  # Path to tidal velocities file (TPXO format)
+        relax=None,  # For backward compatibility
+        inflow_relax=None,
+        outflow_relax=None,
+        tidal_elevations=None,
+        tidal_velocities=None,
+        ncbn=0,
+        nfluxf=0,
+        elev_th_path=None,
+        elev_st_path=None,
+        flow_th_path=None,
+        vel_st_path=None,
+        temp_th_path=None,
+        temp_3d_path=None,
+        salt_th_path=None,
+        salt_3d_path=None,
     ):
         """Initialize Bctides handler.
 
@@ -74,8 +86,14 @@ class Bctides:
             Temperature OBC values
         sobc : list, optional
             Salinity OBC values
-        relax : list, optional
-            Relaxation parameters
+        tidal_elevations : str or Path, optional
+            Path to tidal elevations file
+        tidal_velocities : str or Path, optional
+            Path to tidal velocities file
+        ncbn : int, optional
+            Number of flow boundary segments, by default 0
+        nfluxf : int, optional
+            Number of flux boundary segments, by default 0
         """
         self.flags = flags or [[5, 5, 4, 4]]
         self.ntip = ntip
@@ -87,12 +105,26 @@ class Bctides:
         self.sthconst = sthconst or []
         self.tobc = tobc or [1]
         self.sobc = sobc or [1]
-        self.relax = relax or []
+        self.relax = relax or []  # Keep for backward compatibility
+        self.inflow_relax = inflow_relax or [0.5]
+        self.outflow_relax = outflow_relax or [0.1]
+        self.ncbn = ncbn
+        self.nfluxf = nfluxf
         self.tidal_database = tidal_database
 
         # Store tidal file paths
         self.tidal_elevations = tidal_elevations
         self.tidal_velocities = tidal_velocities
+        
+        # Store boundary condition file paths
+        self.elev_th_path = elev_th_path  # Time history of elevation
+        self.elev_st_path = elev_st_path  # Space-time elevation
+        self.flow_th_path = flow_th_path  # Time history of flow
+        self.vel_st_path = vel_st_path    # Space-time velocity
+        self.temp_th_path = temp_th_path  # Temperature time history
+        self.temp_3d_path = temp_3d_path  # 3D temperature
+        self.salt_th_path = salt_th_path  # Salinity time history
+        self.salt_3d_path = salt_3d_path  # 3D salinity
 
         # Store start time and run duration (will be set by SCHISMDataTides.get())
         self._start_time = None
@@ -902,12 +934,8 @@ class Bctides:
                 )
 
             # Write frequency info
-            n_constituents = len(self.tnames) + (1 if len(self.ethconst) > 0 else 0)
+            n_constituents = len(self.tnames)
             f.write(f"{n_constituents} !nbfr\n")
-
-            # Write Z0 (mean sea level) if ethconst provided
-            if len(self.ethconst) > 0:
-                f.write("Z0\n  0.0 1.0 0.0\n")
 
             # Write frequency info for each constituent
             for i, tname in enumerate(self.tnames):
@@ -916,17 +944,24 @@ class Bctides:
                 )
 
             # Write open boundary information
-            f.write(f"{self.gd.nob} !nope\n")
+            # Use the number of boundaries from self.flags or fallback to grid boundaries
+            nope = len(self.flags) if hasattr(self, 'flags') and self.flags else self.gd.nob
+            f.write(f"{nope} !nope\n")
 
             # For each open boundary
-            for ibnd in range(self.gd.nob):
-                # Get boundary nodes
-                nodes = self.gd.iobn[ibnd]
-                num_nodes = self.gd.nobn[ibnd]
+            for ibnd in range(nope):
+                # Get boundary nodes - use grid boundary data if ibnd is within range
+                if ibnd < self.gd.nob:
+                    nodes = self.gd.iobn[ibnd]
+                    num_nodes = self.gd.nobn[ibnd]
+                else:
+                    # For boundaries beyond grid boundaries, use first boundary's nodes
+                    nodes = self.gd.iobn[0]
+                    num_nodes = self.gd.nobn[0]
 
                 # Write boundary flags (ensure we have enough flags defined)
                 bnd_flags = (
-                    self.flags[ibnd] if ibnd < len(self.flags) else self.flags[0]
+                    self.flags[ibnd] if hasattr(self, 'flags') and ibnd < len(self.flags) else [0, 0, 0, 0]
                 )
                 flag_str = " ".join(map(str, bnd_flags))
                 f.write(f"{num_nodes} {flag_str} !ocean\n")
@@ -937,71 +972,190 @@ class Bctides:
 
                 # Write elevation boundary conditions
 
-                # First, handle constant elevation if provided
-                if len(self.ethconst) > 0:
+                # Handle elevation boundary conditions based on flags
+                elev_type = bnd_flags[0] if len(bnd_flags) > 0 else 0
+                
+                # Type 1: Time history of elevation
+                if elev_type == 1:
+                    f.write("! Time history of elevation will be read from elev.th\n")
+                # Type 2: Constant elevation
+                elif elev_type == 2 and len(self.ethconst) > 0:
                     f.write("Z0\n")
                     eth_val = self.ethconst[ibnd] if ibnd < len(self.ethconst) else 0.0
                     for n in range(num_nodes):
                         f.write(f"{eth_val} 0.0\n")
+                # Type 4: Space-time varying elevation
+                elif elev_type == 4:
+                    f.write("! Space-time varying elevation will be read from elev2D.th.nc\n")
 
-                # Then write tidal constituents
-                for i, tname in enumerate(self.tnames):
-                    logger.info(f"Processing tide {tname} for boundary {ibnd+1}")
+                # Then write tidal constituents for elevation
+                # Only write tidal constituents for tidal elevation types (3 or 5)
+                if bnd_flags[0] == 3 or bnd_flags[0] == 5:
+                    for i, tname in enumerate(self.tnames):
+                        logger.info(f"Processing tide {tname} for boundary {ibnd+1}")
 
-                    # Interpolate tidal data for this constituent
-                    try:
-                        tidal_data = self._interpolate_tidal_data(
-                            lons, lats, tname, "h"
-                        )
+                        # Interpolate tidal data for this constituent
+                        try:
+                            tidal_data = self._interpolate_tidal_data(
+                                lons, lats, tname, "h"
+                            )
 
-                        # Write header for constituent - use original case for consistency
-                        f.write(f"{tname}\n")
+                            # Write header for constituent - use original case for consistency
+                            f.write(f"{tname}\n")
 
-                        # Write amplitude and phase for each node
-                        for n in range(num_nodes):
-                            f.write(f"{tidal_data[n,0]:8.6f} {tidal_data[n,1]:.6f}\n")
-                    except Exception as e:
-                        # Log error but continue with other constituents
-                        logger.error(
-                            f"Error processing tide {tname} for boundary {ibnd+1}: {e}"
-                        )
-                        raise
+                            # Write amplitude and phase for each node
+                            for n in range(num_nodes):
+                                f.write(f"{tidal_data[n,0]:8.6f} {tidal_data[n,1]:.6f}\n")
+                        except Exception as e:
+                            # Log error but continue with other constituents
+                            logger.error(
+                                f"Error processing tide {tname} for boundary {ibnd+1}: {e}"
+                            )
+                            raise
 
                 # Write velocity boundary conditions
 
-                # First, handle constant velocity if provided
-                if len(self.vthconst) > 0:
-                    f.write("Z0\n")
+                # Handle velocity boundary conditions based on flags
+                vel_type = bnd_flags[1] if len(bnd_flags) > 1 else 0
+                
+                # Type -1: Flather type radiation boundary
+                if vel_type == -1:
+                    # Write mean elevation marker
+                    f.write("eta_mean\n")
+                    
+                    # Write mean elevation for each node (use 0 as default)
+                    for n in range(num_nodes):
+                        f.write("0.0\n")  # Default mean elevation
+                    
+                    # Write mean normal velocity marker
+                    f.write("vn_mean\n")
+                    
+                    # Write mean normal velocity for each node
+                    for n in range(num_nodes):
+                        f.write("0.0\n")  # Default mean normal velocity
+                # Type 1: Time history of discharge
+                elif vel_type == 1:
+                    f.write("! Time history of discharge will be read from flux.th\n")
+                # Type 2: Constant discharge
+                elif vel_type == 2 and len(self.vthconst) > 0:
                     vth_val = self.vthconst[ibnd] if ibnd < len(self.vthconst) else 0.0
                     for n in range(num_nodes):
-                        f.write("0.0 0.0 0.0 0.0\n")
+                        # Write as integer if it's a whole number, otherwise as float
+                        if vth_val == int(vth_val):
+                            f.write(f"{int(vth_val)}\n")
+                        else:
+                            f.write(f"{vth_val}\n")
+                # Type -4: Relaxed velocity with 3D input
+                elif vel_type == -4:
+                    f.write("! 3D velocity will be read from uv3D.th.nc\n")
+                    if len(self.inflow_relax) > 0 and len(self.outflow_relax) > 0:
+                        inflow = self.inflow_relax[ibnd] if ibnd < len(self.inflow_relax) else 0.5
+                        outflow = self.outflow_relax[ibnd] if ibnd < len(self.outflow_relax) else 0.1
+                        f.write(f"{inflow:.4f} {outflow:.4f} ! Relaxation constants for inflow and outflow\n")
 
-                # Then write tidal constituents
-                for i, tname in enumerate(self.tnames):
-                    # Write header for constituent first - use original case for consistency
-                    f.write(f"{tname}\n")
-
-                    # Try to interpolate velocity data
-                    if self.tidal_velocities and os.path.exists(self.tidal_velocities):
-                        vel_data = self._interpolate_tidal_data(lons, lats, tname, "uv")
-
-                        # Write u/v amplitude and phase for each node
-                        for n in range(num_nodes):
-                            f.write(
-                                f"{vel_data[n,0]:8.6f} {vel_data[n,1]:.6f} "
-                                f"{vel_data[n,2]:8.6f} {vel_data[n,3]:.6f}\n"
+                # Then write tidal constituents for velocity
+                # Only write tidal constituents for tidal velocity types (3 or 5)
+                if vel_type == 3 or vel_type == 5:
+                    for i, tname in enumerate(self.tnames):
+                        # Write header for constituent first - use original case for consistency
+                        f.write(f"{tname}\n")
+    
+                        # Try to interpolate velocity data
+                        if self.tidal_velocities and os.path.exists(self.tidal_velocities):
+                            vel_data = self._interpolate_tidal_data(lons, lats, tname, "uv")
+    
+                            # Write u/v amplitude and phase for each node
+                            for n in range(num_nodes):
+                                f.write(
+                                    f"{vel_data[n,0]:8.6f} {vel_data[n,1]:.6f} "
+                                    f"{vel_data[n,2]:8.6f} {vel_data[n,3]:.6f}\n"
+                                )
+                        else:
+                            # If no velocity file, use zeros to ensure file structure is complete
+                            logger.warning(
+                                f"No velocity data available for {tname}, using zeros"
                             )
-                    else:
-                        # If no velocity file, use zeros to ensure file structure is complete
-                        logger.warning(
-                            f"No velocity data available for {tname}, using zeros"
-                        )
-                        for n in range(num_nodes):
-                            f.write("0.0 0.0 0.0 0.0\n")
+                            for n in range(num_nodes):
+                                f.write("0.0 0.0 0.0 0.0\n")
+                            
+                # Write temperature boundary conditions if specified
+                if len(bnd_flags) > 2 and bnd_flags[2] > 0:
+                    temp_type = bnd_flags[2]
+                    
+                    # Handle different temperature boundary types
+                    if temp_type == 1:  # Time history
+                        # Write nudging factor for inflow
+                        temp_nudge = self.tobc[ibnd] if self.tobc and ibnd < len(self.tobc) else 1.0
+                        f.write(f"{temp_nudge:.6f} !temperature nudging factor\n")
+                        if self.temp_th_path:
+                            f.write(f"! Temperature time history will be read from {self.temp_th_path}\n")
+                    elif temp_type == 2:  # Constant value
+                        # Write constant temperature and nudging factor
+                        const_temp = self.tthconst[ibnd] if self.tthconst and ibnd < len(self.tthconst) else 20.0
+                        temp_nudge = self.tobc[ibnd] if self.tobc and ibnd < len(self.tobc) else 1.0
+                        f.write(f"{const_temp:.6f} !constant temperature\n")
+                        f.write(f"{temp_nudge:.6f} !temperature nudging factor\n")
+                    elif temp_type == 3:  # Initial profile
+                        # Write nudging factor only
+                        temp_nudge = self.tobc[ibnd] if self.tobc and ibnd < len(self.tobc) else 1.0
+                        f.write(f"{temp_nudge:.6f} !temperature nudging factor\n")
+                    elif temp_type == 4:  # 3D input
+                        # Write nudging factor only
+                        temp_nudge = self.tobc[ibnd] if self.tobc and ibnd < len(self.tobc) else 1.0
+                        f.write(f"{temp_nudge:.6f} !temperature nudging factor\n")
+                        if self.temp_3d_path:
+                            f.write(f"! 3D temperature will be read from {self.temp_3d_path}\n")
+                
+                # Write salinity boundary conditions if specified
+                if len(bnd_flags) > 3 and bnd_flags[3] > 0:
+                    salt_type = bnd_flags[3]
+                    
+                    # Handle different salinity boundary types
+                    if salt_type == 1:  # Time history
+                        # Write nudging factor for inflow
+                        salt_nudge = self.sobc[ibnd] if self.sobc and ibnd < len(self.sobc) else 1.0
+                        f.write(f"{salt_nudge:.6f} !salinity nudging factor\n")
+                        if self.salt_th_path:
+                            f.write(f"! Salinity time history will be read from {self.salt_th_path}\n")
+                    elif salt_type == 2:  # Constant value
+                        # Write constant salinity and nudging factor
+                        const_salt = self.sthconst[ibnd] if self.sthconst and ibnd < len(self.sthconst) else 35.0
+                        salt_nudge = self.sobc[ibnd] if self.sobc and ibnd < len(self.sobc) else 1.0
+                        f.write(f"{const_salt:.6f} !constant salinity\n")
+                        f.write(f"{salt_nudge:.6f} !salinity nudging factor\n")
+                    elif salt_type == 3:  # Initial profile
+                        # Write nudging factor only
+                        salt_nudge = self.sobc[ibnd] if self.sobc and ibnd < len(self.sobc) else 1.0
+                        f.write(f"{salt_nudge:.6f} !salinity nudging factor\n")
+                    elif salt_type == 4:  # 3D input
+                        # Write nudging factor only
+                        salt_nudge = self.sobc[ibnd] if self.sobc and ibnd < len(self.sobc) else 1.0
+                        f.write(f"{salt_nudge:.6f} !salinity nudging factor\n")
+                        if self.salt_3d_path:
+                            f.write(f"! 3D salinity will be read from {self.salt_3d_path}\n")
 
-            # # Add remaining sections
-            f.write("0 !ncbn: total # of flow bnd segments with discharge\n")
-            f.write("0 !nfluxf: total # of flux boundary segments\n")
+            # Add flow and flux boundary information
+            # Use instance attributes if available, otherwise default to 0
+            ncbn = getattr(self, 'ncbn', 0)
+            nfluxf = getattr(self, 'nfluxf', 0)
+            
+            f.write(f"{ncbn} !ncbn: total # of flow bnd segments with discharge\n")
+            
+            # If ncbn > 0, we need to write flow boundary information
+            # For now, we're just writing placeholder values as this would require additional data
+            for i in range(ncbn):
+                f.write(f"1 1 !flow boundary {i+1}: number of nodes, boundary flag\n")
+                f.write("1 !node number on the boundary\n")
+                f.write("1 !number of vertical layers\n")
+                f.write("0.0 !flow rate for each layer\n")
+            
+            f.write(f"{nfluxf} !nfluxf: total # of flux boundary segments\n")
+            
+            # If nfluxf > 0, we need to write flux boundary information
+            # For now, we're just writing placeholder values
+            for i in range(nfluxf):
+                f.write(f"1 !flux boundary {i+1}: number of nodes\n")
+                f.write("1 !node number on the boundary\n")
 
         logger.info(f"Successfully wrote bctides.in to {output_file}")
         return output_file

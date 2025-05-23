@@ -131,6 +131,29 @@ class BoundarySetup(RompyBaseModel):
         1.0, description="Salinity nudging factor (0-1)"
     )
 
+    # File paths for different boundary types
+    temp_th_path: Optional[str] = Field(
+        None, description="Path to temperature time history file (for type 1)"
+    )
+    temp_3d_path: Optional[str] = Field(
+        None, description="Path to 3D temperature file (for type 4)"
+    )
+    salt_th_path: Optional[str] = Field(
+        None, description="Path to salinity time history file (for type 1)"
+    )
+    salt_3d_path: Optional[str] = Field(
+        None, description="Path to 3D salinity file (for type 4)"
+    )
+    flow_th_path: Optional[str] = Field(
+        None, description="Path to flow time history file (for type 1)"
+    )
+    elev_st_path: Optional[str] = Field(
+        None, description="Path to space-time elevation file (for types 2/4)"
+    )
+    vel_st_path: Optional[str] = Field(
+        None, description="Path to space-time velocity file (for types 2/4)"
+    )
+
     # Flather boundary parameters
     mean_elev: Optional[List[float]] = Field(
         None, description="Mean elevation for Flather boundaries"
@@ -157,7 +180,14 @@ class BoundarySetup(RompyBaseModel):
             tobc=self.temp_nudge,
             sobc=self.salt_nudge,
             eta_mean=self.mean_elev,
-            vn_mean=self.mean_flow
+            vn_mean=self.mean_flow,
+            temp_th_path=self.temp_th_path,
+            temp_3d_path=self.temp_3d_path,
+            salt_th_path=self.salt_th_path,
+            salt_3d_path=self.salt_3d_path,
+            flow_th_path=self.flow_th_path,
+            elev_st_path=self.elev_st_path,
+            vel_st_path=self.vel_st_path
         )
 
 
@@ -178,22 +208,23 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
     )
 
     # Basic tidal configuration
-    constituents: Optional[List[str]] = Field(
-        None, description="Tidal constituents to include"
+    constituents: List[str] = Field(
+        default_factory=lambda: ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"],
+        description="Tidal constituents to include"
     )
-    tidal_database: Optional[str] = Field(
-        "tpxo", description="Tidal database to use"
+    tidal_database: str = Field(
+        default="tpxo", description="Tidal database to use"
     )
 
     # Earth tidal potential settings
-    ntip: Optional[int] = Field(
-        0, description="Number of tidal potential regions (0 to disable, >0 to enable)"
+    ntip: int = Field(
+        default=0, description="Number of tidal potential regions (0 to disable, >0 to enable)"
     )
-    tip_dp: Optional[float] = Field(
-        1.0, description="Depth threshold for tidal potential calculations"
+    tip_dp: float = Field(
+        default=1.0, description="Depth threshold for tidal potential calculations"
     )
-    cutoff_depth: Optional[float] = Field(
-        50.0, description="Cutoff depth for tides"
+    cutoff_depth: float = Field(
+        default=50.0, description="Cutoff depth for tides"
     )
 
     # Legacy boundary configuration
@@ -223,8 +254,8 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
     )
 
     # Enhanced boundary configuration
-    boundaries: Optional[Dict[int, BoundarySetup]] = Field(
-        None, description="Enhanced boundary configuration by boundary index"
+    boundaries: Dict[int, BoundarySetup] = Field(
+        default_factory=dict, description="Enhanced boundary configuration by boundary index"
     )
 
     # Predefined configurations
@@ -337,6 +368,9 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
 
     def create_tidal_boundary(self, grid) -> TidalBoundary:
         """Create a TidalBoundary instance from this configuration.
+        
+        This method takes the current configuration and creates a properly configured
+        TidalBoundary object that can be used to write bctides.in files.
 
         Parameters
         ----------
@@ -355,10 +389,13 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             tidal_elevations = self.tidal_data.elevations
             tidal_velocities = self.tidal_data.velocities
 
+        # Ensure constituents is a valid list
+        constituents = self.constituents if self.constituents is not None else ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"]
+
         # Create boundary handler
         boundary = TidalBoundary(
             grid_path=grid.hgrid.source,
-            constituents=self.constituents,
+            constituents=constituents,
             tidal_database=self.tidal_database,
             tidal_elevations=tidal_elevations,
             tidal_velocities=tidal_velocities,
@@ -368,7 +405,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
         )
 
         # Configure boundaries
-        if self.boundaries:
+        if self.boundaries is not None and len(self.boundaries) > 0:
             # Use enhanced boundary configuration
             for idx, setup in self.boundaries.items():
                 boundary.set_boundary_config(idx, setup.to_boundary_config())
@@ -493,6 +530,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
         logger.info(f"Writing bctides.in to: {bctides_path}")
 
         try:
+            # Use the enhanced write_boundary_file method that properly handles all configs
             boundary.write_boundary_file(bctides_path)
             logger.info(f"Successfully wrote bctides.in to {bctides_path}")
         except Exception as e:
