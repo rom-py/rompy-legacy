@@ -88,6 +88,62 @@ The enum types provide several advantages:
 3. **IDE support**: Modern IDEs can provide auto-completion and documentation for enum values.
 4. **Extensibility**: New boundary types can be added to the enums without changing existing code.
 
+Boundary Type Enumerations
+-------------------------
+
+The enhanced tides implementation uses enum classes to represent boundary types, replacing the numeric flags used in the standard implementation. These enum classes are defined in ``boundary_tides.py``:
+
+**ElevationType**: Represents elevation boundary condition types
+
+.. code-block:: python
+
+    class ElevationType(IntEnum):
+        NONE = 0            # Not specified
+        TIMEHIST = 1        # Time history from elev.th
+        CONSTANT = 2        # Constant elevation
+        TIDAL = 3           # Tidal elevation
+        SPACETIME = 4       # Space and time-varying from elev2D.th.nc
+        TIDALSPACETIME = 5  # Combination of tide and external file
+
+**VelocityType**: Represents velocity boundary condition types
+
+.. code-block:: python
+
+    class VelocityType(IntEnum):
+        NONE = 0            # Not specified
+        TIMEHIST = 1        # Time history from flux.th
+        CONSTANT = 2        # Constant discharge
+        TIDAL = 3           # Tidal velocity
+        SPACETIME = 4       # Space and time-varying from uv3D.th.nc
+        TIDALSPACETIME = 5  # Combination of tide and external file
+        FLATHER = -1        # Flather type radiation boundary
+        RELAXED = -4        # 3D input with relaxation
+
+**TracerType**: Represents temperature/salinity boundary condition types
+
+.. code-block:: python
+
+    class TracerType(IntEnum):
+        NONE = 0        # Not specified
+        TIMEHIST = 1    # Time history from temp/salt.th
+        CONSTANT = 2    # Constant temperature/salinity
+        INITIAL = 3     # Initial profile for inflow
+        SPACETIME = 4   # 3D input
+
+These enum types provide better code readability and type safety compared to the numeric flags used in the standard implementation. When working with the enhanced tides module, you should import and use these enum types directly:
+
+.. code-block:: python
+
+    from rompy.schism.boundary_tides import ElevationType, VelocityType, TracerType
+    
+    # Configure a boundary with specific types
+    boundary_setup = BoundarySetup(
+        elev_type=ElevationType.TIDAL,
+        vel_type=VelocityType.RELAXED,
+        temp_type=TracerType.SPACETIME,
+        salt_type=TracerType.SPACETIME
+    )
+
 **Mapping Between Old Flags and New Enum Types**
 
 For users familiar with the old flags system, here's how the numeric flags map to the new enum types:
@@ -99,15 +155,15 @@ For users familiar with the old flags system, here's how the numeric flags map t
 +=======+=========================+===========================+
 | 0     | No elevation BC         | ElevationType.NONE        |
 +-------+-------------------------+---------------------------+
-| 1     | Constant elevation      | ElevationType.CONSTANT    |
+| 1     | Time history            | ElevationType.TIMEHIST    |
 +-------+-------------------------+---------------------------+
-| 2     | Space-time elevation    | ElevationType.SPACETIME   |
+| 2     | Constant elevation      | ElevationType.CONSTANT    |
 +-------+-------------------------+---------------------------+
-| 3     | Space-time + harmonic   | ElevationType.SPACETIDAL  |
+| 3     | Tidal elevation         | ElevationType.TIDAL       |
 +-------+-------------------------+---------------------------+
-| 4     | Flather                 | ElevationType.FLATHER     |
+| 4     | Space-time elevation    | ElevationType.SPACETIME   |
 +-------+-------------------------+---------------------------+
-| 5     | Tidal harmonics         | ElevationType.TIDAL       |
+| 5     | Tidal + space-time      | ElevationType.TIDALSPACETIME |
 +-------+-------------------------+---------------------------+
 
 *Velocity Types:*
@@ -115,19 +171,21 @@ For users familiar with the old flags system, here's how the numeric flags map t
 +-------+-------------------------+---------------------------+
 | Flag  | Description             | Enum Value                |
 +=======+=========================+===========================+
-| -4    | Flather velocity        | VelocityType.FLATHER      |
+| -4    | Relaxed velocity        | VelocityType.RELAXED      |
 +-------+-------------------------+---------------------------+
-| -1    | Relaxed velocity        | VelocityType.RELAXED      |
+| -1    | Flather velocity        | VelocityType.FLATHER      |
 +-------+-------------------------+---------------------------+
 | 0     | No velocity BC          | VelocityType.NONE         |
 +-------+-------------------------+---------------------------+
-| 1     | Constant velocity       | VelocityType.CONSTANT     |
+| 1     | Time history            | VelocityType.TIMEHIST     |
 +-------+-------------------------+---------------------------+
-| 2     | Space-time velocity     | VelocityType.SPACETIME    |
+| 2     | Constant discharge      | VelocityType.CONSTANT     |
 +-------+-------------------------+---------------------------+
-| 3     | Space-time + harmonic   | VelocityType.SPACETIDAL   |
+| 3     | Tidal velocity          | VelocityType.TIDAL        |
 +-------+-------------------------+---------------------------+
-| 5     | Tidal harmonics         | VelocityType.TIDAL        |
+| 4     | Space-time velocity     | VelocityType.SPACETIME    |
++-------+-------------------------+---------------------------+
+| 5     | Tidal + space-time      | VelocityType.TIDALSPACETIME |
 +-------+-------------------------+---------------------------+
 
 *Tracer Types (Temperature and Salinity):*
@@ -137,13 +195,13 @@ For users familiar with the old flags system, here's how the numeric flags map t
 +=======+=========================+===========================+
 | 0     | No tracer BC            | TracerType.NONE           |
 +-------+-------------------------+---------------------------+
-| 1     | Constant tracer         | TracerType.CONSTANT       |
+| 1     | Time history            | TracerType.TIMEHIST       |
 +-------+-------------------------+---------------------------+
-| 2     | Space-time tracer       | TracerType.SPACETIME      |
+| 2     | Constant value          | TracerType.CONSTANT       |
 +-------+-------------------------+---------------------------+
-| 3     | Nudged tracer           | TracerType.NUDGED         |
+| 3     | Initial profile         | TracerType.INITIAL        |
 +-------+-------------------------+---------------------------+
-| 4     | FES tracer              | TracerType.FES            |
+| 4     | Space-time tracer       | TracerType.SPACETIME      |
 +-------+-------------------------+---------------------------+
 
 **Simplified Configuration with Setup Types**
@@ -237,28 +295,35 @@ The main class for enhanced tidal handling is ``SCHISMDataTidesEnhanced``, which
 Factory Functions
 ----------------
 
-The enhanced tides module provides several factory functions to simplify the creation of common boundary configurations:
+The enhanced tides module provides several factory functions in ``tides_enhanced.py`` to simplify the creation of common boundary configurations. These functions handle the details of setting up the appropriate boundary types and parameters, allowing users to focus on their specific requirements.
 
 Tidal-Only Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Create a configuration for tidal-only boundaries:
+Creates a configuration where all open boundaries are treated as tidal boundaries:
 
 .. code-block:: python
 
     from rompy.schism.tides_enhanced import create_tidal_only_config
     
     tides = create_tidal_only_config(
-        constituents=["M2", "S2", "N2", "K1", "O1"],
-        tidal_database="tpxo",
-        tidal_elevations="/path/to/elevations.nc",
-        tidal_velocities="/path/to/velocities.nc"
+        constituents=["M2", "S2", "N2", "K1", "O1"],  # Tidal constituents to use
+        tidal_database="tpxo",                       # Database source
+        tidal_elevations="/path/to/elevations.nc",   # Elevation data file
+        tidal_velocities="/path/to/velocities.nc",   # Velocity data file
+        ntip=0                                      # Nodal factor method (0=standard)
     )
+
+Internally, this function:
+1. Creates an instance of ``SCHISMDataTidesEnhanced``
+2. Sets all boundaries to use ``ElevationType.TIDAL`` and ``VelocityType.TIDAL``
+3. Configures the tidal database and constituents
+4. Returns the configured instance ready for use
 
 Hybrid Configuration
 ~~~~~~~~~~~~~~~~~~~
 
-Create a configuration for hybrid tidal + external data boundaries:
+Creates a configuration for hybrid tidal + external data boundaries:
 
 .. code-block:: python
 
@@ -271,35 +336,53 @@ Create a configuration for hybrid tidal + external data boundaries:
         tidal_velocities="/path/to/velocities.nc"
     )
 
+This configuration sets all boundaries to use ``ElevationType.TIDALSPACETIME`` and ``VelocityType.TIDALSPACETIME``, which combines tidal harmonics with external data.
+
 River Configuration
 ~~~~~~~~~~~~~~~~~
 
-Create a configuration with a river boundary:
+Creates a configuration with a designated river boundary and optional tidal boundaries:
 
 .. code-block:: python
 
     from rompy.schism.tides_enhanced import create_river_config
     
     tides = create_river_config(
-        river_boundary_index=1,  # Index of the river boundary
-        river_flow=-100.0,       # Negative for inflow
-        other_boundaries="tidal" # Other boundaries are tidal
+        river_boundary_index=1,       # Index of the river boundary
+        river_flow=-100.0,            # Flow rate (negative for inflow)
+        other_boundaries="tidal",     # Other boundaries are tidal
+        constituents=["M2", "S2"],    # Optional - only used if other_boundaries="tidal"
+        tidal_elevations="/path/to/elevations.nc",  # Only if other_boundaries="tidal"
+        tidal_velocities="/path/to/velocities.nc"   # Only if other_boundaries="tidal"
     )
+
+This function:
+1. Sets the specified boundary to use ``VelocityType.CONSTANT`` with the given flow rate
+2. Configures other boundaries based on the ``other_boundaries`` parameter
+3. Returns a fully configured ``SCHISMDataTidesEnhanced`` instance
 
 Nested Configuration
 ~~~~~~~~~~~~~~~~~~
 
-Create a configuration for nested model with external data:
+Creates a configuration for nested model boundaries with external data:
 
 .. code-block:: python
 
     from rompy.schism.tides_enhanced import create_nested_config
     
     tides = create_nested_config(
-        with_tides=True,
-        inflow_relax=0.8,
-        outflow_relax=0.2
+        with_tides=True,              # Include tidal components
+        inflow_relax=0.8,             # Relaxation parameter for inflow
+        outflow_relax=0.2,            # Relaxation parameter for outflow
+        constituents=["M2", "S2"],    # Only used if with_tides=True
+        tidal_elevations="/path/to/elevations.nc",  # Only if with_tides=True
+        tidal_velocities="/path/to/velocities.nc"   # Only if with_tides=True
     )
+
+This function creates a nested boundary configuration that:
+1. Sets boundaries to use ``ElevationType.SPACETIME`` (or ``TIDALSPACETIME`` if with_tides=True)
+2. Uses ``VelocityType.RELAXED`` with the specified relaxation parameters
+3. Configures tracer types to use ``TracerType.SPACETIME`` for temperature and salinity
 
 Usage in SCHISM Configuration
 ----------------------------
@@ -489,8 +572,14 @@ The enhanced tides implementation uses the ``TidalBoundary`` class, which in tur
 
 .. code-block:: text
 
-    SCHISMDataTidesEnhanced  -->  TidalBoundary  -->  Bctides
-    (High-level interface)       (Mid-level)         (Low-level)
+    +----------------------------+     +-------------------------+     +------------------------+
+    | SCHISMDataTidesEnhanced    |     | TidalBoundary           |     | Bctides               |
+    | (High-level interface)     |     | (Mid-level)             |     | (Low-level)           |
+    +----------------------------+     +-------------------------+     +------------------------+
+    | - Validates configuration  | --> | - Manages boundary types| --> | - Calculates factors  |
+    | - Converts between formats |     | - Sets up parameters    |     | - Interpolates data   |
+    | - Integrates with SCHISM   |     | - Writes boundary files |     | - Writes bctides.in   |
+    +----------------------------+     +-------------------------+     +------------------------+
 
 The ``Bctides`` module is not redundant - it still handles the core functionality of generating the bctides.in file according to the SCHISM format specification. The enhanced tides implementation provides a more user-friendly interface on top of this core functionality.
 
@@ -541,6 +630,63 @@ While the enhanced tides implementation is closely related to the ``Bctides`` mo
 
 3. **Conceptual Clarity**: The name "SCHISMDataTidesEnhanced" clearly indicates that this is an enhanced version of the standard "SCHISMDataTides" class, making it easier for users to understand the relationship between these components.
 
+Data Flow in the Enhanced Tides Implementation
+--------------------------------------------
+
+Understanding how data flows through the enhanced tides implementation is important for both users and developers. Here's a detailed overview of the process:
+
+1. **Configuration Input**:
+   Users provide configuration either directly to ``SCHISMDataTidesEnhanced`` or through one of the factory functions.
+
+2. **Configuration Validation**:
+   ``SCHISMDataTidesEnhanced`` validates the input configuration, checking for required data and parameter consistency.
+
+3. **Boundary Setup Creation**:
+   For each boundary segment, a ``BoundarySetup`` instance is created (either directly or converted from legacy flags).
+
+4. **TidalBoundary Creation**:
+   When needed, ``SCHISMDataTidesEnhanced.create_tidal_boundary()`` creates a ``TidalBoundary`` instance with the configured parameters.
+
+5. **Bctides Creation**:
+   ``TidalBoundary.create_bctides()`` creates a ``Bctides`` instance, which is the low-level handler for tidal boundary conditions.
+
+6. **File Generation**:
+   The ``Bctides`` instance handles the details of generating the bctides.in file, including tidal factor calculation and data interpolation.
+
+This process can be visualized as follows:
+
+.. code-block:: text
+
+    User Input
+        |
+        v
+    +----------------------------+
+    | SCHISMDataTidesEnhanced    |
+    | - validate_tidal_data()    |
+    | - validate_setup_type()    |
+    +----------------------------+
+        |
+        v
+    +----------------------------+
+    | TidalBoundary              |
+    | - set_boundary_config()    |
+    | - set_boundary_type()      |
+    | - get_flags_list()         |
+    +----------------------------+
+        |
+        v
+    +----------------------------+
+    | Bctides                    |
+    | - _get_tidal_factors()     |
+    | - _interpolate_tidal_data()|
+    | - write_bctides()          |
+    +----------------------------+
+        |
+        v
+    bctides.in file
+
+This hierarchical approach provides a clean separation of concerns, making the code easier to maintain and extend.
+
 Data Input Requirements
 ---------------------
 
@@ -562,7 +708,7 @@ Each boundary type in the enhanced tides implementation has specific data input 
      - Not specified
      - None
      - None
-   * - ``TIMESERIES``
+   * - ``TIMEHIST``
      - 1
      - Time history
      - ``elev.th`` file
@@ -682,8 +828,13 @@ Tracer Types (Temperature and Salinity)
 Common Configurations and Their Requirements
 ------------------------------------------
 
-Pure Tidal Boundary (``setup_type="tidal``")
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+YAML Configuration Examples
+------------------------
+
+The enhanced tides implementation supports various configuration formats in YAML files:
+
+Pure Tidal Configuration
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: yaml
 
@@ -767,8 +918,8 @@ Nested Boundary (``setup_type="nested``")
   * ``temp3D.th.nc`` for temperature (if used)
   * ``salt3D.th.nc`` for salinity (if used)
 
-Custom Configuration with Multiple Boundary Types
-----------------------------------------------
+Mixed Boundary Types
+~~~~~~~~~~~~~~~~~~
 
 .. code-block:: yaml
 
@@ -781,18 +932,18 @@ Custom Configuration with Multiple Boundary Types
         elevations: path/to/elevations.nc
         velocities: path/to/velocities.nc
       boundaries:
-        0:  # Open ocean boundary
-          elev_type: 5  # TIDALSPACETIME
-          vel_type: 5   # TIDALSPACETIME
+        0:  # Ocean boundary
+          elev_type: 3  # TIDAL
+          vel_type: 3   # TIDAL
         1:  # River boundary
           elev_type: 0  # NONE
           vel_type: 2   # CONSTANT
-          const_flow: -500.0  # Required for CONSTANT velocity
+          const_flow: -100.0
         2:  # Nested boundary
           elev_type: 4  # SPACETIME
           vel_type: -4  # RELAXED
-          inflow_relax: 0.9  # Required for RELAXED velocity
-          outflow_relax: 0.9  # Required for RELAXED velocity
+          inflow_relax: 0.8
+          outflow_relax: 0.2
 
 
 Conclusion
