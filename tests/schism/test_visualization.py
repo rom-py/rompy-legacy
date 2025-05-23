@@ -21,14 +21,16 @@ from rompy.core.time import TimeRange
 from rompy.model import ModelRun
 from rompy.schism import SCHISMGrid
 from rompy.schism.config import SCHISMConfig
-from rompy.schism.config_plotting import (plot_sflux_spatial,
-                                          plot_sflux_timeseries)
+from rompy.schism.config_plotting import plot_sflux_spatial, plot_sflux_timeseries
+
 # Import the plotting modules directly
-from rompy.schism.config_plotting_boundary import (plot_boundary_points,
-                                                   plot_boundary_profile,
-                                                   plot_boundary_timeseries)
-from rompy.schism.config_plotting_tides import (plot_tidal_boundaries,
-                                                plot_tidal_rose)
+from rompy.schism.config_plotting_boundary import (
+    plot_boundary_points,
+    plot_boundary_profile,
+    plot_boundary_timeseries,
+)
+from rompy.schism.config_plotting_tides import plot_tidal_boundaries, plot_tidal_rose
+
 # Import helper functions from test_adapter
 from tests.schism.test_adapter import prepare_test_grid
 
