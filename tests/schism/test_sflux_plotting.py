@@ -15,18 +15,9 @@ from rompy.core.time import TimeRange
 from rompy.schism.data import SCHISMDataSflux, SfluxAir, SfluxRad, SfluxPrc
 from rompy.schism.grid import SCHISMGrid
 
-# Import helper functions from test_adapter
-from tests.schism.test_adapter import prepare_test_grid
-
 # Define the location of test files
 HERE = Path(__file__).parent
 
-
-@pytest.fixture
-def test_grid():
-    """Return a test grid for testing sflux plotting."""
-    grid = SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
-    return prepare_test_grid(grid)
 
 
 @pytest.fixture
@@ -126,7 +117,7 @@ def test_sflux_data(test_air_dataset):
     return SimpleSfluxDataSource(test_air_dataset)
 
 
-def test_plot_sflux_spatial(test_grid, test_sflux_data):
+def test_plot_sflux_spatial(grid2d, test_sflux_data):
     """Test plotting of sflux spatial fields."""
     import matplotlib.pyplot as plt
     import numpy as np
@@ -223,7 +214,7 @@ def test_plot_sflux_timeseries(test_sflux_data):
     assert fig is not None
 
 
-def test_sflux_plotting_workflow(test_grid, test_sflux_data):
+def test_sflux_plotting_workflow(grid2d, test_sflux_data):
     """Test a complete workflow with multiple sflux plots."""
     import matplotlib.pyplot as plt
     import numpy as np

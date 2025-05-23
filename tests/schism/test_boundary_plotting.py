@@ -15,28 +15,20 @@ from rompy.core.time import TimeRange
 from rompy.schism.data import SCHISMDataBoundary
 from rompy.schism.grid import SCHISMGrid
 
-# Import helper functions from test_adapter
-from tests.schism.test_adapter import prepare_test_grid
 
 # Define the location of test files
 HERE = Path(__file__).parent
 
 
-@pytest.fixture
-def test_grid():
-    """Return a test grid for testing boundary plotting."""
-    grid = SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
-    return prepare_test_grid(grid)
-
 
 @pytest.fixture
-def test_boundary_data(test_grid):
+def test_boundary_data(grid2d):
     """Create sample boundary data for testing without using SCHISMDataBoundary."""
     # Create a sample dataset
     times = pd.date_range(start=datetime.now(), periods=5, freq="1D").to_pydatetime()
 
     # Create a simple elevation boundary
-    grid = test_grid
+    grid = grid2d
     grid.pylibs_hgrid.compute_bnd()
 
     # Get a boundary with some nodes
@@ -94,13 +86,13 @@ def test_boundary_data(test_grid):
     return SimpleDataSource(ds)
 
 
-def test_plot_boundary_points(test_grid, test_boundary_data):
+def test_plot_boundary_points(grid2d, test_boundary_data):
     """Test plotting of boundary points."""
     # Create a simplified test that doesn't rely on SCHISMDataBoundary validation
     import matplotlib.pyplot as plt
 
     # Get boundary points from grid
-    x_bound, y_bound = test_grid.boundary_points()
+    x_bound, y_bound = grid2d.boundary_points()
 
     # Create a simple plot
     fig, ax = plt.subplots()
@@ -113,7 +105,7 @@ def test_plot_boundary_points(test_grid, test_boundary_data):
     assert ax is not None
 
 
-def test_plot_boundary_timeseries(test_grid, test_boundary_data):
+def test_plot_boundary_timeseries(grid2d, test_boundary_data):
     """Test plotting of boundary time series."""
     import matplotlib.pyplot as plt
     import xarray as xr
@@ -152,7 +144,7 @@ def test_plot_boundary_timeseries(test_grid, test_boundary_data):
     assert fig is not None
 
 
-def test_plot_boundary_profile(test_grid, test_boundary_data):
+def test_plot_boundary_profile(grid2d, test_boundary_data):
     """Test plotting of boundary vertical profile."""
     import matplotlib.pyplot as plt
 
@@ -173,7 +165,7 @@ def test_plot_boundary_profile(test_grid, test_boundary_data):
     assert fig is not None
 
 
-def test_boundary_plotting_workflow(test_grid, test_boundary_data):
+def test_boundary_plotting_workflow(grid2d, test_boundary_data):
     """Test a complete workflow with multiple plots."""
     import matplotlib.pyplot as plt
 
@@ -185,7 +177,7 @@ def test_boundary_plotting_workflow(test_grid, test_boundary_data):
 
     # 1. Plot boundary points in first subplot
     ax1 = plt.subplot(2, 2, 1)
-    x_bound, y_bound = test_grid.boundary_points()
+    x_bound, y_bound = grid2d.boundary_points()
     ax1.scatter(x_bound, y_bound, color="blue")
     ax1.set_xlabel("Longitude")
     ax1.set_ylabel("Latitude")

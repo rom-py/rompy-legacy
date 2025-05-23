@@ -16,18 +16,10 @@ from rompy.schism.data import SCHISMData, SCHISMDataBoundary
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.config import SCHISMConfig
 
-# Import helper functions from test_adapter
-from tests.schism.test_adapter import prepare_test_grid
 
 # Define the location of test files
 HERE = Path(__file__).parent
 
-
-@pytest.fixture
-def test_grid():
-    """Return a test grid for testing boundary plotting."""
-    grid = SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
-    return prepare_test_grid(grid)
 
 
 @pytest.fixture
@@ -106,7 +98,7 @@ def test_boundary_data(test_boundary_dataset):
 
 
 @pytest.fixture
-def test_config(test_grid, test_boundary_data):
+def test_config(grid2d, test_boundary_data):
     """Create a simple SCHISMConfig-like object with test grid and boundary data."""
 
     # Create a simple container class instead of real SCHISMConfig
@@ -170,7 +162,7 @@ def test_config(test_grid, test_boundary_data):
             return fig
 
     # Return simple config instead of real SCHISMConfig
-    return SimpleConfig(test_grid, test_boundary_data)
+    return SimpleConfig(grid2d, test_boundary_data)
 
 
 def test_plot_boundary_points(test_config):

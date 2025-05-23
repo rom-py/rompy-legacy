@@ -14,19 +14,10 @@ from rompy.schism import SCHISMGrid
 from rompy.schism.data import SCHISMDataTides, TidalDataset, SCHISMData
 from rompy.schism.config import SCHISMConfig
 
-# Import helper functions from test_adapter
-from tests.schism.test_adapter import prepare_test_grid
-
 HERE = Path(__file__).parent
 import logging
 
 logging.basicConfig(level=logging.INFO)
-
-
-@pytest.fixture
-def grid2d():
-    grid = SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
-    return prepare_test_grid(grid)
 
 
 @pytest.fixture

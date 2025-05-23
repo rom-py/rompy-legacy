@@ -29,20 +29,12 @@ from rompy.schism.config_plotting_boundary import (plot_boundary_points,
                                                    plot_boundary_timeseries)
 from rompy.schism.config_plotting_tides import (plot_tidal_boundaries,
                                                 plot_tidal_rose)
-# Import helper functions from test_adapter
-from tests.schism.test_adapter import prepare_test_grid
 
 HERE = Path(__file__).parent
 import logging
 
 logging.basicConfig(level=logging.INFO)
 
-
-@pytest.fixture
-def grid():
-    """Return a test grid for visualization tests."""
-    grid = SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
-    return prepare_test_grid(grid)
 
 
 @pytest.fixture
@@ -170,12 +162,12 @@ class SimpleContainer:
 
 
 @pytest.fixture
-def test_container(grid, boundary_ds, sflux_ds):
+def test_container(grid2d, boundary_ds, sflux_ds):
     """Create a simple container with all the objects needed for testing."""
     container = SimpleContainer()
 
     # Add the grid
-    container.grid = grid
+    container.grid = grid2d
 
     # Set up ocean data with boundary information
     # Create ocean boundary structure

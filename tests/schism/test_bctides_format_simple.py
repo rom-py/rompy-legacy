@@ -8,7 +8,6 @@ from datetime import datetime
 
 # Import Bctides class directly
 from rompy.schism.bctides import Bctides
-from tests.schism.bctides_patched import BctidesPatch
 
 def test_files_dir():
     """Get the directory containing test files."""
@@ -18,26 +17,26 @@ def validate_bctides_format(file_path):
     """Validate the format of a bctides.in file."""
     with open(file_path, "r") as f:
         lines = f.readlines()
-    
+
     # Remove comments and empty lines
     lines = [line.split("!")[0].strip() for line in lines]
     lines = [line for line in lines if line]
-    
+
     line_index = 0
-    
+
     # Parse ntip and tip_dp (earth tidal potential)
     parts = lines[line_index].split()
     if len(parts) < 2:
         return False, "Missing ntip and tip_dp values"
-    
+
     try:
         ntip = int(parts[0])
         tip_dp = float(parts[1])
     except ValueError:
         return False, "Invalid ntip or tip_dp values"
-    
+
     line_index += 1
-    
+
     # Parse tidal potential constituents if any
     if ntip > 0:
         for i in range(ntip):
@@ -46,15 +45,15 @@ def validate_bctides_format(file_path):
                 return False, f"Missing constituent name for potential {i+1}"
             constituent = lines[line_index].strip()
             line_index += 1
-            
+
             # Species, amplitude, frequency, nodal factor, earth equilibrium argument
             if line_index >= len(lines):
                 return False, f"Missing tidal potential parameters for {constituent}"
-            
+
             parts = lines[line_index].split()
             if len(parts) != 5:
                 return False, f"Invalid tidal potential format for {constituent}"
-            
+
             try:
                 species = int(parts[0])
                 amp = float(parts[1])
@@ -63,55 +62,55 @@ def validate_bctides_format(file_path):
                 ear = float(parts[4])
             except ValueError:
                 return False, f"Invalid tidal potential values for {constituent}"
-            
+
             line_index += 1
-    
+
     # Parse nbfr (tidal boundary forcing frequencies)
     if line_index >= len(lines):
         return False, "Missing nbfr value"
-    
+
     try:
         nbfr = int(lines[line_index])
     except ValueError:
         return False, "Invalid nbfr value"
-    
+
     line_index += 1
-    
+
     # Parse frequency info for each constituent
     for i in range(nbfr):
         # Constituent name
         if line_index >= len(lines):
             return False, f"Missing constituent name for frequency {i+1}"
-        
+
         constituent = lines[line_index].strip()
         line_index += 1
-        
+
         # Frequency, nodal factor, earth equilibrium argument
         if line_index >= len(lines):
             return False, f"Missing frequency parameters for {constituent}"
-        
+
         parts = lines[line_index].split()
         if len(parts) != 3:
             return False, f"Invalid frequency format for {constituent}"
-        
+
         try:
             freq = float(parts[0])
             nodal = float(parts[1])
             ear = float(parts[2])
         except ValueError:
             return False, f"Invalid frequency values for {constituent}"
-        
+
         line_index += 1
-    
+
     # Parse nope (number of open boundary segments)
     if line_index >= len(lines):
         return False, "Missing nope value"
-    
+
     try:
         nope = int(lines[line_index])
     except ValueError:
         return False, "Invalid nope value"
-    
+
     return True, "File format is valid"
 
 class MockGrid:
@@ -130,10 +129,10 @@ def test_basic_bctides_format():
     """Test that a basic bctides.in file can be created and has correct format."""
     # Create a mock grid
     grid = MockGrid()
-    
+
     # Create dummy flags for one boundary segment
     flags = [[3, 3, 0, 0]]  # Tidal elevation, tidal velocity, no temp/salt BC
-    
+
     # Create a Bctides instance
     bctides = Bctides(
         hgrid=grid,
@@ -144,11 +143,11 @@ def test_basic_bctides_format():
         tip_dp=50.0,
         cutoff_depth=50.0
     )
-    
+
     # Set start time and duration
     bctides._start_time = datetime(2023, 1, 1)
     bctides._rnday = 5.0
-    
+
     # Override interpolation method with a mock that returns constant values
     def mock_interpolate(self, lons, lats, tname, data_type):
         if data_type == "h":
@@ -157,74 +156,73 @@ def test_basic_bctides_format():
             return np.array([[0.1, 30.0, 0.1, 60.0] for _ in range(len(lons))])
         else:
             raise ValueError(f"Unknown data type: {data_type}")
-    
+
     # Assign our mock method to the instance
     bctides._interpolate_tidal_data = mock_interpolate.__get__(bctides, bctides.__class__)
-    
+
     # Set tidal factors for each constituent
     bctides.tnames = ["M2", "S2"]
     bctides.freq = np.array([0.0001405189, 0.0001454441])  # Angular frequency (rad/s)
     bctides.nodal = np.array([1.0, 1.0])  # Nodal factors
     bctides.tear = np.array([0.0, 0.0])  # Earth equilibrium arguments (degrees)
     bctides.amp = np.array([0.242334, 0.113033])  # Amplitude constants
-    
+
     # Set empty constants to avoid file writing issues
     bctides.ethconst = {}
     bctides.vthconst = {}
-    
+
     # Test both original and patched versions
     test_versions = [
         ("Original", bctides),
-        ("Patched", BctidesPatch(bctides))
     ]
-    
+
     for version_name, bctides_version in test_versions:
         print(f"\nTesting {version_name} version:")
-        
+
         # Write the bctides.in file to a temporary location
         with tempfile.NamedTemporaryFile(delete=False) as tmp:
             tmp_path = tmp.name
-        
+
         try:
             bctides_version.write_bctides(tmp_path)
-            
+
             # Print the file contents for analysis
             print_bctides_file(tmp_path)
-            
+
             # Validate the file format
             is_valid, message = validate_bctides_format(tmp_path)
             assert is_valid, message
-            
+
             # Additional checks - read the file and examine specific sections
             with open(tmp_path, "r") as f:
                 content = f.read()
-            
+
             # Check constituent names
             assert "M2" in content, "M2 constituent not found in output"
             assert "S2" in content, "S2 constituent not found in output"
-            
+
             # Check nbfr section
             with open(tmp_path, "r") as f:
                 lines = f.readlines()
-                
+
             # Find line with nbfr
             nbfr_line = None
             for i, line in enumerate(lines):
                 if "nbfr" in line:
                     nbfr_line = i
                     break
-                
+
                 # If no explicit marker, look for a line that just has the number of constituents
                 if line.strip().isdigit() and int(line.strip()) == len(bctides.tnames):
                     nbfr_line = i
                     break
-            
+
             assert nbfr_line is not None, "nbfr line not found"
-            
+
             # The nbfr value should be the number of constituents
             nbfr_value = int(lines[nbfr_line].split("!")[0].strip())
             assert nbfr_value == len(bctides.tnames), f"nbfr ({nbfr_value}) doesn't match number of constituents ({len(bctides.tnames)})"
-            
+
             # Check for case consistency in constituent names
             if version_name == "Original":
                 # Original version should have lowercase in boundary sections
@@ -236,7 +234,7 @@ def test_basic_bctides_format():
                 counts = {"M2": content.count("M2"), "m2": content.count("m2")}
                 print(f"Case counts in patched version: {counts}")
                 assert counts["M2"] > counts["m2"], "Patched version should use consistent upper case M2"
-            
+
         finally:
             # Clean up
             if os.path.exists(tmp_path):

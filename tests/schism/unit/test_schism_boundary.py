@@ -15,7 +15,6 @@ from rompy.core.source import SourceFile
 from rompy.core.time import TimeRange
 from rompy.schism import SCHISMGrid
 from rompy.schism.data import SCHISMDataBoundary, SCHISMDataOcean
-from tests.schism.test_adapter import ensure_boundary_data_format
 
 pytest.importorskip("rompy.schism")
 
@@ -51,7 +50,6 @@ class TestBoundaryHandling:
         assert data_boundary.variables == ["surf_el"]
 
         # Ensure boundary format is correct for the grid
-        data_boundary = ensure_boundary_data_format(data_boundary, grid2d)
 
     def test_ocean_boundary(self, grid2d, hycom_bnd2d, tmp_path):
         """Test ocean boundary data handling."""
@@ -82,7 +80,6 @@ class TestBoundaryHandling:
         assert temp_boundary.variables == ["water_temp"]
 
         # Ensure boundary format is correct for the grid
-        temp_boundary = ensure_boundary_data_format(temp_boundary, grid3d)
 
     def test_boundary_validation(self):
         """Test validation in boundary objects."""
