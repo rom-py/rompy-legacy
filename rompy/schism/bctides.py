@@ -95,19 +95,32 @@ class Bctides:
         nfluxf : int, optional
             Number of flux boundary segments, by default 0
         """
-        self.flags = flags or [[5, 5, 4, 4]]
+        # Set default values for any None parameters
+        flags = flags or [[5, 5, 4, 4]]
+        ethconst = ethconst or []
+        vthconst = vthconst or []
+        tthconst = tthconst or []
+        sthconst = sthconst or []
+        tobc = tobc or [1]
+        sobc = sobc or [1]
+        relax = relax or []  # Keep for backward compatibility
+        inflow_relax = inflow_relax or [0.5]
+        outflow_relax = outflow_relax or [0.1]
+        
+        # Assign to instance variables
+        self.flags = flags
         self.ntip = ntip
         self.tip_dp = tip_dp
         self.cutoff_depth = cutoff_depth
-        self.ethconst = ethconst or []
-        self.vthconst = vthconst or []
-        self.tthconst = tthconst or []
-        self.sthconst = sthconst or []
-        self.tobc = tobc or [1]
-        self.sobc = sobc or [1]
-        self.relax = relax or []  # Keep for backward compatibility
-        self.inflow_relax = inflow_relax or [0.5]
-        self.outflow_relax = outflow_relax or [0.1]
+        self.ethconst = ethconst
+        self.vthconst = vthconst
+        self.tthconst = tthconst
+        self.sthconst = sthconst
+        self.tobc = tobc
+        self.sobc = sobc
+        self.relax = relax
+        self.inflow_relax = inflow_relax
+        self.outflow_relax = outflow_relax
         self.ncbn = ncbn
         self.nfluxf = nfluxf
         self.tidal_database = tidal_database

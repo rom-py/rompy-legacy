@@ -344,6 +344,10 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
     @model_validator(mode="after")
     def validate_setup_type(self):
         """Validate setup type specific requirements."""
+        # Skip validation if setup_type is not set
+        if not self.setup_type:
+            return self
+            
         if self.setup_type in ["tidal", "hybrid"]:
             if not self.constituents:
                 logger.warning("constituents are required for tidal or hybrid setup_type")
@@ -363,10 +367,21 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                     if hasattr(setup, 'vel_type') and setup.vel_type == VelocityType.RELAXED:
                         if not hasattr(setup, 'inflow_relax') or not hasattr(setup, 'outflow_relax'):
                             logger.warning(f"inflow_relax and outflow_relax are recommended for nested setup_type in boundary {idx}")
+        else:
+            logger.warning(f"Unknown setup_type: {self.setup_type}. Expected one of: tidal, hybrid, river, nested")
+        
+        # Initialize default empty lists for any None attributes to prevent errors later
+        self.flags = self.flags if self.flags is not None else []
+        self.ethconst = self.ethconst if self.ethconst is not None else []
+        self.vthconst = self.vthconst if self.vthconst is not None else []
+        self.tthconst = self.tthconst if self.tthconst is not None else []
+        self.sthconst = self.sthconst if self.sthconst is not None else []
+        self.tobc = self.tobc if self.tobc is not None else [1.0]
+        self.sobc = self.sobc if self.sobc is not None else [1.0]
         
         return self
 
-    def create_tidal_boundary(self, grid) -> TidalBoundary:
+    def create_tidal_boundary(self, grid, setup_type=None) -> TidalBoundary:
         """Create a TidalBoundary instance from this configuration.
         
         This method takes the current configuration and creates a properly configured
@@ -376,12 +391,26 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
         ----------
         grid : SCHISMGrid
             SCHISM grid instance
+        setup_type : str, optional
+            Override the setup type, by default None (uses self.setup_type)
 
         Returns
         -------
         TidalBoundary
             Configured tidal boundary handler
         """
+        # Use local variables for all attributes to avoid modifying the original instance
+        flags = self.flags if self.flags is not None else []
+        ethconst = self.ethconst if self.ethconst is not None else []
+        vthconst = self.vthconst if self.vthconst is not None else []
+        tthconst = self.tthconst if self.tthconst is not None else []
+        sthconst = self.sthconst if self.sthconst is not None else []
+        tobc = self.tobc if self.tobc is not None else [1.0]
+        sobc = self.sobc if self.sobc is not None else [1.0]
+
+        # Use provided setup_type or fallback to instance attribute
+        active_setup_type = setup_type or self.setup_type
+
         # Get tidal data paths
         tidal_elevations = None
         tidal_velocities = None
@@ -409,35 +438,52 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             # Use enhanced boundary configuration
             for idx, setup in self.boundaries.items():
                 boundary.set_boundary_config(idx, setup.to_boundary_config())
-        elif self.flags:
+        elif flags:
             # Use legacy flags
-            max_boundary = len(self.flags)
+            max_boundary = len(flags)
             for i in range(max_boundary):
+                # Default flag values
+                elev_type = 0
+                vel_type = 0
+                temp_type = 0
+                salt_type = 0
+                
+                # Only access flags if they exist and contain values
+                if i < len(flags) and flags[i]:
+                    if len(flags[i]) > 0:
+                        elev_type = flags[i][0]
+                    if len(flags[i]) > 1:
+                        vel_type = flags[i][1]
+                    if len(flags[i]) > 2:
+                        temp_type = flags[i][2]
+                    if len(flags[i]) > 3:
+                        salt_type = flags[i][3]
+                
                 config = BoundaryConfig(
-                    elev_type=self.flags[i][0] if len(self.flags[i]) > 0 else 0,
-                    vel_type=self.flags[i][1] if len(self.flags[i]) > 1 else 0,
-                    temp_type=self.flags[i][2] if len(self.flags[i]) > 2 else 0,
-                    salt_type=self.flags[i][3] if len(self.flags[i]) > 3 else 0
+                    elev_type=elev_type,
+                    vel_type=vel_type,
+                    temp_type=temp_type,
+                    salt_type=salt_type
                 )
 
                 # Add constant values if provided
-                if self.ethconst and i < len(self.ethconst):
-                    config.ethconst = self.ethconst[i]
-                if self.vthconst and i < len(self.vthconst):
-                    config.vthconst = self.vthconst[i]
-                if self.tthconst and i < len(self.tthconst):
-                    config.tthconst = self.tthconst[i]
-                if self.sthconst and i < len(self.sthconst):
-                    config.sthconst = self.sthconst[i]
-                if self.tobc and i < len(self.tobc):
-                    config.tobc = self.tobc[i]
-                if self.sobc and i < len(self.sobc):
-                    config.sobc = self.sobc[i]
+                if ethconst and i < len(ethconst):
+                    config.ethconst = ethconst[i]
+                if vthconst and i < len(vthconst):
+                    config.vthconst = vthconst[i]
+                if tthconst and i < len(tthconst):
+                    config.tthconst = tthconst[i]
+                if sthconst and i < len(sthconst):
+                    config.sthconst = sthconst[i]
+                if tobc and i < len(tobc):
+                    config.tobc = tobc[i]
+                if sobc and i < len(sobc):
+                    config.sobc = sobc[i]
 
                 boundary.set_boundary_config(i, config)
-        elif self.setup_type:
+        elif active_setup_type:
             # Use predefined configuration
-            if self.setup_type == "tidal":
+            if active_setup_type == "tidal":
                 # Pure tidal boundary
                 for i in range(grid.pylibs_hgrid.nob):
                     boundary.set_boundary_type(
@@ -445,7 +491,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                         elev_type=ElevationType.TIDAL,
                         vel_type=VelocityType.TIDAL
                     )
-            elif self.setup_type == "hybrid":
+            elif active_setup_type == "hybrid":
                 # Tidal + external data
                 for i in range(grid.pylibs_hgrid.nob):
                     boundary.set_boundary_type(
@@ -453,7 +499,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                         elev_type=ElevationType.TIDALSPACETIME,
                         vel_type=VelocityType.TIDALSPACETIME
                     )
-            elif self.setup_type == "river":
+            elif active_setup_type == "river":
                 # River boundary (first boundary only)
                 if grid.pylibs_hgrid.nob > 0:
                     boundary.set_boundary_type(
@@ -462,7 +508,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                         vel_type=VelocityType.CONSTANT,
                         vthconst=-100.0  # Default inflow
                     )
-            elif self.setup_type == "nested":
+            elif active_setup_type == "nested":
                 # Nested boundary with relaxation
                 for i in range(grid.pylibs_hgrid.nob):
                     boundary.set_boundary_type(
