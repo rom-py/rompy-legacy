@@ -9,8 +9,9 @@ ROMPY includes a comprehensive formatting and logging framework that provides co
 
 1. **Customizable Logging**: Configure log levels, formats, and outputs
 2. **Formatted Output Boxes**: Create consistent visual elements for status reports and information display
-3. **String Representation**: A standardized approach to presenting model objects as strings
-4. **Environment-based Configuration**: Control formatting behavior via environment variables
+3. **Common Formatting Elements**: Centralized symbols and elements for consistent appearance
+4. **String Representation**: A standardized approach to presenting model objects as strings
+5. **Environment-based Configuration**: Control formatting behavior via environment variables
 
 This framework is designed to be flexible yet consistent, allowing both programmatic and command-line usage.
 
@@ -19,7 +20,7 @@ Core Components
 
 The formatting framework spans several files:
 
-- ``rompy/formatting.py``: Core formatting utilities
+- ``rompy/formatting.py``: Core formatting utilities and centralized formatting elements
 - ``rompy/utils.py``: Helper functions for formatting
 - ``rompy/core/types.py``: Base model with string representation capabilities
 - ``rompy/cli.py``: Command-line interface with formatting options
@@ -38,7 +39,7 @@ The formatting behavior can be controlled with these environment variables:
      - Description
    * - ``ROMPY_ASCII_ONLY``
      - ``False``
-     - When set to ``True``, use only ASCII characters for boxes and formatting
+     - When set to ``True``, use only ASCII characters for boxes and formatting (also adjusts default box width)
    * - ``ROMPY_SIMPLE_LOGS``
      - ``False``
      - When set to ``True``, simplify log format (no timestamps or module names)
@@ -76,24 +77,29 @@ The framework provides utilities to create consistent visual elements:
 
 .. code-block:: python
 
-    from rompy.formatting import get_formatted_box, get_formatted_header_footer
+    from rompy.formatting import get_formatted_box, get_formatted_header_footer, log_box
+    import logging
     
-    # Create a simple box with a title
-    box = get_formatted_box("Status Report", use_ascii=False, width=60)
+    # Create a simple box with a title (uses defaults from environment)
+    box = get_formatted_box("Status Report")
+    print(box)
+    
+    # Explicitly specify formatting options when needed
+    box = get_formatted_box("Status Report", use_ascii=False)
     print(box)
     
     # Create header, footer, and bullet character for more complex output
-    header, footer, bullet = get_formatted_header_footer(
-        "Processing Results", 
-        use_ascii=False, 
-        width=70
-    )
+    header, footer, bullet = get_formatted_header_footer("Processing Results")
     
     # Use in output
     print(header)
     print(f"{bullet} Processed 100 items")
     print(f"{bullet} Found 5 anomalies")
     print(footer)
+    
+    # For logging a box directly (most common use case)
+    logger = logging.getLogger(__name__)
+    log_box("PROCESSING STARTED", logger=logger)
 
 These utilities respect the ``ROMPY_ASCII_ONLY`` setting, determining whether to use Unicode or ASCII characters:
 
@@ -112,6 +118,70 @@ These utilities respect the ``ROMPY_ASCII_ONLY`` setting, determining whether to
     +------------------------------------------------------------+
     |                        Status Report                        |
     +------------------------------------------------------------+
+
+The ``log_box()`` utility simplifies the common pattern of creating a box and logging each line:
+
+.. code-block:: python
+
+    from rompy.formatting import log_box
+    import logging
+    
+    logger = logging.getLogger(__name__)
+    
+    # This single call:
+    log_box("MODEL RUN CONFIGURATION", logger=logger)
+    
+    # Replaces this common pattern:
+    # box = get_formatted_box(title="MODEL RUN CONFIGURATION")
+    # for line in box.split("\n"):
+    #     logger.info(line)
+    # logger.info("")
+
+Common Formatting Elements
+-------------------------
+
+The framework provides centralized formatting elements that can be imported and used directly:
+
+.. code-block:: python
+
+    from rompy.formatting import ARROW, BULLET, DEFAULT_WIDTH
+    
+    # Use in string formatting
+    print(f"{ARROW} Processing step 1")
+    print(f"{BULLET} First item in list")
+    
+    # The elements automatically adapt to ASCII mode
+    # In ASCII mode: ARROW = "->" and BULLET = "*"
+    # In Unicode mode: ARROW = "→" and BULLET = "•"
+
+Pre-defined status boxes are also available:
+
+.. code-block:: python
+
+    from rompy.formatting import log_status
+    
+    # Log different types of status boxes
+    log_status("processing", logger=logger)  # "PROCESSING"
+    log_status("completed", logger=logger)   # "COMPLETED"
+    log_status("error", logger=logger)       # "ERROR"
+    log_status("warning", logger=logger)     # "WARNING"
+    log_status("info", logger=logger)        # "INFORMATION"
+    
+    # With custom title
+    log_status("processing", "CUSTOM TITLE", logger=logger)
+
+Additional utility functions:
+
+.. code-block:: python
+
+    from rompy.formatting import log_horizontal_line, format_table_row
+    
+    # Log a horizontal line for visual separation
+    log_horizontal_line(logger=logger)
+    
+    # Format key-value pairs as table rows
+    logger.info(format_table_row("Parameter", "Value"))
+    logger.info(format_table_row("Width", "70"))
 
 String Representation
 --------------------
@@ -195,21 +265,19 @@ Combining Multiple Features
 
 .. code-block:: python
 
-    from rompy.formatting import configure_logging, get_formatted_box
+    from rompy.formatting import configure_logging, log_box, ARROW, BULLET
     import logging
     
     # Configure logging
     configure_logging(verbosity=1)
     logger = logging.getLogger(__name__)
     
-    # Create a formatted status box
-    status_box = get_formatted_box("Processing Started", width=50)
+    # Log a formatted status box (uses sensible defaults)
+    log_box("Processing Started", logger=logger)
     
-    # Log the status
-    logger.info("\n" + status_box)
-    
-    # Continue with processing...
-    logger.info("Processing item 1...")
+    # Continue with processing using centralized formatting elements
+    logger.info(f"{ARROW} Processing item 1...")
+    logger.info(f"{BULLET} Result: Success")
 
 CLI Application with Custom Formatting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -217,8 +285,9 @@ CLI Application with Custom Formatting
 .. code-block:: python
 
     import click
-    from rompy.formatting import get_formatted_header_footer
+    from rompy.formatting import log_status, ARROW, BULLET
     import os
+    import logging
     
     @click.command()
     @click.option("--ascii-only", is_flag=True, help="Use ASCII-only characters")
@@ -226,26 +295,59 @@ CLI Application with Custom Formatting
         # Set environment variable
         os.environ['ROMPY_ASCII_ONLY'] = 'true' if ascii_only else 'false'
         
-        # Create header and footer
-        header, footer, bullet = get_formatted_header_footer(
-            "Processing Results", 
-            use_ascii=ascii_only, 
-            width=60
-        )
+        # Configure logging
+        logger = logging.getLogger()
         
-        # Display formatted output
-        print(header)
-        print(f"{bullet} Processed 100 items")
-        print(f"{bullet} Found 5 anomalies")
-        print(footer)
+        # Use predefined status box
+        log_status("processing", "PROCESSING RESULTS", logger=logger)
+        
+        # Use centralized formatting elements
+        logger.info(f"{BULLET} Processed 100 items")
+        logger.info(f"{BULLET} Found 5 anomalies")
+        logger.info(f"{ARROW} Operation completed successfully")
 
 Best Practices
 -------------
 
 1. **Consistent Usage**: Always use the formatting utilities for output to maintain a consistent appearance
-2. **Environment Awareness**: Check and respect the environment variables
+2. **Environment Awareness**: Respect the environment variables rather than hardcoding formatting preferences
 3. **Customization**: Override the `_format_value` method for custom types rather than the entire `__str__` method
 4. **CLI Options**: Provide formatting options in CLI applications
-5. **Documentation**: Document the formatting options available to users
+5. **Smart Defaults**: Use the smart defaults provided by the formatting module instead of passing explicit parameters
+6. **Documentation**: Document the formatting options available to users
+
+When working with formatted boxes:
+
+.. code-block:: python
+
+    # DO: Use the log_box or log_status utility
+    from rompy.formatting import log_box, log_status
+    log_box("OPERATION COMPLETE", logger=logger)
+    log_status("completed", logger=logger)
+    
+    # DON'T: Manually handle box formatting and logging
+    from rompy.formatting import get_formatted_box
+    box = get_formatted_box("OPERATION COMPLETE")
+    for line in box.split("\n"):
+        logger.info(line)
+    logger.info("")
+    
+    # DON'T: Override default formatting parameters unless necessary
+    # This is redundant as the function will detect ASCII mode automatically
+    log_box("OPERATION COMPLETE", logger=logger, use_ascii=True)
+
+When implementing formatting in new components:
+
+.. code-block:: python
+
+    # DO: Use the centralized formatting elements
+    from rompy.formatting import ARROW, BULLET
+    logger.info(f"{ARROW} Processing step")
+    logger.info(f"{BULLET} List item")
+    
+    # DON'T: Create your own formatting elements
+    from rompy.formatting import get_ascii_mode
+    arrow = "->" if get_ascii_mode() else "→"
+    logger.info(f"{arrow} Processing step")
 
 For more examples and detailed API documentation, see the API Reference section.

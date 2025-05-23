@@ -14,9 +14,11 @@ from pydantic import Field, field_validator, model_validator
 from rompy.core.data import DataGrid
 from rompy.core.time import TimeRange
 from rompy.formatting import (
-    USE_ASCII_ONLY,
     get_formatted_box,
-    get_formatted_header_footer
+    get_formatted_header_footer,
+    ARROW,
+    BULLET,
+    log_box
 )
 from rompy.swan.grid import SwanGrid
 from rompy.swan.types import GridOptions
@@ -28,9 +30,6 @@ FILL_VALUE = -99.0
 
 class SwanDataGrid(DataGrid):
     """This class is used to write SWAN data from a dataset."""
-    
-    # Make formatting variables accessible to all class methods
-    _use_ascii_only = USE_ASCII_ONLY
 
     z1: Optional[str] = Field(
         default=None,
@@ -104,31 +103,25 @@ class SwanDataGrid(DataGrid):
 
         output_file = os.path.join(destdir, f"{self.var.value}.grd")
         # Use formatting utilities imported at the top of the file
-
-        # Use global ASCII flag
-        arrow = "->" if self._use_ascii_only else "→"
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
         # Create a formatted box for logging
-        box = get_formatted_box(
+        log_box(
             title=f"WRITING {self.var.value.upper()} GRID DATA",
-            use_ascii=self._use_ascii_only,
-            width=72 if self._use_ascii_only else 70
+            logger=logger,
+            add_empty_line=False
         )
-        
-        # Log each line of the box
-        for line in box.split("\n"):
-            logger.info(line)
 
-        logger.info(f"  {arrow} Output file: {output_file}")
+        logger.info(f"  {ARROW} Output file: {output_file}")
 
         # Log additional information about the dataset
         if self.z1:
             shape_info = f"{self.ds[self.z1].shape}"
-            logger.info(f"  {arrow} Variable: {self.z1} with shape {shape_info}")
+            logger.info(f"  {ARROW} Variable: {self.z1} with shape {shape_info}")
         if self.z2:
             shape_info = f"{self.ds[self.z2].shape}"
-            logger.info(f"  {arrow} Variable: {self.z2} with shape {shape_info}")
-        logger.info(f"  {arrow} Scaling factor: {self.fac}")
+            logger.info(f"  {ARROW} Variable: {self.z2} with shape {shape_info}")
+        logger.info(f"  {ARROW} Scaling factor: {self.fac}")
 
         start_time = time_module.time()
         if self.var.value == "bottom":
@@ -160,11 +153,8 @@ class SwanDataGrid(DataGrid):
 
         # Use the centralized functions from rompy package
 
-        # Use global ASCII flag
-        arrow = "->" if self._use_ascii_only else "→"
-
-        logger.info(f"  {arrow} Completed in {elapsed_time:.2f} seconds")
-        logger.info(f"  {arrow} File size: {file_size:.2f} MB")
+        logger.info(f"  {ARROW} Completed in {elapsed_time:.2f} seconds")
+        logger.info(f"  {ARROW} File size: {file_size:.2f} MB")
 
         return f"{inpgrid}\n{readgrid}\n"
 
@@ -193,7 +183,7 @@ class SwanDataGrid(DataGrid):
 
         # Get header, footer, and bullet character
         header, footer, bullet = get_formatted_header_footer(
-            title="SWAN DATA GRID", use_ascii=self._use_ascii_only
+            title="SWAN DATA GRID"
         )
 
         # Build content lines
@@ -277,20 +267,13 @@ def dset_to_swan(
     logger.debug(f"Writing SWAN ASCII file: {output_file}")
 
     # Use formatting utilities imported at the top of the file
-    
+
     # Import formatting utilities at function level to avoid scoping issues
-    from rompy.formatting import USE_ASCII_ONLY
-    
     # Create a formatted box for logging
-    box = get_formatted_box(
+    log_box(
         title="WRITING SWAN ASCII DATA",
-        use_ascii=USE_ASCII_ONLY,
-        width=72 if USE_ASCII_ONLY else 70
+        logger=logger
     )
-    
-    # Log each line of the box
-    for line in box.split("\n"):
-        logger.debug(line)
 
     start_time = time_module.time()
     file_size = 0
@@ -319,29 +302,11 @@ def dset_to_swan(
     # Format the completion message
     elapsed_str = f"{elapsed_time:.2f}"
     size_str = f"{file_size:.2f}"
+    # Get a formatted completion box
     completion_msg = f"COMPLETED: {elapsed_str} seconds, File size: {size_str} MB"
-    padding = 28  # Adjust padding as needed
-
-    if USE_ASCII_ONLY:
-        logger.debug(
-            "+------------------------------------------------------------------------+"
-        )
-        logger.debug(
-            f"| {completion_msg}" + " " * max(0, 70 - len(completion_msg)) + "|"
-        )
-        logger.debug(
-            "+------------------------------------------------------------------------+"
-        )
-    else:
-        logger.debug(
-            "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
-        )
-        logger.debug(
-            f"┃ {completion_msg}" + " " * max(0, 70 - len(completion_msg)) + "┃"
-        )
-        logger.debug(
-            "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-        )
+    completion_box = get_formatted_box(completion_msg)
+    for line in completion_box.split("\n"):
+        logger.debug(line)
 
     logger.debug(f"SWAN ASCII file written successfully to {output_file}")
 

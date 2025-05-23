@@ -13,9 +13,12 @@ from cookiecutter.find import find_template
 
 from rompy.core.types import RompyBaseModel
 from rompy.formatting import (
-    USE_ASCII_ONLY,
+    ARROW,
+    BULLET,
     get_formatted_box,
-    get_formatted_header_footer
+    get_formatted_header_footer,
+    log_box,
+    log_status
 )
 
 logger = logging.getLogger(__name__)
@@ -90,8 +93,7 @@ class TemplateRenderer(RompyBaseModel):
         # Format TemplateRenderer object
         if isinstance(obj, TemplateRenderer):
             header, footer, bullet = get_formatted_header_footer(
-                title="TEMPLATE RENDERING DETAILS", 
-                use_ascii=USE_ASCII_ONLY
+                title="TEMPLATE RENDERING DETAILS"
             )
 
             lines = [header]
@@ -151,15 +153,6 @@ def render(context, template, output_dir, checkout=None):
     # Format renderer info
     renderer_info = renderer._format_value(renderer)
 
-    # Use the formatted box utility
-    box = get_formatted_box(
-        title="RENDERING TEMPLATE",
-        use_ascii=USE_ASCII_ONLY,
-        width=72 if USE_ASCII_ONLY else 70
-    )
-    for line in box.split("\n"):
-        logger.info(line)
-
     # Log detailed renderer info
     if renderer_info:
         for line in renderer_info.split("\n"):
@@ -179,10 +172,7 @@ def render(context, template, output_dir, checkout=None):
     )
 
     # Determine the repo directory
-    if USE_ASCII_ONLY:
-        logger.info("Locating template repository...")
-    else:
-        logger.info("🔍 Locating template repository...")
+    logger.info(f"{ARROW} Locating template repository...")
 
     repo_dir, cleanup = cc_repository.determine_repo_dir(
         template=template,
@@ -195,10 +185,7 @@ def render(context, template, output_dir, checkout=None):
     context["_template"] = repo_dir
 
     # Generate files from template
-    if USE_ASCII_ONLY:
-        logger.info("Generating files from template...")
-    else:
-        logger.info("🔧 Generating files from template...")
+    logger.info(f"{ARROW} Generating files from template...")
     render_start = time_module.time()
     staging_dir = cc_generate.generate_files(
         repo_dir=repo_dir,
@@ -228,28 +215,17 @@ def render(context, template, output_dir, checkout=None):
 
             if isinstance(obj, RenderResults):
                 header, footer, _ = get_formatted_header_footer(
-                    title="TEMPLATE RENDERING RESULTS", 
-                    use_ascii=USE_ASCII_ONLY
+                    title="TEMPLATE RENDERING RESULTS"
                 )
-            
-                if USE_ASCII_ONLY:
-                    return (
-                        f"{header}\n"
-                        f"  Rendering time:      {obj.render_time:.2f} seconds\n"
-                        f"  Total process time:  {obj.elapsed_time:.2f} seconds\n"
-                        f"  Files created:       {obj.file_count}\n"
-                        f"  Output location:     {obj.staging_dir}\n"
-                        f"{footer}"
-                    )
-                else:
-                    return (
-                        f"{header}\n"
-                        f"  ⏱️ Rendering time:      {obj.render_time:.2f} seconds\n"
-                        f"  ⏱️ Total process time:  {obj.elapsed_time:.2f} seconds\n"
-                        f"  📄 Files created:       {obj.file_count}\n"
-                        f"  📂 Output location:     {obj.staging_dir}\n"
-                        f"{footer}"
-                    )
+
+                return (
+                    f"{header}\n"
+                    f"  {ARROW} Rendering time:      {obj.render_time:.2f} seconds\n"
+                    f"  {ARROW} Total process time:  {obj.elapsed_time:.2f} seconds\n"
+                    f"  {ARROW} Files created:       {obj.file_count}\n"
+                    f"  {ARROW} Output location:     {obj.staging_dir}\n"
+                    f"{footer}"
+                )
             return None
 
     # Create and format results
@@ -266,15 +242,9 @@ def render(context, template, output_dir, checkout=None):
             logger.info(line)
     else:
         # Fallback to simple logging if formatting failed
-        if USE_ASCII_ONLY:
-            logger.info(f"Rendering time:      {render_time:.2f} seconds")
-            logger.info(f"Total process time:  {elapsed:.2f} seconds")
-            logger.info(f"Files created:       {file_count}")
-            logger.info(f"Output location:     {staging_dir}")
-        else:
-            logger.info(f"⏱️ Rendering time:      {render_time:.2f} seconds")
-            logger.info(f"⏱️ Total process time:  {elapsed:.2f} seconds")
-            logger.info(f"📄 Files created:       {file_count}")
-            logger.info(f"📂 Output location:     {staging_dir}")
+        logger.info(f"{ARROW} Rendering time:      {render_time:.2f} seconds")
+        logger.info(f"{ARROW} Total process time:  {elapsed:.2f} seconds")
+        logger.info(f"{ARROW} Files created:       {file_count}")
+        logger.info(f"{ARROW} Output location:     {staging_dir}")
 
     return staging_dir

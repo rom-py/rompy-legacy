@@ -67,14 +67,12 @@ class SwanConfig(BaseConfig):
         # Use formatting utilities imported at the top of the file
         
         # Log the process beginning
-        logger.info("")
-        box = get_formatted_box(
+        # Use the log_box utility function
+        from rompy.formatting import log_box
+        log_box(
             title="PROCESSING SWAN CONFIGURATION",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
+            logger=logger
         )
-        for line in box.split("\n"):
-            logger.info(line)
             
         # Setup configuration
         ret = {}
@@ -90,14 +88,11 @@ class SwanConfig(BaseConfig):
         ret["outputs"] = self.outputs.cmd
         
         # Log completion
-        logger.info("")
-        box = get_formatted_box(
+        from rompy.formatting import log_box
+        log_box(
             title="SWAN CONFIGURATION PROCESSING COMPLETE",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
+            logger=logger
         )
-        for line in box.split("\n"):
-            logger.info(line)
         ret["output_locs"] = self.outputs.spec.locations
         return ret
 
@@ -734,15 +729,12 @@ class SwanConfigComponents(BaseConfig):
         # Check for simple logs mode
         SIMPLE_LOGS = os.environ.get('ROMPY_SIMPLE_LOGS', 'false').lower() == 'true'
 
-        logger.info("")
-        # Use the formatted box utility
-        box = get_formatted_box(
+        # Use the log_box utility function
+        from rompy.formatting import log_box
+        log_box(
             title="PROCESSING SWAN CONFIGURATION",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
+            logger=logger
         )
-        for line in box.split("\n"):
-            logger.info(line)
 
         period = runtime.period
         staging_dir = runtime.staging_dir
@@ -899,14 +891,11 @@ class SwanConfigComponents(BaseConfig):
 
         # Use formatting utilities imported at the top of the file
 
-        logger.info("")
-        # Use the formatted box utility
-        box = get_formatted_box(
+        # Use the log_box utility function
+        from rompy.formatting import log_box
+        log_box(
             title="SWAN CONFIGURATION RENDERING COMPLETE",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
+            logger=logger
         )
-        for line in box.split("\n"):
-            logger.info(line)
 
         return ret

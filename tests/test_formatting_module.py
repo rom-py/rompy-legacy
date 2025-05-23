@@ -16,7 +16,8 @@ from rompy.formatting import (
     get_ascii_mode,
     get_simple_logs,
     get_formatted_box,
-    get_formatted_header_footer
+    get_formatted_header_footer,
+    log_box
 )
 
 
@@ -171,6 +172,102 @@ class TestFormattedBox:
             
             lines = box.split("\n")
             assert any(c in lines[0] for c in ["┏", "╱", "╣"])  # Unicode header
+
+
+class TestLogBox:
+    """Test the log_box function."""
+
+    def test_log_box_basic(self):
+        """Test the basic functionality of log_box."""
+        import logging
+        from io import StringIO
+        import sys
+        
+        # Setup a logger with a string buffer
+        log_buffer = StringIO()
+        handler = logging.StreamHandler(log_buffer)
+        logger = logging.getLogger("test_logger")
+        logger.setLevel(logging.INFO)
+        logger.addHandler(handler)
+        logger.propagate = False  # Don't propagate to root logger
+        
+        # Call log_box with the test logger
+        log_box("TEST BOX", logger=logger)
+        
+        # Get the logged output
+        output = log_buffer.getvalue()
+        
+        # Verify the box was logged correctly
+        assert "TEST BOX" in output
+        # Box should have multiple lines
+        assert output.count('\n') >= 3
+        
+        # Clean up
+        logger.removeHandler(handler)
+    
+    def test_log_box_no_empty_line(self):
+        """Test log_box with add_empty_line=False."""
+        import logging
+        from io import StringIO
+        
+        # Setup a logger with a string buffer
+        log_buffer = StringIO()
+        handler = logging.StreamHandler(log_buffer)
+        logger = logging.getLogger("test_logger2")
+        logger.setLevel(logging.INFO)
+        logger.addHandler(handler)
+        logger.propagate = False
+        
+        # Call log_box with add_empty_line=False
+        log_box("TEST BOX", logger=logger, add_empty_line=False)
+        
+        # Get the logged output
+        output = log_buffer.getvalue()
+        
+        # The output should not end with two newlines
+        assert not output.endswith('\n\n')
+        
+        # Clean up
+        logger.removeHandler(handler)
+    
+    def test_log_box_respects_ascii_mode(self):
+        """Test that log_box respects the ASCII mode setting."""
+        import logging
+        from io import StringIO
+        
+        # Setup a logger with a string buffer
+        log_buffer = StringIO()
+        handler = logging.StreamHandler(log_buffer)
+        logger = logging.getLogger("test_logger3")
+        logger.setLevel(logging.INFO)
+        logger.addHandler(handler)
+        logger.propagate = False
+        
+        # Call log_box with explicit ASCII mode
+        log_box("ASCII BOX", logger=logger, use_ascii=True)
+        
+        # Get the logged output
+        output = log_buffer.getvalue()
+        
+        # Check for ASCII characters
+        assert "+" in output
+        assert "-" in output
+        
+        # Clean up
+        log_buffer.truncate(0)
+        log_buffer.seek(0)
+        
+        # Call log_box with explicit Unicode mode
+        log_box("UNICODE BOX", logger=logger, use_ascii=False)
+        
+        # Get the logged output
+        output = log_buffer.getvalue()
+        
+        # Check for Unicode characters (at least one should be present)
+        assert any(c in output for c in ["┏", "┃", "┗", "━", "┓", "┛"])
+        
+        # Clean up
+        logger.removeHandler(handler)
 
 
 class TestHeaderFooter:

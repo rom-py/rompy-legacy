@@ -1,12 +1,64 @@
 import os
 import logging
-from typing import Tuple, Optional, Any
+from typing import Tuple, Optional, Any, Dict, List
 
 # Define constants for ASCII mode and simple logs
 # Check if we should use ASCII-only formatting
 USE_ASCII_ONLY = os.environ.get('ROMPY_ASCII_ONLY', '').lower() in ('1', 'true', 'yes')
 # Check if simple logs are requested (no timestamps or module names)
 USE_SIMPLE_LOGS = os.environ.get('ROMPY_SIMPLE_LOGS', '').lower() in ('1', 'true', 'yes')
+
+# Define commonly used formatting elements based on ASCII mode
+# Arrows for indicating actions or steps
+ARROW = "->" if USE_ASCII_ONLY else "→"
+# Bullet points for lists
+BULLET = "*" if USE_ASCII_ONLY else "•"
+# Default widths
+DEFAULT_WIDTH = 72 if USE_ASCII_ONLY else 70
+
+# Common table formatting elements
+TABLE_FORMATS = {
+    "ascii": {
+        "top_line": "+{}-+{}-+",
+        "header_line": "| {} | {} |",
+        "separator": "+{}-+{}-+",
+        "data_line": "| {} | {} |",
+        "bottom_line": "+{}-+{}-+",
+        "h_line": "-" * DEFAULT_WIDTH,
+    },
+    "unicode": {
+        "top_line": "┏{}━┳{}━┓",
+        "header_line": "┃ {} ┃ {} ┃",
+        "separator": "┠{}━╋{}━┨",
+        "data_line": "┃ {} ┃ {} ┃",
+        "bottom_line": "┗{}━┻{}━┛",
+        "h_line": "━" * DEFAULT_WIDTH,
+    }
+}
+
+# Status box headers and footers
+STATUS_BOX_TEMPLATES = {
+    "processing": {
+        "title": "PROCESSING",
+        "width": DEFAULT_WIDTH
+    },
+    "completed": {
+        "title": "COMPLETED",
+        "width": DEFAULT_WIDTH
+    },
+    "error": {
+        "title": "ERROR",
+        "width": DEFAULT_WIDTH
+    },
+    "warning": {
+        "title": "WARNING",
+        "width": DEFAULT_WIDTH
+    },
+    "info": {
+        "title": "INFORMATION",
+        "width": DEFAULT_WIDTH
+    }
+}
 
 # Helper functions to avoid circular imports
 def get_ascii_mode() -> bool:
@@ -88,14 +140,14 @@ def configure_logging(verbosity: int = 0, log_dir: Optional[str] = None) -> None
 def get_formatted_header_footer(
     title: str, 
     use_ascii: Optional[bool] = None, 
-    width: int = 70
+    width: Optional[int] = None
 ) -> Tuple[str, str, str]:
     """Create formatted header and footer for output blocks.
     
     Args:
         title: The title text to display in the header
         use_ascii: Whether to use ASCII-only characters (defaults to global setting)
-        width: The width of the header/footer in characters
+        width: The width of the header/footer in characters (defaults to ASCII-appropriate width)
         
     Returns:
         A tuple containing (header, footer, bullet_char)
@@ -104,20 +156,24 @@ def get_formatted_header_footer(
     if use_ascii is None:
         use_ascii = get_ascii_mode()
     
+    # If width isn't specified, use a sensible default based on ASCII mode
+    if width is None:
+        width = DEFAULT_WIDTH
+    
     if use_ascii:
         # Create ASCII-only header/footer
         header = f"+{'-' * (width - 2)}+"
         title_line = f"| {title.center(width - 4)} |"
         separator = f"+{'-' * (width - 2)}+"
         footer = f"+{'-' * (width - 2)}+"
-        bullet = "*"
+        bullet = BULLET  # Use predefined bullet
     else:
         # Create Unicode header/footer
         header = f"┏{'━' * (width - 2)}┓"
         title_line = f"┃ {title.center(width - 4)} ┃"
         separator = f"┠{'━' * (width - 2)}┨"
         footer = f"┗{'━' * (width - 2)}┛"
-        bullet = "•"
+        bullet = BULLET  # Use predefined bullet
     
     # Combine header with title
     header = f"{header}\n{title_line}\n{separator}"
@@ -128,14 +184,14 @@ def get_formatted_header_footer(
 def get_formatted_box(
     title: str, 
     use_ascii: Optional[bool] = None, 
-    width: int = 70
+    width: Optional[int] = None
 ) -> str:
     """Create a formatted box with a title.
     
     Args:
         title: The title text to display in the box
         use_ascii: Whether to use ASCII-only characters (defaults to global setting)
-        width: The width of the box in characters
+        width: The width of the box in characters (defaults to ASCII-appropriate width)
         
     Returns:
         A string containing the formatted box
@@ -143,6 +199,10 @@ def get_formatted_box(
     # If ASCII mode isn't specified, use the global setting
     if use_ascii is None:
         use_ascii = get_ascii_mode()
+    
+    # If width isn't specified, use a sensible default based on ASCII mode
+    if width is None:
+        width = DEFAULT_WIDTH
     
     if use_ascii:
         # Create ASCII-only box
@@ -156,6 +216,49 @@ def get_formatted_box(
         title_line = f"┃ {title.center(width - 4)} ┃"
         bottom = f"┗{'━' * (width - 2)}┛"
         return f"{top}\n{title_line}\n{bottom}"
+
+
+def log_box(title: str, 
+            logger=None, 
+            use_ascii: Optional[bool] = None, 
+            width: Optional[int] = None, 
+            add_empty_line: bool = True) -> None:
+    """Create a formatted box and log each line.
+    
+    This utility function creates a formatted box and logs each line to the specified
+    logger, handling the common pattern of creating a box and then splitting it
+    for logging.
+    
+    Args:
+        title: The title text to display in the box
+        logger: The logger to use (if None, imports and uses the root logger)
+        use_ascii: Whether to use ASCII-only characters (defaults to global setting)
+        width: The width of the box in characters (defaults to ASCII-appropriate width)
+        add_empty_line: Whether to add an empty line after the box
+    """
+    # If ASCII mode isn't specified, use the global setting
+    if use_ascii is None:
+        use_ascii = get_ascii_mode()
+    
+    # If width isn't specified, use a sensible default based on ASCII mode
+    if width is None:
+        width = DEFAULT_WIDTH
+    
+    # Create the formatted box
+    box = get_formatted_box(title=title, use_ascii=use_ascii, width=width)
+    
+    # Use the provided logger or get the root logger
+    if logger is None:
+        import logging
+        logger = logging.getLogger()
+    
+    # Log each line of the box
+    for line in box.split("\n"):
+        logger.info(line)
+    
+    # Add an empty line if requested
+    if add_empty_line:
+        logger.info("")
 
 
 def format_value(obj: Any) -> Optional[str]:
@@ -199,6 +302,107 @@ def format_value(obj: Any) -> Optional[str]:
     
     # Use default formatting for other types
     return None
+
+
+def get_table_format(use_ascii: Optional[bool] = None) -> Dict:
+    """Get the appropriate table formatting elements based on ASCII mode.
+    
+    Args:
+        use_ascii: Whether to use ASCII-only characters (defaults to global setting)
+        
+    Returns:
+        A dictionary of table formatting elements
+    """
+    if use_ascii is None:
+        use_ascii = get_ascii_mode()
+        
+    return TABLE_FORMATS["ascii"] if use_ascii else TABLE_FORMATS["unicode"]
+
+
+def format_table_row(key: str, value: str, use_ascii: Optional[bool] = None) -> str:
+    """Format a key-value pair as a table row.
+    
+    Args:
+        key: The key/label for the row
+        value: The value to display
+        use_ascii: Whether to use ASCII-only characters (defaults to global setting)
+        
+    Returns:
+        A formatted table row string
+    """
+    if use_ascii is None:
+        use_ascii = get_ascii_mode()
+        
+    format_dict = TABLE_FORMATS["ascii"] if use_ascii else TABLE_FORMATS["unicode"]
+    return format_dict["data_line"].format(key, value)
+
+
+def log_horizontal_line(logger=None, use_ascii: Optional[bool] = None) -> None:
+    """Log a horizontal line for visual separation.
+    
+    Args:
+        logger: The logger to use (if None, imports and uses the root logger)
+        use_ascii: Whether to use ASCII-only characters (defaults to global setting)
+    """
+    if use_ascii is None:
+        use_ascii = get_ascii_mode()
+        
+    # Use the provided logger or get the root logger
+    if logger is None:
+        import logging
+        logger = logging.getLogger()
+    
+    line = TABLE_FORMATS["ascii"]["h_line"] if use_ascii else TABLE_FORMATS["unicode"]["h_line"]
+    logger.info(line)
+
+
+def get_status_box(status_type: str, custom_title: Optional[str] = None, use_ascii: Optional[bool] = None) -> str:
+    """Get a pre-configured status box.
+    
+    Args:
+        status_type: Type of status box ('processing', 'completed', 'error', 'warning', 'info')
+        custom_title: Optional custom title to override the default
+        use_ascii: Whether to use ASCII-only characters (defaults to global setting)
+        
+    Returns:
+        A formatted box string
+    """
+    if status_type not in STATUS_BOX_TEMPLATES:
+        status_type = "info"  # Default fallback
+        
+    template = STATUS_BOX_TEMPLATES[status_type]
+    title = custom_title if custom_title else template["title"]
+    
+    return get_formatted_box(
+        title=title,
+        use_ascii=use_ascii,
+        width=template["width"]
+    )
+
+
+def log_status(status_type: str, custom_title: Optional[str] = None, logger=None, add_empty_line: bool = True) -> None:
+    """Log a pre-configured status box.
+    
+    Args:
+        status_type: Type of status box ('processing', 'completed', 'error', 'warning', 'info')
+        custom_title: Optional custom title to override the default
+        logger: The logger to use (if None, imports and uses the root logger)
+        add_empty_line: Whether to add an empty line after the box
+    """
+    # Use the provided logger or get the root logger
+    if logger is None:
+        import logging
+        logger = logging.getLogger()
+        
+    box = get_status_box(status_type, custom_title)
+    
+    # Log each line of the box
+    for line in box.split("\n"):
+        logger.info(line)
+    
+    # Add an empty line if requested
+    if add_empty_line:
+        logger.info("")
 
 
 def str_helper(lines: list, name: str, obj: Any, level: int, format_value_func=None) -> None:
