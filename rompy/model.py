@@ -14,7 +14,7 @@ from typing import Union
 from pydantic import Field
 
 # Import these at module level to avoid scoping issues
-from rompy.formatting import (USE_ASCII_ONLY, USE_SIMPLE_LOGS,
+from rompy.formatting import (get_ascii_mode, get_simple_logs,
                               get_formatted_box, get_formatted_header_footer)
 from rompy.utils import load_entry_points
 
@@ -76,9 +76,7 @@ class ModelRun(RompyBaseModel):
     Further explanation is given in the rompy.core.Baseconfig docstring.
     """
 
-    # Make formatting variables accessible to all class methods
-    _use_ascii_only = USE_ASCII_ONLY
-    _use_simple_logs = USE_SIMPLE_LOGS
+    # Initialize formatting variables in __init__
 
     run_id: str = Field("run_id", description="The run id")
     period: TimeRange = Field(
@@ -138,24 +136,20 @@ class ModelRun(RompyBaseModel):
         staging_dir : str
 
         """
-        logger.info("")
-        # Use the formatted box utility with class variables
-        box = get_formatted_box(
+        # Use the log_box utility function
+        from rompy.formatting import log_box
+        log_box(
             title="MODEL RUN CONFIGURATION",
-            use_ascii=self._use_ascii_only,
-            width=72 if self._use_ascii_only else 70,
+            logger=logger,
         )
-        for line in box.split("\n"):
-            logger.info(line)
-        logger.info("")
 
         # Format model settings in a more structured way
         config_type = type(self.config).__name__
         duration = self.period.end - self.period.start
         formatted_duration = self.period.format_duration(duration)
 
-        # Use a formatted two-column layout with class variables
-        if self._use_ascii_only:
+        # Use a formatted two-column layout
+        if get_ascii_mode():
             logger.info(
                 "+-----------------------------+-------------------------------------+"
             )
@@ -191,7 +185,7 @@ class ModelRun(RompyBaseModel):
             logger.info(f"┃ Output Directory            ┃ {str(self.output_dir):<35} ┃")
 
         if hasattr(self.config, "description") and self.config.description:
-            if self._use_ascii_only:
+            if get_ascii_mode():
                 logger.info(
                     f"| Description                | {self.config.description:<35} |"
                 )
@@ -200,7 +194,7 @@ class ModelRun(RompyBaseModel):
                     f"┃ Description                ┃ {self.config.description:<35} ┃"
                 )
 
-        if self._use_ascii_only:
+        if get_ascii_mode():
             logger.info(
                 "+-----------------------------+-------------------------------------+"
             )
@@ -246,18 +240,15 @@ class ModelRun(RompyBaseModel):
 
         logger.info("")
         # Use helper functions to avoid circular imports
-        from rompy import ROMPY_ASCII_MODE, ROMPY_SIMPLE_LOGS
+        # No need to import or set USE_ASCII_ONLY, we use get_ascii_mode() directly
 
-        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-
-        # Use the formatted box utility
-        box = get_formatted_box(
+        # Use the log_box utility function
+        from rompy.formatting import log_box
+        log_box(
             title="STARTING MODEL GENERATION",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70,
+            logger=logger,
+            add_empty_line=False,
         )
-        for line in box.split("\n"):
-            logger.info(line)
         logger.info(f"Preparing input files in {self.output_dir}")
 
         # Collect context data
@@ -286,18 +277,15 @@ class ModelRun(RompyBaseModel):
 
         logger.info("")
         # Use helper functions to avoid circular imports
-        from rompy import ROMPY_ASCII_MODE, ROMPY_SIMPLE_LOGS
+        # No need to import or set USE_ASCII_ONLY, we use get_ascii_mode() directly
 
-        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-
-        # Use the formatted box utility
-        box = get_formatted_box(
+        # Use the log_box utility function
+        from rompy.formatting import log_box
+        log_box(
             title="MODEL GENERATION COMPLETE",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70,
+            logger=logger,
+            add_empty_line=False,
         )
-        for line in box.split("\n"):
-            logger.info(line)
         logger.info(f"Model files generated at: {staging_dir}")
         return staging_dir
 
@@ -312,15 +300,12 @@ class ModelRun(RompyBaseModel):
         -------
         zip_fn : str
         """
-        logger.info("")
-        # Use the formatted box utility with class variables
-        box = get_formatted_box(
+        # Use the log_box utility function
+        from rompy.formatting import log_box
+        log_box(
             title="ARCHIVING MODEL FILES",
-            use_ascii=self._use_ascii_only,
-            width=72 if self._use_ascii_only else 70,
+            logger=logger,
         )
-        for line in box.split("\n"):
-            logger.info(line)
 
         # Always remove previous zips
         zip_fn = Path(str(self.staging_dir) + ".zip")
@@ -345,8 +330,8 @@ class ModelRun(RompyBaseModel):
         shutil.rmtree(self.staging_dir)
 
         logger.info(f"Archive created successfully: {zip_fn}")
-        # Draw a horizontal line based on ASCII mode using class variables
-        if self._use_ascii_only:
+        # Draw a horizontal line based on ASCII mode
+        if get_ascii_mode():
             logger.info(
                 "------------------------------------------------------------------------"
             )

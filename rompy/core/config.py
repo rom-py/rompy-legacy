@@ -6,7 +6,7 @@ from typing import Literal, Optional
 from pydantic import ConfigDict, Field
 
 from .types import RompyBaseModel
-from rompy.formatting import USE_ASCII_ONLY, get_formatted_header_footer
+from rompy.formatting import get_ascii_mode, get_formatted_header_footer
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +66,8 @@ class BaseConfig(RompyBaseModel):
         
         # Format BaseConfig objects with header and structure
         if hasattr(obj, 'model_type') and isinstance(obj, BaseConfig):
-            if USE_ASCII_ONLY:
+            is_ascii = get_ascii_mode()
+            if is_ascii:
                 header = "+------------ MODEL CONFIGURATION ------------+"
                 separator = "+-------------------------------------------+"
                 footer = "+-------------------------------------------+"
@@ -75,7 +76,7 @@ class BaseConfig(RompyBaseModel):
                 separator = "┠━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┨"
                 footer = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
                 
-            bullet = "*" if USE_ASCII_ONLY else "•"
+            bullet = "*" if is_ascii else "•"
             
             lines = [header]
             lines.append(f"  {bullet} Model type: {obj.model_type}")
