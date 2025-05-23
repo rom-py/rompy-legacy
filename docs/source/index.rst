@@ -35,6 +35,7 @@ The final main component of the library is an intake driver that builds on the i
     quickstart
     core_concepts
     formatting
+    string_representation
     cli
     models
     demo
