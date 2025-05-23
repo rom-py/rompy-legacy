@@ -60,18 +60,18 @@ class NamelistBaseModel(RompyBaseModel):
             return value
 
         return __lower__(values)
-        
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to handle proper serialization of nested components."""
         result = {}
-        
+
         # Include only non-None fields in the serialized output
         for field_name in self.model_fields:
             value = getattr(self, field_name, None)
             if value is not None and not field_name.startswith("_"):
                 result[field_name] = value
-                
+
         return result
 
     def update(self, update: Dict[str, Any]):
