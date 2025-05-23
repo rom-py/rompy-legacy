@@ -3,25 +3,20 @@ import logging
 import os
 import platform
 import shutil
-import zipfile as zf
+import sys
+import textwrap
 import time as time_module
+import zipfile as zf
 from datetime import datetime
 from pathlib import Path
 from typing import Union
-import textwrap
-import sys
 
-import ipdb
 from pydantic import Field
 
-from rompy.utils import load_entry_points
-from rompy.formatting import (
-    get_formatted_box,
-    get_formatted_header_footer
-)
-
 # Import these at module level to avoid scoping issues
-from rompy.formatting import USE_ASCII_ONLY, USE_SIMPLE_LOGS
+from rompy.formatting import (USE_ASCII_ONLY, USE_SIMPLE_LOGS,
+                              get_formatted_box, get_formatted_header_footer)
+from rompy.utils import load_entry_points
 
 from .core.config import BaseConfig
 from .core.render import render
@@ -80,6 +75,7 @@ class ModelRun(RompyBaseModel):
 
     Further explanation is given in the rompy.core.Baseconfig docstring.
     """
+
     # Make formatting variables accessible to all class methods
     _use_ascii_only = USE_ASCII_ONLY
     _use_simple_logs = USE_SIMPLE_LOGS
@@ -147,7 +143,7 @@ class ModelRun(RompyBaseModel):
         box = get_formatted_box(
             title="MODEL RUN CONFIGURATION",
             use_ascii=self._use_ascii_only,
-            width=72 if self._use_ascii_only else 70
+            width=72 if self._use_ascii_only else 70,
         )
         for line in box.split("\n"):
             logger.info(line)
@@ -160,46 +156,70 @@ class ModelRun(RompyBaseModel):
 
         # Use a formatted two-column layout with class variables
         if self._use_ascii_only:
-            logger.info("+-----------------------------+-------------------------------------+")
+            logger.info(
+                "+-----------------------------+-------------------------------------+"
+            )
             logger.info(f"| Run ID                      | {self.run_id:<35} |")
             logger.info(f"| Model Type                  | {config_type:<35} |")
-            logger.info(f"| Start Time                  | {self.period.start.isoformat():<35} |")
-            logger.info(f"| End Time                    | {self.period.end.isoformat():<35} |")
+            logger.info(
+                f"| Start Time                  | {self.period.start.isoformat():<35} |"
+            )
+            logger.info(
+                f"| End Time                    | {self.period.end.isoformat():<35} |"
+            )
             logger.info(f"| Duration                    | {formatted_duration:<35} |")
-            logger.info(f"| Time Interval               | {str(self.period.interval):<35} |")
+            logger.info(
+                f"| Time Interval               | {str(self.period.interval):<35} |"
+            )
             logger.info(f"| Output Directory            | {str(self.output_dir):<35} |")
         else:
-            logger.info( "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+            logger.info(
+                "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+            )
             logger.info(f"┃ Run ID                      ┃ {self.run_id:<35} ┃")
             logger.info(f"┃ Model Type                  ┃ {config_type:<35} ┃")
-            logger.info(f"┃ Start Time                  ┃ {self.period.start.isoformat():<35} ┃")
-            logger.info(f"┃ End Time                    ┃ {self.period.end.isoformat():<35} ┃")
+            logger.info(
+                f"┃ Start Time                  ┃ {self.period.start.isoformat():<35} ┃"
+            )
+            logger.info(
+                f"┃ End Time                    ┃ {self.period.end.isoformat():<35} ┃"
+            )
             logger.info(f"┃ Duration                    ┃ {formatted_duration:<35} ┃")
-            logger.info(f"┃ Time Interval               ┃ {str(self.period.interval):<35} ┃")
+            logger.info(
+                f"┃ Time Interval               ┃ {str(self.period.interval):<35} ┃"
+            )
             logger.info(f"┃ Output Directory            ┃ {str(self.output_dir):<35} ┃")
 
-        if hasattr(self.config, 'description') and self.config.description:
+        if hasattr(self.config, "description") and self.config.description:
             if self._use_ascii_only:
-                logger.info(f"| Description                | {self.config.description:<35} |")
+                logger.info(
+                    f"| Description                | {self.config.description:<35} |"
+                )
             else:
-                logger.info(f"┃ Description                ┃ {self.config.description:<35} ┃")
+                logger.info(
+                    f"┃ Description                ┃ {self.config.description:<35} ┃"
+                )
 
         if self._use_ascii_only:
-            logger.info("+-----------------------------+-------------------------------------+")
+            logger.info(
+                "+-----------------------------+-------------------------------------+"
+            )
         else:
-            logger.info("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+            logger.info(
+                "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+            )
 
         # Display detailed configuration info using the hierarchical __str__ method
         logger.info("")
         logger.info(f"MODEL CONFIGURATION ({type(self.config).__name__}):")
-        
+
         # First try to use the _format_value method directly if available
-        if hasattr(self.config, '_format_value'):
+        if hasattr(self.config, "_format_value"):
             try:
                 # Try using _format_value method directly for structured formatting
                 formatted_config = self.config._format_value(self.config)
                 if formatted_config:
-                    for line in formatted_config.split('\n'):
+                    for line in formatted_config.split("\n"):
                         logger.info(line)
                     # If we successfully used _format_value, we're done
                     formatted = True
@@ -211,12 +231,12 @@ class ModelRun(RompyBaseModel):
                 formatted = False
         else:
             formatted = False
-            
+
         # If _format_value didn't work or isn't available, fall back to str()
         if not formatted:
             try:
                 # Use hierarchical string representation from RompyBaseModel
-                config_lines = str(self.config).split('\n')
+                config_lines = str(self.config).split("\n")
                 for line in config_lines:
                     logger.info(line)
             except Exception as e:
@@ -227,13 +247,14 @@ class ModelRun(RompyBaseModel):
         logger.info("")
         # Use helper functions to avoid circular imports
         from rompy import ROMPY_ASCII_MODE, ROMPY_SIMPLE_LOGS
+
         USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
+
         # Use the formatted box utility
         box = get_formatted_box(
             title="STARTING MODEL GENERATION",
             use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
+            width=72 if USE_ASCII_ONLY else 70,
         )
         for line in box.split("\n"):
             logger.info(line)
@@ -266,13 +287,14 @@ class ModelRun(RompyBaseModel):
         logger.info("")
         # Use helper functions to avoid circular imports
         from rompy import ROMPY_ASCII_MODE, ROMPY_SIMPLE_LOGS
+
         USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
+
         # Use the formatted box utility
         box = get_formatted_box(
             title="MODEL GENERATION COMPLETE",
             use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
+            width=72 if USE_ASCII_ONLY else 70,
         )
         for line in box.split("\n"):
             logger.info(line)
@@ -295,7 +317,7 @@ class ModelRun(RompyBaseModel):
         box = get_formatted_box(
             title="ARCHIVING MODEL FILES",
             use_ascii=self._use_ascii_only,
-            width=72 if self._use_ascii_only else 70
+            width=72 if self._use_ascii_only else 70,
         )
         for line in box.split("\n"):
             logger.info(line)
@@ -325,9 +347,13 @@ class ModelRun(RompyBaseModel):
         logger.info(f"Archive created successfully: {zip_fn}")
         # Draw a horizontal line based on ASCII mode using class variables
         if self._use_ascii_only:
-            logger.info("------------------------------------------------------------------------")
+            logger.info(
+                "------------------------------------------------------------------------"
+            )
         else:
-            logger.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            logger.info(
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            )
         return zip_fn
 
     def __call__(self):
@@ -335,10 +361,11 @@ class ModelRun(RompyBaseModel):
 
     def _format_value(self, obj):
         """Custom formatter for ModelRun values"""
-        from .core.time import TimeRange
         from datetime import datetime, timedelta
         from pathlib import Path
-        
+
+        from .core.time import TimeRange
+
         # Format TimeRange object with more detail
         if isinstance(obj, TimeRange):
             duration = obj.end - obj.start
@@ -349,30 +376,31 @@ class ModelRun(RompyBaseModel):
                 f"  Interval: {str(obj.interval)}\n"
                 f"  Include End: {obj.include_end}"
             )
-        
-        # Format DateTime objects in readable format 
+
+        # Format DateTime objects in readable format
         if isinstance(obj, datetime):
-            return obj.isoformat(' ')
-            
+            return obj.isoformat(" ")
+
         # Format timedelta objects using TimeRange's format_duration
         if isinstance(obj, timedelta):
             from .core.time import TimeRange
+
             # We need to create a TimeRange instance to use the format_duration method
             tr = TimeRange(start=datetime.now(), duration=obj)
             return tr.format_duration(obj)
-        
+
         # Format Path objects as strings
         if isinstance(obj, Path):
             return str(obj)
-            
+
         # Format config with just its type name to avoid recursive dump
-        if hasattr(obj, 'model_type') and isinstance(obj, RompyBaseModel):
+        if hasattr(obj, "model_type") and isinstance(obj, RompyBaseModel):
             config_type = type(obj).__name__
-            description = getattr(obj, 'description', '')
+            description = getattr(obj, "description", "")
             result = f"{config_type}"
             if description:
                 result += f" - {description}"
             return result
-            
+
         # Use default formatting for everything else
         return None
