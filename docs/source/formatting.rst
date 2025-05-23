@@ -213,10 +213,29 @@ Output will be formatted hierarchically:
           [1]: second item
         ]
 
+Hierarchical String Representation Mechanism
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``RompyBaseModel`` implements a recursive string representation system that:
+
+1. **Traverses the Object Graph**: Recursively explores nested objects, including dictionaries, lists, and other RompyBaseModel instances
+2. **Maintains Indentation**: Properly indents nested structures for readability
+3. **Special Handling**: Applies special formatting for common types like datetimes, paths, etc.
+4. **Smart Truncation**: Avoids excessive output for large collections
+
+The string representation is implemented through two key methods:
+
+* ``__str__``: Entry point that generates the full string representation
+* ``_str_helper``: Recursive helper that builds the hierarchical structure
+
+This system ensures consistent, readable output across all ROMPY models.
+
 Customizing String Representation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can customize the string representation by overriding the ``_format_value`` method:
+You can customize the string representation in two ways:
+
+1. **Override the ``_format_value`` method** (recommended):
 
 .. code-block:: python
 
@@ -225,8 +244,23 @@ You can customize the string representation by overriding the ``_format_value`` 
             # Custom formatting for specific types
             if isinstance(obj, datetime):
                 return obj.strftime("%Y-%m-%d %H:%M")
+            elif isinstance(obj, Path):
+                return f"PATH: {obj}"
             # Return None to use default formatting
             return None
+
+This method is called for each value during string representation. Returning ``None`` will use the default formatting.
+
+2. **Override the ``__str__`` method** (for complete customization):
+
+.. code-block:: python
+
+    class CompletelyCustomModel(RompyBaseModel):
+        def __str__(self):
+            # Completely custom string representation
+            return f"Custom representation of {self.__class__.__name__}"
+
+The ``_format_value`` approach is preferred as it maintains the hierarchical structure while allowing customization for specific types.
 
 Value Formatting
 ---------------
