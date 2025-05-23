@@ -54,15 +54,6 @@ config:
           uri: "../../tests/schism/test_data/hycom.nc"
         variables: 
          - salinity
-    hotstart:
-      temp_var: water_temp
-      salt_var: salinity
-      coords:
-        t: time
-        x: xlon
-        y: ylat
-        z: depth
-        
       # uv3d:
       #   buffer: 0.0
       #   coords:
@@ -76,18 +67,29 @@ config:
       #   variables: 
       #     - water_u
       #     - water_v
-      TEM_3D:
-        buffer: 0.0
-        coords:
-          t: time
-          x: xlon
-          y: ylat
-          z: depth
-        source: 
-          model_type: file
-          uri: "../../tests/schism/test_data/hycom.nc"
-        variables: 
-          - temperature
+      # TEM_3D:
+      #   buffer: 0.0
+      #   coords:
+      #     t: time
+      #     x: xlon
+      #     y: ylat
+      #     z: depth
+      #   source: 
+      #     model_type: file
+      #     uri: "../../tests/schism/test_data/hycom.nc"
+      #   variables: 
+      #     - temperature
+    hotstart:
+      source: 
+        model_type: file
+        uri: "../../tests/schism/test_data/hycom.nc"
+      temp_var: temperature
+      salt_var: salinity
+      coords:
+        t: time
+        x: xlon
+        y: ylat
+        z: depth
     tides:
       constituents:
       - M2

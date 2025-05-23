@@ -8,8 +8,16 @@ import numpy as np
 
 # Import needed modules
 from rompy.schism.boundary_tides import (
-    TidalBoundary, ElevationType, VelocityType, TracerType, TidalSpecies, BoundaryConfig,
-    create_tidal_boundary, create_hybrid_boundary, create_river_boundary, create_nested_boundary
+    TidalBoundary,
+    ElevationType,
+    VelocityType,
+    TracerType,
+    TidalSpecies,
+    BoundaryConfig,
+    create_tidal_boundary,
+    create_hybrid_boundary,
+    create_river_boundary,
+    create_nested_boundary,
 )
 from rompy.schism import SCHISMGrid
 from rompy.core.data import DataBlob
@@ -121,6 +129,7 @@ def validate_bctides_format(file_path):
 
 class MockTidalData:
     """Mock tidal dataset for testing."""
+
     def __init__(self):
         # Create mock tidal data
         self.data = {}
@@ -165,16 +174,24 @@ class TestBctides:
                 f.write("2 50.0 !ntip, tip_dp\n")
                 # For each tidal potential region
                 f.write("M2\n")
-                f.write("2 0.242334 0.0000140519 1.0 0.0 !species, amp, freq, nodal factor, earth tear\n")
+                f.write(
+                    "2 0.242334 0.0000140519 1.0 0.0 !species, amp, freq, nodal factor, earth tear\n"
+                )
                 f.write("S2\n")
-                f.write("2 0.112743 0.0000145444 1.0 0.0 !species, amp, freq, nodal factor, earth tear\n")
+                f.write(
+                    "2 0.112743 0.0000145444 1.0 0.0 !species, amp, freq, nodal factor, earth tear\n"
+                )
                 # Number of tidal boundary forcing frequencies
                 f.write("2 !nbfr - number of tidal forcing frequencies\n")
                 # For each frequency
                 f.write("M2\n")
-                f.write("0.0000140519 1.0 0.0 !freq, nodal factor, earth equilibrium argument\n")
+                f.write(
+                    "0.0000140519 1.0 0.0 !freq, nodal factor, earth equilibrium argument\n"
+                )
                 f.write("S2\n")
-                f.write("0.0000145444 1.0 0.0 !freq, nodal factor, earth equilibrium argument\n")
+                f.write(
+                    "0.0000145444 1.0 0.0 !freq, nodal factor, earth equilibrium argument\n"
+                )
                 # Number of open boundaries
                 f.write("1 !nope - number of open boundaries\n")
                 # Boundary type flags for each boundary
@@ -261,9 +278,13 @@ class TestBctides:
                         break
 
             assert boundary_flags_line is not None, "Boundary flags line not found"
-            assert len(boundary_flags_line) >= 3, "Boundary flags line should have at least 3 values"
+            assert (
+                len(boundary_flags_line) >= 3
+            ), "Boundary flags line should have at least 3 values"
             assert int(boundary_flags_line[0]) == 0, "Elevation type should be 0 (NONE)"
-            assert int(boundary_flags_line[1]) == 2, "Velocity type should be 2 (CONSTANT)"
+            assert (
+                int(boundary_flags_line[1]) == 2
+            ), "Velocity type should be 2 (CONSTANT)"
 
             # Find the constant discharge value
             discharge_line = None

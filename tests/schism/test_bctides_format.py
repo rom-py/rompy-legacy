@@ -16,12 +16,12 @@ from rompy.schism.boundary_tides import (
     create_tidal_boundary,
     create_hybrid_boundary,
     create_river_boundary,
-    create_nested_boundary
+    create_nested_boundary,
 )
 from rompy.schism.tides_enhanced import (
     SCHISMDataTidesEnhanced,
     TidalDataset,
-    create_tidal_only_config
+    create_tidal_only_config,
 )
 
 
@@ -32,6 +32,7 @@ def test_files_dir():
 
 
 # Using grid2d fixture and tidal_data_files from conftest.py instead of defining custom ones
+
 
 @pytest.fixture
 def hgrid_path(grid2d, test_files_dir):
@@ -49,11 +50,12 @@ def hgrid_path(grid2d, test_files_dir):
 
     return str(grid_path)
 
+
 def create_tidal_dataset(tidal_data_files):
     """Create a tidal dataset using paths from tidal_data_files."""
     return TidalDataset(
         elevations=tidal_data_files["elevation"],
-        velocities=tidal_data_files["velocity"]
+        velocities=tidal_data_files["velocity"],
     )
 
 
@@ -131,7 +133,10 @@ def validate_bctides_format(file_path):
         # Frequency, nodal factor, earth equilibrium argument
         parts = lines[line_index].split()
         if len(parts) != 3:
-            return False, f"Invalid tidal forcing frequency format at line {line_index+1}"
+            return (
+                False,
+                f"Invalid tidal forcing frequency format at line {line_index+1}",
+            )
         try:
             freq = float(parts[0])
             nodal = float(parts[1])
@@ -180,12 +185,18 @@ def validate_bctides_format(file_path):
                 for i in range(neta):
                     parts = lines[line_index].split()
                     if len(parts) != 2:
-                        return False, f"Invalid tidal elevation format at line {line_index+1}"
+                        return (
+                            False,
+                            f"Invalid tidal elevation format at line {line_index+1}",
+                        )
                     try:
                         amp = float(parts[0])
                         phase = float(parts[1])
                     except ValueError:
-                        return False, f"Invalid tidal elevation values at line {line_index+1}"
+                        return (
+                            False,
+                            f"Invalid tidal elevation values at line {line_index+1}",
+                        )
                     line_index += 1
         elif iettype == 4:
             # Space- and time-varying input - no input in bctides.in
@@ -201,12 +212,18 @@ def validate_bctides_format(file_path):
                 for i in range(neta):
                     parts = lines[line_index].split()
                     if len(parts) != 2:
-                        return False, f"Invalid tidal elevation format at line {line_index+1}"
+                        return (
+                            False,
+                            f"Invalid tidal elevation format at line {line_index+1}",
+                        )
                     try:
                         amp = float(parts[0])
                         phase = float(parts[1])
                     except ValueError:
-                        return False, f"Invalid tidal elevation values at line {line_index+1}"
+                        return (
+                            False,
+                            f"Invalid tidal elevation values at line {line_index+1}",
+                        )
                     line_index += 1
         elif iettype == 0:
             # Elevation not specified
@@ -239,21 +256,30 @@ def validate_bctides_format(file_path):
                 for i in range(neta):
                     parts = lines[line_index].split()
                     if len(parts) != 4:
-                        return False, f"Invalid tidal velocity format at line {line_index+1}"
+                        return (
+                            False,
+                            f"Invalid tidal velocity format at line {line_index+1}",
+                        )
                     try:
                         uamp = float(parts[0])
                         uphase = float(parts[1])
                         vamp = float(parts[2])
                         vphase = float(parts[3])
                     except ValueError:
-                        return False, f"Invalid tidal velocity values at line {line_index+1}"
+                        return (
+                            False,
+                            f"Invalid tidal velocity values at line {line_index+1}",
+                        )
                     line_index += 1
         elif ifltype == 4 or ifltype == -4:
             # 3D input - no input in bctides.in (except relaxation for -4)
             if ifltype == -4:
                 parts = lines[line_index].split()
                 if len(parts) != 2:
-                    return False, f"Invalid relaxation constants format at line {line_index+1}"
+                    return (
+                        False,
+                        f"Invalid relaxation constants format at line {line_index+1}",
+                    )
                 try:
                     rel1 = float(parts[0])
                     rel2 = float(parts[1])
@@ -271,19 +297,25 @@ def validate_bctides_format(file_path):
                 for i in range(neta):
                     parts = lines[line_index].split()
                     if len(parts) != 4:
-                        return False, f"Invalid tidal velocity format at line {line_index+1}"
+                        return (
+                            False,
+                            f"Invalid tidal velocity format at line {line_index+1}",
+                        )
                     try:
                         uamp = float(parts[0])
                         uphase = float(parts[1])
                         vamp = float(parts[2])
                         vphase = float(parts[3])
                     except ValueError:
-                        return False, f"Invalid tidal velocity values at line {line_index+1}"
+                        return (
+                            False,
+                            f"Invalid tidal velocity values at line {line_index+1}",
+                        )
                     line_index += 1
         elif ifltype == -1:
             # Flather type
             # Parse mean elevation
-            if lines[line_index].strip().lower() != 'eta_mean':
+            if lines[line_index].strip().lower() != "eta_mean":
                 return False, f"Missing 'eta_mean' marker at line {line_index+1}"
             line_index += 1
 
@@ -296,7 +328,7 @@ def validate_bctides_format(file_path):
                     return False, f"Invalid mean elevation at line {line_index+1}"
 
             # Parse mean normal velocity
-            if lines[line_index].strip().lower() != 'vn_mean':
+            if lines[line_index].strip().lower() != "vn_mean":
                 return False, f"Missing 'vn_mean' marker at line {line_index+1}"
             line_index += 1
 
@@ -322,7 +354,10 @@ def validate_bctides_format(file_path):
                 tobc = float(lines[line_index])
                 line_index += 1
             except ValueError:
-                return False, f"Invalid temperature nudging factor at line {line_index+1}"
+                return (
+                    False,
+                    f"Invalid temperature nudging factor at line {line_index+1}",
+                )
         elif itetype == 2:
             # Constant temperature
             try:
@@ -331,21 +366,30 @@ def validate_bctides_format(file_path):
                 tobc = float(lines[line_index])
                 line_index += 1
             except ValueError:
-                return False, f"Invalid constant temperature parameters at line {line_index+1}"
+                return (
+                    False,
+                    f"Invalid constant temperature parameters at line {line_index+1}",
+                )
         elif itetype == 3:
             # Initial profile
             try:
                 tobc = float(lines[line_index])
                 line_index += 1
             except ValueError:
-                return False, f"Invalid temperature nudging factor at line {line_index+1}"
+                return (
+                    False,
+                    f"Invalid temperature nudging factor at line {line_index+1}",
+                )
         elif itetype == 4:
             # 3D input
             try:
                 tobc = float(lines[line_index])
                 line_index += 1
             except ValueError:
-                return False, f"Invalid temperature nudging factor at line {line_index+1}"
+                return (
+                    False,
+                    f"Invalid temperature nudging factor at line {line_index+1}",
+                )
         else:
             return False, f"Invalid temperature type {itetype} at boundary {j+1}"
 
@@ -368,7 +412,10 @@ def validate_bctides_format(file_path):
                 sobc = float(lines[line_index])
                 line_index += 1
             except ValueError:
-                return False, f"Invalid constant salinity parameters at line {line_index+1}"
+                return (
+                    False,
+                    f"Invalid constant salinity parameters at line {line_index+1}",
+                )
         elif isatype == 3:
             # Initial profile
             try:
@@ -406,7 +453,7 @@ def test_bctides_format_pure_tidal(hgrid_path, tidal_data_files, tmp_path):
         grid_path=hgrid_path,
         constituents=["M2", "S2", "N2"],
         tidal_elevations=tidal_dataset.elevations,
-        tidal_velocities=tidal_dataset.velocities
+        tidal_velocities=tidal_dataset.velocities,
     )
 
     # Set run parameters
@@ -430,7 +477,7 @@ def test_bctides_format_river(hgrid_path, tidal_data_files, tmp_path):
         grid_path=hgrid_path,
         constituents=["M2"],
         tidal_elevations=tidal_dataset.elevations,
-        tidal_velocities=tidal_dataset.velocities
+        tidal_velocities=tidal_dataset.velocities,
     )
 
     # Then override with river settings for the testing portion
@@ -438,7 +485,7 @@ def test_bctides_format_river(hgrid_path, tidal_data_files, tmp_path):
         0,  # First boundary segment
         elev_type=ElevationType.NONE,  # No elevation specified
         vel_type=VelocityType.CONSTANT,  # Constant flow
-        vthconst=-100.0  # Flow value (negative for inflow)
+        vthconst=-100.0,  # Flow value (negative for inflow)
     )
 
     # Set run parameters
@@ -461,7 +508,7 @@ def test_bctides_format_hybrid(hgrid_path, tidal_data_files, tmp_path):
         grid_path=hgrid_path,
         constituents=["M2", "S2", "N2"],
         tidal_elevations=tidal_dataset.elevations,
-        tidal_velocities=tidal_dataset.velocities
+        tidal_velocities=tidal_dataset.velocities,
     )
 
     # Set run parameters
@@ -488,7 +535,7 @@ def test_bctides_format_nested(hgrid_path, tidal_data_files, tmp_path):
         inflow_relax=0.8,
         outflow_relax=0.2,
         tidal_elevations=tidal_dataset.elevations,
-        tidal_velocities=tidal_dataset.velocities
+        tidal_velocities=tidal_dataset.velocities,
     )
 
     # Set run parameters
@@ -512,7 +559,7 @@ def test_bctides_enhanced_format(grid2d, hgrid_path, tidal_data_files, tmp_path)
         constituents=["M2", "S2", "N2"],
         tidal_database="tpxo",
         tidal_data=tidal_dataset,
-        setup_type="tidal"  # Pure tidal setup
+        setup_type="tidal",  # Pure tidal setup
     )
 
     # Create a tidal boundary
@@ -539,15 +586,13 @@ def test_mixed_boundary_types(hgrid_path, tidal_data_files, tmp_path):
         grid_path=hgrid_path,
         constituents=["M2", "S2", "N2"],
         tidal_elevations=tidal_dataset.elevations,
-        tidal_velocities=tidal_dataset.velocities
+        tidal_velocities=tidal_dataset.velocities,
     )
 
     # Set different boundary types
     # First boundary: tidal
     boundary.set_boundary_type(
-        0,
-        elev_type=ElevationType.TIDAL,
-        vel_type=VelocityType.TIDAL
+        0, elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL
     )
 
     # Second boundary: river (if there is one)
@@ -556,7 +601,7 @@ def test_mixed_boundary_types(hgrid_path, tidal_data_files, tmp_path):
             1,
             elev_type=ElevationType.NONE,
             vel_type=VelocityType.CONSTANT,
-            vthconst=-100.0  # Inflow of 100 m³/s
+            vthconst=-100.0,  # Inflow of 100 m³/s
         )
 
     # Set run parameters
@@ -568,4 +613,3 @@ def test_mixed_boundary_types(hgrid_path, tidal_data_files, tmp_path):
     # Validate the file format
     is_valid, message = validate_bctides_format(bctides_path)
     assert is_valid, message
-

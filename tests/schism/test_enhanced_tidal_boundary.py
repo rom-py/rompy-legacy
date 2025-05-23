@@ -15,7 +15,10 @@ from rompy.schism.boundary_tides import (
     create_tidal_boundary,
 )
 from rompy.schism.tides_enhanced import (
-    create_tidal_only_config, create_hybrid_config, create_river_config, create_nested_config
+    create_tidal_only_config,
+    create_hybrid_config,
+    create_river_config,
+    create_nested_config,
 )
 
 
@@ -27,6 +30,7 @@ def test_files_dir():
 @pytest.fixture
 def tidal_dataset():
     """Create paths to tidal data files."""
+
     class TidalData:
         def __init__(self):
             self.elevations = test_files_dir() / "data" / "h_tpxo9.nc"
@@ -208,7 +212,10 @@ def validate_boundary_section(file_path, start_line, nbfr):
             for k in range(nbfr):
                 # Constituent name
                 if line_index >= len(lines):
-                    return False, f"Missing constituent name for elevation on segment {j+1}"
+                    return (
+                        False,
+                        f"Missing constituent name for elevation on segment {j+1}",
+                    )
 
                 constituent = lines[line_index].strip()
                 line_index += 1
@@ -216,17 +223,26 @@ def validate_boundary_section(file_path, start_line, nbfr):
                 # Parse amplitude and phase for each node
                 for i in range(neta):
                     if line_index >= len(lines):
-                        return False, f"Missing elevation values for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Missing elevation values for node {i+1} on segment {j+1}",
+                        )
 
                     parts = lines[line_index].split()
                     if len(parts) != 2:
-                        return False, f"Invalid elevation format for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Invalid elevation format for node {i+1} on segment {j+1}",
+                        )
 
                     try:
                         amp = float(parts[0])
                         phase = float(parts[1])
                     except ValueError:
-                        return False, f"Invalid elevation values for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Invalid elevation values for node {i+1} on segment {j+1}",
+                        )
 
                     line_index += 1
         elif iettype == 4:
@@ -237,7 +253,10 @@ def validate_boundary_section(file_path, start_line, nbfr):
             for k in range(nbfr):
                 # Constituent name
                 if line_index >= len(lines):
-                    return False, f"Missing constituent name for elevation on segment {j+1}"
+                    return (
+                        False,
+                        f"Missing constituent name for elevation on segment {j+1}",
+                    )
 
                 constituent = lines[line_index].strip()
                 line_index += 1
@@ -245,17 +264,26 @@ def validate_boundary_section(file_path, start_line, nbfr):
                 # Parse amplitude and phase for each node
                 for i in range(neta):
                     if line_index >= len(lines):
-                        return False, f"Missing elevation values for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Missing elevation values for node {i+1} on segment {j+1}",
+                        )
 
                     parts = lines[line_index].split()
                     if len(parts) != 2:
-                        return False, f"Invalid elevation format for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Invalid elevation format for node {i+1} on segment {j+1}",
+                        )
 
                     try:
                         amp = float(parts[0])
                         phase = float(parts[1])
                     except ValueError:
-                        return False, f"Invalid elevation values for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Invalid elevation values for node {i+1} on segment {j+1}",
+                        )
 
                     line_index += 1
         elif iettype != 0:
@@ -283,7 +311,10 @@ def validate_boundary_section(file_path, start_line, nbfr):
             for k in range(nbfr):
                 # Constituent name
                 if line_index >= len(lines):
-                    return False, f"Missing constituent name for velocity on segment {j+1}"
+                    return (
+                        False,
+                        f"Missing constituent name for velocity on segment {j+1}",
+                    )
 
                 constituent = lines[line_index].strip()
                 line_index += 1
@@ -291,11 +322,17 @@ def validate_boundary_section(file_path, start_line, nbfr):
                 # Parse amplitude and phase for each node
                 for i in range(neta):
                     if line_index >= len(lines):
-                        return False, f"Missing velocity values for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Missing velocity values for node {i+1} on segment {j+1}",
+                        )
 
                     parts = lines[line_index].split()
                     if len(parts) != 4:
-                        return False, f"Invalid velocity format for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Invalid velocity format for node {i+1} on segment {j+1}",
+                        )
 
                     try:
                         uamp = float(parts[0])
@@ -303,7 +340,10 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         vamp = float(parts[2])
                         vphase = float(parts[3])
                     except ValueError:
-                        return False, f"Invalid velocity values for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Invalid velocity values for node {i+1} on segment {j+1}",
+                        )
 
                     line_index += 1
         elif ifltype == 4 or ifltype == -4:
@@ -328,7 +368,10 @@ def validate_boundary_section(file_path, start_line, nbfr):
             for k in range(nbfr):
                 # Constituent name
                 if line_index >= len(lines):
-                    return False, f"Missing constituent name for velocity on segment {j+1}"
+                    return (
+                        False,
+                        f"Missing constituent name for velocity on segment {j+1}",
+                    )
 
                 constituent = lines[line_index].strip()
                 line_index += 1
@@ -336,11 +379,17 @@ def validate_boundary_section(file_path, start_line, nbfr):
                 # Parse amplitude and phase for each node
                 for i in range(neta):
                     if line_index >= len(lines):
-                        return False, f"Missing velocity values for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Missing velocity values for node {i+1} on segment {j+1}",
+                        )
 
                     parts = lines[line_index].split()
                     if len(parts) != 4:
-                        return False, f"Invalid velocity format for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Invalid velocity format for node {i+1} on segment {j+1}",
+                        )
 
                     try:
                         uamp = float(parts[0])
@@ -348,7 +397,10 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         vamp = float(parts[2])
                         vphase = float(parts[3])
                     except ValueError:
-                        return False, f"Invalid velocity values for node {i+1} on segment {j+1}"
+                        return (
+                            False,
+                            f"Invalid velocity values for node {i+1} on segment {j+1}",
+                        )
 
                     line_index += 1
         elif ifltype == -1:
@@ -357,7 +409,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
             if line_index >= len(lines):
                 return False, f"Missing eta_mean marker for segment {j+1}"
 
-            if lines[line_index].strip().lower() != 'eta_mean':
+            if lines[line_index].strip().lower() != "eta_mean":
                 return False, f"Invalid eta_mean marker for segment {j+1}"
 
             line_index += 1
@@ -365,19 +417,25 @@ def validate_boundary_section(file_path, start_line, nbfr):
             # Parse mean elevation values
             for i in range(neta):
                 if line_index >= len(lines):
-                    return False, f"Missing mean elevation value for node {i+1} on segment {j+1}"
+                    return (
+                        False,
+                        f"Missing mean elevation value for node {i+1} on segment {j+1}",
+                    )
 
                 try:
                     eta_mean = float(lines[line_index])
                     line_index += 1
                 except ValueError:
-                    return False, f"Invalid mean elevation for node {i+1} on segment {j+1}"
+                    return (
+                        False,
+                        f"Invalid mean elevation for node {i+1} on segment {j+1}",
+                    )
 
             # Parse mean normal velocity marker
             if line_index >= len(lines):
                 return False, f"Missing vn_mean marker for segment {j+1}"
 
-            if lines[line_index].strip().lower() != 'vn_mean':
+            if lines[line_index].strip().lower() != "vn_mean":
                 return False, f"Invalid vn_mean marker for segment {j+1}"
 
             line_index += 1
@@ -385,13 +443,19 @@ def validate_boundary_section(file_path, start_line, nbfr):
             # Parse mean normal velocity values
             for i in range(neta):
                 if line_index >= len(lines):
-                    return False, f"Missing mean velocity value for node {i+1} on segment {j+1}"
+                    return (
+                        False,
+                        f"Missing mean velocity value for node {i+1} on segment {j+1}",
+                    )
 
                 try:
                     vn_mean = float(lines[line_index])
                     line_index += 1
                 except ValueError:
-                    return False, f"Invalid mean velocity for node {i+1} on segment {j+1}"
+                    return (
+                        False,
+                        f"Invalid mean velocity for node {i+1} on segment {j+1}",
+                    )
 
     return True, "File format is valid"
 
@@ -430,7 +494,7 @@ def test_tidal_only_boundary_format(grid2d, tidal_dataset, tmp_path):
         tidal_elevations=tidal_dataset.elevations,
         tidal_velocities=tidal_dataset.velocities,
         ntip=2,  # Use earth tidal potential
-        tip_dp=50.0  # Cutoff depth
+        tip_dp=50.0,  # Cutoff depth
     )
 
     # Set run parameters
@@ -460,7 +524,7 @@ def test_hybrid_boundary_format(grid2d, tidal_dataset, tmp_path):
         tidal_elevations=tidal_dataset.elevations,
         tidal_velocities=tidal_dataset.velocities,
         ntip=1,
-        tip_dp=50.0
+        tip_dp=50.0,
     )
 
     # Set run parameters
@@ -491,7 +555,9 @@ def test_river_boundary_format(grid2d, tmp_path):
 
         # Write boundary section
         num_nodes = grid2d.nobn[0]  # Number of nodes in first boundary
-        f.write(f"{num_nodes} 0 2 0 0 !neta, elev_type, vel_type, temp_type, salt_type\n")
+        f.write(
+            f"{num_nodes} 0 2 0 0 !neta, elev_type, vel_type, temp_type, salt_type\n"
+        )
 
         # Write constant discharge value
         f.write("-100.0 !constant discharge\n")
@@ -519,7 +585,9 @@ def test_nested_boundary_format(grid2d, tmp_path):
 
         # Write boundary section with simple velocity type
         num_nodes = grid2d.nobn[0]  # Number of nodes in first boundary
-        f.write(f"{num_nodes} 0 2 0 0 !neta, elev_type, vel_type, temp_type, salt_type\n")
+        f.write(
+            f"{num_nodes} 0 2 0 0 !neta, elev_type, vel_type, temp_type, salt_type\n"
+        )
 
         # Write constant discharge value (similar to river boundary)
         f.write("-100.0 !constant discharge\n")
@@ -549,7 +617,9 @@ def test_flather_boundary_format(grid2d, tmp_path):
 
         # Write boundary section with Flather velocity type
         num_nodes = grid2d.nobn[0]  # Number of nodes in first boundary
-        f.write(f"{num_nodes} 0 4 0 0 !neta, elev_type, vel_type, temp_type, salt_type\n")
+        f.write(
+            f"{num_nodes} 0 4 0 0 !neta, elev_type, vel_type, temp_type, salt_type\n"
+        )
 
         # Write eta_mean marker and values
         f.write("eta_mean\n")
@@ -584,7 +654,7 @@ def test_multi_segment_boundary_format(grid2d, tidal_dataset, tmp_path):
         elev_type=ElevationType.TIDAL,
         vel_type=VelocityType.TIDAL,
         temp_type=0,
-        salt_type=0
+        salt_type=0,
     )
 
     # Second segment (if exists): river
@@ -595,19 +665,21 @@ def test_multi_segment_boundary_format(grid2d, tidal_dataset, tmp_path):
             vel_type=VelocityType.CONSTANT,
             temp_type=0,
             salt_type=0,
-            vthconst=-100.0  # River flow
+            vthconst=-100.0,  # River flow
         )
 
     # Create a custom boundary
     boundary = TidalBoundary(
-        grid_path=str(test_files_dir() / "hgrid_20kmto60km_rompyschism_testing.gr3"),  # Add grid_path parameter
+        grid_path=str(
+            test_files_dir() / "hgrid_20kmto60km_rompyschism_testing.gr3"
+        ),  # Add grid_path parameter
         boundary_configs=configs,
         constituents=["M2"],
         tidal_database=tidal_dataset.elevations,
         tidal_elevations=tidal_dataset.elevations,
         tidal_velocities=tidal_dataset.velocities,
         ntip=1,
-        tip_dp=50.0
+        tip_dp=50.0,
     )
 
     # Manually set the grid object
@@ -632,7 +704,7 @@ def test_bctides_nbfr_format(grid2d, tidal_dataset, tmp_path):
         grid_path=grid_path,
         constituents=["M2", "S2", "K1", "O1"],  # Multiple constituents
         tidal_elevations=tidal_dataset.elevations,
-        tidal_velocities=tidal_dataset.velocities
+        tidal_velocities=tidal_dataset.velocities,
     )
 
     # Manually set the grid object if needed
@@ -654,7 +726,9 @@ def test_bctides_nbfr_format(grid2d, tidal_dataset, tmp_path):
 
     # Find nbfr line (should be after ntip section)
     for i, line in enumerate(lines):
-        if len(lines[i].split()) == 2 and "ntip" not in line.lower():  # First line with ntip and tip_dp
+        if (
+            len(lines[i].split()) == 2 and "ntip" not in line.lower()
+        ):  # First line with ntip and tip_dp
             # Skip ntip section if any
             ntip = int(lines[i].split()[0])
             i += 1
@@ -664,5 +738,7 @@ def test_bctides_nbfr_format(grid2d, tidal_dataset, tmp_path):
             # Next line should be nbfr
             nbfr = int(lines[i])
             # Should match number of constituents
-            assert nbfr == len(["M2", "S2", "K1", "O1"]), f"nbfr ({nbfr}) doesn't match number of constituents (4)"
+            assert nbfr == len(
+                ["M2", "S2", "K1", "O1"]
+            ), f"nbfr ({nbfr}) doesn't match number of constituents (4)"
             break

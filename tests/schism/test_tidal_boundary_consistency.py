@@ -6,12 +6,14 @@ from pathlib import Path
 from datetime import datetime
 
 from rompy.schism.boundary_tides import (
-    TidalBoundary, BoundaryConfig, ElevationType, VelocityType,
-    create_tidal_boundary
+    TidalBoundary,
+    BoundaryConfig,
+    ElevationType,
+    VelocityType,
+    create_tidal_boundary,
 )
 from rompy.schism.bctides import Bctides
 from rompy.schism.grid import SCHISMGrid
-
 
 
 def validate_constituent_case_consistency(file_path):
@@ -85,7 +87,9 @@ def validate_constituent_case_consistency(file_path):
             i += 1
 
             # Check if we've reached the end of the boundary segments
-            if i < len(lines) and (lines[i].endswith("!ncbn") or lines[i].endswith("!nfluxf")):
+            if i < len(lines) and (
+                lines[i].endswith("!ncbn") or lines[i].endswith("!nfluxf")
+            ):
                 break
 
     # For each constituent, check if the case is consistent
@@ -101,11 +105,13 @@ def validate_constituent_case_consistency(file_path):
     return inconsistent
 
 
-def test_tidal_boundary_constituent_consistency(grid2d, tidal_dataset, mock_tidal_data, monkeypatch):
+def test_tidal_boundary_constituent_consistency(
+    grid2d, tidal_dataset, mock_tidal_data, monkeypatch
+):
     """Test that constituent names in the bctides.in file have consistent case using real grid."""
     # Use the mock_tidal_data function for interpolation
-    monkeypatch.setattr(Bctides, '_interpolate_tidal_data', mock_tidal_data)
-    
+    monkeypatch.setattr(Bctides, "_interpolate_tidal_data", mock_tidal_data)
+
     # Create boundary configs for tidal boundary
     configs = {}
     configs[0] = BoundaryConfig(
@@ -113,7 +119,7 @@ def test_tidal_boundary_constituent_consistency(grid2d, tidal_dataset, mock_tida
         elev_type=ElevationType.TIDAL,
         vel_type=VelocityType.TIDAL,
         temp_type=0,
-        salt_type=0
+        salt_type=0,
     )
 
     # Create a temporary file for output
@@ -123,15 +129,18 @@ def test_tidal_boundary_constituent_consistency(grid2d, tidal_dataset, mock_tida
     try:
         # Get grid path from grid2d fixture
         grid_path = str(grid2d.hgrid.source)
-        
+
         # Create a TidalBoundary instance with only the constituents in the test dataset (M2, S2, N2)
         boundary = TidalBoundary(
             grid_path=grid_path,
             boundary_configs=configs,
-            constituents=["M2", "S2"],  # Only use constituents available in the test dataset
+            constituents=[
+                "M2",
+                "S2",
+            ],  # Only use constituents available in the test dataset
             tidal_database="tpxo",
             tidal_elevations=tidal_dataset.elevations,
-            tidal_velocities=tidal_dataset.velocities
+            tidal_velocities=tidal_dataset.velocities,
         )
 
         # Set run parameters
@@ -142,20 +151,22 @@ def test_tidal_boundary_constituent_consistency(grid2d, tidal_dataset, mock_tida
 
         # Check for case consistency
         inconsistencies = validate_constituent_case_consistency(bctides_path)
-        
+
         # Debug output
         with open(bctides_path, "r") as f:
             content = f.read()
             print(f"\nBCTIDES CONTENT:\n{content}\n")
-        
+
         # There should be no inconsistencies
-        assert len(inconsistencies) == 0, f"Inconsistent constituent cases: {inconsistencies}"
+        assert (
+            len(inconsistencies) == 0
+        ), f"Inconsistent constituent cases: {inconsistencies}"
 
         # Check each constituent for case consistency
         for constituent in ["M2", "S2"]:
             upper_count = content.count(constituent)
             lower_count = content.count(constituent.lower())
-            
+
             # Either all uppercase or all lowercase is acceptable, but mixing is not
             assert upper_count == 0 or lower_count == 0, f"Mixed case for {constituent}"
 
@@ -165,11 +176,13 @@ def test_tidal_boundary_constituent_consistency(grid2d, tidal_dataset, mock_tida
             os.unlink(tmp_path)
 
 
-def test_create_tidal_boundary_wrapper(grid2d, tidal_dataset, mock_tidal_data, monkeypatch):
+def test_create_tidal_boundary_wrapper(
+    grid2d, tidal_dataset, mock_tidal_data, monkeypatch
+):
     """Test the create_tidal_boundary wrapper function with real grid and data."""
     # Use the mock_tidal_data function for interpolation
-    monkeypatch.setattr(Bctides, '_interpolate_tidal_data', mock_tidal_data)
-    
+    monkeypatch.setattr(Bctides, "_interpolate_tidal_data", mock_tidal_data)
+
     # Create a temporary file for output
     with tempfile.NamedTemporaryFile(delete=False) as tmp:
         tmp_path = Path(tmp.name)
@@ -177,13 +190,16 @@ def test_create_tidal_boundary_wrapper(grid2d, tidal_dataset, mock_tidal_data, m
     try:
         # Get grid path from grid2d fixture
         grid_path = str(grid2d.hgrid.source)
-        
+
         # Create the boundary with the wrapper function
         boundary = create_tidal_boundary(
             grid_path=grid_path,
-            constituents=["M2", "S2"],  # Only use constituents available in the test dataset
+            constituents=[
+                "M2",
+                "S2",
+            ],  # Only use constituents available in the test dataset
             tidal_elevations=tidal_dataset.elevations,
-            tidal_velocities=tidal_dataset.velocities
+            tidal_velocities=tidal_dataset.velocities,
         )
 
         # Set run parameters
@@ -194,7 +210,9 @@ def test_create_tidal_boundary_wrapper(grid2d, tidal_dataset, mock_tidal_data, m
 
         # Check for case consistency
         inconsistencies = validate_constituent_case_consistency(bctides_path)
-        assert len(inconsistencies) == 0, f"Inconsistent constituent cases: {inconsistencies}"
+        assert (
+            len(inconsistencies) == 0
+        ), f"Inconsistent constituent cases: {inconsistencies}"
 
     finally:
         # Clean up
@@ -202,10 +220,12 @@ def test_create_tidal_boundary_wrapper(grid2d, tidal_dataset, mock_tidal_data, m
             os.unlink(tmp_path)
 
 
-def test_tidal_boundary_with_different_grids(request, grid2d, grid3d, tidal_dataset, mock_tidal_data, monkeypatch):
+def test_tidal_boundary_with_different_grids(
+    request, grid2d, grid3d, tidal_dataset, mock_tidal_data, monkeypatch
+):
     """Test tidal boundary with different grid types."""
     # Use the mock_tidal_data function for interpolation
-    monkeypatch.setattr(Bctides, '_interpolate_tidal_data', mock_tidal_data)
+    monkeypatch.setattr(Bctides, "_interpolate_tidal_data", mock_tidal_data)
 
     # Test with each grid type
     for grid_fixture in [grid2d, grid3d]:
@@ -216,13 +236,16 @@ def test_tidal_boundary_with_different_grids(request, grid2d, grid3d, tidal_data
         try:
             # Get grid path
             grid_path = str(grid_fixture.hgrid.source)
-            
+
             # Create the boundary
             boundary = create_tidal_boundary(
                 grid_path=grid_path,
-                constituents=["M2", "S2"],  # Only use constituents available in the test dataset
+                constituents=[
+                    "M2",
+                    "S2",
+                ],  # Only use constituents available in the test dataset
                 tidal_elevations=tidal_dataset.elevations,
-                tidal_velocities=tidal_dataset.velocities
+                tidal_velocities=tidal_dataset.velocities,
             )
 
             # Set run parameters
@@ -233,7 +256,9 @@ def test_tidal_boundary_with_different_grids(request, grid2d, grid3d, tidal_data
 
             # Check for case consistency
             inconsistencies = validate_constituent_case_consistency(bctides_path)
-            assert len(inconsistencies) == 0, f"Inconsistent constituent cases: {inconsistencies}"
+            assert (
+                len(inconsistencies) == 0
+            ), f"Inconsistent constituent cases: {inconsistencies}"
 
         finally:
             # Clean up
@@ -244,12 +269,12 @@ def test_tidal_boundary_with_different_grids(request, grid2d, grid3d, tidal_data
 def test_case_consistency(grid2d, tidal_dataset, mock_tidal_data, monkeypatch):
     """Test that constituent names in the bctides.in file have consistent case."""
     # Use the mock_tidal_data function for interpolation
-    monkeypatch.setattr(Bctides, '_interpolate_tidal_data', mock_tidal_data)
-    
+    monkeypatch.setattr(Bctides, "_interpolate_tidal_data", mock_tidal_data)
+
     # Create a temporary file for output
     with tempfile.NamedTemporaryFile(delete=False) as tmp:
         tmp_path = Path(tmp.name)
-        
+
     try:
         # Create a boundary
         grid_path = str(grid2d.hgrid.source)
@@ -257,27 +282,31 @@ def test_case_consistency(grid2d, tidal_dataset, mock_tidal_data, monkeypatch):
             grid_path=grid_path,
             constituents=["M2", "S2"],
             tidal_elevations=tidal_dataset.elevations,
-            tidal_velocities=tidal_dataset.velocities
+            tidal_velocities=tidal_dataset.velocities,
         )
-        
+
         # Write the boundary file
         boundary.set_run_parameters(datetime(2023, 1, 1), 5.0)
         boundary.write_boundary_file(tmp_path)
-        
+
         # Check for case consistency
         inconsistencies = validate_constituent_case_consistency(tmp_path)
-        assert len(inconsistencies) == 0, f"Found case inconsistencies: {inconsistencies}"
-        
+        assert (
+            len(inconsistencies) == 0
+        ), f"Found case inconsistencies: {inconsistencies}"
+
         # Check specifically for each constituent
         with open(tmp_path, "r") as f:
             content = f.read()
-            
+
         for constituent in ["M2", "S2"]:
             # All occurrences should be same case (either all uppercase or all lowercase)
             upper_count = content.count(constituent)
             lower_count = content.count(constituent.lower())
-            assert (upper_count == 0 or lower_count == 0), f"Mixed case found for {constituent}"
-    
+            assert (
+                upper_count == 0 or lower_count == 0
+            ), f"Mixed case found for {constituent}"
+
     finally:
         # Clean up
         if os.path.exists(tmp_path):

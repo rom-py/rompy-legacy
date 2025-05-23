@@ -10,13 +10,20 @@ from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel, Spectrum
 
 from .config_legacy import SchismCSIROConfig as _LegacySchismCSIROConfig
+
 # Import plotting functions
 from .config_plotting import plot_sflux_spatial, plot_sflux_timeseries
-from .config_plotting_boundary import (plot_boundary_points,
-                                       plot_boundary_profile,
-                                       plot_boundary_timeseries)
-from .config_plotting_tides import (plot_tidal_boundaries, plot_tidal_dataset,
-                                    plot_tidal_rose, plot_tidal_stations)
+from .config_plotting_boundary import (
+    plot_boundary_points,
+    plot_boundary_profile,
+    plot_boundary_timeseries,
+)
+from .config_plotting_tides import (
+    plot_tidal_boundaries,
+    plot_tidal_dataset,
+    plot_tidal_rose,
+    plot_tidal_stations,
+)
 from .data import SCHISMData
 from .grid import SCHISMGrid
 from .interface import TimeInterface

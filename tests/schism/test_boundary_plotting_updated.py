@@ -21,7 +21,6 @@ from rompy.schism.config import SCHISMConfig
 HERE = Path(__file__).parent
 
 
-
 @pytest.fixture
 def test_boundary_dataset():
     """Create a sample boundary dataset for testing boundary plotting."""

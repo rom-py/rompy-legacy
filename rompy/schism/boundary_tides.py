@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 
 class ElevationType(IntEnum):
     """Elevation boundary condition types."""
+
     NONE = 0  # Not specified
     TIMEHIST = 1  # Time history from elev.th
     CONSTANT = 2  # Constant elevation
@@ -39,6 +40,7 @@ class ElevationType(IntEnum):
 
 class VelocityType(IntEnum):
     """Velocity boundary condition types."""
+
     NONE = 0  # Not specified
     TIMEHIST = 1  # Time history from flux.th
     CONSTANT = 2  # Constant discharge
@@ -51,6 +53,7 @@ class VelocityType(IntEnum):
 
 class TracerType(IntEnum):
     """Temperature/salinity boundary condition types."""
+
     NONE = 0  # Not specified
     TIMEHIST = 1  # Time history from temp/salt.th
     CONSTANT = 2  # Constant temperature/salinity
@@ -60,6 +63,7 @@ class TracerType(IntEnum):
 
 class TidalSpecies(IntEnum):
     """Tidal species types."""
+
     LONG_PERIOD = 0  # Long period (declinational)
     DIURNAL = 1  # Diurnal
     SEMI_DIURNAL = 2  # Semi-diurnal
@@ -67,121 +71,107 @@ class TidalSpecies(IntEnum):
 
 class BoundaryConfig(BaseModel):
     """Configuration for a single SCHISM boundary segment."""
-    
+
     # Required fields with default values
     elev_type: ElevationType = Field(
-        default=ElevationType.NONE,
-        description="Elevation boundary condition type"
+        default=ElevationType.NONE, description="Elevation boundary condition type"
     )
     vel_type: VelocityType = Field(
-        default=VelocityType.NONE,
-        description="Velocity boundary condition type"
+        default=VelocityType.NONE, description="Velocity boundary condition type"
     )
     temp_type: TracerType = Field(
-        default=TracerType.NONE,
-        description="Temperature boundary condition type"
+        default=TracerType.NONE, description="Temperature boundary condition type"
     )
     salt_type: TracerType = Field(
-        default=TracerType.NONE,
-        description="Salinity boundary condition type"
+        default=TracerType.NONE, description="Salinity boundary condition type"
     )
-    
+
     # Optional fields for specific boundary types
     # Elevation constants (for ElevationType.CONSTANT)
     ethconst: Optional[float] = Field(
-        default=None,
-        description="Constant elevation value (for CONSTANT type)"
+        default=None, description="Constant elevation value (for CONSTANT type)"
     )
-    
+
     # Velocity/flow constants (for VelocityType.CONSTANT)
     vthconst: Optional[float] = Field(
-        default=None,
-        description="Constant velocity/flow value (for CONSTANT type)"
+        default=None, description="Constant velocity/flow value (for CONSTANT type)"
     )
-    
+
     # Temperature constants and parameters
     tthconst: Optional[float] = Field(
-        default=None,
-        description="Constant temperature value (for CONSTANT type)"
+        default=None, description="Constant temperature value (for CONSTANT type)"
     )
     tobc: Optional[float] = Field(
         default=1.0,
-        description="Temperature nudging factor (0-1, 1 is strongest nudging)"
+        description="Temperature nudging factor (0-1, 1 is strongest nudging)",
     )
     temp_th_path: Optional[str] = Field(
-        default=None,
-        description="Path to temperature time history file (for type 1)"
+        default=None, description="Path to temperature time history file (for type 1)"
     )
     temp_3d_path: Optional[str] = Field(
-        default=None,
-        description="Path to 3D temperature file (for type 4)"
+        default=None, description="Path to 3D temperature file (for type 4)"
     )
-    
+
     # Salinity constants and parameters
     sthconst: Optional[float] = Field(
-        default=None,
-        description="Constant salinity value (for CONSTANT type)"
+        default=None, description="Constant salinity value (for CONSTANT type)"
     )
     sobc: Optional[float] = Field(
-        default=1.0,
-        description="Salinity nudging factor (0-1, 1 is strongest nudging)"
+        default=1.0, description="Salinity nudging factor (0-1, 1 is strongest nudging)"
     )
     salt_th_path: Optional[str] = Field(
-        default=None,
-        description="Path to salinity time history file (for type 1)"
+        default=None, description="Path to salinity time history file (for type 1)"
     )
     salt_3d_path: Optional[str] = Field(
-        default=None,
-        description="Path to 3D salinity file (for type 4)"
+        default=None, description="Path to 3D salinity file (for type 4)"
     )
-    
+
     # Velocity/flow time history parameters (for VelocityType.TIMEHIST)
     flow_th_path: Optional[str] = Field(
-        default=None,
-        description="Path to flow time history file (for type 1)"
+        default=None, description="Path to flow time history file (for type 1)"
     )
-    
+
     # Relaxation parameters for velocity (for VelocityType.RELAXED)
     inflow_relax: Optional[float] = Field(
-        default=0.5, 
-        description="Relaxation factor for inflow (0-1, 1 is strongest nudging)"
+        default=0.5,
+        description="Relaxation factor for inflow (0-1, 1 is strongest nudging)",
     )
     outflow_relax: Optional[float] = Field(
         default=0.1,
-        description="Relaxation factor for outflow (0-1, 1 is strongest nudging)"
+        description="Relaxation factor for outflow (0-1, 1 is strongest nudging)",
     )
-    
+
     # Flather boundary values (for VelocityType.FLATHER)
     eta_mean: Optional[List[float]] = Field(
-        default=None,
-        description="Mean elevation profile for Flather boundary"
+        default=None, description="Mean elevation profile for Flather boundary"
     )
     vn_mean: Optional[List[List[float]]] = Field(
-        default=None,
-        description="Mean velocity profile for Flather boundary"
+        default=None, description="Mean velocity profile for Flather boundary"
     )
-    
+
     # Space-time parameters
     elev_st_path: Optional[str] = Field(
         default=None,
-        description="Path to space-time elevation file (for SPACETIME type)"
+        description="Path to space-time elevation file (for SPACETIME type)",
     )
     vel_st_path: Optional[str] = Field(
         default=None,
-        description="Path to space-time velocity file (for SPACETIME type)"
+        description="Path to space-time velocity file (for SPACETIME type)",
     )
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
-    
+
     def __str__(self):
         """String representation of the boundary configuration."""
-        return (f"BoundaryConfig(elev_type={self.elev_type}, vel_type={self.vel_type}, "
-                f"temp_type={self.temp_type}, salt_type={self.salt_type})")
+        return (
+            f"BoundaryConfig(elev_type={self.elev_type}, vel_type={self.vel_type}, "
+            f"temp_type={self.temp_type}, salt_type={self.salt_type})"
+        )
 
 
 class TidalBoundary(BoundaryData):
     """Handler for SCHISM tidal boundary conditions.
-    
+
     This class extends BoundaryData to specifically handle tidal boundaries
     with full support for all SCHISM boundary condition types.
     """
@@ -197,7 +187,8 @@ class TidalBoundary(BoundaryData):
         ntip: int = 0,
         tip_dp: float = 1.0,
         cutoff_depth: float = 50.0,
-        *args, **kwargs
+        *args,
+        **kwargs,
     ):
         """Initialize the tidal boundary handler.
 
@@ -223,7 +214,7 @@ class TidalBoundary(BoundaryData):
             Cutoff depth for tides, by default 50.0
         """
         super().__init__(grid_path, *args, **kwargs)
-        
+
         self.constituents = constituents
         self.tidal_database = tidal_database if tidal_database is not None else "none"
         self.boundary_configs = boundary_configs or {}
@@ -232,11 +223,11 @@ class TidalBoundary(BoundaryData):
         self.ntip = ntip
         self.tip_dp = tip_dp
         self.cutoff_depth = cutoff_depth
-        
+
         # For storing start time and run duration
         self._start_time = None
         self._rnday = None
-        
+
         # Additional file paths for various boundary types
         self.temp_th_path = None  # Temperature time history
         self.temp_3d_path = None  # 3D temperature
@@ -244,8 +235,8 @@ class TidalBoundary(BoundaryData):
         self.salt_3d_path = None  # 3D salinity
         self.flow_th_path = None  # Flow time history
         self.elev_st_path = None  # Space-time elevation
-        self.vel_st_path = None   # Space-time velocity
-        
+        self.vel_st_path = None  # Space-time velocity
+
     def set_boundary_config(self, boundary_index: int, config: BoundaryConfig):
         """Set configuration for a specific boundary.
 
@@ -257,15 +248,15 @@ class TidalBoundary(BoundaryData):
             Configuration for the boundary
         """
         self.boundary_configs[boundary_index] = config
-        
+
     def set_boundary_type(
-        self, 
+        self,
         boundary_index: int,
         elev_type: ElevationType,
         vel_type: VelocityType,
         temp_type: TracerType = TracerType.NONE,
         salt_type: TracerType = TracerType.NONE,
-        **kwargs
+        **kwargs,
     ):
         """Set boundary types for a specific boundary.
 
@@ -289,10 +280,10 @@ class TidalBoundary(BoundaryData):
             vel_type=vel_type,
             temp_type=temp_type,
             salt_type=salt_type,
-            **kwargs
+            **kwargs,
         )
         self.set_boundary_config(boundary_index, config)
-        
+
     def set_run_parameters(self, start_time, run_days):
         """Set start time and run duration.
 
@@ -305,7 +296,7 @@ class TidalBoundary(BoundaryData):
         """
         self._start_time = start_time
         self._rnday = run_days
-        
+
     def get_flags_list(self) -> List[List[int]]:
         """Get list of boundary flags for Bctides.
 
@@ -316,7 +307,7 @@ class TidalBoundary(BoundaryData):
         """
         if not self.boundary_configs:
             return [[5, 5, 0, 0]]  # Default to tidal
-            
+
         # Find max boundary without using default parameter
         if self.boundary_configs:
             # Convert keys to list and find max
@@ -324,23 +315,25 @@ class TidalBoundary(BoundaryData):
             max_boundary = max(boundary_keys) if boundary_keys else -1
         else:
             max_boundary = -1
-            
+
         flags = []
-        
+
         for i in range(int(max_boundary) + 1):
             if i in self.boundary_configs:
                 config = self.boundary_configs[i]
-                flags.append([
-                    int(config.elev_type),
-                    int(config.vel_type),
-                    int(config.temp_type),
-                    int(config.salt_type)
-                ])
+                flags.append(
+                    [
+                        int(config.elev_type),
+                        int(config.vel_type),
+                        int(config.temp_type),
+                        int(config.salt_type),
+                    ]
+                )
             else:
                 flags.append([0, 0, 0, 0])
-                
+
         return flags
-    
+
     def get_constant_values(self) -> Dict[str, List[float]]:
         """Get constant values for boundaries.
 
@@ -368,10 +361,10 @@ class TidalBoundary(BoundaryData):
             "elev_st_path": [],
             "vel_st_path": [],
         }
-        
+
         if not self.boundary_configs:
             return result
-            
+
         # Find max boundary without using default parameter
         if self.boundary_configs:
             # Convert keys to list and find max
@@ -379,76 +372,98 @@ class TidalBoundary(BoundaryData):
             max_boundary = max(boundary_keys) if boundary_keys else -1
         else:
             max_boundary = -1
-        
+
         for i in range(int(max_boundary) + 1):
             if i in self.boundary_configs:
                 config = self.boundary_configs[i]
-                
+
                 # Handle type 2 (constant) boundaries
                 if config.elev_type == ElevationType.CONSTANT:
-                    result["ethconst"].append(config.ethconst if config.ethconst is not None else 0.0)
+                    result["ethconst"].append(
+                        config.ethconst if config.ethconst is not None else 0.0
+                    )
                 else:
                     result["ethconst"].append(0.0)
-                    
+
                 if config.vel_type == VelocityType.CONSTANT:
-                    result["vthconst"].append(config.vthconst if config.vthconst is not None else 0.0)
+                    result["vthconst"].append(
+                        config.vthconst if config.vthconst is not None else 0.0
+                    )
                 else:
                     result["vthconst"].append(0.0)
-                    
+
                 if config.temp_type == TracerType.CONSTANT:
-                    result["tthconst"].append(config.tthconst if config.tthconst is not None else 0.0)
+                    result["tthconst"].append(
+                        config.tthconst if config.tthconst is not None else 0.0
+                    )
                 else:
                     result["tthconst"].append(0.0)
-                    
+
                 if config.salt_type == TracerType.CONSTANT:
-                    result["sthconst"].append(config.sthconst if config.sthconst is not None else 0.0)
+                    result["sthconst"].append(
+                        config.sthconst if config.sthconst is not None else 0.0
+                    )
                 else:
                     result["sthconst"].append(0.0)
-                
+
                 # Nudging factors for temperature and salinity
                 result["tobc"].append(config.tobc if config.tobc is not None else 1.0)
                 result["sobc"].append(config.sobc if config.sobc is not None else 1.0)
-                
+
                 # Temperature and salinity file paths
                 result["temp_th_path"].append(config.temp_th_path)
                 result["temp_3d_path"].append(config.temp_3d_path)
                 result["salt_th_path"].append(config.salt_th_path)
                 result["salt_3d_path"].append(config.salt_3d_path)
-                
+
                 # Flow time history path
                 result["flow_th_path"].append(config.flow_th_path)
-                
+
                 # Space-time file paths
                 result["elev_st_path"].append(config.elev_st_path)
                 result["vel_st_path"].append(config.vel_st_path)
-                
+
                 # Relaxation factors for velocity
                 if config.vel_type == VelocityType.RELAXED:
-                    result["inflow_relax"].append(config.inflow_relax if config.inflow_relax is not None else 0.5)
-                    result["outflow_relax"].append(config.outflow_relax if config.outflow_relax is not None else 0.1)
+                    result["inflow_relax"].append(
+                        config.inflow_relax if config.inflow_relax is not None else 0.5
+                    )
+                    result["outflow_relax"].append(
+                        config.outflow_relax
+                        if config.outflow_relax is not None
+                        else 0.1
+                    )
                 else:
                     result["inflow_relax"].append(0.5)  # Default values
                     result["outflow_relax"].append(0.1)
-                    
+
                 # Handle Flather boundaries
                 if config.vel_type == VelocityType.FLATHER:
                     # Create default values if none provided
                     if config.eta_mean is None:
                         # For testing, create a simple array of zeros with size = num nodes on this boundary
                         # In practice, this should be filled with actual mean elevation values
-                        num_nodes = self.grid.nobn[i] if hasattr(self.grid, 'nobn') and i < len(self.grid.nobn) else 1
+                        num_nodes = (
+                            self.grid.nobn[i]
+                            if hasattr(self.grid, "nobn") and i < len(self.grid.nobn)
+                            else 1
+                        )
                         eta_mean = [0.0] * num_nodes
                     else:
                         eta_mean = config.eta_mean
-                    
+
                     if config.vn_mean is None:
                         # For testing, create a simple array of arrays with zeros
-                        num_nodes = self.grid.nobn[i] if hasattr(self.grid, 'nobn') and i < len(self.grid.nobn) else 1
+                        num_nodes = (
+                            self.grid.nobn[i]
+                            if hasattr(self.grid, "nobn") and i < len(self.grid.nobn)
+                            else 1
+                        )
                         # Assume 5 vertical levels for testing
                         vn_mean = [[0.0] * 5 for _ in range(num_nodes)]
                     else:
                         vn_mean = config.vn_mean
-                        
+
                     result["eta_mean"].append(eta_mean)
                     result["vn_mean"].append(vn_mean)
                 else:
@@ -473,9 +488,9 @@ class TidalBoundary(BoundaryData):
                 result["flow_th_path"].append(None)
                 result["elev_st_path"].append(None)
                 result["vel_st_path"].append(None)
-                
+
         return result
-    
+
     def create_bctides(self) -> Bctides:
         """Create a Bctides instance from this configuration.
 
@@ -486,7 +501,7 @@ class TidalBoundary(BoundaryData):
         """
         flags = self.get_flags_list()
         constants = self.get_constant_values()
-        
+
         # Clean up lists to avoid None values
         ethconst = constants["ethconst"] if constants["ethconst"] else None
         vthconst = constants["vthconst"] if constants["vthconst"] else None
@@ -495,37 +510,70 @@ class TidalBoundary(BoundaryData):
         tobc = constants["tobc"] if constants["tobc"] else None
         sobc = constants["sobc"] if constants["sobc"] else None
         inflow_relax = constants["inflow_relax"] if constants["inflow_relax"] else None
-        outflow_relax = constants["outflow_relax"] if constants["outflow_relax"] else None
-        
+        outflow_relax = (
+            constants["outflow_relax"] if constants["outflow_relax"] else None
+        )
+
         # Add flow and flux boundary information
         ncbn = 0
         nfluxf = 0
-        
+
         # Count the number of flow and flux boundaries
         for i, config in self.boundary_configs.items():
             # Count flow boundaries - both CONSTANT type with non-zero flow value
             # and type 1 (time history) are considered flow boundaries
-            if ((config.vel_type == VelocityType.CONSTANT and config.vthconst is not None) or
-                (config.vel_type == VelocityType.TIMEHIST)):
+            if (
+                config.vel_type == VelocityType.CONSTANT and config.vthconst is not None
+            ) or (config.vel_type == VelocityType.TIMEHIST):
                 ncbn += 1
-                
+
             # Count flux boundaries - type 3 with flux specified
             if config.vel_type == VelocityType.TIDAL:
                 nfluxf += 1
-        
+
         # Extract file paths
-        temp_th_path = constants.get("temp_th_path", [None])[0] if constants.get("temp_th_path") else None
-        temp_3d_path = constants.get("temp_3d_path", [None])[0] if constants.get("temp_3d_path") else None
-        salt_th_path = constants.get("salt_th_path", [None])[0] if constants.get("salt_th_path") else None
-        salt_3d_path = constants.get("salt_3d_path", [None])[0] if constants.get("salt_3d_path") else None
-        flow_th_path = constants.get("flow_th_path", [None])[0] if constants.get("flow_th_path") else None
-        elev_st_path = constants.get("elev_st_path", [None])[0] if constants.get("elev_st_path") else None
-        vel_st_path = constants.get("vel_st_path", [None])[0] if constants.get("vel_st_path") else None
-        
+        temp_th_path = (
+            constants.get("temp_th_path", [None])[0]
+            if constants.get("temp_th_path")
+            else None
+        )
+        temp_3d_path = (
+            constants.get("temp_3d_path", [None])[0]
+            if constants.get("temp_3d_path")
+            else None
+        )
+        salt_th_path = (
+            constants.get("salt_th_path", [None])[0]
+            if constants.get("salt_th_path")
+            else None
+        )
+        salt_3d_path = (
+            constants.get("salt_3d_path", [None])[0]
+            if constants.get("salt_3d_path")
+            else None
+        )
+        flow_th_path = (
+            constants.get("flow_th_path", [None])[0]
+            if constants.get("flow_th_path")
+            else None
+        )
+        elev_st_path = (
+            constants.get("elev_st_path", [None])[0]
+            if constants.get("elev_st_path")
+            else None
+        )
+        vel_st_path = (
+            constants.get("vel_st_path", [None])[0]
+            if constants.get("vel_st_path")
+            else None
+        )
+
         # Extract Flather boundary data if available
-        eta_mean = constants.get("eta_mean", [None]) if constants.get("eta_mean") else None
+        eta_mean = (
+            constants.get("eta_mean", [None]) if constants.get("eta_mean") else None
+        )
         vn_mean = constants.get("vn_mean", [None]) if constants.get("vn_mean") else None
-        
+
         # Create Bctides object with all the enhanced parameters
         bctides = Bctides(
             hgrid=self.grid,
@@ -555,22 +603,22 @@ class TidalBoundary(BoundaryData):
             temp_th_path=temp_th_path,
             temp_3d_path=temp_3d_path,
             salt_th_path=salt_th_path,
-            salt_3d_path=salt_3d_path
+            salt_3d_path=salt_3d_path,
         )
-        
+
         # Set additional properties for Flather boundaries
         if eta_mean and any(x is not None for x in eta_mean):
             bctides.eta_mean = eta_mean
         if vn_mean and any(x is not None for x in vn_mean):
             bctides.vn_mean = vn_mean
-        
+
         # Set start time and run duration
         if self._start_time and self._rnday is not None:
             bctides._start_time = self._start_time
             bctides._rnday = self._rnday
-            
+
         return bctides
-    
+
     def write_boundary_file(self, output_path: Union[str, Path]) -> Path:
         """Write the bctides.in file.
 
@@ -590,26 +638,29 @@ class TidalBoundary(BoundaryData):
             If start_time and rnday are not set
         """
         if not self._start_time or self._rnday is None:
-            raise ValueError("start_time and rnday must be set before writing boundary file")
-            
+            raise ValueError(
+                "start_time and rnday must be set before writing boundary file"
+            )
+
         # Create Bctides object
         bctides = self.create_bctides()
-        
+
         # Write file
         output_path = Path(output_path)
         bctides.write_bctides(output_path)
-        
+
         return output_path
 
 
 # Factory functions for common configurations
+
 
 def create_tidal_boundary(
     grid_path: Union[str, Path],
     constituents: Union[str, List[str]] = "major",
     tidal_database: str = "tpxo",
     tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None
+    tidal_velocities: Optional[str] = None,
 ) -> TidalBoundary:
     """Create a tidal-only boundary.
 
@@ -636,16 +687,16 @@ def create_tidal_boundary(
         constituents=constituents,
         tidal_database=tidal_database,
         tidal_elevations=tidal_elevations,
-        tidal_velocities=tidal_velocities
+        tidal_velocities=tidal_velocities,
     )
-    
+
     # Set default configuration for all boundaries: pure tidal
     boundary.set_boundary_type(
         0,  # Will be applied to all boundaries
         elev_type=ElevationType.TIDAL,
-        vel_type=VelocityType.TIDAL
+        vel_type=VelocityType.TIDAL,
     )
-    
+
     return boundary
 
 
@@ -654,7 +705,7 @@ def create_hybrid_boundary(
     constituents: Union[str, List[str]] = "major",
     tidal_database: str = "tpxo",
     tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None
+    tidal_velocities: Optional[str] = None,
 ) -> TidalBoundary:
     """Create a hybrid boundary with tides + external data.
 
@@ -681,23 +732,23 @@ def create_hybrid_boundary(
         constituents=constituents,
         tidal_database=tidal_database,
         tidal_elevations=tidal_elevations,
-        tidal_velocities=tidal_velocities
+        tidal_velocities=tidal_velocities,
     )
-    
+
     # Set default configuration for all boundaries: tidal + spacetime
     boundary.set_boundary_type(
         0,  # Will be applied to all boundaries
         elev_type=ElevationType.TIDALSPACETIME,
-        vel_type=VelocityType.TIDALSPACETIME
+        vel_type=VelocityType.TIDALSPACETIME,
     )
-    
+
     return boundary
 
 
 def create_river_boundary(
     grid_path: Union[str, Path],
     river_flow: float = -100.0,  # Negative for inflow
-    river_boundary_index: int = 0
+    river_boundary_index: int = 0,
 ) -> TidalBoundary:
     """Create a river boundary with constant flow.
 
@@ -716,15 +767,15 @@ def create_river_boundary(
         Configured river boundary
     """
     boundary = TidalBoundary(grid_path=grid_path)
-    
+
     # Set river boundary
     boundary.set_boundary_type(
         river_boundary_index,
         elev_type=ElevationType.NONE,  # No elevation specified
         vel_type=VelocityType.CONSTANT,  # Constant flow
-        vthconst=river_flow  # Flow value
+        vthconst=river_flow,  # Flow value
     )
-    
+
     return boundary
 
 
@@ -736,7 +787,7 @@ def create_nested_boundary(
     constituents: Union[str, List[str]] = "major",
     tidal_database: str = "tpxo",
     tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None
+    tidal_velocities: Optional[str] = None,
 ) -> TidalBoundary:
     """Create a nested boundary with optional tides.
 
@@ -769,9 +820,9 @@ def create_nested_boundary(
         constituents=constituents if with_tides else None,
         tidal_database=tidal_database if with_tides else None,
         tidal_elevations=tidal_elevations if with_tides else None,
-        tidal_velocities=tidal_velocities if with_tides else None
+        tidal_velocities=tidal_velocities if with_tides else None,
     )
-    
+
     if with_tides:
         # Tides + external data with relaxation
         boundary.set_boundary_type(
@@ -781,7 +832,7 @@ def create_nested_boundary(
             temp_type=TracerType.SPACETIME,
             salt_type=TracerType.SPACETIME,
             inflow_relax=inflow_relax,
-            outflow_relax=outflow_relax
+            outflow_relax=outflow_relax,
         )
     else:
         # Just external data with relaxation
@@ -792,7 +843,7 @@ def create_nested_boundary(
             temp_type=TracerType.SPACETIME,
             salt_type=TracerType.SPACETIME,
             inflow_relax=inflow_relax,
-            outflow_relax=outflow_relax
+            outflow_relax=outflow_relax,
         )
-    
+
     return boundary

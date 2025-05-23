@@ -19,7 +19,6 @@ from rompy.schism.grid import SCHISMGrid
 HERE = Path(__file__).parent
 
 
-
 @pytest.fixture
 def test_air_dataset():
     """Create a sample air dataset for testing sflux air plotting."""

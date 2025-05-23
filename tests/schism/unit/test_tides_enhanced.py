@@ -13,14 +13,10 @@ from rompy.schism.tides_enhanced import (
     create_tidal_only_config,
     create_hybrid_config,
     create_river_config,
-    create_nested_config
+    create_nested_config,
 )
 from rompy.schism.data import SCHISMData, SCHISMDataOcean, SCHISMDataBoundary
-from rompy.schism.boundary_tides import (
-    ElevationType,
-    VelocityType,
-    TracerType
-)
+from rompy.schism.boundary_tides import ElevationType, VelocityType, TracerType
 
 # We'll use the grid2d fixture from the parent conftest.py
 # No need to redefine it here
@@ -29,10 +25,7 @@ from rompy.schism.boundary_tides import (
 @pytest.fixture
 def test_time_range():
     """Return a test time range."""
-    return TimeRange(
-        start=datetime(2023, 1, 1),
-        end=datetime(2023, 1, 10)
-    )
+    return TimeRange(start=datetime(2023, 1, 1), end=datetime(2023, 1, 10))
 
 
 @pytest.fixture
@@ -45,10 +38,7 @@ def tidal_dataset():
     if not elev_file.exists() or not vel_file.exists():
         pytest.skip("Tidal data files not found")
 
-    return TidalDataset(
-        elevations=str(elev_file),
-        velocities=str(vel_file)
-    )
+    return TidalDataset(elevations=str(elev_file), velocities=str(vel_file))
 
 
 class TestBoundarySetup:
@@ -59,7 +49,7 @@ class TestBoundarySetup:
         setup = BoundarySetup()
 
         assert setup.elev_type == 5  # Default to TIDALSPACETIME
-        assert setup.vel_type == 5   # Default to TIDALSPACETIME
+        assert setup.vel_type == 5  # Default to TIDALSPACETIME
         assert setup.temp_type == 0  # Default to NONE
         assert setup.salt_type == 0  # Default to NONE
 
@@ -78,7 +68,7 @@ class TestBoundarySetup:
         """Test initialization with custom values."""
         setup = BoundarySetup(
             elev_type=3,  # TIDAL
-            vel_type=3,   # TIDAL
+            vel_type=3,  # TIDAL
             temp_type=2,  # CONSTANT
             salt_type=2,  # CONSTANT
             const_elev=1.0,
@@ -88,7 +78,7 @@ class TestBoundarySetup:
             inflow_relax=0.8,
             outflow_relax=0.2,
             temp_nudge=0.9,
-            salt_nudge=0.9
+            salt_nudge=0.9,
         )
 
         assert setup.elev_type == 3
@@ -111,13 +101,13 @@ class TestBoundarySetup:
         """Test conversion to BoundaryConfig."""
         setup = BoundarySetup(
             elev_type=3,  # TIDAL
-            vel_type=3,   # TIDAL
+            vel_type=3,  # TIDAL
             temp_type=2,  # CONSTANT
             salt_type=2,  # CONSTANT
             const_elev=1.0,
             const_flow=-100.0,
             const_temp=15.0,
-            const_salt=35.0
+            const_salt=35.0,
         )
 
         config = setup.to_boundary_config()
@@ -157,20 +147,19 @@ class TestSCHISMDataTidesEnhanced:
         # Define boundary configurations
         boundaries = {
             0: BoundarySetup(
-                elev_type=int(ElevationType.TIDAL),
-                vel_type=int(VelocityType.TIDAL)
+                elev_type=int(ElevationType.TIDAL), vel_type=int(VelocityType.TIDAL)
             ),
             1: BoundarySetup(
                 elev_type=int(ElevationType.NONE),
                 vel_type=int(VelocityType.CONSTANT),
-                const_flow=-100.0
-            )
+                const_flow=-100.0,
+            ),
         }
 
         tides = SCHISMDataTidesEnhanced(
             constituents=["M2", "S2", "N2"],
             tidal_data=tidal_dataset,
-            boundaries=boundaries
+            boundaries=boundaries,
         )
 
         assert tides.boundaries is not None
@@ -184,7 +173,7 @@ class TestSCHISMDataTidesEnhanced:
         tides = SCHISMDataTidesEnhanced(
             constituents=["M2", "S2", "N2"],
             tidal_data=tidal_dataset,
-            setup_type="tidal"
+            setup_type="tidal",
         )
 
         boundary = tides.create_tidal_boundary(grid2d)
@@ -205,7 +194,7 @@ class TestSCHISMDataTidesEnhanced:
         tides = SCHISMDataTidesEnhanced(
             constituents=["M2", "S2", "N2"],
             tidal_data=tidal_dataset,
-            setup_type="tidal"
+            setup_type="tidal",
         )
 
         # Mock the write_boundary_file method to avoid actual file writing
@@ -238,7 +227,9 @@ class TestSCHISMDataTidesEnhanced:
 class TestTidesOceanConsistency:
     """Tests for cross-validation between SCHISMDataOcean and SCHISMDataTidesEnhanced."""
 
-    def test_temperature_validation(self, grid2d, tidal_dataset, hycom_bnd2d, hycom_bnd_temp_3d):
+    def test_temperature_validation(
+        self, grid2d, tidal_dataset, hycom_bnd2d, hycom_bnd_temp_3d
+    ):
         """Test that temperature boundary validation works correctly."""
         # Create a tidal config that requires temperature
         tides = SCHISMDataTidesEnhanced(
@@ -249,34 +240,36 @@ class TestTidesOceanConsistency:
                     elev_type=ElevationType.TIDAL,
                     vel_type=VelocityType.TIDAL,
                     temp_type=TracerType.CONSTANT,
-                    const_temp=15.0
+                    const_temp=15.0,
                 )
-            }
+            },
         )
-        
+
         # Create ocean data without temperature - should log a warning
         ocean = SCHISMDataOcean(
             elev2D=SCHISMDataBoundary(
                 source=hycom_bnd2d.source,
                 variables=["surf_el"],
-                coords=hycom_bnd2d.coords
+                coords=hycom_bnd2d.coords,
             )
         )
-        
+
         # This should log a warning about missing temperature data
         model = SCHISMData(tides=tides, ocean=ocean)
-        
+
         # Now add temperature data - should not log any warnings
         ocean.TEM_3D = SCHISMDataBoundary(
             source=hycom_bnd_temp_3d.source,
             variables=["water_temp"],
-            coords=hycom_bnd_temp_3d.coords
+            coords=hycom_bnd_temp_3d.coords,
         )
-        
+
         # This should not log any warnings
         model = SCHISMData(tides=tides, ocean=ocean)
 
-    def test_salinity_validation(self, grid2d, tidal_dataset, hycom_bnd2d, hycom_bnd_temp_3d):
+    def test_salinity_validation(
+        self, grid2d, tidal_dataset, hycom_bnd2d, hycom_bnd_temp_3d
+    ):
         """Test that salinity boundary validation works correctly."""
         # Create a tidal config that requires salinity
         tides = SCHISMDataTidesEnhanced(
@@ -287,31 +280,31 @@ class TestTidesOceanConsistency:
                     elev_type=ElevationType.TIDAL,
                     vel_type=VelocityType.TIDAL,
                     salt_type=TracerType.CONSTANT,
-                    const_salt=35.0
+                    const_salt=35.0,
                 )
-            }
+            },
         )
-        
+
         # Create ocean data without salinity - should log a warning
         ocean = SCHISMDataOcean(
             elev2D=SCHISMDataBoundary(
                 source=hycom_bnd2d.source,
                 variables=["surf_el"],
-                coords=hycom_bnd2d.coords
+                coords=hycom_bnd2d.coords,
             )
         )
-        
+
         # This should log a warning about missing salinity data
         model = SCHISMData(tides=tides, ocean=ocean)
-        
+
         # Now add salinity data - should not log any warnings
         # For this test, we'll reuse the temperature data source since it has the same structure
         ocean.SAL_3D = SCHISMDataBoundary(
             source=hycom_bnd_temp_3d.source,
             variables=["water_temp"],  # Using water_temp as a stand-in for salinity
-            coords=hycom_bnd_temp_3d.coords
+            coords=hycom_bnd_temp_3d.coords,
         )
-        
+
         # This should not log any warnings
         model = SCHISMData(tides=tides, ocean=ocean)
 
@@ -320,21 +313,21 @@ class TestFactoryFunctions:
     """Tests for the factory functions."""
 
     def test_create_tidal_only_config(self, tidal_dataset):
-            """Test creating a tidal-only configuration."""
-            config = create_tidal_only_config(
-                constituents=["M2", "S2", "N2"],
-                tidal_database="tpxo",
-                tidal_elevations=tidal_dataset.elevations,
-                tidal_velocities=tidal_dataset.velocities,
-                ntip=1
-            )
+        """Test creating a tidal-only configuration."""
+        config = create_tidal_only_config(
+            constituents=["M2", "S2", "N2"],
+            tidal_database="tpxo",
+            tidal_elevations=tidal_dataset.elevations,
+            tidal_velocities=tidal_dataset.velocities,
+            ntip=1,
+        )
 
-            assert isinstance(config, SCHISMDataTidesEnhanced)
-            assert config.constituents == ["M2", "S2", "N2"]
-            assert config.tidal_database == "tpxo"
-            assert config.ntip == 1
-            assert hasattr(config, "setup_type")
-            assert config.tidal_data is not None
+        assert isinstance(config, SCHISMDataTidesEnhanced)
+        assert config.constituents == ["M2", "S2", "N2"]
+        assert config.tidal_database == "tpxo"
+        assert config.ntip == 1
+        assert hasattr(config, "setup_type")
+        assert config.tidal_data is not None
 
     def test_create_hybrid_config(self, tidal_dataset):
         """Test creating a hybrid configuration."""
@@ -342,7 +335,7 @@ class TestFactoryFunctions:
             constituents=["M2", "S2", "N2"],
             tidal_database="tpxo",
             tidal_elevations=tidal_dataset.elevations,
-            tidal_velocities=tidal_dataset.velocities
+            tidal_velocities=tidal_dataset.velocities,
         )
 
         assert isinstance(config, SCHISMDataTidesEnhanced)
@@ -359,7 +352,7 @@ class TestFactoryFunctions:
             constituents=["M2", "S2", "N2"],
             tidal_database="tpxo",
             tidal_elevations=tidal_dataset.elevations,
-            tidal_velocities=tidal_dataset.velocities
+            tidal_velocities=tidal_dataset.velocities,
         )
 
         assert isinstance(config, SCHISMDataTidesEnhanced)
@@ -377,7 +370,7 @@ class TestFactoryFunctions:
             constituents=["M2", "S2", "N2"],
             tidal_database="tpxo",
             tidal_elevations=tidal_dataset.elevations,
-            tidal_velocities=tidal_dataset.velocities
+            tidal_velocities=tidal_dataset.velocities,
         )
 
         assert isinstance(config, SCHISMDataTidesEnhanced)

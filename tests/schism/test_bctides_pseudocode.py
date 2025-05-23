@@ -15,13 +15,15 @@ from rompy.schism.boundary_tides import (
 from rompy.schism.tides_enhanced import (
     SCHISMDataTidesEnhanced,
     TidalDataset,
-    BoundarySetup
+    BoundarySetup,
 )
 from rompy.schism import SCHISMGrid
 from rompy.core.time import TimeRange
 
 # Skip tests if test data is not available
-SKIP_TESTS = not (Path(__file__).parent / "test_data" / "tpxo9-neaus" / "h_m2s2n2.nc").exists()
+SKIP_TESTS = not (
+    Path(__file__).parent / "test_data" / "tpxo9-neaus" / "h_m2s2n2.nc"
+).exists()
 
 
 def test_files_dir():
@@ -37,7 +39,7 @@ def test_tidal_dataset():
 
     return TidalDataset(
         elevations=str(test_files_dir() / "tpxo9-neaus" / "h_m2s2n2.nc"),
-        velocities=str(test_files_dir() / "tpxo9-neaus" / "u_m2s2n2.nc")
+        velocities=str(test_files_dir() / "tpxo9-neaus" / "u_m2s2n2.nc"),
     )
 
 
@@ -85,11 +87,11 @@ def validate_bctides_format(file_path):
         "nope": 0,
         "boundaries": [],
         "ncbn": 0,
-        "nfluxf": 0
+        "nfluxf": 0,
     }
 
     line_index = 0
-    
+
     try:
         # Parse earth tidal potential section
         parts = lines[line_index].split()
@@ -108,7 +110,11 @@ def validate_bctides_format(file_path):
                 # Species, amplitude, frequency, nodal factor, earth equilibrium argument
                 parts = lines[line_index].split()
                 if len(parts) != 5:
-                    return False, f"Invalid tidal potential format at line {line_index+1}", sections
+                    return (
+                        False,
+                        f"Invalid tidal potential format at line {line_index+1}",
+                        sections,
+                    )
 
                 # Store the tidal constituent details
                 sections["constituents"][-1] = {
@@ -117,7 +123,7 @@ def validate_bctides_format(file_path):
                     "amplitude": float(parts[1]),
                     "frequency": float(parts[2]),
                     "nodal": float(parts[3]),
-                    "ear": float(parts[4])
+                    "ear": float(parts[4]),
                 }
                 line_index += 1
 
@@ -134,14 +140,20 @@ def validate_bctides_format(file_path):
             # Frequency, nodal factor, earth equilibrium argument
             parts = lines[line_index].split()
             if len(parts) != 3:
-                return False, f"Invalid tidal forcing frequency format at line {line_index+1}", sections
+                return (
+                    False,
+                    f"Invalid tidal forcing frequency format at line {line_index+1}",
+                    sections,
+                )
 
-            sections["constituents"].append({
-                "name": constituent,
-                "frequency": float(parts[0]),
-                "nodal": float(parts[1]),
-                "ear": float(parts[2])
-            })
+            sections["constituents"].append(
+                {
+                    "name": constituent,
+                    "frequency": float(parts[0]),
+                    "nodal": float(parts[1]),
+                    "ear": float(parts[2]),
+                }
+            )
             line_index += 1
 
         # Parse nope (number of open boundary segments)
@@ -154,7 +166,9 @@ def validate_bctides_format(file_path):
 
             # Parse number of nodes and flags
             parts = lines[line_index].split()
-            if len(parts) < 5:  # At least neta, elev_type, vel_type, temp_type, salt_type
+            if (
+                len(parts) < 5
+            ):  # At least neta, elev_type, vel_type, temp_type, salt_type
                 return False, f"Invalid boundary flags at line {line_index+1}", sections
 
             boundary["neta"] = int(parts[0])
@@ -162,7 +176,7 @@ def validate_bctides_format(file_path):
             boundary["vel_type"] = int(parts[2])
             boundary["temp_type"] = int(parts[3])
             boundary["salt_type"] = int(parts[4])
-            
+
             line_index += 1
 
             # Process elevation boundary conditions
@@ -187,18 +201,20 @@ def validate_bctides_format(file_path):
                     for i in range(boundary["neta"]):
                         parts = lines[line_index].split()
                         if len(parts) != 2:
-                            return False, f"Invalid tidal elevation format at line {line_index+1}", sections
+                            return (
+                                False,
+                                f"Invalid tidal elevation format at line {line_index+1}",
+                                sections,
+                            )
 
-                        nodes_data.append({
-                            "amplitude": float(parts[0]),
-                            "phase": float(parts[1])
-                        })
+                        nodes_data.append(
+                            {"amplitude": float(parts[0]), "phase": float(parts[1])}
+                        )
                         line_index += 1
 
-                    boundary["elev_data"].append({
-                        "constituent": constituent,
-                        "nodes": nodes_data
-                    })
+                    boundary["elev_data"].append(
+                        {"constituent": constituent, "nodes": nodes_data}
+                    )
             elif boundary["elev_type"] == 4:
                 # Space-time input - no input in bctides.in
                 boundary["elev_data"] = "space_time"
@@ -228,20 +244,25 @@ def validate_bctides_format(file_path):
                     for i in range(boundary["neta"]):
                         parts = lines[line_index].split()
                         if len(parts) != 4:
-                            return False, f"Invalid tidal velocity format at line {line_index+1}", sections
+                            return (
+                                False,
+                                f"Invalid tidal velocity format at line {line_index+1}",
+                                sections,
+                            )
 
-                        nodes_data.append({
-                            "u_amplitude": float(parts[0]),
-                            "u_phase": float(parts[1]),
-                            "v_amplitude": float(parts[2]),
-                            "v_phase": float(parts[3])
-                        })
+                        nodes_data.append(
+                            {
+                                "u_amplitude": float(parts[0]),
+                                "u_phase": float(parts[1]),
+                                "v_amplitude": float(parts[2]),
+                                "v_phase": float(parts[3]),
+                            }
+                        )
                         line_index += 1
 
-                    boundary["vel_data"].append({
-                        "constituent": constituent,
-                        "nodes": nodes_data
-                    })
+                    boundary["vel_data"].append(
+                        {"constituent": constituent, "nodes": nodes_data}
+                    )
             elif boundary["vel_type"] == 4 or boundary["vel_type"] == -4:
                 # 3D input
                 boundary["vel_data"] = "3d_input"
@@ -250,7 +271,11 @@ def validate_bctides_format(file_path):
                     # Relaxation parameters
                     parts = lines[line_index].split()
                     if len(parts) != 2:
-                        return False, f"Invalid relaxation constants at line {line_index+1}", sections
+                        return (
+                            False,
+                            f"Invalid relaxation constants at line {line_index+1}",
+                            sections,
+                        )
 
                     boundary["inflow_relax"] = float(parts[0])
                     boundary["outflow_relax"] = float(parts[1])
@@ -260,8 +285,12 @@ def validate_bctides_format(file_path):
                 boundary["vel_data"] = "flather"
 
                 # Mean elevation marker and values
-                if lines[line_index].strip().lower() != 'eta_mean':
-                    return False, f"Missing 'eta_mean' marker at line {line_index+1}", sections
+                if lines[line_index].strip().lower() != "eta_mean":
+                    return (
+                        False,
+                        f"Missing 'eta_mean' marker at line {line_index+1}",
+                        sections,
+                    )
                 line_index += 1
 
                 # Parse mean elevation for each node
@@ -271,8 +300,12 @@ def validate_bctides_format(file_path):
                     line_index += 1
 
                 # Mean normal velocity marker and values
-                if lines[line_index].strip().lower() != 'vn_mean':
-                    return False, f"Missing 'vn_mean' marker at line {line_index+1}", sections
+                if lines[line_index].strip().lower() != "vn_mean":
+                    return (
+                        False,
+                        f"Missing 'vn_mean' marker at line {line_index+1}",
+                        sections,
+                    )
                 line_index += 1
 
                 # Parse mean normal velocity for each node
@@ -290,7 +323,7 @@ def validate_bctides_format(file_path):
                 # Time history
                 boundary["temp_data"] = {
                     "type": "time_history",
-                    "nudge": float(lines[line_index])
+                    "nudge": float(lines[line_index]),
                 }
                 line_index += 1
             elif boundary["temp_type"] == 2:
@@ -298,21 +331,21 @@ def validate_bctides_format(file_path):
                 boundary["temp_data"] = {
                     "type": "constant",
                     "value": float(lines[line_index]),
-                    "nudge": float(lines[line_index+1])
+                    "nudge": float(lines[line_index + 1]),
                 }
                 line_index += 2
             elif boundary["temp_type"] == 3:
                 # Initial profile
                 boundary["temp_data"] = {
                     "type": "initial_profile",
-                    "nudge": float(lines[line_index])
+                    "nudge": float(lines[line_index]),
                 }
                 line_index += 1
             elif boundary["temp_type"] == 4:
                 # 3D input
                 boundary["temp_data"] = {
                     "type": "3d_input",
-                    "nudge": float(lines[line_index])
+                    "nudge": float(lines[line_index]),
                 }
                 line_index += 1
 
@@ -324,7 +357,7 @@ def validate_bctides_format(file_path):
                 # Time history
                 boundary["salt_data"] = {
                     "type": "time_history",
-                    "nudge": float(lines[line_index])
+                    "nudge": float(lines[line_index]),
                 }
                 line_index += 1
             elif boundary["salt_type"] == 2:
@@ -332,21 +365,21 @@ def validate_bctides_format(file_path):
                 boundary["salt_data"] = {
                     "type": "constant",
                     "value": float(lines[line_index]),
-                    "nudge": float(lines[line_index+1])
+                    "nudge": float(lines[line_index + 1]),
                 }
                 line_index += 2
             elif boundary["salt_type"] == 3:
                 # Initial profile
                 boundary["salt_data"] = {
                     "type": "initial_profile",
-                    "nudge": float(lines[line_index])
+                    "nudge": float(lines[line_index]),
                 }
                 line_index += 1
             elif boundary["salt_type"] == 4:
                 # 3D input
                 boundary["salt_data"] = {
                     "type": "3d_input",
-                    "nudge": float(lines[line_index])
+                    "nudge": float(lines[line_index]),
                 }
                 line_index += 1
 
@@ -362,7 +395,9 @@ def validate_bctides_format(file_path):
                 for i in range(sections["ncbn"]):
                     # Flow boundary has variable number of lines
                     # For simplicity, we just increment until we find nfluxf
-                    while line_index < len(lines) and not lines[line_index].endswith("!nfluxf"):
+                    while line_index < len(lines) and not lines[line_index].endswith(
+                        "!nfluxf"
+                    ):
                         line_index += 1
             except ValueError:
                 # If we can't parse this as an integer, it's probably not ncbn
@@ -397,11 +432,8 @@ def test_tidal_boundary_pseudocode_format(test_grid, test_tidal_dataset, tmp_pat
         cutoff_depth=50.0,
         boundaries={
             # Just one tidal boundary to keep it simple
-            0: BoundarySetup(
-                elev_type=ElevationType.TIDAL,
-                vel_type=VelocityType.TIDAL
-            )
-        }
+            0: BoundarySetup(elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL)
+        },
     )
 
     # Create the boundary and write the file
@@ -429,7 +461,7 @@ def test_tidal_boundary_pseudocode_format(test_grid, test_tidal_dataset, tmp_pat
     assert sections["ntip"] > 0, "Earth tidal potential should be enabled"
     assert sections["nbfr"] > 0, "Should have tidal forcing frequencies"
     assert len(sections["boundaries"]) > 0, "Should have at least one boundary"
-    
+
     # Check that we have a tidal boundary with correct types
     found_tidal = False
     for boundary in sections["boundaries"]:
@@ -437,8 +469,10 @@ def test_tidal_boundary_pseudocode_format(test_grid, test_tidal_dataset, tmp_pat
             found_tidal = True
             assert "elev_data" in boundary, "Missing elevation data"
             if "elev_data" in boundary:
-                assert isinstance(boundary["elev_data"], list), f"Expected list for elev_data, got {type(boundary['elev_data'])}"
-    
+                assert isinstance(
+                    boundary["elev_data"], list
+                ), f"Expected list for elev_data, got {type(boundary['elev_data'])}"
+
     assert found_tidal, "No tidal boundary found"
 
 
@@ -453,9 +487,9 @@ def test_relaxed_boundary_pseudocode_format(test_grid, test_tidal_dataset, tmp_p
                 elev_type=ElevationType.SPACETIME,
                 vel_type=VelocityType.RELAXED,
                 inflow_relax=0.9,
-                outflow_relax=0.5
+                outflow_relax=0.5,
             )
-        }
+        },
     )
 
     # Create the boundary and write the file
@@ -494,9 +528,9 @@ def test_flather_boundary_pseudocode_format(test_grid, test_tidal_dataset, tmp_p
                 elev_type=ElevationType.NONE,
                 vel_type=VelocityType.FLATHER,
                 mean_elev=mean_elev,
-                mean_flow=mean_flow
+                mean_flow=mean_flow,
             )
-        }
+        },
     )
 
     # Create the boundary and write the file
@@ -533,9 +567,9 @@ def test_river_boundary_pseudocode_format(test_grid, tmp_path):
             0: BoundarySetup(
                 elev_type=ElevationType.NONE,
                 vel_type=VelocityType.CONSTANT,
-                const_flow=-500.0  # Inflow of 500 m³/s
+                const_flow=-500.0,  # Inflow of 500 m³/s
             )
-        }
+        },
     )
 
     # Create the boundary and write the file
@@ -548,7 +582,7 @@ def test_river_boundary_pseudocode_format(test_grid, tmp_path):
     with open(bctides_path, "r") as f:
         file_contents = f.read()
         print(f"Generated river bctides.in content:\n{file_contents}")
-        
+
     # Dump the file content to a well-known location for inspection
     with open("/tmp/bctides_river.in", "w") as f:
         f.write(file_contents)
@@ -566,9 +600,9 @@ def test_river_boundary_pseudocode_format(test_grid, tmp_path):
             assert isinstance(boundary["vel_data"], float)
             assert boundary["vel_data"] < 0  # Should be negative for inflow
             break
-    
+
     assert constant_vel_boundary_found, "No constant velocity boundary found"
-    
+
     # Flow boundaries are represented in ncbn, but not required for river boundaries
     # Just check that it exists, not its value
     assert "ncbn" in sections
@@ -585,7 +619,7 @@ def test_time_history_format(test_grid, tmp_path):
                 temp_type=TracerType.TIMEHIST,
                 salt_type=TracerType.TIMEHIST,
                 temp_nudge=0.8,
-                salt_nudge=0.8
+                salt_nudge=0.8,
             )
         }
     )

@@ -20,7 +20,6 @@ from rompy.schism.grid import SCHISMGrid
 HERE = Path(__file__).parent
 
 
-
 @pytest.fixture
 def test_boundary_data(grid2d):
     """Create sample boundary data for testing without using SCHISMDataBoundary."""

@@ -32,18 +32,22 @@ from rompy.schism.boundary_tides import (
     create_tidal_boundary,
     create_hybrid_boundary,
     create_river_boundary,
-    create_nested_boundary
+    create_nested_boundary,
 )
 from rompy.schism.boundary_tides import ElevationType, VelocityType, TracerType
 
 logger = logging.getLogger(__name__)
+
 
 # Utility function to convert numpy types to Python types
 def to_python_type(obj):
     """Convert numpy types to Python native types."""
     if isinstance(obj, np.ndarray):
         return obj.tolist()
-    elif isinstance(obj, (np.integer, np.int_, np.intc, np.intp, np.int8, np.int16, np.int32, np.int64)):
+    elif isinstance(
+        obj,
+        (np.integer, np.int_, np.intc, np.intp, np.int8, np.int16, np.int32, np.int64),
+    ):
         return int(obj)
     elif isinstance(obj, (np.float_, np.float16, np.float32, np.float64)):
         return float(obj)
@@ -90,18 +94,10 @@ class BoundarySetup(RompyBaseModel):
     """Configuration for a boundary in SCHISM."""
 
     # Basic boundary configuration
-    elev_type: int = Field(
-        5, description="Elevation boundary type (0-5)"
-    )
-    vel_type: int = Field(
-        5, description="Velocity boundary type (-4, -1, 0-5)"
-    )
-    temp_type: int = Field(
-        0, description="Temperature boundary type (0-4)"
-    )
-    salt_type: int = Field(
-        0, description="Salinity boundary type (0-4)"
-    )
+    elev_type: int = Field(5, description="Elevation boundary type (0-5)")
+    vel_type: int = Field(5, description="Velocity boundary type (-4, -1, 0-5)")
+    temp_type: int = Field(0, description="Temperature boundary type (0-4)")
+    salt_type: int = Field(0, description="Salinity boundary type (0-4)")
 
     # Values for constant boundaries
     const_elev: Optional[float] = Field(
@@ -118,18 +114,10 @@ class BoundarySetup(RompyBaseModel):
     )
 
     # Values for relaxation and nudging
-    inflow_relax: float = Field(
-        0.5, description="Relaxation factor for inflow (0-1)"
-    )
-    outflow_relax: float = Field(
-        0.1, description="Relaxation factor for outflow (0-1)"
-    )
-    temp_nudge: float = Field(
-        1.0, description="Temperature nudging factor (0-1)"
-    )
-    salt_nudge: float = Field(
-        1.0, description="Salinity nudging factor (0-1)"
-    )
+    inflow_relax: float = Field(0.5, description="Relaxation factor for inflow (0-1)")
+    outflow_relax: float = Field(0.1, description="Relaxation factor for outflow (0-1)")
+    temp_nudge: float = Field(1.0, description="Temperature nudging factor (0-1)")
+    salt_nudge: float = Field(1.0, description="Salinity nudging factor (0-1)")
 
     # File paths for different boundary types
     temp_th_path: Optional[str] = Field(
@@ -187,7 +175,7 @@ class BoundarySetup(RompyBaseModel):
             salt_3d_path=self.salt_3d_path,
             flow_th_path=self.flow_th_path,
             elev_st_path=self.elev_st_path,
-            vel_st_path=self.vel_st_path
+            vel_st_path=self.vel_st_path,
         )
 
 
@@ -210,22 +198,19 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
     # Basic tidal configuration
     constituents: List[str] = Field(
         default_factory=lambda: ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"],
-        description="Tidal constituents to include"
+        description="Tidal constituents to include",
     )
-    tidal_database: str = Field(
-        default="tpxo", description="Tidal database to use"
-    )
+    tidal_database: str = Field(default="tpxo", description="Tidal database to use")
 
     # Earth tidal potential settings
     ntip: int = Field(
-        default=0, description="Number of tidal potential regions (0 to disable, >0 to enable)"
+        default=0,
+        description="Number of tidal potential regions (0 to disable, >0 to enable)",
     )
     tip_dp: float = Field(
         default=1.0, description="Depth threshold for tidal potential calculations"
     )
-    cutoff_depth: float = Field(
-        default=50.0, description="Cutoff depth for tides"
-    )
+    cutoff_depth: float = Field(default=50.0, description="Cutoff depth for tides")
 
     # Legacy boundary configuration
     flags: Optional[List[List[int]]] = Field(
@@ -255,7 +240,8 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
 
     # Enhanced boundary configuration
     boundaries: Dict[int, BoundarySetup] = Field(
-        default_factory=dict, description="Enhanced boundary configuration by boundary index"
+        default_factory=dict,
+        description="Enhanced boundary configuration by boundary index",
     )
 
     # Predefined configurations
@@ -274,102 +260,155 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             if isinstance(value, (np.bool_, np.integer, np.floating, np.ndarray)):
                 data[key] = to_python_type(value)
         return data
-        
+
     @model_validator(mode="after")
     def validate_tidal_data(self):
         """Ensure tidal data is provided when needed for TIDAL or TIDALSPACETIME boundaries."""
         boundaries = self.boundaries or {}
         needs_tidal_data = False
-        
+
         # Check setup_type first
-        if self.setup_type in ['tidal', 'hybrid']:
+        if self.setup_type in ["tidal", "hybrid"]:
             needs_tidal_data = True
-        
+
         # Then check individual boundaries
         for setup in boundaries.values():
-            if (hasattr(setup, 'elev_type') and setup.elev_type in [ElevationType.TIDAL, ElevationType.TIDALSPACETIME]) or \
-               (hasattr(setup, 'vel_type') and setup.vel_type in [VelocityType.TIDAL, VelocityType.TIDALSPACETIME]):
+            if (
+                hasattr(setup, "elev_type")
+                and setup.elev_type
+                in [ElevationType.TIDAL, ElevationType.TIDALSPACETIME]
+            ) or (
+                hasattr(setup, "vel_type")
+                and setup.vel_type in [VelocityType.TIDAL, VelocityType.TIDALSPACETIME]
+            ):
                 needs_tidal_data = True
                 break
-        
+
         if needs_tidal_data and not self.tidal_data:
-            logger.warning("Tidal data is required for TIDAL or TIDALSPACETIME boundary types but was not provided")
-        
+            logger.warning(
+                "Tidal data is required for TIDAL or TIDALSPACETIME boundary types but was not provided"
+            )
+
         return self
-        
+
     @model_validator(mode="after")
     def validate_constant_values(self):
         """Ensure constant values are provided when using CONSTANT boundary types."""
         boundaries = self.boundaries or {}
-        
+
         for idx, setup in boundaries.items():
-            if hasattr(setup, 'elev_type') and setup.elev_type == ElevationType.CONSTANT and setup.const_elev is None:
-                logger.warning(f"const_elev is required for CONSTANT elev_type in boundary {idx}")
-                
-            if hasattr(setup, 'vel_type') and setup.vel_type == VelocityType.CONSTANT and setup.const_flow is None:
-                logger.warning(f"const_flow is required for CONSTANT vel_type in boundary {idx}")
-                
-            if hasattr(setup, 'temp_type') and setup.temp_type == TracerType.CONSTANT and setup.const_temp is None:
-                logger.warning(f"const_temp is required for CONSTANT temp_type in boundary {idx}")
-                
-            if hasattr(setup, 'salt_type') and setup.salt_type == TracerType.CONSTANT and setup.const_salt is None:
-                logger.warning(f"const_salt is required for CONSTANT salt_type in boundary {idx}")
-        
+            if (
+                hasattr(setup, "elev_type")
+                and setup.elev_type == ElevationType.CONSTANT
+                and setup.const_elev is None
+            ):
+                logger.warning(
+                    f"const_elev is required for CONSTANT elev_type in boundary {idx}"
+                )
+
+            if (
+                hasattr(setup, "vel_type")
+                and setup.vel_type == VelocityType.CONSTANT
+                and setup.const_flow is None
+            ):
+                logger.warning(
+                    f"const_flow is required for CONSTANT vel_type in boundary {idx}"
+                )
+
+            if (
+                hasattr(setup, "temp_type")
+                and setup.temp_type == TracerType.CONSTANT
+                and setup.const_temp is None
+            ):
+                logger.warning(
+                    f"const_temp is required for CONSTANT temp_type in boundary {idx}"
+                )
+
+            if (
+                hasattr(setup, "salt_type")
+                and setup.salt_type == TracerType.CONSTANT
+                and setup.const_salt is None
+            ):
+                logger.warning(
+                    f"const_salt is required for CONSTANT salt_type in boundary {idx}"
+                )
+
         return self
-        
+
     @model_validator(mode="after")
     def validate_relaxed_boundaries(self):
         """Ensure relaxation parameters are provided for RELAXED velocity boundaries."""
         boundaries = self.boundaries or {}
-        
+
         for idx, setup in boundaries.items():
-            if hasattr(setup, 'vel_type') and setup.vel_type == VelocityType.RELAXED:
-                if not hasattr(setup, 'inflow_relax') or not hasattr(setup, 'outflow_relax'):
-                    logger.warning(f"inflow_relax and outflow_relax are required for RELAXED vel_type in boundary {idx}")
-        
+            if hasattr(setup, "vel_type") and setup.vel_type == VelocityType.RELAXED:
+                if not hasattr(setup, "inflow_relax") or not hasattr(
+                    setup, "outflow_relax"
+                ):
+                    logger.warning(
+                        f"inflow_relax and outflow_relax are required for RELAXED vel_type in boundary {idx}"
+                    )
+
         return self
-        
+
     @model_validator(mode="after")
     def validate_flather_boundaries(self):
         """Ensure mean_elev and mean_flow are provided for FLATHER boundaries."""
         boundaries = self.boundaries or {}
-        
+
         for idx, setup in boundaries.items():
-            if hasattr(setup, 'vel_type') and setup.vel_type == VelocityType.FLATHER:
+            if hasattr(setup, "vel_type") and setup.vel_type == VelocityType.FLATHER:
                 if setup.mean_elev is None or setup.mean_flow is None:
-                    logger.warning(f"mean_elev and mean_flow are required for FLATHER vel_type in boundary {idx}")
-        
+                    logger.warning(
+                        f"mean_elev and mean_flow are required for FLATHER vel_type in boundary {idx}"
+                    )
+
         return self
-        
+
     @model_validator(mode="after")
     def validate_setup_type(self):
         """Validate setup type specific requirements."""
         # Skip validation if setup_type is not set
         if not self.setup_type:
             return self
-            
+
         if self.setup_type in ["tidal", "hybrid"]:
             if not self.constituents:
-                logger.warning("constituents are required for tidal or hybrid setup_type")
+                logger.warning(
+                    "constituents are required for tidal or hybrid setup_type"
+                )
             if not self.tidal_data:
                 logger.warning("tidal_data is required for tidal or hybrid setup_type")
-                
+
         elif self.setup_type == "river":
             if self.boundaries:
-                has_flow = any(hasattr(s, 'const_flow') and s.const_flow is not None 
-                             for s in self.boundaries.values())
+                has_flow = any(
+                    hasattr(s, "const_flow") and s.const_flow is not None
+                    for s in self.boundaries.values()
+                )
                 if not has_flow:
-                    logger.warning("At least one boundary should have const_flow for river setup_type")
-                    
+                    logger.warning(
+                        "At least one boundary should have const_flow for river setup_type"
+                    )
+
         elif self.setup_type == "nested":
             if self.boundaries:
                 for idx, setup in self.boundaries.items():
-                    if hasattr(setup, 'vel_type') and setup.vel_type == VelocityType.RELAXED:
-                        if not hasattr(setup, 'inflow_relax') or not hasattr(setup, 'outflow_relax'):
-                            logger.warning(f"inflow_relax and outflow_relax are recommended for nested setup_type in boundary {idx}")
+                    if (
+                        hasattr(setup, "vel_type")
+                        and setup.vel_type == VelocityType.RELAXED
+                    ):
+                        if not hasattr(setup, "inflow_relax") or not hasattr(
+                            setup, "outflow_relax"
+                        ):
+                            logger.warning(
+                                f"inflow_relax and outflow_relax are recommended for nested setup_type in boundary {idx}"
+                            )
         else:
-            logger.warning(f"Unknown setup_type: {self.setup_type}. Expected one of: tidal, hybrid, river, nested")
-        
+            logger.warning(
+                f"Unknown setup_type: {self.setup_type}. Expected one of: tidal, hybrid, river, nested"
+            )
+
         # Initialize default empty lists for any None attributes to prevent errors later
         self.flags = self.flags if self.flags is not None else []
         self.ethconst = self.ethconst if self.ethconst is not None else []
@@ -378,12 +417,12 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
         self.sthconst = self.sthconst if self.sthconst is not None else []
         self.tobc = self.tobc if self.tobc is not None else [1.0]
         self.sobc = self.sobc if self.sobc is not None else [1.0]
-        
+
         return self
 
     def create_tidal_boundary(self, grid, setup_type=None) -> TidalBoundary:
         """Create a TidalBoundary instance from this configuration.
-        
+
         This method takes the current configuration and creates a properly configured
         TidalBoundary object that can be used to write bctides.in files.
 
@@ -419,7 +458,11 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             tidal_velocities = self.tidal_data.velocities
 
         # Ensure constituents is a valid list
-        constituents = self.constituents if self.constituents is not None else ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"]
+        constituents = (
+            self.constituents
+            if self.constituents is not None
+            else ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"]
+        )
 
         # Create boundary handler
         boundary = TidalBoundary(
@@ -430,7 +473,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             tidal_velocities=tidal_velocities,
             ntip=self.ntip,
             tip_dp=self.tip_dp,
-            cutoff_depth=self.cutoff_depth
+            cutoff_depth=self.cutoff_depth,
         )
 
         # Configure boundaries
@@ -447,7 +490,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                 vel_type = 0
                 temp_type = 0
                 salt_type = 0
-                
+
                 # Only access flags if they exist and contain values
                 if i < len(flags) and flags[i]:
                     if len(flags[i]) > 0:
@@ -458,12 +501,12 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                         temp_type = flags[i][2]
                     if len(flags[i]) > 3:
                         salt_type = flags[i][3]
-                
+
                 config = BoundaryConfig(
                     elev_type=elev_type,
                     vel_type=vel_type,
                     temp_type=temp_type,
-                    salt_type=salt_type
+                    salt_type=salt_type,
                 )
 
                 # Add constant values if provided
@@ -487,9 +530,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                 # Pure tidal boundary
                 for i in range(grid.pylibs_hgrid.nob):
                     boundary.set_boundary_type(
-                        i,
-                        elev_type=ElevationType.TIDAL,
-                        vel_type=VelocityType.TIDAL
+                        i, elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL
                     )
             elif active_setup_type == "hybrid":
                 # Tidal + external data
@@ -497,7 +538,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                     boundary.set_boundary_type(
                         i,
                         elev_type=ElevationType.TIDALSPACETIME,
-                        vel_type=VelocityType.TIDALSPACETIME
+                        vel_type=VelocityType.TIDALSPACETIME,
                     )
             elif active_setup_type == "river":
                 # River boundary (first boundary only)
@@ -506,7 +547,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                         0,
                         elev_type=ElevationType.NONE,
                         vel_type=VelocityType.CONSTANT,
-                        vthconst=-100.0  # Default inflow
+                        vthconst=-100.0,  # Default inflow
                     )
             elif active_setup_type == "nested":
                 # Nested boundary with relaxation
@@ -518,15 +559,13 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                         temp_type=TracerType.SPACETIME,
                         salt_type=TracerType.SPACETIME,
                         inflow_relax=0.8,
-                        outflow_relax=0.8
+                        outflow_relax=0.8,
                     )
         else:
             # Default: tidal boundary for all open boundaries
             for i in range(grid.pylibs_hgrid.nob):
                 boundary.set_boundary_type(
-                    i,
-                    elev_type=ElevationType.TIDAL,
-                    vel_type=VelocityType.TIDAL
+                    i, elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL
                 )
 
         return boundary
@@ -548,7 +587,9 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
         str
             Path to the generated bctides.in file
         """
-        logger.info(f"===== SCHISMDataTidesEnhanced.get called with destdir={destdir} =====")
+        logger.info(
+            f"===== SCHISMDataTidesEnhanced.get called with destdir={destdir} ====="
+        )
 
         # Convert destdir to Path object
         destdir = Path(destdir)
@@ -585,7 +626,9 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             try:
                 with open(bctides_path, "w") as f:
                     f.write("0 10.0 !nbfr, beta_flux\n")
-                    f.write(f"{grid.pylibs_hgrid.nob} !nope: number of open boundaries with elevation specified\n")
+                    f.write(
+                        f"{grid.pylibs_hgrid.nob} !nope: number of open boundaries with elevation specified\n"
+                    )
                     for i in range(grid.pylibs_hgrid.nob):
                         f.write(f"{i+1} 0. !open bnd #{i+1}, eta amplitude\n")
                     f.write("0 !ncbn: total # of flow bnd segments with discharge\n")
@@ -599,12 +642,13 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
 
 # Factory functions for common tidal configurations
 
+
 def create_tidal_only_config(
     constituents: List[str] = None,
     tidal_database: str = "tpxo",
     tidal_elevations: str = None,
     tidal_velocities: str = None,
-    ntip: int = 0
+    ntip: int = 0,
 ) -> SCHISMDataTidesEnhanced:
     """Create a configuration for tidal-only boundaries.
 
@@ -629,8 +673,7 @@ def create_tidal_only_config(
     tidal_data = None
     if tidal_elevations and tidal_velocities:
         tidal_data = TidalDataset(
-            elevations=tidal_elevations,
-            velocities=tidal_velocities
+            elevations=tidal_elevations, velocities=tidal_velocities
         )
 
     return SCHISMDataTidesEnhanced(
@@ -638,7 +681,7 @@ def create_tidal_only_config(
         tidal_database=tidal_database,
         tidal_data=tidal_data,
         ntip=ntip,
-        setup_type="tidal"
+        setup_type="tidal",
     )
 
 
@@ -646,7 +689,7 @@ def create_hybrid_config(
     constituents: List[str] = None,
     tidal_database: str = "tpxo",
     tidal_elevations: str = None,
-    tidal_velocities: str = None
+    tidal_velocities: str = None,
 ) -> SCHISMDataTidesEnhanced:
     """Create a configuration for hybrid tidal + external data boundaries.
 
@@ -669,15 +712,14 @@ def create_hybrid_config(
     tidal_data = None
     if tidal_elevations and tidal_velocities:
         tidal_data = TidalDataset(
-            elevations=tidal_elevations,
-            velocities=tidal_velocities
+            elevations=tidal_elevations, velocities=tidal_velocities
         )
 
     return SCHISMDataTidesEnhanced(
         constituents=constituents or ["O1", "K1", "Q1", "P1", "M2", "S2", "K2", "N2"],
         tidal_database=tidal_database,
         tidal_data=tidal_data,
-        setup_type="hybrid"
+        setup_type="hybrid",
     )
 
 
@@ -688,7 +730,7 @@ def create_river_config(
     constituents: List[str] = None,
     tidal_database: str = "tpxo",
     tidal_elevations: str = None,
-    tidal_velocities: str = None
+    tidal_velocities: str = None,
 ) -> SCHISMDataTidesEnhanced:
     """Create a configuration with a river boundary.
 
@@ -717,8 +759,7 @@ def create_river_config(
     tidal_data = None
     if tidal_elevations and tidal_velocities:
         tidal_data = TidalDataset(
-            elevations=tidal_elevations,
-            velocities=tidal_velocities
+            elevations=tidal_elevations, velocities=tidal_velocities
         )
 
     # Create basic configuration
@@ -726,7 +767,7 @@ def create_river_config(
         constituents=constituents or ["O1", "K1", "Q1", "P1", "M2", "S2", "K2", "N2"],
         tidal_database=tidal_database,
         tidal_data=tidal_data,
-        boundaries={}
+        boundaries={},
     )
 
     # Configure river boundary
@@ -735,7 +776,7 @@ def create_river_config(
         vel_type=VelocityType.CONSTANT,
         temp_type=TracerType.NONE,
         salt_type=TracerType.NONE,
-        const_flow=river_flow
+        const_flow=river_flow,
     )
 
     # Configure other boundaries if needed
@@ -744,14 +785,14 @@ def create_river_config(
             elev_type=ElevationType.TIDAL,
             vel_type=VelocityType.TIDAL,
             temp_type=TracerType.NONE,
-            salt_type=TracerType.NONE
+            salt_type=TracerType.NONE,
         )
     else:
         other_config = BoundarySetup(
             elev_type=ElevationType.NONE,
             vel_type=VelocityType.NONE,
             temp_type=TracerType.NONE,
-            salt_type=TracerType.NONE
+            salt_type=TracerType.NONE,
         )
 
     # Add boundary configurations
@@ -769,7 +810,7 @@ def create_nested_config(
     constituents: List[str] = None,
     tidal_database: str = "tpxo",
     tidal_elevations: str = None,
-    tidal_velocities: str = None
+    tidal_velocities: str = None,
 ) -> SCHISMDataTidesEnhanced:
     """Create a configuration for nested model with external data.
 
@@ -798,8 +839,7 @@ def create_nested_config(
     tidal_data = None
     if with_tides and tidal_elevations and tidal_velocities:
         tidal_data = TidalDataset(
-            elevations=tidal_elevations,
-            velocities=tidal_velocities
+            elevations=tidal_elevations, velocities=tidal_velocities
         )
 
     # Create boundary configuration
@@ -810,7 +850,7 @@ def create_nested_config(
             temp_type=TracerType.SPACETIME,
             salt_type=TracerType.SPACETIME,
             inflow_relax=inflow_relax,
-            outflow_relax=outflow_relax
+            outflow_relax=outflow_relax,
         )
     else:
         default_config = BoundarySetup(
@@ -819,12 +859,12 @@ def create_nested_config(
             temp_type=TracerType.SPACETIME,
             salt_type=TracerType.SPACETIME,
             inflow_relax=inflow_relax,
-            outflow_relax=outflow_relax
+            outflow_relax=outflow_relax,
         )
 
     return SCHISMDataTidesEnhanced(
         constituents=constituents if with_tides else None,
         tidal_database=tidal_database if with_tides else None,
         tidal_data=tidal_data,
-        boundaries={0: default_config}  # Will be applied to all boundaries
+        boundaries={0: default_config},  # Will be applied to all boundaries
     )

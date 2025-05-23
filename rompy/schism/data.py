@@ -10,8 +10,7 @@ import scipy as sp
 import xarray as xr
 from cloudpathlib import AnyPath
 from pydantic import ConfigDict, Field, field_validator, model_validator
-from pylib import (compute_zcor, read_schism_bpfile, read_schism_hgrid,
-                   read_schism_vgrid)
+from pylib import compute_zcor, read_schism_bpfile, read_schism_hgrid, read_schism_vgrid
 
 from rompy.core.data import DataGrid
 from rompy.core.types import RompyBaseModel
@@ -27,6 +26,7 @@ from rompy.schism.hotstart import SCHISMDataHotstart
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
+
 # Import numpy type handlers to enable proper Pydantic validation with numpy types
 from .numpy_types import to_python_type
 
@@ -1237,8 +1237,8 @@ class SCHISMData(RompyBaseModel):
     wave: Optional[Union[DataBlob, SCHISMDataWave]] = Field(
         None, description="wave data"
     )
-    tides: Optional[Union[DataBlob, SCHISMDataTides, "SCHISMDataTidesEnhanced"]] = Field(
-        None, description="tidal data"
+    tides: Optional[Union[DataBlob, SCHISMDataTides, "SCHISMDataTidesEnhanced"]] = (
+        Field(None, description="tidal data")
     )
     hotstart: Optional[SCHISMDataHotstart] = Field(
         None, description="hotstart data"

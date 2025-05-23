@@ -9,9 +9,11 @@ from datetime import datetime
 # Import Bctides class directly
 from rompy.schism.bctides import Bctides
 
+
 def test_files_dir():
     """Get the directory containing test files."""
     return Path(os.path.dirname(os.path.abspath(__file__)))
+
 
 def validate_bctides_format(file_path):
     """Validate the format of a bctides.in file."""
@@ -113,17 +115,22 @@ def validate_bctides_format(file_path):
 
     return True, "File format is valid"
 
+
 class MockGrid:
     """Mock grid class for testing."""
+
     def __init__(self):
         # Basic grid properties
         self.ne = 100  # Number of elements
-        self.np = 60   # Number of nodes
-        self.nob = 1   # Number of open boundaries
+        self.np = 60  # Number of nodes
+        self.nob = 1  # Number of open boundaries
         self.nobn = np.array([10], dtype=np.int32)  # Number of nodes per boundary
-        self.iobn = [np.array(range(10), dtype=np.int32)]  # Node indices for each boundary
+        self.iobn = [
+            np.array(range(10), dtype=np.int32)
+        ]  # Node indices for each boundary
         self.x = np.array([float(i) for i in range(60)])  # Longitudes
         self.y = np.array([float(i) for i in range(60)])  # Latitudes
+
 
 def test_basic_bctides_format():
     """Test that a basic bctides.in file can be created and has correct format."""
@@ -141,7 +148,7 @@ def test_basic_bctides_format():
         tidal_database=None,
         ntip=0,
         tip_dp=50.0,
-        cutoff_depth=50.0
+        cutoff_depth=50.0,
     )
 
     # Set start time and duration
@@ -158,7 +165,9 @@ def test_basic_bctides_format():
             raise ValueError(f"Unknown data type: {data_type}")
 
     # Assign our mock method to the instance
-    bctides._interpolate_tidal_data = mock_interpolate.__get__(bctides, bctides.__class__)
+    bctides._interpolate_tidal_data = mock_interpolate.__get__(
+        bctides, bctides.__class__
+    )
 
     # Set tidal factors for each constituent
     bctides.tnames = ["M2", "S2"]
@@ -221,7 +230,9 @@ def test_basic_bctides_format():
 
             # The nbfr value should be the number of constituents
             nbfr_value = int(lines[nbfr_line].split("!")[0].strip())
-            assert nbfr_value == len(bctides.tnames), f"nbfr ({nbfr_value}) doesn't match number of constituents ({len(bctides.tnames)})"
+            assert nbfr_value == len(
+                bctides.tnames
+            ), f"nbfr ({nbfr_value}) doesn't match number of constituents ({len(bctides.tnames)})"
 
             # Check for case consistency in constituent names
             if version_name == "Original":
@@ -233,12 +244,15 @@ def test_basic_bctides_format():
                 # Patched version should have consistent case
                 counts = {"M2": content.count("M2"), "m2": content.count("m2")}
                 print(f"Case counts in patched version: {counts}")
-                assert counts["M2"] > counts["m2"], "Patched version should use consistent upper case M2"
+                assert (
+                    counts["M2"] > counts["m2"]
+                ), "Patched version should use consistent upper case M2"
 
         finally:
             # Clean up
             if os.path.exists(tmp_path):
                 os.unlink(tmp_path)
+
 
 def print_bctides_file(file_path):
     """Print the contents of a bctides.in file for analysis."""
@@ -246,6 +260,7 @@ def print_bctides_file(file_path):
     with open(file_path, "r") as f:
         print(f.read())
     print("==== END OF FILE CONTENTS ====\n")
+
 
 if __name__ == "__main__":
     test_basic_bctides_format()
