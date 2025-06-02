@@ -3,7 +3,7 @@ Core Concepts
 =================================
 
 .. note::
-   For information about Rompy's formatting and logging system, see :doc:`formatting`.
+   For information about Rompy's formatting and logging system, see :doc:`formatting_and_logging`.
    
    For details on using the command line interface, see :doc:`cli`.
 

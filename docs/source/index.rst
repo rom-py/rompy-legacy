@@ -34,14 +34,11 @@ The final main component of the library is an intake driver that builds on the i
     Home <self>
     quickstart
     core_concepts
-    formatting
-    string_representation
+    formatting_and_logging
     cli
     models
     demo
     api
-    developer/index
-    relational_diagrams
 
 Indices and tables
 ==================
