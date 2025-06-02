@@ -79,7 +79,7 @@ class TemplateRenderer(RompyBaseModel):
     checkout: Optional[str] = None
 
     def _format_value(self, obj) -> Optional[str]:
-        """Format specific types of values for display.
+        """Format specific types of values for display using the new formatting framework.
 
         This method formats template rendering information with rich details.
 
@@ -89,31 +89,13 @@ class TemplateRenderer(RompyBaseModel):
         Returns:
             A formatted string or None to use default formatting
         """
-        # Use formatting utilities imported at the top of the file
-
-        # Format TemplateRenderer object
-        if isinstance(obj, TemplateRenderer):
-            header, footer, bullet = get_formatted_header_footer(
-                title="TEMPLATE RENDERING DETAILS"
-            )
-
-            lines = [header]
-            lines.append(f"  {bullet} Template source: {obj.template}")
-            lines.append(f"  {bullet} Output directory: {obj.output_dir}")
-
-            if obj.checkout:
-                lines.append(f"  {bullet} Template version: {obj.checkout}")
-
-            # Add context summary if available
-            context_items = len(obj.context)
-            if context_items > 0:
-                lines.append(f"  {bullet} Context items: {context_items}")
-
-            lines.append(footer)
-            return "\n".join(lines)
-
-        # Use default formatting for other types
-        return None
+        # Only format TemplateRenderer objects
+        if not isinstance(obj, TemplateRenderer):
+            return None
+            
+        # Use the new formatting framework
+        from rompy.formatting import format_value
+        return format_value(obj)
 
     def __call__(self) -> str:
         """Render the template with the given context.
@@ -209,23 +191,21 @@ def render(context, template, output_dir, checkout=None):
         file_count: int
 
         def _format_value(self, obj) -> Optional[str]:
-            """Format render results for display"""
-            # Use formatting utilities imported at the top of the file
-
-            if isinstance(obj, RenderResults):
-                header, footer, _ = get_formatted_header_footer(
-                    title="TEMPLATE RENDERING RESULTS"
-                )
-
-                return (
-                    f"{header}\n"
-                    f"  {ARROW} Rendering time:      {obj.render_time:.2f} seconds\n"
-                    f"  {ARROW} Total process time:  {obj.elapsed_time:.2f} seconds\n"
-                    f"  {ARROW} Files created:       {obj.file_count}\n"
-                    f"  {ARROW} Output location:     {obj.staging_dir}\n"
-                    f"{footer}"
-                )
-            return None
+            """Format render results for display using the new formatting framework.
+            
+            Args:
+                obj: The object to format
+                
+            Returns:
+                A formatted string or None to use default formatting
+            """
+            # Only format RenderResults objects
+            if not isinstance(obj, RenderResults):
+                return None
+                
+            # Use the new formatting framework
+            from rompy.formatting import format_value
+            return format_value(obj)
 
     # Create and format results
     results = RenderResults(

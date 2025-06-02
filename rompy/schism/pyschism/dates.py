@@ -17,8 +17,9 @@ class StartDate:
             if obj.end_date is not None:
                 if start_date > obj.end_date:
                     raise ValueError(
-                        'start_date is greater than end_date. '
-                        'Try clearing end_date first.')
+                        "start_date is greater than end_date. "
+                        "Try clearing end_date first."
+                    )
         self.start_date = start_date
 
     def __get__(self, obj, val) -> datetime:
@@ -37,14 +38,15 @@ class RunDays:
 
         if isinstance(run_days, (int, float)):
             run_days = timedelta(days=float(run_days))
-        
+
         elif isinstance(run_days, datetime):
             run_days = localize_datetime(run_days) - obj.start_date
-            
+
         elif not isinstance(run_days, timedelta):
             raise TypeError(
-                f'Argument run_days must be {timedelta} or float, not {run_days}.')
-        
+                f"Argument run_days must be {timedelta} or float, not {run_days}."
+            )
+
         if obj.start_date is not None:
             obj.end_date = obj.start_date + run_days
 
@@ -105,42 +107,47 @@ class SpinupTime:
         self.spinup_time = None
 
 
-def nearest_zulu(input_datetime=None, method='floor'):
+def nearest_zulu(input_datetime=None, method="floor"):
     """
     "pivot time" is defined as the nearest floor t00z for any given datetime.
     If this function is called without arguments, it will return the pivot time
     for the current datetime in UTC.
     """
-    input_datetime = nearest_cycle(method=method) if input_datetime is None \
+    input_datetime = (
+        nearest_cycle(method=method)
+        if input_datetime is None
         else localize_datetime(input_datetime).astimezone(pytz.utc)
+    )
     return localize_datetime(
         datetime(input_datetime.year, input_datetime.month, input_datetime.day)
     )
 
 
-def nearest_cycle(input_datetime=None, period=6, method='floor'):
+def nearest_cycle(input_datetime=None, period=6, method="floor"):
     # Bug: method='ceil' doesn´t work correctly for cycle 18
     if input_datetime is None:
         input_datetime = localize_datetime(datetime.utcnow())
-    assert method in ['floor', 'ceil']
-    if method == 'floor':
+    assert method in ["floor", "ceil"]
+    if method == "floor":
         method = np.floor
-    if method == 'ceil':
+    if method == "ceil":
         method = np.ceil
     if isinstance(period, timedelta):
         period /= timedelta(hours=1)
 
     current_cycle = int(period * method(input_datetime.hour / period)) % 24
 
-    return pytz.timezone('UTC').localize(
-        datetime(input_datetime.year, input_datetime.month,
-                 input_datetime.day, current_cycle))
+    return pytz.timezone("UTC").localize(
+        datetime(
+            input_datetime.year, input_datetime.month, input_datetime.day, current_cycle
+        )
+    )
 
 
 def localize_datetime(d):
     # datetime is naïve iff:
     if d.tzinfo is None or d.tzinfo.utcoffset(d) is None:
-        return pytz.timezone('UTC').localize(d)
+        return pytz.timezone("UTC").localize(d)
     return d
 
 
@@ -160,5 +167,5 @@ def round_time(dt: datetime, date_delta: timedelta):
     roundTo = date_delta.total_seconds()
     seconds = (d - d.min).seconds
     # // is a floor division, not a comment on following line:
-    rounding = (seconds+roundTo/2) // roundTo * roundTo
-    return d + timedelta(0, rounding-seconds, - d.microsecond)
+    rounding = (seconds + roundTo / 2) // roundTo * roundTo
+    return d + timedelta(0, rounding - seconds, -d.microsecond)

@@ -38,7 +38,8 @@ class RompyBaseModel(BaseModel):
         """Format a value for string representation.
 
         This method can be overridden by subclasses to customize how specific types
-        are formatted in the string representation.
+        are formatted in the string representation. The default implementation
+        uses the format_value function from the formatting module.
 
         Args:
             obj: The object to format
@@ -46,7 +47,8 @@ class RompyBaseModel(BaseModel):
         Returns:
             A string representation of the object, or None to use default formatting
         """
-        return None
+        from rompy.formatting import format_value
+        return format_value(obj)
 
     def _str_helper(self, lines: list, name: str, obj: Any, level: int) -> None:
         """Helper method to build a hierarchical string representation.
