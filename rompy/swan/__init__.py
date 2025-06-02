@@ -5,14 +5,11 @@ This module provides interfaces and utilities for working with the SWAN
 (Simulating WAves Nearshore) model within the ROMPY framework.
 """
 
-# Standard library imports
 import os
 from pathlib import Path
 
-# Local imports
-from rompy.core.logging import get_logger, LoggingConfig
+from rompy.core.logging import LoggingConfig, get_logger
 
-# Initialize the logger
 logger = get_logger(__name__)
 
 # Import SWAN components

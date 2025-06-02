@@ -5,12 +5,10 @@ This module provides various formatting utilities for creating consistent and
 visually appealing output in the ROMPY codebase.
 """
 
-# Standard library imports
 import os
-from typing import Tuple, Optional, Any, Dict, List, Callable
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
-# Local imports
-from rompy.core.logging import get_logger, LoggingConfig, LogLevel, LogFormat
+from rompy.core.logging import LogFormat, LoggingConfig, LogLevel, get_logger
 from rompy.core.logging.formatter import BoxFormatter, BoxStyle, formatter
 
 # Initialize the logger
@@ -248,7 +246,7 @@ def log_box(
         add_empty_line: Whether to add an empty line after the box
     """
     # Import here to avoid circular imports
-    from rompy.core.logging import get_logger, RompyLogger
+    from rompy.core.logging import RompyLogger, get_logger
 
     # Ensure we have a valid logger
     if logger is None:
@@ -298,8 +296,8 @@ def format_value(obj: Any) -> Optional[str]:
     Returns:
         A formatted string or None to use default formatting
     """
-    from pathlib import Path
     from datetime import datetime, timedelta
+    from pathlib import Path
 
     # Format Path objects
     if isinstance(obj, Path):

@@ -1,23 +1,19 @@
-# Standard library imports
 from pathlib import Path
 from typing import Literal, Optional, Union
 
-# Third-party imports
 from pydantic import Field, model_serializer, model_validator
 
-# Local imports
 from rompy.core.config import BaseConfig
 from rompy.core.data import DataBlob
+from rompy.core.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel, Spectrum
-from rompy.core.logging import get_logger
 
 from .data import SCHISMData
 from .grid import SCHISMGrid
 from .interface import TimeInterface
 from .namelists import NML
 
-# Initialize the logger
 logger = get_logger(__name__)
 
 HERE = Path(__file__).parent

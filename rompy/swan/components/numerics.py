@@ -5,28 +5,24 @@ This module contains components for configuring the numerical schemes and parame
 used in SWAN for wave propagation, frequency shifting, and other numerical aspects.
 """
 
-# Standard library imports
-from typing import Literal, Optional, Union, Annotated
+from typing import Annotated, Literal, Optional, Union
 
-# Third-party imports
 from pydantic import Field
 
-# Local imports
 from rompy.core.logging import get_logger
 from rompy.swan.components.base import BaseComponent
 from rompy.swan.subcomponents.numerics import (
-    BSBT,
-    GSE,
-    STOPC,
     ACCUR,
-    DIRIMPL,
-    SIGIMPL,
-    CTHETA,
+    BSBT,
     CSIGMA,
+    CTHETA,
+    DIRIMPL,
+    GSE,
     SETUP,
+    SIGIMPL,
+    STOPC,
 )
 
-# Initialize the logger
 logger = get_logger(__name__)
 
 

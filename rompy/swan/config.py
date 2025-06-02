@@ -4,35 +4,26 @@ SWAN Configuration Module
 This module provides configuration classes for the SWAN model within the ROMPY framework.
 """
 
-# Standard library imports
 import logging
 from pathlib import Path
 from typing import Annotated, Literal, Optional, Union
 
-# Third-party imports
 from pydantic import Field, model_validator
 
-# Local imports
 from rompy.core.config import BaseConfig
 from rompy.core.logging import get_logger
 from rompy.formatting import get_formatted_box, get_formatted_header_footer
-
-from rompy.swan.interface import (
-    DataInterface,
-    BoundaryInterface,
-    OutputInterface,
-    LockupInterface,
-)
-
-from rompy.swan.legacy import ForcingData, SwanSpectrum, SwanPhysics, Outputs
-
 from rompy.swan.components import boundary, cgrid, numerics
-from rompy.swan.components.group import STARTUP, INPGRIDS, PHYSICS, OUTPUT, LOCKUP
-
+from rompy.swan.components.group import INPGRIDS, LOCKUP, OUTPUT, PHYSICS, STARTUP
 from rompy.swan.grid import SwanGrid
+from rompy.swan.interface import (
+    BoundaryInterface,
+    DataInterface,
+    LockupInterface,
+    OutputInterface,
+)
+from rompy.swan.legacy import ForcingData, Outputs, SwanPhysics, SwanSpectrum
 
-
-# Initialize the logger
 logger = get_logger(__name__)
 
 HERE = Path(__file__).parent
@@ -96,7 +87,6 @@ class SwanConfig(BaseConfig):
         log_box(title="SWAN CONFIGURATION PROCESSING COMPLETE", logger=logger)
         ret["output_locs"] = self.outputs.spec.locations
         return ret
-
 
 
 STARTUP_TYPE = Annotated[STARTUP, Field(description="Startup components")]
@@ -227,8 +217,8 @@ class SwanConfigComponents(BaseConfig):
             A formatted string or None to use default formatting
         """
         # Import specific types if needed
-        from rompy.swan.grid import SwanGrid
         from rompy.core.logging import LoggingConfig
+        from rompy.swan.grid import SwanGrid
 
         # Get ASCII mode setting from LoggingConfig
         logging_config = LoggingConfig()
