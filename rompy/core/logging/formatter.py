@@ -116,7 +116,6 @@ class BoxFormatter:
             config: Logging configuration. If None, uses the global config.
         """
         self._config = config or LoggingConfig()
-        print(f"BoxFormatter initialized with use_ascii={self._config.use_ascii}")
         self._glyphs: Optional[Glyphs] = None
         self._glyphs_is_ascii: bool = self._config.use_ascii
 
@@ -137,17 +136,11 @@ class BoxFormatter:
         """Get the appropriate glyphs based on current config."""
         # Always check the current config value to handle runtime changes
         current_ascii = self.config.use_ascii
-        print(
-            f"Accessing glyphs: current_ascii={current_ascii}, _glyphs_is_ascii={self._glyphs_is_ascii}, _glyphs={self._glyphs}"
-        )
 
         if self._glyphs is None or self._glyphs_is_ascii != current_ascii:
-            print(f"Creating new glyphs: use_ascii={current_ascii}")
             self._glyphs = AsciiGlyphs() if current_ascii else UnicodeGlyphs()
             self._glyphs_is_ascii = current_ascii
-            print(
-                f"Created {type(self._glyphs).__name__} with TOP_LEFT='{self._glyphs.TOP_LEFT}'"
-            )
+
         return self._glyphs
 
     def box(

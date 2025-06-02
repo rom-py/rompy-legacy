@@ -6,7 +6,6 @@ from typing import Literal, Optional
 from pydantic import ConfigDict, Field
 
 from .types import RompyBaseModel
-from rompy.formatting import get_ascii_mode, get_formatted_header_footer
 
 logger = logging.getLogger(__name__)
 
@@ -46,5 +45,3 @@ class BaseConfig(RompyBaseModel):
 
     def __call__(self, *args, **kwargs):
         return self
-
-    # Formatting is now handled by the formatting module
