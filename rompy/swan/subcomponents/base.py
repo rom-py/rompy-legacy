@@ -1,10 +1,22 @@
-"""Base class for SWAN sub-components."""
+"""
+SWAN Subcomponents Base Module
 
+This module provides the base classes for SWAN subcomponents in the ROMPY framework.
+"""
+
+# Standard library imports
 from typing import Literal, Optional
 from abc import ABC
+
+# Third-party imports
 from pydantic import ConfigDict, Field, model_validator
 
+# Local imports
+from rompy.core.logging import get_logger
 from rompy.core.types import RompyBaseModel
+
+# Initialize the logger
+logger = get_logger(__name__)
 
 
 class BaseSubComponent(RompyBaseModel, ABC):

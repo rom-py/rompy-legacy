@@ -1,28 +1,33 @@
-import logging
+# Standard library imports
+import os
 from pathlib import Path
 from typing import Literal, Optional, Union
 
+# Third-party imports
 import numpy as np
 import pandas as pd
-from pydantic import Field, PrivateAttr, field_validator, model_validator, model_serializer
+from pydantic import (
+    Field,
+    PrivateAttr,
+    field_validator,
+    model_validator,
+    model_serializer,
+    BaseModel,
+)
 from shapely.geometry import MultiPoint, Polygon
 
+# Local imports
 from rompy.core.data import DataBlob
 from rompy.core.types import RompyBaseModel
 from rompy.core.grid import BaseGrid
-# from pyschism.mesh import Hgrid
-# from pyschism.mesh.prop import Tvdflag
-# from pyschism.mesh.vgrid import LSC2, SZ, Vgrid
+from rompy.core.logging import get_logger
 from rompy.schism.pyschism.mesh import Hgrid
 from rompy.schism.pyschism.mesh.base import Gr3
 from rompy.schism.pyschism.mesh.prop import Tvdflag
 from rompy.schism.pyschism.mesh.vgrid import LSC2, SZ, Vgrid
 
-logger = logging.getLogger(__name__)
-
-import os
-
-from pydantic import BaseModel, field_validator
+# Initialize the logger
+logger = get_logger(__name__)
 
 G3ACCEPT = ["albedo", "diffmin", "diffmax", "watertype", "windrot_geo2proj"]
 G3WARN = ["manning", "rough", "drag"]
@@ -44,7 +49,9 @@ class GeneratorBase(RompyBaseModel):
 
 
 class GR3Generator(GeneratorBase):
-    model_type: Literal["gr3_generator"] = Field("gr3_generator", description="Model discriminator")
+    model_type: Literal["gr3_generator"] = Field(
+        "gr3_generator", description="Model discriminator"
+    )
     hgrid: DataBlob | Path = Field(..., description="Path to hgrid.gr3 file")
     gr3_type: str = Field(
         ...,
@@ -52,35 +59,38 @@ class GR3Generator(GeneratorBase):
     )
     value: float = Field(None, description="Constant value to set in gr3 file")
     crs: str = Field("epsg:4326", description="Coordinate reference system")
-    
+
     @classmethod
     def model_json_schema(cls, *args, **kwargs):
         """Add discriminator to JSON schema"""
         schema = super().model_json_schema(*args, **kwargs)
         schema["discriminator"] = {"propertyName": "model_type"}
         return schema
-        
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to ensure proper serialization when used in other models."""
         result = {}
         result["model_type"] = self.model_type
-        
+
         # Explicitly include the value field to ensure it's correctly serialized
-        if hasattr(self, 'value') and self.value is not None:
-            result['value'] = self.value
-        
+        if hasattr(self, "value") and self.value is not None:
+            result["value"] = self.value
+
         # Include other non-private fields
         for field_name in self.model_fields:
-            if not field_name.startswith('_') and getattr(self, field_name, None) is not None:
-                if field_name not in ['value', 'model_type']:  # Already handled above
+            if (
+                not field_name.startswith("_")
+                and getattr(self, field_name, None) is not None
+            ):
+                if field_name not in ["value", "model_type"]:  # Already handled above
                     result[field_name] = getattr(self, field_name)
-                    
+
         # Remove any private attributes
         for key in list(result.keys()):
-            if key.startswith('_'):
+            if key.startswith("_"):
                 del result[key]
-                
+
         return result
 
     @field_validator("gr3_type")
@@ -124,18 +134,21 @@ class Vgrid2D(GeneratorBase):
     model_type: Literal["vgrid2D_generator"] = Field(
         "vgrid2D_generator", description="Model descriminator"
     )
-    
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to handle proper serialization."""
-        result = {field_name: getattr(self, field_name) for field_name in self.model_fields 
-                 if getattr(self, field_name, None) is not None}
-        
+        result = {
+            field_name: getattr(self, field_name)
+            for field_name in self.model_fields
+            if getattr(self, field_name, None) is not None
+        }
+
         # Remove private attributes
         for key in list(result.keys()):
-            if key.startswith('_'):
+            if key.startswith("_"):
                 del result[key]
-                
+
         return result
 
     def generate(self, destdir: str | Path, hgrid=None) -> Path:
@@ -166,19 +179,23 @@ class Vgrid3D_LSC2(GeneratorBase):
     model_type: Literal["vgrid3D_lsc2"] = Field(
         "vgrid3D_lsc2", description="Model descriminator"
     )
-    
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to handle proper serialization."""
-        result = {field_name: getattr(self, field_name) for field_name in self.model_fields 
-                 if getattr(self, field_name, None) is not None}
-        
+        result = {
+            field_name: getattr(self, field_name)
+            for field_name in self.model_fields
+            if getattr(self, field_name, None) is not None
+        }
+
         # Remove private attributes
         for key in list(result.keys()):
-            if key.startswith('_'):
+            if key.startswith("_"):
                 del result[key]
-                
+
         return result
+
     hgrid: DataBlob | Path = Field(..., description="Path to hgrid.gr3 file")
     hsm: list[float] = Field(..., description="Depth for each master grid")
     nv: list[int] = Field(..., description="Total number of vertical levels")
@@ -215,19 +232,23 @@ class Vgrid3D_SZ(GeneratorBase):
     model_type: Literal["vgrid3D_sz"] = Field(
         "vgrid3D_sz", description="Model descriminator"
     )
-    
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to handle proper serialization."""
-        result = {field_name: getattr(self, field_name) for field_name in self.model_fields 
-                 if getattr(self, field_name, None) is not None}
-        
+        result = {
+            field_name: getattr(self, field_name)
+            for field_name in self.model_fields
+            if getattr(self, field_name, None) is not None
+        }
+
         # Remove private attributes
         for key in list(result.keys()):
-            if key.startswith('_'):
+            if key.startswith("_"):
                 del result[key]
-                
+
         return result
+
     hgrid: DataBlob | Path = Field(..., description="Path to hgrid.gr3 file")
     h_s: float = Field(..., description="Depth for each master grid")
     ztot: list[int] = Field(..., description="Total number of vertical levels")
@@ -273,18 +294,21 @@ class VgridGenerator(GeneratorBase):
         default_factory=Vgrid2D,
         description="Type of vgrid to generate. 2d will create the minimum required for a 2d model. LSC2 will create a full vgrid for a 3d model using pyschsim's LSC2 class",
     )
-    
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to handle proper serialization of the vgrid field."""
-        result = {field_name: getattr(self, field_name) for field_name in self.model_fields 
-                 if getattr(self, field_name, None) is not None}
-        
+        result = {
+            field_name: getattr(self, field_name)
+            for field_name in self.model_fields
+            if getattr(self, field_name, None) is not None
+        }
+
         # Remove private attributes
         for key in list(result.keys()):
-            if key.startswith('_'):
+            if key.startswith("_"):
                 del result[key]
-                
+
         return result
 
     def generate(self, destdir: str | Path) -> Path:
@@ -316,31 +340,37 @@ class VgridGenerator(GeneratorBase):
 
 
 class WWMBNDGR3Generator(GeneratorBase):
-    model_type: Literal["wwmbnd_generator"] = Field("wwmbnd_generator", description="Model discriminator")
+    model_type: Literal["wwmbnd_generator"] = Field(
+        "wwmbnd_generator", description="Model discriminator"
+    )
     hgrid: DataBlob | Path = Field(..., description="Path to hgrid.gr3 file")
     bcflags: list[int] = Field(
         None,
         description="List of boundary condition flags. This replicates the functionality of the gen_wwmbnd.in file. Must be the same length as the number of open boundaries in the hgrid.gr3 file. If not specified, it is assumed that all open hgrid files are open to waves",
     )
-    
+
     @classmethod
     def model_json_schema(cls, *args, **kwargs):
         """Add discriminator to JSON schema"""
         schema = super().model_json_schema(*args, **kwargs)
         schema["discriminator"] = {"propertyName": "model_type"}
         return schema
-    
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to ensure proper serialization when used in other models."""
         result = {}
         result["model_type"] = self.model_type
-        
+
         # Include other non-private fields
         for field_name in self.model_fields:
-            if not field_name.startswith('_') and field_name != "model_type" and getattr(self, field_name, None) is not None:
+            if (
+                not field_name.startswith("_")
+                and field_name != "model_type"
+                and getattr(self, field_name, None) is not None
+            ):
                 result[field_name] = getattr(self, field_name)
-                
+
         return result
 
     def generate(self, destdir: str | Path, name: str = None) -> Path:
@@ -445,16 +475,27 @@ class SCHISMGrid(BaseGrid):
         description="Path to vgrid.in file",
         validate_default=True,
     )
-    
-    @model_validator(mode='after')
+
+    @model_validator(mode="after")
     def validate_gr3_fields(self):
         """Custom validator to handle GR3Generator conversion during deserialization."""
         # Convert GR3Generator fields that might have been serialized as simple values
-        gr3_fields = ['drag', 'diffmin', 'diffmax', 'albedo', 'watertype', 'windrot_geo2proj']
-        
+        gr3_fields = [
+            "drag",
+            "diffmin",
+            "diffmax",
+            "albedo",
+            "watertype",
+            "windrot_geo2proj",
+        ]
+
         for field in gr3_fields:
             value = getattr(self, field, None)
-            if value is not None and not isinstance(value, (DataBlob, GR3Generator)) and isinstance(value, (int, float)):
+            if (
+                value is not None
+                and not isinstance(value, (DataBlob, GR3Generator))
+                and isinstance(value, (int, float))
+            ):
                 # Create a GR3Generator instance instead of using the raw value
                 gr3_generator = GR3Generator(
                     hgrid=self.hgrid,
@@ -462,30 +503,35 @@ class SCHISMGrid(BaseGrid):
                     value=value,
                 )
                 setattr(self, field, gr3_generator)
-                
+
         return self
-    
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to handle proper serialization."""
         result = {}
-        
+
         # Add fields to the result dictionary
         for field_name in self.model_fields:
             value = getattr(self, field_name, None)
-            
+
             # Special handling for GR3Generator fields
             if value is not None and isinstance(value, GR3Generator):
-                # For GR3Generator objects, just use the value field 
+                # For GR3Generator objects, just use the value field
                 result[field_name] = value.value
             # Skip wwmbnd field if it's a WWMBNDGR3Generator (similar to TimeRange behavior in memory)
-            elif field_name == 'wwmbnd' and value is not None and isinstance(value, WWMBNDGR3Generator):
+            elif (
+                field_name == "wwmbnd"
+                and value is not None
+                and isinstance(value, WWMBNDGR3Generator)
+            ):
                 # Skip this field to prevent validation errors as it's complex to serialize/deserialize
                 pass
-            elif value is not None and not field_name.startswith('_'):
+            elif value is not None and not field_name.startswith("_"):
                 result[field_name] = value
-                
+
         return result
+
     drag: Optional[DataBlob | float | GR3Generator] = Field(
         default=None, description="Path to drag.gr3 file"
     )
@@ -750,19 +796,23 @@ class SCHISMGrid(BaseGrid):
 
     def boundary_points(self, spacing=None) -> tuple:
         return self.ocean_boundary()
-        
+
     @model_serializer
     def serialize_model(self, **kwargs):
         """Custom serializer to handle optional fields properly during serialization."""
         # Start with all fields that have values
-        result = {field_name: getattr(self, field_name) for field_name in self.model_fields 
-                 if getattr(self, field_name, None) is not None or field_name in ['grid_type', 'hgrid', 'crs']}
-        
+        result = {
+            field_name: getattr(self, field_name)
+            for field_name in self.model_fields
+            if getattr(self, field_name, None) is not None
+            or field_name in ["grid_type", "hgrid", "crs"]
+        }
+
         # Remove private attributes that shouldn't be in the serialized output
         for key in list(result.keys()):
-            if key.startswith('_'):
+            if key.startswith("_"):
                 del result[key]
-                
+
         return result
 
 

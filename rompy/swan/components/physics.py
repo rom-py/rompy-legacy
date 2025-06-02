@@ -1,9 +1,19 @@
-"""Model physics components."""
+"""
+SWAN Physics Components
 
+This module contains components for configuring the physical processes in SWAN,
+including wind generation, whitecapping, quadruplet interactions, and wave breaking.
+"""
+
+# Standard library imports
 import logging
 from typing import Any, Literal, Optional, Union, Annotated
+
+# Third-party imports
 from pydantic import field_validator, model_validator, Field, ValidationInfo
 
+# Local imports
+from rompy.core.logging import get_logger
 from rompy.swan.components.base import BaseComponent
 from rompy.swan.types import IDLA, PhysicsOff
 from rompy.swan.subcomponents.physics import (
@@ -30,8 +40,8 @@ from rompy.swan.subcomponents.physics import (
     LINE,
 )
 
-
-logger = logging.getLogger(__name__)
+# Initialize the logger
+logger = get_logger(__name__)
 
 
 SOURCE_TERMS = Union[

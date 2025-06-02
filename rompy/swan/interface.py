@@ -1,19 +1,27 @@
-"""SWAN interface objects."""
+"""
+SWAN Interface Module
 
-import logging
+This module provides interface classes for SWAN model components in the ROMPY framework.
+"""
+
+# Standard library imports
 from pathlib import Path
 from typing import Any, Literal, Optional, Union
 
+# Third-party imports
 from pydantic import Field, ValidationInfo, field_validator, model_validator
 
+# Local imports
 from rompy.core.types import RompyBaseModel
 from rompy.core.time import TimeRange
+from rompy.core.logging import get_logger
 from rompy.swan.boundary import Boundnest1, BoundspecSegmentXY, BoundspecSide
 from rompy.swan.data import SwanDataGrid
 from rompy.swan.grid import SwanGrid
 from rompy.swan.subcomponents.time import NONSTATIONARY, STATIONARY, TimeRangeOpen
 
-logger = logging.getLogger(__name__)
+# Initialize the logger
+logger = get_logger(__name__)
 
 
 class DataInterface(RompyBaseModel):

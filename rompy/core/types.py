@@ -4,8 +4,7 @@ import json
 from datetime import datetime
 from typing import Any, Optional, Union
 
-from pydantic import (BaseModel, ConfigDict, Field, field_validator,
-                      model_validator)
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class RompyBaseModel(BaseModel):
@@ -23,10 +22,10 @@ class RompyBaseModel(BaseModel):
     def dump_inputs_json(self) -> str:
         """Return the original inputs as a JSON string."""
         return json.dumps((self._original_inputs))
-        
+
     def __str__(self) -> str:
         """Return a hierarchical string representation of the model.
-        
+
         This generic implementation provides a consistent string formatting
         for all RompyBaseModel objects, handling nested models recursively.
         Classes can override this if they need custom string representations.
@@ -34,24 +33,24 @@ class RompyBaseModel(BaseModel):
         lines = []
         self._str_helper(lines, name=self.__class__.__name__, obj=self, level=0)
         return "\n".join(lines)
-    
+
     def _format_value(self, obj: Any) -> Optional[str]:
         """Format a value for string representation.
-        
+
         This method can be overridden by subclasses to customize how specific types
         are formatted in the string representation.
-        
+
         Args:
             obj: The object to format
-            
+
         Returns:
             A string representation of the object, or None to use default formatting
         """
         return None
-    
+
     def _str_helper(self, lines: list, name: str, obj: Any, level: int) -> None:
         """Helper method to build a hierarchical string representation.
-        
+
         Args:
             lines: List to append formatted string lines
             name: Name of the current object/field
@@ -59,12 +58,12 @@ class RompyBaseModel(BaseModel):
             level: Current indentation level
         """
         indent = "  " * level
-        
+
         # Handle None values
         if obj is None:
             lines.append(f"{indent}{name}: None")
             return
-        
+
         # Check if there's a custom formatter in the current class
         custom_format = self._format_value(obj)
         if custom_format is not None:
@@ -76,16 +75,18 @@ class RompyBaseModel(BaseModel):
             else:
                 lines.append(f"{indent}{name}: {custom_format}")
             return
-            
+
         # Check for objects with their own __str__ method (not inherited from object or base classes)
         # But don't use it for RompyBaseModel instances (use our hierarchical formatting instead)
         str_method = getattr(obj.__class__, "__str__", None)
         base_str_method = getattr(RompyBaseModel, "__str__", None)
         object_str_method = getattr(object, "__str__", None)
-        
-        if (not isinstance(obj, RompyBaseModel) and 
-            str_method is not None and 
-            str_method is not object_str_method):
+
+        if (
+            not isinstance(obj, RompyBaseModel)
+            and str_method is not None
+            and str_method is not object_str_method
+        ):
             # Use the object's custom __str__ if it has one
             str_val = str(obj)
             if "\n" in str_val:

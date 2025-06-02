@@ -1,4 +1,10 @@
-import logging
+"""
+SWAN Data Module
+
+This module provides data handling functionality for the SWAN model within the ROMPY framework.
+"""
+
+# Standard library imports
 import os
 import sys
 import time as time_module
@@ -6,24 +12,28 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Optional, Union
 
+# Third-party imports
 import numpy as np
 import pandas as pd
 import xarray as xr
 from pydantic import Field, field_validator, model_validator
 
+# Local imports
 from rompy.core.data import DataGrid
 from rompy.core.time import TimeRange
+from rompy.core.logging import get_logger
 from rompy.formatting import (
     get_formatted_box,
     get_formatted_header_footer,
     ARROW,
     BULLET,
-    log_box
+    log_box,
 )
 from rompy.swan.grid import SwanGrid
 from rompy.swan.types import GridOptions
 
-logger = logging.getLogger(__name__)
+# Initialize the logger
+logger = get_logger(__name__)
 
 FILL_VALUE = -99.0
 
@@ -109,7 +119,7 @@ class SwanDataGrid(DataGrid):
         log_box(
             title=f"WRITING {self.var.value.upper()} GRID DATA",
             logger=logger,
-            add_empty_line=False
+            add_empty_line=False,
         )
 
         logger.info(f"  {ARROW} Output file: {output_file}")
@@ -172,7 +182,7 @@ class SwanDataGrid(DataGrid):
         Returns:
             A formatted string or None to use default formatting
         """
-        from rompy import ROMPY_ASCII_MODE
+        from rompy.core.logging import LoggingConfig
         from rompy.utils import get_formatted_header_footer
 
         # Only format SwanDataGrid objects
@@ -182,9 +192,7 @@ class SwanDataGrid(DataGrid):
         # Use formatting utilities imported at the top of the file
 
         # Get header, footer, and bullet character
-        header, footer, bullet = get_formatted_header_footer(
-            title="SWAN DATA GRID"
-        )
+        header, footer, bullet = get_formatted_header_footer(title="SWAN DATA GRID")
 
         # Build content lines
         lines = [header]
@@ -270,10 +278,7 @@ def dset_to_swan(
 
     # Import formatting utilities at function level to avoid scoping issues
     # Create a formatted box for logging
-    log_box(
-        title="WRITING SWAN ASCII DATA",
-        logger=logger
-    )
+    log_box(title="WRITING SWAN ASCII DATA", logger=logger)
 
     start_time = time_module.time()
     file_size = 0

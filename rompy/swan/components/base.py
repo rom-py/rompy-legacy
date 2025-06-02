@@ -1,23 +1,28 @@
-"""Base class for SWAN components.
+"""
+SWAN Components Base Module
 
-How to subclass
----------------
+This module provides the base classes for SWAN components in the ROMPY framework.
 
-* Define a new `model_type` Literal for the subclass
-* Overwrite the `cmd` method to return the SWAN input file string
-
+How to subclass:
+1. Define a new `model_type` Literal for the subclass
+2. Overwrite the `cmd` method to return the SWAN input file string
 """
 
-import logging
+# Standard library imports
 from typing import Literal, Optional
 from abc import abstractmethod
+
+# Third-party imports
 from pydantic import ConfigDict, Field
 
+# Local imports
 from rompy.core.types import RompyBaseModel
+from rompy.core.logging import get_logger
 
+# Initialize the logger
+logger = get_logger(__name__)
 
-logger = logging.getLogger(__name__)
-
+# Constants
 MAX_LENGTH = 180
 SPACES = 4
 

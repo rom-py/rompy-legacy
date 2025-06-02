@@ -1,6 +1,18 @@
-"""Types for the swan wrapper."""
+"""
+SWAN Types
 
+This module contains type definitions and enumerations used throughout the SWAN model
+implementation, including grid types, boundary conditions, and physics options.
+"""
+
+# Standard library imports
 from enum import Enum, IntEnum
+
+# Local imports
+from rompy.core.logging import get_logger
+
+# Initialize the logger
+logger = get_logger(__name__)
 
 
 class IDLA(IntEnum):

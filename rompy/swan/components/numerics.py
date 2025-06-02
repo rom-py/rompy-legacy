@@ -1,9 +1,18 @@
-"""Model numerics components."""
+"""
+SWAN Numerics Components
 
-import logging
+This module contains components for configuring the numerical schemes and parameters
+used in SWAN for wave propagation, frequency shifting, and other numerical aspects.
+"""
+
+# Standard library imports
 from typing import Literal, Optional, Union, Annotated
+
+# Third-party imports
 from pydantic import Field
 
+# Local imports
+from rompy.core.logging import get_logger
 from rompy.swan.components.base import BaseComponent
 from rompy.swan.subcomponents.numerics import (
     BSBT,
@@ -17,8 +26,8 @@ from rompy.swan.subcomponents.numerics import (
     SETUP,
 )
 
-
-logger = logging.getLogger(__name__)
+# Initialize the logger
+logger = get_logger(__name__)
 
 
 PROP_TYPE = Annotated[

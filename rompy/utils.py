@@ -1,73 +1,93 @@
-# -----------------------------------------------------------------------------
-# Copyright (c) 2020 - 2021, CSIRO
-#
-# All rights reserved.
-#
-# The full license is in the LICENSE file, distributed with this software.
-# -----------------------------------------------------------------------------
+"""
+Utility functions for ROMPY.
 
+This module provides various utility functions used throughout the ROMPY codebase.
+"""
+
+# Standard library imports
 import importlib
-import logging
-from typing import Optional, List, Tuple, Union
+from typing import Optional, List, Tuple, Union, Dict, Any
 from importlib.metadata import entry_points
+
+# Third-party imports
 import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.spatial import KDTree
 
+# Local imports
+from rompy.core.logging import get_logger
 
-logger = logging.getLogger(__name__)
+# Initialize the logger
+logger = get_logger(__name__)
 
 
-def get_formatted_box(title: str = None, 
-                     content: List[str] = None, 
-                     use_ascii: bool = None,
-                     width: int = 60) -> str:
+def get_formatted_box(
+    title: str = None,
+    content: List[str] = None,
+    use_ascii: bool = None,
+    width: int = 60,
+) -> str:
     """Create a formatted box with header, content, and footer.
-    
+
     This utility function creates a nicely formatted box with optional title and content,
     using either ASCII or Unicode characters. This helps standardize the formatting
     across different components of ROMPY.
-    
+
     Args:
-        title: Optional title to display in the box
-        content: Optional list of content lines to display in the box
+        title: Optional title for the box
+        content: List of content lines to include in the box
         use_ascii: Whether to use ASCII-only characters (True) or Unicode (False)
-                   If None, uses the global ROMPY_ASCII_MODE setting
+                   If None, uses the global LoggingConfig setting
         width: Width of the box in characters
-        
+
     Returns:
         A formatted string with the complete box, ready to be split by newlines
     """
     # Import here to avoid circular imports
-    from rompy import get_formatted_box as core_get_formatted_box
-    
-    # Use the centralized function from __init__.py
-    return core_get_formatted_box(title, content, use_ascii, width)
+    from rompy.formatting import get_formatted_box as core_get_formatted_box
+
+    # If ASCII mode isn't specified, use the global setting
+    if use_ascii is None:
+        use_ascii = LoggingConfig().use_ascii
+
+    # Use the formatting function
+    return core_get_formatted_box(
+        title=title, content=content, use_ascii=use_ascii, width=width
+    )
 
 
-def get_formatted_header_footer(title: str = None, 
-                              use_ascii: bool = None, 
-                              width: int = 60) -> Tuple[str, str, str]:
+def get_formatted_header_footer(
+    title: str = None, use_ascii: bool = None, width: int = 60
+) -> Tuple[str, str, str]:
     """Get formatted header, footer, and bullet character.
-    
+
     This utility function creates a matching header and footer for displaying
     boxed content, using either ASCII or Unicode characters.
-    
+
     Args:
         title: Optional title to display in the header
         use_ascii: Whether to use ASCII-only characters (True) or Unicode (False)
-                   If None, uses the global ROMPY_ASCII_MODE setting
+                   If None, uses the global LoggingConfig setting
         width: Width of the box in characters
-        
+
     Returns:
         A tuple containing (header, footer, bullet_char)
     """
     # Import here to avoid circular imports
-    from rompy import get_formatted_header_footer as core_get_formatted_header_footer
-    
-    # Use the centralized function from __init__.py
-    return core_get_formatted_header_footer(title, use_ascii, width)
+    from rompy.core.logging import LoggingConfig
+    from rompy.formatting import (
+        get_formatted_header_footer as core_get_formatted_header_footer,
+    )
+
+    # If ASCII mode isn't specified, use the global setting
+    if use_ascii is None:
+        use_ascii = LoggingConfig().use_ascii
+
+    # Use the formatting function
+    return core_get_formatted_header_footer(
+        title=title, use_ascii=use_ascii, width=width
+    )
 
 
 def load_entry_points(egroup: str, etype: Optional[str] = None):

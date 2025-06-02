@@ -11,7 +11,6 @@ from rompy.formatting import get_ascii_mode, get_formatted_header_footer
 logger = logging.getLogger(__name__)
 
 
-
 DEFAULT_TEMPLATE = str(Path(__file__).parent.parent / "templates" / "base")
 
 
@@ -50,22 +49,23 @@ class BaseConfig(RompyBaseModel):
 
     def _format_value(self, obj):
         """Custom formatter for BaseConfig values.
-        
+
         This method provides special formatting for specific types used in
         BaseConfig such as nested components, paths, and other config objects.
-        
+
         Args:
             obj: The object to format
-            
+
         Returns:
             A formatted string or None to use default formatting
         """
         from pathlib import Path
         from datetime import datetime
+
         # Use formatting utilities imported at the top of the file
-        
+
         # Format BaseConfig objects with header and structure
-        if hasattr(obj, 'model_type') and isinstance(obj, BaseConfig):
+        if hasattr(obj, "model_type") and isinstance(obj, BaseConfig):
             is_ascii = get_ascii_mode()
             if is_ascii:
                 header = "+------------ MODEL CONFIGURATION ------------+"
@@ -75,33 +75,33 @@ class BaseConfig(RompyBaseModel):
                 header = "┏━━━━━━━━━━ MODEL CONFIGURATION ━━━━━━━━━━━━┓"
                 separator = "┠━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┨"
                 footer = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-                
+
             bullet = "*" if is_ascii else "•"
-            
+
             lines = [header]
             lines.append(f"  {bullet} Model type: {obj.model_type}")
-            
+
             # Add template info if available
-            if hasattr(obj, 'template') and obj.template:
+            if hasattr(obj, "template") and obj.template:
                 template_path = obj.template
                 if len(template_path) > 50:  # Truncate long paths
                     template_path = "..." + template_path[-47:]
                 lines.append(f"  {bullet} Template:   {template_path}")
-            
+
             # Add other important attributes
-            if hasattr(obj, 'description') and obj.description:
+            if hasattr(obj, "description") and obj.description:
                 lines.append(f"  {bullet} Description: {obj.description}")
-                
+
             lines.append(footer)
             return "\n".join(lines)
-            
+
         # Format Path objects
         if isinstance(obj, Path):
             return str(obj)
-            
+
         # Format datetime objects
         if isinstance(obj, datetime):
-            return obj.isoformat(' ')
-            
+            return obj.isoformat(" ")
+
         # Use default formatting for other types
         return None

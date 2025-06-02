@@ -1,9 +1,17 @@
-"""SWAN group components."""
+"""
+SWAN Components Group Module
 
+This module provides group components for organizing SWAN model configurations in the ROMPY framework.
+"""
+
+# Standard library imports
 import logging
 from typing import Annotated, Literal, Optional, Union, Any
+
+# Third-party imports
 from pydantic import Field, model_validator, field_validator
 
+# Local imports
 from rompy.swan.types import PhysicsOff
 from rompy.swan.components.base import BaseComponent
 from rompy.swan.components.startup import PROJECT, SET, MODE, COORDINATES

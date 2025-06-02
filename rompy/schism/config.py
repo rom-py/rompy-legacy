@@ -1,20 +1,24 @@
-import logging
+# Standard library imports
 from pathlib import Path
 from typing import Literal, Optional, Union
 
+# Third-party imports
 from pydantic import Field, model_serializer, model_validator
 
+# Local imports
 from rompy.core.config import BaseConfig
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel, Spectrum
+from rompy.core.logging import get_logger
 
 from .data import SCHISMData
 from .grid import SCHISMGrid
 from .interface import TimeInterface
 from .namelists import NML
 
-logger = logging.getLogger(__name__)
+# Initialize the logger
+logger = get_logger(__name__)
 
 HERE = Path(__file__).parent
 
@@ -35,56 +39,11 @@ class Inputs(RompyBaseModel):
         return ret
 
     def __str__(self):
-        """Return a formatted string representation of the inputs.
-        
-        This provides a human-readable representation of available data inputs.
-        """
-        # Use helper function to avoid circular imports
-        from rompy import ROMPY_ASCII_MODE
-        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
-        if not any(forcing[1] for forcing in self):
-            return "No input data sources defined"
-            
-        lines = []
-        if USE_ASCII_ONLY:
-            lines.append("+-----------------------------+-------------------------------------+")
-            lines.append("| DATA SOURCE                 | SOURCE INFORMATION                  |")
-            lines.append("+-----------------------------+-------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃ DATA SOURCE             ┃ SOURCE INFORMATION                  ┃")
-            lines.append("┣━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫")
-        
+        ret = ""
         for forcing in self:
             if forcing[1]:
-                source_info = getattr(forcing[1], 'source', 'Unknown source')
-                # Truncate long source info
-                if len(source_info) > 35:
-                    source_info = "..." + source_info[-32:]
-                    
-                if USE_ASCII_ONLY:
-                    lines.append(f"| {forcing[0]:<25} | {source_info:<35} |")
-                else:
-                    lines.append(f"┃ {forcing[0]:<25} ┃ {source_info:<35} ┃")
-                
-                # Add additional details if available
-                if hasattr(forcing[1], 'variables') and forcing[1].variables:
-                    vars_str = ", ".join(forcing[1].variables)
-                    if len(vars_str) > 35:
-                        vars_str = vars_str[:32] + "..."
-                    
-                    if USE_ASCII_ONLY:
-                        lines.append(f"| {' Variables':<25} | {vars_str:<35} |")
-                    else:
-                        lines.append(f"┃ {' Variables':<25} ┃ {vars_str:<35} ┃")
-        
-        if USE_ASCII_ONLY:
-            lines.append("+-----------------------------+-------------------------------------+")
-        else:
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-            
-        return "\n".join(lines)
+                ret += f"\t{forcing[0]}: {forcing[1].source}\n"
+        return ret
 
 
 class SchismCSIROConfig(BaseConfig):
@@ -547,186 +506,6 @@ class SchismCSIROConfig(BaseConfig):
             raise ValueError("nchi must be 0, -1, or 1")
         return v
 
-    def _format_value(self, obj):
-        """Custom formatter for SchismCSIROConfig values.
-        
-        This method formats SchismCSIROConfig objects with detailed information.
-        
-        Args:
-            obj: The object to format
-            
-        Returns:
-            A formatted string or None to use default formatting
-        """
-        from rompy import ROMPY_ASCII_MODE
-        from rompy.utils import get_formatted_header_footer, get_formatted_box
-        
-        # Only format SchismCSIROConfig objects
-        if not isinstance(obj, SchismCSIROConfig):
-            return None
-            
-        # Get ASCII mode setting
-        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
-        lines = []
-        
-        # Create main configuration header
-        box = get_formatted_box(
-            title="SCHISM CSIRO MODEL CONFIGURATION",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
-        )
-        lines.extend(box.split("\n"))
-        
-        # Add grid information
-        lines.append("")
-        header, footer, _ = get_formatted_header_footer(
-            title=f"GRID: {type(obj.grid).__name__}",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
-        )
-        lines.append(header)
-        lines.append(footer)
-        
-        if hasattr(obj.grid, "__str__"):
-            grid_lines = str(obj.grid).split("\n")
-            for line in grid_lines:
-                if line.strip():
-                    lines.append(f"   {line}")
-        
-        # Add data information
-        lines.append("")
-        header, footer, _ = get_formatted_header_footer(
-            title="DATA SOURCES",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
-        )
-        lines.append(header)
-        lines.append(footer)
-        
-        if hasattr(obj.data, "__str__"):
-            data_lines = str(obj.data).split("\n")
-            for line in data_lines:
-                if line.strip():
-                    lines.append(f"   {line}")
-                    
-        return "\n".join(lines)
-        
-    def __str__(self):
-        """Return a formatted string representation of the SCHISM CSIRO Migration config.
-        
-        This provides a human-readable representation that can be used in logs.
-        """
-        # Use helper function to avoid circular imports
-        from rompy import ROMPY_ASCII_MODE
-        from rompy.utils import get_formatted_header_footer, get_formatted_box
-        
-        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
-        lines = []
-        
-        # Use the formatted box utility for the main title
-        box = get_formatted_box(
-            title="SCHISM CSIRO MODEL CONFIGURATION",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
-        )
-        lines.extend(box.split("\n"))
-        
-        # Add grid information
-        lines.append("")
-        header, footer, _ = get_formatted_header_footer(
-            title=f"GRID: {type(self.grid).__name__}",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
-        )
-        lines.append(header)
-        lines.append(footer)
-        
-        if hasattr(self.grid, "__str__"):
-            grid_lines = str(self.grid).split("\n")
-            for line in grid_lines:
-                if line.strip():
-                    lines.append(f"   {line}")
-        
-        # Add data information
-        lines.append("")
-        header, footer, _ = get_formatted_header_footer(
-            title="DATA SOURCES",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
-        )
-        lines.append(header)
-        lines.append(footer)
-        
-        if hasattr(self.data, "__str__"):
-            data_lines = str(self.data).split("\n")
-            for line in data_lines:
-                if line.strip():
-                    lines.append(f"   {line}")
-        
-        # Add configuration parameters
-        lines.append("")
-        
-        # Two column table header for parameters
-        if USE_ASCII_ONLY:
-            lines.append("+-----------------------------+-------------------------------------+")
-            lines.append("| CONFIGURATION PARAMETER     | VALUE                              |")
-            lines.append("+-----------------------------+-------------------------------------+")
-            
-            params_added = False
-            for field_name in self.model_fields:
-                if field_name not in ["model_type", "template", "grid", "data"] and not field_name.startswith("_"):
-                    value = getattr(self, field_name)
-                    value_str = str(value)
-                    if len(value_str) > 35:
-                        value_str = value_str[:32] + "..."
-                    lines.append(f"| {field_name:<28} | {value_str:<35} |")
-                    params_added = True
-                    
-            if params_added:
-                lines.append("+-----------------------------+-------------------------------------+")
-            else:
-                lines.append("| No additional parameters defined                                 |")
-                lines.append("+------------------------------------------------------------------------+")
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃ CONFIGURATION PARAMETER     ┃ VALUE                              ┃")
-            lines.append("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫")
-            
-            params_added = False
-            for field_name in self.model_fields:
-                if field_name not in ["model_type", "template", "grid", "data"] and not field_name.startswith("_"):
-                    value = getattr(self, field_name)
-                    value_str = str(value)
-                    if len(value_str) > 35:
-                        value_str = value_str[:32] + "..."
-                    lines.append(f"┃ {field_name:<28} ┃ {value_str:<35} ┃")
-                    params_added = True
-                    
-            if params_added:
-                lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-            else:
-                lines.append("┃ No additional parameters defined                                 ┃")
-                lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-        
-        # Add template information
-        lines.append("")
-        header, footer, _ = get_formatted_header_footer(
-            title="TEMPLATE INFORMATION",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
-        )
-        lines.append(header)
-        lines.append(footer)
-        
-        template_path = self.template
-        if len(template_path) > 70:
-            template_path = "..." + template_path[-67:]
-        lines.append(f"   {template_path}")
-        
-        return "\n".join(lines)
-        
     def __call__(self, runtime) -> str:
         # Copy grid files
         ret = self.model_dump()
@@ -752,105 +531,6 @@ class SCHISMConfig(BaseConfig):
         description="The path to the model template",
         default=SCHISM_TEMPLATE,
     )
-    
-    def _format_value(self, obj):
-        """Custom formatter for SCHISMConfig values.
-        
-        This method provides special formatting for specific types used in
-        SCHISMConfig such as grid, data sources, and namelist components.
-        
-        Args:
-            obj: The object to format
-            
-        Returns:
-            A formatted string or None to use default formatting
-        """
-        from pathlib import Path
-        from datetime import datetime
-        from rompy import ROMPY_ASCII_MODE
-        from rompy.utils import get_formatted_header_footer
-        
-        # Get ASCII mode setting
-        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
-        # Format SCHISMGrid with relevant details
-        if hasattr(obj, 'hgrid_path') and isinstance(obj, SCHISMGrid):
-            header, footer, bullet = get_formatted_header_footer(
-                title="GRID CONFIGURATION", 
-                use_ascii=USE_ASCII_ONLY
-            )
-            
-            return (
-                f"{header}\n"
-                f"  {bullet} Horizontal grid: {obj.hgrid_path}\n"
-                f"  {bullet} Vertical grid:   {getattr(obj, 'vgrid_path', 'None')}\n"
-                f"  {bullet} Projection:      {getattr(obj, 'projection', 'None')}\n"
-                f"{footer}"
-            )
-            
-        # Format SCHISMData with summary of data sources
-        if hasattr(obj, 'sources') and hasattr(obj, 'inputs'):
-            header, footer, bullet = get_formatted_header_footer(
-                title="DATA SOURCES", 
-                use_ascii=USE_ASCII_ONLY
-            )
-            sources_count = len(getattr(obj, 'sources', []))
-            inputs_count = len(getattr(obj, 'inputs', []))
-            
-            lines = [header]
-            lines.append(f"  {bullet} Sources: {sources_count}")
-            lines.append(f"  {bullet} Inputs:  {inputs_count}")
-            
-            # Add specific sources if available
-            sources = getattr(obj, 'sources', [])
-            if sources and len(sources) <= 5:  # Only show if not too many
-                lines.append(f"  {bullet} Source Types:")
-                sub_bullet = "-" if USE_ASCII_ONLY else "◦"
-                for source in sources:
-                    source_type = getattr(source, 'source_type', 'unknown')
-                    lines.append(f"    {sub_bullet} {source_type}")
-            
-            lines.append(footer)
-            return "\n".join(lines)
-            
-        # Format NML (namelist) with key parameters
-        if hasattr(obj, 'params') and hasattr(obj, 'method'):
-            header, footer, bullet = get_formatted_header_footer(
-                title="NAMELIST CONFIGURATION", 
-                use_ascii=USE_ASCII_ONLY
-            )
-            method = getattr(obj, 'method', 'default')
-            params = getattr(obj, 'params', {})
-            
-            lines = [header]
-            lines.append(f"  {bullet} Method: {method}")
-            lines.append(f"  {bullet} Parameters: {len(params)}")
-            
-            # Show important parameters if available
-            if params:
-                sub_bullet = "-" if USE_ASCII_ONLY else "◦"
-                # Show up to 5 key parameters
-                key_params = list(params.items())[:5]
-                for key, value in key_params:
-                    lines.append(f"    {sub_bullet} {key}: {value}")
-                if len(params) > 5:
-                    lines.append(f"    {sub_bullet} ... and {len(params) - 5} more")
-            
-            lines.append(footer)
-            return "\n".join(lines)
-            
-        # Format Path objects
-        if isinstance(obj, Path):
-            return str(obj)
-            
-        # Format datetime objects
-        if isinstance(obj, datetime):
-            return obj.isoformat(' ')
-            
-        # Use default formatting for other types
-        return None
-    
-
 
     @model_serializer
     def serialize_model(self, **kwargs):
@@ -910,63 +590,8 @@ class SchismCSIROMigrationConfig(SchismCSIROConfig):
         description="The path to the model template",
         default=SCHISM_TEMPLATE,
     )
-    
-    def __str__(self):
-        """Return a formatted string representation of the SCHISM CSIRO Migration config.
-        
-        This provides a human-readable representation that can be used in logs.
-        """
-        # Use helper function to avoid circular imports
-        from rompy import ROMPY_ASCII_MODE
-        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
-        lines = []
-        if USE_ASCII_ONLY:
-            lines.append("+------------------------------------------------------------------------+")
-            lines.append("|             SCHISM CSIRO MIGRATION MODEL CONFIGURATION                 |")
-            lines.append("+------------------------------------------------------------------------+")
-            
-            # Use parent class __str__ but replace the header
-            parent_str = super().__str__()
-            parent_lines = parent_str.split("\n")
-            
-            # Find the indexes of the first section after the header
-            for i, line in enumerate(parent_lines):
-                if i > 2 and "+" in line:  # Skip the first header
-                    return "\n".join(lines + parent_lines[i:])
-        else:
-            lines.append("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-            lines.append("┃             SCHISM CSIRO MIGRATION MODEL CONFIGURATION             ┃")
-            lines.append("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
-            
-            # Use parent class __str__ but replace the header
-            parent_str = super().__str__()
-            parent_lines = parent_str.split("\n")
-            
-            # Find the indexes of the first section after the header
-            for i, line in enumerate(parent_lines):
-                if i > 2 and "┏" in line:  # Skip the first header
-                    return "\n".join(lines + parent_lines[i:])
-                    
-        # If we didn't find any sections, just return our header
-        return "\n".join(lines)
 
     def __call__(self, runtime) -> str:
-        # Use formatting utilities
-        from rompy.utils import get_formatted_box
-        from rompy import ROMPY_ASCII_MODE
-        USE_ASCII_ONLY = ROMPY_ASCII_MODE()
-        
-        # Log the process beginning
-        logger.info("")
-        box = get_formatted_box(
-            title="PROCESSING SCHISM CSIRO MIGRATION",
-            use_ascii=USE_ASCII_ONLY,
-            width=72 if USE_ASCII_ONLY else 70
-        )
-        for line in box.split("\n"):
-            logger.info(line)
-        
         # Create translation dictionary
         config_dict = {
             "param": {

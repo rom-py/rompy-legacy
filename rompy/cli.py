@@ -1,89 +1,129 @@
+"""
+ROMPY Command Line Interface
+
+This module provides the command-line interface for ROMPY.
+"""
+
 import json
-import logging
 import sys
 import os
 import warnings
 from importlib.metadata import entry_points
+from pathlib import Path
+from typing import Optional
 from datetime import datetime
 
 import click
 import yaml
 
 from rompy.model import ModelRun
-from rompy.formatting import get_ascii_mode as ROMPY_ASCII_MODE
+from rompy.core.logging import get_logger, LoggingConfig, LogLevel, LogFormat
 
+# Initialize the logger
+logger = get_logger(__name__)
+
+# Get installed entry points
 installed = entry_points(group="rompy.config").names
-logger = logging.getLogger(__name__)
 
-def configure_logging(verbosity=0):
-    """Configure logging based on verbosity level.
+
+def configure_logging(
+    verbosity: int = 0,
+    log_dir: Optional[str] = None,
+    simple_logs: bool = False,
+    ascii_only: bool = False,
+    show_warnings: bool = False,
+) -> None:
+    """Configure logging based on verbosity level and other options.
+
+    This function configures the logging system using the LoggingConfig class.
 
     Args:
-        verbosity (int): 0=WARNING, 1=INFO, 2=DEBUG
+        verbosity: 0=WARNING, 1=INFO, 2=DEBUG
+        log_dir: Directory to save log files
+        simple_logs: Use simple log format without timestamps and module names
+        ascii_only: Use ASCII-only characters in output
+        show_warnings: Whether to show Python warnings
     """
-    log_level = logging.WARNING
+    # Get the singleton instance of LoggingConfig
+    logging_config = LoggingConfig()
+
+    # Map verbosity to log level
+    log_level = LogLevel.WARNING
     if verbosity >= 1:
-        log_level = logging.INFO
+        log_level = LogLevel.INFO
     if verbosity >= 2:
-        log_level = logging.DEBUG
+        log_level = LogLevel.DEBUG
 
-    # Check if simple logs are requested (no timestamps or module names)
-    simple_logs = os.environ.get('ROMPY_SIMPLE_LOGS', 'false').lower() == 'true'
-    
-    # Create a custom formatter with or without timestamp and level
-    if simple_logs:
-        # Simple format with just the message
-        formatter = logging.Formatter('%(message)s')
+    # Determine log format
+    log_format = LogFormat.SIMPLE if simple_logs else LogFormat.VERBOSE
+
+    # Prepare update parameters
+    update_params = {"level": log_level, "format": log_format, "use_ascii": ascii_only}
+
+    # Set log directory and file if provided
+    if log_dir:
+        from pathlib import Path
+
+        log_file = f"rompy_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+        update_params["log_dir"] = Path(log_dir)
+        update_params["log_file"] = log_file
+
+    # Apply the configuration (update() will call configure_logging() if needed)
+    logging_config.update(**update_params)
+
+    # Configure warnings
+    if not show_warnings:
+        warnings.filterwarnings("ignore")
     else:
-        # Detailed format with timestamp, level, and module name
-        formatter = logging.Formatter(
-            '%(asctime)s [%(levelname)s] %(name)-20s: %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S'
-        )
+        # Show deprecation warnings
+        warnings.filterwarnings("default", category=DeprecationWarning)
 
-    # Configure console handler
-    console = logging.StreamHandler(sys.stdout)
-    console.setFormatter(formatter)
-
-    # Configure file handler if output directory exists
-    log_file = None
-    output_dir = os.environ.get('ROMPY_LOG_DIR', None)
-    if output_dir and os.path.isdir(output_dir):
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        log_file = os.path.join(output_dir, f'rompy_{timestamp}.log')
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setFormatter(formatter)
-        logging.root.addHandler(file_handler)
-
-    # Configure root logger
-    logging.root.setLevel(log_level)
-    logging.root.handlers = []  # Remove existing handlers
-    logging.root.addHandler(console)
-
-    # Suppress specific warnings
-    if log_level != logging.DEBUG:
-        logging.getLogger('pydantic').setLevel(logging.ERROR)
-        logging.getLogger('intake').setLevel(logging.WARNING)
-
-        # Filter out common warnings
-        warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
-        warnings.filterwarnings("ignore", category=UserWarning, module="intake.readers.readers")
-        warnings.filterwarnings("ignore", message="A custom validator is returning a value other than `self`")
-
-    return log_file
+    # Log configuration
+    logger.debug("Logging configured with level: %s", log_level.value)
+    if log_dir:
+        logger.info("Log directory: %s", log_dir)
 
 
-@click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.argument("model", type=click.Choice(installed), envvar="ROMPY_MODEL", required=False)
+@click.command(context_settings=dict(help_option_names=["-h", "--help"]))
+@click.argument(
+    "model", type=click.Choice(installed), envvar="ROMPY_MODEL", required=False
+)
 @click.argument("config", envvar="ROMPY_CONFIG", required=False)
 @click.option("zip", "--zip/--no-zip", default=False, envvar="ROMPY_ZIP")
-@click.option("-v", "--verbose", count=True, help="Increase verbosity (can be used multiple times)")
+@click.option(
+    "-v",
+    "--verbose",
+    count=True,
+    help="Increase verbosity (can be used multiple times)",
+)
 @click.option("--log-dir", envvar="ROMPY_LOG_DIR", help="Directory to save log files")
-@click.option("--show-warnings/--hide-warnings", default=False, help="Show Python warnings")
-@click.option("--ascii-only/--unicode", default=False, help="Use ASCII-only characters in output", envvar="ROMPY_ASCII_ONLY")
-@click.option("--simple-logs/--detailed-logs", default=False, help="Use simple log format without timestamps and module names", envvar="ROMPY_SIMPLE_LOGS")
+@click.option(
+    "--show-warnings/--hide-warnings", default=False, help="Show Python warnings"
+)
+@click.option(
+    "--ascii-only/--unicode",
+    default=False,
+    help="Use ASCII-only characters in output",
+    envvar="ROMPY_ASCII_ONLY",
+)
+@click.option(
+    "--simple-logs/--detailed-logs",
+    default=False,
+    help="Use simple log format without timestamps and module names",
+    envvar="ROMPY_SIMPLE_LOGS",
+)
 @click.option("--version", is_flag=True, help="Show version information and exit")
-def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, simple_logs, version):
+def main(
+    model,
+    config,
+    zip,
+    verbose,
+    log_dir,
+    show_warnings,
+    ascii_only,
+    simple_logs,
+    version,
+):
     """Run ROMPY model with the specified configuration.
 
     ROMPY (Regional Ocean Modeling PYthon) is a tool for generating and running
@@ -116,25 +156,23 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, simple
         # Capture warnings to prevent them from being displayed
         warnings.filterwarnings("ignore")
 
-    # Set ASCII-only environment variable globally
-    ascii_value = 'true' if ascii_only else 'false'
-    os.environ['ROMPY_ASCII_ONLY'] = ascii_value
+    # Configure logging with all parameters
+    configure_logging(
+        verbosity=verbose,
+        log_dir=log_dir,
+        simple_logs=simple_logs,
+        ascii_only=ascii_only,
+        show_warnings=show_warnings,
+    )
 
-    # Set simple logs environment variable
-    simple_logs_value = 'true' if simple_logs else 'false'
-    os.environ['ROMPY_SIMPLE_LOGS'] = simple_logs_value
-
-    # Force reloading of the ASCII_MODE value
-    reload_value = ROMPY_ASCII_MODE()
+    # Get the logging config for reference
+    logging_config = LoggingConfig()
 
     # Log the settings
-    logger.debug(f"ASCII mode set to: {ascii_only}")
-    logger.debug(f"Simple logs mode set to: {simple_logs} (no timestamps or module names)")
-
-    # Configure logging
-    if log_dir:
-        os.environ['ROMPY_LOG_DIR'] = log_dir
-    log_file = configure_logging(verbose)
+    logger.debug(f"ASCII mode set to: {logging_config.use_ascii}")
+    logger.debug(
+        f"Simple logs mode set to: {logging_config.format == LogFormat.SIMPLE} (no timestamps or module names)"
+    )
 
     # Import here to avoid circular imports
     import rompy
@@ -181,11 +219,6 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, simple
 
     # Log version and execution information
     logger.info(f"ROMPY Version: {rompy.__version__}")
-    logger.info(f"ASCII Mode: {'Enabled' if ascii_only else 'Disabled'}")
-    # Ensure we're actually using the correct mode by checking the helper function
-    actual_mode = ROMPY_ASCII_MODE()
-    if actual_mode != ascii_only:
-        logger.warning(f"ASCII mode setting inconsistency detected - requested: {ascii_only}, actual: {actual_mode}")
     logger.info(f"Running model: {model}")
     logger.info(f"Configuration: {config}")
 
@@ -205,12 +238,14 @@ def main(model, config, zip, verbose, log_dir, show_warnings, ascii_only, simple
         elapsed = datetime.now() - start_time
         logger.info(f"Model run completed in {elapsed.total_seconds():.2f} seconds")
 
-        if log_file:
-            logger.info(f"Log file saved to: {log_file}")
+        if log_dir:
+            logger.info(f"Log directory: {log_dir}")
     except TypeError as e:
         if "unsupported format string" in str(e) and "timedelta" in str(e):
             logger.error(f"Error with time format: {str(e)}")
-            logger.error("This is likely due to formatting issues with time duration values")
+            logger.error(
+                "This is likely due to formatting issues with time duration values"
+            )
             if verbose > 0:
                 logger.error("", exc_info=True)
         else:

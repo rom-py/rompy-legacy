@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 try:
     from rompy_binary_datasources import SourceDataset, SourceTimeseriesDataFrame
 except ImportError:
+
     def _create_import_error_class(class_name):
         """
         Create a class that raises a helpful import error when instantiated.
@@ -34,12 +35,12 @@ except ImportError:
             f"{class_name} has been moved to the rompy_binary_datasources package.\n"
             "Please install it using: pip install rompy_binary_datasources"
         )
-        
+
         def __init__(self, *args, **kwargs):
             raise ImportError(error_message)
-            
+
         return type(class_name, (), {"__init__": __init__, "__doc__": error_message})
-    
+
     # Create stub classes that will raise a helpful error when instantiated
     SourceDataset = _create_import_error_class("SourceDataset")
     SourceTimeseriesDataFrame = _create_import_error_class("SourceTimeseriesDataFrame")

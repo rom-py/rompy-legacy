@@ -1,13 +1,22 @@
-"""SWAN boundary subcomponents."""
+"""
+SWAN Boundary Subcomponents
 
-import logging
+This module contains subcomponents for defining boundary conditions in SWAN,
+including boundary segments, spectral parameters, and initial conditions.
+"""
+
+# Standard library imports
 from typing import Annotated, Optional, Literal, Union
+
+# Third-party imports
 from pydantic import Field, model_validator
 
+# Local imports
+from rompy.core.logging import get_logger
 from rompy.swan.subcomponents.base import BaseSubComponent, XY, IJ
 
-
-logger = logging.getLogger(__name__)
+# Initialize the logger
+logger = get_logger(__name__)
 
 
 class SIDE(BaseSubComponent):
