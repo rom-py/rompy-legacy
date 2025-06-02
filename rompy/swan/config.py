@@ -97,26 +97,6 @@ class SwanConfig(BaseConfig):
         ret["output_locs"] = self.outputs.spec.locations
         return ret
 
-    def _format_value(self, obj):
-        """Format SwanConfig values using the new formatting framework.
-
-        This method provides special formatting for specific types used in
-        SwanConfig such as grid, forcing data, and physics components.
-
-        Args:
-            obj: The object to format
-
-        Returns:
-            A formatted string or None to use default formatting
-        """
-        # Only format SwanConfig objects
-        if not isinstance(obj, SwanConfig):
-            return None
-
-        # Use the new formatting framework
-        from rompy.formatting import format_value
-
-        return format_value(obj)
 
 
 STARTUP_TYPE = Annotated[STARTUP, Field(description="Startup components")]
