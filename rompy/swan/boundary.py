@@ -1,17 +1,25 @@
-"""SWAN boundary classes."""
+"""
+SWAN Boundary Module
 
-import logging
+This module provides boundary condition handling for the SWAN model within the ROMPY framework.
+"""
+
+# Standard library imports
+from abc import ABC
 from pathlib import Path
 from typing import Literal, Optional, Union, Annotated
+
+# Third-party imports
 import xarray as xr
 import pandas as pd
 import numpy as np
 from shapely.geometry import LineString
-from abc import ABC
 from pydantic import Field, field_validator
 
+# Local imports
 from rompy.core.time import TimeRange
 from rompy.core.boundary import BoundaryWaveStation
+from rompy.core.logging import get_logger
 from rompy.swan.grid import SwanGrid
 from rompy.swan.components.boundary import BOUNDSPEC
 from rompy.swan.subcomponents.base import BaseSubComponent, XY, IJ
@@ -26,7 +34,8 @@ from rompy.swan.subcomponents.boundary import (
 )
 from rompy.swan.subcomponents.spectrum import SHAPESPEC
 
-logger = logging.getLogger(__name__)
+# Initialize the logger
+logger = get_logger(__name__)
 
 
 def write_tpar(df: pd.DataFrame, filename: str | Path):

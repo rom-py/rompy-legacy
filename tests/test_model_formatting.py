@@ -8,6 +8,13 @@ and handles ASCII mode settings.
 
 import os
 import pytest
+
+# Import test utilities
+from test_utils.logging import get_test_logger
+
+# Initialize logger
+logger = get_test_logger(__name__)
+
 from unittest.mock import patch, MagicMock
 import importlib
 

@@ -1,5 +1,11 @@
+"""
+Model run implementation for ROMPY.
+
+This module provides the ModelRun class which is the main entry point for
+running models with ROMPY.
+"""
+
 import glob
-import logging
 import os
 import platform
 import shutil
@@ -9,21 +15,21 @@ import time as time_module
 import zipfile as zf
 from datetime import datetime
 from pathlib import Path
-from typing import Union
+from typing import Any, Dict, Optional, Union
 
+import ipdb
 from pydantic import Field
 
-# Import these at module level to avoid scoping issues
-from rompy.formatting import (get_ascii_mode, get_simple_logs,
-                              get_formatted_box, get_formatted_header_footer)
+from rompy.core.config import BaseConfig
+from rompy.core.logging import LogFormat, LoggingConfig, LogLevel, get_logger
+from rompy.core.render import render
+from rompy.core.time import TimeRange
+from rompy.core.types import RompyBaseModel
 from rompy.utils import load_entry_points
 
-from .core.config import BaseConfig
-from .core.render import render
-from .core.time import TimeRange
-from .core.types import RompyBaseModel
-
-logger = logging.getLogger(__name__)
+# Initialize the logger
+logger = get_logger(__name__)
+__import__("ipdb").set_trace()
 
 
 # Accepted config types are defined in the entry points of the rompy.config group
@@ -136,76 +142,72 @@ class ModelRun(RompyBaseModel):
         staging_dir : str
 
         """
-        # Use the log_box utility function
-        from rompy.formatting import log_box
-        log_box(
-            title="MODEL RUN CONFIGURATION",
-            logger=logger,
-        )
+        # Import formatting utilities
+        from rompy.formatting import format_table_row, get_formatted_box, log_box
 
-        # Format model settings in a more structured way
+        # Format model settings in a structured way
         config_type = type(self.config).__name__
         duration = self.period.end - self.period.start
         formatted_duration = self.period.format_duration(duration)
 
-        # Use a formatted two-column layout
-        if get_ascii_mode():
-            logger.info(
-                "+-----------------------------+-------------------------------------+"
-            )
-            logger.info(f"| Run ID                      | {self.run_id:<35} |")
-            logger.info(f"| Model Type                  | {config_type:<35} |")
-            logger.info(
-                f"| Start Time                  | {self.period.start.isoformat():<35} |"
-            )
-            logger.info(
-                f"| End Time                    | {self.period.end.isoformat():<35} |"
-            )
-            logger.info(f"| Duration                    | {formatted_duration:<35} |")
-            logger.info(
-                f"| Time Interval               | {str(self.period.interval):<35} |"
-            )
-            logger.info(f"| Output Directory            | {str(self.output_dir):<35} |")
-        else:
-            logger.info(
-                "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
-            )
-            logger.info(f"┃ Run ID                      ┃ {self.run_id:<35} ┃")
-            logger.info(f"┃ Model Type                  ┃ {config_type:<35} ┃")
-            logger.info(
-                f"┃ Start Time                  ┃ {self.period.start.isoformat():<35} ┃"
-            )
-            logger.info(
-                f"┃ End Time                    ┃ {self.period.end.isoformat():<35} ┃"
-            )
-            logger.info(f"┃ Duration                    ┃ {formatted_duration:<35} ┃")
-            logger.info(
-                f"┃ Time Interval               ┃ {str(self.period.interval):<35} ┃"
-            )
-            logger.info(f"┃ Output Directory            ┃ {str(self.output_dir):<35} ┃")
+        # Create table rows for the model run info
+        rows = [
+            format_table_row("Run ID", str(self.run_id)),
+            format_table_row("Model Type", config_type),
+            format_table_row("Start Time", self.period.start.isoformat()),
+            format_table_row("End Time", self.period.end.isoformat()),
+            format_table_row("Duration", formatted_duration),
+            format_table_row("Time Interval", str(self.period.interval)),
+            format_table_row("Output Directory", str(self.output_dir)),
+        ]
 
+        # Add description if available
         if hasattr(self.config, "description") and self.config.description:
-            if get_ascii_mode():
-                logger.info(
-                    f"| Description                | {self.config.description:<35} |"
-                )
-            else:
-                logger.info(
-                    f"┃ Description                ┃ {self.config.description:<35} ┃"
-                )
+            rows.append(format_table_row("Description", self.config.description))
 
-        if get_ascii_mode():
-            logger.info(
-                "+-----------------------------+-------------------------------------+"
-            )
-        else:
-            logger.info(
-                "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-            )
+        # Create a formatted table with proper alignment
+        formatted_rows = []
+        key_lengths = []
+
+        # First pass: collect all valid rows and calculate max key length
+        for row in rows:
+            try:
+                # Split the row by the box-drawing vertical line character
+                parts = [p.strip() for p in row.split("┃") if p.strip()]
+                if len(parts) >= 2:  # We expect at least key and value parts
+                    key = parts[0].strip()
+                    value = parts[1].strip() if len(parts) > 1 else ""
+                    key_lengths.append(len(key))
+                    formatted_rows.append((key, value))
+            except Exception as e:
+                logger.warning(f"Error processing row '{row}': {e}")
+
+        if not formatted_rows:
+            logger.warning("No valid rows found for model run configuration table")
+            return self._staging_dir
+
+        max_key_len = max(key_lengths) if key_lengths else 0
+
+        # Format the rows with proper alignment
+        aligned_rows = []
+        for key, value in formatted_rows:
+            aligned_row = f"{key:>{max_key_len}} : {value}"
+            aligned_rows.append(aligned_row)
+
+        # Log the box with the model run info
+        log_box(title="MODEL RUN CONFIGURATION", logger=logger, add_empty_line=False)
+
+        # Log each row of the content with proper indentation
+        for row in aligned_rows:
+            logger.info(f"  {row}")
+
+        # Log the bottom of the box
+        log_box(
+            title=None, logger=logger, add_empty_line=True  # Just the bottom border
+        )
 
         # Display detailed configuration info using the hierarchical __str__ method
-        logger.info("")
-        logger.info(f"MODEL CONFIGURATION ({type(self.config).__name__}):")
+        logger.info(f"MODEL CONFIGURATION ({config_type}):")
 
         # First try to use the _format_value method directly if available
         if hasattr(self.config, "_format_value"):
@@ -244,6 +246,7 @@ class ModelRun(RompyBaseModel):
 
         # Use the log_box utility function
         from rompy.formatting import log_box
+
         log_box(
             title="STARTING MODEL GENERATION",
             logger=logger,
@@ -281,6 +284,7 @@ class ModelRun(RompyBaseModel):
 
         # Use the log_box utility function
         from rompy.formatting import log_box
+
         log_box(
             title="MODEL GENERATION COMPLETE",
             logger=logger,
@@ -302,6 +306,7 @@ class ModelRun(RompyBaseModel):
         """
         # Use the log_box utility function
         from rompy.formatting import log_box
+
         log_box(
             title="ARCHIVING MODEL FILES",
             logger=logger,

@@ -18,7 +18,7 @@ from rompy.formatting import (
     get_formatted_box,
     get_formatted_header_footer,
     log_box,
-    log_status
+    log_status,
 )
 
 logger = logging.getLogger(__name__)
@@ -72,6 +72,7 @@ class TemplateRenderer(RompyBaseModel):
     This class wraps the cookiecutter template rendering process and provides
     detailed formatting through the _format_value method.
     """
+
     template: str | Path
     output_dir: str | Path
     context: Dict[str, Any]
@@ -144,10 +145,7 @@ def render(context, template, output_dir, checkout=None):
 
     # Create renderer object for nice formatting
     renderer = TemplateRenderer(
-        template=template,
-        output_dir=output_dir,
-        context=context,
-        checkout=checkout
+        template=template, output_dir=output_dir, context=context, checkout=checkout
     )
 
     # Format renderer info
@@ -204,6 +202,7 @@ def render(context, template, output_dir, checkout=None):
     # Create render results object for formatting
     class RenderResults(RompyBaseModel):
         """Render results information"""
+
         staging_dir: str
         render_time: float
         elapsed_time: float
@@ -233,7 +232,7 @@ def render(context, template, output_dir, checkout=None):
         staging_dir=staging_dir,
         render_time=render_time,
         elapsed_time=elapsed,
-        file_count=file_count
+        file_count=file_count,
     )
 
     results_info = results._format_value(results)
