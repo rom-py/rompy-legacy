@@ -4,7 +4,6 @@ SWAN Data Module
 This module provides data handling functionality for the SWAN model within the ROMPY framework.
 """
 
-# Standard library imports
 import os
 import sys
 import time as time_module
@@ -12,25 +11,18 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Optional, Union
 
-# Third-party imports
 import numpy as np
 import pandas as pd
 import xarray as xr
 from pydantic import Field, field_validator, model_validator
 
-# Local imports
 from rompy.core.data import DataGrid
-from rompy.core.time import TimeRange
 from rompy.core.logging import get_logger
-from rompy.formatting import (
-    get_formatted_box,
-    get_formatted_header_footer,
-    log_box,
-)
+from rompy.core.time import TimeRange
+from rompy.formatting import get_formatted_box, get_formatted_header_footer, log_box
 from rompy.swan.grid import SwanGrid
 from rompy.swan.types import GridOptions
 
-# Initialize the logger
 logger = get_logger(__name__)
 
 FILL_VALUE = -99.0
@@ -122,7 +114,7 @@ class SwanDataGrid(DataGrid):
 
         # Log output file and dataset information using bullet points
         items = [f"Output file: {output_file}"]
-        
+
         # Add variable information if available
         if self.z1:
             shape_info = f"{self.ds[self.z1].shape}"
@@ -130,10 +122,10 @@ class SwanDataGrid(DataGrid):
         if self.z2:
             shape_info = f"{self.ds[self.z2].shape}"
             items.append(f"Variable: {self.z2} with shape {shape_info}")
-            
+
         # Add scaling factor
         items.append(f"Scaling factor: {self.fac}")
-        
+
         # Log all items as a bulleted list
         logger.bullet_list(items, indent=2)
 
@@ -171,9 +163,9 @@ class SwanDataGrid(DataGrid):
         logger.bullet_list(
             [
                 f"Completed in {elapsed_time:.2f} seconds",
-                f"File size: {file_size:.2f} MB"
+                f"File size: {file_size:.2f} MB",
             ],
-            indent=2
+            indent=2,
         )
 
         return f"{inpgrid}\n{readgrid}\n"

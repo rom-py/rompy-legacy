@@ -8,18 +8,14 @@ How to subclass:
 2. Overwrite the `cmd` method to return the SWAN input file string
 """
 
-# Standard library imports
-from typing import Literal, Optional
 from abc import abstractmethod
+from typing import Literal, Optional
 
-# Third-party imports
 from pydantic import ConfigDict, Field
 
-# Local imports
-from rompy.core.types import RompyBaseModel
 from rompy.core.logging import get_logger
+from rompy.core.types import RompyBaseModel
 
-# Initialize the logger
 logger = get_logger(__name__)
 
 # Constants

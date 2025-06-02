@@ -5,22 +5,18 @@ This module contains components for controlling SWAN model execution flow,
 including computation, hotfile output, and program termination.
 """
 
-# Standard library imports
+from datetime import datetime
 from pathlib import Path
 from typing import Literal, Optional, Union
-from datetime import datetime
 
-# Third-party imports
-from pydantic import field_validator, model_validator, Field
-from pandas import Timestamp
 from numpy import inf
+from pandas import Timestamp
+from pydantic import Field, field_validator, model_validator
 
-# Local imports
 from rompy.core.logging import get_logger
 from rompy.swan.components.base import BaseComponent
-from rompy.swan.subcomponents.time import STATIONARY, NONSTATIONARY
+from rompy.swan.subcomponents.time import NONSTATIONARY, STATIONARY
 
-# Initialize the logger
 logger = get_logger(__name__)
 
 TIMES_TYPE = Union[STATIONARY, NONSTATIONARY]

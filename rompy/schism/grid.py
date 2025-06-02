@@ -1,32 +1,26 @@
-# Standard library imports
-import os
 from pathlib import Path
 from typing import Literal, Optional, Union
 
-# Third-party imports
 import numpy as np
 import pandas as pd
 from pydantic import (
     Field,
     PrivateAttr,
     field_validator,
-    model_validator,
     model_serializer,
-    BaseModel,
+    model_validator,
 )
 from shapely.geometry import MultiPoint, Polygon
 
-# Local imports
 from rompy.core.data import DataBlob
-from rompy.core.types import RompyBaseModel
 from rompy.core.grid import BaseGrid
 from rompy.core.logging import get_logger
+from rompy.core.types import RompyBaseModel
 from rompy.schism.pyschism.mesh import Hgrid
 from rompy.schism.pyschism.mesh.base import Gr3
 from rompy.schism.pyschism.mesh.prop import Tvdflag
 from rompy.schism.pyschism.mesh.vgrid import LSC2, SZ, Vgrid
 
-# Initialize the logger
 logger = get_logger(__name__)
 
 G3ACCEPT = ["albedo", "diffmin", "diffmax", "watertype", "windrot_geo2proj"]

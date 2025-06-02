@@ -4,21 +4,17 @@ Utility functions for ROMPY.
 This module provides various utility functions used throughout the ROMPY codebase.
 """
 
-# Standard library imports
 import importlib
-from typing import Optional, List, Tuple, Union, Dict, Any
 from importlib.metadata import entry_points
+from typing import Any, Dict, List, Optional, Tuple, Union
 
-# Third-party imports
 import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.spatial import KDTree
 
-# Local imports
 from rompy.core.logging import get_logger
 
-# Initialize the logger
 logger = get_logger(__name__)
 
 
