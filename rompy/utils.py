@@ -20,37 +20,6 @@ from rompy.core.logging import get_logger
 logger = get_logger(__name__)
 
 
-def get_formatted_header_footer(
-    title: str = None, use_ascii: bool = None, width: int = 60
-) -> Tuple[str, str, str]:
-    """Get formatted header, footer, and bullet character.
-
-    This utility function creates a matching header and footer for displaying
-    boxed content, using either ASCII or Unicode characters.
-
-    Args:
-        title: Optional title to display in the header
-        use_ascii: Whether to use ASCII-only characters (True) or Unicode (False)
-                   If None, uses the global LoggingConfig setting
-        width: Width of the box in characters
-
-    Returns:
-        A tuple containing (header, footer, bullet_char)
-    """
-    # Import here to avoid circular imports
-    from rompy.core.logging import LoggingConfig
-    from rompy.formatting import (
-        get_formatted_header_footer as core_get_formatted_header_footer,
-    )
-
-    # If ASCII mode isn't specified, use the global setting
-    if use_ascii is None:
-        use_ascii = LoggingConfig().use_ascii
-
-    # Use the formatting function
-    return core_get_formatted_header_footer(
-        title=title, use_ascii=use_ascii, width=width
-    )
 
 
 def load_entry_points(egroup: str, etype: Optional[str] = None):
