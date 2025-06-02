@@ -317,16 +317,8 @@ class ModelRun(RompyBaseModel):
         logger.info(f"Cleaning up staging directory {self.staging_dir}")
         shutil.rmtree(self.staging_dir)
 
-        logger.info(f"Archive created successfully: {zip_fn}")
-        # Draw a horizontal line based on ASCII mode
-        if get_ascii_mode():
-            logger.info(
-                "------------------------------------------------------------------------"
-            )
-        else:
-            logger.info(
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            )
+        from rompy.formatting import log_box
+        log_box(f"✓ Archive created successfully: {zip_fn}", logger=logger, add_empty_line=False)
         return zip_fn
 
     def __call__(self):
