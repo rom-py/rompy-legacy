@@ -13,8 +13,8 @@ from pathlib import Path
 from typing import Optional, Dict, Any, ClassVar
 from enum import Enum
 
-from pydantic import Field, field_validator, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import ConfigDict, Field, field_validator, model_validator
+from pydantic_settings import BaseSettings
 
 
 class LogLevel(str, Enum):
@@ -69,15 +69,19 @@ class LoggingConfig(BaseSettings):
         default=False, description="Use ASCII-only characters for console output"
     )
 
+    # Pydantic v2 model configuration
+    model_config = ConfigDict(
+        env_prefix="ROMPY_",
+        case_sensitive=False,
+        extra="ignore",
+        env_file=".env",
+        env_file_encoding="utf-8",
+        validate_default=True,
+        validate_assignment=True
+    )
+    
     # Singleton instance
     _instance: ClassVar[Optional["LoggingConfig"]] = None
-
-    class Config:
-        env_prefix = "ROMPY_"
-        case_sensitive = False
-        extra = "ignore"
-        env_file = ".env"
-        env_file_encoding = "utf-8"
 
     def __new__(cls, *args, **kwargs):
         """Ensure singleton pattern."""
