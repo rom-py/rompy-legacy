@@ -172,7 +172,7 @@ class SwanDataGrid(DataGrid):
         return f"SWANDataGrid {self.var.name}"
 
     def _format_value(self, obj):
-        """Custom formatter for SwanDataGrid values.
+        """Format SwanDataGrid values using the new formatting framework.
 
         This method provides special formatting for SwanDataGrid objects.
 
@@ -182,22 +182,14 @@ class SwanDataGrid(DataGrid):
         Returns:
             A formatted string or None to use default formatting
         """
-        from rompy.core.logging import LoggingConfig
-        from rompy.utils import get_formatted_header_footer
-
         # Only format SwanDataGrid objects
         if not isinstance(obj, SwanDataGrid):
             return None
 
-        # Use formatting utilities imported at the top of the file
+        # Use the new formatting framework
+        from rompy.formatting import format_value
 
-        # Get header, footer, and bullet character
-        header, footer, bullet = get_formatted_header_footer(title="SWAN DATA GRID")
-
-        # Build content lines
-        lines = [header]
-
-        # Add basic information
+        return format_value(obj)
         lines.append(f"  {bullet} Variable:   {obj.var.name}")
 
         # Add source information if available

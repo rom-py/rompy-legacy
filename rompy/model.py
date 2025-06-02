@@ -142,8 +142,7 @@ class ModelRun(RompyBaseModel):
 
         """
         # Import formatting utilities
-        from rompy.formatting import (format_table_row, get_formatted_box,
-                                      log_box)
+        from rompy.formatting import format_table_row, get_formatted_box, log_box
 
         # Format model settings in a structured way
         config_type = type(self.config).__name__
@@ -208,10 +207,10 @@ class ModelRun(RompyBaseModel):
 
         # Display detailed configuration info using the new formatting framework
         from rompy.formatting import log_box
-        
+
         # Create a box with the configuration type as title
         log_box(f"MODEL CONFIGURATION ({config_type})")
-        
+
         # Use the model's string representation which now uses the new formatting
         try:
             # The __str__ method of RompyBaseModel already handles the formatting
@@ -220,8 +219,8 @@ class ModelRun(RompyBaseModel):
                 logger.info(line)
         except Exception as e:
             # If anything goes wrong with config formatting, log the error and minimal info
-                logger.info(f"Using {type(self.config).__name__} configuration")
-                logger.debug(f"Configuration string formatting error: {str(e)}")
+            logger.info(f"Using {type(self.config).__name__} configuration")
+            logger.debug(f"Configuration string formatting error: {str(e)}")
 
         logger.info("")
         # Use helper functions to avoid circular imports
@@ -318,7 +317,12 @@ class ModelRun(RompyBaseModel):
         shutil.rmtree(self.staging_dir)
 
         from rompy.formatting import log_box
-        log_box(f"✓ Archive created successfully: {zip_fn}", logger=logger, add_empty_line=False)
+
+        log_box(
+            f"✓ Archive created successfully: {zip_fn}",
+            logger=logger,
+            add_empty_line=False,
+        )
         return zip_fn
 
     def __call__(self):

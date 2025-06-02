@@ -6,12 +6,12 @@ from rompy.swan import SwanGrid
 from rompy.swan.subcomponents.readgrid import GRIDREGULAR
 
 
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
 # Initialize logger
 logger = get_test_logger(__name__)
+
 
 # test class based on pytest fixtures
 @pytest.fixture

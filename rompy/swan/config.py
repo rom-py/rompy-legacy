@@ -98,7 +98,7 @@ class SwanConfig(BaseConfig):
         return ret
 
     def _format_value(self, obj):
-        """Custom formatter for SwanConfig values.
+        """Format SwanConfig values using the new formatting framework.
 
         This method provides special formatting for specific types used in
         SwanConfig such as grid, forcing data, and physics components.
@@ -109,118 +109,14 @@ class SwanConfig(BaseConfig):
         Returns:
             A formatted string or None to use default formatting
         """
-        from pathlib import Path
-        from datetime import datetime
+        # Only format SwanConfig objects
+        if not isinstance(obj, SwanConfig):
+            return None
 
-        # Use formatting utilities imported at the top of the file
+        # Use the new formatting framework
+        from rompy.formatting import format_value
 
-        # Format grid with relevant details and section header
-        if hasattr(obj, "cgrid") and hasattr(obj, "mxc"):
-            header, footer, _ = get_formatted_header_footer(
-                title="GRID CONFIGURATION", use_ascii=USE_ASCII_ONLY
-            )
-
-            return (
-                f"{header}\n"
-                f"  Resolution: {obj.mxc}x{obj.myc} cells\n"
-                f"  Origin:     ({obj.xpc}, {obj.ypc})\n"
-                f"  Rotation:   {obj.alpc}°\n"
-                f"  Size:       {obj.xlenc}x{obj.ylenc}\n"
-                f"{footer}"
-            )
-
-        # Format spectral resolution with section header
-        # Format spectrum with relevant details and section header
-        if hasattr(obj, "fmin") and hasattr(obj, "fmax"):
-            header, footer, _ = get_formatted_header_footer(
-                title="SPECTRAL RESOLUTION", use_ascii=USE_ASCII_ONLY
-            )
-
-            return (
-                f"{header}\n"
-                f"  Frequency range: {obj.fmin}-{obj.fmax} Hz\n"
-                f"  Frequency bins:  {obj.nfreqs}\n"
-                f"  Direction bins:  {obj.ndirs}\n"
-                f"{footer}"
-            )
-
-        # Format forcing components with section header
-        # Format forcing data with relevant details and section header
-        if hasattr(obj, "wind") or hasattr(obj, "boundary"):
-            header, footer, bullet = get_formatted_header_footer(
-                title="FORCING DATA", use_ascii=USE_ASCII_ONLY
-            )
-            lines = [header]
-
-            if hasattr(obj, "wind") and obj.wind:
-                wind_source = getattr(obj.wind, "source", "Enabled")
-                lines.append(f"  {bullet} Wind:     {wind_source}")
-            if hasattr(obj, "boundary") and obj.boundary:
-                boundary_source = getattr(obj.boundary, "source", "Enabled")
-                lines.append(f"  {bullet} Boundary: {boundary_source}")
-            if hasattr(obj, "current") and obj.current:
-                current_source = getattr(obj.current, "source", "Enabled")
-                lines.append(f"  {bullet} Current:  {current_source}")
-            if hasattr(obj, "bottom") and obj.bottom:
-                bottom_source = getattr(obj.bottom, "source", "Enabled")
-                lines.append(f"  {bullet} Bottom:   {bottom_source}")
-
-            lines.append(footer)
-            return "\n".join(lines)
-
-        # Format physics components with section header
-        # Format physics settings with relevant details and section header
-        if hasattr(obj, "friction") and hasattr(obj, "cmd"):
-            header, footer, bullet = get_formatted_header_footer(
-                title="PHYSICS SETTINGS", use_ascii=USE_ASCII_ONLY
-            )
-            friction = getattr(obj, "friction", "default")
-
-            return (
-                f"{header}\n"
-                f"  {bullet} Friction: {friction}\n"
-                f"  {bullet} Command:  {obj.cmd}\n"
-                f"{footer}"
-            )
-
-        # Format outputs with section header
-        # Format output settings with relevant details and section header
-        if hasattr(obj, "grid") and hasattr(obj, "spec"):
-            header, footer, bullet = get_formatted_header_footer(
-                title="OUTPUT CONFIGURATION", use_ascii=USE_ASCII_ONLY
-            )
-            sub_bullet = "-" if USE_ASCII_ONLY else "◦"
-
-            lines = [header]
-
-            # Grid outputs
-            lines.append(f"  {bullet} Grid Outputs:")
-            if hasattr(obj.grid, "period"):
-                period_str = str(obj.grid.period)
-                lines.append(f"    {sub_bullet} Period: {period_str}")
-
-            # Spec outputs
-            lines.append(f"  {bullet} Spectral Outputs:")
-            if hasattr(obj.spec, "period"):
-                period_str = str(obj.spec.period)
-                lines.append(f"    {sub_bullet} Period: {period_str}")
-            if hasattr(obj.spec, "locations"):
-                num_locs = len(obj.spec.locations)
-                lines.append(f"    {sub_bullet} Locations: {num_locs}")
-
-            lines.append(footer)
-            return "\n".join(lines)
-
-        # Format Path objects
-        if isinstance(obj, Path):
-            return str(obj)
-
-        # Format datetime objects
-        if isinstance(obj, datetime):
-            return obj.isoformat(" ")
-
-        # Use default formatting for other types
-        return None
+        return format_value(obj)
 
 
 STARTUP_TYPE = Annotated[STARTUP, Field(description="Startup components")]
@@ -649,90 +545,12 @@ class SwanConfigComponents(BaseConfig):
                         lines.append(f"      Variables: {len(outputs)} variables")
 
             # Spectral output
-            if hasattr(obj, "specout"):
-                spec = obj.specout
-                sname = getattr(spec, "sname", "unknown")
-                fname = getattr(spec, "fname", "unknown")
-                lines.append(f"  {bullet} Spectral Output:")
-                lines.append(f"      Name: {sname}")
-                lines.append(f"      File: {fname}")
-                if hasattr(spec, "dim"):
-                    dim_type = getattr(spec.dim, "model_type", "unknown")
-                    lines.append(f"      Dimension: {dim_type}")
+            return None
 
-            lines.append(footer)
-            return "\n".join(lines)
+        # Use the new formatting framework
+        from rompy.formatting import format_value
 
-        # Format physics components
-        if hasattr(obj, "physics") and obj.physics is not None:
-            physics_type = getattr(obj.physics, "type", "standard")
-
-            header, footer, bullet = get_formatted_header_footer(
-                title="PHYSICS CONFIGURATION", use_ascii=USE_ASCII_ONLY
-            )
-
-            lines = [header]
-            lines.append(f"  {bullet} Type:     {physics_type}")
-
-            if hasattr(obj.physics, "friction"):
-                friction = getattr(obj.physics, "friction", "default")
-                lines.append(f"  {bullet} Friction: {friction}")
-
-            if hasattr(obj.physics, "gen"):
-                gen = obj.physics.gen
-                gen_type = getattr(gen, "model_type", "unknown")
-                lines.append(f"  {bullet} Generation: {gen_type}")
-
-            if hasattr(obj.physics, "breaking"):
-                breaking = obj.physics.breaking
-                break_type = getattr(breaking, "model_type", "unknown")
-                lines.append(f"  {bullet} Breaking: {break_type}")
-
-            lines.append(footer)
-            return "\n".join(lines)
-
-        # Format physics component directly
-        if hasattr(obj, "model_type") and getattr(obj, "model_type") == "physics":
-            header, footer, bullet = get_formatted_header_footer(
-                title="PHYSICS CONFIGURATION", use_ascii=USE_ASCII_ONLY
-            )
-
-            lines = [header]
-
-            if hasattr(obj, "gen"):
-                gen = obj.gen
-                gen_type = getattr(gen, "model_type", "unknown")
-                lines.append(f"  {bullet} Generation: {gen_type}")
-
-                if hasattr(gen, "source_terms"):
-                    source_type = getattr(gen.source_terms, "model_type", "unknown")
-                    lines.append(f"      Source terms: {source_type}")
-
-            if hasattr(obj, "breaking"):
-                breaking = obj.breaking
-                break_type = getattr(breaking, "model_type", "unknown")
-                gamma = getattr(breaking, "gamma", None)
-                lines.append(f"  {bullet} Breaking: {break_type}")
-                if gamma:
-                    lines.append(f"      Gamma: {gamma}")
-
-            if hasattr(obj, "friction"):
-                friction = obj.friction
-                fric_type = getattr(friction, "model_type", "unknown")
-                lines.append(f"  {bullet} Friction: {fric_type}")
-                if hasattr(friction, "kn"):
-                    lines.append(f"      kn: {friction.kn}")
-
-            if hasattr(obj, "triad"):
-                triad = obj.triad
-                triad_type = getattr(triad, "model_type", "unknown")
-                lines.append(f"  {bullet} Triad: {triad_type}")
-
-            lines.append(footer)
-            return "\n".join(lines)
-
-        # Use default formatting for other types
-        return None
+        return format_value(obj)
 
     def __call__(self, runtime) -> str:
         # Use the new LoggingConfig for logging settings

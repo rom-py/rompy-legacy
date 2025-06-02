@@ -249,21 +249,22 @@ def log_box(
     """
     # Import here to avoid circular imports
     from rompy.core.logging import get_logger, RompyLogger
-    
+
     # Ensure we have a valid logger
     if logger is None:
         logger = get_logger()
-    
+
     # If the logger is not a RompyLogger, get a new one with the same name
     if not isinstance(logger, RompyLogger):
-        logger_name = getattr(logger, 'name', __name__)
+        logger_name = getattr(logger, "name", __name__)
         logger = get_logger(logger_name)
-    
+
     # Ensure the logger is properly initialized
-    if not hasattr(logger, '_box_formatter') or logger._box_formatter is None:
+    if not hasattr(logger, "_box_formatter") or logger._box_formatter is None:
         from rompy.core.logging.formatter import formatter as default_formatter
+
         logger._box_formatter = default_formatter
-    
+
     # Get the global ASCII mode if not explicitly set
     if use_ascii is None:
         use_ascii = LoggingConfig().use_ascii
@@ -279,7 +280,7 @@ def log_box(
     for line in box.split("\n"):
         if line.strip():  # Only log non-empty lines
             logger.info(line)
-    
+
     # Add an empty line if requested
     if add_empty_line:
         logger.info("")

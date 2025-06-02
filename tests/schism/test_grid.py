@@ -20,6 +20,7 @@ here = Path(__file__).parent
 
 eps = entry_points(group="rompy.config")
 
+
 @pytest.mark.skipif("schism" not in eps.names, reason="requires SCHISM")
 def test_SCHISMGrid2D(tmpdir):
     hgrid = DataBlob(source=here / "test_data/hgrid.gr3")

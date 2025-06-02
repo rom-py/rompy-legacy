@@ -48,6 +48,7 @@ class RompyBaseModel(BaseModel):
             A string representation of the object, or None to use default formatting
         """
         from rompy.formatting import format_value
+
         return format_value(obj)
 
     def _str_helper(self, lines: list, name: str, obj: Any, level: int) -> None:
