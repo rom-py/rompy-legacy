@@ -1,4 +1,3 @@
-import logging
 import os
 import time as time_module
 from pathlib import Path
@@ -12,16 +11,10 @@ from cookiecutter.exceptions import NonTemplatedInputDirException
 from cookiecutter.find import find_template
 
 from rompy.core.types import RompyBaseModel
-from rompy.formatting import (
-    ARROW,
-    BULLET,
-    get_formatted_box,
-    get_formatted_header_footer,
-    log_box,
-    log_status,
-)
 
-logger = logging.getLogger(__name__)
+from rompy.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 def repository_has_cookiecutter_json(repo_directory):
@@ -140,10 +133,10 @@ def render(context, template, output_dir, checkout=None):
             logger.info(line)
     else:
         # Fall back to simple logging if formatting failed
-        logger.info(f"Template source: {template}")
-        logger.info(f"Output directory: {output_dir}")
+        logger.info("Template source: %s", template)
+        logger.info("Output directory: %s", output_dir)
         if checkout:
-            logger.info(f"Using template version: {checkout}")
+            logger.info("Using template version: %s", checkout)
 
     # Initialize context for cookiecutter
     context["cookiecutter"] = {}
@@ -153,7 +146,7 @@ def render(context, template, output_dir, checkout=None):
     )
 
     # Determine the repo directory
-    logger.info(f"{ARROW} Locating template repository...")
+    logger.bullet_list(["Locating template repository..."])
 
     repo_dir, cleanup = cc_repository.determine_repo_dir(
         template=template,
@@ -162,11 +155,11 @@ def render(context, template, output_dir, checkout=None):
         checkout=checkout,
         no_input=True,
     )
-    logger.info(f"Template repository located at: {repo_dir}")
+    logger.info("Template repository located at: %s", repo_dir)
     context["_template"] = repo_dir
 
     # Generate files from template
-    logger.info(f"{ARROW} Generating files from template...")
+    logger.bullet_list(["Generating files from template..."])
     render_start = time_module.time()
     staging_dir = cc_generate.generate_files(
         repo_dir=repo_dir,
@@ -222,10 +215,14 @@ def render(context, template, output_dir, checkout=None):
         for line in results_info.split("\n"):
             logger.info(line)
     else:
-        # Fallback to simple logging if formatting failed
-        logger.info(f"{ARROW} Rendering time:      {render_time:.2f} seconds")
-        logger.info(f"{ARROW} Total process time:  {elapsed:.2f} seconds")
-        logger.info(f"{ARROW} Files created:       {file_count}")
-        logger.info(f"{ARROW} Output location:     {staging_dir}")
+        # Fallback to bullet list if formatting failed
+        logger.bullet_list(
+            [
+                f"Rendering time:      {render_time:.2f} seconds",
+                f"Total process time:  {elapsed:.2f} seconds",
+                f"Files created:       {file_count}",
+                f"Output location:     {staging_dir}",
+            ]
+        )
 
     return staging_dir
