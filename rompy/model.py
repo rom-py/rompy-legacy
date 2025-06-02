@@ -29,7 +29,6 @@ from rompy.utils import load_entry_points
 
 # Initialize the logger
 logger = get_logger(__name__)
-__import__("ipdb").set_trace()
 
 
 # Accepted config types are defined in the entry points of the rompy.config group
@@ -105,7 +104,8 @@ class ModelRun(RompyBaseModel):
 
         """
         # Import formatting utilities
-        from rompy.formatting import format_table_row, get_formatted_box, log_box
+        from rompy.formatting import (format_table_row, get_formatted_box,
+                                      log_box)
 
         # Format model settings in a structured way
         config_type = type(self.config).__name__
@@ -168,37 +168,20 @@ class ModelRun(RompyBaseModel):
             title=None, logger=logger, add_empty_line=True  # Just the bottom border
         )
 
-        # Display detailed configuration info using the hierarchical __str__ method
-        logger.info(f"MODEL CONFIGURATION ({config_type}):")
-
-        # First try to use the _format_value method directly if available
-        if hasattr(self.config, "_format_value"):
-            try:
-                # Try using _format_value method directly for structured formatting
-                formatted_config = self.config._format_value(self.config)
-                if formatted_config:
-                    for line in formatted_config.split("\n"):
-                        logger.info(line)
-                    # If we successfully used _format_value, we're done
-                    formatted = True
-                else:
-                    # _format_value returned None, fall back to str()
-                    formatted = False
-            except Exception as e:
-                logger.debug(f"Error in _format_value: {str(e)}")
-                formatted = False
-        else:
-            formatted = False
-
-        # If _format_value didn't work or isn't available, fall back to str()
-        if not formatted:
-            try:
-                # Use hierarchical string representation from RompyBaseModel
-                config_lines = str(self.config).split("\n")
-                for line in config_lines:
-                    logger.info(line)
-            except Exception as e:
-                # If anything goes wrong with config formatting, log the error and minimal info
+        # Display detailed configuration info using the new formatting framework
+        from rompy.formatting import log_box
+        
+        # Create a box with the configuration type as title
+        log_box(f"MODEL CONFIGURATION ({config_type})")
+        
+        # Use the model's string representation which now uses the new formatting
+        try:
+            # The __str__ method of RompyBaseModel already handles the formatting
+            config_str = str(self.config)
+            for line in config_str.split("\n"):
+                logger.info(line)
+        except Exception as e:
+            # If anything goes wrong with config formatting, log the error and minimal info
                 logger.info(f"Using {type(self.config).__name__} configuration")
                 logger.debug(f"Configuration string formatting error: {str(e)}")
 
@@ -311,48 +294,4 @@ class ModelRun(RompyBaseModel):
     def __call__(self):
         return self.generate()
 
-    def _format_value(self, obj):
-        """Custom formatter for ModelRun values"""
-        from datetime import datetime, timedelta
-        from pathlib import Path
-
-        from .core.time import TimeRange
-
-        # Format TimeRange object with more detail
-        if isinstance(obj, TimeRange):
-            duration = obj.end - obj.start
-            formatted_duration = obj.format_duration(duration)
-            return (
-                f"{obj.start.isoformat(' ')} to {obj.end.isoformat(' ')}\n"
-                f"  Duration: {formatted_duration}\n"
-                f"  Interval: {str(obj.interval)}\n"
-                f"  Include End: {obj.include_end}"
-            )
-
-        # Format DateTime objects in readable format
-        if isinstance(obj, datetime):
-            return obj.isoformat(" ")
-
-        # Format timedelta objects using TimeRange's format_duration
-        if isinstance(obj, timedelta):
-            from .core.time import TimeRange
-
-            # We need to create a TimeRange instance to use the format_duration method
-            tr = TimeRange(start=datetime.now(), duration=obj)
-            return tr.format_duration(obj)
-
-        # Format Path objects as strings
-        if isinstance(obj, Path):
-            return str(obj)
-
-        # Format config with just its type name to avoid recursive dump
-        if hasattr(obj, "model_type") and isinstance(obj, RompyBaseModel):
-            config_type = type(obj).__name__
-            description = getattr(obj, "description", "")
-            result = f"{config_type}"
-            if description:
-                result += f" - {description}"
-            return result
-
-        # Use default formatting for everything else
-        return None
+    # Formatting is now handled by the formatting module

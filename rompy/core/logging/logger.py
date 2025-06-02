@@ -21,15 +21,33 @@ class RompyLogger(logging.Logger):
     """Enhanced logger with ROMPY-specific functionality."""
 
     def __init__(self, name: str, level: int = logging.NOTSET):
-        """Initialize the logger."""
+        """Initialize the logger.
+        
+        Args:
+            name: The name of the logger
+            level: The log level (defaults to logging.NOTSET)
+        """
+        # Initialize the base logger
         super().__init__(name, level)
-        self._box_formatter: Optional[BoxFormatter] = None
+        
+        # Initialize the box formatter
+        self._box_formatter = formatter
+        
+        # Ensure the formatter is properly set up
+        if not hasattr(self, '_box_formatter') or self._box_formatter is None:
+            from .formatter import formatter as default_formatter
+            self._box_formatter = default_formatter
 
     @property
     def box_formatter(self) -> BoxFormatter:
-        """Get the box formatter for this logger."""
-        if self._box_formatter is None:
-            self._box_formatter = formatter
+        """Get the box formatter for this logger.
+        
+        Returns:
+            BoxFormatter: The box formatter instance
+        """
+        if not hasattr(self, '_box_formatter') or self._box_formatter is None:
+            from .formatter import formatter as default_formatter
+            self._box_formatter = default_formatter
         return self._box_formatter
 
     def box(
