@@ -92,9 +92,10 @@ class TemplateRenderer(RompyBaseModel):
         # Only format TemplateRenderer objects
         if not isinstance(obj, TemplateRenderer):
             return None
-            
+
         # Use the new formatting framework
         from rompy.formatting import format_value
+
         return format_value(obj)
 
     def __call__(self) -> str:
@@ -192,19 +193,20 @@ def render(context, template, output_dir, checkout=None):
 
         def _format_value(self, obj) -> Optional[str]:
             """Format render results for display using the new formatting framework.
-            
+
             Args:
                 obj: The object to format
-                
+
             Returns:
                 A formatted string or None to use default formatting
             """
             # Only format RenderResults objects
             if not isinstance(obj, RenderResults):
                 return None
-                
+
             # Use the new formatting framework
             from rompy.formatting import format_value
+
             return format_value(obj)
 
     # Create and format results

@@ -28,11 +28,11 @@ def pytest_addoption(parser):
 def pytest_configure(config):
     """Configure pytest with plugins and settings."""
     import logging
-    
+
     # Get log level from command line or use default
     log_level_str = config.getoption("--rompy-log-level")
     log_level = getattr(logging, log_level_str)
-    
+
     # Configure logging for tests
     configure_test_logging(level=log_level_str)
 
@@ -40,15 +40,15 @@ def pytest_configure(config):
 @pytest.fixture(scope="session", autouse=True)
 def setup_logging():
     """Set up logging for all tests.
-    
+
     This fixture runs once per test session and ensures that logging is properly
     configured for all tests.
     """
     # Import here to avoid circular imports
     from test_utils.logging import configure_test_logging
-    
+
     # Configure logging with default settings
     configure_test_logging()
-    
+
     # Return a function to reconfigure logging if needed
     return configure_test_logging
