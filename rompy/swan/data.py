@@ -25,8 +25,6 @@ from rompy.core.logging import get_logger
 from rompy.formatting import (
     get_formatted_box,
     get_formatted_header_footer,
-    ARROW,
-    BULLET,
     log_box,
 )
 from rompy.swan.grid import SwanGrid
@@ -122,16 +120,22 @@ class SwanDataGrid(DataGrid):
             add_empty_line=False,
         )
 
-        logger.info(f"  {ARROW} Output file: {output_file}")
-
-        # Log additional information about the dataset
+        # Log output file and dataset information using bullet points
+        items = [f"Output file: {output_file}"]
+        
+        # Add variable information if available
         if self.z1:
             shape_info = f"{self.ds[self.z1].shape}"
-            logger.info(f"  {ARROW} Variable: {self.z1} with shape {shape_info}")
+            items.append(f"Variable: {self.z1} with shape {shape_info}")
         if self.z2:
             shape_info = f"{self.ds[self.z2].shape}"
-            logger.info(f"  {ARROW} Variable: {self.z2} with shape {shape_info}")
-        logger.info(f"  {ARROW} Scaling factor: {self.fac}")
+            items.append(f"Variable: {self.z2} with shape {shape_info}")
+            
+        # Add scaling factor
+        items.append(f"Scaling factor: {self.fac}")
+        
+        # Log all items as a bulleted list
+        logger.bullet_list(items, indent=2)
 
         start_time = time_module.time()
         if self.var.value == "bottom":
@@ -163,8 +167,14 @@ class SwanDataGrid(DataGrid):
 
         # Use the centralized functions from rompy package
 
-        logger.info(f"  {ARROW} Completed in {elapsed_time:.2f} seconds")
-        logger.info(f"  {ARROW} File size: {file_size:.2f} MB")
+        # Log completion information as a bulleted list
+        logger.bullet_list(
+            [
+                f"Completed in {elapsed_time:.2f} seconds",
+                f"File size: {file_size:.2f} MB"
+            ],
+            indent=2
+        )
 
         return f"{inpgrid}\n{readgrid}\n"
 
