@@ -10,8 +10,6 @@ from __future__ import annotations
 import logging
 from typing import Any, Optional, TypeVar, cast
 
-import ipdb
-
 from .formatter import BoxFormatter, BoxStyle, formatter
 
 T = TypeVar("T", bound="RompyLogger")
