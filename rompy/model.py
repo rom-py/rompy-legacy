@@ -98,8 +98,8 @@ class ModelRun(RompyBaseModel):
         discriminator="model_type",
     )
     delete_existing: bool = Field(False, description="Delete existing output directory")
-    model_type: Literal["modelrun"] = Field(
-        "modelrun", description="The model type for SCHISM."
+    run_id_subdir: bool = Field(
+        True, description="Use run_id subdirectory in the output directory"
     )
     _datefmt: str = "%Y%m%d.%H%M%S"
     _staging_dir: Path = None
@@ -118,7 +118,10 @@ class ModelRun(RompyBaseModel):
         return self._staging_dir
 
     def _create_staging_dir(self):
-        odir = Path(self.output_dir) / self.run_id
+        if self.run_id_subdir:
+            odir = Path(self.output_dir) / self.run_id
+        else:
+            odir = Path(self.output_dir)
         if self.delete_existing and odir.exists():
             shutil.rmtree(odir)
         odir.mkdir(parents=True, exist_ok=True)
@@ -238,6 +241,7 @@ class ModelRun(RompyBaseModel):
         # Collect context data
         cc_full = {}
         cc_full["runtime"] = self.model_dump()
+        cc_full["runtime"]["staging_dir"] = self.staging_dir
         cc_full["runtime"].update(self._generation_medatadata)
         cc_full["runtime"].update({"_datefmt": self._datefmt})
 
@@ -253,26 +257,16 @@ class ModelRun(RompyBaseModel):
             logger.info("Using static configuration...")
             cc_full["config"] = self.config
 
-        # Render templates
-        logger.info(f"Rendering model templates to {self.output_dir}/{self.run_id}...")
-        staging_dir = render(
-            cc_full, self.config.template, self.output_dir, self.config.checkout
+        render(
+            cc_full,
+            self.config.template,
+            self.config.checkout,
         )
 
         logger.info("")
-        # Use helper functions to avoid circular imports
-        # No need to import or set USE_ASCII_ONLY, we use get_ascii_mode() directly
-
-        # Use the log_box utility function
-        from rompy.formatting import log_box
-
-        log_box(
-            title="MODEL GENERATION COMPLETE",
-            logger=logger,
-            add_empty_line=False,
-        )
-        logger.info(f"Model files generated at: {staging_dir}")
-        return staging_dir
+        logger.info(f"Successfully generated project in {self.staging_dir}")
+        logger.info("-----------------------------------------------------")
+        return self.staging_dir
 
     def zip(self) -> str:
         """Zip the input files for the model run

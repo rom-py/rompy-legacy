@@ -59,86 +59,7 @@ cc_repository.repository_has_cookiecutter_json = repository_has_cookiecutter_jso
 cc_generate.find_template = find_template
 
 
-class TemplateRenderer(RompyBaseModel):
-    """Template renderer class that provides enhanced logging and formatting.
-
-    This class wraps the cookiecutter template rendering process and provides
-    detailed formatting through the _format_value method.
-    """
-
-    template: str | Path
-    output_dir: str | Path
-    context: Dict[str, Any]
-    checkout: Optional[str] = None
-
-    def _format_value(self, obj) -> Optional[str]:
-        """Format specific types of values for display using the new formatting framework.
-
-        This method formats template rendering information with rich details.
-
-        Args:
-            obj: The object to format
-
-        Returns:
-            A formatted string or None to use default formatting
-        """
-        # Only format TemplateRenderer objects
-        if not isinstance(obj, TemplateRenderer):
-            return None
-
-        # Use the new formatting framework
-        from rompy.formatting import format_value
-
-        return format_value(obj)
-
-    def __call__(self) -> str:
-        """Render the template with the given context.
-
-        Returns:
-            str: The path to the rendered template
-        """
-        return render(self.context, self.template, self.output_dir, self.checkout)
-
-
-def render(context, template, output_dir, checkout=None):
-    """Render the template with the given context.
-
-    This function handles the rendering process and provides detailed progress
-    information during the rendering.
-
-    Args:
-        context (dict): The context to use for rendering
-        template (str): The template directory or URL
-        output_dir (str): The output directory
-        checkout (str, optional): The branch, tag or commit to checkout
-
-    Returns:
-        str: The path to the rendered template
-    """
-    # Use formatting utilities imported at the top of the file
-
-    start_time = time_module.time()
-
-    # Create renderer object for nice formatting
-    renderer = TemplateRenderer(
-        template=template, output_dir=output_dir, context=context, checkout=checkout
-    )
-
-    # Format renderer info
-    renderer_info = renderer._format_value(renderer)
-
-    # Log detailed renderer info
-    if renderer_info:
-        for line in renderer_info.split("\n"):
-            logger.info(line)
-    else:
-        # Fall back to simple logging if formatting failed
-        logger.info("Template source: %s", template)
-        logger.info("Output directory: %s", output_dir)
-        if checkout:
-            logger.info("Using template version: %s", checkout)
-
-    # Initialize context for cookiecutter
+def render(context, template, checkout=None):
     context["cookiecutter"] = {}
     config_dict = cc_config.get_user_config(
         config_file=None,
@@ -165,7 +86,7 @@ def render(context, template, output_dir, checkout=None):
         repo_dir=repo_dir,
         context=context,
         overwrite_if_exists=True,
-        output_dir=output_dir,
+        output_dir=".",
     )
 
     # Log completion information
