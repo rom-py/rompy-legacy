@@ -53,7 +53,7 @@ cc_repository.repository_has_cookiecutter_json = repository_has_cookiecutter_jso
 cc_generate.find_template = find_template
 
 
-def render(context, template, output_dir, checkout=None):
+def render(context, template, checkout=None):
     context["cookiecutter"] = {}
     config_dict = cc_config.get_user_config(
         config_file=None,
@@ -73,6 +73,6 @@ def render(context, template, output_dir, checkout=None):
         repo_dir=repo_dir,
         context=context,
         overwrite_if_exists=True,
-        output_dir=output_dir,
+        output_dir=".",
     )
     return staging_dir

@@ -51,6 +51,9 @@ class ModelRun(RompyBaseModel):
         discriminator="model_type",
     )
     delete_existing: bool = Field(False, description="Delete existing output directory")
+    run_id_subdir: bool = Field(
+        True, description="Use run_id subdirectory in the output directory"
+    )
     _datefmt: str = "%Y%m%d.%H%M%S"
     _staging_dir: Path = None
 
@@ -68,7 +71,10 @@ class ModelRun(RompyBaseModel):
         return self._staging_dir
 
     def _create_staging_dir(self):
-        odir = Path(self.output_dir) / self.run_id
+        if self.run_id_subdir:
+            odir = Path(self.output_dir) / self.run_id
+        else:
+            odir = Path(self.output_dir)
         if self.delete_existing and odir.exists():
             shutil.rmtree(odir)
         odir.mkdir(parents=True, exist_ok=True)
@@ -99,6 +105,7 @@ class ModelRun(RompyBaseModel):
 
         cc_full = {}
         cc_full["runtime"] = self.model_dump()
+        cc_full["runtime"]["staging_dir"] = self.staging_dir
         cc_full["runtime"].update(self._generation_medatadata)
         cc_full["runtime"].update({"_datefmt": self._datefmt})
 
@@ -110,14 +117,16 @@ class ModelRun(RompyBaseModel):
             # Otherwise just fill in the context with the config instance itself
             cc_full["config"] = self.config
 
-        staging_dir = render(
-            cc_full, self.config.template, self.output_dir, self.config.checkout
+        render(
+            cc_full,
+            self.config.template,
+            self.config.checkout,
         )
 
         logger.info("")
-        logger.info(f"Successfully generated project in {staging_dir}")
+        logger.info(f"Successfully generated project in {self.staging_dir}")
         logger.info("-----------------------------------------------------")
-        return staging_dir
+        return self.staging_dir
 
     def zip(self) -> str:
         """Zip the input files for the model run
