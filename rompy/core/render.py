@@ -1,7 +1,7 @@
 import os
 import time as time_module
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 import cookiecutter.config as cc_config
@@ -10,9 +10,8 @@ import cookiecutter.repository as cc_repository
 from cookiecutter.exceptions import NonTemplatedInputDirException
 from cookiecutter.find import find_template
 
-from rompy.core.types import RompyBaseModel
-
 from rompy.core.logging import get_logger
+from rompy.core.types import RompyBaseModel
 
 logger = get_logger(__name__)
 
@@ -165,7 +164,7 @@ def render(context, template, output_dir, checkout=None):
         repo_dir=repo_dir,
         context=context,
         overwrite_if_exists=True,
-        output_dir=output_dir,
+        output_dir=".",
     )
 
     # Log completion information
