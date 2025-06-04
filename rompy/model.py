@@ -141,8 +141,7 @@ class ModelRun(RompyBaseModel):
 
         """
         # Import formatting utilities
-        from rompy.formatting import (format_table_row, get_formatted_box,
-                                      log_box)
+        from rompy.formatting import format_table_row, get_formatted_box, log_box
 
         # Format model settings in a structured way
         config_type = type(self.config).__name__

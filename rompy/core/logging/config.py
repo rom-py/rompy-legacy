@@ -77,9 +77,9 @@ class LoggingConfig(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         validate_default=True,
-        validate_assignment=True
+        validate_assignment=True,
     )
-    
+
     # Singleton instance
     _instance: ClassVar[Optional["LoggingConfig"]] = None
 

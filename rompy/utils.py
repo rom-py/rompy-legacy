@@ -20,8 +20,6 @@ from rompy.core.logging import get_logger
 logger = get_logger(__name__)
 
 
-
-
 def load_entry_points(egroup: str, etype: Optional[str] = None):
     """Load entry points from the rompy.source group.
 
