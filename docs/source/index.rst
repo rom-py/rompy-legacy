@@ -1,35 +1,40 @@
+. -*- mode: rst -*-
+
 =================================
 Welcome to rompy's documentation!
 =================================
 
 *Taking the pain out of ocean model setup*
 
-**This library is in early prototype stage and the interfaces are likely to change**
+**Status:** This library is under active development. While functional, interfaces may evolve.
 
-This library takes an opinionated approach to combining the functionality of the cookie-cutter library (https://github.com/cookiecutter/cookiecutter) with the XArray ecosystem (http://xarray.pydata.org/en/stable/related-projects.html) and intake (https://github.com/intake/intake) for data to aid in the configuration and evaluation of coastal scale numerical models.
+.. figure:: /_static/logo.svg
+    :align: center
+    :alt: rompy logo
+    :width: 400px
 
-There are two base classes BaseModel and BaseGrid. BaseModel implements the cookie-cutter code and model configuration packaging. BaseGrid defines a loose definition of the grid as two arrays of x, y points that establish the models geographic extents, bounding box and convex hull.
+Introduction
+------------
 
-At present only one example model has been implemented - the SwanModel (http://swanmodel.sourceforge.net/). An example cookie-cutter template for swan is provided in the ```rompy/templates``` folder. 
+Relocatable Ocean Modelling in PYthon (rompy) is a Python framework designed to streamline the configuration, execution, and analysis of coastal and ocean numerical models. It addresses the often complex and model-specific nature of setting up simulations by providing:
 
-A model implementation will generally consist of the following components:
+*   **Structured Configuration:** Leverages `Pydantic` models for defining model settings (including spatial grids, physics, forcing sources, outputs) in a clear, type-safe, and validated manner. Configurations can be defined programmatically in Python or declaratively via YAML/JSON files.
+*   **Templated Setup:** Utilizes the `cookiecutter` engine to generate model-specific input files and directory structures based on the defined configuration and runtime parameters (e.g., simulation period).
+*   **Abstracted Data Handling:** Integrates with `xarray`, `intake`, `fsspec`, and `oceanum`'s Datamesh to provide flexible ways to source, filter, and process input forcing data (bathymetry, wind, boundary conditions, etc.) required by the models.
+*   **Workflow Orchestration:** The central `ModelRun` class manages the simulation lifecycle, combining runtime information (like the simulation period) with a model-specific `Config` object to generate a complete, ready-to-run model setup.
+*   **Extensibility:** Designed with a plugin architecture using Python's `entry_points`, allowing users and developers to easily add support for new models or data sources.
 
-1. A model class that inherits from BaseModel and implements the minimal interface. At present only a private ```_get_grid()``` method.
-2. A grid class that inherits from BaseGrid and implements the minimal interface of either loading the grid from file or a model specific grid specification string
-3. An XArray accessor that has methods that translate an XArray dataset into a model specific input file format (usually some bespoke text file format). This allows convenient namespacing of methods from an XArray dataset e.g.:
+`rompy` facilitates setup for models including:
 
-   ``` ds.swan.to_inpgrid(filename) ```
+*   **SWAN:** A detailed, component-based configuration mirroring SWAN's command structure (via the `rompy-swan` package).
+*   **SCHISM:** Support including both a minimal configuration and a comprehensive namelist-based approach (via the `rompy-schism` package).
+*   **XBeach:** Configuration and input generation (via the `rompy-xbeach <https://github.com/rom-py/rompy-xbeach>`_ plugin).
 
-The final main component of the library is an intake driver that builds on the intake-xarray.DataSourceMixin and allows for the stacking of multiple model forecast datasets that are typically published in netCDF format on THREDDS/OpenDAP servers. The unique feature of the driver include:
-
-1. The ability to use format strings in the urlpath and pass a dictionary of values for the format keys. The product of the dictionary values is expanded to a set of URLs that are scanned checked for existence using the fsspec library. This allows for scanning of both local filesystems and http servers in a targetted fashion, for example a specific date range of interest.
-2. The subset of urls identified are opened with XArray with a preprocessing function that takes a dictionary of filters for common operations that are applied during pre-processing - allowing this to be parameterised in the intake catalog yaml entry for a specific dataset.
-3. The result is either a stack of model forcasts normalised to an initialisation and lead time (hindcast=false), or a pseudo-reanalysis that selects the shortest lead-time for each time point in the stack.
-
+The goal is to provide a unified, Pythonic interface for diverse ocean models, promoting reproducibility, efficiency, and automation in modelling workflows.
 
 .. toctree::
     :hidden:
-    :maxdepth: 4
+    :maxdepth: 2
 
     Home <self>
     quickstart
@@ -37,7 +42,7 @@ The final main component of the library is an intake driver that builds on the i
     models
     demo
     api
-    relational_diagrams
+    # relational_diagrams (Keep if relevant)
 
 Indices and tables
 ==================
