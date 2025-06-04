@@ -162,6 +162,14 @@ class SfluxAir(SfluxSource):
         None,
         description="name of specific humidity variable in source",
     )
+    stmp_default: float = Field(
+        -999,
+        description="default value for surface air temperature when variable is missing",
+    )
+    spfh_default: float = Field(
+        0.01,
+        description="default value for specific humidity when variable is missing",
+    )
     _variable_names = [
         "uwind_name",
         "vwind_name",
@@ -180,7 +188,9 @@ class SfluxAir(SfluxSource):
                 proxy_var = variable.replace("_name", "")
                 ds[proxy_var] = ds[self.uwind_name].copy()
                 if variable == "spfh_name":
-                    missing = 0.01
+                    missing = self.spfh_default
+                elif variable == "stmp_name":
+                    missing = self.stmp_default
                 else:
                     missing = -999
                 ds[proxy_var][:, :, :] = missing
