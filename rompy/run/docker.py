@@ -8,22 +8,12 @@ import os
 import pathlib
 import subprocess
 import time
-import abc
 from typing import Dict, List, Optional
-
-# Define a local abstract class to avoid circular imports
-class BaseRunBackend(abc.ABC):
-    """Abstract base class for model run backends."""
-    
-    @abc.abstractmethod
-    def run(self, model_run, **kwargs) -> bool:
-        """Run the model using this backend."""
-        pass
 
 logger = logging.getLogger(__name__)
 
 
-class DockerRunBackend(BaseRunBackend):
+class DockerRunBackend:
     """Execute models inside Docker containers.
     
     This backend builds Docker images if needed and runs models

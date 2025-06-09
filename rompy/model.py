@@ -23,6 +23,41 @@ logger = logging.getLogger(__name__)
 # Accepted config types are defined in the entry points of the rompy.config group
 CONFIG_TYPES = load_entry_points("rompy.config")
 
+def _load_backends():
+    """Load backends from entry points with fallback handling."""
+    run_backends = {}
+    postprocessors = {}
+    pipeline_backends = {}
+    
+    # Load run backends
+    try:
+        for backend in load_entry_points("rompy.run"):
+            name = backend.__name__.lower().replace('runbackend', '')
+            run_backends[name] = backend
+    except Exception as e:
+        logger.warning(f"Failed to load run backends: {e}")
+    
+    # Load postprocessors
+    try:
+        for proc in load_entry_points("rompy.postprocess"):
+            name = proc.__name__.lower().replace('postprocessor', '')
+            postprocessors[name] = proc
+    except Exception as e:
+        logger.warning(f"Failed to load postprocessors: {e}")
+    
+    # Load pipeline backends
+    try:
+        for backend in load_entry_points("rompy.pipeline"):
+            name = backend.__name__.lower().replace('pipelinebackend', '')
+            pipeline_backends[name] = backend
+    except Exception as e:
+        logger.warning(f"Failed to load pipeline backends: {e}")
+    
+    return run_backends, postprocessors, pipeline_backends
+
+# Load backends from entry points
+RUN_BACKENDS, POSTPROCESSORS, PIPELINE_BACKENDS = _load_backends()
+
 
 class ModelRun(RompyBaseModel):
     """A model run.
@@ -164,8 +199,12 @@ class ModelRun(RompyBaseModel):
         """
         Run the model using the specified backend.
 
-        This method delegates to the appropriate run backend based on the backend parameter.
-        Available backends are registered through entry points in the rompy.run group.
+        This method uses entry points to load and execute the appropriate run backend.
+        Available backends are automatically discovered from the rompy.run entry point group.
+        
+        Built-in backends:
+        - "local": Execute the model locally using the system's Python interpreter
+        - "docker": Execute the model inside a Docker container (if available)
 
         Args:
             backend: Name of the run backend to use (default: "local")
@@ -177,18 +216,16 @@ class ModelRun(RompyBaseModel):
         Raises:
             ValueError: If the specified backend is not available
         """
-        from rompy.run import RunBackend
-
-        # Get the requested backend class
-        backend_class = RunBackend.get_backend(backend)
-        if not backend_class:
-            available = RunBackend.list_backends()
+        # Get the requested backend class from entry points
+        if backend not in RUN_BACKENDS:
+            available = list(RUN_BACKENDS.keys())
             raise ValueError(
                 f"Unknown run backend: {backend}. "
                 f"Available backends: {', '.join(available)}"
             )
 
         # Create an instance and run the model
+        backend_class = RUN_BACKENDS[backend]
         backend_instance = backend_class()
         return backend_instance.run(self, **kwargs)
 
@@ -196,8 +233,11 @@ class ModelRun(RompyBaseModel):
         """
         Postprocess the model outputs using the specified processor.
 
-        This method delegates to the appropriate postprocessor based on the processor parameter.
-        Available processors are registered through entry points in the rompy.postprocess group.
+        This method uses entry points to load and execute the appropriate postprocessor.
+        Available processors are automatically discovered from the rompy.postprocess entry point group.
+        
+        Built-in processors:
+        - "noop": A placeholder processor that does nothing but returns success
 
         Args:
             processor: Name of the postprocessor to use (default: "noop")
@@ -209,18 +249,16 @@ class ModelRun(RompyBaseModel):
         Raises:
             ValueError: If the specified processor is not available
         """
-        from rompy.postprocess import Postprocessor
-
-        # Get the requested postprocessor class
-        processor_class = Postprocessor.get_processor(processor)
-        if not processor_class:
-            available = Postprocessor.list_processors()
+        # Get the requested postprocessor class from entry points
+        if processor not in POSTPROCESSORS:
+            available = list(POSTPROCESSORS.keys())
             raise ValueError(
                 f"Unknown postprocessor: {processor}. "
                 f"Available processors: {', '.join(available)}"
             )
 
         # Create an instance and process the outputs
+        processor_class = POSTPROCESSORS[processor]
         processor_instance = processor_class()
         return processor_instance.process(self, **kwargs)
 
@@ -229,9 +267,11 @@ class ModelRun(RompyBaseModel):
         Run the complete model pipeline (generate, run, postprocess) using the specified pipeline backend.
 
         This method executes the entire model workflow from input generation through running
-        the model to postprocessing outputs. It delegates to the appropriate pipeline backend
-        based on the pipeline_backend parameter. Available pipeline backends are registered
-        through entry points in the rompy.pipeline group.
+        the model to postprocessing outputs. It uses entry points to load and execute the 
+        appropriate pipeline backend from the rompy.pipeline entry point group.
+        
+        Built-in pipeline backends:
+        - "local": Execute the complete pipeline locally using the existing ModelRun methods
 
         Args:
             pipeline_backend: Name of the pipeline backend to use (default: "local")
@@ -247,17 +287,15 @@ class ModelRun(RompyBaseModel):
         Raises:
             ValueError: If the specified pipeline backend is not available
         """
-        from rompy.pipeline import PipelineBackend
-
-        # Get the requested pipeline backend class
-        backend_class = PipelineBackend.get_backend(pipeline_backend)
-        if not backend_class:
-            available = PipelineBackend.list_backends()
+        # Get the requested pipeline backend class from entry points
+        if pipeline_backend not in PIPELINE_BACKENDS:
+            available = list(PIPELINE_BACKENDS.keys())
             raise ValueError(
                 f"Unknown pipeline backend: {pipeline_backend}. "
                 f"Available backends: {', '.join(available)}"
             )
 
         # Create an instance and execute the pipeline
+        backend_class = PIPELINE_BACKENDS[pipeline_backend]
         backend_instance = backend_class()
         return backend_instance.execute(self, **kwargs)
