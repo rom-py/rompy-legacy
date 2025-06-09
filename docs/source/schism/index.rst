@@ -33,32 +33,41 @@ Main objects
 
    rompy.schism.data.SCHISMDataSflux
    rompy.schism.data.SCHISMDataWave
-   rompy.schism.data.SCHISMDataOcean
-   rompy.schism.data.SCHISMDataTides
+   rompy.schism.data.SCHISMDataBoundaryConditions
+   rompy.schism.data.HotstartConfig
    rompy.schism.data.SCHISMData
 
 
-Enhanced Tides
---------------
+Boundary Conditions
+-------------------
 
-The enhanced tides module provides improved support for SCHISM tidal boundaries with more flexible configuration options.
+The boundary conditions module provides a unified interface for configuring all types of SCHISM boundary conditions including tidal, ocean, river, and nested model boundaries.
 
 .. toctree::
    :maxdepth: 2
 
    enhanced_tides
 
+Hotstart Configuration
+----------------------
+
+The hotstart system provides integrated initial condition file generation, allowing you to create hotstart.nc files from the same ocean data sources used for boundary conditions.
+
+.. toctree::
+   :maxdepth: 2
+
+   hotstart
+
 .. autosummary::
    :nosignatures:
    :toctree: _generated/
 
-   rompy.schism.tides_enhanced.TidalDataset
-   rompy.schism.tides_enhanced.BoundarySetup
-   rompy.schism.tides_enhanced.SCHISMDataTidesEnhanced
-   rompy.schism.tides_enhanced.create_tidal_only_config
-   rompy.schism.tides_enhanced.create_hybrid_config
-   rompy.schism.tides_enhanced.create_river_config
-   rompy.schism.tides_enhanced.create_nested_config
+   rompy.schism.data.SCHISMDataBoundaryConditions
+   rompy.schism.data.BoundarySetupWithSource
+   rompy.schism.boundary_conditions.create_tidal_only_boundary_config
+   rompy.schism.boundary_conditions.create_hybrid_boundary_config
+   rompy.schism.boundary_conditions.create_river_boundary_config
+   rompy.schism.boundary_conditions.create_nested_boundary_config
 
 
 Config Minimal
