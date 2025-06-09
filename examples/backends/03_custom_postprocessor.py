@@ -15,14 +15,18 @@ from datetime import datetime
 
 from rompy.model import ModelRun
 from rompy.core.time import TimeRange
-from rompy.postprocess import Postprocessor
+# No need to import abstract base class anymore
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class ZipOutputsPostprocessor(Postprocessor):
-    """Postprocessor that zips the model outputs."""
+class ZipOutputsPostprocessor:
+    """Custom postprocessor that zips the model outputs.
+    
+    This class implements the postprocessor interface by providing a process() method
+    that takes a model_run instance and returns a dictionary with results.
+    """
     
     def process(self, model_run, output_zip: str = "outputs.zip", **kwargs) -> Dict[str, Any]:
         """Zip the model outputs.

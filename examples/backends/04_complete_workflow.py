@@ -14,7 +14,7 @@ from typing import Dict, Any, Optional
 
 from rompy.model import ModelRun
 from rompy.core.time import TimeRange
-from rompy.postprocess import Postprocessor
+# No need to import abstract base class anymore
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -65,8 +65,12 @@ class ShellCommandBackend:
             return False
 
 # 2. Define a custom postprocessor
-class FileInfoPostprocessor(Postprocessor):
-    """Postprocessor that collects information about output files."""
+class FileInfoPostprocessor:
+    """Custom postprocessor that collects information about output files.
+    
+    This class implements the postprocessor interface by providing a process() method
+    that takes a model_run instance and returns a dictionary with results.
+    """
     
     def process(self, model_run, **kwargs) -> Dict[str, Any]:
         """Collect information about output files.
