@@ -1,6 +1,8 @@
 import logging
 import os
 import sys
+from datetime import datetime
+from enum import IntEnum
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
@@ -10,6 +12,7 @@ import scipy as sp
 import xarray as xr
 from cloudpathlib import AnyPath
 from pydantic import ConfigDict, Field, field_validator, model_validator
+
 from pylib import compute_zcor, read_schism_bpfile, read_schism_hgrid, read_schism_vgrid
 
 from rompy.core.data import DataGrid
@@ -18,17 +21,31 @@ from rompy.core.boundary import BoundaryWaveStation, DataBoundary
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
 from rompy.schism.bctides import Bctides
-from rompy.schism.tides_enhanced import SCHISMDataTidesEnhanced
 from rompy.schism.boundary import Boundary3D
 from rompy.schism.boundary import BoundaryData
+from rompy.schism.boundary_tides import (ElevationType, TidalBoundary,
+                                         TracerType, VelocityType,
+                                         create_tidal_boundary)
 from rompy.schism.grid import SCHISMGrid
-from rompy.schism.hotstart import SCHISMDataHotstart
+
+from rompy.schism.tides_enhanced import BoundarySetup, TidalDataset
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
 
-# Import numpy type handlers to enable proper Pydantic validation with numpy types
-from .numpy_types import to_python_type
+
+def to_python_type(value):
+    """Convert numpy types to Python native types."""
+    if isinstance(value, np.ndarray):
+        return value.tolist()
+    elif isinstance(value, (np.integer, np.int64, np.int32)):
+        return int(value)
+    elif isinstance(value, (np.floating, np.float64, np.float32)):
+        return float(value)
+    elif isinstance(value, np.bool_):
+        return bool(value)
+    else:
+        return value
 
 logger = logging.getLogger(__name__)
 
@@ -651,8 +668,19 @@ class SCHISMDataBoundary(DataBoundary):
         else:
             dt = 3600
 
-        # Get the variable data
-        data = ds[self.variables[0]].values
+        # Get the variable data - handle multiple variables (e.g., u,v for velocity)
+        num_components = len(self.variables)
+        
+        # Process all variables and stack them
+        variable_data = []
+        for var in self.variables:
+            variable_data.append(ds[var].values)
+        
+        # Stack variables along a new component axis (last axis)
+        if num_components == 1:
+            data = variable_data[0]
+        else:
+            data = np.stack(variable_data, axis=-1)
 
         # Determine if we're working with 3D data
         is_3d_data = grid.is_3d and self.coords.z is not None
@@ -677,18 +705,42 @@ class SCHISMDataBoundary(DataBoundary):
                     f"Dimension order: time={time_dim_idx}, z={z_dim_idx}, x={x_dim_idx}"
                 )
 
-                # Reshape data to expected format if needed (time, x, z)
-                if not (time_dim_idx == 0 and x_dim_idx == 1 and z_dim_idx == 2):
-                    trans_dims = list(range(data.ndim))
-                    trans_dims[time_dim_idx] = 0
-                    trans_dims[x_dim_idx] = 1
-                    trans_dims[z_dim_idx] = 2
+                # Reshape data to expected format if needed (time, x, z, [components])
+                if num_components == 1:
+                    # Single component case - need to transpose to (time, x, z)
+                    if not (time_dim_idx == 0 and x_dim_idx == 1 and z_dim_idx == 2):
+                        trans_dims = list(range(data.ndim))
+                        trans_dims[time_dim_idx] = 0
+                        trans_dims[x_dim_idx] = 1
+                        trans_dims[z_dim_idx] = 2
 
-                    data = np.transpose(data, trans_dims)
-                    logger.debug(f"Transposed data shape: {data.shape}")
+                        data = np.transpose(data, trans_dims)
+                        logger.debug(f"Transposed data shape: {data.shape}")
+                    
+                    # Add the component dimension for SCHISM
+                    time_series = np.expand_dims(data, axis=3)
+                else:
+                    # Multiple component case - data is already (time, x, z, components)
+                    # Need to transpose the first 3 dimensions to (time, x, z) if needed
+                    if not (time_dim_idx == 0 and x_dim_idx == 1 and z_dim_idx == 2):
+                        trans_dims = list(range(data.ndim - 1))  # Exclude component axis
+                        trans_dims[time_dim_idx] = 0
+                        trans_dims[x_dim_idx] = 1
+                        trans_dims[z_dim_idx] = 2
+                        # Keep component axis at the end
+                        trans_dims.append(data.ndim - 1)
 
-            # Add the component dimension for SCHISM
-            time_series = np.expand_dims(data, axis=3)
+                        data = np.transpose(data, trans_dims)
+                        logger.debug(f"Transposed data shape: {data.shape}")
+                    
+                    # Data already has component dimension from stacking
+                    time_series = data
+            else:
+                # Fallback: add component dimension if needed
+                if num_components == 1:
+                    time_series = np.expand_dims(data, axis=3)
+                else:
+                    time_series = data
 
             # Calculate zcor for 3D
             # For PyLibs vgrid, extract sigma coordinates differently
@@ -785,10 +837,13 @@ class SCHISMDataBoundary(DataBoundary):
 
             # Get source z-levels and prepare for interpolation
             z_src = ds[self.coords.z].values
-            data_shape = data.shape
+            data_shape = time_series.shape
 
             # Initialize interpolated data array with the maximum number of vertical levels
-            interpolated_data = np.zeros((data_shape[0], data_shape[1], max_nvrt))
+            if num_components == 1:
+                interpolated_data = np.zeros((data_shape[0], data_shape[1], max_nvrt))
+            else:
+                interpolated_data = np.zeros((data_shape[0], data_shape[1], max_nvrt, data_shape[3]))
 
             # For each time step and boundary point
             for t in range(data_shape[0]):  # time
@@ -799,25 +854,47 @@ class SCHISMDataBoundary(DataBoundary):
                         n
                     ]  # Get the number of vertical levels for this point
 
-                    # Extract vertical profile
-                    profile = data[t, n, :]
+                    if num_components == 1:
+                        # Extract vertical profile for single component
+                        profile = time_series[t, n, :, 0]
 
-                    # Create interpolator for this profile
-                    interp = sp.interpolate.interp1d(
-                        z_src,
-                        profile,
-                        kind="linear",
-                        bounds_error=False,
-                        fill_value="extrapolate",
-                    )
+                        # Create interpolator for this profile
+                        interp = sp.interpolate.interp1d(
+                            z_src,
+                            profile,
+                            kind="linear",
+                            bounds_error=False,
+                            fill_value="extrapolate",
+                        )
 
-                    # Interpolate to SCHISM levels for this boundary point
-                    # Only interpolate up to the actual number of levels for this point
-                    interpolated_data[t, n, :nvrt_n] = interp(z_dest[:nvrt_n])
+                        # Interpolate to SCHISM levels for this boundary point
+                        # Only interpolate up to the actual number of levels for this point
+                        interpolated_data[t, n, :nvrt_n] = interp(z_dest[:nvrt_n])
+                    else:
+                        # Handle multiple components (e.g., u,v for velocity)
+                        for c in range(num_components):
+                            # Extract vertical profile for this component
+                            profile = time_series[t, n, :, c]
+
+                            # Create interpolator for this profile
+                            interp = sp.interpolate.interp1d(
+                                z_src,
+                                profile,
+                                kind="linear",
+                                bounds_error=False,
+                                fill_value="extrapolate",
+                            )
+
+                            # Interpolate to SCHISM levels for this boundary point
+                            # Only interpolate up to the actual number of levels for this point
+                            interpolated_data[t, n, :nvrt_n, c] = interp(z_dest[:nvrt_n])
 
             # Replace data with interpolated values
             data = interpolated_data
-            time_series = np.expand_dims(data, axis=3)
+            if num_components == 1:
+                time_series = np.expand_dims(data, axis=3)
+            else:
+                time_series = data
 
             # Store the variable vertical levels in the output dataset
             # Create a 2D array where each row contains the vertical levels for a boundary node
@@ -830,9 +907,9 @@ class SCHISMDataBoundary(DataBoundary):
             schism_ds = xr.Dataset(
                 coords={
                     "time": ds.time,
-                    "nOpenBndNodes": np.arange(data.shape[1]),
+                    "nOpenBndNodes": np.arange(time_series.shape[1]),
                     "nLevels": np.arange(max_nvrt),
-                    "nComponents": np.array([1]),
+                    "nComponents": np.arange(num_components),
                     "one": np.array([1]),
                 },
                 data_vars={
@@ -855,15 +932,19 @@ class SCHISMDataBoundary(DataBoundary):
             # # 2D case - simpler handling
 
             # Add level and component dimensions for SCHISM
-            time_series = np.expand_dims(data, axis=(2, 3))
+            if num_components == 1:
+                time_series = np.expand_dims(data, axis=(2, 3))
+            else:
+                # Multiple components: add level dimension but keep component dimension
+                time_series = np.expand_dims(data, axis=2)
 
             # Create output dataset
             schism_ds = xr.Dataset(
                 coords={
                     "time": ds.time,
-                    "nOpenBndNodes": np.arange(data.shape[1]),
+                    "nOpenBndNodes": np.arange(time_series.shape[1]),
                     "nLevels": np.array([0]),  # Single level for 2D
-                    "nComponents": np.array([1]),
+                    "nComponents": np.arange(num_components),
                     "one": np.array([1]),
                 },
                 data_vars={
@@ -937,139 +1018,230 @@ class SCHISMDataBoundary(DataBoundary):
         return schism_ds
 
 
-class SCHISMDataOcean(RompyBaseModel):
-    """This class is used define all ocean boundary forcing"""
 
-    data_type: Literal["ocean"] = Field(
-        default="ocean",
+
+
+
+
+class SCHISMData(RompyBaseModel):
+    """
+    This class is used to gather all required input forcing for SCHISM
+    """
+
+    data_type: Literal["schism"] = Field(
+        default="schism",
         description="Model type discriminator",
     )
-    elev2D: Optional[Union[DataBlob, SCHISMDataBoundary]] = Field(
-        None,
-        description="elev2D",
+    atmos: Optional[SCHISMDataSflux] = Field(None, description="atmospheric data")
+    wave: Optional[Union[DataBlob, SCHISMDataWave]] = Field(
+        None, description="wave data"
     )
-    uv3D: Optional[Union[DataBlob, SCHISMDataBoundary]] = Field(
-        None,
-        description="uv3D",
+    boundary_conditions: Optional["SCHISMDataBoundaryConditions"] = Field(
+        None, description="unified boundary conditions (replaces tides and ocean)"
     )
-    TEM_3D: Optional[Union[DataBlob, SCHISMDataBoundary]] = Field(
-        None,
-        description="TEM_3D",
-    )
-    SAL_3D: Optional[Union[DataBlob, SCHISMDataBoundary]] = Field(
-        None,
-        description="SAL_3D",
-    )
-
-    @model_validator(mode="after")
-    def set_id(cls, v):
-        for variable in ["elev2D", "uv3D", "TEM_3D", "SAL_3D"]:
-            if getattr(v, variable) is not None:
-                getattr(v, variable).id = variable
-        return v
 
     def get(
         self,
         destdir: str | Path,
         grid: SCHISMGrid,
-        time: Optional[TimeRange] = None,
-    ) -> str:
-        """Write all inputs to netcdf files.
+        time: TimeRange,
+    ) -> Dict[str, Any]:
+        """
+        Process all SCHISM forcing data and generate necessary input files.
+
         Parameters
         ----------
         destdir : str | Path
-            Destination directory for the netcdf file.
-        grid : SCHISMGrid,
-            Grid instance to use for selecting the boundary points.
-        time: TimeRange, optional
-            The times to filter the data to, only used if `self.crop_data` is True.
+            Destination directory
+        grid : SCHISMGrid
+            SCHISM grid instance
+        time : TimeRange
+            Time range for the simulation
 
         Returns
         -------
-        outfile : Path
-            Path to the netcdf file.
-
+        Dict[str, Any]
+            Paths to generated files for each data component
         """
-        for variable in ["elev2D", "uv3D", "TEM_3D", "SAL_3D"]:
-            data = getattr(self, variable)
-            if data is None:
-                continue
-            data.get(destdir, grid, time)
+        logger.info(f"===== SCHISMData.get called with destdir={destdir} =====")
+        
+        # Convert destdir to Path object
+        destdir = Path(destdir)
+        
+        # Create destdir if it doesn't exist
+        if not destdir.exists():
+            logger.info(f"Creating destination directory: {destdir}")
+            destdir.mkdir(parents=True, exist_ok=True)
+        
+        results = {}
+        
+        # Process atmospheric data
+        if self.atmos:
+            logger.info("Processing atmospheric data")
+            results["atmos"] = self.atmos.get(destdir, grid, time)
+        
+        # Process wave data
+        if self.wave:
+            logger.info("Processing wave data")
+            results["wave"] = self.wave.get(destdir, grid, time)
+        
+        # Process boundary conditions
+        if self.boundary_conditions:
+            logger.info("Processing boundary conditions")
+            results["boundary_conditions"] = self.boundary_conditions.get(destdir, grid, time)
+        
+        logger.info(f"===== SCHISMData.get completed. Generated files: {list(results.keys())} =====")
+        return results
 
-    def __str__(self):
-        return f"SCHISMDataOcean"
 
-
-class TidalDataset(RompyBaseModel):
-    """This class is used to define the tidal dataset"""
-
-    data_type: Literal["tidal_dataset"] = Field(
-        default="tidal_dataset",
-        description="Model type discriminator",
+class HotstartConfig(RompyBaseModel):
+    """
+    Configuration for generating SCHISM hotstart files.
+    
+    This class specifies parameters for creating hotstart.nc files from
+    temperature and salinity data sources already configured in boundary conditions.
+    """
+    
+    enabled: bool = Field(
+        default=False,
+        description="Whether to generate hotstart file"
     )
-    elevations: AnyPath = Field(..., description="Path to elevations file")
-    velocities: AnyPath = Field(..., description="Path to currents file")
+    temp_var: str = Field(
+        default="temperature",
+        description="Name of temperature variable in source dataset"
+    )
+    salt_var: str = Field(
+        default="salinity", 
+        description="Name of salinity variable in source dataset"
+    )
+    time_offset: float = Field(
+        default=0.0,
+        description="Offset to add to source time values (in days)"
+    )
+    time_base: datetime = Field(
+        default=datetime(2000, 1, 1),
+        description="Base time for source time values"
+    )
+    output_filename: str = Field(
+        default="hotstart.nc",
+        description="Name of the output hotstart file"
+    )
 
-    def get(self, destdir: str | Path) -> str:
-        """Write all inputs to netcdf files.
-        Parameters
-        ----------
-        destdir : str | Path
-            Destination directory for the netcdf file.
 
-        Returns
-        -------
-        outfile : Path
-            Path to the netcdf file.
+class BoundarySetupWithSource(BoundarySetup):
+    """
+    Enhanced boundary setup that includes data sources.
 
-        """
-        # TODO need to put some smarts in here for remote files
-        os.environ["TPXO_ELEVATION"] = self.elevations.as_posix()
-        os.environ["TPXO_VELOCITY"] = self.velocities.as_posix()
+    This class extends BoundarySetup to provide a unified configuration
+    for both boundary conditions and their data sources.
+    """
+
+    elev_source: Optional[Union[DataBlob, "SCHISMDataBoundary"]] = Field(
+        None, description="Data source for elevation boundary condition"
+    )
+    vel_source: Optional[Union[DataBlob, "SCHISMDataBoundary"]] = Field(
+        None, description="Data source for velocity boundary condition"
+    )
+    temp_source: Optional[Union[DataBlob, "SCHISMDataBoundary"]] = Field(
+        None, description="Data source for temperature boundary condition"
+    )
+    salt_source: Optional[Union[DataBlob, "SCHISMDataBoundary"]] = Field(
+        None, description="Data source for salinity boundary condition"
+    )
+
+    @model_validator(mode="after")
+    def validate_data_sources(self):
+        """Ensure data sources are provided when needed for space-time boundary types."""
+        # Check elevation data source
+        if (
+            self.elev_type in [ElevationType.SPACETIME, ElevationType.TIDALSPACETIME]
+            and self.elev_source is None
+        ):
+            logger.warning(
+                "elev_source should be provided for SPACETIME or TIDALSPACETIME elevation type"
+            )
+
+        # Check velocity data source
+        if (
+            self.vel_type
+            in [
+                VelocityType.SPACETIME,
+                VelocityType.TIDALSPACETIME,
+                VelocityType.RELAXED,
+            ]
+            and self.vel_source is None
+        ):
+            logger.warning(
+                "vel_source should be provided for SPACETIME, TIDALSPACETIME, or RELAXED velocity type"
+            )
+
+        # Check temperature data source
+        if self.temp_type == TracerType.SPACETIME and self.temp_source is None:
+            logger.warning(
+                "temp_source should be provided for SPACETIME temperature type"
+            )
+
+        # Check salinity data source
+        if self.salt_type == TracerType.SPACETIME and self.salt_source is None:
+            logger.warning("salt_source should be provided for SPACETIME salinity type")
+
+        return self
 
 
-class SCHISMDataTides(RompyBaseModel):
-    """This class is used to define the tidal forcing for SCHISM."""
+class SCHISMDataBoundaryConditions(RompyBaseModel):
+    """
+    This class configures all boundary conditions for SCHISM including tidal,
+    ocean, river, and nested model boundaries.
+
+    It provides a unified interface for specifying boundary conditions and their
+    data sources, replacing the separate tides and ocean configurations.
+    """
 
     # Allow arbitrary types for schema generation
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    data_type: Literal["tides"] = Field(
-        default="tide",
+    data_type: Literal["boundary_conditions"] = Field(
+        default="boundary_conditions",
         description="Model type discriminator",
     )
-    tidal_data: Optional[TidalDataset] = Field(None, description="tidal dataset")
-    # Fields below are used to construct a default TidalDataset if none is provided
-    # Parameters for Bctides
-    constituents: Optional[List[str]] = Field(
-        None, description="Tidal constituents to include"
+
+    # Tidal dataset specification
+    tidal_data: Optional[TidalDataset] = Field(
+        None, description="Tidal dataset with elevation and velocity files"
     )
-    tidal_database: Optional[str] = Field("tpxo", description="Tidal database to use")
-    flags: Optional[List[List[int]]] = Field(
-        None, description="Boundary condition flags"
+
+    # Basic tidal configuration
+    constituents: List[str] = Field(
+        default_factory=lambda: ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"],
+        description="Tidal constituents to include",
     )
-    ntip: Optional[int] = Field(
-        0, description="Number of tidal potential regions (0 to disable, >0 to enable)"
+    tidal_database: str = Field(default="tpxo", description="Tidal database to use")
+
+    # Earth tidal potential settings
+    ntip: int = Field(
+        default=0,
+        description="Number of tidal potential regions (0 to disable, >0 to enable)",
     )
-    tip_dp: Optional[float] = Field(
-        1.0, description="Depth threshold for tidal potential calculations"
+    tip_dp: float = Field(
+        default=1.0, description="Depth threshold for tidal potential calculations"
     )
-    cutoff_depth: Optional[float] = Field(50.0, description="Cutoff depth for tides")
-    ethconst: Optional[List[float]] = Field(
-        None, description="Constant elevation for each boundary"
+    cutoff_depth: float = Field(default=50.0, description="Cutoff depth for tides")
+
+    # Boundary configurations with integrated data sources
+    boundaries: Dict[int, BoundarySetupWithSource] = Field(
+        default_factory=dict,
+        description="Boundary configuration by boundary index",
     )
-    vthconst: Optional[List[float]] = Field(
-        None, description="Constant velocity for each boundary"
+
+    # Predefined configuration types
+    setup_type: Optional[Literal["tidal", "hybrid", "river", "nested"]] = Field(
+        None, description="Predefined boundary setup type"
     )
-    tthconst: Optional[List[float]] = Field(
-        None, description="Constant temperature for each boundary"
+
+    # Hotstart configuration
+    hotstart_config: Optional[HotstartConfig] = Field(
+        None, description="Configuration for hotstart file generation"
     )
-    sthconst: Optional[List[float]] = Field(
-        None, description="Constant salinity for each boundary"
-    )
-    tobc: Optional[List[float]] = Field(None, description="Temperature OBC values")
-    sobc: Optional[List[float]] = Field(None, description="Salinity OBC values")
-    relax: Optional[List[float]] = Field(None, description="Relaxation parameters")
 
     @model_validator(mode="before")
     @classmethod
@@ -1083,50 +1255,84 @@ class SCHISMDataTides(RompyBaseModel):
                 data[key] = to_python_type(value)
         return data
 
-    def get(self, destdir: str | Path, grid: SCHISMGrid, time: TimeRange) -> str:
-        """Write all inputs to netcdf files.
-        Parameters
-        ----------
-        destdir : str | Path
-            Destination directory for the netcdf file.
-        grid : SCHISMGrid
-            Grid instance to use for selecting the boundary points.
-        time: TimeRange, optional
-            The times to filter the data to, only used if `self.crop_data` is True.
+    @model_validator(mode="after")
+    def validate_tidal_data(self):
+        """Ensure tidal data is provided when needed for TIDAL or TIDALSPACETIME boundaries."""
+        boundaries = self.boundaries or {}
+        needs_tidal_data = False
 
-        Returns
-        -------
-        outfile : Path
-            Path to the netcdf file.
+        # Check setup_type first
+        if self.setup_type in ["tidal", "hybrid"]:
+            needs_tidal_data = True
 
-        """
-        logger.info(f"===== SCHISMDataTides.get called with destdir={destdir} =====")
-        logger.info(f"Creating essential SCHISM tidal input files")
+        # Then check individual boundaries
+        for setup in boundaries.values():
+            if (
+                hasattr(setup, "elev_type")
+                and setup.elev_type
+                in [ElevationType.TIDAL, ElevationType.TIDALSPACETIME]
+            ) or (
+                hasattr(setup, "vel_type")
+                and setup.vel_type in [VelocityType.TIDAL, VelocityType.TIDALSPACETIME]
+            ):
+                needs_tidal_data = True
+                break
 
-        # Convert destdir to Path object
-        destdir = Path(destdir)
+        if needs_tidal_data and not self.tidal_data:
+            logger.warning(
+                "Tidal data is required for TIDAL or TIDALSPACETIME boundary types but was not provided"
+            )
 
-        # Create destdir if it doesn't exist
-        if not destdir.exists():
-            logger.info(f"Creating destination directory: {destdir}")
-            destdir.mkdir(parents=True, exist_ok=True)
+        return self
 
-        if self.tidal_data:
-            logger.info(f"Processing tidal data from {self.tidal_data}")
-            self.tidal_data.get(destdir)
+    @model_validator(mode="after")
+    def validate_setup_type(self):
+        """Validate setup type specific requirements."""
+        # Skip validation if setup_type is not set
+        if not self.setup_type:
+            return self
+
+        if self.setup_type in ["tidal", "hybrid"]:
+            if not self.constituents:
+                logger.warning(
+                    "constituents are required for tidal or hybrid setup_type"
+                )
+            if not self.tidal_data:
+                logger.warning("tidal_data is required for tidal or hybrid setup_type")
+
+        elif self.setup_type == "river":
+            if self.boundaries:
+                has_flow = any(
+                    hasattr(s, "const_flow") and s.const_flow is not None
+                    for s in self.boundaries.values()
+                )
+                if not has_flow:
+                    logger.warning(
+                        "At least one boundary should have const_flow for river setup_type"
+                    )
+
+        elif self.setup_type == "nested":
+            if self.boundaries:
+                for idx, setup in self.boundaries.items():
+                    if (
+                        hasattr(setup, "vel_type")
+                        and setup.vel_type == VelocityType.RELAXED
+                    ):
+                        if not hasattr(setup, "inflow_relax") or not hasattr(
+                            setup, "outflow_relax"
+                        ):
+                            logger.warning(
+                                f"inflow_relax and outflow_relax are recommended for nested setup_type in boundary {idx}"
+                            )
         else:
-            logger.warning("No tidal_data available in SCHISMDataTides")
+            logger.warning(
+                f"Unknown setup_type: {self.setup_type}. Expected one of: tidal, hybrid, river, nested"
+            )
 
-        logger.info(f"Generating tides with constituents={self.constituents}")
+        return self
 
-        logger.info(f"Creating bctides with hgrid: {grid.pylibs_hgrid}")
-        logger.info(f"Grid has nob: {hasattr(grid.pylibs_hgrid, 'nob')}")
-        if hasattr(grid.pylibs_hgrid, "nob"):
-            logger.info(f"Number of open boundaries: {grid.pylibs_hgrid.nob}")
-
-        logger.info(f"Flags: {self.flags}")
-        logger.info(f"Constituents: {self.constituents}")
-
+    def _create_boundary_config(self, grid):
+        """Create a TidalBoundary object based on the configuration."""
         # Get tidal data paths
         tidal_elevations = None
         tidal_velocities = None
@@ -1136,155 +1342,282 @@ class SCHISMDataTides(RompyBaseModel):
             if hasattr(self.tidal_data, "velocities") and self.tidal_data.velocities:
                 tidal_velocities = str(self.tidal_data.velocities)
 
-        logger.info(f"Using tidal elevation file: {tidal_elevations}")
-        logger.info(f"Using tidal velocity file: {tidal_velocities}")
+        # Ensure boundary information is computed
+        if hasattr(grid.pylibs_hgrid, "compute_bnd"):
+            grid.pylibs_hgrid.compute_bnd()
+        else:
+            logger.warning(
+                "Grid object doesn't have compute_bnd method. Boundary information may be missing."
+            )
 
-        # Create the bctides object with all parameters
-        bctides = Bctides(
-            hgrid=grid.pylibs_hgrid,
-            flags=self.flags,
+        # Create a new TidalBoundary with all the configuration
+        # Ensure boundary information is computed before creating the boundary
+        if not hasattr(grid.pylibs_hgrid, "nob") or not hasattr(
+            grid.pylibs_hgrid, "nobn"
+        ):
+            logger.info("Computing boundary information before creating TidalBoundary")
+            # First try compute_bnd if available
+            if hasattr(grid.pylibs_hgrid, "compute_bnd"):
+                grid.pylibs_hgrid.compute_bnd()
+
+            # Then try compute_all if nob is still missing
+            if not hasattr(grid.pylibs_hgrid, "nob") and hasattr(
+                grid.pylibs_hgrid, "compute_all"
+            ):
+                logger.info(
+                    "Running compute_all to ensure boundary information is available"
+                )
+                grid.pylibs_hgrid.compute_all()
+
+        # Verify boundary attributes are available
+        if not hasattr(grid.pylibs_hgrid, "nob"):
+            logger.error("Failed to set 'nob' attribute on grid.pylibs_hgrid")
+            raise AttributeError(
+                "Missing required 'nob' attribute on grid.pylibs_hgrid"
+            )
+
+        # Create TidalBoundary with pre-computed grid to avoid losing boundary info
+        # Get the grid path for TidalBoundary
+        grid_path = (
+            str(grid.hgrid.path)
+            if hasattr(grid, "hgrid") and hasattr(grid.hgrid, "path")
+            else None
+        )
+        if grid_path is None:
+            # Create a temporary file with the grid if needed
+            import tempfile
+
+            temp_file = tempfile.NamedTemporaryFile(suffix=".gr3", delete=False)
+            temp_path = temp_file.name
+            temp_file.close()
+            grid.pylibs_hgrid.write_hgrid(temp_path)
+            grid_path = temp_path
+
+        boundary = create_tidal_boundary(
+            grid_path=grid_path,
             constituents=self.constituents,
             tidal_database=self.tidal_database,
-            ntip=self.ntip,
-            tip_dp=self.tip_dp,
-            cutoff_depth=self.cutoff_depth,
-            ethconst=self.ethconst,
-            vthconst=self.vthconst,
-            tthconst=self.tthconst,
-            sthconst=self.sthconst,
-            tobc=self.tobc,
-            sobc=self.sobc,
-            relax=self.relax,
             tidal_elevations=tidal_elevations,
             tidal_velocities=tidal_velocities,
         )
 
-        # Set start_time and rnday directly on the bctides object before calling write_bctides
-        bctides._start_time = time.start
-        bctides._rnday = (
-            time.end - time.start
-        ).total_seconds() / 86400.0  # Convert to days
+        # Replace the TidalBoundary's grid with our pre-computed one to preserve boundary info
+        boundary.grid = grid.pylibs_hgrid
 
-        # Log the path we're writing to
-        bctides_path = Path(destdir) / "bctides.in"
+        # Configure each boundary segment
+        for idx, setup in self.boundaries.items():
+            boundary_config = setup.to_boundary_config()
+            boundary.set_boundary_config(idx, boundary_config)
+
+        return boundary
+
+    def get(
+        self,
+        destdir: str | Path,
+        grid: SCHISMGrid,
+        time: TimeRange,
+    ) -> Dict[str, str]:
+        """
+        Process all boundary data and generate necessary input files.
+
+        Parameters
+        ----------
+        destdir : str | Path
+            Destination directory
+        grid : SCHISMGrid
+            SCHISM grid instance
+        time : TimeRange
+            Time range for the simulation
+
+        Returns
+        -------
+        Dict[str, str]
+            Paths to generated files
+        """
+        logger.info(
+            f"===== SCHISMDataBoundaryConditions.get called with destdir={destdir} ====="
+        )
+
+        # Convert destdir to Path object
+        destdir = Path(destdir)
+
+        # Create destdir if it doesn't exist
+        if not destdir.exists():
+            logger.info(f"Creating destination directory: {destdir}")
+            destdir.mkdir(parents=True, exist_ok=True)
+
+        # 1. Process tidal data if needed
+        if self.tidal_data:
+            logger.info(f"Processing tidal data from {self.tidal_data}")
+            self.tidal_data.get(destdir)
+
+        # 2. Create boundary condition file (bctides.in)
+        boundary = self._create_boundary_config(grid)
+
+        # Set start time and run duration
+        start_time = time.start
+        run_days = (time.end - time.start).total_seconds() / 86400.0  # Convert to days
+        boundary.set_run_parameters(start_time, run_days)
+
+        # Generate bctides.in file
+        bctides_path = destdir / "bctides.in"
         logger.info(f"Writing bctides.in to: {bctides_path}")
 
-        # Call write_bctides with just the output path
-        result = bctides.write_bctides(bctides_path)
-        logger.info(f"write_bctides returned: {result}")
-
-        # TODO remove
-        # Check if the file was created
-        if bctides_path.exists():
-            logger.info(f"bctides.in file was created successfully")
-        else:
-            logger.error(f"bctides.in file was NOT created")
-            logger.warning("Creating bctides.in directly as fallback")
-
-            # Direct creation as fallback
-            try:
-                with open(bctides_path, "w") as f:
-                    f.write("0 10.0 !nbfr, beta_flux\n")
-                    f.write(
-                        "4 !nope: number of open boundaries with elevation specified\n"
-                    )
-                    f.write("1 0. !open bnd #, eta amplitude\n")
-                    f.write("2 0. !open bnd #, eta amplitude\n")
-                    f.write("3 0. !open bnd #, eta amplitude\n")
-                    f.write("4 0. !open bnd #, eta amplitude\n")
-                    f.write("0 !ncbn: total # of flow bnd segments with discharge\n")
-                    f.write("0 !nfluxf: total # of flux boundary segments\n")
-                logger.info(
-                    f"Successfully created minimal bctides.in directly at {bctides_path}"
-                )
-            except Exception as e:
-                logger.error(f"Failed to create fallback bctides.in: {e}")
-
-        # If needed, copy to the test location, but don't create a fallback version
-        try:
-            test_path = (
-                Path(destdir).parent
-                / "schism_declaritive"
-                / "test_schism_nml"
-                / "bctides.in"
+        # Ensure grid object has complete boundary information before writing
+        if hasattr(grid.pylibs_hgrid, "compute_all"):
+            logger.info(
+                "Running compute_all to ensure grid is ready for boundary writing"
             )
-            test_path.parent.mkdir(parents=True, exist_ok=True)
+            grid.pylibs_hgrid.compute_all()
 
-            # Only if the main bctides was successfully created, copy it
-            if bctides_path.exists():
-                # Copy the file instead of creating a new one with different content
-                import shutil
+        # Double-check all required attributes are present
+        required_attrs = ["nob", "nobn", "iobn"]
+        missing_attrs = [
+            attr for attr in required_attrs if not hasattr(grid.pylibs_hgrid, attr)
+        ]
+        if missing_attrs:
+            error_msg = (
+                f"Grid is missing required attributes: {', '.join(missing_attrs)}"
+            )
+            logger.error(error_msg)
+            raise AttributeError(error_msg)
 
-                shutil.copy2(bctides_path, test_path)
-                logger.info(f"Copied bctides.in to alternate location: {test_path}")
-        except Exception as e:
-            logger.error(f"Failed to copy bctides.in to alternate location: {e}")
+        # Write the boundary file - no fallbacks
+        logger.info(f"Writing boundary file to {bctides_path}")
+        boundary.write_boundary_file(bctides_path)
+        logger.info(f"Successfully wrote bctides.in to {bctides_path}")
 
-        return str(bctides_path)
+        # 3. Process ocean data based on boundary configurations
+        processed_files = {"bctides": str(bctides_path)}
 
+        # Process each data source based on the boundary type
+        for idx, setup in self.boundaries.items():
+            # Process elevation data if needed
+            if setup.elev_type in [
+                ElevationType.SPACETIME,
+                ElevationType.TIDALSPACETIME,
+            ]:
+                if setup.elev_source:
+                    if hasattr(setup.elev_source, 'data_type') and setup.elev_source.data_type == 'boundary':
+                        # Process using SCHISMDataBoundary interface
+                        setup.elev_source.id = "elev2D"  # Set the ID for the boundary
+                        file_path = setup.elev_source.get(destdir, grid, time)
+                    else:
+                        # Process using DataBlob interface
+                        file_path = setup.elev_source.get(destdir)
+                    processed_files[f"elev_boundary_{idx}"] = file_path
+                    logger.info(f"Processed elevation data for boundary {idx}")
 
-class SCHISMData(RompyBaseModel):
-    """
-    This class is used to gather all required input forcing for SCHISM
-    """
+            # Process velocity data if needed
+            if setup.vel_type in [
+                VelocityType.SPACETIME,
+                VelocityType.TIDALSPACETIME,
+                VelocityType.RELAXED,
+            ]:
+                if setup.vel_source:
+                    if hasattr(setup.vel_source, 'data_type') and setup.vel_source.data_type == 'boundary':
+                        # Process using SCHISMDataBoundary interface
+                        setup.vel_source.id = "uv3D"  # Set the ID for the boundary
+                        file_path = setup.vel_source.get(destdir, grid, time)
+                    else:
+                        # Process using DataBlob interface
+                        file_path = setup.vel_source.get(destdir)
+                    processed_files[f"vel_boundary_{idx}"] = file_path
+                    logger.info(f"Processed velocity data for boundary {idx}")
 
-    data_type: Literal["schism"] = Field(
-        default="schism",
-        description="Model type discriminator",
-    )
-    atmos: Optional[SCHISMDataSflux] = Field(None, description="atmospheric data")
-    ocean: Optional[SCHISMDataOcean] = Field(None, description="ocean data")
-    wave: Optional[Union[DataBlob, SCHISMDataWave]] = Field(
-        None, description="wave data"
-    )
-    tides: Optional[Union[DataBlob, SCHISMDataTides, "SCHISMDataTidesEnhanced"]] = (
-        Field(None, description="tidal data")
-    )
-    hotstart: Optional[SCHISMDataHotstart] = Field(
-        None, description="hotstart data"
-    )  # TODO this will probably move from here when more general hotstart generation is in place
+            # Process temperature data if needed
+            if setup.temp_type == TracerType.SPACETIME:
+                if setup.temp_source:
+                    if hasattr(setup.temp_source, 'data_type') and setup.temp_source.data_type == 'boundary':
+                        # Process using SCHISMDataBoundary interface
+                        setup.temp_source.id = "TEM_3D"  # Set the ID for the boundary
+                        file_path = setup.temp_source.get(destdir, grid, time)
+                    else:
+                        # Process using DataBlob interface
+                        file_path = setup.temp_source.get(destdir)
+                    processed_files[f"temp_boundary_{idx}"] = file_path
+                    logger.info(f"Processed temperature data for boundary {idx}")
 
-    # @model_validator(mode="after")
+            # Process salinity data if needed
+            if setup.salt_type == TracerType.SPACETIME:
+                if setup.salt_source:
+                    if hasattr(setup.salt_source, 'data_type') and setup.salt_source.data_type == 'boundary':
+                        # Process using SCHISMDataBoundary interface
+                        setup.salt_source.id = "SAL_3D"  # Set the ID for the boundary
+                        file_path = setup.salt_source.get(destdir, grid, time)
+                    else:
+                        # Process using DataBlob interface
+                        file_path = setup.salt_source.get(destdir)
+                    processed_files[f"salt_boundary_{idx}"] = file_path
+                    logger.info(f"Processed salinity data for boundary {idx}")
+
+        # Generate hotstart file if configured
+        if self.hotstart_config and self.hotstart_config.enabled:
+            hotstart_path = self._generate_hotstart(destdir, grid, time)
+            processed_files["hotstart"] = hotstart_path
+            logger.info(f"Generated hotstart file: {hotstart_path}")
+
+        return processed_files
+
+    def _generate_hotstart(
+        self,
+        destdir: Union[str, Path],
+        grid: SCHISMGrid,
+        time: Optional[TimeRange] = None,
+    ) -> str:
+        """
+        Generate hotstart file using boundary condition data sources.
+        
+        Args:
+            destdir: Destination directory for the hotstart file
+            grid: SCHISM grid object
+            time: Time range for the data
+            
+        Returns:
+            Path to the generated hotstart file
+        """
+        from rompy.schism.hotstart import SCHISMDataHotstart
+        
+        # Find a boundary that has both temperature and salinity sources
+        temp_source = None
+        salt_source = None
+        
+        for boundary_config in self.boundaries.values():
+            if boundary_config.temp_source is not None:
+                temp_source = boundary_config.temp_source
+            if boundary_config.salt_source is not None:
+                salt_source = boundary_config.salt_source
+            
+            # If we found both, we can proceed
+            if temp_source is not None and salt_source is not None:
+                break
+        
+        if temp_source is None or salt_source is None:
+            raise ValueError(
+                "Hotstart generation requires both temperature and salinity sources "
+                "to be configured in boundary conditions"
+            )
+        
+        # Create hotstart instance using the first available source
+        # (assuming temp and salt sources point to the same dataset)
+        hotstart_data = SCHISMDataHotstart(
+            source=temp_source.source,
+            coords=temp_source.coords,
+            temp_var=self.hotstart_config.temp_var,
+            salt_var=self.hotstart_config.salt_var,
+            time_offset=self.hotstart_config.time_offset,
+            time_base=self.hotstart_config.time_base,
+            output_filename=self.hotstart_config.output_filename,
+        )
+        
+        return hotstart_data.get(destdir, grid, time)
     # def check_bctides_flags(cls, v):
     #     # TODO Add check fro bc flags in teh event of 3d inputs
     #     # SHould possibly move this these flags out of SCHISMDataTides class as they cover more than
     #     # just tides
     #     return cls
 
-    def get(
-        self,
-        destdir: str | Path,
-        grid: Optional[SCHISMGrid] = None,
-        time: Optional[TimeRange] = None,
-    ) -> None:
-        ret = {}
-        # if time:
-        #     # Bump enddate by 1 hour to make sure we get the last time step
-        #     time = TimeRange(
-        #         start=time.start,
-        #         end=time.end + timedelta(hours=1),
-        #         interval=time.interval,
-        #         include_end=time.include_end,
-        #     )
-        for datatype in ["atmos", "ocean", "wave", "tides", "hotstart"]:
-            logger.info(f"Processing {datatype} data")
-            data = getattr(self, datatype)
-            if data is None:
-                logger.info(f"{datatype} data is None, skipping")
-                continue
 
-            logger.info(f"{datatype} data type: {type(data).__name__}")
-
-            if type(data) is DataBlob:
-                logger.info(f"Calling get on DataBlob for {datatype}")
-                output = data.get(destdir)
-
-            else:
-                logger.info(f"Calling get on {type(data).__name__} for {datatype}")
-                output = data.get(destdir, grid, time)
-            ret.update({datatype: output})
-            logger.info(f"Successfully processed {datatype} data")
-        return ret
 
 
 def get_valid_rename_dict(ds, rename_dict):

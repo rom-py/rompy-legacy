@@ -902,6 +902,13 @@ class Bctides:
                 "start_time and rnday must be set before calling write_bctides"
             )
 
+        # Ensure boundary information is computed before accessing boundary attributes
+        if hasattr(self.gd, "compute_bnd") and not hasattr(self.gd, "nob"):
+            logger.info("Computing boundary information for grid")
+            self.gd.compute_bnd()
+        elif not hasattr(self.gd, "nob"):
+            logger.warning("Grid has no boundary information and no compute_bnd method")
+
         # Get tidal factors
         self._get_tidal_factors()
 
@@ -958,23 +965,43 @@ class Bctides:
 
             # Write open boundary information
             # Use the number of boundaries from self.flags or fallback to grid boundaries
-            nope = (
-                len(self.flags)
-                if hasattr(self, "flags") and self.flags
-                else self.gd.nob
-            )
+            if hasattr(self, "flags") and self.flags:
+                nope = len(self.flags)
+                logger.info(f"Using {nope} user-defined boundaries from flags")
+            elif hasattr(self.gd, "nob") and self.gd.nob > 0:
+                nope = self.gd.nob
+                logger.info(f"Using {nope} boundaries from grid")
+            else:
+                # No boundaries in grid and no user-defined flags
+                logger.warning("Grid has no open boundaries and no user-defined boundary flags")
+                nope = 0
+            
             f.write(f"{nope} !nope\n")
 
             # For each open boundary
             for ibnd in range(nope):
-                # Get boundary nodes - use grid boundary data if ibnd is within range
-                if ibnd < self.gd.nob:
+                # Get boundary nodes - prioritize grid boundaries if available
+                if hasattr(self.gd, "nob") and self.gd.nob > 0 and ibnd < self.gd.nob:
+                    # Use actual grid boundary
                     nodes = self.gd.iobn[ibnd]
                     num_nodes = self.gd.nobn[ibnd]
+                    logger.debug(f"Using grid boundary {ibnd} with {num_nodes} nodes")
+                elif hasattr(self.gd, "nob") and self.gd.nob > 0 and ibnd >= self.gd.nob:
+                    # User has defined more boundaries than grid has - reuse last grid boundary
+                    last_bnd_idx = self.gd.nob - 1
+                    nodes = self.gd.iobn[last_bnd_idx]
+                    num_nodes = self.gd.nobn[last_bnd_idx]
+                    logger.warning(f"Boundary {ibnd} exceeds grid boundaries, reusing boundary {last_bnd_idx}")
                 else:
-                    # For boundaries beyond grid boundaries, use first boundary's nodes
-                    nodes = self.gd.iobn[0]
-                    num_nodes = self.gd.nobn[0]
+                    # Grid has no boundaries, but user has defined flags
+                    # This is an inconsistent state - create a minimal dummy boundary
+                    logger.warning(f"Grid has no open boundaries but user defined boundary {ibnd}, creating dummy boundary")
+                    # Create a simple 2-node boundary using first two grid nodes
+                    if self.gd.np > 1:
+                        nodes = np.array([0, 1])
+                    else:
+                        nodes = np.array([0])
+                    num_nodes = len(nodes)
 
                 # Write boundary flags (ensure we have enough flags defined)
                 bnd_flags = (

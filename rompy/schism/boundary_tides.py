@@ -574,6 +574,20 @@ class TidalBoundary(BoundaryData):
         )
         vn_mean = constants.get("vn_mean", [None]) if constants.get("vn_mean") else None
 
+        # Ensure grid boundaries are computed before creating Bctides
+        if self.grid is not None:
+            if hasattr(self.grid, "compute_bnd") and not hasattr(self.grid, "nob"):
+                logger.info("Computing grid boundaries for Bctides")
+                self.grid.compute_bnd()
+            elif not hasattr(self.grid, "nob") and hasattr(self.grid, "compute_all"):
+                logger.info("Running compute_all to ensure grid boundaries are available")
+                self.grid.compute_all()
+            
+            # Verify boundaries were computed
+            if not hasattr(self.grid, "nob"):
+                logger.error("Failed to compute grid boundaries - grid has no 'nob' attribute")
+                raise AttributeError("Grid boundaries could not be computed")
+
         # Create Bctides object with all the enhanced parameters
         bctides = Bctides(
             hgrid=self.grid,
