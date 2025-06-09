@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -12,9 +13,7 @@ from rompy.core.source import SourceFile, SourceIntake
 from rompy.schism import SCHISMGrid
 from rompy.schism.data import (
     SCHISMDataBoundary,
-    SCHISMDataOcean,
     SCHISMDataSflux,
-    SCHISMDataTides,
     SfluxAir,
     TidalDataset,
 )
@@ -167,62 +166,7 @@ def test_oceandataboundary3d(tmp_path, grid3d, hycom_bnd_temp_3d):
         assert bnd.time_series.isnull().sum() == 0
 
 
-def test_oceandata(tmp_path, grid2d, hycom_bnd2d, monkeypatch):
-    # Debug statements to help identify the issue
-    import logging
-    import traceback
-
-    import numpy as np
-
-    from rompy.core.boundary import DataBoundary
-
-    # Apply monkey patch for boundary points
-    if hasattr(grid2d, "ocean_boundary"):
-        try:
-            # Get boundary nodes
-            boundary_nodes = grid2d.ocean_boundary()[0]
-
-            # Get coordinates of these nodes
-            x = grid2d.pylibs_hgrid.x[boundary_nodes]
-            y = grid2d.pylibs_hgrid.y[boundary_nodes]
-
-            # Create a special boundary points method that returns our coordinates
-            def mock_boundary_points(self, grid):
-                logging.info("Using mocked _boundary_points method in oceandata test")
-                return x, y
-
-            # Apply the monkey patch to bypass the issue
-            monkeypatch.setattr(DataBoundary, "_boundary_points", mock_boundary_points)
-
-        except Exception as e:
-            logging.error(f"Debug: ocean_boundary call failed with error: {str(e)}")
-
-    try:
-        oceandata = SCHISMDataOcean(elev2D=hycom_bnd2d)
-        oceandata.get(tmp_path, grid2d)
-        logging.info("Successfully generated ocean data")
-    except ValueError as e:
-        logging.error(f"Error details in oceandata test: {str(e)}")
-        logging.error(f"Error traceback in oceandata test: {traceback.format_exc()}")
-        raise
 
 
-def test_tidal_boundary(tmp_path, grid2d):
-    if not (HERE / "test_data" / "tpxo9-neaus" / "h_m2s2n2.nc").exists():
-        from tests.utils import untar_file
 
-        untar_file(HERE / "test_data" / "tpxo9-neaus.tar.gz", HERE / "test_data/")
-    from tests.utils import untar_file
 
-    tides = SCHISMDataTides(
-        tidal_data=TidalDataset(
-            elevations=HERE / "test_data" / "tpxo9-neaus" / "h_m2s2n2.nc",
-            velocities=HERE / "test_data" / "tpxo9-neaus" / "u_m2s2n2.nc",
-        ),
-        constituents=["M2", "S2", "N2"],
-    )
-    tides.get(
-        destdir=tmp_path,
-        grid=grid2d,
-        time=TimeRange(start="2023-01-01", end="2023-01-02", dt=3600),
-    )

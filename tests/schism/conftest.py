@@ -18,9 +18,7 @@ from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords
 from rompy.schism.data import (
     SCHISMDataBoundary,
-    SCHISMDataOcean,
     SCHISMDataSflux,
-    SCHISMDataTides,
     SfluxAir,
     TidalDataset,
 )

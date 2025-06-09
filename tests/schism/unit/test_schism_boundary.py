@@ -14,7 +14,7 @@ from rompy.core.data import DataBlob
 from rompy.core.source import SourceFile
 from rompy.core.time import TimeRange
 from rompy.schism import SCHISMGrid
-from rompy.schism.data import SCHISMDataBoundary, SCHISMDataOcean
+from rompy.schism.data import SCHISMDataBoundary
 
 pytest.importorskip("rompy.schism")
 
@@ -51,19 +51,17 @@ class TestBoundaryHandling:
 
         # Ensure boundary format is correct for the grid
 
-    def test_ocean_boundary(self, grid2d, hycom_bnd2d, tmp_path):
+    def test_ocean_boundary(self, grid2d, hycom_bnd2d):
         """Test ocean boundary data handling."""
-        # Create ocean data
-        ocean_data = SCHISMDataOcean(
-            elev2D=SCHISMDataBoundary(
-                id="elev2D",
-                source=hycom_bnd2d.source,  # Use SourceFile directly
-                variables=["surf_el"],
-            ),
+        # Create ocean boundary data directly
+        ocean_boundary = SCHISMDataBoundary(
+            id="elev2D",
+            source=hycom_bnd2d.source,  # Use SourceFile directly
+            variables=["surf_el"],
         )
 
-        assert ocean_data is not None
-        assert ocean_data.elev2D is not None
+        assert ocean_boundary is not None
+        assert ocean_boundary.id == "elev2D"
 
     def test_3d_boundary(self, grid3d, hycom_bnd_temp_3d, tmp_path):
         """Test 3D boundary data handling."""

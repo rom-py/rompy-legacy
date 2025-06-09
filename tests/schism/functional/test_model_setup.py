@@ -16,9 +16,7 @@ from rompy.core.time import TimeRange
 from rompy.schism import SCHISMGrid
 from rompy.schism.data import (
     SCHISMDataBoundary,
-    SCHISMDataOcean,
     SCHISMDataSflux,
-    SCHISMDataTides,
 )
 
 # Import our stub class from test_namelist instead of the non-existent module
@@ -98,12 +96,10 @@ class TestFullModelSetup:
         assert grid2d is not None
         assert grid_atmos_source is not None
 
-        # 2. Set up boundaries
-        ocean_data = SCHISMDataOcean(
-            elev2D=SCHISMDataBoundary(
-                source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
-                variables=["surf_el"],
-            ),
+        # 2. Set up boundaries (using SCHISMDataBoundary directly)
+        ocean_boundary = SCHISMDataBoundary(
+            source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+            variables=["surf_el"],
         )
 
         # 3. Set up atmospheric forcing
@@ -129,8 +125,7 @@ class TestFullModelSetup:
         )
 
         # 5. Verify all components
-        assert ocean_data is not None
-        assert ocean_data.elev2D is not None
+        assert ocean_boundary is not None
         assert atmos_data is not None
         assert namelist is not None
 

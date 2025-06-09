@@ -12,9 +12,7 @@ from rompy.core.time import TimeRange
 from rompy.schism import SCHISMGrid
 from rompy.schism.data import (
     SCHISMDataBoundary,
-    SCHISMDataOcean,
     SCHISMDataSflux,
-    SCHISMDataTides,
     SfluxAir,
 )
 
@@ -37,12 +35,10 @@ class TestCommonWorkflows:
         grid_copy = grid2d.copy_to(model_dir)
         assert (model_dir / "hgrid.gr3").exists()
 
-        # 3. Set up ocean boundary
-        ocean_data = SCHISMDataOcean(
-            elev2D=SCHISMDataBoundary(
-                source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
-                variables=["surf_el"],
-            ),
+        # 3. Set up ocean boundary (using SCHISMDataBoundary directly)
+        ocean_boundary = SCHISMDataBoundary(
+            source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+            variables=["surf_el"],
         )
 
         # 4. Create a simple namelist
@@ -55,8 +51,7 @@ class TestCommonWorkflows:
 
         # 5. Check that all components are ready
         assert grid_copy is not None
-        assert ocean_data is not None
-        assert ocean_data.elev2D is not None
+        assert ocean_boundary is not None
         assert namelist is not None
 
         # Here, we would generate the actual model files if the implementation supports it
@@ -73,12 +68,10 @@ class TestCommonWorkflows:
         grid_copy = grid3d.copy_to(model_dir)
         assert (model_dir / "hgrid.gr3").exists()
 
-        # 3. Set up ocean boundary with temperature
-        ocean_data = SCHISMDataOcean(
-            TEM_3D=SCHISMDataBoundary(
-                source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
-                variables=["water_temp"],
-            ),
+        # 3. Set up ocean boundary with temperature (using SCHISMDataBoundary directly)
+        temp_boundary = SCHISMDataBoundary(
+            source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+            variables=["water_temp"],
         )
 
         # 4. Set up atmospheric forcing
@@ -103,15 +96,14 @@ class TestCommonWorkflows:
 
         # 6. Check that all components are ready
         assert grid_copy is not None
-        assert ocean_data is not None
-        assert ocean_data.TEM_3D is not None
+        assert temp_boundary is not None
         assert atmos_data is not None
         assert namelist is not None
 
         # Here, we would generate the actual model files if the implementation supports it
 
     def test_tidal_model(self, grid2d, tmp_path):
-        """Test setting up a tidal model."""
+        """Test setting up a tidal model using new boundary conditions system."""
         # 1. Create a directory for the model
         model_dir = tmp_path / "tidal_model"
         model_dir.mkdir()
@@ -120,9 +112,11 @@ class TestCommonWorkflows:
         grid_copy = grid2d.copy_to(model_dir)
         assert (model_dir / "hgrid.gr3").exists()
 
-        # 3. Set up tidal forcing
-        tidal_data = SCHISMDataTides(
-            constituents=["M2", "S2", "K1", "O1"], tidal_database="tpxo9"
+        # 3. Set up tidal forcing using new boundary conditions system
+        from rompy.schism.boundary_conditions import create_tidal_only_boundary_config
+        tidal_boundary = create_tidal_only_boundary_config(
+            constituents=["M2", "S2", "K1", "O1"],
+            tidal_database="tpxo9"
         )
 
         # 4. Create a namelist
@@ -135,7 +129,7 @@ class TestCommonWorkflows:
 
         # 5. Check that all components are ready
         assert grid_copy is not None
-        assert tidal_data is not None
+        assert tidal_boundary is not None
         assert namelist is not None
 
         # Here, we would generate the actual model files if the implementation supports it
