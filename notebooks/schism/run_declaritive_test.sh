@@ -4,7 +4,7 @@ set -e
 
 # test=nml_3d_tidal_velocities
 # test=nml
-test=nml_3d_nontidal_velocities_enhanced
+test="nml_3d_nontidal_velocities_new"
 version=v5.11.1
 
 
