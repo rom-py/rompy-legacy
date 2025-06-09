@@ -168,10 +168,12 @@ class TestSCHISMDataBoundaryConditions:
 
     def test_with_boundaries(self):
         """Test initialization with boundary configurations."""
-        # Create boundary setups
-        tidal_boundary = BoundarySetupWithSource(
-            elev_type=ElevationType.TIDAL,
-            vel_type=VelocityType.TIDAL
+        # Create boundary setups that don't require tidal data
+        constant_boundary = BoundarySetupWithSource(
+            elev_type=ElevationType.CONSTANT,
+            vel_type=VelocityType.CONSTANT,
+            const_elev=1.0,
+            const_flow=-50.0
         )
         
         river_boundary = BoundarySetupWithSource(
@@ -184,58 +186,48 @@ class TestSCHISMDataBoundaryConditions:
         bc = SCHISMDataBoundaryConditions(
             constituents=["M2", "S2"],
             boundaries={
-                0: tidal_boundary,
+                0: constant_boundary,
                 1: river_boundary
             }
         )
         
         assert len(bc.boundaries) == 2
-        assert bc.boundaries[0].elev_type == ElevationType.TIDAL
+        assert bc.boundaries[0].elev_type == ElevationType.CONSTANT
         assert bc.boundaries[1].vel_type == VelocityType.CONSTANT
         assert bc.boundaries[1].const_flow == -100.0
 
     def test_with_setup_type(self):
         """Test initialization with setup type."""
-        # Create with tidal setup type
-        bc_tidal = SCHISMDataBoundaryConditions(
-            constituents=["M2", "S2"],
-            setup_type="tidal"
-        )
+        # Test that tidal setup type fails without tidal data
+        with pytest.raises(ValueError, match="Tidal data is required for TIDAL or TIDALSPACETIME boundary types"):
+            bc_tidal = SCHISMDataBoundaryConditions(
+                constituents=["M2", "S2"],
+                setup_type="tidal"
+            )
         
-        assert bc_tidal.setup_type == "tidal"
-        
-        # Create with river setup type
+        # Test river setup type (should work without tidal data)
         bc_river = SCHISMDataBoundaryConditions(
-            constituents=["M2", "S2"],
-            setup_type="river",
-            boundaries={
-                0: BoundarySetupWithSource(
-                    elev_type=ElevationType.NONE,
-                    vel_type=VelocityType.CONSTANT,
-                    const_flow=-100.0
-                )
-            }
+            constituents=[],
+            setup_type="river"
         )
         
         assert bc_river.setup_type == "river"
 
-    def test_validate_tidal_data(self, caplog):
+    def test_validate_tidal_data(self):
         """Test validation of tidal data."""
-        # Create a configuration that needs tidal data but doesn't have it
-        bc = SCHISMDataBoundaryConditions(
-            constituents=["M2", "S2"],
-            setup_type="tidal",
-            # Missing tidal_data
-            boundaries={
-                0: BoundarySetupWithSource(
-                    elev_type=ElevationType.TIDAL,
-                    vel_type=VelocityType.TIDAL
-                )
-            }
-        )
-        
-        # Check that a warning was logged
-        assert "Tidal data is required" in caplog.text
+        # Test that configurations requiring tidal data fail without it
+        with pytest.raises(ValueError, match="Tidal data is required for TIDAL or TIDALSPACETIME boundary types"):
+            SCHISMDataBoundaryConditions(
+                constituents=["M2", "S2"],
+                setup_type="tidal",
+                # Missing tidal_data
+                boundaries={
+                    0: BoundarySetupWithSource(
+                        elev_type=ElevationType.TIDAL,
+                        vel_type=VelocityType.TIDAL
+                    )
+                }
+            )
 
     def test_tidal_data(self, tidal_dataset):
         """Test with actual tidal dataset."""
@@ -277,38 +269,43 @@ class TestSCHISMDataBoundaryConditions:
             assert "M2" in content or "S2" in content
 
 
-@pytest.mark.parametrize("function_name,expected_type", [
-    ("create_tidal_only_boundary_config", "tidal"),
-    ("create_hybrid_boundary_config", "hybrid"),
-    ("create_river_boundary_config", "river"),
-    ("create_nested_boundary_config", "nested"),
+@pytest.mark.parametrize("function_name,expected_type,should_fail", [
+    ("create_tidal_only_boundary_config", "tidal", True),  # Should fail without tidal data
+    ("create_hybrid_boundary_config", "hybrid", True),    # Should fail without tidal data
+    ("create_river_boundary_config", "river", False),     # Should work without tidal data
+    ("create_nested_boundary_config", "nested", False),   # Should work without tidal data
 ])
-def test_factory_functions_basic(function_name, expected_type):
+def test_factory_functions_basic(function_name, expected_type, should_fail):
     """Test basic functionality of factory functions."""
     # Get the factory function
     import rompy.schism.boundary_conditions as bc_module
     factory_func = getattr(bc_module, function_name)
     
-    # Call the factory function with minimal arguments
-    boundary_config = factory_func()
-    
-    # Check the result
-    assert isinstance(boundary_config, SCHISMDataBoundaryConditions)
-    assert boundary_config.setup_type == expected_type
+    if should_fail:
+        # These functions should fail without proper tidal data
+        with pytest.raises(ValueError, match="Tidal data is required for TIDAL or TIDALSPACETIME boundary types"):
+            factory_func()
+    else:
+        # These functions should work with minimal arguments
+        boundary_config = factory_func()
+        
+        # Check the result
+        assert isinstance(boundary_config, SCHISMDataBoundaryConditions)
+        assert boundary_config.setup_type == expected_type
 
 
 def test_tidal_only_factory(tidal_data_files):
     """Test the tidal-only factory function with real data."""
     # Create configuration with tidal data
     bc = create_tidal_only_boundary_config(
-        constituents=["M2", "S2"],
+        constituents=["M2", "S2", "N2"],
         tidal_elevations=tidal_data_files["elevation"],
         tidal_velocities=tidal_data_files["velocity"]
     )
     
     # Check the configuration
     assert bc.setup_type == "tidal"
-    assert bc.constituents == ["M2", "S2"]
+    assert bc.constituents == ["M2", "S2", "N2"]
     assert bc.tidal_data is not None
     assert bc.tidal_data.elevations == tidal_data_files["elevation"]
     assert bc.tidal_data.velocities == tidal_data_files["velocity"]
@@ -326,7 +323,7 @@ def test_hybrid_factory(tidal_data_files, grid2d, time_range, temp_output_dir):
     
     # Create configuration with data sources
     bc = create_hybrid_boundary_config(
-        constituents=["M2", "S2"],
+        constituents=["M2", "S2", "N2"],
         tidal_elevations=tidal_data_files["elevation"],
         tidal_velocities=tidal_data_files["velocity"],
         elev_source=elev_source,
@@ -335,7 +332,7 @@ def test_hybrid_factory(tidal_data_files, grid2d, time_range, temp_output_dir):
     
     # Check the configuration
     assert bc.setup_type == "hybrid"
-    assert bc.constituents == ["M2", "S2"]
+    assert bc.constituents == ["M2", "S2", "N2"]
     assert bc.tidal_data is not None
     assert len(bc.boundaries) == 1
     assert bc.boundaries[0].elev_type == ElevationType.TIDALSPACETIME
@@ -353,7 +350,8 @@ def test_river_factory():
     bc = create_river_boundary_config(
         river_boundary_index=1,
         river_flow=-100.0,
-        other_boundaries="tidal"
+        other_boundaries="tidal",
+        constituents=["M2", "S2", "N2"]
     )
     
     # Check the configuration
@@ -379,6 +377,7 @@ def test_nested_factory(tidal_data_files, grid2d, time_range, temp_output_dir):
         with_tides=True,
         inflow_relax=0.9,
         outflow_relax=0.1,
+        constituents=["M2", "S2", "N2"],
         tidal_elevations=tidal_data_files["elevation"],
         tidal_velocities=tidal_data_files["velocity"],
         elev_source=elev_source,
@@ -405,11 +404,11 @@ def test_integration_with_schism_data(grid2d, time_range, temp_output_dir, tidal
     
     # Create a boundary configuration with real tidal data
     bc = create_tidal_only_boundary_config(
-        constituents=["M2", "S2"],
-        tidal_database="tpxo"
+        constituents=["M2", "S2", "N2"],
+        tidal_database="tpxo",
+        tidal_elevations=tidal_dataset.elevations,
+        tidal_velocities=tidal_dataset.velocities
     )
-    # Add the tidal dataset
-    bc.tidal_data = tidal_dataset
     
     # Create a SCHISMData object with the boundary configuration
     schism_data = SCHISMData(

@@ -53,23 +53,12 @@ __all__ = [
 ]
 
 import logging
-from datetime import datetime
-from enum import IntEnum
-from pathlib import Path
-from typing import Dict, List, Literal, Optional, Union
-
-import numpy as np
-from pydantic import ConfigDict, Field, model_validator
+from typing import List, Literal, Optional, Union
 
 from rompy.core.data import DataBlob
-from rompy.core.time import TimeRange
-from rompy.core.types import RompyBaseModel
-from rompy.schism.boundary_tides import (ElevationType, TidalBoundary,
-                                         TracerType, VelocityType,
-                                         create_tidal_boundary)
+from rompy.schism.boundary_tides import ElevationType, TracerType, VelocityType
 from rompy.schism.data import SCHISMDataBoundary, BoundarySetupWithSource, SCHISMDataBoundaryConditions
-from rompy.schism.grid import SCHISMGrid
-from rompy.schism.tides_enhanced import BoundarySetup, TidalDataset
+from rompy.schism.tides_enhanced import TidalDataset
 
 logger = logging.getLogger(__name__)
 
@@ -105,9 +94,9 @@ def create_tidal_only_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    # Create tidal dataset if paths are provided
+    # Create tidal dataset if both paths are provided
     tidal_data = None
-    if tidal_elevations or tidal_velocities:
+    if tidal_elevations and tidal_velocities:
         tidal_data = TidalDataset(
             elevations=tidal_elevations, velocities=tidal_velocities
         )
@@ -119,6 +108,8 @@ def create_tidal_only_boundary_config(
         tidal_data=tidal_data,
         ntip=ntip,
         setup_type="tidal",
+        boundaries={},
+        hotstart_config=None,
     )
 
     return config
@@ -161,9 +152,9 @@ def create_hybrid_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    # Create tidal dataset if paths are provided
+    # Create tidal dataset if both paths are provided
     tidal_data = None
-    if tidal_elevations or tidal_velocities:
+    if tidal_elevations and tidal_velocities:
         tidal_data = TidalDataset(
             elevations=tidal_elevations, velocities=tidal_velocities
         )
@@ -186,6 +177,7 @@ def create_hybrid_boundary_config(
                 salt_source=salt_source,
             )
         },
+        hotstart_config=None,
     )
 
     return config
@@ -222,11 +214,9 @@ def create_river_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    # Create tidal dataset if paths are provided and needed
+    # Create tidal dataset if both paths are provided and needed
     tidal_data = None
-    if other_boundaries in ["tidal", "hybrid"] and (
-        tidal_elevations or tidal_velocities
-    ):
+    if other_boundaries in ["tidal", "hybrid"] and tidal_elevations and tidal_velocities:
         tidal_data = TidalDataset(
             elevations=tidal_elevations, velocities=tidal_velocities
         )
@@ -237,6 +227,7 @@ def create_river_boundary_config(
         tidal_database="tpxo" if other_boundaries in ["tidal", "hybrid"] else "",
         tidal_data=tidal_data,
         setup_type="river",
+        hotstart_config=None,
     )
 
     # Add the river boundary
@@ -294,9 +285,9 @@ def create_nested_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    # Create tidal dataset if paths are provided and needed
+    # Create tidal dataset if both paths are provided and needed
     tidal_data = None
-    if with_tides and (tidal_elevations or tidal_velocities):
+    if with_tides and tidal_elevations and tidal_velocities:
         tidal_data = TidalDataset(
             elevations=tidal_elevations, velocities=tidal_velocities
         )
@@ -307,6 +298,7 @@ def create_nested_boundary_config(
         tidal_database="tpxo" if with_tides else "",
         tidal_data=tidal_data,
         setup_type="nested",
+        hotstart_config=None,
     )
 
     # Determine elevation type based on tides setting

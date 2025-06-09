@@ -154,6 +154,7 @@ class TestBoundaryConditionsHotstartIntegration:
         hotstart_config = HotstartConfig(enabled=False)
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
@@ -173,6 +174,7 @@ class TestBoundaryConditionsHotstartIntegration:
         )
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
@@ -195,6 +197,7 @@ class TestBoundaryConditionsHotstartIntegration:
         )
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
@@ -219,6 +222,7 @@ class TestBoundaryConditionsHotstartIntegration:
         hotstart_config = HotstartConfig(enabled=True)
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_setup_no_sources},
@@ -250,6 +254,7 @@ class TestBoundaryConditionsHotstartIntegration:
         hotstart_config = HotstartConfig(enabled=True)
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_setup},
@@ -294,6 +299,7 @@ class TestBoundaryConditionsHotstartIntegration:
         hotstart_config = HotstartConfig(enabled=True)
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_0, 1: boundary_1},
@@ -316,6 +322,7 @@ class TestBoundaryConditionsHotstartIntegration:
         )
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
@@ -334,6 +341,7 @@ class TestBoundaryConditionsHotstartIntegration:
         hotstart_config = HotstartConfig(enabled=True)
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
@@ -374,6 +382,7 @@ class TestBoundaryConditionsHotstartIntegration:
         )
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
@@ -396,6 +405,7 @@ class TestBoundaryConditionsHotstartIntegration:
         hotstart_config = HotstartConfig(enabled=False)
         
         bc = SCHISMDataBoundaryConditions(
+            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
             tidal_data=tidal_dataset,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
