@@ -973,9 +973,11 @@ class Bctides:
                 logger.info(f"Using {nope} boundaries from grid")
             else:
                 # No boundaries in grid and no user-defined flags
-                logger.warning("Grid has no open boundaries and no user-defined boundary flags")
+                logger.warning(
+                    "Grid has no open boundaries and no user-defined boundary flags"
+                )
                 nope = 0
-            
+
             f.write(f"{nope} !nope\n")
 
             # For each open boundary
@@ -986,16 +988,22 @@ class Bctides:
                     nodes = self.gd.iobn[ibnd]
                     num_nodes = self.gd.nobn[ibnd]
                     logger.debug(f"Using grid boundary {ibnd} with {num_nodes} nodes")
-                elif hasattr(self.gd, "nob") and self.gd.nob > 0 and ibnd >= self.gd.nob:
+                elif (
+                    hasattr(self.gd, "nob") and self.gd.nob > 0 and ibnd >= self.gd.nob
+                ):
                     # User has defined more boundaries than grid has - reuse last grid boundary
                     last_bnd_idx = self.gd.nob - 1
                     nodes = self.gd.iobn[last_bnd_idx]
                     num_nodes = self.gd.nobn[last_bnd_idx]
-                    logger.warning(f"Boundary {ibnd} exceeds grid boundaries, reusing boundary {last_bnd_idx}")
+                    logger.warning(
+                        f"Boundary {ibnd} exceeds grid boundaries, reusing boundary {last_bnd_idx}"
+                    )
                 else:
                     # Grid has no boundaries, but user has defined flags
                     # This is an inconsistent state - create a minimal dummy boundary
-                    logger.warning(f"Grid has no open boundaries but user defined boundary {ibnd}, creating dummy boundary")
+                    logger.warning(
+                        f"Grid has no open boundaries but user defined boundary {ibnd}, creating dummy boundary"
+                    )
                     # Create a simple 2-node boundary using first two grid nodes
                     if self.gd.np > 1:
                         nodes = np.array([0, 1])

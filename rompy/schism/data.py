@@ -23,9 +23,13 @@ from rompy.core.time import TimeRange
 from rompy.schism.bctides import Bctides
 from rompy.schism.boundary import Boundary3D
 from rompy.schism.boundary import BoundaryData
-from rompy.schism.boundary_tides import (ElevationType, TidalBoundary,
-                                         TracerType, VelocityType,
-                                         create_tidal_boundary)
+from rompy.schism.boundary_tides import (
+    ElevationType,
+    TidalBoundary,
+    TracerType,
+    VelocityType,
+    create_tidal_boundary,
+)
 from rompy.schism.grid import SCHISMGrid
 
 from rompy.schism.tides_enhanced import BoundarySetup, TidalDataset
@@ -46,6 +50,7 @@ def to_python_type(value):
         return bool(value)
     else:
         return value
+
 
 logger = logging.getLogger(__name__)
 
@@ -587,7 +592,9 @@ class SCHISMDataBoundary(DataBoundary):
     data_grid_source: Optional[DataGrid] = Field(
         None, description="DataGrid source for boundary data"
     )
-    variables: list[str] = Field(default_factory=list, description="variable name in the dataset")
+    variables: list[str] = Field(
+        default_factory=list, description="variable name in the dataset"
+    )
     sel_method: Literal["sel", "interp"] = Field(
         default="interp",
         description=(
@@ -661,12 +668,12 @@ class SCHISMDataBoundary(DataBoundary):
 
         # Get the variable data - handle multiple variables (e.g., u,v for velocity)
         num_components = len(self.variables)
-        
+
         # Process all variables and stack them
         variable_data = []
         for var in self.variables:
             variable_data.append(ds[var].values)
-        
+
         # Stack variables along a new component axis (last axis)
         if num_components == 1:
             data = variable_data[0]
@@ -686,10 +693,14 @@ class SCHISMDataBoundary(DataBoundary):
                 # Find indices of time, z, and x dimensions
                 time_dim_idx = dims.index(ds.time.dims[0])
                 z_dim_idx = (
-                    dims.index(ds[self.coords.z].dims[0]) if self.coords and self.coords.z and self.coords.z in ds else 1
+                    dims.index(ds[self.coords.z].dims[0])
+                    if self.coords and self.coords.z and self.coords.z in ds
+                    else 1
                 )
                 x_dim_idx = (
-                    dims.index(ds[self.coords.x].dims[0]) if self.coords and self.coords.x and self.coords.x in ds else 2
+                    dims.index(ds[self.coords.x].dims[0])
+                    if self.coords and self.coords.x and self.coords.x in ds
+                    else 2
                 )
 
                 logger.debug(
@@ -707,14 +718,16 @@ class SCHISMDataBoundary(DataBoundary):
 
                         data = np.transpose(data, trans_dims)
                         logger.debug(f"Transposed data shape: {data.shape}")
-                    
+
                     # Add the component dimension for SCHISM
                     time_series = np.expand_dims(data, axis=3)
                 else:
                     # Multiple component case - data is already (time, x, z, components)
                     # Need to transpose the first 3 dimensions to (time, x, z) if needed
                     if not (time_dim_idx == 0 and x_dim_idx == 1 and z_dim_idx == 2):
-                        trans_dims = list(range(data.ndim - 1))  # Exclude component axis
+                        trans_dims = list(
+                            range(data.ndim - 1)
+                        )  # Exclude component axis
                         trans_dims[time_dim_idx] = 0
                         trans_dims[x_dim_idx] = 1
                         trans_dims[z_dim_idx] = 2
@@ -723,7 +736,7 @@ class SCHISMDataBoundary(DataBoundary):
 
                         data = np.transpose(data, trans_dims)
                         logger.debug(f"Transposed data shape: {data.shape}")
-                    
+
                     # Data already has component dimension from stacking
                     time_series = data
             else:
@@ -827,14 +840,20 @@ class SCHISMDataBoundary(DataBoundary):
                 zcor[i, :nvrt_i] = node_zcor
 
             # Get source z-levels and prepare for interpolation
-            sigma_values = ds[self.coords.z].values if self.coords and self.coords.z else np.array([0])
+            sigma_values = (
+                ds[self.coords.z].values
+                if self.coords and self.coords.z
+                else np.array([0])
+            )
             data_shape = time_series.shape
 
             # Initialize interpolated data array with the maximum number of vertical levels
             if num_components == 1:
                 interpolated_data = np.zeros((data_shape[0], data_shape[1], max_nvrt))
             else:
-                interpolated_data = np.zeros((data_shape[0], data_shape[1], max_nvrt, data_shape[3]))
+                interpolated_data = np.zeros(
+                    (data_shape[0], data_shape[1], max_nvrt, data_shape[3])
+                )
 
             # For each time step and boundary point
             for t in range(data_shape[0]):  # time
@@ -878,7 +897,9 @@ class SCHISMDataBoundary(DataBoundary):
 
                             # Interpolate to SCHISM levels for this boundary point
                             # Only interpolate up to the actual number of levels for this point
-                            interpolated_data[t, n, :nvrt_n, c] = interp(z_dest[:nvrt_n])
+                            interpolated_data[t, n, :nvrt_n, c] = interp(
+                                z_dest[:nvrt_n]
+                            )
 
             # Replace data with interpolated values
             data = interpolated_data
@@ -1009,11 +1030,6 @@ class SCHISMDataBoundary(DataBoundary):
         return schism_ds
 
 
-
-
-
-
-
 class SCHISMData(RompyBaseModel):
     """
     This class is used to gather all required input forcing for SCHISM
@@ -1055,67 +1071,66 @@ class SCHISMData(RompyBaseModel):
             Paths to generated files for each data component
         """
         logger.info(f"===== SCHISMData.get called with destdir={destdir} =====")
-        
+
         # Convert destdir to Path object
         destdir = Path(destdir)
-        
+
         # Create destdir if it doesn't exist
         if not destdir.exists():
             logger.info(f"Creating destination directory: {destdir}")
             destdir.mkdir(parents=True, exist_ok=True)
-        
+
         results = {}
-        
+
         # Process atmospheric data
         if self.atmos:
             logger.info("Processing atmospheric data")
             results["atmos"] = self.atmos.get(destdir, grid, time)
-        
+
         # Process wave data
         if self.wave:
             logger.info("Processing wave data")
             results["wave"] = self.wave.get(destdir, grid, time)
-        
+
         # Process boundary conditions
         if self.boundary_conditions:
             logger.info("Processing boundary conditions")
-            results["boundary_conditions"] = self.boundary_conditions.get(destdir, grid, time)
-        
-        logger.info(f"===== SCHISMData.get completed. Generated files: {list(results.keys())} =====")
+            results["boundary_conditions"] = self.boundary_conditions.get(
+                destdir, grid, time
+            )
+
+        logger.info(
+            f"===== SCHISMData.get completed. Generated files: {list(results.keys())} ====="
+        )
         return results
 
 
 class HotstartConfig(RompyBaseModel):
     """
     Configuration for generating SCHISM hotstart files.
-    
+
     This class specifies parameters for creating hotstart.nc files from
     temperature and salinity data sources already configured in boundary conditions.
     """
-    
+
     enabled: bool = Field(
-        default=False,
-        description="Whether to generate hotstart file"
+        default=False, description="Whether to generate hotstart file"
     )
     temp_var: str = Field(
         default="temperature",
-        description="Name of temperature variable in source dataset"
+        description="Name of temperature variable in source dataset",
     )
     salt_var: str = Field(
-        default="salinity", 
-        description="Name of salinity variable in source dataset"
+        default="salinity", description="Name of salinity variable in source dataset"
     )
     time_offset: float = Field(
-        default=0.0,
-        description="Offset to add to source time values (in days)"
+        default=0.0, description="Offset to add to source time values (in days)"
     )
     time_base: datetime = Field(
-        default=datetime(2000, 1, 1),
-        description="Base time for source time values"
+        default=datetime(2000, 1, 1), description="Base time for source time values"
     )
     output_filename: str = Field(
-        default="hotstart.nc",
-        description="Name of the output hotstart file"
+        default="hotstart.nc", description="Name of the output hotstart file"
     )
 
 
@@ -1289,7 +1304,9 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
                     "constituents are required for tidal or hybrid setup_type"
                 )
             if not self.tidal_data:
-                raise ValueError("tidal_data is required for tidal or hybrid setup_type")
+                raise ValueError(
+                    "tidal_data is required for tidal or hybrid setup_type"
+                )
 
         elif self.setup_type == "river":
             if self.boundaries:
@@ -1448,7 +1465,9 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
         # Set start time and run duration
         start_time = time.start
         if time.end is not None and time.start is not None:
-            run_days = (time.end - time.start).total_seconds() / 86400.0  # Convert to days
+            run_days = (
+                time.end - time.start
+            ).total_seconds() / 86400.0  # Convert to days
         else:
             run_days = 1.0  # Default to 1 day if time is not properly specified
         boundary.set_run_parameters(start_time, run_days)
@@ -1467,7 +1486,9 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
         # Double-check all required attributes are present
         required_attrs = ["nob", "nobn", "iobn"]
         missing_attrs = [
-            attr for attr in required_attrs if not (grid.pylibs_hgrid and hasattr(grid.pylibs_hgrid, attr))
+            attr
+            for attr in required_attrs
+            if not (grid.pylibs_hgrid and hasattr(grid.pylibs_hgrid, attr))
         ]
         if missing_attrs:
             error_msg = (
@@ -1492,7 +1513,10 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
                 ElevationType.TIDALSPACETIME,
             ]:
                 if setup.elev_source:
-                    if hasattr(setup.elev_source, 'data_type') and setup.elev_source.data_type == 'boundary':
+                    if (
+                        hasattr(setup.elev_source, "data_type")
+                        and setup.elev_source.data_type == "boundary"
+                    ):
                         # Process using SCHISMDataBoundary interface
                         setup.elev_source.id = "elev2D"  # Set the ID for the boundary
                         file_path = setup.elev_source.get(destdir, grid, time)
@@ -1509,7 +1533,10 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
                 VelocityType.RELAXED,
             ]:
                 if setup.vel_source:
-                    if hasattr(setup.vel_source, 'data_type') and setup.vel_source.data_type == 'boundary':
+                    if (
+                        hasattr(setup.vel_source, "data_type")
+                        and setup.vel_source.data_type == "boundary"
+                    ):
                         # Process using SCHISMDataBoundary interface
                         setup.vel_source.id = "uv3D"  # Set the ID for the boundary
                         file_path = setup.vel_source.get(destdir, grid, time)
@@ -1522,7 +1549,10 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
             # Process temperature data if needed
             if setup.temp_type == TracerType.SPACETIME:
                 if setup.temp_source:
-                    if hasattr(setup.temp_source, 'data_type') and setup.temp_source.data_type == 'boundary':
+                    if (
+                        hasattr(setup.temp_source, "data_type")
+                        and setup.temp_source.data_type == "boundary"
+                    ):
                         # Process using SCHISMDataBoundary interface
                         setup.temp_source.id = "TEM_3D"  # Set the ID for the boundary
                         file_path = setup.temp_source.get(destdir, grid, time)
@@ -1535,7 +1565,10 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
             # Process salinity data if needed
             if setup.salt_type == TracerType.SPACETIME:
                 if setup.salt_source:
-                    if hasattr(setup.salt_source, 'data_type') and setup.salt_source.data_type == 'boundary':
+                    if (
+                        hasattr(setup.salt_source, "data_type")
+                        and setup.salt_source.data_type == "boundary"
+                    ):
                         # Process using SCHISMDataBoundary interface
                         setup.salt_source.id = "SAL_3D"  # Set the ID for the boundary
                         file_path = setup.salt_source.get(destdir, grid, time)
@@ -1561,62 +1594,75 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
     ) -> str:
         """
         Generate hotstart file using boundary condition data sources.
-        
+
         Args:
             destdir: Destination directory for the hotstart file
             grid: SCHISM grid object
             time: Time range for the data
-            
+
         Returns:
             Path to the generated hotstart file
         """
         from rompy.schism.hotstart import SCHISMDataHotstart
-        
+
         # Find a boundary that has both temperature and salinity sources
         temp_source = None
         salt_source = None
-        
+
         for boundary_config in self.boundaries.values():
             if boundary_config.temp_source is not None:
                 temp_source = boundary_config.temp_source
             if boundary_config.salt_source is not None:
                 salt_source = boundary_config.salt_source
-            
+
             # If we found both, we can proceed
             if temp_source is not None and salt_source is not None:
                 break
-        
+
         if temp_source is None or salt_source is None:
             raise ValueError(
                 "Hotstart generation requires both temperature and salinity sources "
                 "to be configured in boundary conditions"
             )
-        
+
         # Create hotstart instance using the first available source
         # (assuming temp and salt sources point to the same dataset)
         # Include both temperature and salinity variables for hotstart generation
-        temp_var_name = self.hotstart_config.temp_var if self.hotstart_config else "temperature"
-        salt_var_name = self.hotstart_config.salt_var if self.hotstart_config else "salinity"
-        
+        temp_var_name = (
+            self.hotstart_config.temp_var if self.hotstart_config else "temperature"
+        )
+        salt_var_name = (
+            self.hotstart_config.salt_var if self.hotstart_config else "salinity"
+        )
+
         hotstart_data = SCHISMDataHotstart(
             source=temp_source.source,
             variables=[temp_var_name, salt_var_name],
-            coords=getattr(temp_source, 'coords', None),
+            coords=getattr(temp_source, "coords", None),
             temp_var=temp_var_name,
             salt_var=salt_var_name,
-            time_offset=self.hotstart_config.time_offset if self.hotstart_config else 0.0,
-            time_base=self.hotstart_config.time_base if self.hotstart_config else datetime(2000, 1, 1),
-            output_filename=self.hotstart_config.output_filename if self.hotstart_config else "hotstart.nc",
+            time_offset=(
+                self.hotstart_config.time_offset if self.hotstart_config else 0.0
+            ),
+            time_base=(
+                self.hotstart_config.time_base
+                if self.hotstart_config
+                else datetime(2000, 1, 1)
+            ),
+            output_filename=(
+                self.hotstart_config.output_filename
+                if self.hotstart_config
+                else "hotstart.nc"
+            ),
         )
-        
+
         return hotstart_data.get(str(destdir), grid=grid, time=time)
+
     # def check_bctides_flags(cls, v):
     #     # TODO Add check fro bc flags in teh event of 3d inputs
     #     # SHould possibly move this these flags out of SCHISMDataTides class as they cover more than
     #     # just tides
     #     return cls
-
-
 
 
 def get_valid_rename_dict(ds, rename_dict):

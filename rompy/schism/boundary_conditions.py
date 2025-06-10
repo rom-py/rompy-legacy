@@ -47,7 +47,7 @@ Example Usage:
 
 __all__ = [
     "create_tidal_only_boundary_config",
-    "create_hybrid_boundary_config", 
+    "create_hybrid_boundary_config",
     "create_river_boundary_config",
     "create_nested_boundary_config",
 ]
@@ -57,7 +57,11 @@ from typing import List, Literal, Optional, Union
 
 from rompy.core.data import DataBlob
 from rompy.schism.boundary_tides import ElevationType, TracerType, VelocityType
-from rompy.schism.data import SCHISMDataBoundary, BoundarySetupWithSource, SCHISMDataBoundaryConditions
+from rompy.schism.data import (
+    SCHISMDataBoundary,
+    BoundarySetupWithSource,
+    SCHISMDataBoundaryConditions,
+)
 from rompy.schism.tides_enhanced import TidalDataset
 
 logger = logging.getLogger(__name__)
@@ -216,7 +220,11 @@ def create_river_boundary_config(
     """
     # Create tidal dataset if both paths are provided and needed
     tidal_data = None
-    if other_boundaries in ["tidal", "hybrid"] and tidal_elevations and tidal_velocities:
+    if (
+        other_boundaries in ["tidal", "hybrid"]
+        and tidal_elevations
+        and tidal_velocities
+    ):
         tidal_data = TidalDataset(
             elevations=tidal_elevations, velocities=tidal_velocities
         )

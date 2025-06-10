@@ -164,9 +164,3 @@ def test_oceandataboundary3d(tmp_path, grid3d, hycom_bnd_temp_3d):
         # assert len(bnd.nOpenBndNodes) == len(boundary_nodes)
 
         assert bnd.time_series.isnull().sum() == 0
-
-
-
-
-
-

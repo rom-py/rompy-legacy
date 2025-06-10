@@ -115,14 +115,13 @@ class TestCommonWorkflows:
         # 3. Test that the boundary conditions system can be imported and used
         from rompy.schism.boundary_conditions import create_tidal_only_boundary_config
         from rompy.schism.data import SCHISMDataBoundaryConditions
-        
+
         # Just test that we can import and create the basic configuration type
         # without requiring actual tidal data files in this integration test
         try:
             # This should fail due to missing tidal data, but the import should work
             create_tidal_only_boundary_config(
-                constituents=["M2", "S2", "N2"],
-                tidal_database="tpxo"
+                constituents=["M2", "S2", "N2"], tidal_database="tpxo"
             )
         except ValueError as e:
             # Expected to fail without tidal data - this is the correct behavior
