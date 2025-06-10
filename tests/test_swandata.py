@@ -1,6 +1,13 @@
 import numpy as np
 import pandas as pd
 import pytest
+
+# Import test utilities
+from test_utils.logging import get_test_logger
+
+# Initialize logger
+logger = get_test_logger(__name__)
+
 import xarray as xr
 
 from rompy.core.source import SourceFile
@@ -74,7 +81,7 @@ def nc_data_source(tmp_path):
 
 def test_swandata_write(tmp_path, nc_data_source):
     swangrid = SwanGrid(x0=0, y0=0, dx=1, dy=1, nx=10, ny=10)
-    config_ref = "INPGRID WIND REG 0.0 0.0 0.0 9 9 1.0 1.0 EXC -99.0 NONSTATION 20000101.000000 24.0 HR\n"
+    config_ref = "INPGRID WIND REG 0.0 0.0 0.0 9 9 1.0 1.0 EXC -99.0 NONSTATION 20000101.000000 24.00 HR\n"
     config_ref += "READINP WIND 1.0 'wind.grd' 3 0 1 0 FREE\n"
     config = nc_data_source.get(tmp_path, swangrid)
     assert config == config_ref

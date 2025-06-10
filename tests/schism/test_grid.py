@@ -2,6 +2,13 @@ from pathlib import Path
 from importlib.metadata import entry_points
 import pytest
 
+
+# Import test utilities
+from test_utils.logging import get_test_logger
+
+# Initialize logger
+logger = get_test_logger(__name__)
+
 pytest.importorskip("rompy.schism")
 
 from rompy.core.data import DataBlob
@@ -12,6 +19,7 @@ from rompy.schism.grid import WWMBNDGR3Generator
 here = Path(__file__).parent
 
 eps = entry_points(group="rompy.config")
+
 
 @pytest.mark.skipif("schism" not in eps.names, reason="requires SCHISM")
 def test_SCHISMGrid2D(tmpdir):

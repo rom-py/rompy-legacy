@@ -1,18 +1,23 @@
-"""Model lockup components."""
+"""
+SWAN Lockup Components
 
-import logging
+This module contains components for controlling SWAN model execution flow,
+including computation, hotfile output, and program termination.
+"""
+
+from datetime import datetime
 from pathlib import Path
 from typing import Literal, Optional, Union
-from pydantic import field_validator, model_validator, Field
-from datetime import datetime
-from pandas import Timestamp
+
 from numpy import inf
+from pandas import Timestamp
+from pydantic import Field, field_validator, model_validator
 
+from rompy.core.logging import get_logger
 from rompy.swan.components.base import BaseComponent
-from rompy.swan.subcomponents.time import STATIONARY, NONSTATIONARY
+from rompy.swan.subcomponents.time import NONSTATIONARY, STATIONARY
 
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 TIMES_TYPE = Union[STATIONARY, NONSTATIONARY]
 HOTTIMES_TYPE = Union[list[datetime], list[int]]

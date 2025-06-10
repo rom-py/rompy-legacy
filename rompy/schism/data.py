@@ -1,4 +1,3 @@
-import logging
 import os
 from pathlib import Path
 from typing import Literal, Optional, Union
@@ -9,19 +8,18 @@ import xarray as xr
 from cloudpathlib import AnyPath
 from pydantic import Field, model_validator
 
-from rompy.core.data import DataGrid
-from rompy.core.types import RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
-from rompy.core.data import DataBlob
+from rompy.core.data import DataBlob, DataGrid
+from rompy.core.logging import get_logger
 from rompy.core.time import TimeRange
+from rompy.core.types import RompyBaseModel
 from rompy.schism.grid import SCHISMGrid
-# from pyschism.forcing.bctides import Bctides
 from rompy.schism.pyschism.forcing.bctides import Bctides
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class SfluxSource(DataGrid):

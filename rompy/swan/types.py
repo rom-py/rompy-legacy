@@ -1,6 +1,15 @@
-"""Types for the swan wrapper."""
+"""
+SWAN Types
+
+This module contains type definitions and enumerations used throughout the SWAN model
+implementation, including grid types, boundary conditions, and physics options.
+"""
 
 from enum import Enum, IntEnum
+
+from rompy.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 class IDLA(IntEnum):
@@ -198,6 +207,8 @@ class BlockOptions(str, Enum):
         Swell wave height (in m).
     DIR: "dir"
         Mean wave direction (in degrees).
+    DPM: "dpm"
+        Mean wave direction at the peak frequency (in degrees).
     PDIR: "pdir"
         Peak wave direction (in degrees).
     TDIR: "tdir"
@@ -353,6 +364,7 @@ class BlockOptions(str, Enum):
     HSIGN = "hsign"
     HSWELL = "hswell"
     DIR = "dir"
+    DPM = "dpm"
     PDIR = "pdir"
     TDIR = "tdir"
     TM01 = "tm01"
