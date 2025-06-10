@@ -145,15 +145,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../models.html">
-    Models
+  <a class="nav-link nav-internal" href="../../../../formatting_and_logging.html">
+    Formatting and Logging
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../demo.html">
-    Demonstration notebooks
+  <a class="nav-link nav-internal" href="../../../../cli.html">
+    Command Line Interface
   </a>
 </li>
 
@@ -165,6 +165,20 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../../../../api.html">
     API  Documentation
@@ -283,6 +297,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../../models.html">
     Models
   </a>
@@ -347,6 +375,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../formatting_and_logging.html">Formatting and Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../demo.html">Demonstration notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API  Documentation</a></li>
@@ -419,6 +449,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.namelists.basemodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamelistBaseModel</span>
 
 
+<div class="viewcode-block" id="Mice_in">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Mice_in</span><span class="p">(</span><span class="n">NamelistBaseModel</span><span class="p">):</span>
     <span class="n">ice_tests</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Flag for box test. 0 indicates no box test.&quot;</span>
@@ -483,145 +515,206 @@
     <span class="n">salt_ice</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Salinity for ice [PSU].&quot;</span><span class="p">)</span>
     <span class="n">salt_water</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mf">34.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Salinity for water [PSU].&quot;</span><span class="p">)</span>
 
+<div class="viewcode-block" id="Mice_in.validate_ice_tests">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_ice_tests">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;ice_tests&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_ice_tests</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ice_tests must be 0 or 1&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_ihot_mice">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_ihot_mice">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;ihot_mice&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_ihot_mice</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ihot_mice must be 0, 1, or 2&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_ice_advection">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_ice_advection">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;ice_advection&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_ice_advection</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ice_advection must be an integer between 3 and 7&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_ice_therm_on">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_ice_therm_on">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;ice_therm_on&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_ice_therm_on</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ice_therm_on must be 0 or 1&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_ievp">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_ievp">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;ievp&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_ievp</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ievp must be 1 or 2&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_ice_cutoff">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_ice_cutoff">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;ice_cutoff&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_ice_cutoff</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ice_cutoff must be a non-negative float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_evp_rheol_steps">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_evp_rheol_steps">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;evp_rheol_steps&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_evp_rheol_steps</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;evp_rheol_steps must be a positive integer&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_mevp_rheol_steps">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_mevp_rheol_steps">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;mevp_rheol_steps&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_mevp_rheol_steps</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mevp_rheol_steps must be a positive integer&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_delta_min">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_delta_min">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;delta_min&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_delta_min</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;delta_min must be a positive float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_theta_io">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_theta_io">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;theta_io&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_theta_io</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="mi">360</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;theta_io must be a float between 0 and 360&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_mevp_alpha1">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_mevp_alpha1">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;mevp_alpha1&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_mevp_alpha1</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mevp_alpha1 must be a positive float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_mevp_alpha2">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_mevp_alpha2">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;mevp_alpha2&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_mevp_alpha2</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mevp_alpha2 must be a positive float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_pstar">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_pstar">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;pstar&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_pstar</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;pstar must be a positive float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_ellipse">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_ellipse">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;ellipse&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_ellipse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ellipse must be a float greater than 1&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_c_pressure">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_c_pressure">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;c_pressure&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_c_pressure</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;c_pressure must be a positive float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_niter_fct">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_niter_fct">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;niter_fct&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_niter_fct</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;niter_fct must be a positive integer&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_ice_gamma_fct">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_ice_gamma_fct">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;ice_gamma_fct&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_ice_gamma_fct</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ice_gamma_fct must be a float between 0 and 1&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_h_ml0">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_h_ml0">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;h_ml0&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_h_ml0</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;h_ml0 must be a positive float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_salt_ice">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_salt_ice">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;salt_ice&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_salt_ice</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;salt_ice must be a non-negative float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
 
+
+<div class="viewcode-block" id="Mice_in.validate_salt_water">
+<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.mice.Mice_in.html#rompy.schism.namelists.mice.Mice_in.validate_salt_water">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;salt_water&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_salt_water</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;salt_water must be a non-negative float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+</div>
+
 
 
 <div class="viewcode-block" id="Mice">

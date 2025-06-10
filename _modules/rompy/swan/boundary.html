@@ -145,15 +145,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../models.html">
-    Models
+  <a class="nav-link nav-internal" href="../../../formatting_and_logging.html">
+    Formatting and Logging
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../demo.html">
-    Demonstration notebooks
+  <a class="nav-link nav-internal" href="../../../cli.html">
+    Command Line Interface
   </a>
 </li>
 
@@ -165,6 +165,20 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../../../api.html">
     API  Documentation
@@ -283,6 +297,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../models.html">
     Models
   </a>
@@ -347,6 +375,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../formatting_and_logging.html">Formatting and Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstration notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API  Documentation</a></li>
@@ -410,35 +440,40 @@
                 <article class="bd-article">
                   
   <h1>Source code for rompy.swan.boundary</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;SWAN boundary classes.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SWAN Boundary Module</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Annotated</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineString</span>
+<span class="sd">This module provides boundary condition handling for the SWAN model within the ROMPY framework.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineString</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundaryWaveStation</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="n">BOUNDSPEC</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.subcomponents.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSubComponent</span><span class="p">,</span> <span class="n">XY</span><span class="p">,</span> <span class="n">IJ</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.subcomponents.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">IJ</span><span class="p">,</span> <span class="n">XY</span><span class="p">,</span> <span class="n">BaseSubComponent</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.subcomponents.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">SIDE</span><span class="p">,</span>
-    <span class="n">SIDES</span><span class="p">,</span>
-    <span class="n">SEGMENT</span><span class="p">,</span>
-    <span class="n">VARIABLEFILE</span><span class="p">,</span>
-    <span class="n">VARIABLEPAR</span><span class="p">,</span>
     <span class="n">CONSTANTFILE</span><span class="p">,</span>
     <span class="n">CONSTANTPAR</span><span class="p">,</span>
+    <span class="n">SEGMENT</span><span class="p">,</span>
+    <span class="n">SIDE</span><span class="p">,</span>
+    <span class="n">SIDES</span><span class="p">,</span>
+    <span class="n">VARIABLEFILE</span><span class="p">,</span>
+    <span class="n">VARIABLEPAR</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.subcomponents.spectrum</span><span class="w"> </span><span class="kn">import</span> <span class="n">SHAPESPEC</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="write_tpar">

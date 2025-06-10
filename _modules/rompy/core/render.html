@@ -145,15 +145,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../models.html">
-    Models
+  <a class="nav-link nav-internal" href="../../../formatting_and_logging.html">
+    Formatting and Logging
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../demo.html">
-    Demonstration notebooks
+  <a class="nav-link nav-internal" href="../../../cli.html">
+    Command Line Interface
   </a>
 </li>
 
@@ -165,6 +165,20 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../../../api.html">
     API  Documentation
@@ -283,6 +297,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../models.html">
     Models
   </a>
@@ -347,6 +375,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../formatting_and_logging.html">Formatting and Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstration notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API  Documentation</a></li>
@@ -410,9 +440,11 @@
                 <article class="bd-article">
                   
   <h1>Source code for rompy.core.render</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">time_module</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">cookiecutter.config</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cc_config</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">cookiecutter.generate</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cc_generate</span>
@@ -420,7 +452,10 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">cookiecutter.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">NonTemplatedInputDirException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cookiecutter.find</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_template</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">RompyBaseModel</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="repository_has_cookiecutter_json">
@@ -471,12 +506,99 @@
 <span class="n">cc_generate</span><span class="o">.</span><span class="n">find_template</span> <span class="o">=</span> <span class="n">find_template</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">checkout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TemplateRenderer">
+<a class="viewcode-back" href="../../../api.html#rompy.core.render.TemplateRenderer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TemplateRenderer</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Template renderer class that provides enhanced logging and formatting.</span>
+
+<span class="sd">    This class wraps the cookiecutter template rendering process and provides</span>
+<span class="sd">    detailed formatting through the _format_value method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span>
+    <span class="n">context</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="n">checkout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format specific types of values for display using the new formatting framework.</span>
+
+<span class="sd">        This method formats template rendering information with rich details.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj: The object to format</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A formatted string or None to use default formatting</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Only format TemplateRenderer objects</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">TemplateRenderer</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># Use the new formatting framework</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_value</span>
+
+        <span class="k">return</span> <span class="n">format_value</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render the template with the given context.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The path to the rendered template</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkout</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="render">
+<a class="viewcode-back" href="../../../api.html#rompy.core.render.render">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">checkout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render the template with the given context.</span>
+
+<span class="sd">    This function handles the rendering process and provides detailed progress</span>
+<span class="sd">    information during the rendering.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        context (dict): The context to use for rendering</span>
+<span class="sd">        template (str): The template directory or URL</span>
+<span class="sd">        output_dir (str): The output directory</span>
+<span class="sd">        checkout (str, optional): The branch, tag or commit to checkout</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The path to the rendered template</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Use formatting utilities imported at the top of the file</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time_module</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="c1"># Create renderer object for nice formatting</span>
+    <span class="n">renderer</span> <span class="o">=</span> <span class="n">TemplateRenderer</span><span class="p">(</span>
+        <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">checkout</span><span class="o">=</span><span class="n">checkout</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Format renderer info</span>
+    <span class="n">renderer_info</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">.</span><span class="n">_format_value</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+
+    <span class="c1"># Log detailed renderer info</span>
+    <span class="k">if</span> <span class="n">renderer_info</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">renderer_info</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Fall back to simple logging if formatting failed</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Template source: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Output directory: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">checkout</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using template version: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">checkout</span><span class="p">)</span>
+
+    <span class="c1"># Initialize context for cookiecutter</span>
     <span class="n">context</span><span class="p">[</span><span class="s2">&quot;cookiecutter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">config_dict</span> <span class="o">=</span> <span class="n">cc_config</span><span class="o">.</span><span class="n">get_user_config</span><span class="p">(</span>
         <span class="n">config_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">default_config</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
+
+    <span class="c1"># Determine the repo directory</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">bullet_list</span><span class="p">([</span><span class="s2">&quot;Locating template repository...&quot;</span><span class="p">])</span>
 
     <span class="n">repo_dir</span><span class="p">,</span> <span class="n">cleanup</span> <span class="o">=</span> <span class="n">cc_repository</span><span class="o">.</span><span class="n">determine_repo_dir</span><span class="p">(</span>
         <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span>
@@ -485,15 +607,78 @@
         <span class="n">checkout</span><span class="o">=</span><span class="n">checkout</span><span class="p">,</span>
         <span class="n">no_input</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Template repository located at: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">repo_dir</span><span class="p">)</span>
     <span class="n">context</span><span class="p">[</span><span class="s2">&quot;_template&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">repo_dir</span>
 
+    <span class="c1"># Generate files from template</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">bullet_list</span><span class="p">([</span><span class="s2">&quot;Generating files from template...&quot;</span><span class="p">])</span>
+    <span class="n">render_start</span> <span class="o">=</span> <span class="n">time_module</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">staging_dir</span> <span class="o">=</span> <span class="n">cc_generate</span><span class="o">.</span><span class="n">generate_files</span><span class="p">(</span>
         <span class="n">repo_dir</span><span class="o">=</span><span class="n">repo_dir</span><span class="p">,</span>
         <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
         <span class="n">overwrite_if_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="n">staging_dir</span>
+
+    <span class="c1"># Log completion information</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time_module</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="n">render_time</span> <span class="o">=</span> <span class="n">time_module</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">render_start</span>
+
+    <span class="c1"># Get number of files created</span>
+    <span class="n">file_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">staging_dir</span><span class="p">)])</span>
+
+    <span class="c1"># Create render results object for formatting</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">RenderResults</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render results information&quot;&quot;&quot;</span>
+
+        <span class="n">staging_dir</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">render_time</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="n">elapsed_time</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="n">file_count</span><span class="p">:</span> <span class="nb">int</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_format_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Format render results for display using the new formatting framework.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                obj: The object to format</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                A formatted string or None to use default formatting</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># Only format RenderResults objects</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">RenderResults</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="c1"># Use the new formatting framework</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_value</span>
+
+            <span class="k">return</span> <span class="n">format_value</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="c1"># Create and format results</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">RenderResults</span><span class="p">(</span>
+        <span class="n">staging_dir</span><span class="o">=</span><span class="n">staging_dir</span><span class="p">,</span>
+        <span class="n">render_time</span><span class="o">=</span><span class="n">render_time</span><span class="p">,</span>
+        <span class="n">elapsed_time</span><span class="o">=</span><span class="n">elapsed</span><span class="p">,</span>
+        <span class="n">file_count</span><span class="o">=</span><span class="n">file_count</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">results_info</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">_format_value</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">results_info</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">results_info</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Fallback to bullet list if formatting failed</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">bullet_list</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;Rendering time:      </span><span class="si">{</span><span class="n">render_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Total process time:  </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Files created:       </span><span class="si">{</span><span class="n">file_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Output location:     </span><span class="si">{</span><span class="n">staging_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">staging_dir</span></div>
+
 </pre></div>
 
                 </article>

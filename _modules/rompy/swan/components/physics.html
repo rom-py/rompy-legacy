@@ -145,15 +145,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../models.html">
-    Models
+  <a class="nav-link nav-internal" href="../../../../formatting_and_logging.html">
+    Formatting and Logging
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../demo.html">
-    Demonstration notebooks
+  <a class="nav-link nav-internal" href="../../../../cli.html">
+    Command Line Interface
   </a>
 </li>
 
@@ -165,6 +165,20 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../../../../api.html">
     API  Documentation
@@ -283,6 +297,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../../models.html">
     Models
   </a>
@@ -347,6 +375,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../formatting_and_logging.html">Formatting and Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../demo.html">Demonstration notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API  Documentation</a></li>
@@ -410,40 +440,46 @@
                 <article class="bd-article">
                   
   <h1>Source code for rompy.swan.components.physics</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Model physics components.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SWAN Physics Components</span>
+
+<span class="sd">This module contains components for configuring the physical processes in SWAN,</span>
+<span class="sd">including wind generation, whitecapping, quadruplet interactions, and wave breaking.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Annotated</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">ValidationInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">ValidationInfo</span><span class="p">,</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseComponent</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">IDLA</span><span class="p">,</span> <span class="n">PhysicsOff</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.subcomponents.physics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DANGREMOND</span><span class="p">,</span>
+    <span class="n">DEWIT</span><span class="p">,</span>
+    <span class="n">ELDEBERKY</span><span class="p">,</span>
+    <span class="n">FREEBOARD</span><span class="p">,</span>
+    <span class="n">GODA</span><span class="p">,</span>
     <span class="n">JANSSEN</span><span class="p">,</span>
     <span class="n">KOMEN</span><span class="p">,</span>
-    <span class="n">WESTHUYSEN</span><span class="p">,</span>
+    <span class="n">LINE</span><span class="p">,</span>
+    <span class="n">RDIFF</span><span class="p">,</span>
+    <span class="n">REFL</span><span class="p">,</span>
+    <span class="n">RSPEC</span><span class="p">,</span>
     <span class="n">ST6</span><span class="p">,</span>
     <span class="n">ST6C1</span><span class="p">,</span>
     <span class="n">ST6C2</span><span class="p">,</span>
     <span class="n">ST6C3</span><span class="p">,</span>
     <span class="n">ST6C4</span><span class="p">,</span>
     <span class="n">ST6C5</span><span class="p">,</span>
-    <span class="n">ELDEBERKY</span><span class="p">,</span>
-    <span class="n">DEWIT</span><span class="p">,</span>
-    <span class="n">TRANSM</span><span class="p">,</span>
     <span class="n">TRANS1D</span><span class="p">,</span>
     <span class="n">TRANS2D</span><span class="p">,</span>
-    <span class="n">GODA</span><span class="p">,</span>
-    <span class="n">DANGREMOND</span><span class="p">,</span>
-    <span class="n">REFL</span><span class="p">,</span>
-    <span class="n">RSPEC</span><span class="p">,</span>
-    <span class="n">RDIFF</span><span class="p">,</span>
-    <span class="n">FREEBOARD</span><span class="p">,</span>
-    <span class="n">LINE</span><span class="p">,</span>
+    <span class="n">TRANSM</span><span class="p">,</span>
+    <span class="n">WESTHUYSEN</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">IDLA</span><span class="p">,</span> <span class="n">PhysicsOff</span>
 
-
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <span class="n">SOURCE_TERMS</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
