@@ -7,8 +7,9 @@ from datetime import datetime
 import re
 
 # Import necessary modules from rompy
-from rompy.schism.boundary_tides import (
-    TidalBoundary,
+from rompy.schism.boundary_core import (
+    BoundaryHandler,
+    TidalBoundary,  # Backward compatibility alias
     BoundaryConfig,
     ElevationType,
     VelocityType,

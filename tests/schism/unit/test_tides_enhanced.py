@@ -16,7 +16,7 @@ from rompy.schism.tides_enhanced import (
     create_nested_config,
 )
 from rompy.schism.data import SCHISMData, SCHISMDataBoundary
-from rompy.schism.boundary_tides import ElevationType, VelocityType, TracerType
+from rompy.schism.boundary_core import ElevationType, VelocityType, TracerType
 
 # We'll use the grid2d fixture from the parent conftest.py
 # No need to redefine it here

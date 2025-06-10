@@ -23,9 +23,9 @@ from rompy.core.time import TimeRange
 from rompy.schism.bctides import Bctides
 from rompy.schism.boundary import Boundary3D
 from rompy.schism.boundary import BoundaryData
-from rompy.schism.boundary_tides import (
+from rompy.schism.boundary_core import (
     ElevationType,
-    TidalBoundary,
+    BoundaryHandler,
     TracerType,
     VelocityType,
     create_tidal_boundary,

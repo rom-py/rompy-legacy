@@ -4,8 +4,9 @@ from pathlib import Path
 import numpy as np
 from datetime import datetime
 
-from rompy.schism.boundary_tides import (
-    TidalBoundary,
+from rompy.schism.boundary_core import (
+    BoundaryHandler,
+    TidalBoundary,  # Backward compatibility alias
     BoundaryConfig,
     ElevationType,
     VelocityType,

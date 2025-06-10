@@ -7,8 +7,9 @@ import tempfile
 import numpy as np
 
 # Import needed modules
-from rompy.schism.boundary_tides import (
-    TidalBoundary,
+from rompy.schism.boundary_core import (
+    BoundaryHandler,
+    TidalBoundary,  # Backward compatibility alias
     ElevationType,
     VelocityType,
     TracerType,

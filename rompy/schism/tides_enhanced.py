@@ -23,8 +23,8 @@ from rompy.schism.grid import SCHISMGrid
 
 # Import bctides and boundary modules
 from .bctides import Bctides
-from rompy.schism.boundary_tides import (
-    TidalBoundary,
+from rompy.schism.boundary_core import (
+    BoundaryHandler,
     BoundaryConfig,
     ElevationType,
     VelocityType,
@@ -33,8 +33,9 @@ from rompy.schism.boundary_tides import (
     create_hybrid_boundary,
     create_river_boundary,
     create_nested_boundary,
+    # Keep backward compatibility
+    TidalBoundary,
 )
-from rompy.schism.boundary_tides import ElevationType, VelocityType, TracerType
 
 logger = logging.getLogger(__name__)
 

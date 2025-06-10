@@ -22,7 +22,7 @@ from rompy.core.source import SourceFile
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.data import SCHISMDataBoundary
 from rompy.schism.tides_enhanced import TidalDataset
-from rompy.schism.boundary_tides import (
+from rompy.schism.boundary_core import (
     ElevationType,
     VelocityType,
     TracerType,

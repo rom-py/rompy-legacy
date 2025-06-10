@@ -46,7 +46,7 @@ The boundary conditions module provides a unified interface for configuring all 
 .. toctree::
    :maxdepth: 2
 
-   enhanced_tides
+   boundary_conditions
 
 Hotstart Configuration
 ----------------------
