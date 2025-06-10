@@ -1,6 +1,12 @@
-"""SWAN output subcomponents."""
+"""
+SWAN Output Subcomponents
+
+This module contains subcomponents for defining output specifications in SWAN,
+including spectral output types and frequency representations.
+"""
 
 from typing import Literal
+
 from pydantic import Field
 
 from rompy.swan.subcomponents.base import BaseSubComponent

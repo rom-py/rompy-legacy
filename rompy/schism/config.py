@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 from typing import Literal, Optional, Union
 
@@ -6,6 +5,7 @@ from pydantic import Field, model_serializer, model_validator
 
 from rompy.core.config import BaseConfig
 from rompy.core.data import DataBlob
+from rompy.core.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel, Spectrum
 
@@ -14,7 +14,7 @@ from .grid import SCHISMGrid
 from .interface import TimeInterface
 from .namelists import NML
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 HERE = Path(__file__).parent
 

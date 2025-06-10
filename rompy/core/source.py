@@ -27,7 +27,7 @@ try:
     from rompy_binary_datasources import SourceDataset, SourceTimeseriesDataFrame
 except ImportError:
     from rompy.utils import create_import_error_class
-    
+
     # Create stub classes that will raise a helpful error when instantiated
     SourceDataset = create_import_error_class("SourceDataset")
     SourceTimeseriesDataFrame = create_import_error_class("SourceTimeseriesDataFrame")

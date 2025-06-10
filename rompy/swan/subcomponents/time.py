@@ -1,15 +1,20 @@
-"""Time subcomponents."""
+"""
+SWAN Time Subcomponents
 
-import logging
+This module contains subcomponents for handling time specifications in SWAN,
+including time ranges, intervals, and time format conversions.
+"""
+
 from datetime import datetime, timedelta
 from typing import Literal, Optional, Union
-from pydantic import Field, field_validator, model_validator
-import pandas as pd
 
+import pandas as pd
+from pydantic import Field, field_validator, model_validator
+
+from rompy.core.logging import get_logger
 from rompy.swan.subcomponents.base import BaseSubComponent
 
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 DEFAULT_TIME = datetime(1970, 1, 1, 0, 0, 0)
 DEFAULT_TEND = DEFAULT_TIME + timedelta(days=1)
