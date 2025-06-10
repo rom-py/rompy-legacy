@@ -3,7 +3,7 @@ period:
   start: 20230101T00
   end: 20230101T12
   interval: 3600
-run_id: test_schism_nml
+run_id: test_schism_nml_lsc2_new
 config:
   model_type: schism
   grid:
@@ -11,12 +11,10 @@ config:
     hgrid:
       id: hgrid
       model_type: data_blob
-        #source: ../../tests/schism/test_data/hgrid.gr3
       source: ../../tests/schism/test_data/hgrid_20kmto60km_rompyschism_testing.gr3
     vgrid:
-      model_type: vgrid3D_lsc2
-      hgrid: ../../tests/schism/test_data/hgrid_20kmto60km_rompyschism_testing.gr3
-      hsm: 
+      model_type: data_blob
+      source: ../../tests/schism/test_data/vgrid.in
     drag: 1
   data:
     data_type: schism
@@ -32,40 +30,34 @@ config:
         filter:
           sort: {coords: [latitude]}
         buffer: 5
-    ocean:
-      elev2D:
-        buffer: 0.0
-        coords:
-          t: time
-          x: xlon
-          y: ylat
-        source: 
-          model_type: file
-          uri:  ../../tests/schism/test_data/hycom.nc
-        variable: surf_el
-      sal3d:
-        buffer: 0.0
-        coords:
-          t: time
-          x: xlon
-          y: ylat
-          z: depth
-        source: 
-          model_type: file
-          uri:  ../../tests/schism/test_data/hycom.nc
-        variable: salinity
-    tides:
-      constituents:
-      - M2
-      - S2
-      - N2
+    # New unified boundary conditions configuration
+    boundary_conditions:
+      data_type: boundary_conditions
+      constituents: [M2, S2, N2]
+      tidal_database: "tpxo"
+      ntip: 0
       cutoff_depth: 50.0
-      flags: 
-        - [5, 3, 0, 0]
+      setup_type: "hybrid"
       tidal_data:
-        data_type: tidal_dataset
         elevations: ../../tests/schism/test_data/tpxo9-neaus/h_m2s2n2.nc
         velocities: ../../tests/schism/test_data/tpxo9-neaus/u_m2s2n2.nc
+      boundaries:
+        0:  # Applied to all open boundaries
+          elev_type: 5  # TIDALSPACETIME: Combined tidal + external data
+          vel_type: 3   # TIDAL: Tidal velocity
+          temp_type: 0  # NONE: No temperature
+          salt_type: 0  # NONE: No salinity
+          elev_source:
+            data_type: boundary
+            source: 
+              model_type: file
+              uri: ../../tests/schism/test_data/hycom.nc
+            variables:
+              - surf_el
+            coords:
+              t: time
+              x: xlon
+              y: ylat
     wave:
       buffer: 0.0
       coords:

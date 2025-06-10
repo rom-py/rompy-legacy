@@ -3,7 +3,7 @@ period:
   start: 20230101T00
   end: 20230101T12
   interval: 3600
-run_id: test_schism_nml
+run_id: test_schism_new
 delete_existing: True
 config:
   model_type: schism
@@ -12,10 +12,7 @@ config:
     hgrid:
       id: hgrid
       model_type: data_blob
-       #source: ../../tests/schism/test_data/hgrid.gr3
       source: ../../tests/schism/test_data/hgrid_20kmto60km_rompyschism_testing.gr3
-    # vgrid:
-    #   model_type: vgrid2D_generator
     drag: 1
   data:
     data_type: schism
@@ -31,29 +28,32 @@ config:
         filter:
           sort: {coords: [latitude]}
         buffer: 5
-    ocean:
-      elev2D:
-        buffer: 0.0
-        coords:
-          t: time
-          x: xlon
-          y: ylat
-        source: 
-          uri:  ../../tests/schism/test_data/hycom.nc
-          model_type: file
-        variables: 
-          - surf_el
-    tides:
-      data_type: tides
+    # New unified boundary conditions configuration
+    boundary_conditions:
+      data_type: boundary_conditions
       constituents: [M2, S2, N2]
-      flags: [[5, 3, 0, 0]]
       tidal_database: "tpxo"
       ntip: 0
       cutoff_depth: 50.0
+      setup_type: "hybrid"
       tidal_data:
-        data_type: tidal_dataset
         elevations: ../../tests/schism/test_data/tpxo9-neaus/h_m2s2n2.nc
         velocities: ../../tests/schism/test_data/tpxo9-neaus/u_m2s2n2.nc
+      boundaries:
+        0:  # Applied to all open boundaries
+          elev_type: 5  # TIDALSPACETIME: Combined tidal + external data
+          vel_type: 3   # TIDAL: Tidal velocity
+          elev_source:  # Data source for elevation boundaries
+            data_type: boundary
+            source: 
+              model_type: file
+              uri: ../../tests/schism/test_data/hycom.nc
+            variables:
+              - surf_el
+            coords:
+              t: time
+              x: xlon
+              y: ylat
     wave:
       buffer: 0.0
       coords:
@@ -69,13 +69,13 @@ config:
   nml:
     param:
       schout:
-        iof_hydro__1: 1 # elevation
-        iof_hydro__2: 1 # mslp
+        iof_hydro__1: 1  # elevation
+        iof_hydro__2: 1  # mslp
         iof_hydro__14: 1 # wind speed
         iof_hydro__16: 1 # surface velocities
-        iof_wwm__18: 1 # peak wave direction
-        iof_wwm__1: 1 # significant wave height
-        iof_wwm__9: 1 # peak period
+        iof_wwm__18: 1   # peak wave direction
+        iof_wwm__1: 1    # significant wave height
+        iof_wwm__9: 1    # peak period
     wwminput:
       proc:
         deltc: 100
