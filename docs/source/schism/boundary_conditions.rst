@@ -83,18 +83,128 @@ TracerType
 Factory Functions
 =================
 
-The boundary conditions module provides convenient factory functions for creating common boundary configurations:
+The boundary conditions module provides convenient factory functions for creating common boundary configurations. These functions return ``SCHISMDataBoundaryConditions`` objects that can be directly used in SCHISM simulations.
 
 High-Level Configuration Functions
 ----------------------------------
 
+create_tidal_only_boundary_config
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. autofunction:: rompy.schism.boundary_conditions.create_tidal_only_boundary_config
+
+**Example Usage:**
+
+.. code-block:: python
+
+    from rompy.schism.boundary_conditions import create_tidal_only_boundary_config
+    
+    # Basic tidal configuration
+    bc = create_tidal_only_boundary_config(
+        constituents=["M2", "S2", "N2", "K1", "O1"],
+        tidal_elevations="/path/to/h_tpxo9.nc",
+        tidal_velocities="/path/to/u_tpxo9.nc"
+    )
+    
+    # With earth tidal potential
+    bc = create_tidal_only_boundary_config(
+        constituents=["M2", "S2", "K1", "O1"],
+        ntip=1  # Enable earth tidal potential
+    )
+
+create_hybrid_boundary_config
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. autofunction:: rompy.schism.boundary_conditions.create_hybrid_boundary_config
+
+**Example Usage:**
+
+.. code-block:: python
+
+    from rompy.schism.boundary_conditions import create_hybrid_boundary_config
+    from rompy.core.data import DataBlob
+    
+    # Hybrid configuration with external data
+    bc = create_hybrid_boundary_config(
+        constituents=["M2", "S2"],
+        tidal_elevations="/path/to/h_tpxo9.nc",
+        tidal_velocities="/path/to/u_tpxo9.nc",
+        elev_source=DataBlob(source="/path/to/elev2D.th.nc"),
+        vel_source=DataBlob(source="/path/to/uv3D.th.nc"),
+        temp_source=DataBlob(source="/path/to/TEM_3D.th.nc"),
+        salt_source=DataBlob(source="/path/to/SAL_3D.th.nc")
+    )
+
+create_river_boundary_config
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. autofunction:: rompy.schism.boundary_conditions.create_river_boundary_config
+
+**Example Usage:**
+
+.. code-block:: python
+
+    from rompy.schism.boundary_conditions import create_river_boundary_config
+    
+    # River boundary with tidal forcing on other boundaries
+    bc = create_river_boundary_config(
+        river_boundary_index=1,
+        river_flow=-500.0,  # 500 m³/s inflow
+        river_temp=15.0,    # 15°C
+        river_salt=0.1,     # 0.1 PSU (fresh water)
+        other_boundaries="tidal",
+        constituents=["M2", "S2", "N2"]
+    )
+    
+    # River-only configuration
+    bc = create_river_boundary_config(
+        river_boundary_index=0,
+        river_flow=-200.0,
+        other_boundaries="none"
+    )
+
+create_nested_boundary_config
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. autofunction:: rompy.schism.boundary_conditions.create_nested_boundary_config
+
+**Example Usage:**
+
+.. code-block:: python
+
+    from rompy.schism.boundary_conditions import create_nested_boundary_config
+    from rompy.schism.data import SCHISMDataBoundary
+    from rompy.core.source import SourceFile
+    
+    # Nested boundary with tides and parent model data
+    bc = create_nested_boundary_config(
+        with_tides=True,
+        inflow_relax=0.9,
+        outflow_relax=0.1,
+        constituents=["M2", "S2"],
+        elev_source=SCHISMDataBoundary(
+            source=SourceFile(uri="/path/to/parent_model.nc"),
+            variables=["ssh"]
+        ),
+        vel_source=SCHISMDataBoundary(
+            source=SourceFile(uri="/path/to/parent_model.nc"),
+            variables=["u", "v"]
+        )
+    )
+    
+    # Nested boundary without tides
+    bc = create_nested_boundary_config(
+        with_tides=False,
+        inflow_relax=0.8,
+        outflow_relax=0.2,
+        elev_source=elev_data,
+        vel_source=vel_data
+    )
 
 Low-Level Boundary Creation Functions
 -------------------------------------
+
+These functions create ``BoundaryHandler`` objects for direct grid-based boundary manipulation:
 
 .. autofunction:: rompy.schism.boundary_core.create_tidal_boundary
 .. autofunction:: rompy.schism.boundary_core.create_hybrid_boundary
@@ -352,6 +462,8 @@ Configuration Files
 
 The boundary conditions can also be configured via YAML files:
 
+**Tidal-Only Configuration:**
+
 .. code-block:: yaml
 
     boundary_conditions:
@@ -359,21 +471,97 @@ The boundary conditions can also be configured via YAML files:
       constituents: ["M2", "S2", "N2", "K1", "O1"]
       tidal_database: tpxo
       tidal_data:
-        elevations: path/to/tidal_elevations.nc
-        velocities: path/to/tidal_velocities.nc
+        elevations: path/to/h_tpxo9.nc
+        velocities: path/to/u_tpxo9.nc
+      setup_type: tidal
+
+**Hybrid Configuration:**
+
+.. code-block:: yaml
+
+    boundary_conditions:
+      data_type: boundary_conditions
+      constituents: ["M2", "S2", "N2", "K1", "O1"]
+      tidal_database: tpxo
+      tidal_data:
+        elevations: path/to/h_tpxo9.nc
+        velocities: path/to/u_tpxo9.nc
       setup_type: hybrid
       boundaries:
         0:
-          elev_type: TIDALSPACETIME
-          vel_type: TIDALSPACETIME
-          temp_type: SPACETIME
-          salt_type: SPACETIME
+          elev_type: HARMONICEXTERNAL
+          vel_type: HARMONICEXTERNAL
+          temp_type: EXTERNAL
+          salt_type: EXTERNAL
           elev_source:
             data_type: blob
             source: path/to/elev2D.th.nc
           vel_source:
             data_type: blob
             source: path/to/uv3D.th.nc
+          temp_source:
+            data_type: blob
+            source: path/to/TEM_3D.th.nc
+          salt_source:
+            data_type: blob
+            source: path/to/SAL_3D.th.nc
+
+**River Configuration:**
+
+.. code-block:: yaml
+
+    boundary_conditions:
+      data_type: boundary_conditions
+      constituents: ["M2", "S2"]
+      tidal_database: tpxo
+      setup_type: river
+      boundaries:
+        0:  # Tidal boundary
+          elev_type: HARMONIC
+          vel_type: HARMONIC
+          temp_type: NONE
+          salt_type: NONE
+        1:  # River boundary
+          elev_type: NONE
+          vel_type: CONSTANT
+          temp_type: CONSTANT
+          salt_type: CONSTANT
+          const_flow: -500.0
+          const_temp: 15.0
+          const_salt: 0.1
+
+**Nested Configuration:**
+
+.. code-block:: yaml
+
+    boundary_conditions:
+      data_type: boundary_conditions
+      constituents: ["M2", "S2"]
+      tidal_database: tpxo
+      tidal_data:
+        elevations: path/to/h_tpxo9.nc
+        velocities: path/to/u_tpxo9.nc
+      setup_type: nested
+      boundaries:
+        0:
+          elev_type: HARMONICEXTERNAL
+          vel_type: RELAXED
+          temp_type: EXTERNAL
+          salt_type: EXTERNAL
+          inflow_relax: 0.8
+          outflow_relax: 0.2
+          elev_source:
+            data_type: schism_boundary
+            source:
+              data_type: source_file
+              uri: path/to/parent_model.nc
+            variables: ["ssh"]
+          vel_source:
+            data_type: schism_boundary
+            source:
+              data_type: source_file
+              uri: path/to/parent_model.nc
+            variables: ["u", "v"]
 
 
 
@@ -392,51 +580,78 @@ Benefits of the New System
 Advanced Features
 =================
 
-Tidal Potential
----------------
+Factory Function Parameters
+---------------------------
 
-Configure Earth tidal potential corrections:
+All factory functions support additional parameters for fine-tuning:
+
+**Common Parameters:**
+
+- ``constituents``: List of tidal constituents (e.g., ["M2", "S2", "N2", "K1", "O1"])
+- ``tidal_database``: Database identifier ("tpxo", "fes2014", "got")
+- ``tidal_elevations``: Path to tidal elevation NetCDF file
+- ``tidal_velocities``: Path to tidal velocity NetCDF file
+
+**Tidal Potential:**
 
 .. code-block:: python
 
-    boundary_conditions = SCHISMDataBoundaryConditions(
+    bc = create_tidal_only_boundary_config(
+        constituents=["M2", "S2", "K1", "O1"],
         ntip=1,          # Enable tidal potential
         tip_dp=1.0,      # Depth threshold
         cutoff_depth=50.0,  # Cutoff depth
     )
 
-Relaxation Parameters
----------------------
-
-Fine-tune relaxation boundary conditions:
+**Relaxation Parameters:**
 
 .. code-block:: python
 
-    nested_setup = BoundarySetupWithSource(
-        vel_type=VelocityType.RELAXED,
+    bc = create_nested_boundary_config(
+        with_tides=True,
         inflow_relax=0.8,   # Strong relaxation for inflow
         outflow_relax=0.2,  # Weak relaxation for outflow
     )
 
-Multiple Tidal Databases
-------------------------
-
-Support for different tidal databases:
+**Multiple Tidal Databases:**
 
 .. code-block:: python
 
-    boundary_conditions = SCHISMDataBoundaryConditions(
+    bc = create_tidal_only_boundary_config(
         tidal_database="fes2014",  # Alternative: "tpxo", "got"
         constituents=["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"],
+    )
+
+**Custom Boundary Types:**
+
+.. code-block:: python
+
+    from rompy.schism.data import BoundarySetupWithSource
+    from rompy.schism.boundary_core import ElevationType, VelocityType, TracerType
+    
+    # Custom boundary with specific types
+    custom_boundary = BoundarySetupWithSource(
+        elev_type=ElevationType.HARMONICEXTERNAL,
+        vel_type=VelocityType.HARMONICEXTERNAL,
+        temp_type=TracerType.EXTERNAL,
+        salt_type=TracerType.EXTERNAL,
+        inflow_relax=0.9,
+        outflow_relax=0.1
     )
 
 Flather Radiation Boundaries
 ----------------------------
 
-Configure Flather radiation boundaries:
+Configure Flather radiation boundaries using the low-level BoundaryHandler:
 
 .. code-block:: python
 
+    from rompy.schism.boundary_core import BoundaryHandler, ElevationType, VelocityType
+    
+    # Create boundary handler
+    boundary = BoundaryHandler(grid_path="path/to/hgrid.gr3")
+    
+    # Configure Flather boundary
     boundary.set_boundary_type(
         boundary_index=1,
         elev_type=ElevationType.NONE,
@@ -444,6 +659,48 @@ Configure Flather radiation boundaries:
         eta_mean=[0.0, 0.0, 0.0],        # Mean elevation at each node
         vn_mean=[[0.1], [0.1], [0.1]]    # Mean normal velocity at each node
     )
+
+Common Tidal Constituents
+-------------------------
+
+**Major Constituents (recommended for most applications):**
+
+- M2, S2, N2, K1, O1
+
+**Semi-diurnal:**
+
+- M2 (Principal lunar), S2 (Principal solar), N2 (Lunar elliptic), K2 (Lunisolar)
+
+**Diurnal:**
+
+- K1 (Lunar diurnal), O1 (Lunar principal), P1 (Solar principal), Q1 (Larger lunar elliptic)
+
+**Long Period:**
+
+- Mf (Lunisolar fortnightly), Mm (Lunar monthly), Ssa (Solar semiannual)
+
+**Full Set Example:**
+
+.. code-block:: python
+
+    bc = create_tidal_only_boundary_config(
+        constituents=[
+            "M2", "S2", "N2", "K2",     # Semi-diurnal
+            "K1", "O1", "P1", "Q1",     # Diurnal  
+            "Mf", "Mm", "Ssa"           # Long period
+        ]
+    )
+
+Best Practices
+--------------
+
+1. **Start Simple**: Begin with tidal-only configurations using major constituents
+2. **Validate Data**: Ensure tidal and external data files cover your model domain and time period
+3. **Check Units**: River flows are in m³/s (negative for inflow)
+4. **Relaxation Values**: Use 0.8-1.0 for strong nudging, 0.1-0.3 for weak nudging
+5. **File Formats**: Use NetCDF files for better performance and metadata
+6. **Coordinate Systems**: Ensure all data sources use consistent coordinate systems
+7. **Time Coverage**: External data must cover the entire simulation period plus spin-up
 
 See Also
 ========
