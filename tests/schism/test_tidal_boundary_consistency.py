@@ -117,8 +117,8 @@ def test_tidal_boundary_constituent_consistency(
     configs = {}
     configs[0] = BoundaryConfig(
         id=0,
-        elev_type=ElevationType.TIDAL,
-        vel_type=VelocityType.TIDAL,
+        elev_type=ElevationType.HARMONIC,
+        vel_type=VelocityType.HARMONIC,
         temp_type=0,
         salt_type=0,
     )

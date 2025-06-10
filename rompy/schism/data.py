@@ -1160,36 +1160,36 @@ class BoundarySetupWithSource(BoundarySetup):
         """Ensure data sources are provided when needed for space-time boundary types."""
         # Check elevation data source
         if (
-            self.elev_type in [ElevationType.SPACETIME, ElevationType.TIDALSPACETIME]
+            self.elev_type in [ElevationType.EXTERNAL, ElevationType.HARMONICEXTERNAL]
             and self.elev_source is None
         ):
             logger.warning(
-                "elev_source should be provided for SPACETIME or TIDALSPACETIME elevation type"
+                "elev_source should be provided for EXTERNAL or HARMONICEXTERNAL elevation type"
             )
 
         # Check velocity data source
         if (
             self.vel_type
             in [
-                VelocityType.SPACETIME,
-                VelocityType.TIDALSPACETIME,
+                VelocityType.EXTERNAL,
+                VelocityType.HARMONICEXTERNAL,
                 VelocityType.RELAXED,
             ]
             and self.vel_source is None
         ):
             logger.warning(
-                "vel_source should be provided for SPACETIME, TIDALSPACETIME, or RELAXED velocity type"
+                "vel_source should be provided for EXTERNAL, HARMONICEXTERNAL, or RELAXED velocity type"
             )
 
         # Check temperature data source
-        if self.temp_type == TracerType.SPACETIME and self.temp_source is None:
+        if self.temp_type == TracerType.EXTERNAL and self.temp_source is None:
             logger.warning(
-                "temp_source should be provided for SPACETIME temperature type"
+                "temp_source should be provided for EXTERNAL temperature type"
             )
 
         # Check salinity data source
-        if self.salt_type == TracerType.SPACETIME and self.salt_source is None:
-            logger.warning("salt_source should be provided for SPACETIME salinity type")
+        if self.salt_type == TracerType.EXTERNAL and self.salt_source is None:
+            logger.warning("salt_source should be provided for EXTERNAL salinity type")
 
         return self
 
@@ -1276,17 +1276,17 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
             if (
                 hasattr(setup, "elev_type")
                 and setup.elev_type
-                in [ElevationType.TIDAL, ElevationType.TIDALSPACETIME]
+                in [ElevationType.HARMONIC, ElevationType.HARMONICEXTERNAL]
             ) or (
                 hasattr(setup, "vel_type")
-                and setup.vel_type in [VelocityType.TIDAL, VelocityType.TIDALSPACETIME]
+                and setup.vel_type in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
             ):
                 needs_tidal_data = True
                 break
 
         if needs_tidal_data and not self.tidal_data:
             raise ValueError(
-                "Tidal data is required for TIDAL or TIDALSPACETIME boundary types but was not provided"
+                "Tidal data is required for HARMONIC or HARMONICEXTERNAL boundary types but was not provided"
             )
 
         return self
@@ -1509,8 +1509,8 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
         for idx, setup in self.boundaries.items():
             # Process elevation data if needed
             if setup.elev_type in [
-                ElevationType.SPACETIME,
-                ElevationType.TIDALSPACETIME,
+                ElevationType.EXTERNAL,
+                ElevationType.HARMONICEXTERNAL,
             ]:
                 if setup.elev_source:
                     if (
@@ -1528,8 +1528,8 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
 
             # Process velocity data if needed
             if setup.vel_type in [
-                VelocityType.SPACETIME,
-                VelocityType.TIDALSPACETIME,
+                VelocityType.EXTERNAL,
+                VelocityType.HARMONICEXTERNAL,
                 VelocityType.RELAXED,
             ]:
                 if setup.vel_source:
@@ -1547,7 +1547,7 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
                     logger.info(f"Processed velocity data for boundary {idx}")
 
             # Process temperature data if needed
-            if setup.temp_type == TracerType.SPACETIME:
+            if setup.temp_type == TracerType.EXTERNAL:
                 if setup.temp_source:
                     if (
                         hasattr(setup.temp_source, "data_type")
@@ -1563,7 +1563,7 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
                     logger.info(f"Processed temperature data for boundary {idx}")
 
             # Process salinity data if needed
-            if setup.salt_type == TracerType.SPACETIME:
+            if setup.salt_type == TracerType.EXTERNAL:
                 if setup.salt_source:
                     if (
                         hasattr(setup.salt_source, "data_type")

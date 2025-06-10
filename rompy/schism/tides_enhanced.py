@@ -277,10 +277,10 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             if (
                 hasattr(setup, "elev_type")
                 and setup.elev_type
-                in [ElevationType.TIDAL, ElevationType.TIDALSPACETIME]
+                in [ElevationType.HARMONIC, ElevationType.HARMONICEXTERNAL]
             ) or (
                 hasattr(setup, "vel_type")
-                and setup.vel_type in [VelocityType.TIDAL, VelocityType.TIDALSPACETIME]
+                and setup.vel_type in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
             ):
                 needs_tidal_data = True
                 break
@@ -531,15 +531,15 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                 # Pure tidal boundary
                 for i in range(grid.pylibs_hgrid.nob):
                     boundary.set_boundary_type(
-                        i, elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL
+                        i, elev_type=ElevationType.HARMONIC, vel_type=VelocityType.HARMONIC
                     )
             elif active_setup_type == "hybrid":
                 # Tidal + external data
                 for i in range(grid.pylibs_hgrid.nob):
                     boundary.set_boundary_type(
                         i,
-                        elev_type=ElevationType.TIDALSPACETIME,
-                        vel_type=VelocityType.TIDALSPACETIME,
+                        elev_type=ElevationType.HARMONICEXTERNAL,
+                        vel_type=VelocityType.HARMONICEXTERNAL,
                     )
             elif active_setup_type == "river":
                 # River boundary (first boundary only)
@@ -555,10 +555,10 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                 for i in range(grid.pylibs_hgrid.nob):
                     boundary.set_boundary_type(
                         i,
-                        elev_type=ElevationType.SPACETIME,
+                        elev_type=ElevationType.EXTERNAL,
                         vel_type=VelocityType.RELAXED,
-                        temp_type=TracerType.SPACETIME,
-                        salt_type=TracerType.SPACETIME,
+                        temp_type=TracerType.EXTERNAL,
+                        salt_type=TracerType.EXTERNAL,
                         inflow_relax=0.8,
                         outflow_relax=0.8,
                     )
@@ -566,7 +566,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             # Default: tidal boundary for all open boundaries
             for i in range(grid.pylibs_hgrid.nob):
                 boundary.set_boundary_type(
-                    i, elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL
+                    i, elev_type=ElevationType.HARMONIC, vel_type=VelocityType.HARMONIC
                 )
 
         return boundary
@@ -783,8 +783,8 @@ def create_river_config(
     # Configure other boundaries if needed
     if other_boundaries == "tidal":
         other_config = BoundarySetup(
-            elev_type=ElevationType.TIDAL,
-            vel_type=VelocityType.TIDAL,
+            elev_type=ElevationType.HARMONIC,
+            vel_type=VelocityType.HARMONIC,
             temp_type=TracerType.NONE,
             salt_type=TracerType.NONE,
         )
@@ -846,19 +846,19 @@ def create_nested_config(
     # Create boundary configuration
     if with_tides:
         default_config = BoundarySetup(
-            elev_type=ElevationType.TIDALSPACETIME,
+            elev_type=ElevationType.HARMONICEXTERNAL,
             vel_type=VelocityType.RELAXED,
-            temp_type=TracerType.SPACETIME,
-            salt_type=TracerType.SPACETIME,
+            temp_type=TracerType.EXTERNAL,
+            salt_type=TracerType.EXTERNAL,
             inflow_relax=inflow_relax,
             outflow_relax=outflow_relax,
         )
     else:
         default_config = BoundarySetup(
-            elev_type=ElevationType.SPACETIME,
+            elev_type=ElevationType.EXTERNAL,
             vel_type=VelocityType.RELAXED,
-            temp_type=TracerType.SPACETIME,
-            salt_type=TracerType.SPACETIME,
+            temp_type=TracerType.EXTERNAL,
+            salt_type=TracerType.EXTERNAL,
             inflow_relax=inflow_relax,
             outflow_relax=outflow_relax,
         )

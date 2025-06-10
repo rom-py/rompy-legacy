@@ -78,7 +78,7 @@ def test_simple_bctides_format():
 
         # Configure a simple tidal boundary
         config = BoundaryConfig(
-            elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL
+            elev_type=ElevationType.HARMONIC, vel_type=VelocityType.HARMONIC
         )
         boundary.set_boundary_config(0, config)
 

@@ -46,8 +46,8 @@ class TestBoundaryConfig:
     def test_init_custom(self):
         """Test initialization with custom values."""
         config = BoundaryConfig(
-            elev_type=ElevationType.TIDAL,
-            vel_type=VelocityType.TIDAL,
+            elev_type=ElevationType.HARMONIC,
+            vel_type=VelocityType.HARMONIC,
             temp_type=TracerType.CONSTANT,
             salt_type=TracerType.CONSTANT,
             ethconst=1.0,
@@ -56,12 +56,10 @@ class TestBoundaryConfig:
             sthconst=35.0,
             inflow_relax=0.8,
             outflow_relax=0.2,
-            tobc=0.9,
-            sobc=0.9,
         )
 
-        assert config.elev_type == ElevationType.TIDAL
-        assert config.vel_type == VelocityType.TIDAL
+        assert config.elev_type == ElevationType.HARMONIC
+        assert config.vel_type == VelocityType.HARMONIC
         assert config.temp_type == TracerType.CONSTANT
         assert config.salt_type == TracerType.CONSTANT
 
@@ -73,8 +71,8 @@ class TestBoundaryConfig:
         assert config.inflow_relax == 0.8
         assert config.outflow_relax == 0.2
 
-        assert config.tobc == 0.9
-        assert config.sobc == 0.9
+        assert config.tobc == 1.0
+        assert config.sobc == 1.0
 
     def test_flather_validation(self):
         """Test validation for Flather boundary conditions."""
@@ -136,13 +134,13 @@ class TestTidalBoundary:
         boundary = TidalBoundary(grid_path=sample_grid_path)
 
         config = BoundaryConfig(
-            elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL
+            elev_type=ElevationType.HARMONIC, vel_type=VelocityType.HARMONIC
         )
 
         boundary.set_boundary_config(0, config)
         assert 0 in boundary.boundary_configs
-        assert boundary.boundary_configs[0].elev_type == ElevationType.TIDAL
-        assert boundary.boundary_configs[0].vel_type == VelocityType.TIDAL
+        assert boundary.boundary_configs[0].elev_type == ElevationType.HARMONIC
+        assert boundary.boundary_configs[0].vel_type == VelocityType.HARMONIC
 
     def test_set_boundary_type(self, sample_grid_path):
         """Test setting boundary type."""
@@ -150,15 +148,15 @@ class TestTidalBoundary:
 
         boundary.set_boundary_type(
             0,
-            elev_type=ElevationType.TIDAL,
-            vel_type=VelocityType.TIDAL,
+            elev_type=ElevationType.HARMONIC,
+            vel_type=VelocityType.HARMONIC,
             temp_type=TracerType.NONE,
             salt_type=TracerType.NONE,
         )
 
         assert 0 in boundary.boundary_configs
-        assert boundary.boundary_configs[0].elev_type == ElevationType.TIDAL
-        assert boundary.boundary_configs[0].vel_type == VelocityType.TIDAL
+        assert boundary.boundary_configs[0].elev_type == ElevationType.HARMONIC
+        assert boundary.boundary_configs[0].vel_type == VelocityType.HARMONIC
         assert boundary.boundary_configs[0].temp_type == TracerType.NONE
         assert boundary.boundary_configs[0].salt_type == TracerType.NONE
 
@@ -167,7 +165,7 @@ class TestTidalBoundary:
         boundary = TidalBoundary(grid_path=sample_grid_path)
 
         # Add configurations for multiple boundaries
-        boundary.set_boundary_type(0, ElevationType.TIDAL, VelocityType.TIDAL)
+        boundary.set_boundary_type(0, ElevationType.HARMONIC, VelocityType.HARMONIC)
         boundary.set_boundary_type(
             1,
             ElevationType.CONSTANT,
@@ -180,7 +178,7 @@ class TestTidalBoundary:
         flags = boundary.get_flags_list()
 
         assert len(flags) == 4  # Should include boundary indices 0, 1, 2, 3
-        assert flags[0] == [int(ElevationType.TIDAL), int(VelocityType.TIDAL), 0, 0]
+        assert flags[0] == [int(ElevationType.HARMONIC), int(VelocityType.HARMONIC), 0, 0]
         assert flags[1] == [
             int(ElevationType.CONSTANT),
             int(VelocityType.CONSTANT),
@@ -222,7 +220,7 @@ class TestTidalBoundary:
             tidal_velocities=sample_tidal_files["velocities"],
         )
 
-        boundary.set_boundary_type(0, ElevationType.TIDAL, VelocityType.TIDAL)
+        boundary.set_boundary_type(0, ElevationType.HARMONIC, VelocityType.HARMONIC)
 
         # Set run parameters
         boundary.set_run_parameters(datetime(2023, 1, 1), 10.0)
@@ -251,8 +249,8 @@ class TestFactoryFunctions:
         # Check default configuration
         configs = boundary.boundary_configs
         assert 0 in configs
-        assert configs[0].elev_type == ElevationType.TIDAL
-        assert configs[0].vel_type == VelocityType.TIDAL
+        assert configs[0].elev_type == ElevationType.HARMONIC
+        assert configs[0].vel_type == VelocityType.HARMONIC
 
     def test_create_hybrid_boundary(self, sample_grid_path):
         """Test creating a hybrid boundary."""
@@ -265,8 +263,8 @@ class TestFactoryFunctions:
         # Check default configuration
         configs = boundary.boundary_configs
         assert 0 in configs
-        assert configs[0].elev_type == ElevationType.TIDALSPACETIME
-        assert configs[0].vel_type == VelocityType.TIDALSPACETIME
+        assert configs[0].elev_type == ElevationType.HARMONICEXTERNAL
+        assert configs[0].vel_type == VelocityType.HARMONICEXTERNAL
 
     def test_create_river_boundary(self, sample_grid_path):
         """Test creating a river boundary."""
@@ -299,9 +297,9 @@ class TestFactoryFunctions:
         # Check nested configuration
         configs = boundary.boundary_configs
         assert 0 in configs
-        assert configs[0].elev_type == ElevationType.TIDALSPACETIME
+        assert configs[0].elev_type == ElevationType.HARMONICEXTERNAL
         assert configs[0].vel_type == VelocityType.RELAXED
-        assert configs[0].temp_type == TracerType.SPACETIME
-        assert configs[0].salt_type == TracerType.SPACETIME
+        assert configs[0].temp_type == TracerType.EXTERNAL
+        assert configs[0].salt_type == TracerType.EXTERNAL
         assert configs[0].inflow_relax == 0.9
         assert configs[0].outflow_relax == 0.8

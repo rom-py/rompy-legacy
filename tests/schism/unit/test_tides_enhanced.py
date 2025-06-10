@@ -48,8 +48,8 @@ class TestBoundarySetup:
         """Test initialization with default values."""
         setup = BoundarySetup()
 
-        assert setup.elev_type == 5  # Default to TIDALSPACETIME
-        assert setup.vel_type == 5  # Default to TIDALSPACETIME
+        assert setup.elev_type == 5  # Default to HARMONICEXTERNAL
+        assert setup.vel_type == 5  # Default to HARMONICEXTERNAL
         assert setup.temp_type == 0  # Default to NONE
         assert setup.salt_type == 0  # Default to NONE
 
@@ -147,7 +147,7 @@ class TestSCHISMDataTidesEnhanced:
         # Define boundary configurations
         boundaries = {
             0: BoundarySetup(
-                elev_type=int(ElevationType.TIDAL), vel_type=int(VelocityType.TIDAL)
+                elev_type=int(ElevationType.HARMONIC), vel_type=int(VelocityType.HARMONIC)
             ),
             1: BoundarySetup(
                 elev_type=int(ElevationType.NONE),
@@ -164,7 +164,7 @@ class TestSCHISMDataTidesEnhanced:
 
         assert tides.boundaries is not None
         assert len(tides.boundaries) == 2
-        assert tides.boundaries[0].elev_type == int(ElevationType.TIDAL)
+        assert tides.boundaries[0].elev_type == int(ElevationType.HARMONIC)
         assert tides.boundaries[1].vel_type == int(VelocityType.CONSTANT)
         assert tides.boundaries[1].const_flow == -100.0
 
@@ -186,8 +186,8 @@ class TestSCHISMDataTidesEnhanced:
         for i in range(grid2d.pylibs_hgrid.nob):
             config = boundary.boundary_configs.get(i)
             if config:
-                assert config.elev_type == ElevationType.TIDAL
-                assert config.vel_type == VelocityType.TIDAL
+                assert config.elev_type == ElevationType.HARMONIC
+                assert config.vel_type == VelocityType.HARMONIC
 
     def test_get(self, grid2d, test_time_range, tidal_dataset, tmp_path):
         """Test generating bctides.in file."""
@@ -237,8 +237,8 @@ class TestTidesOceanConsistency:
             constituents=["M2", "S2"],
             boundaries={
                 0: BoundarySetup(
-                    elev_type=ElevationType.TIDAL,
-                    vel_type=VelocityType.TIDAL,
+                    elev_type=ElevationType.HARMONIC,
+                    vel_type=VelocityType.HARMONIC,
                     temp_type=TracerType.CONSTANT,
                     const_temp=15.0,
                 )
@@ -265,8 +265,8 @@ class TestTidesOceanConsistency:
             constituents=["M2", "S2"],
             boundaries={
                 0: BoundarySetup(
-                    elev_type=ElevationType.TIDAL,
-                    vel_type=VelocityType.TIDAL,
+                    elev_type=ElevationType.HARMONIC,
+                    vel_type=VelocityType.HARMONIC,
                     salt_type=TracerType.CONSTANT,
                     const_salt=35.0,
                 )

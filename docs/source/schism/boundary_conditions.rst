@@ -7,8 +7,8 @@ Overview
 
 The SCHISM boundary conditions system provides a unified interface for configuring all types of boundary conditions in SCHISM simulations. This system replaces the previous separate tidal and ocean configurations with a single, flexible approach that supports:
 
-- **Tidal boundaries** - Pure tidal forcing using harmonic constituents
-- **Hybrid boundaries** - Combined tidal and external data forcing  
+- **Harmonic boundaries** - Pure harmonic tidal forcing using tidal constituents
+- **Hybrid boundaries** - Combined harmonic and external data forcing  
 - **River boundaries** - Constant or time-varying river inputs
 - **Nested boundaries** - Coupling with parent model outputs
 - **Custom configurations** - Flexible mixing of different boundary types
@@ -224,8 +224,8 @@ For maximum control, use the BoundaryHandler class directly:
     # Configure different boundary types
     boundary.set_boundary_type(
         0,  # Ocean boundary with tides
-        elev_type=ElevationType.TIDAL,
-        vel_type=VelocityType.TIDAL
+        elev_type=ElevationType.HARMONIC,
+        vel_type=VelocityType.HARMONIC
     )
     
     boundary.set_boundary_type(
@@ -255,12 +255,12 @@ For complex scenarios with mixed boundary types:
         constituents=["M2", "S2"],
         tidal_database="tpxo",
         boundaries={
-            # Ocean boundary (tidal + external data)
+            # Ocean boundary (harmonic + external data)
             0: BoundarySetupWithSource(
-                elev_type=ElevationType.TIDALSPACETIME,
-                vel_type=VelocityType.TIDALSPACETIME,
-                temp_type=TracerType.SPACETIME,
-                salt_type=TracerType.SPACETIME,
+                elev_type=ElevationType.HARMONICEXTERNAL,
+                vel_type=VelocityType.HARMONICEXTERNAL,
+                temp_type=TracerType.EXTERNAL,
+                salt_type=TracerType.EXTERNAL,
                 elev_source=DataBlob(source="path/to/elev2D.th.nc"),
                 vel_source=DataBlob(source="path/to/uv3D.th.nc"),
                 temp_source=DataBlob(source="path/to/TEM_3D.th.nc"),
@@ -290,9 +290,9 @@ Elevation Types
 - **NONE** - No elevation boundary condition
 - **TIMEHIST** - Time history from elev.th
 - **CONSTANT** - Constant elevation
-- **TIDAL** - Pure tidal elevation using harmonic constituents
-- **SPACETIME** - Time-varying elevation from external data (elev2D.th.nc)
-- **TIDALSPACETIME** - Combined tidal and external elevation data
+- **HARMONIC** - Pure harmonic tidal elevation using tidal constituents
+- **EXTERNAL** - Time-varying elevation from external data (elev2D.th.nc)
+- **HARMONICEXTERNAL** - Combined harmonic and external elevation data
 
 Velocity Types
 --------------
@@ -300,9 +300,9 @@ Velocity Types
 - **NONE** - No velocity boundary condition
 - **TIMEHIST** - Time history from flux.th
 - **CONSTANT** - Constant velocity/flow rate
-- **TIDAL** - Pure tidal velocity using harmonic constituents
-- **SPACETIME** - Time-varying velocity from external data (uv3D.th.nc)
-- **TIDALSPACETIME** - Combined tidal and external velocity data
+- **HARMONIC** - Pure harmonic tidal velocity using tidal constituents
+- **EXTERNAL** - Time-varying velocity from external data (uv3D.th.nc)
+- **HARMONICEXTERNAL** - Combined harmonic and external velocity data
 - **FLATHER** - Flather type radiation boundary
 - **RELAXED** - Relaxation boundary condition (for nesting)
 
@@ -313,7 +313,7 @@ Tracer Types
 - **TIMEHIST** - Time history from temp/salt.th
 - **CONSTANT** - Constant tracer value
 - **INITIAL** - Initial profile for inflow
-- **SPACETIME** - Time-varying tracer from external data
+- **EXTERNAL** - Time-varying tracer from external data
 
 Data Sources
 ============

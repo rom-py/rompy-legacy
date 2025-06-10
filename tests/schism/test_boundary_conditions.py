@@ -63,14 +63,14 @@ class TestBoundarySetupWithSource:
         """Test basic initialization with different boundary types."""
         # Tidal boundary
         tidal_boundary = BoundarySetupWithSource(
-            elev_type=ElevationType.TIDAL,
-            vel_type=VelocityType.TIDAL,
+            elev_type=ElevationType.HARMONIC,
+            vel_type=VelocityType.HARMONIC,
             temp_type=TracerType.NONE,
             salt_type=TracerType.NONE,
         )
 
-        assert tidal_boundary.elev_type == ElevationType.TIDAL
-        assert tidal_boundary.vel_type == VelocityType.TIDAL
+        assert tidal_boundary.elev_type == ElevationType.HARMONIC
+        assert tidal_boundary.vel_type == VelocityType.HARMONIC
         assert tidal_boundary.temp_type == TracerType.NONE
         assert tidal_boundary.salt_type == TracerType.NONE
 
@@ -101,16 +101,16 @@ class TestBoundarySetupWithSource:
 
         # Hybrid boundary with data sources
         hybrid_boundary = BoundarySetupWithSource(
-            elev_type=ElevationType.TIDALSPACETIME,
-            vel_type=VelocityType.TIDALSPACETIME,
+            elev_type=ElevationType.HARMONICEXTERNAL,
+            vel_type=VelocityType.HARMONICEXTERNAL,
             temp_type=TracerType.NONE,
             salt_type=TracerType.NONE,
             elev_source=elev_source,
             vel_source=vel_source,
         )
 
-        assert hybrid_boundary.elev_type == ElevationType.TIDALSPACETIME
-        assert hybrid_boundary.vel_type == VelocityType.TIDALSPACETIME
+        assert hybrid_boundary.elev_type == ElevationType.HARMONICEXTERNAL
+        assert hybrid_boundary.vel_type == VelocityType.HARMONICEXTERNAL
         assert hybrid_boundary.elev_source == elev_source
         assert hybrid_boundary.vel_source == vel_source
 
@@ -118,25 +118,25 @@ class TestBoundarySetupWithSource:
         """Test that warnings are logged for missing data sources."""
         # Create a boundary that should have data sources but doesn't
         boundary = BoundarySetupWithSource(
-            elev_type=ElevationType.SPACETIME,
+            elev_type=ElevationType.EXTERNAL,
             vel_type=VelocityType.RELAXED,
-            temp_type=TracerType.SPACETIME,
-            salt_type=TracerType.SPACETIME,
+            temp_type=TracerType.EXTERNAL,
+            salt_type=TracerType.EXTERNAL,
             # Missing data sources
         )
 
         # Check that warnings were logged
-        assert "elev_source should be provided for SPACETIME" in caplog.text
+        assert "elev_source should be provided for EXTERNAL" in caplog.text
         assert "vel_source should be provided for" in caplog.text
-        assert "temp_source should be provided for SPACETIME" in caplog.text
-        assert "salt_source should be provided for SPACETIME" in caplog.text
+        assert "temp_source should be provided for EXTERNAL" in caplog.text
+        assert "salt_source should be provided for EXTERNAL" in caplog.text
 
     def test_to_boundary_config(self):
         """Test conversion to boundary config."""
         # Create a boundary setup
         boundary = BoundarySetupWithSource(
-            elev_type=ElevationType.TIDAL,
-            vel_type=VelocityType.TIDAL,
+            elev_type=ElevationType.HARMONIC,
+            vel_type=VelocityType.HARMONIC,
             temp_type=TracerType.NONE,
             salt_type=TracerType.NONE,
         )
@@ -145,8 +145,8 @@ class TestBoundarySetupWithSource:
         config = boundary.to_boundary_config()
 
         # Check the config
-        assert config.elev_type == ElevationType.TIDAL
-        assert config.vel_type == VelocityType.TIDAL
+        assert config.elev_type == ElevationType.HARMONIC
+        assert config.vel_type == VelocityType.HARMONIC
         assert config.temp_type == TracerType.NONE
         assert config.salt_type == TracerType.NONE
 
@@ -197,7 +197,7 @@ class TestSCHISMDataBoundaryConditions:
         # Test that tidal setup type fails without tidal data
         with pytest.raises(
             ValueError,
-            match="Tidal data is required for TIDAL or TIDALSPACETIME boundary types",
+            match="Tidal data is required for HARMONIC or HARMONICEXTERNAL boundary types",
         ):
             bc_tidal = SCHISMDataBoundaryConditions(
                 constituents=["M2", "S2"], setup_type="tidal"
@@ -213,7 +213,7 @@ class TestSCHISMDataBoundaryConditions:
         # Test that configurations requiring tidal data fail without it
         with pytest.raises(
             ValueError,
-            match="Tidal data is required for TIDAL or TIDALSPACETIME boundary types",
+            match="Tidal data is required for HARMONIC or HARMONICEXTERNAL boundary types",
         ):
             SCHISMDataBoundaryConditions(
                 constituents=["M2", "S2"],
@@ -221,7 +221,7 @@ class TestSCHISMDataBoundaryConditions:
                 # Missing tidal_data
                 boundaries={
                     0: BoundarySetupWithSource(
-                        elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL
+                        elev_type=ElevationType.HARMONIC, vel_type=VelocityType.HARMONIC
                     )
                 },
             )
@@ -244,7 +244,7 @@ class TestSCHISMDataBoundaryConditions:
             setup_type="tidal",
             boundaries={
                 0: BoundarySetupWithSource(
-                    elev_type=ElevationType.TIDAL, vel_type=VelocityType.TIDAL
+                    elev_type=ElevationType.HARMONIC, vel_type=VelocityType.HARMONIC
                 )
             },
         )
@@ -299,7 +299,7 @@ def test_factory_functions_basic(function_name, expected_type, should_fail):
         # These functions should fail without proper tidal data
         with pytest.raises(
             ValueError,
-            match="Tidal data is required for TIDAL or TIDALSPACETIME boundary types",
+            match="Tidal data is required for HARMONIC or HARMONICEXTERNAL boundary types",
         ):
             factory_func()
     else:
@@ -354,7 +354,7 @@ def test_hybrid_factory(tidal_data_files, grid2d, time_range, temp_output_dir):
     assert bc.constituents == ["M2", "S2", "N2"]
     assert bc.tidal_data is not None
     assert len(bc.boundaries) == 1
-    assert bc.boundaries[0].elev_type == ElevationType.TIDALSPACETIME
+    assert bc.boundaries[0].elev_type == ElevationType.HARMONICEXTERNAL
     assert bc.boundaries[0].elev_source == elev_source
 
     # Process the data to verify it works with real files
