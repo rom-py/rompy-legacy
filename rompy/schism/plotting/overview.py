@@ -400,13 +400,21 @@ class OverviewPlotter(BasePlotter):
         """Get grid information summary."""
         try:
             if hasattr(self, 'grid') and self.grid is not None:
-                n_nodes = len(self.grid.coords['node'])
-                n_elements = len(self.grid.coords['nSCHISM_hgrid_face'])
-                depth_range = (float(self.grid.depth.min()), float(self.grid.depth.max()))
+                # Use SCHISMGrid properties instead of coords
+                n_nodes = self.grid.np  # number of points/nodes
+                n_elements = self.grid.ne  # number of elements
                 
-                return (f"Nodes: {n_nodes:,}\n"
-                       f"Elements: {n_elements:,}\n"
-                       f"Depth: {depth_range[0]:.1f} to {depth_range[1]:.1f} m")
+                # Get depth from pylibs_hgrid if available
+                hgrid = self.grid.pylibs_hgrid
+                if hasattr(hgrid, 'dp'):
+                    depth_range = (float(hgrid.dp.min()), float(hgrid.dp.max()))
+                    return (f"Nodes: {n_nodes:,}\n"
+                           f"Elements: {n_elements:,}\n"
+                           f"Depth: {depth_range[0]:.1f} to {depth_range[1]:.1f} m")
+                else:
+                    return (f"Nodes: {n_nodes:,}\n"
+                           f"Elements: {n_elements:,}\n"
+                           f"Depth: info unavailable")
             return "Grid info unavailable"
         except Exception as e:
             logger.warning(f"Could not get grid info: {e}")
@@ -603,14 +611,20 @@ class OverviewPlotter(BasePlotter):
         """Plot depth histogram."""
         try:
             if hasattr(self, 'grid') and self.grid is not None:
-                depths = self.grid.depth.values.flatten()
-                depths = depths[~np.isnan(depths)]
-                
-                ax.hist(depths, bins=50, alpha=0.7, edgecolor='black')
-                ax.set_xlabel('Depth (m)')
-                ax.set_ylabel('Frequency')
-                ax.set_title('Depth Distribution', fontweight='bold')
-                ax.grid(True, alpha=0.3)
+                # Get depth from pylibs_hgrid
+                hgrid = self.grid.pylibs_hgrid
+                if hasattr(hgrid, 'dp'):
+                    depths = hgrid.dp
+                    depths = depths[~np.isnan(depths)]
+                    
+                    ax.hist(depths, bins=50, alpha=0.7, edgecolor='black')
+                    ax.set_xlabel('Depth (m)')
+                    ax.set_ylabel('Frequency')
+                    ax.set_title('Depth Distribution', fontweight='bold')
+                    ax.grid(True, alpha=0.3)
+                else:
+                    ax.text(0.5, 0.5, "Depth data unavailable", 
+                           ha='center', va='center', transform=ax.transAxes)
             else:
                 ax.text(0.5, 0.5, "Grid data unavailable", 
                        ha='center', va='center', transform=ax.transAxes)
@@ -654,19 +668,30 @@ class OverviewPlotter(BasePlotter):
         """Calculate comprehensive grid statistics."""
         try:
             if hasattr(self, 'grid') and self.grid is not None:
-                n_nodes = len(self.grid.coords['node'])
-                n_elements = len(self.grid.coords['nSCHISM_hgrid_face'])
-                depths = self.grid.depth.values.flatten()
-                depths = depths[~np.isnan(depths)]
+                # Use SCHISMGrid properties instead of coords
+                n_nodes = self.grid.np  # number of points/nodes
+                n_elements = self.grid.ne  # number of elements
                 
-                return {
-                    'Total Nodes': f"{n_nodes:,}",
-                    'Total Elements': f"{n_elements:,}",
-                    'Min Depth': f"{depths.min():.2f} m",
-                    'Max Depth': f"{depths.max():.2f} m",
-                    'Mean Depth': f"{depths.mean():.2f} m",
-                    'Depth Std': f"{depths.std():.2f} m"
-                }
+                # Get depth from pylibs_hgrid if available
+                hgrid = self.grid.pylibs_hgrid
+                if hasattr(hgrid, 'dp'):
+                    depths = hgrid.dp
+                    depths = depths[~np.isnan(depths)]
+                    
+                    return {
+                        'Total Nodes': f"{n_nodes:,}",
+                        'Total Elements': f"{n_elements:,}",
+                        'Min Depth': f"{depths.min():.2f} m",
+                        'Max Depth': f"{depths.max():.2f} m",
+                        'Mean Depth': f"{depths.mean():.2f} m",
+                        'Depth Std': f"{depths.std():.2f} m"
+                    }
+                else:
+                    return {
+                        'Total Nodes': f"{n_nodes:,}",
+                        'Total Elements': f"{n_elements:,}",
+                        'Depth Stats': "unavailable"
+                    }
             return {}
         except Exception as e:
             logger.warning(f"Could not calculate grid statistics: {e}")
@@ -928,7 +953,7 @@ class OverviewPlotter(BasePlotter):
         """
         return self.plot_comprehensive_overview(**kwargs)
 
-    def _save_plot(self, fig: Figure, save_path: Union[str, Path]) -> None:
+    def _save_plot(self, fig: Figure, save_path: Union[str, Path]) -> bool:
         """Save plot to file."""
         try:
             save_path = Path(save_path)
@@ -937,6 +962,8 @@ class OverviewPlotter(BasePlotter):
             fig.savefig(save_path, dpi=self.plot_config.dpi, 
                        bbox_inches='tight', facecolor='white')
             logger.info(f"Overview plot saved to {save_path}")
+            return True
             
         except Exception as e:
             logger.error(f"Could not save plot to {save_path}: {e}")
+            return False

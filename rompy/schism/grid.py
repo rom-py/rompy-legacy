@@ -562,6 +562,31 @@ class SCHISMGrid(BaseGrid):
             v = VgridGenerator()
         return v
 
+    @classmethod
+    def from_file(cls, grid_file: Union[str, Path]) -> "SCHISMGrid":
+        """Create a SCHISMGrid instance from a grid file.
+        
+        Parameters
+        ----------
+        grid_file : Union[str, Path]
+            Path to the hgrid.gr3 file
+            
+        Returns
+        -------
+        SCHISMGrid
+            A new SCHISMGrid instance
+        """
+        from rompy.core.data import DataBlob
+        
+        # Create DataBlob for the hgrid file
+        hgrid_blob = DataBlob(source=grid_file)
+        
+        # Create SCHISMGrid with minimal required parameters
+        return cls(
+            hgrid=hgrid_blob,
+            drag=0.001  # Default drag value to satisfy validation
+        )
+
     @property
     def x(self) -> np.ndarray:
         return self.pylibs_hgrid.x
