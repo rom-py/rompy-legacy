@@ -58,6 +58,16 @@ The hotstart system provides integrated initial condition file generation, allow
 
    hotstart
 
+Plotting and Visualization
+---------------------------
+
+The SCHISM plotting module provides comprehensive visualization capabilities for model inputs, grid structures, boundary conditions, atmospheric forcing, and model validation.
+
+.. toctree::
+   :maxdepth: 2
+
+   plotting/index
+
 .. autosummary::
    :nosignatures:
    :toctree: _generated/
@@ -68,6 +78,22 @@ The hotstart system provides integrated initial condition file generation, allow
    rompy.schism.boundary_conditions.create_hybrid_boundary_config
    rompy.schism.boundary_conditions.create_river_boundary_config
    rompy.schism.boundary_conditions.create_nested_boundary_config
+
+Plotting Classes
+~~~~~~~~~~~~~~~~
+
+.. autosummary::
+   :nosignatures:
+   :toctree: _generated/
+
+   rompy.schism.plotting.SchismPlotter
+   rompy.schism.plotting.core.PlotConfig
+   rompy.schism.plotting.core.BasePlotter
+   rompy.schism.plotting.grid.GridPlotter
+   rompy.schism.plotting.data.DataPlotter
+   rompy.schism.plotting.overview.OverviewPlotter
+   rompy.schism.plotting.validation.ModelValidator
+   rompy.schism.plotting.validation.ValidationPlotter
 
 
 Config Minimal
