@@ -11,19 +11,8 @@ from rompy.core.types import RompyBaseModel, Spectrum
 
 from .config_legacy import SchismCSIROConfig as _LegacySchismCSIROConfig
 
-# Import plotting functions
-from .config_plotting import plot_sflux_spatial, plot_sflux_timeseries
-from .config_plotting_boundary import (
-    plot_boundary_points,
-    plot_boundary_profile,
-    plot_boundary_timeseries,
-)
-from .config_plotting_tides import (
-    plot_tidal_boundaries,
-    plot_tidal_dataset,
-    plot_tidal_rose,
-    plot_tidal_stations,
-)
+# Import new unified plotting infrastructure
+from .plotting import SchismPlotter
 from .data import SCHISMData
 from .grid import SCHISMGrid
 from .interface import TimeInterface
@@ -102,21 +91,70 @@ class SCHISMConfig(BaseConfig):
     # Enable arbitrary types and validation from instances in Pydantic v2
     model_config = ConfigDict(arbitrary_types_allowed=True, from_attributes=True)
 
-    # Add data visualization methods
+    def _get_plotter(self):
+        """Get SchismPlotter instance for this configuration."""
+        return SchismPlotter(config=self)
+
+    # Add data visualization methods using new plotting infrastructure
     # Atmospheric (sflux) plotting
-    plot_sflux_spatial = plot_sflux_spatial
-    plot_sflux_timeseries = plot_sflux_timeseries
+    def plot_sflux_spatial(self, **kwargs):
+        """Plot spatial distribution of atmospheric forcing data."""
+        return self._get_plotter().plot_atmospheric_data(**kwargs)
+    
+    def plot_sflux_timeseries(self, **kwargs):
+        """Plot time series of atmospheric data at a specific location."""
+        return self._get_plotter().data_plotter.plot_atmospheric_timeseries(**kwargs)
 
     # Boundary data plotting
-    plot_boundary_points = plot_boundary_points
-    plot_boundary_timeseries = plot_boundary_timeseries
-    plot_boundary_profile = plot_boundary_profile
+    def plot_boundary_points(self, **kwargs):
+        """Plot boundary node points."""
+        return self._get_plotter().plot_boundaries(**kwargs)
+    
+    def plot_boundary_timeseries(self, file_path, **kwargs):
+        """Plot time series of boundary data."""
+        return self._get_plotter().plot_boundary_data(file_path, **kwargs)
+    
+    def plot_boundary_profile(self, file_path, **kwargs):
+        """Plot vertical profile of boundary data."""
+        return self._get_plotter().plot_boundary_data(file_path, plot_type="profile", **kwargs)
 
     # Tidal data plotting
-    plot_tidal_boundaries = plot_tidal_boundaries
-    plot_tidal_stations = plot_tidal_stations
-    plot_tidal_rose = plot_tidal_rose
-    plot_tidal_dataset = plot_tidal_dataset
+    def plot_tidal_boundaries(self, **kwargs):
+        """Plot boundaries with tidal forcing."""
+        return self._get_plotter().plot_tidal_data(**kwargs)
+    
+    def plot_tidal_stations(self, **kwargs):
+        """Plot tidal stations."""
+        return self._get_plotter().plot_tidal_data(**kwargs)
+    
+    def plot_tidal_rose(self, **kwargs):
+        """Plot tidal rose diagram."""
+        return self._get_plotter().plot_tidal_data(**kwargs)
+    
+    def plot_tidal_dataset(self, **kwargs):
+        """Plot tidal dataset."""
+        return self._get_plotter().plot_tidal_data(**kwargs)
+
+    # Grid plotting methods
+    def plot_grid(self, **kwargs):
+        """Plot SCHISM grid."""
+        return self._get_plotter().plot_grid(**kwargs)
+    
+    def plot_bathymetry(self, **kwargs):
+        """Plot SCHISM bathymetry."""
+        return self._get_plotter().plot_bathymetry(**kwargs)
+    
+    def plot_overview(self, **kwargs):
+        """Create comprehensive overview plot of SCHISM model setup."""
+        return self._get_plotter().plot_overview(**kwargs)
+    
+    def plot_gr3_file(self, file_path, **kwargs):
+        """Plot .gr3 property files with appropriate colormaps."""
+        return self._get_plotter().plot_gr3_file(file_path, **kwargs)
+    
+    def plot_bctides_file(self, file_path, **kwargs):
+        """Plot bctides.in configuration file."""
+        return self._get_plotter().plot_bctides_file(file_path, **kwargs)
 
     def __call__(self, runtime) -> str:
         logger = logging.getLogger(__name__)
