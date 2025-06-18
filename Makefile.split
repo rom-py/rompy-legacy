@@ -1,0 +1,265 @@
+# Makefile for Repository Splitting Process
+#
+# This Makefile provides convenient commands for splitting the rompy repository
+# into multiple focused repositories while preserving git history.
+#
+# Usage:
+#   make install-deps    # Install required dependencies
+#   make validate        # Validate the configuration
+#   make dry-run         # Show what would be done without doing it
+#   make split           # Perform the actual repository split
+#   make clean           # Clean up temporary files and split results
+#   make test-splits     # Test each split repository independently
+
+.PHONY: help install-deps validate dry-run split clean test-splits push-all setup-remotes
+
+# Default target
+help:
+	@echo "Repository Splitting Makefile"
+	@echo "============================="
+	@echo ""
+	@echo "Available targets:"
+	@echo "  help           - Show this help message"
+	@echo "  install-deps   - Install required Python dependencies"
+	@echo "  validate       - Validate the splitting configuration"
+	@echo "  dry-run        - Show what would be done without doing it"
+	@echo "  split          - Perform the actual repository split"
+	@echo "  clean          - Clean up temporary files and split results"
+	@echo "  test-splits    - Test each split repository independently"
+	@echo "  setup-remotes  - Set up remote repositories (requires manual config)"
+	@echo "  push-all       - Push all split repositories to their remotes"
+	@echo ""
+	@echo "Configuration:"
+	@echo "  CONFIG_FILE    - Configuration file (default: repo_split_config.yaml)"
+	@echo "  TARGET_DIR     - Target directory for split repos (default: ../split-repos)"
+	@echo ""
+	@echo "Example workflow:"
+	@echo "  make install-deps"
+	@echo "  make validate"
+	@echo "  make dry-run"
+	@echo "  make split"
+	@echo "  make test-splits"
+
+# Configuration variables
+CONFIG_FILE ?= repo_split_config.yaml
+TARGET_DIR ?= ../split-repos
+PYTHON ?= python3
+
+# Install required dependencies
+install-deps:
+	@echo "Installing repository splitting dependencies..."
+	$(PYTHON) -m pip install -r split_requirements.txt
+	@echo "Dependencies installed successfully!"
+
+# Validate the configuration file
+validate:
+	@echo "Validating configuration file: $(CONFIG_FILE)"
+	$(PYTHON) validate_config.py --config $(CONFIG_FILE) --verbose
+	@echo "Configuration validation complete!"
+
+# Perform a dry run to show what would be done
+dry-run:
+	@echo "Performing dry run with configuration: $(CONFIG_FILE)"
+	$(PYTHON) split_repository.py --config $(CONFIG_FILE) --dry-run --verbose
+	@echo "Dry run complete!"
+
+# Perform the actual repository split
+split: validate
+	@echo "Starting repository split process..."
+	@echo "WARNING: This will create new repositories in $(TARGET_DIR)"
+	@echo "Press Ctrl+C within 5 seconds to cancel..."
+	@sleep 5
+	$(PYTHON) split_repository.py --config $(CONFIG_FILE) --verbose
+	@echo ""
+	@echo "Repository split complete!"
+	@echo "Results are available in: $(TARGET_DIR)"
+	@echo ""
+	@echo "Next steps:"
+	@echo "  1. Review each repository: ls -la $(TARGET_DIR)/"
+	@echo "  2. Test the splits: make test-splits"
+	@echo "  3. Set up remotes: make setup-remotes"
+	@echo "  4. Push to remotes: make push-all"
+
+# Clean up generated files and directories
+clean:
+	@echo "Cleaning up split repositories and temporary files..."
+	@if [ -d "$(TARGET_DIR)" ]; then \
+		echo "Removing $(TARGET_DIR)..."; \
+		rm -rf $(TARGET_DIR); \
+	fi
+	@find . -name "*.pyc" -delete
+	@find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+	@echo "Cleanup complete!"
+
+# Test each split repository independently
+test-splits:
+	@echo "Testing split repositories..."
+	@if [ ! -d "$(TARGET_DIR)" ]; then \
+		echo "ERROR: Split repositories not found. Run 'make split' first."; \
+		exit 1; \
+	fi
+	@for repo_dir in $(TARGET_DIR)/*/; do \
+		if [ -d "$$repo_dir" ]; then \
+			repo_name=$$(basename "$$repo_dir"); \
+			echo ""; \
+			echo "Testing $$repo_name..."; \
+			echo "====================="; \
+			cd "$$repo_dir" && \
+			echo "✓ Git repository status:" && \
+			git status --porcelain && \
+			echo "✓ Git log (last 3 commits):" && \
+			git log --oneline -3 && \
+			echo "✓ Branch information:" && \
+			git branch -a && \
+			echo "✓ Directory structure:" && \
+			find . -maxdepth 2 -type f -name "*.py" | head -5 && \
+			if [ -f "pyproject.toml" ]; then \
+				echo "✓ Package configuration found: pyproject.toml"; \
+			fi && \
+			if [ -f "setup.cfg" ]; then \
+				echo "✓ Package configuration found: setup.cfg"; \
+			fi && \
+			if [ -d "tests" ]; then \
+				echo "✓ Tests directory found"; \
+			fi && \
+			cd - > /dev/null; \
+		fi \
+	done
+	@echo ""
+	@echo "All repositories tested successfully!"
+
+# Set up remote repositories (requires manual configuration)
+setup-remotes:
+	@echo "Setting up remote repositories..."
+	@echo "This requires manual configuration of remote URLs."
+	@echo ""
+	@echo "For each repository in $(TARGET_DIR), you need to:"
+	@echo "1. Create a remote repository (GitHub, GitLab, etc.)"
+	@echo "2. Add the remote URL to the local repository"
+	@echo ""
+	@echo "Example commands for each repository:"
+	@for repo_dir in $(TARGET_DIR)/*/; do \
+		if [ -d "$$repo_dir" ]; then \
+			repo_name=$$(basename "$$repo_dir"); \
+			echo ""; \
+			echo "For $$repo_name:"; \
+			echo "  cd $(TARGET_DIR)/$$repo_name"; \
+			echo "  git remote add origin https://github.com/YOUR-ORG/$$repo_name.git"; \
+			echo "  git remote -v  # Verify remote is set"; \
+		fi \
+	done
+	@echo ""
+	@echo "After setting up remotes, use 'make push-all' to push all repositories."
+
+# Push all repositories to their remote origins
+push-all:
+	@echo "Pushing all split repositories to their remotes..."
+	@for repo_dir in $(TARGET_DIR)/*/; do \
+		if [ -d "$$repo_dir" ]; then \
+			repo_name=$$(basename "$$repo_dir"); \
+			echo ""; \
+			echo "Pushing $$repo_name..."; \
+			echo "====================="; \
+			cd "$$repo_dir" && \
+			if git remote get-url origin >/dev/null 2>&1; then \
+				echo "✓ Remote origin found, pushing..."; \
+				git push -u origin --all && \
+				git push --tags && \
+				echo "✓ $$repo_name pushed successfully"; \
+			else \
+				echo "⚠ No remote origin configured for $$repo_name"; \
+				echo "  Run 'make setup-remotes' first"; \
+			fi && \
+			cd - > /dev/null; \
+		fi \
+	done
+	@echo ""
+	@echo "Push operation complete!"
+
+# Create a backup of the current repository before splitting
+backup:
+	@echo "Creating backup of current repository..."
+	@backup_name="rompy-backup-$$(date +%Y%m%d-%H%M%S)"; \
+	git clone . "../$$backup_name" && \
+	echo "Backup created at: ../$$backup_name"
+
+# Quick development setup for split repositories
+dev-setup:
+	@echo "Setting up development environment for split repositories..."
+	@for repo_dir in $(TARGET_DIR)/*/; do \
+		if [ -d "$$repo_dir" ]; then \
+			repo_name=$$(basename "$$repo_dir"); \
+			echo ""; \
+			echo "Setting up development environment for $$repo_name..."; \
+			cd "$$repo_dir" && \
+			if [ -f "pyproject.toml" ] || [ -f "setup.cfg" ] || [ -f "setup.py" ]; then \
+				echo "✓ Installing $$repo_name in development mode..."; \
+				$(PYTHON) -m pip install -e . || echo "⚠ Installation failed for $$repo_name"; \
+			else \
+				echo "⚠ No setup configuration found for $$repo_name"; \
+			fi && \
+			cd - > /dev/null; \
+		fi \
+	done
+	@echo ""
+	@echo "Development setup complete!"
+
+# Run tests for all split repositories
+test-all:
+	@echo "Running tests for all split repositories..."
+	@for repo_dir in $(TARGET_DIR)/*/; do \
+		if [ -d "$$repo_dir" ]; then \
+			repo_name=$$(basename "$$repo_dir"); \
+			echo ""; \
+			echo "Running tests for $$repo_name..."; \
+			echo "================================"; \
+			cd "$$repo_dir" && \
+			if [ -d "tests" ]; then \
+				$(PYTHON) -m pytest tests/ -v || echo "⚠ Tests failed for $$repo_name"; \
+			else \
+				echo "⚠ No tests directory found for $$repo_name"; \
+			fi && \
+			cd - > /dev/null; \
+		fi \
+	done
+	@echo ""
+	@echo "Test run complete!"
+
+# Show status of all split repositories
+status:
+	@echo "Status of split repositories:"
+	@echo "============================="
+	@if [ ! -d "$(TARGET_DIR)" ]; then \
+		echo "No split repositories found. Run 'make split' first."; \
+		exit 1; \
+	fi
+	@for repo_dir in $(TARGET_DIR)/*/; do \
+		if [ -d "$$repo_dir" ]; then \
+			repo_name=$$(basename "$$repo_dir"); \
+			echo ""; \
+			echo "📁 $$repo_name"; \
+			cd "$$repo_dir" && \
+			echo "   Branch: $$(git branch --show-current)" && \
+			echo "   Commits: $$(git rev-list --count HEAD)" && \
+			echo "   Last commit: $$(git log -1 --format='%h %s')" && \
+			if git remote get-url origin >/dev/null 2>&1; then \
+				echo "   Remote: $$(git remote get-url origin)"; \
+			else \
+				echo "   Remote: Not configured"; \
+			fi && \
+			cd - > /dev/null; \
+		fi \
+	done
+
+# Complete workflow: install, validate, split, and test
+all: install-deps validate split test-splits
+	@echo ""
+	@echo "🎉 Complete workflow finished successfully!"
+	@echo ""
+	@echo "Your repositories are ready in: $(TARGET_DIR)"
+	@echo ""
+	@echo "Next steps:"
+	@echo "  1. Review the repositories: make status"
+	@echo "  2. Set up remote repositories: make setup-remotes"
+	@echo "  3. Push to remotes: make push-all"
+	@echo "  4. Set up development environment: make dev-setup"

@@ -1,0 +1,277 @@
+# Configuration for splitting rompy repository into multiple packages
+# This file defines how to split the monorepo while preserving git history
+
+source_repo: "."
+target_base_dir: "../split-repos"
+
+# Global settings
+preserve_branches: true
+preserve_tags: true
+cleanup_after_split: false # Set to true to remove temporary directories
+
+# Define the split repositories
+repositories:
+  rompy-core:
+    description: "Core rompy library with base functionality"
+    paths:
+      # Include specific rompy subdirectories (excluding swan and schism)
+      - "rompy/__init__.py"
+      - "rompy/_version.py"
+      - "rompy/cli.py"
+      - "rompy/formatting.py"
+      - "rompy/model.py"
+      - "rompy/plotting.py"
+      - "rompy/utils.py"
+      - "rompy/archive/"
+      - "rompy/catalogs/"
+      - "rompy/configuration/"
+      - "rompy/core/"
+      - "rompy/templates/"
+      # Include specific test directories (excluding swan and schism)
+      - "tests/__init__.py"
+      - "tests/conftest.py"
+      - "tests/test_basegrid.py"
+      - "tests/test_basemodel.py"
+      - "tests/test_data.py"
+      - "tests/test_intake_driver.py"
+      - "tests/test_serilization.py"
+      - "tests/test_templates.py"
+      - "tests/test_time.py"
+      - "tests/core/"
+      - "tests/data/"
+      - "tests/example_configs/"
+      - "tests/simulations/"
+      - "tests/test_utils/"
+      - "tests/utils/"
+      # Include core documentation
+      - "docs/Makefile"
+      - "docs/make.bat"
+      - "docs/modules.rst"
+      - "docs/requirements.txt"
+      - "docs/rompy.rst"
+      - "docs/environment.yml"
+      - "docs/source/api.rst"
+      - "docs/source/cli.rst"
+      - "docs/source/conf.py"
+      - "docs/source/core_concepts.rst"
+      - "docs/source/demo.rst"
+      - "docs/source/formatting_and_logging.rst"
+      - "docs/source/index.rst"
+      - "docs/source/models.rst"
+      - "docs/source/quickstart.rst"
+      # Include package configuration files
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "MANIFEST.in"
+      - "versioneer.py"
+      - "pytest.ini"
+      - ".coveragerc"
+      - ".ci-coveragerc"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".readthedocs.yml"
+      - "appveyor.yml"
+      - "README.md"
+      - "LICENSE"
+      - "HISTORY.rst"
+      - ".github/"
+      - "scripts/"
+    post_split_actions:
+      - action: "create_src_layout"
+        base_package: "rompy_core"
+      - action: "merge_directory_contents"
+        merges:
+          - from: "rompy"
+            to: "src/rompy_core"
+      - action: "update_setup"
+        package_name: "rompy-core"
+        description: "Core rompy library for ocean wave modeling"
+        src_layout: true
+      - action: "create_modern_setup"
+        package_name: "rompy-core"
+        package_module: "rompy_core"
+        description: "Core rompy library for ocean wave modeling"
+        dependencies: []
+
+  rompy-swan:
+    description: "SWAN wave model integration for rompy"
+    paths:
+      - "rompy/swan/"
+      - "tests/swan/"
+      - "docs/source/swan/"
+      - "docker/"
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "MANIFEST.in"
+      - "versioneer.py"
+      - "pytest.ini"
+      - ".coveragerc"
+      - ".ci-coveragerc"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".readthedocs.yml"
+      - "README.md"
+      - "LICENSE"
+      - "HISTORY.rst"
+      - ".github/"
+    post_split_actions:
+      - action: "create_src_layout"
+        base_package: "rompy_swan"
+      - action: "move_files"
+        moves:
+          - from: "rompy/swan"
+            to: "src/rompy_swan"
+      - action: "merge_directory_contents"
+        merges:
+          - from: "tests/swan"
+            to: "tests"
+          - from: "docs/source/swan"
+            to: "docs/source"
+      - action: "update_setup"
+        package_name: "rompy-swan"
+        description: "SWAN wave model integration for rompy"
+        src_layout: true
+        dependencies:
+          - "rompy-core"
+      - action: "create_modern_setup"
+        package_name: "rompy-swan"
+        package_module: "rompy_swan"
+        description: "SWAN wave model integration for rompy"
+        dependencies:
+          - "rompy-core"
+
+  rompy-schism:
+    description: "SCHISM model integration for rompy"
+    paths:
+      - "rompy/schism/"
+      - "tests/schism/"
+      - "docs/source/schism/"
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "MANIFEST.in"
+      - "versioneer.py"
+      - "pytest.ini"
+      - ".coveragerc"
+      - ".ci-coveragerc"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".readthedocs.yml"
+      - "README.md"
+      - "LICENSE"
+      - "HISTORY.rst"
+      - ".github/"
+    post_split_actions:
+      - action: "create_src_layout"
+        base_package: "rompy_schism"
+      - action: "move_files"
+        moves:
+          - from: "rompy/schism"
+            to: "src/rompy_schism"
+      - action: "merge_directory_contents"
+        merges:
+          - from: "tests/schism"
+            to: "tests"
+          - from: "docs/source/schism"
+            to: "docs/source"
+      - action: "update_setup"
+        package_name: "rompy-schism"
+        description: "SCHISM model integration for rompy"
+        src_layout: true
+        dependencies:
+          - "rompy-core"
+      - action: "create_modern_setup"
+        package_name: "rompy-schism"
+        package_module: "rompy_schism"
+        description: "SCHISM model integration for rompy"
+        dependencies:
+          - "rompy-core"
+
+  rompy-notebooks:
+    description: "Example notebooks and tutorials for rompy"
+    paths:
+      - "notebooks/"
+      - "docs/source/notebooks/"
+      - "README.md"
+      - "LICENSE"
+      - ".gitignore"
+      - ".gitattributes"
+    post_split_actions:
+      - action: "create_readme"
+        template: "notebooks_readme"
+      - action: "update_setup"
+        package_name: "rompy-notebooks"
+        description: "Example notebooks and tutorials for rompy"
+        dependencies:
+          - "rompy-core"
+          - "rompy-swan"
+          - "rompy-schism"
+
+  rompy-docs:
+    description: "Documentation for rompy ecosystem"
+    paths:
+      - "docs/"
+      - "README.md"
+      - "LICENSE"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".readthedocs.yml"
+    post_split_actions:
+      - action: "create_readme"
+        template: "docs_readme"
+      - action: "update_docs_config"
+        ecosystem_packages:
+          - "rompy-core"
+          - "rompy-swan"
+          - "rompy-schism"
+
+# Templates for generated files
+templates:
+  notebooks_readme: |
+    # Rompy Notebooks
+
+    This repository contains example notebooks and tutorials for the rompy ecosystem.
+
+    ## Requirements
+
+    Install the required rompy packages:
+
+    ```bash
+    pip install rompy-core rompy-swan rompy-schism
+    ```
+
+    ## Notebooks
+
+    - Browse the notebooks/ directory for examples
+    - Each notebook includes setup instructions and explanations
+
+    ## Contributing
+
+    Please see the main rompy-core repository for contribution guidelines.
+
+  docs_readme: |
+    # Rompy Documentation
+
+    This repository contains the documentation for the rompy ecosystem.
+
+    ## Building Documentation
+
+    ```bash
+    cd docs
+    pip install -r requirements.txt
+    make html
+    ```
+
+    ## Contributing
+
+    Please see the main rompy-core repository for contribution guidelines.
+
+# Git settings
+git:
+  # Branches to include in split (empty means all branches)
+  branches: []
+  # Tags to include in split (empty means all tags)
+  tags: []
+  # Whether to rewrite commit messages
+  rewrite_messages: false
+  # Author rewriting (if needed)
+  author_rewrites: {}
