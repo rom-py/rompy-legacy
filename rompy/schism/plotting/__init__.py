@@ -2,10 +2,13 @@
 SCHISM Plotting Module
 
 This module provides a unified interface for visualizing SCHISM model input data,
-including grid visualization, boundary conditions, atmospheric forcing, and tidal data.
+including grid visualization, boundary conditions, atmospheric forcing, tidal data,
+and time series animations.
 
 Main Classes:
     SchismPlotter: Primary interface for all SCHISM plotting functionality
+    AnimationPlotter: Specialized class for time series animations
+    AnimationConfig: Configuration for animation parameters
 
 Main Functions:
     plot_schism_overview: Create comprehensive overview plots
@@ -14,11 +17,22 @@ Main Functions:
     plot_atmospheric_data: Plot atmospheric forcing data
     plot_tidal_data: Plot tidal data
 
+Animation Functions:
+    animate_boundary_data: Create boundary data time series animations
+    animate_atmospheric_data: Create atmospheric forcing animations
+    animate_grid_data: Create grid-based data animations
+    create_multi_variable_animation: Create multi-panel animations
+
 Example Usage:
-    >>> from rompy.schism.plotting import SchismPlotter
+    >>> from rompy.schism.plotting import SchismPlotter, AnimationConfig
     >>> plotter = SchismPlotter(config)
     >>> fig, ax = plotter.plot_overview()
     >>> fig.show()
+    
+    >>> # Create time series animation
+    >>> anim_config = AnimationConfig(frame_rate=15, show_time_label=True)
+    >>> plotter = SchismPlotter(config, animation_config=anim_config)
+    >>> anim = plotter.animate_boundary_data('boundary.th.nc', 'temperature', 'temp_animation.mp4')
 """
 
 import logging
@@ -36,6 +50,7 @@ from .grid import GridPlotter
 from .data import DataPlotter
 from .overview import OverviewPlotter
 from .validation import ValidationPlotter, ModelValidator, ValidationResult
+from .animation import AnimationPlotter, AnimationConfig
 from .utils import setup_cartopy_axis, validate_file_exists
 
 logger = logging.getLogger(__name__)
@@ -64,22 +79,27 @@ class SchismPlotter:
         Grid-specific plotting functionality
     data_plotter : DataPlotter
         Data-specific plotting functionality
+    animation_plotter : AnimationPlotter
+        Animation-specific plotting functionality
     """
     
     def __init__(
         self,
         config: Optional[Any] = None,
         grid_file: Optional[Union[str, Path]] = None,
+        animation_config: Optional[AnimationConfig] = None,
     ):
         """Initialize SchismPlotter with configuration or grid file."""
         self.config = config
         self.grid_file = Path(grid_file) if grid_file else None
+        self.animation_config = animation_config
         
         # Initialize sub-plotters
         self.grid_plotter = GridPlotter(config=config, grid_file=grid_file)
         self.data_plotter = DataPlotter(config=config, grid_file=grid_file)
         self.overview_plotter = OverviewPlotter(config=config, grid_file=grid_file)
         self.validation_plotter = ValidationPlotter(config=config, grid_file=grid_file)
+        self.animation_plotter = AnimationPlotter(config=config, grid_file=grid_file, animation_config=animation_config)
         
         # Validate initialization
         if not config and not grid_file:
@@ -579,6 +599,151 @@ class SchismPlotter:
                 hasattr(self.config.data, 'tides') and 
                 self.config.data.tides is not None)
 
+    # Animation methods
+    def animate_boundary_data(
+        self,
+        data_file: Union[str, Path],
+        variable: str,
+        output_file: Optional[Union[str, Path]] = None,
+        level_idx: int = 0,
+        **kwargs
+    ):
+        """
+        Create animation of boundary data time evolution.
+        
+        Parameters
+        ----------
+        data_file : Union[str, Path]
+            Path to boundary data file (*.th.nc)
+        variable : str
+            Variable name to animate
+        output_file : Optional[Union[str, Path]]
+            Path to save animation (MP4 or GIF)
+        level_idx : int, optional
+            Level index for 3D data. Default is 0.
+        **kwargs : dict
+            Additional plotting parameters
+            
+        Returns
+        -------
+        animation.FuncAnimation
+            Matplotlib animation object
+        """
+        return self.animation_plotter.animate_boundary_data(
+            data_file, variable, output_file, level_idx, **kwargs
+        )
+
+    def animate_atmospheric_data(
+        self,
+        data_file: Union[str, Path],
+        variable: str = "air",
+        parameter: Optional[str] = None,
+        output_file: Optional[Union[str, Path]] = None,
+        **kwargs
+    ):
+        """
+        Create animation of atmospheric forcing data progression.
+        
+        Parameters
+        ----------
+        data_file : Union[str, Path]
+            Path to atmospheric data file
+        variable : str, optional
+            Type of atmospheric data ('air', 'rad', 'prc'). Default is 'air'.
+        parameter : Optional[str]
+            Specific parameter to animate
+        output_file : Optional[Union[str, Path]]
+            Path to save animation (MP4 or GIF)
+        **kwargs : dict
+            Additional plotting parameters
+            
+        Returns
+        -------
+        animation.FuncAnimation
+            Matplotlib animation object
+        """
+        return self.animation_plotter.animate_atmospheric_data(
+            data_file, variable, parameter, output_file, **kwargs
+        )
+
+    def animate_grid_data(
+        self,
+        data_file: Union[str, Path],
+        variable: str,
+        output_file: Optional[Union[str, Path]] = None,
+        show_grid: bool = True,
+        **kwargs
+    ):
+        """
+        Create animation of grid-based data with spatial-temporal visualization.
+        
+        Parameters
+        ----------
+        data_file : Union[str, Path]
+            Path to data file with grid-based temporal data
+        variable : str
+            Variable name to animate
+        output_file : Optional[Union[str, Path]]
+            Path to save animation (MP4 or GIF)
+        show_grid : bool, optional
+            Whether to show computational grid. Default is True.
+        **kwargs : dict
+            Additional plotting parameters
+            
+        Returns
+        -------
+        animation.FuncAnimation
+            Matplotlib animation object
+        """
+        return self.animation_plotter.animate_grid_data(
+            data_file, variable, output_file, show_grid, **kwargs
+        )
+
+    def create_multi_variable_animation(
+        self,
+        data_files: Dict[str, Union[str, Path]],
+        variables: Dict[str, str],
+        output_file: Optional[Union[str, Path]] = None,
+        layout: str = "grid",
+        **kwargs
+    ):
+        """
+        Create multi-panel animation with multiple variables.
+        
+        Parameters
+        ----------
+        data_files : Dict[str, Union[str, Path]]
+            Dictionary mapping panel names to data file paths
+        variables : Dict[str, str]
+            Dictionary mapping panel names to variable names
+        output_file : Optional[Union[str, Path]]
+            Path to save animation (MP4 or GIF)
+        layout : str, optional
+            Panel layout: 'grid', 'vertical', 'horizontal'. Default is 'grid'.
+        **kwargs : dict
+            Additional plotting parameters
+            
+        Returns
+        -------
+        animation.FuncAnimation
+            Matplotlib animation object
+        """
+        return self.animation_plotter.create_multi_variable_animation(
+            data_files, variables, output_file, layout, **kwargs
+        )
+
+    def stop_animation(self) -> None:
+        """Stop the current animation."""
+        self.animation_plotter.stop_animation()
+
+    def pause_animation(self) -> None:
+        """Pause the current animation."""
+        self.animation_plotter.pause_animation()
+
+    def resume_animation(self) -> None:
+        """Resume the current animation."""
+        self.animation_plotter.resume_animation()
+
 
 # Convenience functions for direct usage
 def plot_schism_overview(
@@ -678,6 +843,8 @@ __all__ = [
     'ValidationPlotter',
     'ModelValidator',
     'ValidationResult',
+    'AnimationPlotter',
+    'AnimationConfig',
     'plot_schism_overview',
     'plot_grid', 
     'plot_boundary_data',

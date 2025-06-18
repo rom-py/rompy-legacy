@@ -10,6 +10,7 @@ The SCHISM plotting module provides comprehensive visualization capabilities for
    overview
    api_reference
    examples
+   animations
    tutorials
 
 Quick Start
@@ -20,15 +21,15 @@ The SCHISM plotting system is designed around a unified interface that can creat
 .. code-block:: python
 
    from rompy.schism.plotting import SchismPlotter
-   
+
    # Initialize with a SCHISM configuration
    plotter = SchismPlotter(config=schism_config)
-   
+
    # Create basic plots
    fig, ax = plotter.plot_grid()
    fig, ax = plotter.plot_bathymetry()
    fig, ax = plotter.plot_boundaries()
-   
+
    # Create comprehensive overview
    fig, axes = plotter.plot_comprehensive_overview()
 
@@ -62,6 +63,7 @@ Advanced Features
 ~~~~~~~~~~~~~~~~~
 
 * **Multi-panel Overviews**: Comprehensive 8-panel model summaries
+* **Time Series Animations**: Dynamic visualizations of temporal data evolution
 * **Real-time Validation**: Interactive validation with detailed feedback
 * **Export Capabilities**: High-resolution plot export with customizable formats
 * **Cartopy Integration**: Geographic projections and coordinate systems
@@ -80,6 +82,8 @@ Main Classes
    ~rompy.schism.plotting.overview.OverviewPlotter
    ~rompy.schism.plotting.validation.ModelValidator
    ~rompy.schism.plotting.validation.ValidationPlotter
+   ~rompy.schism.plotting.animation.AnimationPlotter
+   ~rompy.schism.plotting.animation.AnimationConfig
 
 Core Configuration
 ------------------
@@ -105,13 +109,13 @@ Basic Grid Plotting
 
    from rompy.schism.plotting import SchismPlotter
    from rompy.model import ModelRun
-   
+
    # Load SCHISM configuration
    config = ModelRun.from_yaml("schism_config.yaml")
-   
+
    # Initialize plotter
    plotter = SchismPlotter(config=config.config)
-   
+
    # Create grid plot
    fig, ax = plotter.plot_grid(
        figsize=(12, 10),
@@ -158,9 +162,38 @@ Comprehensive Overview
        include_validation=True,
        include_quality_metrics=True
    )
-   
+
    # Save high-resolution plot
    fig.savefig('model_overview.png', dpi=300, bbox_inches='tight')
+
+   Boundary Data Animation
+   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+   .. code-block:: python
+
+      from rompy.schism.plotting.animation import AnimationConfig
+
+      # Configure animation
+      anim_config = AnimationConfig(
+          frame_rate=15,
+          show_time_label=True,
+          quality='high'
+      )
+
+      # Create plotter with animation support
+      plotter = SchismPlotter(
+          grid_file="hgrid.gr3",
+          animation_config=anim_config
+      )
+
+      # Create boundary data animation
+      anim = plotter.animate_boundary_data(
+          "SAL_3D.th.nc",
+          "salinity",
+          "salinity_animation.mp4",
+          figsize=(12, 8),
+          cmap='viridis'
+      )
 
 Model Validation
 ~~~~~~~~~~~~~~~~
@@ -169,12 +202,12 @@ Model Validation
 
    # Run model validation
    validation_results = plotter.run_model_validation()
-   
+
    # Create validation summary plot
    fig, axes = plotter.plot_validation_summary(
        figsize=(14, 10)
    )
-   
+
    # Print validation summary
    for result in validation_results:
        print(f"{result.check_name}: {result.status} - {result.message}")
@@ -186,14 +219,14 @@ Working with Real Data
 
    # Initialize with grid file for existing model
    plotter = SchismPlotter(grid_file="hgrid.gr3")
-   
+
    # Plot specific boundary data file
    fig, ax = plotter.plot_boundary_data(
-       "SAL_3D.th.nc", 
+       "SAL_3D.th.nc",
        variable="salinity",
        time_index=0
    )
-   
+
    # Create data analysis overview
    fig, axes = plotter.plot_data_analysis_overview()
 
@@ -203,7 +236,7 @@ Configuration Options
 .. code-block:: python
 
    from rompy.schism.plotting.core import PlotConfig
-   
+
    # Custom plot configuration
    plot_config = PlotConfig(
        figsize=(16, 12),
@@ -213,7 +246,7 @@ Configuration Options
        boundary_linewidth=2.0,
        colorbar_orientation='horizontal'
    )
-   
+
    # Use custom configuration
    plotter = SchismPlotter(
        config=schism_config,
@@ -234,7 +267,7 @@ The plotting system is extensible. You can access individual plotter components:
    grid_plotter = plotter.grid_plotter
    data_plotter = plotter.data_plotter
    overview_plotter = plotter.overview_plotter
-   
+
    # Use specialized plotting methods
    fig, ax = grid_plotter.plot_grid_quality_metrics()
    fig, ax = data_plotter.plot_3d_boundary_profiles("TEM_3D.th.nc")
@@ -251,7 +284,7 @@ For large datasets, consider these performance optimizations:
        subsample_factor=10,  # Plot every 10th element
        simplify_boundaries=True
    )
-   
+
    # Time subset for atmospheric data
    fig, ax = plotter.plot_atmospheric_data(
        time_range=(0, 48),  # First 48 hours only
@@ -286,7 +319,7 @@ The plotting system works seamlessly in Jupyter notebooks:
 
    # Enable inline plotting
    %matplotlib inline
-   
+
    # Create interactive plots
    fig, ax = plotter.plot_grid()
    # Plot displays automatically in notebook
@@ -299,15 +332,15 @@ Saving and Export
    # Save individual plots
    fig, ax = plotter.plot_bathymetry()
    fig.savefig('bathymetry.png', dpi=300, bbox_inches='tight')
-   
+
    # Batch export multiple plots
    plot_dir = Path("plots")
    plot_dir.mkdir(exist_ok=True)
-   
+
    # Grid plots
    fig, ax = plotter.plot_grid()
    fig.savefig(plot_dir / "grid.png", dpi=150)
-   
+
    # Boundary plots
    fig, ax = plotter.plot_boundaries()
    fig.savefig(plot_dir / "boundaries.png", dpi=150)
@@ -339,7 +372,7 @@ Common Issues
 
    # Check file existence before plotting
    from rompy.schism.plotting.utils import validate_file_exists
-   
+
    if validate_file_exists("boundary_data.nc"):
        fig, ax = plotter.plot_boundary_data("boundary_data.nc")
    else:
@@ -356,5 +389,6 @@ Next Steps
 ----------
 
 * :doc:`api_reference` - Complete API documentation
-* :doc:`examples` - Detailed examples and use cases  
+* :doc:`examples` - Detailed examples and use cases
+* :doc:`animations` - Time series animation documentation and examples
 * :doc:`tutorials` - Step-by-step tutorials for common workflows

@@ -21,12 +21,12 @@ logger = logging.getLogger(__name__)
 def validate_file_exists(file_path: Union[str, Path]) -> bool:
     """
     Validate that a file exists.
-    
+
     Parameters
     ----------
     file_path : Union[str, Path]
         Path to file to validate
-        
+
     Returns
     -------
     bool
@@ -38,7 +38,7 @@ def validate_file_exists(file_path: Union[str, Path]) -> bool:
 def setup_cartopy_axis():
     """
     Set up cartopy projection for geographic plotting.
-    
+
     Returns
     -------
     projection : cartopy.crs projection or None
@@ -55,16 +55,16 @@ def setup_cartopy_axis():
 def get_geographic_extent(lons: np.ndarray, lats: np.ndarray, buffer: float = 0.1) -> Tuple[float, float, float, float]:
     """
     Get geographic extent from longitude and latitude arrays.
-    
+
     Parameters
     ----------
     lons : np.ndarray
         Longitude values
-    lats : np.ndarray  
+    lats : np.ndarray
         Latitude values
     buffer : float, optional
         Buffer to add around extent as fraction of range. Default is 0.1.
-        
+
     Returns
     -------
     extent : Tuple[float, float, float, float]
@@ -72,16 +72,16 @@ def get_geographic_extent(lons: np.ndarray, lats: np.ndarray, buffer: float = 0.
     """
     lon_min, lon_max = np.nanmin(lons), np.nanmax(lons)
     lat_min, lat_max = np.nanmin(lats), np.nanmax(lats)
-    
+
     lon_range = lon_max - lon_min
     lat_range = lat_max - lat_min
-    
+
     lon_buffer = lon_range * buffer
     lat_buffer = lat_range * buffer
-    
+
     return (
         lon_min - lon_buffer,
-        lon_max + lon_buffer, 
+        lon_max + lon_buffer,
         lat_min - lat_buffer,
         lat_max + lat_buffer
     )
@@ -96,7 +96,7 @@ def setup_colormap(
 ) -> Tuple[str, Normalize, Optional[np.ndarray]]:
     """
     Set up colormap and normalization for data visualization.
-    
+
     Parameters
     ----------
     data : np.ndarray
@@ -106,10 +106,10 @@ def setup_colormap(
     vmin : Optional[float]
         Minimum value for normalization
     vmax : Optional[float]
-        Maximum value for normalization  
+        Maximum value for normalization
     levels : Optional[Union[int, List[float]]]
         Contour levels if needed
-        
+
     Returns
     -------
     cmap_name : str
@@ -124,10 +124,10 @@ def setup_colormap(
         vmin = np.nanmin(data)
     if vmax is None:
         vmax = np.nanmax(data)
-        
+
     # Create normalization
     norm = Normalize(vmin=vmin, vmax=vmax)
-    
+
     # Handle levels
     levels_array = None
     if levels is not None:
@@ -135,7 +135,7 @@ def setup_colormap(
             levels_array = np.linspace(vmin, vmax, levels)
         else:
             levels_array = np.array(levels)
-            
+
     return cmap, norm, levels_array
 
 
@@ -148,7 +148,7 @@ def add_grid_overlay(
 ):
     """
     Add grid overlay to existing plot.
-    
+
     Parameters
     ----------
     ax : plt.Axes
@@ -167,7 +167,7 @@ def add_grid_overlay(
         if hasattr(grid, 'pylibs_hgrid'):
             hgrid = grid.pylibs_hgrid
             # Plot triangulation
-            ax.triplot(hgrid.x, hgrid.y, hgrid.elnode, 
+            ax.triplot(hgrid.x, hgrid.y, hgrid.elnode,
                       alpha=alpha, color=color, linewidth=linewidth)
         else:
             logger.warning("Grid overlay not supported for this grid type")
@@ -183,7 +183,7 @@ def add_boundary_overlay(
 ):
     """
     Add boundary overlay to existing plot.
-    
+
     Parameters
     ----------
     ax : plt.Axes
@@ -197,24 +197,24 @@ def add_boundary_overlay(
     """
     if boundary_colors is None:
         boundary_colors = {"ocean": "red", "land": "green", "tidal": "blue"}
-    
+
     try:
         # Plot ocean boundaries
         if hasattr(grid, 'ocean_boundary'):
             x_ocean, y_ocean = grid.ocean_boundary()
             if len(x_ocean) > 0:
-                ax.plot(x_ocean, y_ocean, 
+                ax.plot(x_ocean, y_ocean,
                        color=boundary_colors.get("ocean", "red"),
                        linewidth=linewidth, label="Ocean Boundary")
-        
-        # Plot land boundaries  
+
+        # Plot land boundaries
         if hasattr(grid, 'land_boundary'):
             x_land, y_land = grid.land_boundary()
             if len(x_land) > 0:
                 ax.plot(x_land, y_land,
-                       color=boundary_colors.get("land", "green"), 
+                       color=boundary_colors.get("land", "green"),
                        linewidth=linewidth, label="Land Boundary")
-                       
+
     except Exception as e:
         logger.warning(f"Could not add boundary overlay: {e}")
 
@@ -222,12 +222,12 @@ def add_boundary_overlay(
 def detect_file_type(file_path: Union[str, Path]) -> str:
     """
     Detect SCHISM file type from filename.
-    
+
     Parameters
     ----------
     file_path : Union[str, Path]
         Path to SCHISM file
-        
+
     Returns
     -------
     file_type : str
@@ -235,7 +235,7 @@ def detect_file_type(file_path: Union[str, Path]) -> str:
     """
     file_path = Path(file_path)
     name = file_path.name.lower()
-    
+
     if name.endswith('.gr3'):
         return 'gr3'
     elif name.endswith('.th.nc'):
@@ -253,6 +253,9 @@ def detect_file_type(file_path: Union[str, Path]) -> str:
         return 'bctides'
     elif 'sflux' in name:
         return 'atmospheric'
+    elif name.endswith('.nc'):
+        # Generic NetCDF file - could be grid data or other SCHISM output
+        return 'netcdf_grid'
     else:
         return 'unknown'
 
@@ -260,17 +263,17 @@ def detect_file_type(file_path: Union[str, Path]) -> str:
 def load_schism_data(file_path: Union[str, Path]) -> xr.Dataset:
     """
     Load SCHISM data file as xarray Dataset.
-    
+
     Parameters
     ----------
     file_path : Union[str, Path]
         Path to SCHISM data file
-        
+
     Returns
     -------
     ds : xr.Dataset
         Loaded dataset
-        
+
     Raises
     ------
     FileNotFoundError
@@ -279,13 +282,13 @@ def load_schism_data(file_path: Union[str, Path]) -> xr.Dataset:
         If file format is not supported
     """
     file_path = Path(file_path)
-    
+
     if not file_path.exists():
         raise FileNotFoundError(f"File not found: {file_path}")
-    
+
     file_type = detect_file_type(file_path)
-    
-    if file_type in ['salinity_3d', 'temperature_3d', 'velocity_3d', 'elevation_2d', 'boundary_th', 'atmospheric']:
+
+    if file_type in ['salinity_3d', 'temperature_3d', 'velocity_3d', 'elevation_2d', 'boundary_th', 'atmospheric', 'netcdf_grid']:
         try:
             ds = xr.open_dataset(file_path)
             return ds
@@ -298,14 +301,14 @@ def load_schism_data(file_path: Union[str, Path]) -> xr.Dataset:
 def get_variable_info(ds: xr.Dataset, var_name: str) -> Dict[str, Any]:
     """
     Get information about a dataset variable.
-    
+
     Parameters
     ----------
     ds : xr.Dataset
         Dataset containing the variable
     var_name : str
         Variable name
-        
+
     Returns
     -------
     info : Dict[str, Any]
@@ -313,9 +316,9 @@ def get_variable_info(ds: xr.Dataset, var_name: str) -> Dict[str, Any]:
     """
     if var_name not in ds.data_vars:
         raise ValueError(f"Variable {var_name} not found in dataset")
-    
+
     var = ds[var_name]
-    
+
     info = {
         'name': var_name,
         'dims': var.dims,
@@ -330,7 +333,7 @@ def get_variable_info(ds: xr.Dataset, var_name: str) -> Dict[str, Any]:
         'has_depth': any(dim in var.dims for dim in ['depth', 'level', 'sigma', 'z']),
         'spatial_dims': [dim for dim in var.dims if dim in ['lon', 'lat', 'x', 'y', 'node']]
     }
-    
+
     return info
 
 
@@ -342,7 +345,7 @@ def create_time_subset(
 ) -> xr.Dataset:
     """
     Create time subset of dataset.
-    
+
     Parameters
     ----------
     ds : xr.Dataset
@@ -353,7 +356,7 @@ def create_time_subset(
         End time for subset (ISO format)
     time_idx : Optional[int]
         Single time index to extract
-        
+
     Returns
     -------
     ds_subset : xr.Dataset
@@ -362,28 +365,28 @@ def create_time_subset(
     if 'time' not in ds.dims:
         logger.warning("Dataset does not have time dimension")
         return ds
-    
+
     if time_idx is not None:
         return ds.isel(time=time_idx)
-    
+
     if start_time or end_time:
         return ds.sel(time=slice(start_time, end_time))
-    
+
     return ds
 
 
 def convert_quads_to_triangles(elnode: np.ndarray) -> np.ndarray:
     """
     Convert SCHISM quad elements to triangles for matplotlib compatibility.
-    
+
     SCHISM may store triangular elements in quadrilateral format using special values
     (like -1 or -2) for missing nodes. These are filtered out properly.
-    
+
     Parameters
     ----------
     elnode : np.ndarray
         Element connectivity array (n_elements, 4) for quads or (n_elements, 3) for triangles
-        
+
     Returns
     -------
     triangles : np.ndarray
@@ -396,11 +399,11 @@ def convert_quads_to_triangles(elnode: np.ndarray) -> np.ndarray:
     elif elnode.shape[1] == 4:
         # Handle mixed quads and triangles
         triangles_list = []
-        
+
         for i, elem in enumerate(elnode):
             # Count valid nodes (non-negative indices)
             valid_nodes = elem[elem >= 0]
-            
+
             if len(valid_nodes) == 3:
                 # Triangular element - use first 3 valid nodes
                 triangles_list.append(elem[:3])
@@ -409,10 +412,10 @@ def convert_quads_to_triangles(elnode: np.ndarray) -> np.ndarray:
                 triangles_list.append(elem[[0, 1, 2]])
                 triangles_list.append(elem[[0, 2, 3]])
             # Skip elements with < 3 valid nodes
-        
+
         if not triangles_list:
             raise ValueError("No valid triangular elements found")
-            
+
         return np.array(triangles_list, dtype=elnode.dtype)
     else:
         raise ValueError(f"Unsupported element type with {elnode.shape[1]} nodes per element")
@@ -421,15 +424,15 @@ def convert_quads_to_triangles(elnode: np.ndarray) -> np.ndarray:
 def ensure_0_based_indexing(elnode: np.ndarray) -> np.ndarray:
     """
     Ensure element connectivity uses 0-based indexing for matplotlib.
-    
+
     SCHISM grids may use special values like -1 or -2 to indicate invalid/missing nodes
     (e.g., triangular elements stored in quadrilateral format). These are preserved.
-    
+
     Parameters
     ----------
     elnode : np.ndarray
         Element connectivity array
-        
+
     Returns
     -------
     elnode_0based : np.ndarray
@@ -437,16 +440,16 @@ def ensure_0_based_indexing(elnode: np.ndarray) -> np.ndarray:
     """
     # Create a copy to avoid modifying the original
     elnode_copy = elnode.copy()
-    
+
     # Mask for valid nodes (non-negative values)
     valid_mask = elnode_copy >= 0
-    
+
     if valid_mask.sum() == 0:
         raise ValueError("No valid node indices found in element connectivity")
-    
+
     # Get minimum valid node index
     min_valid = elnode_copy[valid_mask].min()
-    
+
     if min_valid == 1:
         # Convert from 1-based to 0-based indexing (only for valid nodes)
         elnode_copy[valid_mask] = elnode_copy[valid_mask] - 1
@@ -461,45 +464,45 @@ def ensure_0_based_indexing(elnode: np.ndarray) -> np.ndarray:
 def prepare_triangulation_data(hgrid) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Prepare SCHISM grid data for matplotlib triangulation.
-    
+
     Parameters
     ----------
     hgrid : schism_grid
         SCHISM grid object from pylibs
-        
+
     Returns
     -------
     x : np.ndarray
         X coordinates
     y : np.ndarray
-        Y coordinates  
+        Y coordinates
     triangles : np.ndarray
         Triangle connectivity (n_triangles, 3) with 0-based indexing
     """
     x = hgrid.x
     y = hgrid.y
     elnode = hgrid.elnode
-    
+
     # Ensure 0-based indexing
     elnode_0based = ensure_0_based_indexing(elnode)
-    
+
     # Convert to triangles if needed
     triangles = convert_quads_to_triangles(elnode_0based)
-    
+
     return x, y, triangles
 
 
 def format_scientific_notation(value: float, precision: int = 2) -> str:
     """
     Format value in scientific notation for plot labels.
-    
+
     Parameters
     ----------
     value : float
         Value to format
     precision : int, optional
         Number of decimal places. Default is 2.
-        
+
     Returns
     -------
     formatted : str
@@ -518,7 +521,7 @@ def create_diverging_colormap_levels(
 ) -> np.ndarray:
     """
     Create levels for diverging colormap centered on a value.
-    
+
     Parameters
     ----------
     data : np.ndarray
@@ -527,17 +530,17 @@ def create_diverging_colormap_levels(
         Number of levels. Default is 21.
     center : float, optional
         Center value for diverging colormap. Default is 0.0.
-        
+
     Returns
     -------
     levels : np.ndarray
         Colormap levels
     """
     vmin, vmax = np.nanmin(data), np.nanmax(data)
-    
+
     # Determine maximum absolute deviation from center
     max_dev = max(abs(vmin - center), abs(vmax - center))
-    
+
     # Create symmetric levels around center
     return np.linspace(center - max_dev, center + max_dev, num_levels)
 
@@ -550,7 +553,7 @@ def add_scale_bar(
 ):
     """
     Add scale bar to geographic plot.
-    
+
     Parameters
     ----------
     ax : plt.Axes
@@ -564,14 +567,14 @@ def add_scale_bar(
     """
     try:
         from matplotlib_scalebar.scalebar import ScaleBar
-        
+
         # Add scale bar (assuming PlateCarree projection)
         scalebar = ScaleBar(
             1, units='m', length_fraction=0.25,
             location=location, fontsize=fontsize
         )
         ax.add_artist(scalebar)
-        
+
     except ImportError:
         logger.warning("matplotlib-scalebar not available, skipping scale bar")
     except Exception as e:
@@ -587,7 +590,7 @@ def save_plot(
 ):
     """
     Save plot with standard settings.
-    
+
     Parameters
     ----------
     fig : plt.Figure
