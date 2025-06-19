@@ -7,6 +7,17 @@ This script demonstrates:
 2. Generating model input files
 3. Creating comprehensive plots of the generated data
 4. Demonstrating all plotting capabilities with real SCHISM data
+5. Plotting tidal input data (TPXO) and SCHISM boundary data (bctides.in)
+6. Comprehensive tidal analysis with multiple visualization types
+
+Features include:
+- Basic grid structure and bathymetry plots
+- Boundary condition visualization
+- Atmospheric forcing plots
+- Tidal input data visualization (elevation, velocity, amplitude/phase maps)
+- SCHISM boundary data plots (actual data used by the model)
+- Comprehensive tidal analysis overview
+- Model validation and quality assessment
 
 Usage:
     python schism_real_data_plotting_demo.py [--config path/to/config.yaml] [--save-plots] [--output-dir path]
@@ -47,24 +58,34 @@ def load_and_modify_config(config_path: Path, output_base: Path) -> dict:
         else:
             config['period']['end'] = config['period']['start']  # Fallback to same time
 
-    # Fix relative paths in the config to work from current directory
-    def fix_paths(obj, path_prefix="../../"):
-        """Recursively fix relative paths in config."""
+    # Fix paths in the config to work from current directory
+    def fix_paths(obj):
+        """Recursively fix paths in config."""
         if isinstance(obj, dict):
             for key, value in obj.items():
-                if isinstance(value, str) and value.startswith(path_prefix):
-                    # Convert ../../tests/... to tests/...
-                    obj[key] = value.replace(path_prefix, "")
-                    logger.info(f"Fixed path: {value} -> {obj[key]}")
+                if isinstance(value, str):
+                    # Fix various path patterns
+                    if value.startswith("../../"):
+                        # Convert ../../tests/... to tests/...
+                        obj[key] = value.replace("../../", "")
+                        logger.info(f"Fixed path: {value} -> {obj[key]}")
+                    elif "/home/tdurrant/source/rompy/rompy/" in value:
+                        # Fix absolute paths to relative
+                        obj[key] = value.replace("/home/tdurrant/source/rompy/rompy/", "")
+                        logger.info(f"Fixed absolute path: {value} -> {obj[key]}")
                 elif isinstance(value, (dict, list)):
-                    fix_paths(value, path_prefix)
+                    fix_paths(value)
         elif isinstance(obj, list):
             for i, item in enumerate(obj):
-                if isinstance(item, str) and item.startswith(path_prefix):
-                    obj[i] = item.replace(path_prefix, "")
-                    logger.info(f"Fixed path: {item} -> {obj[i]}")
+                if isinstance(item, str):
+                    if item.startswith("../../"):
+                        obj[i] = item.replace("../../", "")
+                        logger.info(f"Fixed path: {item} -> {obj[i]}")
+                    elif "/home/tdurrant/source/rompy/rompy/" in item:
+                        obj[i] = item.replace("/home/tdurrant/source/rompy/rompy/", "")
+                        logger.info(f"Fixed absolute path: {item} -> {obj[i]}")
                 elif isinstance(item, (dict, list)):
-                    fix_paths(item, path_prefix)
+                    fix_paths(item)
 
     fix_paths(config)
 
@@ -304,12 +325,90 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
         except Exception as e:
             logger.warning(f"Could not run model validation: {e}")
 
-        # 10. Quality Assessment
+        # 10. Tidal Input Data Plots (TPXO data)
+        logger.info("Creating tidal input data plots...")
+        try:
+            # Plot tidal elevation time series from input TPXO data
+            fig, ax = plotter.plot_tidal_inputs_at_points(plot_type="elevation", time_hours=24, figsize=(14, 8))
+            if save_plots and plot_dir:
+                fig.savefig(plot_dir / "10_tidal_input_elevation.png", dpi=150, bbox_inches='tight')
+                logger.info("Saved tidal input elevation plot")
+            else:
+                plt.show()
+            plt.close(fig)
+        except Exception as e:
+            logger.warning(f"Could not create tidal input elevation plot: {e}")
+
+        try:
+            # Plot tidal velocity magnitude time series from input TPXO data
+            fig, ax = plotter.plot_tidal_inputs_at_points(plot_type="velocity_magnitude", time_hours=24, figsize=(14, 8))
+            if save_plots and plot_dir:
+                fig.savefig(plot_dir / "11_tidal_input_velocity.png", dpi=150, bbox_inches='tight')
+                logger.info("Saved tidal input velocity plot")
+            else:
+                plt.show()
+            plt.close(fig)
+        except Exception as e:
+            logger.warning(f"Could not create tidal input velocity plot: {e}")
+
+        try:
+            # Plot spatial amplitude/phase maps from TPXO for M2 constituent
+            fig, axes = plotter.plot_tidal_amplitude_phase_maps(constituent="M2", variable="elevation", figsize=(16, 8))
+            if save_plots and plot_dir:
+                fig.savefig(plot_dir / "12_tidal_amplitude_phase_M2.png", dpi=150, bbox_inches='tight')
+                logger.info("Saved tidal M2 amplitude/phase maps")
+            else:
+                plt.show()
+            plt.close(fig)
+        except Exception as e:
+            logger.warning(f"Could not create tidal amplitude/phase maps: {e}")
+
+        # 11. SCHISM Boundary Data Plots (actual data SCHISM uses)
+        if files['bctides']:
+            logger.info("Creating SCHISM boundary data plots...")
+            try:
+                # Plot actual SCHISM boundary elevation data from bctides.in
+                fig, ax = plotter.plot_schism_boundary_data(bctides_file=files['bctides'], plot_type="elevation", figsize=(14, 8))
+                if save_plots and plot_dir:
+                    fig.savefig(plot_dir / "13_schism_boundary_elevation.png", dpi=150, bbox_inches='tight')
+                    logger.info("Saved SCHISM boundary elevation plot")
+                else:
+                    plt.show()
+                plt.close(fig)
+            except Exception as e:
+                logger.warning(f"Could not create SCHISM boundary elevation plot: {e}")
+
+            try:
+                # Plot SCHISM boundary configuration summary
+                fig, ax = plotter.plot_schism_boundary_data(bctides_file=files['bctides'], plot_type="summary", figsize=(12, 8))
+                if save_plots and plot_dir:
+                    fig.savefig(plot_dir / "14_schism_boundary_summary.png", dpi=150, bbox_inches='tight')
+                    logger.info("Saved SCHISM boundary summary plot")
+                else:
+                    plt.show()
+                plt.close(fig)
+            except Exception as e:
+                logger.warning(f"Could not create SCHISM boundary summary plot: {e}")
+
+        # 12. Comprehensive Tidal Analysis Overview
+        logger.info("Creating comprehensive tidal analysis overview...")
+        try:
+            fig, axes = plotter.plot_tidal_analysis_overview(time_hours=24, figsize=(20, 16))
+            if save_plots and plot_dir:
+                fig.savefig(plot_dir / "15_tidal_analysis_overview.png", dpi=150, bbox_inches='tight')
+                logger.info("Saved comprehensive tidal analysis overview")
+            else:
+                plt.show()
+            plt.close(fig)
+        except Exception as e:
+            logger.warning(f"Could not create comprehensive tidal analysis overview: {e}")
+
+        # 13. Quality Assessment
         logger.info("Creating quality assessment...")
         try:
-            fig, ax = plotter.plot_quality_assessment(figsize=(10, 10))
+            fig = plotter.plot_quality_assessment(figsize=(10, 10))
             if save_plots and plot_dir:
-                fig.savefig(plot_dir / "10_quality_assessment.png", dpi=150, bbox_inches='tight')
+                fig.savefig(plot_dir / "16_quality_assessment.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved quality assessment")
             else:
                 plt.show()
@@ -394,7 +493,14 @@ def main():
             plot_dir = args.output_dir / "plots"
             if plot_dir.exists():
                 plot_count = len(list(plot_dir.glob("*.png")))
-                logger.info(f"Created {plot_count} plot files")
+                logger.info(f"Created {plot_count} plot files including:")
+                logger.info("  - Grid structure and bathymetry plots")
+                logger.info("  - Boundary condition visualizations")
+                logger.info("  - Atmospheric forcing plots (if available)")
+                logger.info("  - Tidal input data plots (TPXO elevation, velocity, amplitude/phase)")
+                logger.info("  - SCHISM boundary data plots (actual bctides.in data)")
+                logger.info("  - Comprehensive tidal analysis overview")
+                logger.info("  - Model validation and quality assessment")
 
         return 0
 

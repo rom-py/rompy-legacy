@@ -28,7 +28,7 @@ Example Usage:
     >>> plotter = SchismPlotter(config)
     >>> fig, ax = plotter.plot_overview()
     >>> fig.show()
-    
+
     >>> # Create time series animation
     >>> anim_config = AnimationConfig(frame_rate=15, show_time_label=True)
     >>> plotter = SchismPlotter(config, animation_config=anim_config)
@@ -59,10 +59,10 @@ logger = logging.getLogger(__name__)
 class SchismPlotter:
     """
     Unified interface for SCHISM model visualization.
-    
+
     This class provides a comprehensive plotting interface for all SCHISM input data types,
     including grids, boundary conditions, atmospheric forcing, and tidal data.
-    
+
     Parameters
     ----------
     config : Optional[Any]
@@ -70,7 +70,7 @@ class SchismPlotter:
         configuration data automatically.
     grid_file : Optional[Union[str, Path]]
         Path to grid file (hgrid.gr3). Required if config is not provided.
-    
+
     Attributes
     ----------
     config : Any
@@ -82,7 +82,7 @@ class SchismPlotter:
     animation_plotter : AnimationPlotter
         Animation-specific plotting functionality
     """
-    
+
     def __init__(
         self,
         config: Optional[Any] = None,
@@ -93,18 +93,18 @@ class SchismPlotter:
         self.config = config
         self.grid_file = Path(grid_file) if grid_file else None
         self.animation_config = animation_config
-        
+
         # Initialize sub-plotters
         self.grid_plotter = GridPlotter(config=config, grid_file=grid_file)
         self.data_plotter = DataPlotter(config=config, grid_file=grid_file)
         self.overview_plotter = OverviewPlotter(config=config, grid_file=grid_file)
         self.validation_plotter = ValidationPlotter(config=config, grid_file=grid_file)
         self.animation_plotter = AnimationPlotter(config=config, grid_file=grid_file, animation_config=animation_config)
-        
+
         # Validate initialization
         if not config and not grid_file:
             raise ValueError("Either config or grid_file must be provided")
-            
+
         if grid_file and not validate_file_exists(grid_file):
             raise FileNotFoundError(f"Grid file not found: {grid_file}")
 
@@ -119,7 +119,7 @@ class SchismPlotter:
     ) -> Tuple[Figure, np.ndarray]:
         """
         Create comprehensive overview plot of SCHISM model setup.
-        
+
         Parameters
         ----------
         figsize : Tuple[float, float], optional
@@ -134,14 +134,14 @@ class SchismPlotter:
             Whether to include tidal data visualization. Default is True.
         **kwargs : dict
             Additional keyword arguments passed to plotting functions.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
             The figure object.
         axes : numpy.ndarray
             Array of axes objects.
-            
+
         Examples
         --------
         >>> plotter = SchismPlotter(config)
@@ -149,10 +149,10 @@ class SchismPlotter:
         >>> fig.savefig('schism_overview.png', dpi=300, bbox_inches='tight')
         """
         # Create subplot layout
-        fig, axes = plt.subplots(2, 2, figsize=figsize, 
+        fig, axes = plt.subplots(2, 2, figsize=figsize,
                                 subplot_kw={'projection': setup_cartopy_axis()})
         axes = axes.flatten()
-        
+
         # Plot grid and bathymetry
         if include_bathymetry:
             self.grid_plotter.plot_bathymetry(ax=axes[0], **kwargs)
@@ -160,21 +160,21 @@ class SchismPlotter:
         else:
             self.grid_plotter.plot_grid(ax=axes[0], **kwargs)
             axes[0].set_title("Grid")
-            
+
         # Plot boundaries
         if include_boundaries:
             self.grid_plotter.plot_boundaries(ax=axes[1], **kwargs)
             axes[1].set_title("Boundary Conditions")
-            
+
         # Plot atmospheric forcing if available
         if include_atmospheric and self._has_atmospheric_data():
             self.data_plotter.plot_atmospheric_spatial(ax=axes[2], **kwargs)
             axes[2].set_title("Atmospheric Forcing")
         else:
-            axes[2].text(0.5, 0.5, "No Atmospheric Data", 
+            axes[2].text(0.5, 0.5, "No Atmospheric Data",
                         ha='center', va='center', transform=axes[2].transAxes)
             axes[2].set_title("Atmospheric Forcing")
-            
+
         # Plot tidal data if available
         if include_tidal and self._has_tidal_data():
             self.data_plotter.plot_tidal_boundaries(ax=axes[3], **kwargs)
@@ -183,7 +183,7 @@ class SchismPlotter:
             axes[3].text(0.5, 0.5, "No Tidal Data",
                         ha='center', va='center', transform=axes[3].transAxes)
             axes[3].set_title("Tidal Data")
-            
+
         plt.tight_layout()
         return fig, axes
 
@@ -198,14 +198,14 @@ class SchismPlotter:
     ) -> Tuple[Figure, Dict[str, Axes]]:
         """
         Create comprehensive multi-panel overview plot.
-        
+
         This creates a detailed overview with the following panels:
         - Grid and bathymetry visualization
         - Boundary conditions and forcing locations
         - Data quality assessment plots
         - Model setup validation summary
         - Time series overview of forcing data
-        
+
         Parameters
         ----------
         figsize : Tuple[float, float], optional
@@ -220,14 +220,14 @@ class SchismPlotter:
             Path to save the plot. If None, plot is not saved.
         **kwargs : dict
             Additional keyword arguments passed to plotting functions.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
             The figure object.
         axes : Dict[str, matplotlib.axes.Axes]
             Dictionary of axes objects keyed by panel name.
-            
+
         Examples
         --------
         >>> plotter = SchismPlotter(config)
@@ -251,13 +251,13 @@ class SchismPlotter:
     ) -> Tuple[Figure, Dict[str, Axes]]:
         """
         Create grid-focused analysis overview.
-        
+
         This creates a detailed grid analysis with:
         - Grid structure and bathymetry
         - Element quality metrics
         - Boundary condition locations
         - Grid statistics and histograms
-        
+
         Parameters
         ----------
         figsize : Tuple[float, float], optional
@@ -266,7 +266,7 @@ class SchismPlotter:
             Path to save the plot. If None, plot is not saved.
         **kwargs : dict
             Additional keyword arguments.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -288,13 +288,13 @@ class SchismPlotter:
     ) -> Tuple[Figure, Dict[str, Axes]]:
         """
         Create data-focused analysis overview.
-        
+
         This creates a comprehensive data analysis with:
         - Atmospheric forcing overview
         - Boundary data time series
         - Data quality metrics
         - Temporal coverage analysis
-        
+
         Parameters
         ----------
         figsize : Tuple[float, float], optional
@@ -303,7 +303,7 @@ class SchismPlotter:
             Path to save the plot. If None, plot is not saved.
         **kwargs : dict
             Additional keyword arguments.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -325,13 +325,13 @@ class SchismPlotter:
     ) -> Tuple[Figure, Dict[str, Axes]]:
         """
         Create comprehensive validation summary plot.
-        
+
         This creates a detailed validation report with:
         - Overall validation status overview
         - Validation results by category
         - Detailed validation results table
         - Validation process timeline
-        
+
         Parameters
         ----------
         figsize : Tuple[float, float], optional
@@ -340,7 +340,7 @@ class SchismPlotter:
             Path to save the plot. If None, plot is not saved.
         **kwargs : dict
             Additional keyword arguments.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -359,13 +359,10 @@ class SchismPlotter:
         figsize: Tuple[float, float] = (12, 8),
         save_path: Optional[Union[str, Path]] = None,
         **kwargs
-    ) -> Tuple[Figure, Axes]:
+    ) -> Figure:
         """
-        Create model quality assessment radar chart.
-        
-        This creates a radar chart showing quality scores across different
-        categories of model setup validation.
-        
+        Plot quality assessment of model setup.
+
         Parameters
         ----------
         figsize : Tuple[float, float], optional
@@ -374,13 +371,11 @@ class SchismPlotter:
             Path to save the plot. If None, plot is not saved.
         **kwargs : dict
             Additional keyword arguments.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
             The figure object.
-        ax : matplotlib.axes.Axes
-            The axes object.
         """
         return self.validation_plotter.plot_quality_assessment(
             figsize=figsize,
@@ -391,15 +386,15 @@ class SchismPlotter:
     def run_model_validation(self) -> List[ValidationResult]:
         """
         Run comprehensive model validation checks.
-        
+
         This runs all available validation checks on the model setup
         and returns detailed results.
-        
+
         Returns
         -------
         List[ValidationResult]
             List of validation results with status and details.
-            
+
         Examples
         --------
         >>> plotter = SchismPlotter(config)
@@ -412,12 +407,12 @@ class SchismPlotter:
     def plot_grid(self, **kwargs) -> Tuple[Figure, Axes]:
         """
         Plot SCHISM grid.
-        
+
         Parameters
         ----------
         **kwargs : dict
             Additional keyword arguments passed to GridPlotter.plot_grid.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -430,12 +425,12 @@ class SchismPlotter:
     def plot_bathymetry(self, **kwargs) -> Tuple[Figure, Axes]:
         """
         Plot SCHISM bathymetry.
-        
+
         Parameters
         ----------
         **kwargs : dict
             Additional keyword arguments passed to GridPlotter.plot_bathymetry.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -448,12 +443,12 @@ class SchismPlotter:
     def plot_boundaries(self, **kwargs) -> Tuple[Figure, Axes]:
         """
         Plot SCHISM boundaries.
-        
+
         Parameters
         ----------
         **kwargs : dict
             Additional keyword arguments passed to GridPlotter.plot_boundaries.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -471,7 +466,7 @@ class SchismPlotter:
     ) -> Tuple[Figure, Axes]:
         """
         Plot boundary condition data from SCHISM input files.
-        
+
         Parameters
         ----------
         file_path : Union[str, Path]
@@ -480,7 +475,7 @@ class SchismPlotter:
             Variable to plot. If None, the first available variable is used.
         **kwargs : dict
             Additional keyword arguments passed to DataPlotter.plot_boundary_data.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -498,7 +493,7 @@ class SchismPlotter:
     ) -> Tuple[Figure, Axes]:
         """
         Plot atmospheric forcing data.
-        
+
         Parameters
         ----------
         variable : str, optional
@@ -507,7 +502,7 @@ class SchismPlotter:
             Specific parameter to plot. If None, a suitable parameter is chosen.
         **kwargs : dict
             Additional keyword arguments passed to DataPlotter.plot_atmospheric_spatial.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -520,12 +515,12 @@ class SchismPlotter:
     def plot_tidal_data(self, **kwargs) -> Tuple[Figure, Axes]:
         """
         Plot tidal data.
-        
+
         Parameters
         ----------
         **kwargs : dict
             Additional keyword arguments passed to DataPlotter.plot_tidal_boundaries.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -535,6 +530,510 @@ class SchismPlotter:
         """
         return self.data_plotter.plot_tidal_boundaries(**kwargs)
 
+    def plot_tidal_inputs_at_points(
+        self,
+        sample_points: Optional[List[Tuple[float, float]]] = None,
+        n_points: int = 4,
+        time_hours: float = 24.0,
+        plot_type: str = "elevation",
+        **kwargs
+    ) -> Tuple[Figure, Axes]:
+        """
+        Plot tidal inputs (elevation or velocity) time series at sample grid points.
+
+        Parameters
+        ----------
+        sample_points : Optional[List[Tuple[float, float]]]
+            List of (lon, lat) coordinates for sample points. If None, representative
+            points are automatically selected from boundary nodes.
+        n_points : int, optional
+            Number of sample points to use if sample_points is None. Default is 4.
+        time_hours : float, optional
+            Duration in hours for the time series. Default is 24.0 hours.
+        plot_type : str, optional
+            Type of plot: 'elevation', 'velocity_u', 'velocity_v', 'velocity_magnitude'.
+            Default is 'elevation'.
+        **kwargs : dict
+            Additional keyword arguments passed to DataPlotter.plot_tidal_inputs_at_points.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+        """
+        return self.data_plotter.plot_tidal_inputs_at_points(
+            sample_points=sample_points,
+            n_points=n_points,
+            time_hours=time_hours,
+            plot_type=plot_type,
+            **kwargs
+        )
+
+    def plot_tidal_amplitude_phase_maps(
+        self,
+        constituent: str = "M2",
+        variable: str = "elevation",
+        **kwargs
+    ) -> Tuple[Figure, Axes]:
+        """
+        Plot spatial distribution of tidal amplitude and phase for a constituent.
+
+        Parameters
+        ----------
+        constituent : str, optional
+            Tidal constituent to plot. Default is "M2".
+        variable : str, optional
+            Variable to plot: 'elevation', 'velocity_u', 'velocity_v'. Default is 'elevation'.
+        **kwargs : dict
+            Additional keyword arguments passed to DataPlotter.plot_tidal_amplitude_phase_maps.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes or tuple of matplotlib.axes.Axes
+            The axes object(s).
+        """
+        return self.data_plotter.plot_tidal_amplitude_phase_maps(
+            constituent=constituent,
+            variable=variable,
+            **kwargs
+        )
+
+    def plot_tidal_analysis_overview(
+        self,
+        figsize: Tuple[float, float] = (20, 12),
+        constituents: Optional[List[str]] = None,
+        time_hours: float = 24.0,
+        n_sample_points: int = 4,
+        save_path: Optional[Union[str, Path]] = None,
+        **kwargs
+    ) -> Tuple[Figure, Dict[str, Axes]]:
+        """
+        Create comprehensive tidal analysis overview with multiple panels.
+
+        This creates a detailed tidal analysis with:
+        - Tidal amplitude and phase spatial maps
+        - Time series at sample boundary points
+        - Constituent comparison plots
+        - Tidal boundary visualization
+
+        Parameters
+        ----------
+        figsize : Tuple[float, float], optional
+            Figure size in inches. Default is (20, 12).
+        constituents : Optional[List[str]], optional
+            List of constituents to analyze. If None, uses all available constituents.
+        time_hours : float, optional
+            Duration in hours for time series plots. Default is 24.0 hours.
+        n_sample_points : int, optional
+            Number of sample points for time series. Default is 4.
+        save_path : Optional[Union[str, Path]], optional
+            Path to save the plot. If None, plot is not saved.
+        **kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        axes : Dict[str, matplotlib.axes.Axes]
+            Dictionary of axes objects keyed by panel name.
+
+        Examples
+        --------
+        >>> plotter = SchismPlotter(config)
+        >>> fig, axes = plotter.plot_tidal_analysis_overview()
+        >>> fig.show()
+        """
+        try:
+            # Check if we have tidal data
+            if not self._has_tidal_data():
+                fig, ax = plt.subplots(figsize=figsize)
+                ax.text(0.5, 0.5, "No tidal data available for analysis",
+                       ha='center', va='center', transform=ax.transAxes)
+                ax.set_title("Tidal Analysis Overview - No Data")
+                return fig, {'error': ax}
+
+            # Get available constituents
+            if constituents is None:
+                if self.config and hasattr(self.config, 'data') and hasattr(self.config.data, 'boundary_conditions'):
+                    bc = self.config.data.boundary_conditions
+                    constituents = bc.constituents[:3]  # Limit to first 3 for display
+                else:
+                    constituents = ['M2', 'S2', 'N2']  # Default constituents
+
+            # Create subplot layout
+            fig = plt.figure(figsize=figsize)
+            gs = fig.add_gridspec(3, 4, height_ratios=[1, 1, 1], width_ratios=[1, 1, 1, 1])
+
+            axes = {}
+
+            # Top row: Amplitude map and boundary points map
+            primary_const = constituents[0] if constituents else "M2"
+
+            # Elevation amplitude and boundary points
+            ax1 = fig.add_subplot(gs[0, :2], projection=setup_cartopy_axis())
+            ax2 = fig.add_subplot(gs[0, 2:], projection=setup_cartopy_axis())
+
+            try:
+                # Plot amplitude map
+                self.data_plotter.plot_tidal_amplitude_phase_maps(
+                    constituent=primary_const, variable="elevation", ax=ax1, **kwargs
+                )
+                axes['elevation_amp'] = ax1
+
+                # Plot boundary points map showing sample locations
+                self._plot_boundary_points_map(ax2, n_sample_points, **kwargs)
+                axes['boundary_points'] = ax2
+
+            except Exception as e:
+                ax1.text(0.5, 0.5, f"Error plotting amplitude map:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax1.transAxes, fontsize=8)
+                ax2.text(0.5, 0.5, f"Error plotting boundary points:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax2.transAxes, fontsize=8)
+
+            # Middle row: Processed data time series at sample points (from bctides.in)
+            ax3 = fig.add_subplot(gs[1, :2])
+            ax4 = fig.add_subplot(gs[1, 2:])
+
+            try:
+                # Processed elevation time series (from bctides.in)
+                self.data_plotter.plot_tidal_inputs_at_points(
+                    n_points=n_sample_points, time_hours=time_hours,
+                    plot_type="elevation", ax=ax3, **kwargs
+                )
+                ax3.set_title("Processed Elevation (from bctides.in)", fontweight='bold')
+                axes['processed_elevation'] = ax3
+
+                # Processed velocity magnitude time series (from bctides.in)
+                self.data_plotter.plot_tidal_inputs_at_points(
+                    n_points=n_sample_points, time_hours=time_hours,
+                    plot_type="velocity_magnitude", ax=ax4, **kwargs
+                )
+                ax4.set_title("Processed Velocity (from bctides.in)", fontweight='bold')
+                axes['processed_velocity'] = ax4
+
+            except Exception as e:
+                ax3.text(0.5, 0.5, f"Error plotting processed elevation:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax3.transAxes, fontsize=8)
+                ax4.text(0.5, 0.5, f"Error plotting processed velocity:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax4.transAxes, fontsize=8)
+
+            # Bottom row: Input data time series for comparison (from original netCDF files)
+            ax5 = fig.add_subplot(gs[2, :2])
+            ax6 = fig.add_subplot(gs[2, 2:])
+
+            try:
+                # Input elevation time series (from original TPXO/netCDF files)
+                self._plot_input_data_comparison(
+                    ax=ax5, n_points=n_sample_points, time_hours=time_hours,
+                    plot_type="elevation", **kwargs
+                )
+                ax5.set_title("Input Elevation (from TPXO netCDF)", fontweight='bold')
+                axes['input_elevation'] = ax5
+
+                # Input velocity time series (from original TPXO/netCDF files)
+                self._plot_input_data_comparison(
+                    ax=ax6, n_points=n_sample_points, time_hours=time_hours,
+                    plot_type="velocity_magnitude", **kwargs
+                )
+                ax6.set_title("Input Velocity (from TPXO netCDF)", fontweight='bold')
+                axes['input_velocity'] = ax6
+
+
+
+            except Exception as e:
+                ax5.text(0.5, 0.5, f"Error plotting input elevation:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax5.transAxes, fontsize=8)
+                ax6.text(0.5, 0.5, f"Error plotting input velocity:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax6.transAxes, fontsize=8)
+
+            plt.tight_layout()
+            fig.suptitle('SCHISM Tidal Analysis: Input vs Processed Data Comparison', fontsize=16, fontweight='bold', y=0.98)
+
+            if save_path:
+                fig.savefig(save_path, dpi=300, bbox_inches='tight')
+                logger.info(f"Tidal analysis overview saved to {save_path}")
+
+            return fig, axes
+
+        except Exception as e:
+            logger.error(f"Error creating tidal analysis overview: {e}")
+            fig, ax = plt.subplots(figsize=figsize)
+            ax.text(0.5, 0.5, f"Error creating tidal analysis overview:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
+            ax.set_title("Tidal Analysis Overview - Error")
+            return fig, {'error': ax}
+
+    def _plot_input_data_comparison(
+        self,
+        ax,
+        n_points: int = 4,
+        time_hours: float = 24.0,
+        plot_type: str = "elevation",
+        **kwargs
+    ):
+        """
+        Plot input data time series from original netCDF files for comparison.
+
+        This method reads data directly from the original TPXO netCDF files
+        to compare with the processed boundary data.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes
+            Axes to plot on
+        n_points : int
+            Number of sample points to plot
+        time_hours : float
+            Duration in hours for time series
+        plot_type : str
+            Type of plot: 'elevation' or 'velocity_magnitude'
+        **kwargs : dict
+            Additional plotting parameters
+        """
+        try:
+            # Check if we have tidal boundary conditions configuration
+            if not (self.config and hasattr(self.config, 'data') and
+                    hasattr(self.config.data, 'boundary_conditions')):
+                ax.text(0.5, 0.5, "No boundary conditions configuration available",
+                       ha='center', va='center', transform=ax.transAxes)
+                return
+
+            bc = self.config.data.boundary_conditions
+            if not (hasattr(bc, 'tidal_data') and bc.tidal_data):
+                ax.text(0.5, 0.5, "No tidal data files specified in configuration",
+                       ha='center', va='center', transform=ax.transAxes)
+                return
+
+            # Get same sample points as processed data for fair comparison
+            sample_points = self.data_plotter._get_representative_boundary_points(n_points)
+            if not sample_points:
+                ax.text(0.5, 0.5, "No boundary points available for sampling",
+                       ha='center', va='center', transform=ax.transAxes)
+                return
+
+            # Get data file path
+            if plot_type == "elevation":
+                data_file = bc.tidal_data.elevations
+                ylabel = "Elevation (m)"
+            elif plot_type == "velocity_magnitude":
+                data_file = bc.tidal_data.velocities
+                ylabel = "Velocity Magnitude (m/s)"
+            else:
+                ax.text(0.5, 0.5, f"Unsupported plot type: {plot_type}",
+                       ha='center', va='center', transform=ax.transAxes)
+                return
+
+            if not Path(data_file).exists():
+                ax.text(0.5, 0.5, f"Input data file not found:\n{Path(data_file).name}",
+                       ha='center', va='center', transform=ax.transAxes)
+                return
+
+            # Use the same time series computation methods as the processed data plotter
+            import numpy as np
+            dt = 0.5  # 30-minute intervals to match processed data
+            times = np.arange(0, time_hours, dt)
+            constituents = bc.constituents if bc.constituents else ['M2', 'S2', 'N2']
+
+            # Compute time series using existing methods
+            if plot_type == "elevation":
+                time_series_data = self.data_plotter._compute_tidal_elevation_timeseries(
+                    data_file, sample_points, constituents, times
+                )
+            else:  # velocity_magnitude
+                time_series_data = self.data_plotter._compute_tidal_velocity_timeseries(
+                    data_file, sample_points, constituents, times, plot_type
+                )
+
+            # Plot time series for each point
+            from matplotlib import cm
+            colors = cm.get_cmap('tab10')(np.linspace(0, 1, len(sample_points)))
+
+            for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
+                if i < len(time_series_data):
+                    ax.plot(times, time_series_data[i], color=color, linewidth=2,
+                           label=f"Point {i+1} ({lon:.2f}°, {lat:.2f}°)", alpha=0.8)
+
+            # Format plot
+            ax.set_xlabel("Time (hours)")
+            ax.set_ylabel(ylabel)
+            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=9)
+            ax.grid(True, alpha=0.3)
+
+            # Add data source information
+            source_text = f"Source: {Path(data_file).name}\nConstituents: {', '.join(constituents)}"
+            ax.text(0.02, 0.98, source_text, transform=ax.transAxes,
+                   verticalalignment='top', fontsize=9,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightyellow", alpha=0.8))
+
+        except Exception as e:
+            logger.error(f"Error plotting input data comparison: {e}")
+            ax.text(0.5, 0.5, f"Error plotting input data:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes, fontsize=8,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
+
+    def _plot_boundary_points_map(self, ax, n_points: int = 4, **kwargs):
+        """
+        Plot SCHISM grid and boundary points map showing sample locations used for time series.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes
+            Axes to plot on (should have cartopy projection)
+        n_points : int
+            Number of sample points to show
+        **kwargs : dict
+            Additional plotting parameters
+        """
+        try:
+            # Get sample points from data plotter
+            sample_points = self.data_plotter._get_representative_boundary_points(n_points)
+
+            if not sample_points:
+                ax.text(0.5, 0.5, "No boundary points available",
+                       ha='center', va='center', transform=ax.transAxes)
+                ax.set_title("SCHISM Grid - No Data")
+                return
+
+            # Import cartopy for coordinate transforms
+            try:
+                import cartopy.crs as ccrs
+                transform = ccrs.PlateCarree()
+            except ImportError:
+                transform = None
+
+            # Plot SCHISM grid structure if available
+            try:
+                grid = self.grid_plotter.grid
+                if grid is not None:
+                    # Add grid overlay (mesh)
+                    from .utils import add_grid_overlay
+                    add_grid_overlay(ax, grid, alpha=0.2, color='lightgray', linewidth=0.3)
+                    logger.info("Added SCHISM grid mesh overlay")
+
+                    # Add boundary overlay (colored boundaries)
+                    from .utils import add_boundary_overlay
+                    boundary_colors = {"ocean": "red", "land": "darkgreen", "tidal": "blue"}
+                    add_boundary_overlay(ax, grid, boundary_colors=boundary_colors, linewidth=2.5)
+                    logger.info("Added SCHISM boundary overlay")
+
+            except Exception as e:
+                logger.warning(f"Could not add SCHISM grid/boundary overlays: {e}")
+
+            # Plot sample points with enhanced styling
+            lons = [pt[0] for pt in sample_points]
+            lats = [pt[1] for pt in sample_points]
+
+            # Create scatter plot with larger, more visible points
+            ax.scatter(lons, lats, c=np.arange(len(sample_points)),
+                      cmap='Set1', s=200, edgecolors='black', linewidth=3,
+                      marker='o', alpha=0.9, zorder=20,
+                      transform=transform)
+
+            # Add enhanced point labels with better visibility
+            for i, (lon, lat) in enumerate(sample_points):
+                ax.annotate(f'P{i+1}', (lon, lat), xytext=(8, 8),
+                          textcoords='offset points', fontsize=11, fontweight='bold',
+                          bbox=dict(boxstyle="round,pad=0.3", facecolor="yellow",
+                                   alpha=0.9, edgecolor='black', linewidth=1),
+                          transform=transform, zorder=25)
+
+            # Set extent with better margins for grid context
+            if lons and lats:
+                lon_range = max(lons) - min(lons)
+                lat_range = max(lats) - min(lats)
+                # Use larger margins to show grid context
+                lon_margin = max(lon_range * 0.15, 0.5)
+                lat_margin = max(lat_range * 0.15, 0.5)
+                ax.set_xlim(min(lons) - lon_margin, max(lons) + lon_margin)
+                ax.set_ylim(min(lats) - lat_margin, max(lats) + lat_margin)
+
+            ax.set_title(f"SCHISM Grid & Boundary Points (n={len(sample_points)})", fontsize=12, fontweight='bold')
+            ax.set_xlabel('Longitude', fontsize=10)
+            ax.set_ylabel('Latitude', fontsize=10)
+
+            # Add enhanced legend with grid info
+            legend_text = '\n'.join([f'P{i+1}: ({lon:.3f}°, {lat:.3f}°)'
+                                   for i, (lon, lat) in enumerate(sample_points)])
+            # Add grid information if available
+            try:
+                grid = self.grid_plotter.grid
+                if grid is not None and hasattr(grid, 'pylibs_hgrid'):
+                    hgrid = grid.pylibs_hgrid
+                    if hgrid is not None:
+                        n_nodes = len(hgrid.x) if hasattr(hgrid, 'x') and hgrid.x is not None else 'Unknown'
+                        n_elements = len(hgrid.elnode) if hasattr(hgrid, 'elnode') and hgrid.elnode is not None else 'Unknown'
+                        legend_text += f'\n\nGrid Info:\nNodes: {n_nodes}\nElements: {n_elements}'
+            except Exception as e:
+                logger.debug(f"Could not get grid info for legend: {e}")
+
+            ax.text(0.02, 0.98, legend_text, transform=ax.transAxes,
+                   verticalalignment='top', fontsize=8, fontfamily='monospace',
+                   bbox=dict(boxstyle="round,pad=0.4", facecolor="lightblue",
+                            alpha=0.9, edgecolor='navy', linewidth=1))
+
+            # Add simple legend for boundary colors
+            try:
+                from matplotlib.lines import Line2D
+                legend_elements = [
+                    Line2D([0], [0], color='red', lw=3, label='Ocean Boundary'),
+                    Line2D([0], [0], color='darkgreen', lw=3, label='Land Boundary'),
+                    Line2D([0], [0], color='lightgray', lw=1, label='Grid Mesh')
+                ]
+                ax.legend(handles=legend_elements, loc='lower right', fontsize=8,
+                         frameon=True, fancybox=True, shadow=True)
+            except Exception as e:
+                logger.debug(f"Could not add boundary legend: {e}")
+
+        except Exception as e:
+            logger.error(f"Error plotting SCHISM grid and boundary points: {e}")
+            ax.text(0.5, 0.5, f"Error plotting SCHISM grid:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes, fontsize=8)
+            ax.set_title("SCHISM Grid - Error")
+
+    def plot_schism_boundary_data(
+        self,
+        bctides_file: Union[str, Path],
+        plot_type: str = "elevation",
+        time_hours: float = 24.0,
+        **kwargs
+    ) -> Tuple[Figure, Axes]:
+        """
+        Plot actual SCHISM boundary data from bctides.in file.
+
+        This plots the processed boundary data that SCHISM will actually use,
+        rather than the input TPXO data.
+
+        Parameters
+        ----------
+        bctides_file : Union[str, Path]
+            Path to bctides.in file
+        plot_type : str, optional
+            Type of plot: 'elevation', 'velocity', 'summary'. Default is 'elevation'.
+        time_hours : float, optional
+            Duration in hours for time series. Default is 24.0 hours.
+        **kwargs : dict
+            Additional keyword arguments passed to DataPlotter.plot_schism_boundary_data.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+        """
+        return self.data_plotter.plot_schism_boundary_data(
+            bctides_file=bctides_file,
+            plot_type=plot_type,
+            time_hours=time_hours,
+            **kwargs
+        )
+
     def plot_gr3_file(
         self,
         file_path: Union[str, Path],
@@ -542,14 +1041,14 @@ class SchismPlotter:
     ) -> Tuple[Figure, Axes]:
         """
         Plot .gr3 property files with appropriate colormaps.
-        
+
         Parameters
         ----------
         file_path : Union[str, Path]
             Path to .gr3 file.
         **kwargs : dict
             Additional keyword arguments passed to DataPlotter.plot_gr3_file.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -566,14 +1065,14 @@ class SchismPlotter:
     ) -> Tuple[Figure, Axes]:
         """
         Plot bctides.in configuration file.
-        
+
         Parameters
         ----------
         file_path : Union[str, Path]
             Path to bctides.in file.
         **kwargs : dict
             Additional keyword arguments passed to DataPlotter.plot_bctides_file.
-            
+
         Returns
         -------
         fig : matplotlib.figure.Figure
@@ -587,17 +1086,21 @@ class SchismPlotter:
         """Check if atmospheric data is available in configuration."""
         if not self.config:
             return False
-        return (hasattr(self.config, 'data') and 
-                hasattr(self.config.data, 'sflux') and 
+        return (hasattr(self.config, 'data') and
+                hasattr(self.config.data, 'sflux') and
                 self.config.data.sflux is not None)
 
     def _has_tidal_data(self) -> bool:
         """Check if tidal data is available in configuration."""
         if not self.config:
             return False
-        return (hasattr(self.config, 'data') and 
-                hasattr(self.config.data, 'tides') and 
-                self.config.data.tides is not None)
+        return (hasattr(self.config, 'data') and
+                hasattr(self.config.data, 'boundary_conditions') and
+                self.config.data.boundary_conditions is not None and
+                hasattr(self.config.data.boundary_conditions, 'setup_type') and
+                self.config.data.boundary_conditions.setup_type in ['tidal', 'hybrid'] and
+                hasattr(self.config.data.boundary_conditions, 'constituents') and
+                self.config.data.boundary_conditions.constituents)
 
     # Animation methods
     def animate_boundary_data(
@@ -610,7 +1113,7 @@ class SchismPlotter:
     ):
         """
         Create animation of boundary data time evolution.
-        
+
         Parameters
         ----------
         data_file : Union[str, Path]
@@ -623,7 +1126,7 @@ class SchismPlotter:
             Level index for 3D data. Default is 0.
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         animation.FuncAnimation
@@ -643,7 +1146,7 @@ class SchismPlotter:
     ):
         """
         Create animation of atmospheric forcing data progression.
-        
+
         Parameters
         ----------
         data_file : Union[str, Path]
@@ -656,7 +1159,7 @@ class SchismPlotter:
             Path to save animation (MP4 or GIF)
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         animation.FuncAnimation
@@ -676,7 +1179,7 @@ class SchismPlotter:
     ):
         """
         Create animation of grid-based data with spatial-temporal visualization.
-        
+
         Parameters
         ----------
         data_file : Union[str, Path]
@@ -689,7 +1192,7 @@ class SchismPlotter:
             Whether to show computational grid. Default is True.
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         animation.FuncAnimation
@@ -709,7 +1212,7 @@ class SchismPlotter:
     ):
         """
         Create multi-panel animation with multiple variables.
-        
+
         Parameters
         ----------
         data_files : Dict[str, Union[str, Path]]
@@ -722,7 +1225,7 @@ class SchismPlotter:
             Panel layout: 'grid', 'vertical', 'horizontal'. Default is 'grid'.
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         animation.FuncAnimation
@@ -753,7 +1256,7 @@ def plot_schism_overview(
 ) -> Tuple[Figure, np.ndarray]:
     """
     Create comprehensive overview plot of SCHISM model setup.
-    
+
     Parameters
     ----------
     config : Optional[Any]
@@ -762,7 +1265,7 @@ def plot_schism_overview(
         Path to grid file if config is not provided.
     **kwargs : dict
         Additional keyword arguments passed to SchismPlotter.plot_overview.
-        
+
     Returns
     -------
     fig : matplotlib.figure.Figure
@@ -781,7 +1284,7 @@ def plot_grid(
 ) -> Tuple[Figure, Axes]:
     """
     Plot SCHISM grid.
-    
+
     Parameters
     ----------
     config : Optional[Any]
@@ -790,7 +1293,7 @@ def plot_grid(
         Path to grid file if config is not provided.
     **kwargs : dict
         Additional keyword arguments passed to GridPlotter.plot_grid.
-        
+
     Returns
     -------
     fig : matplotlib.figure.Figure
@@ -811,7 +1314,7 @@ def plot_boundary_data(
 ) -> Tuple[Figure, Axes]:
     """
     Plot boundary condition data from SCHISM input files.
-    
+
     Parameters
     ----------
     file_path : Union[str, Path]
@@ -824,7 +1327,7 @@ def plot_boundary_data(
         Variable to plot.
     **kwargs : dict
         Additional keyword arguments.
-        
+
     Returns
     -------
     fig : matplotlib.figure.Figure
@@ -846,6 +1349,6 @@ __all__ = [
     'AnimationPlotter',
     'AnimationConfig',
     'plot_schism_overview',
-    'plot_grid', 
+    'plot_grid',
     'plot_boundary_data',
 ]
