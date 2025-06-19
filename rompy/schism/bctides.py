@@ -995,21 +995,15 @@ class Bctides:
                     last_bnd_idx = self.gd.nob - 1
                     nodes = self.gd.iobn[last_bnd_idx]
                     num_nodes = self.gd.nobn[last_bnd_idx]
-                    logger.warning(
+                    raise ValueError(
                         f"Boundary {ibnd} exceeds grid boundaries, reusing boundary {last_bnd_idx}"
                     )
                 else:
                     # Grid has no boundaries, but user has defined flags
                     # This is an inconsistent state - create a minimal dummy boundary
-                    logger.warning(
+                    raise ValueError(
                         f"Grid has no open boundaries but user defined boundary {ibnd}, creating dummy boundary"
                     )
-                    # Create a simple 2-node boundary using first two grid nodes
-                    if self.gd.np > 1:
-                        nodes = np.array([0, 1])
-                    else:
-                        nodes = np.array([0])
-                    num_nodes = len(nodes)
 
                 # Write boundary flags (ensure we have enough flags defined)
                 bnd_flags = (
