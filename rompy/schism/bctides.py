@@ -199,6 +199,9 @@ class Bctides:
             "MM": [0.022191, 0.0000002639, 0],  # Long period
             "SSA": [0.019669, 0.0000000639, 0],  # Long period
         }
+        # Correct the frequency out by factor of 10
+        for key in self.default_factors:
+            self.default_factors[key][1] *= 10.0
 
     @property
     def start_date(self):
