@@ -1,0 +1,77 @@
+output_dir: schism_tidal_extended
+period:
+  start: 20230101T00
+  end: 20230101T12
+  interval: 1800
+run_id: extended_tidal_example
+delete_existing: true
+config:
+  model_type: schism
+  grid:
+    grid_type: schism
+    hgrid:
+      id: hgrid
+      model_type: data_blob
+      source: tests/schism/test_data/hgrid.gr3
+    drag: 1
+  data:
+    data_type: schism
+    atmos:
+      air_1:
+        data_type: sflux_air
+        source:
+          model_type: file
+          uri: tests/schism/test_data/era5.nc
+        uwind_name: u10
+        vwind_name: v10
+        prmsl_name: msl
+        filter:
+          sort:
+            coords:
+              - latitude
+        buffer: 5
+    boundary_conditions:
+      data_type: boundary_conditions
+      constituents:
+        - M2
+        - S2
+        - N2
+      tidal_database: tpxo
+      setup_type: tidal
+      ntip: 0
+      cutoff_depth: 50.0
+      tidal_data:
+        elevations: tests/schism/test_data/tpxo9-neaus/h_m2s2n2.nc
+        velocities: tests/schism/test_data/tpxo9-neaus/u_m2s2n2.nc
+      boundaries:
+        0:
+          elev_type: 3
+          vel_type: 3
+          temp_type: 0
+          salt_type: 0
+    wave:
+      buffer: 0.0
+      coords:
+        t: time
+        x: lon
+        y: lat
+        z: depth
+      id: wavedata
+      source:
+        catalog_uri: tests/data/catalog.yaml
+        dataset_id: ausspec
+        model_type: intake
+  nml:
+    param:
+      core:
+        rnday: 0.5
+        dt: 120.0
+        ibc: 0
+        ibtp: 1
+        nspool: 2
+        ihfskip: 864
+      opt:
+        ihot: 0
+    wwminput:
+      proc:
+        deltc: 120
