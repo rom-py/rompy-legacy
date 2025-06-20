@@ -1,5 +1,7 @@
 FROM ubuntu:20.04
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 WORKDIR /tmp/schism
 
 RUN apt-get update -y && apt-get upgrade -y && \
