@@ -1,7 +1,7 @@
 output_dir: schism_tidal_basic
 period:
-  start: 20230101T00
-  end: 20230101T12
+  start: 20190101T00
+  end: 20190107T00
   interval: 3600
 run_id: basic_tidal_example
 delete_existing: true
@@ -16,20 +16,20 @@ config:
     drag: 1
   data:
     data_type: schism
-    atmos:
-      air_1:
-        data_type: sflux_air
-        source:
-          model_type: file
-          uri: tests/schism/test_data/era5.nc
-        uwind_name: u10
-        vwind_name: v10
-        prmsl_name: msl
-        filter:
-          sort:
-            coords:
-              - latitude
-        buffer: 5
+    # atmos:
+    #   air_1:
+    #     data_type: sflux_air
+    #     source:
+    #       model_type: file
+    #       uri: tests/schism/test_data/era5.nc
+    #     uwind_name: u10
+    #     vwind_name: v10
+    #     prmsl_name: msl
+    #     filter:
+    #       sort:
+    #         coords:
+    #           - latitude
+    #     buffer: 5
     boundary_conditions:
       data_type: boundary_conditions
       constituents:
@@ -49,18 +49,18 @@ config:
           vel_type: 3
           temp_type: 0
           salt_type: 0
-    wave:
-      buffer: 0.0
-      coords:
-        t: time
-        x: lon
-        y: lat
-        z: depth
-      id: wavedata
-      source:
-        catalog_uri: tests/data/catalog.yaml
-        dataset_id: ausspec
-        model_type: intake
+    # wave:
+    #   buffer: 0.0
+    #   coords:
+    #     t: time
+    #     x: lon
+    #     y: lat
+    #     z: depth
+    #   id: wavedata
+    #   source:
+    #     catalog_uri: tests/data/catalog.yaml
+    #     dataset_id: ausspec
+    #     model_type: intake
   nml:
     param:
       core:
@@ -71,9 +71,9 @@ config:
         iof_hydro__2: 1
         iof_hydro__14: 1
         iof_hydro__16: 1
-        iof_wwm__1: 1
-        iof_wwm__9: 1
-        iof_wwm__18: 1
+        # iof_wwm__1: 1
+        # iof_wwm__9: 1
+        # iof_wwm__18: 1
     wwminput:
       proc:
         deltc: 150
