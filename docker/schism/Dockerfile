@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -11,7 +11,7 @@ RUN apt-get update -y && apt-get upgrade -y && \
     libnetcdf-dev libnetcdff-dev make cmake python3 python3-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY compile.sh v5.*.tar.gz /usr/src/
+COPY compile.sh schism-5.*.tar.gz /usr/src/
 COPY include_modules_wwm /usr/src/include_modules
 COPY Make.defs.gfortran /usr/src/Make.defs.local
 RUN  ln -s /usr/bin/mpirun /usr/local/bin/mpiexec
