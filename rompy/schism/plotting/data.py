@@ -709,10 +709,10 @@ class DataPlotter(BasePlotter):
                        ha='center', va='center', transform=ax.transAxes)
                 return self.finalize_plot(fig, ax, title="Tidal Inputs - No Points")
 
-            # Create time array
+            # Create standardized time array
             dt = 0.5  # 30-minute intervals
-            n_times = int(time_hours / dt)
-            times = np.arange(0, time_hours, dt)
+            times = self._compute_standardized_time_axis(time_hours, dt)
+            n_times = len(times)
 
             # Get constituents
             constituents = bc.constituents
@@ -2679,3 +2679,1476 @@ class DataPlotter(BasePlotter):
                     return xr.open_dataset(source.uri)
 
         raise ValueError(f"No {variable} data available in configuration")
+
+    def plot_atmospheric_inputs_at_points(
+        self,
+        sample_points: Optional[List[Tuple[float, float]]] = None,
+        n_points: int = 4,
+        time_hours: float = 24.0,
+        ax: Optional[Axes] = None,
+        plot_type: str = "wind_speed",
+        variable: str = "air",
+        **kwargs
+    ) -> Tuple[Figure, Axes]:
+        """
+        Plot atmospheric inputs time series at sample grid points.
+
+        Parameters
+        ----------
+        sample_points : Optional[List[Tuple[float, float]]]
+            List of (lon, lat) coordinates for sample points. If None, representative
+            points are automatically selected from grid interior.
+        n_points : int, optional
+            Number of sample points to use if sample_points is None. Default is 4.
+        time_hours : float, optional
+            Duration in hours for the time series. Default is 24.0 hours.
+        ax : Optional[Axes]
+            Existing axes to plot on
+        plot_type : str, optional
+            Type of plot: 'wind_speed', 'wind_u', 'wind_v', 'pressure', 'temperature'.
+            Default is 'wind_speed'.
+        variable : str, optional
+            Atmospheric variable type: 'air', 'rad', 'prc'. Default is 'air'.
+        **kwargs : dict
+            Additional plotting parameters
+
+        Returns
+        -------
+        fig : Figure
+            Figure object
+        ax : Axes
+            Axes object
+        """
+        fig, ax = self.create_figure(ax=ax, use_cartopy=False, **kwargs)
+
+        try:
+            # Check if we have atmospheric data in config
+            if not (self.config and hasattr(self.config, 'data') and
+                    hasattr(self.config.data, 'atmos')):
+                ax.text(0.5, 0.5, "No atmospheric data found in configuration",
+                       ha='center', va='center', transform=ax.transAxes)
+                return self.finalize_plot(fig, ax, title="Atmospheric Inputs - No Data")
+
+            # Get atmospheric dataset
+            ds = self._get_atmospheric_dataset(variable)
+
+            # Get sample points
+            if sample_points is None:
+                sample_points = self._get_representative_atmospheric_points(n_points)
+
+            if not sample_points:
+                ax.text(0.5, 0.5, "No sample points available for atmospheric data",
+                       ha='center', va='center', transform=ax.transAxes)
+                return self.finalize_plot(fig, ax, title="Atmospheric Inputs - No Points")
+
+            # Compute time series data
+            time_series_data = self._compute_atmospheric_timeseries(
+                ds, sample_points, plot_type, time_hours
+            )
+
+            # Create standardized time array
+            dt = 0.5  # 30-minute intervals
+            times = self._compute_standardized_time_axis(time_hours, dt)
+
+            # Align data to standardized time axis if needed
+            if len(time_series_data) > 0 and len(time_series_data[0]) != len(times):
+                original_times = np.arange(0, len(time_series_data[0]) * dt, dt)
+                aligned_data = []
+                for data_series in time_series_data:
+                    aligned_series = self._align_data_to_time_axis(data_series, original_times, times)
+                    aligned_data.append(aligned_series)
+                time_series_data = aligned_data
+
+            # Plot time series for each point
+            colors = plt.cm.tab10(np.linspace(0, 1, len(sample_points)))
+
+            for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
+                if i < len(time_series_data):
+                    ax.plot(times, time_series_data[i], color=color, linewidth=2,
+                           label=f"Point {i+1} ({lon:.2f}°, {lat:.2f}°)")
+
+            # Format plot
+            ylabel = self._get_atmospheric_ylabel(plot_type)
+            ax.set_xlabel("Time (hours)")
+            ax.set_ylabel(ylabel)
+            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+            ax.grid(True, alpha=0.3)
+
+            # Add variable information
+            var_text = f"Variable: {variable.upper()}\nParameter: {plot_type}"
+            ax.text(0.02, 0.98, var_text, transform=ax.transAxes,
+                   verticalalignment='top', fontsize=10,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightblue", alpha=0.7))
+
+        except Exception as e:
+            logger.error(f"Error plotting atmospheric inputs: {e}")
+            ax.text(0.5, 0.5, f"Error plotting atmospheric inputs:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
+            ylabel = "Error"
+
+        title_suffix = plot_type.replace('_', ' ').title()
+        return self.finalize_plot(fig, ax, title=f"Atmospheric {title_suffix} at Sample Points")
+
+    def plot_processed_atmospheric_data(
+        self,
+        sample_points: Optional[List[Tuple[float, float]]] = None,
+        n_points: int = 4,
+        time_hours: float = 24.0,
+        ax: Optional[Axes] = None,
+        plot_type: str = "wind_speed",
+        variable: str = "air",
+        **kwargs
+    ) -> Tuple[Figure, Axes]:
+        """
+        Plot processed atmospheric data time series at sample grid points.
+        This reads the actual sflux files generated by SCHISM.
+
+        Parameters
+        ----------
+        sample_points : Optional[List[Tuple[float, float]]]
+            List of (lon, lat) coordinates for sample points.
+        n_points : int, optional
+            Number of sample points to use if sample_points is None. Default is 4.
+        time_hours : float, optional
+            Duration in hours for the time series. Default is 24.0 hours.
+        ax : Optional[Axes]
+            Existing axes to plot on
+        plot_type : str, optional
+            Type of plot: 'wind_speed', 'wind_u', 'wind_v', 'pressure', 'temperature'.
+        variable : str, optional
+            Atmospheric variable type: 'air', 'rad', 'prc'. Default is 'air'.
+        **kwargs : dict
+            Additional plotting parameters
+
+        Returns
+        -------
+        fig : Figure
+            Figure object
+        ax : Axes
+            Axes object
+        """
+        fig, ax = self.create_figure(ax=ax, use_cartopy=False, **kwargs)
+
+        try:
+            # Look for processed sflux files
+            sflux_files = self._find_sflux_files(variable)
+
+            if not sflux_files:
+                ax.text(0.5, 0.5, f"No processed sflux {variable} files found",
+                       ha='center', va='center', transform=ax.transAxes)
+                return self.finalize_plot(fig, ax, title="Processed Atmospheric - No Files")
+
+            # Get sample points
+            if sample_points is None:
+                sample_points = self._get_representative_atmospheric_points(n_points)
+
+            if not sample_points:
+                ax.text(0.5, 0.5, "No sample points available",
+                       ha='center', va='center', transform=ax.transAxes)
+                return self.finalize_plot(fig, ax, title="Processed Atmospheric - No Points")
+
+            # Load and process sflux data
+            time_series_data = self._compute_processed_atmospheric_timeseries(
+                sflux_files, sample_points, plot_type, time_hours
+            )
+
+            # Create standardized time array
+            dt = 0.5  # 30-minute intervals
+            times = self._compute_standardized_time_axis(time_hours, dt)
+
+            # Align data to standardized time axis if needed
+            if len(time_series_data) > 0 and len(time_series_data[0]) != len(times):
+                original_times = np.arange(0, len(time_series_data[0]) * dt, dt)
+                aligned_data = []
+                for data_series in time_series_data:
+                    aligned_series = self._align_data_to_time_axis(data_series, original_times, times)
+                    aligned_data.append(aligned_series)
+                time_series_data = aligned_data
+
+            # Plot time series for each point
+            colors = plt.cm.tab10(np.linspace(0, 1, len(sample_points)))
+
+            for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
+                if i < len(time_series_data):
+                    ax.plot(times, time_series_data[i], color=color, linewidth=2,
+                           label=f"Point {i+1} ({lon:.2f}°, {lat:.2f}°)", alpha=0.8)
+
+            # Format plot
+            ylabel = self._get_atmospheric_ylabel(plot_type)
+            ax.set_xlabel("Time (hours)")
+            ax.set_ylabel(ylabel)
+            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=9)
+            ax.grid(True, alpha=0.3)
+
+            # Add data source information
+            source_text = f"Source: Processed sflux files\nVariable: {variable.upper()}\nParameter: {plot_type}"
+            ax.text(0.02, 0.98, source_text, transform=ax.transAxes,
+                   verticalalignment='top', fontsize=9,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightyellow", alpha=0.8))
+
+        except Exception as e:
+            logger.error(f"Error plotting processed atmospheric data: {e}")
+            ax.text(0.5, 0.5, f"Error plotting processed data:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes, fontsize=8,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
+
+        title_suffix = plot_type.replace('_', ' ').title()
+        return self.finalize_plot(fig, ax, title=f"Processed Atmospheric {title_suffix}")
+
+    def _get_representative_atmospheric_points(self, n_points: int = 4) -> List[Tuple[float, float]]:
+        """
+        Get representative atmospheric points from the atmospheric data domain.
+        This ensures consistent point selection between input and processed data.
+
+        Parameters
+        ----------
+        n_points : int
+            Number of points to select
+
+        Returns
+        -------
+        List[Tuple[float, float]]
+            List of (lon, lat) coordinates
+        """
+        try:
+            # Get atmospheric data bounds instead of grid bounds for consistency
+            try:
+                ds = self._get_atmospheric_dataset('air')
+
+                # Handle different coordinate formats
+                if 'longitude' in ds.coords and 'latitude' in ds.coords:
+                    lons = ds.coords['longitude'].values
+                    lats = ds.coords['latitude'].values
+                elif 'lon' in ds.data_vars and 'lat' in ds.data_vars:
+                    lons = ds['lon'].values
+                    lats = ds['lat'].values
+                else:
+                    # Fallback to grid bounds
+                    return self._get_grid_sample_points(n_points)
+
+                # Get atmospheric domain bounds
+                x_min, x_max = np.min(lons), np.max(lons)
+                y_min, y_max = np.min(lats), np.max(lats)
+
+            except Exception as e:
+                logger.warning(f"Could not get atmospheric data bounds, using grid bounds: {e}")
+                return self._get_grid_sample_points(n_points)
+
+            # Create sample points across the atmospheric domain
+            sample_points = []
+
+            # Create a regular grid of sample points within atmospheric bounds
+            x_step = (x_max - x_min) / (n_points + 1)
+            y_step = (y_max - y_min) / (n_points + 1)
+
+            for i in range(1, n_points + 1):
+                x = x_min + i * x_step
+                y = y_min + i * y_step
+                sample_points.append((x, y))
+
+            logger.info(f"Selected atmospheric sample points within bounds: lon=[{x_min:.3f}, {x_max:.3f}], lat=[{y_min:.3f}, {y_max:.3f}]")
+            return sample_points[:n_points]
+
+        except Exception as e:
+            logger.error(f"Error getting representative atmospheric points: {e}")
+            return []
+
+    def _get_grid_sample_points(self, n_points: int = 4) -> List[Tuple[float, float]]:
+        """Fallback method to get sample points from grid bounds."""
+        try:
+            # Get grid bounds
+            if not self.grid:
+                return []
+
+            # Get grid extent
+            grid_obj = self.grid
+            if hasattr(grid_obj, 'pylibs_hgrid'):
+                x_coords = grid_obj.pylibs_hgrid.x
+                y_coords = grid_obj.pylibs_hgrid.y
+            else:
+                # Fallback to grid data
+                x_coords = grid_obj.hgrid.get_x()
+                y_coords = grid_obj.hgrid.get_y()
+
+            # Calculate domain bounds
+            x_min, x_max = np.min(x_coords), np.max(x_coords)
+            y_min, y_max = np.min(y_coords), np.max(y_coords)
+
+            # Create sample points across the domain
+            sample_points = []
+
+            # Create a regular grid of sample points
+            x_step = (x_max - x_min) / (n_points + 1)
+            y_step = (y_max - y_min) / (n_points + 1)
+
+            for i in range(1, n_points + 1):
+                x = x_min + i * x_step
+                y = y_min + i * y_step
+                sample_points.append((x, y))
+
+            return sample_points[:n_points]
+
+        except Exception as e:
+            logger.error(f"Error getting grid sample points: {e}")
+            return []
+
+    def _compute_atmospheric_timeseries(
+        self,
+        ds: xr.Dataset,
+        sample_points: List[Tuple[float, float]],
+        plot_type: str,
+        time_hours: float
+    ) -> List[np.ndarray]:
+        """
+        Compute atmospheric time series at sample points from input dataset.
+
+        Parameters
+        ----------
+        ds : xr.Dataset
+            Atmospheric dataset
+        sample_points : List[Tuple[float, float]]
+            Sample point coordinates
+        plot_type : str
+            Type of atmospheric variable to plot
+        time_hours : float
+            Duration in hours
+
+        Returns
+        -------
+        List[np.ndarray]
+            Time series data for each sample point
+        """
+        try:
+            # Handle different coordinate formats (original vs sflux)
+            coord_names = list(ds.coords.keys())
+            dim_names = list(ds.dims.keys())
+
+            # Check if this is sflux format (has ny_grid, nx_grid dimensions)
+            is_sflux_format = 'ny_grid' in dim_names and 'nx_grid' in dim_names
+
+            if is_sflux_format:
+                # Sflux format: coordinates stored as data variables 'lon', 'lat'
+                if 'lon' in ds.data_vars and 'lat' in ds.data_vars:
+                    lons = ds['lon'].values
+                    lats = ds['lat'].values
+                    lon_coord = 'nx_grid'  # Use dimensions for indexing
+                    lat_coord = 'ny_grid'
+                else:
+                    logger.error(f"Sflux format detected but no lon/lat data variables found")
+                    return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+            else:
+                # Original format: coordinates as coordinate arrays
+                # Find longitude coordinate
+                lon_coord = None
+                for name in ['longitude', 'lon', 'x']:
+                    if name in coord_names:
+                        lon_coord = name
+                        break
+
+                # Find latitude coordinate
+                lat_coord = None
+                for name in ['latitude', 'lat', 'y']:
+                    if name in coord_names:
+                        lat_coord = name
+                        break
+
+                if not lon_coord or not lat_coord:
+                    logger.error(f"Could not find lon/lat coordinates in {coord_names}")
+                    return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+
+                lons = ds.coords[lon_coord].values
+                lats = ds.coords[lat_coord].values
+
+            # Get time subset - ensure we handle datetime indices properly
+            if hasattr(ds.time, 'values'):
+                time_values = ds.time.values
+                if len(time_values) > 0:
+                    n_times = min(int(time_hours * 2), len(time_values))  # 30-min intervals
+                else:
+                    n_times = int(time_hours * 2)
+            else:
+                n_times = min(int(time_hours * 2), len(ds.time))
+
+            ds_subset = ds.isel(time=slice(0, n_times))
+
+            time_series_data = []
+
+            for lon, lat in sample_points:
+                try:
+                    # Convert coordinates to float64 to avoid datetime issues
+                    lons_float = np.asarray(lons, dtype=np.float64)
+                    lats_float = np.asarray(lats, dtype=np.float64)
+                    lon_float = float(lon)
+                    lat_float = float(lat)
+
+                    # Find nearest grid point - handle points outside domain gracefully
+                    if len(lons.shape) == 1:
+                        # 1D coordinate arrays
+                        lon_idx = np.abs(lons_float - lon_float).argmin()
+                        lat_idx = np.abs(lats_float - lat_float).argmin()
+                    else:
+                        # Handle 2D coordinate arrays (including sflux format)
+                        from scipy.spatial import cKDTree
+                        points = np.column_stack([lons_float.ravel(), lats_float.ravel()])
+                        tree = cKDTree(points)
+                        distance, idx = tree.query([lon_float, lat_float])
+
+                        # Check if point is too far from grid (> 2 degrees)
+                        if distance > 2.0:
+                            logger.warning(f"Point ({lon_float:.3f}, {lat_float:.3f}) is {distance:.2f} degrees from nearest atmospheric grid point")
+                            time_series_data.append(np.zeros(n_times))
+                            continue
+
+                        # Convert to 2D indices - be careful with dimensions
+                        if len(lons.shape) == 2:
+                            lat_idx, lon_idx = np.unravel_index(idx, lons.shape)
+                            # Ensure indices are within bounds
+                            lat_idx = min(max(lat_idx, 0), lons.shape[0] - 1)
+                            lon_idx = min(max(lon_idx, 0), lons.shape[1] - 1)
+                        else:
+                            # Handle 1D case - use proper bounds checking
+                            if len(lons) > 0:
+                                lon_idx = min(max(idx % len(lons), 0), len(lons) - 1)
+                                lat_idx = min(max(idx // len(lons), 0), len(lats) - 1) if len(lats) > 0 else 0
+                            else:
+                                lon_idx, lat_idx = 0, 0
+
+                    # Extract data based on plot type
+                    if plot_type == "wind_speed":
+                        # Calculate wind speed from u and v components
+                        u_var = self._find_variable(ds_subset, ['uwind', 'u10', 'u'])
+                        v_var = self._find_variable(ds_subset, ['vwind', 'v10', 'v'])
+
+                        if u_var and v_var:
+                            u_data = ds_subset[u_var].isel({lat_coord: lat_idx, lon_coord: lon_idx}).values
+                            v_data = ds_subset[v_var].isel({lat_coord: lat_idx, lon_coord: lon_idx}).values
+                            data = np.sqrt(u_data**2 + v_data**2)
+                        else:
+                            data = np.zeros(n_times)
+
+                    elif plot_type == "wind_u":
+                        u_var = self._find_variable(ds_subset, ['uwind', 'u10', 'u'])
+                        data = ds_subset[u_var].isel({lat_coord: lat_idx, lon_coord: lon_idx}).values if u_var else np.zeros(n_times)
+
+                    elif plot_type == "wind_v":
+                        v_var = self._find_variable(ds_subset, ['vwind', 'v10', 'v'])
+                        data = ds_subset[v_var].isel({lat_coord: lat_idx, lon_coord: lon_idx}).values if v_var else np.zeros(n_times)
+
+                    elif plot_type == "pressure":
+                        p_var = self._find_variable(ds_subset, ['prmsl', 'msl', 'pressure'])
+                        data = ds_subset[p_var].isel({lat_coord: lat_idx, lon_coord: lon_idx}).values if p_var else np.zeros(n_times)
+
+                    elif plot_type == "temperature":
+                        t_var = self._find_variable(ds_subset, ['air_temperature', 't2m', 'temperature'])
+                        data = ds_subset[t_var].isel({lat_coord: lat_idx, lon_coord: lon_idx}).values if t_var else np.zeros(n_times)
+
+                    else:
+                        # Default to first available variable
+                        var_name = list(ds_subset.data_vars)[0]
+                        data = ds_subset[var_name].isel({lat_coord: lat_idx, lon_coord: lon_idx}).values
+
+                    time_series_data.append(data)
+
+                except Exception as e:
+                    logger.warning(f"Error processing point ({lon}, {lat}): {e}")
+                    time_series_data.append(np.zeros(n_times))
+
+            return time_series_data
+
+        except Exception as e:
+            logger.error(f"Error computing atmospheric time series: {e}")
+            return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+
+    def _find_variable(self, ds: xr.Dataset, var_names: List[str]) -> Optional[str]:
+        """Find the first available variable from a list of possible names."""
+        for var_name in var_names:
+            if var_name in ds.data_vars:
+                return var_name
+        return None
+
+    def _find_sflux_files(self, variable: str) -> List[Path]:
+        """Find processed sflux files for a given variable type."""
+        try:
+            # Look for sflux files starting with actual model output locations
+            search_paths = [
+                Path.cwd() / "sflux",
+                Path.cwd(),
+                Path.cwd() / "outputs" / "sflux",
+                # Look in common demo output directories
+                Path.cwd() / "schism_demo_output" / "model_run" / "*" / "sflux",
+                Path.cwd() / "*" / "sflux"
+            ]
+
+            # If we have a config with output directory, look there
+            if self.config and hasattr(self.config, 'output_dir'):
+                config_output_dir = Path(self.config.output_dir)
+                search_paths.extend([
+                    config_output_dir / "sflux",
+                    config_output_dir / "*" / "sflux"
+                ])
+
+            sflux_files = []
+            found_paths = set()  # Track unique file paths to avoid duplicates
+
+            for search_path in search_paths:
+                try:
+                    # Handle glob patterns in path
+                    if "*" in str(search_path):
+                        for actual_path in Path(".").glob(str(search_path.relative_to(Path.cwd()))):
+                            if actual_path.exists() and actual_path.is_dir():
+                                # Look for different file patterns based on variable
+                                patterns = [
+                                    f"sflux_{variable}_*.nc",  # Standard sflux format
+                                    f"{variable}_*.nc",       # Alternative format (air_1.0001.nc)
+                                    f"{variable}*.nc"         # General format
+                                ]
+                                for pattern in patterns:
+                                    files = list(actual_path.glob(pattern))
+                                    for f in files:
+                                        if f not in found_paths:
+                                            sflux_files.append(f)
+                                            found_paths.add(f)
+                    else:
+                        if search_path.exists():
+                            # Look for different file patterns based on variable
+                            patterns = [
+                                f"sflux_{variable}_*.nc",  # Standard sflux format
+                                f"{variable}_*.nc",       # Alternative format (air_1.0001.nc)
+                                f"{variable}*.nc"         # General format
+                            ]
+                            for pattern in patterns:
+                                files = list(search_path.glob(pattern))
+                                for f in files:
+                                    if f not in found_paths:
+                                        sflux_files.append(f)
+                                        found_paths.add(f)
+                except Exception as e:
+                    logger.debug(f"Error searching path {search_path}: {e}")
+                    continue
+
+            # Return only the most recent/relevant files (first match per directory)
+            unique_files = []
+            seen_dirs = set()
+            for f in sorted(sflux_files, reverse=True):  # Most recent first
+                parent_dir = f.parent
+                if parent_dir not in seen_dirs:
+                    unique_files.append(f)
+                    seen_dirs.add(parent_dir)
+
+            return sorted(unique_files)
+
+        except Exception as e:
+            logger.error(f"Error finding sflux files: {e}")
+            return []
+
+    def _compute_processed_atmospheric_timeseries(
+        self,
+        sflux_files: List[Path],
+        sample_points: List[Tuple[float, float]],
+        plot_type: str,
+        time_hours: float
+    ) -> List[np.ndarray]:
+        """
+        Compute atmospheric time series from processed sflux files.
+        Ensures consistent sampling with input data by using the same coordinate system.
+
+        Parameters
+        ----------
+        sflux_files : List[Path]
+            List of sflux file paths
+        sample_points : List[Tuple[float, float]]
+            Sample point coordinates (should match input data points)
+        plot_type : str
+            Type of atmospheric variable to plot
+        time_hours : float
+            Duration in hours
+
+        Returns
+        -------
+        List[np.ndarray]
+            Time series data for each sample point
+        """
+        try:
+            import xarray as xr
+
+            if not sflux_files:
+                logger.warning("No sflux files provided for processed atmospheric data")
+                return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+
+            # Use the first (most recent) sflux file
+            file_path = sflux_files[0]
+            logger.info(f"Loading processed sflux data from: {file_path}")
+
+            try:
+                ds = xr.open_dataset(file_path)
+            except Exception as e:
+                logger.error(f"Could not load {file_path}: {e}")
+                return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+
+            # Get available time range (sflux files may have limited time coverage)
+            available_times = len(ds.time) if 'time' in ds.dims else 1
+            n_times = min(int(time_hours * 2), available_times)
+
+            if n_times < int(time_hours * 2):
+                logger.info(f"Sflux file has {available_times} time steps, requested {int(time_hours * 2)}")
+
+            ds_subset = ds.isel(time=slice(0, n_times)) if 'time' in ds.dims else ds
+
+            # Use the same atmospheric timeseries computation for consistency
+            logger.info(f"Computing processed atmospheric timeseries for {len(sample_points)} points over {n_times} time steps")
+            return self._compute_atmospheric_timeseries(ds_subset, sample_points, plot_type, time_hours)
+
+        except Exception as e:
+            logger.error(f"Error computing processed atmospheric time series: {e}")
+            return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+
+    def _get_atmospheric_ylabel(self, plot_type: str) -> str:
+        """Get appropriate y-axis label for atmospheric plot type."""
+        ylabel_map = {
+            "wind_speed": "Wind Speed (m/s)",
+            "wind_u": "U Wind Component (m/s)",
+            "wind_v": "V Wind Component (m/s)",
+            "pressure": "Pressure (Pa)",
+            "temperature": "Temperature (K)"
+        }
+        return ylabel_map.get(plot_type, plot_type.replace('_', ' ').title())
+
+    def plot_ocean_boundary_inputs_at_points(
+        self,
+        sample_points: Optional[List[Tuple[float, float]]] = None,
+        n_points: int = 4,
+        time_hours: float = 24.0,
+        ax: Optional[Axes] = None,
+        plot_type: str = "elevation",
+        boundary_type: str = "2d",
+        **kwargs
+    ) -> Tuple[Figure, Axes]:
+        """
+        Plot ocean boundary inputs time series at sample boundary points.
+
+        Parameters
+        ----------
+        sample_points : Optional[List[Tuple[float, float]]]
+            List of (lon, lat) coordinates for sample points. If None, representative
+            boundary points are automatically selected.
+        n_points : int, optional
+            Number of sample points to use if sample_points is None. Default is 4.
+        time_hours : float, optional
+            Duration in hours for the time series. Default is 24.0 hours.
+        ax : Optional[Axes]
+            Existing axes to plot on
+        plot_type : str, optional
+            Type of plot: 'elevation', 'velocity_u', 'velocity_v', 'velocity_magnitude',
+            'temperature', 'salinity'. Default is 'elevation'.
+        boundary_type : str, optional
+            Type of boundary: '2d' or '3d'. Default is '2d'.
+        **kwargs : dict
+            Additional plotting parameters
+
+        Returns
+        -------
+        fig : Figure
+            Figure object
+        ax : Axes
+            Axes object
+        """
+        fig, ax = self.create_figure(ax=ax, use_cartopy=False, **kwargs)
+
+        try:
+            # Check if we have ocean boundary data in config
+            if not (self.config and hasattr(self.config, 'data') and
+                    hasattr(self.config.data, 'boundary_conditions')):
+                ax.text(0.5, 0.5, "No ocean boundary data found in configuration",
+                       ha='center', va='center', transform=ax.transAxes)
+                return self.finalize_plot(fig, ax, title="Ocean Boundary Inputs - No Data")
+
+            bc = self.config.data.boundary_conditions
+
+            # Get data sources from boundary conditions
+            data_sources = self._get_ocean_boundary_sources(bc, plot_type, boundary_type)
+
+            if not data_sources:
+                ax.text(0.5, 0.5, f"No {plot_type} data sources found for {boundary_type} boundaries",
+                       ha='center', va='center', transform=ax.transAxes)
+                return self.finalize_plot(fig, ax, title="Ocean Boundary Inputs - No Sources")
+
+            # Get sample points
+            if sample_points is None:
+                sample_points = self._get_representative_boundary_points(n_points)
+
+            if not sample_points:
+                ax.text(0.5, 0.5, "No boundary points available for sampling",
+                       ha='center', va='center', transform=ax.transAxes)
+                return self.finalize_plot(fig, ax, title="Ocean Boundary Inputs - No Points")
+
+            # Compute time series data from input sources
+            time_series_data = self._compute_ocean_boundary_input_timeseries(
+                data_sources[0], sample_points, plot_type, time_hours
+            )
+
+            # Create standardized time array
+            dt = 0.5  # 30-minute intervals
+            times = self._compute_standardized_time_axis(time_hours, dt)
+
+            # Align data to standardized time axis if needed
+            if len(time_series_data) > 0 and len(time_series_data[0]) != len(times):
+                original_times = np.arange(0, len(time_series_data[0]) * dt, dt)
+                aligned_data = []
+                for data_series in time_series_data:
+                    aligned_series = self._align_data_to_time_axis(data_series, original_times, times)
+                    aligned_data.append(aligned_series)
+                time_series_data = aligned_data
+
+            # Plot time series for each point
+            colors = plt.cm.tab10(np.linspace(0, 1, len(sample_points)))
+
+            for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
+                if i < len(time_series_data):
+                    ax.plot(times, time_series_data[i], color=color, linewidth=2,
+                           label=f"Point {i+1} ({lon:.2f}°, {lat:.2f}°)")
+
+            # Format plot
+            ylabel = self._get_ocean_boundary_ylabel(plot_type)
+            ax.set_xlabel("Time (hours)")
+            ax.set_ylabel(ylabel)
+            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+            ax.grid(True, alpha=0.3)
+
+            # Add variable information
+            var_text = f"Type: {boundary_type.upper()}\nParameter: {plot_type}"
+            ax.text(0.02, 0.98, var_text, transform=ax.transAxes,
+                   verticalalignment='top', fontsize=10,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightblue", alpha=0.7))
+
+        except Exception as e:
+            logger.error(f"Error plotting ocean boundary inputs: {e}")
+            ax.text(0.5, 0.5, f"Error plotting ocean boundary inputs:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
+
+        title_suffix = f"{boundary_type.upper()} {plot_type.replace('_', ' ').title()}"
+        return self.finalize_plot(fig, ax, title=f"Ocean Boundary Input {title_suffix}")
+
+    def plot_processed_ocean_boundary_data(
+        self,
+        sample_points: Optional[List[Tuple[float, float]]] = None,
+        n_points: int = 4,
+        time_hours: float = 24.0,
+        ax: Optional[Axes] = None,
+        plot_type: str = "elevation",
+        boundary_type: str = "2d",
+        **kwargs
+    ) -> Tuple[Figure, Axes]:
+        """
+        Plot processed ocean boundary data time series at sample boundary points.
+        This reads the actual SCHISM boundary files (*.th.nc).
+
+        Parameters
+        ----------
+        sample_points : Optional[List[Tuple[float, float]]]
+            List of (lon, lat) coordinates for sample points.
+        n_points : int, optional
+            Number of sample points to use if sample_points is None. Default is 4.
+        time_hours : float, optional
+            Duration in hours for the time series. Default is 24.0 hours.
+        ax : Optional[Axes]
+            Existing axes to plot on
+        plot_type : str, optional
+            Type of plot: 'elevation', 'velocity_u', 'velocity_v', 'velocity_magnitude',
+            'temperature', 'salinity'.
+        boundary_type : str, optional
+            Type of boundary: '2d' or '3d'. Default is '2d'.
+        **kwargs : dict
+            Additional plotting parameters
+
+        Returns
+        -------
+        fig : Figure
+            Figure object
+        ax : Axes
+            Axes object
+        """
+        fig, ax = self.create_figure(ax=ax, use_cartopy=False, **kwargs)
+
+        try:
+            # Look for processed boundary files
+            boundary_files = self._find_boundary_files(plot_type, boundary_type)
+
+            if not boundary_files:
+                # For tidal-only setups, use bctides.in data instead
+                if (self.config and hasattr(self.config, 'data') and
+                    hasattr(self.config.data, 'boundary_conditions') and
+                    hasattr(self.config.data.boundary_conditions, 'setup_type') and
+                    self.config.data.boundary_conditions.setup_type == 'tidal'):
+
+                    # Look for bctides.in files
+                    bctides_files = self._find_bctides_files()
+                    if bctides_files:
+                        ax.text(0.5, 0.5, f"Tidal-only setup: Boundary conditions computed on-the-fly\nfrom bctides.in during model execution.\nNo separate processed files generated.",
+                               ha='center', va='center', transform=ax.transAxes,
+                               bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgreen", alpha=0.7))
+                        return self.finalize_plot(fig, ax, title="Processed Ocean Boundary - Tidal Setup")
+
+                ax.text(0.5, 0.5, f"No processed {plot_type} boundary files found",
+                       ha='center', va='center', transform=ax.transAxes)
+                return self.finalize_plot(fig, ax, title="Processed Ocean Boundary - No Files")
+
+            # Get sample points
+            if sample_points is None:
+                sample_points = self._get_representative_boundary_points(n_points)
+
+            if not sample_points:
+                ax.text(0.5, 0.5, "No boundary points available",
+                       ha='center', va='center', transform=ax.transAxes)
+                return self.finalize_plot(fig, ax, title="Processed Ocean Boundary - No Points")
+
+            # Load and process boundary data
+            time_series_data = self._compute_processed_boundary_timeseries(
+                boundary_files[0], sample_points, plot_type, time_hours
+            )
+
+            # Create standardized time array
+            dt = 0.5  # 30-minute intervals
+            times = self._compute_standardized_time_axis(time_hours, dt)
+
+            # Align data to standardized time axis if needed
+            if len(time_series_data) > 0 and len(time_series_data[0]) != len(times):
+                original_times = np.arange(0, len(time_series_data[0]) * dt, dt)
+                aligned_data = []
+                for data_series in time_series_data:
+                    aligned_series = self._align_data_to_time_axis(data_series, original_times, times)
+                    aligned_data.append(aligned_series)
+                time_series_data = aligned_data
+
+            # Plot time series for each point
+            colors = plt.cm.tab10(np.linspace(0, 1, len(sample_points)))
+
+            for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
+                if i < len(time_series_data):
+                    ax.plot(times, time_series_data[i], color=color, linewidth=2,
+                           label=f"Point {i+1} ({lon:.2f}°, {lat:.2f}°)", alpha=0.8)
+
+            # Format plot
+            ylabel = self._get_ocean_boundary_ylabel(plot_type)
+            ax.set_xlabel("Time (hours)")
+            ax.set_ylabel(ylabel)
+            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=9)
+            ax.grid(True, alpha=0.3)
+
+            # Add data source information
+            source_text = f"Source: Processed boundary files\nType: {boundary_type.upper()}\nParameter: {plot_type}"
+            ax.text(0.02, 0.98, source_text, transform=ax.transAxes,
+                   verticalalignment='top', fontsize=9,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightyellow", alpha=0.8))
+
+        except Exception as e:
+            logger.error(f"Error plotting processed ocean boundary data: {e}")
+            ax.text(0.5, 0.5, f"Error plotting processed data:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes, fontsize=8,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
+
+        title_suffix = f"{boundary_type.upper()} {plot_type.replace('_', ' ').title()}"
+        return self.finalize_plot(fig, ax, title=f"Processed Ocean Boundary {title_suffix}")
+
+    def _get_ocean_boundary_sources(self, bc, plot_type: str, boundary_type: str) -> List:
+        """Get ocean boundary data sources from boundary conditions configuration."""
+        try:
+            sources = []
+
+            # Check for tidal data sources (most common case)
+            if hasattr(bc, 'tidal_data') and bc.tidal_data:
+                if plot_type == "elevation" and hasattr(bc.tidal_data, 'elevations'):
+                    sources.append(bc.tidal_data.elevations)
+                elif plot_type in ["velocity_u", "velocity_v", "velocity_magnitude"] and hasattr(bc.tidal_data, 'velocities'):
+                    sources.append(bc.tidal_data.velocities)
+
+            # Check each boundary configuration (for non-tidal setups)
+            if hasattr(bc, 'boundaries') and bc.boundaries:
+                for idx, setup in bc.boundaries.items():
+                    if plot_type == "elevation":
+                        if hasattr(setup, 'elev_source') and setup.elev_source:
+                            sources.append(setup.elev_source)
+                    elif plot_type in ["velocity_u", "velocity_v", "velocity_magnitude"]:
+                        if hasattr(setup, 'vel_source') and setup.vel_source:
+                            sources.append(setup.vel_source)
+                    elif plot_type == "temperature":
+                        if hasattr(setup, 'temp_source') and setup.temp_source:
+                            sources.append(setup.temp_source)
+                    elif plot_type == "salinity":
+                        if hasattr(setup, 'salt_source') and setup.salt_source:
+                            sources.append(setup.salt_source)
+
+            return sources
+
+        except Exception as e:
+            logger.error(f"Error getting ocean boundary sources: {e}")
+            return []
+
+    def _find_boundary_files(self, plot_type: str, boundary_type: str) -> List[Path]:
+        """Find processed boundary files for a given variable type."""
+        try:
+            # Map plot types to SCHISM file naming convention
+            file_mapping = {
+                "elevation": "elev2D.th.nc",
+                "velocity_u": "uv3D.th.nc",
+                "velocity_v": "uv3D.th.nc",
+                "velocity_magnitude": "uv3D.th.nc",
+                "temperature": "TEM_3D.th.nc",
+                "salinity": "SAL_3D.th.nc"
+            }
+
+            filename = file_mapping.get(plot_type)
+            if not filename:
+                return []
+
+            # Look for boundary files in SCHISM output locations
+            search_paths = [
+                Path.cwd(),
+                Path.cwd() / "outputs",
+                Path.cwd() / "boundary_data",
+                Path.cwd() / "schism_demo_output" / "model_run" / "*"
+            ]
+
+            # If we have a config with output directory, look there
+            if self.config and hasattr(self.config, 'output_dir'):
+                config_output_dir = Path(self.config.output_dir)
+                search_paths.extend([
+                    config_output_dir,
+                    config_output_dir / "outputs",
+                    config_output_dir / "*"
+                ])
+
+            boundary_files = []
+            for search_path in search_paths:
+                try:
+                    if "*" in str(search_path):
+                        # Handle glob patterns
+                        for actual_path in Path(".").glob(str(search_path.relative_to(Path.cwd()))):
+                            if actual_path.exists() and actual_path.is_dir():
+                                file_path = actual_path / filename
+                                if file_path.exists():
+                                    boundary_files.append(file_path)
+                                    logger.info(f"Found boundary file: {file_path}")
+                    else:
+                        if search_path.exists():
+                            file_path = search_path / filename
+                            if file_path.exists():
+                                boundary_files.append(file_path)
+                                logger.info(f"Found boundary file: {file_path}")
+                except Exception as e:
+                    logger.debug(f"Error searching path {search_path}: {e}")
+                    continue
+
+            return boundary_files
+
+        except Exception as e:
+            logger.error(f"Error finding boundary files: {e}")
+            return []
+
+    def _find_bctides_files(self) -> List[Path]:
+        """Find bctides.in files in the project."""
+        try:
+            search_paths = [
+                Path.cwd(),
+                Path.cwd() / "outputs",
+                Path.cwd() / "schism_demo_output" / "model_run" / "*",
+                Path.cwd() / "*"
+            ]
+
+            bctides_files = []
+            for search_path in search_paths:
+                try:
+                    if "*" in str(search_path):
+                        for actual_path in Path(".").glob(str(search_path.relative_to(Path.cwd()))):
+                            if actual_path.exists() and actual_path.is_dir():
+                                bctides_file = actual_path / "bctides.in"
+                                if bctides_file.exists():
+                                    bctides_files.append(bctides_file)
+                    else:
+                        if search_path.exists():
+                            bctides_file = search_path / "bctides.in"
+                            if bctides_file.exists():
+                                bctides_files.append(bctides_file)
+                except Exception as e:
+                    logger.debug(f"Error searching path {search_path}: {e}")
+                    continue
+
+            return bctides_files
+
+        except Exception as e:
+            logger.error(f"Error finding bctides files: {e}")
+            return []
+
+    def _compute_ocean_boundary_input_timeseries(
+        self,
+        data_source,
+        sample_points: List[Tuple[float, float]],
+        plot_type: str,
+        time_hours: float
+    ) -> List[np.ndarray]:
+        """
+        Compute ocean boundary time series from input data source.
+        For TPXO data, this generates synthetic time series from harmonic constants.
+
+        Parameters
+        ----------
+        data_source
+            Data source object or file path
+        sample_points : List[Tuple[float, float]]
+            Sample point coordinates
+        plot_type : str
+            Type of variable to plot
+        time_hours : float
+            Duration in hours
+
+        Returns
+        -------
+        List[np.ndarray]
+            Time series data for each sample point
+        """
+        try:
+            import xarray as xr
+
+            # Get dataset from source
+            ds = None
+            if isinstance(data_source, (str, Path)):
+                # Direct file path (common for tidal data)
+                ds = xr.open_dataset(data_source)
+            elif hasattr(data_source, 'source'):
+                source = data_source.source
+                if hasattr(source, 'dataset'):
+                    ds = source.dataset
+                elif hasattr(source, 'get_dataset'):
+                    ds = source.get_dataset()
+                elif hasattr(source, 'data'):
+                    ds = source.data
+                elif hasattr(source, 'uri'):
+                    ds = xr.open_dataset(source.uri)
+            elif hasattr(data_source, 'uri'):
+                ds = xr.open_dataset(data_source.uri)
+            elif hasattr(data_source, 'dataset'):
+                ds = data_source.dataset
+
+            if ds is None:
+                logger.warning(f"Could not load dataset from source: {data_source}")
+                return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+
+            # Check if this is TPXO format (harmonic constants, no time dimension)
+            is_tpxo_format = ('time' not in ds.dims and 'nc' in ds.dims and
+                             any(var in ds.data_vars for var in ['ha', 'hp', 'hRe', 'hIm']))
+
+            if is_tpxo_format:
+                # Generate time series from TPXO harmonic constants
+                return self._compute_tidal_timeseries_from_harmonics(ds, sample_points, plot_type, time_hours)
+            else:
+                # Handle regular time series data
+                if 'time' in ds.dims:
+                    n_times = min(int(time_hours * 2), len(ds.time))
+                    ds_subset = ds.isel(time=slice(0, n_times))
+                else:
+                    logger.warning("No time dimension found in dataset")
+                    n_times = int(time_hours * 2)
+                    ds_subset = ds
+
+                # Get variable names based on plot type
+                var_names = self._get_ocean_variable_names(plot_type)
+
+                time_series_data = []
+
+                for lon, lat in sample_points:
+                    try:
+                        # For ocean boundary data, we need to handle interpolation differently
+                        # Get coordinates from dataset
+                        if 'lon_z' in ds_subset.data_vars and 'lat_z' in ds_subset.data_vars:
+                            lons = ds_subset['lon_z'].values
+                            lats = ds_subset['lat_z'].values
+                        elif 'longitude' in ds_subset.coords:
+                            lons = ds_subset.coords['longitude'].values
+                            lats = ds_subset.coords['latitude'].values
+                        else:
+                            # Skip interpolation for this point
+                            time_series_data.append(np.zeros(n_times))
+                            continue
+
+                        # Find nearest point
+                        if len(lons.shape) == 2:
+                            dist = np.sqrt((lons - lon)**2 + (lats - lat)**2)
+                            min_idx = np.unravel_index(np.argmin(dist), dist.shape)
+                        else:
+                            lon_idx = np.abs(lons - lon).argmin()
+                            lat_idx = np.abs(lats - lat).argmin()
+                            min_idx = (lat_idx, lon_idx)
+
+                        if plot_type == "velocity_magnitude":
+                            # Calculate magnitude from u and v components
+                            u_var = self._find_variable(ds_subset, ['u', 'vozocrtx', 'uo'])
+                            v_var = self._find_variable(ds_subset, ['v', 'vomecrty', 'vo'])
+
+                            if u_var and v_var:
+                                u_data = ds_subset[u_var].values
+                                v_data = ds_subset[v_var].values
+                                if len(u_data.shape) > 2:  # 3D data
+                                    u_point = u_data[:, min_idx[0], min_idx[1]]
+                                    v_point = v_data[:, min_idx[0], min_idx[1]]
+                                elif len(u_data.shape) == 2:  # 2D data
+                                    u_point = u_data[min_idx[0], min_idx[1]]
+                                    v_point = v_data[min_idx[0], min_idx[1]]
+                                    if np.isscalar(u_point):
+                                        u_point = np.full(n_times, u_point)
+                                        v_point = np.full(n_times, v_point)
+                                else:
+                                    u_point = u_data
+                                    v_point = v_data
+                                data = np.sqrt(u_point**2 + v_point**2) if not np.isscalar(u_point) else np.full(n_times, np.sqrt(u_point**2 + v_point**2))
+                            else:
+                                data = np.zeros(n_times)
+
+                        elif plot_type == "velocity_u":
+                            u_var = self._find_variable(ds_subset, ['u', 'vozocrtx', 'uo'])
+                            if u_var:
+                                u_data = ds_subset[u_var].values
+                                if len(u_data.shape) > 2:  # 3D data
+                                    data = u_data[:, min_idx[0], min_idx[1]]
+                                elif len(u_data.shape) == 2:  # 2D data
+                                    point_val = u_data[min_idx[0], min_idx[1]]
+                                    data = np.full(n_times, point_val) if np.isscalar(point_val) else point_val
+                                else:
+                                    data = u_data
+                            else:
+                                data = np.zeros(n_times)
+
+                        elif plot_type == "velocity_v":
+                            v_var = self._find_variable(ds_subset, ['v', 'vomecrty', 'vo'])
+                            if v_var:
+                                v_data = ds_subset[v_var].values
+                                if len(v_data.shape) > 2:  # 3D data
+                                    data = v_data[:, min_idx[0], min_idx[1]]
+                                elif len(v_data.shape) == 2:  # 2D data
+                                    point_val = v_data[min_idx[0], min_idx[1]]
+                                    data = np.full(n_times, point_val) if np.isscalar(point_val) else point_val
+                                else:
+                                    data = v_data
+                            else:
+                                data = np.zeros(n_times)
+
+                        else:
+                            # Find appropriate variable
+                            var_name = self._find_variable(ds_subset, var_names)
+                            if var_name:
+                                var_data = ds_subset[var_name].values
+                                if len(var_data.shape) > 2:  # 3D data
+                                    data = var_data[:, min_idx[0], min_idx[1]]
+                                elif len(var_data.shape) == 2:  # 2D data
+                                    point_val = var_data[min_idx[0], min_idx[1]]
+                                    data = np.full(n_times, point_val) if np.isscalar(point_val) else point_val
+                                else:
+                                    data = var_data
+                            else:
+                                data = np.zeros(n_times)
+
+                        time_series_data.append(data)
+
+                    except Exception as e:
+                        logger.warning(f"Error processing point ({lon}, {lat}): {e}")
+                        time_series_data.append(np.zeros(n_times))
+
+                return time_series_data
+
+        except Exception as e:
+            logger.error(f"Error computing ocean boundary input time series: {e}")
+            return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+
+    def _compute_tidal_timeseries_from_harmonics(
+        self,
+        ds: xr.Dataset,
+        sample_points: List[Tuple[float, float]],
+        plot_type: str,
+        time_hours: float
+    ) -> List[np.ndarray]:
+        """
+        Generate time series from TPXO harmonic constants.
+
+        Parameters
+        ----------
+        ds : xr.Dataset
+            TPXO dataset with harmonic constants
+        sample_points : List[Tuple[float, float]]
+            Sample point coordinates
+        plot_type : str
+            Type of variable to plot
+        time_hours : float
+            Duration in hours
+
+        Returns
+        -------
+        List[np.ndarray]
+            Time series data for each sample point
+        """
+        try:
+            # Get coordinates
+            lons = ds['lon_z'].values
+            lats = ds['lat_z'].values
+
+            # Get constituent names
+            constituents = ds['con'].values
+            constituent_names = [''.join(c.decode('utf-8') if isinstance(c, bytes) else str(c) for c in const).strip()
+                               for const in constituents]
+
+            # Create time array (30-minute intervals)
+            dt = 0.5  # hours
+            n_times = int(time_hours / dt)
+            times = np.arange(0, time_hours, dt)
+
+            time_series_data = []
+
+            for lon, lat in sample_points:
+                try:
+                    # Find nearest point
+                    dist = np.sqrt((lons - lon)**2 + (lats - lat)**2)
+                    min_idx = np.unravel_index(np.argmin(dist), dist.shape)
+
+                    # Initialize time series
+                    if plot_type == "elevation":
+                        # Use elevation harmonic constants
+                        amp_data = ds['ha'].values
+                        phase_data = ds['hp'].values
+                    elif plot_type in ["velocity_u", "velocity_v", "velocity_magnitude"]:
+                        # Use velocity harmonic constants (if available)
+                        if 'uRe' in ds.data_vars and 'uIm' in ds.data_vars:
+                            # Convert complex velocity to amplitude/phase
+                            u_re = ds['uRe'].values
+                            u_im = ds['uIm'].values
+                            v_re = ds['vRe'].values if 'vRe' in ds.data_vars else u_re
+                            v_im = ds['vIm'].values if 'vIm' in ds.data_vars else u_im
+
+                            if plot_type == "velocity_u":
+                                amp_data = np.sqrt(u_re**2 + u_im**2)
+                                phase_data = np.arctan2(u_im, u_re) * 180 / np.pi
+                            elif plot_type == "velocity_v":
+                                amp_data = np.sqrt(v_re**2 + v_im**2)
+                                phase_data = np.arctan2(v_im, v_re) * 180 / np.pi
+                            else:  # velocity_magnitude
+                                amp_data = np.sqrt((u_re**2 + u_im**2) + (v_re**2 + v_im**2))
+                                phase_data = np.zeros_like(amp_data)
+                        else:
+                            # Fallback to elevation data
+                            amp_data = ds['ha'].values
+                            phase_data = ds['hp'].values
+                    else:
+                        # Default to elevation
+                        amp_data = ds['ha'].values
+                        phase_data = ds['hp'].values
+
+                    # Generate time series from harmonic constants
+                    timeseries = np.zeros(len(times))
+
+                    # Standard tidal frequencies (cycles per hour)
+                    tidal_frequencies = {
+                        'M2': 1.40519e-4 * 3600,  # M2 frequency in cycles/hour
+                        'S2': 1.45444e-4 * 3600,  # S2 frequency
+                        'N2': 1.37880e-4 * 3600,  # N2 frequency
+                        'K1': 0.72921e-4 * 3600,  # K1 frequency
+                        'O1': 0.67598e-4 * 3600,  # O1 frequency
+                    }
+
+                    for i, const_name in enumerate(constituent_names):
+                        const_name_clean = const_name.upper().strip()
+                        if const_name_clean in tidal_frequencies:
+                            freq = tidal_frequencies[const_name_clean]
+                            amp = amp_data[i, min_idx[0], min_idx[1]]
+                            phase = phase_data[i, min_idx[0], min_idx[1]]
+
+                            # Skip if amplitude is zero or NaN
+                            if np.isnan(amp) or amp == 0:
+                                continue
+
+                            # Generate harmonic component
+                            timeseries += amp * np.cos(2 * np.pi * freq * times - np.radians(phase))
+
+                    time_series_data.append(timeseries)
+
+                except Exception as e:
+                    logger.warning(f"Error processing TPXO point ({lon}, {lat}): {e}")
+                    time_series_data.append(np.zeros(len(times)))
+
+            return time_series_data
+
+        except Exception as e:
+            logger.error(f"Error computing tidal time series from harmonics: {e}")
+            return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+
+    def _compute_processed_boundary_timeseries(
+        self,
+        boundary_file: Path,
+        sample_points: List[Tuple[float, float]],
+        plot_type: str,
+        time_hours: float
+    ) -> List[np.ndarray]:
+        """
+        Compute ocean boundary time series from processed SCHISM boundary file.
+
+        Parameters
+        ----------
+        boundary_file : Path
+            Path to SCHISM boundary file
+        sample_points : List[Tuple[float, float]]
+            Sample point coordinates
+        plot_type : str
+            Type of variable to plot
+        time_hours : float
+            Duration in hours
+
+        Returns
+        -------
+        List[np.ndarray]
+            Time series data for each sample point
+        """
+        try:
+            import xarray as xr
+
+            # Load boundary file
+            ds = xr.open_dataset(boundary_file)
+
+            # Get time subset
+            n_times = min(int(time_hours * 2), len(ds.time))
+            ds_subset = ds.isel(time=slice(0, n_times))
+
+            # Extract time series data
+            if 'time_series' in ds_subset.data_vars:
+                time_series = ds_subset['time_series'].values
+
+                # Handle different dimensions
+                if len(time_series.shape) == 4:  # (time, nodes, levels, components)
+                    n_points = min(len(sample_points), time_series.shape[1])
+
+                    if plot_type == "velocity_magnitude" and time_series.shape[3] >= 2:
+                        # Calculate magnitude from u and v components
+                        u_data = time_series[:n_times, :n_points, 0, 0]  # Surface u
+                        v_data = time_series[:n_times, :n_points, 0, 1]  # Surface v
+                        magnitude_data = np.sqrt(u_data**2 + v_data**2)
+                        return [magnitude_data[:, i] for i in range(n_points)]
+
+                    elif plot_type == "velocity_u" and time_series.shape[3] >= 1:
+                        u_data = time_series[:n_times, :n_points, 0, 0]  # Surface u
+                        return [u_data[:, i] for i in range(n_points)]
+
+                    elif plot_type == "velocity_v" and time_series.shape[3] >= 2:
+                        v_data = time_series[:n_times, :n_points, 0, 1]  # Surface v
+                        return [v_data[:, i] for i in range(n_points)]
+
+                    else:
+                        # Default to first component, surface level
+                        data = time_series[:n_times, :n_points, 0, 0]
+                        return [data[:, i] for i in range(n_points)]
+
+                elif len(time_series.shape) == 3:  # (time, nodes, levels) or (time, nodes, components)
+                    n_points = min(len(sample_points), time_series.shape[1])
+                    data = time_series[:n_times, :n_points, 0]  # First level/component
+                    return [data[:, i] for i in range(n_points)]
+
+                else:  # 2D case (time, nodes)
+                    n_points = min(len(sample_points), time_series.shape[1])
+                    return [time_series[:n_times, i] for i in range(n_points)]
+
+            else:
+                # Fallback: create zero data
+                return [np.zeros(n_times) for _ in sample_points]
+
+        except Exception as e:
+            logger.error(f"Error computing processed boundary time series: {e}")
+            return [np.zeros(int(time_hours * 2)) for _ in sample_points]
+
+    def _get_ocean_variable_names(self, plot_type: str) -> List[str]:
+        """Get possible variable names for ocean boundary data."""
+        variable_mapping = {
+            "elevation": ["ssh", "zos", "sea_surface_height", "elevation"],
+            "velocity_u": ["u", "vozocrtx", "uo", "eastward_sea_water_velocity"],
+            "velocity_v": ["v", "vomecrty", "vo", "northward_sea_water_velocity"],
+            "velocity_magnitude": ["u", "v", "vozocrtx", "vomecrty", "uo", "vo"],
+            "temperature": ["temperature", "thetao", "votemper", "sea_water_potential_temperature"],
+            "salinity": ["salinity", "so", "vosaline", "sea_water_salinity"]
+        }
+        return variable_mapping.get(plot_type, [plot_type])
+
+    def _get_ocean_boundary_ylabel(self, plot_type: str) -> str:
+        """Get appropriate y-axis label for ocean boundary plot type."""
+        ylabel_map = {
+            "elevation": "Sea Surface Height (m)",
+            "velocity_u": "U Velocity (m/s)",
+            "velocity_v": "V Velocity (m/s)",
+            "velocity_magnitude": "Velocity Magnitude (m/s)",
+            "temperature": "Temperature (°C)",
+            "salinity": "Salinity (PSU)"
+        }
+        return ylabel_map.get(plot_type, plot_type.replace('_', ' ').title())
+
+    def _compute_standardized_time_axis(self, time_hours: float, dt: float = 0.5) -> np.ndarray:
+        """
+        Compute standardized time axis for consistent comparison plots.
+
+        This ensures that both input and processed data plots use the same
+        time axis, making comparison plots properly aligned.
+
+        Parameters
+        ----------
+        time_hours : float
+            Duration in hours for the time series
+        dt : float, optional
+            Time step in hours. Default is 0.5 (30 minutes)
+
+        Returns
+        -------
+        np.ndarray
+            Standardized time array in hours
+        """
+        # Reason: Create consistent time axis regardless of data length variations
+        return np.arange(0, time_hours + dt/2, dt)
+
+    def _align_data_to_time_axis(self, data: np.ndarray, current_times: np.ndarray,
+                                 target_times: np.ndarray) -> np.ndarray:
+        """
+        Align data array to match target time axis through interpolation.
+
+        Parameters
+        ----------
+        data : np.ndarray
+            Input data array
+        current_times : np.ndarray
+            Current time array corresponding to data
+        target_times : np.ndarray
+            Target time array to align data to
+
+        Returns
+        -------
+        np.ndarray
+            Data aligned to target time axis
+        """
+        from scipy import interpolate
+
+        # Reason: Handle cases where data and time arrays have different lengths
+        if len(data) != len(current_times):
+            # Truncate to minimum length to avoid indexing errors
+            min_len = min(len(data), len(current_times))
+            data = data[:min_len]
+            current_times = current_times[:min_len]
+
+        if len(current_times) == 0 or len(data) == 0:
+            # Return zeros array matching target times if no data
+            return np.zeros_like(target_times)
+
+        # Interpolate data to target time axis
+        try:
+            f = interpolate.interp1d(current_times, data, kind='linear',
+                                   bounds_error=False, fill_value=(data[0], data[-1]))
+            return f(target_times)
+        except Exception:
+            # Fallback: pad or truncate to match target length
+            if len(data) < len(target_times):
+                # Pad with last value
+                padded = np.full(len(target_times), data[-1] if len(data) > 0 else 0)
+                padded[:len(data)] = data
+                return padded
+            else:
+                # Truncate to target length
+                return data[:len(target_times)]

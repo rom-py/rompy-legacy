@@ -166,9 +166,19 @@ def add_grid_overlay(
         # Use pylibs plotting if available
         if hasattr(grid, 'pylibs_hgrid'):
             hgrid = grid.pylibs_hgrid
-            # Plot triangulation
-            ax.triplot(hgrid.x, hgrid.y, hgrid.elnode,
-                      alpha=alpha, color=color, linewidth=linewidth)
+            # Ensure arrays are available and valid
+            if (hasattr(hgrid, 'x') and hasattr(hgrid, 'y') and hasattr(hgrid, 'elnode') and
+                hgrid.x is not None and hgrid.y is not None and hgrid.elnode is not None):
+                # Plot triangulation - handle potential array issues
+                elnode = hgrid.elnode
+                if hasattr(elnode, 'shape') and len(elnode.shape) > 1:
+                    # Remove 4th column if it exists (for quad to triangle conversion)
+                    if elnode.shape[1] > 3:
+                        elnode = elnode[:, :3]
+                ax.triplot(hgrid.x, hgrid.y, elnode,
+                          alpha=alpha, color=color, linewidth=linewidth)
+            else:
+                logger.warning("Grid data not available for overlay")
         else:
             logger.warning("Grid overlay not supported for this grid type")
     except Exception as e:
@@ -202,7 +212,8 @@ def add_boundary_overlay(
         # Plot ocean boundaries
         if hasattr(grid, 'ocean_boundary'):
             x_ocean, y_ocean = grid.ocean_boundary()
-            if len(x_ocean) > 0:
+            # Safe array length check to avoid truth value ambiguity
+            if x_ocean is not None and y_ocean is not None and x_ocean.size > 0 and y_ocean.size > 0:
                 ax.plot(x_ocean, y_ocean,
                        color=boundary_colors.get("ocean", "red"),
                        linewidth=linewidth, label="Ocean Boundary")
@@ -210,7 +221,8 @@ def add_boundary_overlay(
         # Plot land boundaries
         if hasattr(grid, 'land_boundary'):
             x_land, y_land = grid.land_boundary()
-            if len(x_land) > 0:
+            # Safe array length check to avoid truth value ambiguity
+            if x_land is not None and y_land is not None and x_land.size > 0 and y_land.size > 0:
                 ax.plot(x_land, y_land,
                        color=boundary_colors.get("land", "green"),
                        linewidth=linewidth, label="Land Boundary")

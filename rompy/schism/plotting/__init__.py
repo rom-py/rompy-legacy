@@ -837,7 +837,7 @@ class SchismPlotter:
             # Use the same time series computation methods as the processed data plotter
             import numpy as np
             dt = 0.5  # 30-minute intervals to match processed data
-            times = np.arange(0, time_hours, dt)
+            times = self.data_plotter._compute_standardized_time_axis(time_hours, dt)
             constituents = bc.constituents if bc.constituents else ['M2', 'S2', 'N2']
 
             # Compute time series using existing methods
@@ -849,6 +849,15 @@ class SchismPlotter:
                 time_series_data = self.data_plotter._compute_tidal_velocity_timeseries(
                     data_file, sample_points, constituents, times, plot_type
                 )
+
+            # Align data to standardized time axis if needed
+            if len(time_series_data) > 0 and len(time_series_data[0]) != len(times):
+                original_times = np.arange(0, len(time_series_data[0]) * dt, dt)
+                aligned_data = []
+                for data_series in time_series_data:
+                    aligned_series = self.data_plotter._align_data_to_time_axis(data_series, original_times, times)
+                    aligned_data.append(aligned_series)
+                time_series_data = aligned_data
 
             # Plot time series for each point
             from matplotlib import cm
@@ -996,6 +1005,382 @@ class SchismPlotter:
                    ha='center', va='center', transform=ax.transAxes, fontsize=8)
             ax.set_title("SCHISM Grid - Error")
 
+    def plot_atmospheric_analysis_overview(
+        self,
+        figsize: Tuple[float, float] = (20, 12),
+        time_hours: float = 24.0,
+        n_sample_points: int = 4,
+        plot_type: str = "wind_speed",
+        variable: str = "air",
+        save_path: Optional[Union[str, Path]] = None,
+        **kwargs
+    ) -> Tuple[Figure, Dict[str, Axes]]:
+        """
+        Create comprehensive atmospheric analysis overview with input vs processed data comparison.
+
+        This creates a detailed atmospheric analysis with:
+        - Atmospheric spatial distribution maps
+        - Time series at sample points from input data
+        - Time series at sample points from processed sflux data
+        - Atmospheric data visualization
+
+        Parameters
+        ----------
+        figsize : Tuple[float, float], optional
+            Figure size in inches. Default is (20, 12).
+        time_hours : float, optional
+            Duration in hours for time series plots. Default is 24.0 hours.
+        n_sample_points : int, optional
+            Number of sample points for time series. Default is 4.
+        plot_type : str, optional
+            Type of atmospheric plot: 'wind_speed', 'wind_u', 'wind_v', 'pressure', 'temperature'.
+            Default is 'wind_speed'.
+        variable : str, optional
+            Atmospheric variable type: 'air', 'rad', 'prc'. Default is 'air'.
+        save_path : Optional[Union[str, Path]], optional
+            Path to save the plot. If None, plot is not saved.
+        **kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        axes : Dict[str, matplotlib.axes.Axes]
+            Dictionary of axes objects keyed by panel name.
+
+        Examples
+        --------
+        >>> plotter = SchismPlotter(config)
+        >>> fig, axes = plotter.plot_atmospheric_analysis_overview()
+        >>> fig.show()
+        """
+        try:
+            # Check if we have atmospheric data
+            if not self._has_atmospheric_data():
+                fig, ax = plt.subplots(figsize=figsize)
+                ax.text(0.5, 0.5, "No atmospheric data available for analysis",
+                       ha='center', va='center', transform=ax.transAxes)
+                ax.set_title("Atmospheric Analysis Overview - No Data")
+                return fig, {'error': ax}
+
+            # Create subplot layout
+            fig = plt.figure(figsize=figsize)
+            gs = fig.add_gridspec(2, 4, height_ratios=[1, 1], width_ratios=[1, 1, 1, 1])
+
+            axes = {}
+
+            # Top row: Atmospheric spatial maps
+            ax1 = fig.add_subplot(gs[0, :2], projection=setup_cartopy_axis())
+            ax2 = fig.add_subplot(gs[0, 2:], projection=setup_cartopy_axis())
+
+            try:
+                # Plot atmospheric spatial distribution
+                self.data_plotter.plot_atmospheric_spatial(
+                    variable=variable, ax=ax1, **kwargs
+                )
+                axes['atmospheric_spatial'] = ax1
+
+                # Plot atmospheric sample points map
+                self._plot_atmospheric_points_map(ax2, n_sample_points, **kwargs)
+                axes['sample_points'] = ax2
+
+            except Exception as e:
+                ax1.text(0.5, 0.5, f"Error plotting atmospheric spatial:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax1.transAxes, fontsize=8)
+                ax2.text(0.5, 0.5, f"Error plotting sample points:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax2.transAxes, fontsize=8)
+
+            # Bottom row: Input vs processed data comparison
+            ax3 = fig.add_subplot(gs[1, :2])
+            ax4 = fig.add_subplot(gs[1, 2:])
+
+            try:
+                # Input atmospheric data time series
+                self.data_plotter.plot_atmospheric_inputs_at_points(
+                    n_points=n_sample_points, time_hours=time_hours,
+                    plot_type=plot_type, variable=variable, ax=ax3, **kwargs
+                )
+                ax3.set_title(f"Input {plot_type.replace('_', ' ').title()} (from {variable.upper()} data)", fontweight='bold')
+                axes['input_data'] = ax3
+
+                # Processed atmospheric data time series
+                self.data_plotter.plot_processed_atmospheric_data(
+                    n_points=n_sample_points, time_hours=time_hours,
+                    plot_type=plot_type, variable=variable, ax=ax4, **kwargs
+                )
+                ax4.set_title(f"Processed {plot_type.replace('_', ' ').title()} (from sflux files)", fontweight='bold')
+                axes['processed_data'] = ax4
+
+            except Exception as e:
+                ax3.text(0.5, 0.5, f"Error plotting input data:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax3.transAxes, fontsize=8)
+                ax4.text(0.5, 0.5, f"Error plotting processed data:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax4.transAxes, fontsize=8)
+
+            plt.tight_layout()
+            fig.suptitle(f'SCHISM Atmospheric Analysis: Input vs Processed Data Comparison ({variable.upper()})',
+                        fontsize=16, fontweight='bold', y=0.98)
+
+            if save_path:
+                fig.savefig(save_path, dpi=300, bbox_inches='tight')
+                logger.info(f"Atmospheric analysis overview saved to {save_path}")
+
+            return fig, axes
+
+        except Exception as e:
+            logger.error(f"Error creating atmospheric analysis overview: {e}")
+            fig, ax = plt.subplots(figsize=figsize)
+            ax.text(0.5, 0.5, f"Error creating atmospheric analysis overview:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
+            ax.set_title("Atmospheric Analysis Overview - Error")
+            return fig, {'error': ax}
+
+    def plot_ocean_boundary_analysis_overview(
+        self,
+        figsize: Tuple[float, float] = (20, 12),
+        time_hours: float = 24.0,
+        n_sample_points: int = 4,
+        plot_type: str = "elevation",
+        boundary_type: str = "2d",
+        save_path: Optional[Union[str, Path]] = None,
+        **kwargs
+    ) -> Tuple[Figure, Dict[str, Axes]]:
+        """
+        Create comprehensive ocean boundary analysis overview with input vs processed data comparison.
+
+        This creates a detailed ocean boundary analysis with:
+        - Ocean boundary spatial visualization
+        - Time series at sample boundary points from input data
+        - Time series at sample boundary points from processed SCHISM files
+        - Ocean boundary condition visualization
+
+        Parameters
+        ----------
+        figsize : Tuple[float, float], optional
+            Figure size in inches. Default is (20, 12).
+        time_hours : float, optional
+            Duration in hours for time series plots. Default is 24.0 hours.
+        n_sample_points : int, optional
+            Number of sample points for time series. Default is 4.
+        plot_type : str, optional
+            Type of ocean boundary plot: 'elevation', 'velocity_u', 'velocity_v',
+            'velocity_magnitude', 'temperature', 'salinity'. Default is 'elevation'.
+        boundary_type : str, optional
+            Type of boundary: '2d' or '3d'. Default is '2d'.
+        save_path : Optional[Union[str, Path]], optional
+            Path to save the plot. If None, plot is not saved.
+        **kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        axes : Dict[str, matplotlib.axes.Axes]
+            Dictionary of axes objects keyed by panel name.
+
+        Examples
+        --------
+        >>> plotter = SchismPlotter(config)
+        >>> fig, axes = plotter.plot_ocean_boundary_analysis_overview()
+        >>> fig.show()
+        """
+        try:
+            # Check if we have ocean boundary data
+            if not self._has_ocean_boundary_data():
+                fig, ax = plt.subplots(figsize=figsize)
+                ax.text(0.5, 0.5, "No ocean boundary data available for analysis",
+                       ha='center', va='center', transform=ax.transAxes)
+                ax.set_title("Ocean Boundary Analysis Overview - No Data")
+                return fig, {'error': ax}
+
+            # Create subplot layout
+            fig = plt.figure(figsize=figsize)
+            gs = fig.add_gridspec(2, 4, height_ratios=[1, 1], width_ratios=[1, 1, 1, 1])
+
+            axes = {}
+
+            # Top row: Ocean boundary spatial maps
+            ax1 = fig.add_subplot(gs[0, :2], projection=setup_cartopy_axis())
+            ax2 = fig.add_subplot(gs[0, 2:], projection=setup_cartopy_axis())
+
+            try:
+                # Plot boundary locations
+                self.grid_plotter.plot_boundaries(ax=ax1, **kwargs)
+                axes['boundary_locations'] = ax1
+
+                # Plot boundary sample points map
+                self._plot_boundary_points_map(ax2, n_sample_points, **kwargs)
+                axes['sample_points'] = ax2
+
+            except Exception as e:
+                ax1.text(0.5, 0.5, f"Error plotting boundary locations:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax1.transAxes, fontsize=8)
+                ax2.text(0.5, 0.5, f"Error plotting sample points:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax2.transAxes, fontsize=8)
+
+            # Bottom row: Input vs processed data comparison
+            ax3 = fig.add_subplot(gs[1, :2])
+            ax4 = fig.add_subplot(gs[1, 2:])
+
+            try:
+                # Input ocean boundary data time series
+                self.data_plotter.plot_ocean_boundary_inputs_at_points(
+                    n_points=n_sample_points, time_hours=time_hours,
+                    plot_type=plot_type, boundary_type=boundary_type, ax=ax3, **kwargs
+                )
+                ax3.set_title(f"Input {boundary_type.upper()} {plot_type.replace('_', ' ').title()} (from netCDF)", fontweight='bold')
+                axes['input_data'] = ax3
+
+                # Processed ocean boundary data time series
+                self.data_plotter.plot_processed_ocean_boundary_data(
+                    n_points=n_sample_points, time_hours=time_hours,
+                    plot_type=plot_type, boundary_type=boundary_type, ax=ax4, **kwargs
+                )
+                ax4.set_title(f"Processed {boundary_type.upper()} {plot_type.replace('_', ' ').title()} (from *.th.nc)", fontweight='bold')
+                axes['processed_data'] = ax4
+
+            except Exception as e:
+                ax3.text(0.5, 0.5, f"Error plotting input data:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax3.transAxes, fontsize=8)
+                ax4.text(0.5, 0.5, f"Error plotting processed data:\n{str(e)[:50]}...",
+                        ha='center', va='center', transform=ax4.transAxes, fontsize=8)
+
+            plt.tight_layout()
+            fig.suptitle(f'SCHISM Ocean Boundary Analysis: Input vs Processed Data Comparison ({boundary_type.upper()})',
+                        fontsize=16, fontweight='bold', y=0.98)
+
+            if save_path:
+                fig.savefig(save_path, dpi=300, bbox_inches='tight')
+                logger.info(f"Ocean boundary analysis overview saved to {save_path}")
+
+            return fig, axes
+
+        except Exception as e:
+            logger.error(f"Error creating ocean boundary analysis overview: {e}")
+            fig, ax = plt.subplots(figsize=figsize)
+            ax.text(0.5, 0.5, f"Error creating ocean boundary analysis overview:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes,
+                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
+            ax.set_title("Ocean Boundary Analysis Overview - Error")
+            return fig, {'error': ax}
+
+    def _plot_atmospheric_points_map(self, ax, n_points: int = 4, **kwargs):
+        """
+        Plot atmospheric sample points map showing locations used for time series.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes
+            Axes to plot on (should have cartopy projection)
+        n_points : int
+            Number of sample points to show
+        **kwargs : dict
+            Additional plotting parameters
+        """
+        try:
+            # Get sample points from data plotter
+            sample_points = self.data_plotter._get_representative_atmospheric_points(n_points)
+
+            if not sample_points:
+                ax.text(0.5, 0.5, "No atmospheric sample points available",
+                       ha='center', va='center', transform=ax.transAxes)
+                ax.set_title("Atmospheric Sample Points - No Data")
+                return
+
+            # Import cartopy for coordinate transforms
+            try:
+                import cartopy.crs as ccrs
+                transform = ccrs.PlateCarree()
+            except ImportError:
+                transform = None
+
+            # Plot SCHISM grid structure if available
+            try:
+                grid = self.grid_plotter.grid
+                if grid is not None:
+                    # Add grid overlay (mesh)
+                    from .utils import add_grid_overlay
+                    add_grid_overlay(ax, grid, alpha=0.2, color='lightgray', linewidth=0.3)
+                    logger.info("Added SCHISM grid mesh overlay")
+
+            except Exception as e:
+                logger.debug(f"Could not add SCHISM grid overlay: {e}")
+
+            # Plot sample points with enhanced styling
+            lons = [pt[0] for pt in sample_points]
+            lats = [pt[1] for pt in sample_points]
+
+            # Create scatter plot with larger, more visible points
+            ax.scatter(lons, lats, c=np.arange(len(sample_points)),
+                      cmap='viridis', s=200, edgecolors='black', linewidth=3,
+                      marker='s', alpha=0.9, zorder=20,
+                      transform=transform)
+
+            # Add enhanced point labels with better visibility
+            for i, (lon, lat) in enumerate(sample_points):
+                ax.annotate(f'A{i+1}', (lon, lat), xytext=(8, 8),
+                          textcoords='offset points', fontsize=11, fontweight='bold',
+                          bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgreen",
+                                   alpha=0.9, edgecolor='black', linewidth=1),
+                          transform=transform, zorder=25)
+
+            # Set extent with margins
+            if lons and lats:
+                lon_range = max(lons) - min(lons)
+                lat_range = max(lats) - min(lats)
+                lon_margin = max(lon_range * 0.15, 0.5)
+                lat_margin = max(lat_range * 0.15, 0.5)
+                ax.set_xlim(min(lons) - lon_margin, max(lons) + lon_margin)
+                ax.set_ylim(min(lats) - lat_margin, max(lats) + lat_margin)
+
+            ax.set_title(f"Atmospheric Sample Points (n={len(sample_points)})", fontsize=12, fontweight='bold')
+            ax.set_xlabel('Longitude', fontsize=10)
+            ax.set_ylabel('Latitude', fontsize=10)
+
+            # Add legend with point information
+            legend_text = '\n'.join([f'A{i+1}: ({lon:.3f}°, {lat:.3f}°)'
+                                   for i, (lon, lat) in enumerate(sample_points)])
+            ax.text(0.02, 0.98, legend_text, transform=ax.transAxes,
+                   verticalalignment='top', fontsize=8, fontfamily='monospace',
+                   bbox=dict(boxstyle="round,pad=0.4", facecolor="lightgreen",
+                            alpha=0.9, edgecolor='darkgreen', linewidth=1))
+
+        except Exception as e:
+            logger.error(f"Error plotting atmospheric sample points: {e}")
+            ax.text(0.5, 0.5, f"Error plotting atmospheric sample points:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes, fontsize=8)
+            ax.set_title("Atmospheric Sample Points - Error")
+
+    def _has_ocean_boundary_data(self) -> bool:
+        """Check if ocean boundary data is available in configuration."""
+        if not self.config:
+            return False
+
+        if not (hasattr(self.config, 'data') and self.config.data):
+            return False
+
+        # Check for boundary conditions data
+        if hasattr(self.config.data, 'boundary_conditions') and self.config.data.boundary_conditions is not None:
+            bc = self.config.data.boundary_conditions
+
+            # Check for explicit boundaries definition
+            if hasattr(bc, 'boundaries') and bc.boundaries:
+                return True
+
+            # Check for tidal setup (which creates ocean boundaries)
+            if (hasattr(bc, 'setup_type') and bc.setup_type in ['tidal', 'hybrid'] and
+                hasattr(bc, 'constituents') and bc.constituents):
+                return True
+
+            # Check for tidal data files
+            if hasattr(bc, 'tidal_data') and bc.tidal_data:
+                return True
+
+        return False
+
     def plot_schism_boundary_data(
         self,
         bctides_file: Union[str, Path],
@@ -1086,9 +1471,26 @@ class SchismPlotter:
         """Check if atmospheric data is available in configuration."""
         if not self.config:
             return False
-        return (hasattr(self.config, 'data') and
-                hasattr(self.config.data, 'sflux') and
-                self.config.data.sflux is not None)
+
+        # Check for atmospheric data in different possible locations
+        if hasattr(self.config, 'data') and self.config.data:
+            # Check for sflux-style data
+            if hasattr(self.config.data, 'sflux') and self.config.data.sflux is not None:
+                return True
+
+            # Check for atmos-style data (more common in newer configurations)
+            if hasattr(self.config.data, 'atmos') and self.config.data.atmos is not None:
+                # Check if any atmospheric data sources are available
+                if hasattr(self.config.data.atmos, 'air_1') and self.config.data.atmos.air_1:
+                    return True
+                if hasattr(self.config.data.atmos, 'air') and self.config.data.atmos.air:
+                    return True
+                if hasattr(self.config.data.atmos, 'rad_1') and self.config.data.atmos.rad_1:
+                    return True
+                if hasattr(self.config.data.atmos, 'prc_1') and self.config.data.atmos.prc_1:
+                    return True
+
+        return False
 
     def _has_tidal_data(self) -> bool:
         """Check if tidal data is available in configuration."""

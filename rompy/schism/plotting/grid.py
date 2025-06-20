@@ -30,10 +30,10 @@ logger = logging.getLogger(__name__)
 class GridPlotter(BasePlotter):
     """
     SCHISM grid plotting functionality.
-    
+
     This class provides methods for visualizing SCHISM computational grids,
     including bathymetry, boundaries, and grid structure.
-    
+
     Parameters
     ----------
     config : Optional[Any]
@@ -43,7 +43,7 @@ class GridPlotter(BasePlotter):
     plot_config : Optional[PlotConfig]
         Plotting configuration parameters
     """
-    
+
     def __init__(
         self,
         config: Optional[Any] = None,
@@ -56,7 +56,7 @@ class GridPlotter(BasePlotter):
     def plot(self, plot_type: str = "bathymetry", **kwargs) -> Tuple[Figure, Axes]:
         """
         Main plotting method with different plot types.
-        
+
         Parameters
         ----------
         plot_type : str, optional
@@ -64,7 +64,7 @@ class GridPlotter(BasePlotter):
             Default is 'bathymetry'.
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         fig : Figure
@@ -96,7 +96,7 @@ class GridPlotter(BasePlotter):
     ) -> Tuple[Figure, Axes]:
         """
         Plot SCHISM computational grid structure.
-        
+
         Parameters
         ----------
         ax : Optional[Axes]
@@ -115,7 +115,7 @@ class GridPlotter(BasePlotter):
             Width of grid lines. Default is 0.5.
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         fig : Figure
@@ -124,11 +124,11 @@ class GridPlotter(BasePlotter):
             Axes object
         """
         fig, ax = self.create_figure(ax=ax, **kwargs)
-        
+
         try:
             grid = self.grid
             hgrid = grid.pylibs_hgrid
-            
+
             # Plot triangulation if requested
             if show_triangulation:
                 x, y, triangles = prepare_triangulation_data(hgrid)
@@ -138,7 +138,7 @@ class GridPlotter(BasePlotter):
                     color=line_color,
                     linewidth=line_width
                 )
-            
+
             # Plot nodes if requested
             if show_nodes:
                 ax.scatter(
@@ -148,12 +148,12 @@ class GridPlotter(BasePlotter):
                     alpha=0.6,
                     zorder=5
                 )
-            
+
             # Set extent based on grid coordinates
             extent = get_geographic_extent(hgrid.x, hgrid.y)
             ax.set_xlim(extent[0], extent[1])
             ax.set_ylim(extent[2], extent[3])
-            
+
             # Add boundaries
             if self.plot_config.show_boundaries:
                 add_boundary_overlay(
@@ -161,11 +161,11 @@ class GridPlotter(BasePlotter):
                     boundary_colors=self.plot_config.boundary_colors,
                     linewidth=self.plot_config.boundary_linewidth
                 )
-            
+
         except Exception as e:
             logger.error(f"Error plotting grid: {e}")
             raise
-        
+
         return self.finalize_plot(fig, ax, title="SCHISM Grid")
 
     def plot_bathymetry(
@@ -183,7 +183,7 @@ class GridPlotter(BasePlotter):
     ) -> Tuple[Figure, Axes]:
         """
         Plot SCHISM bathymetry as filled contours.
-        
+
         Parameters
         ----------
         ax : Optional[Axes]
@@ -206,7 +206,7 @@ class GridPlotter(BasePlotter):
             Transparency for contour lines. Default is 0.5.
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         fig : Figure
@@ -215,21 +215,21 @@ class GridPlotter(BasePlotter):
             Axes object
         """
         fig, ax = self.create_figure(ax=ax, **kwargs)
-        
+
         try:
             grid = self.grid
             hgrid = grid.pylibs_hgrid
-            
+
             # Get bathymetry data (depths are negative in SCHISM)
             depths = hgrid.dp
             x, y, triangles = prepare_triangulation_data(hgrid)
-            
+
             # Set up colormap
             cmap = cmap or self.plot_config.cmap
             cmap_name, norm, levels_array = setup_colormap(
                 depths, cmap=cmap, vmin=vmin, vmax=vmax, levels=levels
             )
-            
+
             # Create filled contour plot
             if levels_array is not None:
                 cs = ax.tricontourf(
@@ -245,13 +245,13 @@ class GridPlotter(BasePlotter):
                     cmap=cmap_name,
                     extend='both'
                 )
-            
+
             # Add colorbar
             cbar = self.add_colorbar(
                 fig, ax, cs,
                 label="Depth (m)" if depths.min() < 0 else "Elevation (m)"
             )
-            
+
             # Add contour lines if requested
             if show_contours:
                 contour_levels = contour_levels or levels_array
@@ -263,12 +263,12 @@ class GridPlotter(BasePlotter):
                         alpha=contour_alpha,
                         linewidths=0.5
                     )
-            
+
             # Set extent
             extent = get_geographic_extent(x, y)
             ax.set_xlim(extent[0], extent[1])
             ax.set_ylim(extent[2], extent[3])
-            
+
             # Add boundaries
             if self.plot_config.show_boundaries:
                 add_boundary_overlay(
@@ -276,11 +276,11 @@ class GridPlotter(BasePlotter):
                     boundary_colors=self.plot_config.boundary_colors,
                     linewidth=self.plot_config.boundary_linewidth
                 )
-            
+
         except Exception as e:
             logger.error(f"Error plotting bathymetry: {e}")
             raise
-        
+
         return self.finalize_plot(fig, ax, title="SCHISM Bathymetry")
 
     def plot_contours(
@@ -296,7 +296,7 @@ class GridPlotter(BasePlotter):
     ) -> Tuple[Figure, Axes]:
         """
         Plot bathymetry contour lines.
-        
+
         Parameters
         ----------
         ax : Optional[Axes]
@@ -315,7 +315,7 @@ class GridPlotter(BasePlotter):
             Font size for contour labels. Default is 8.
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         fig : Figure
@@ -324,16 +324,16 @@ class GridPlotter(BasePlotter):
             Axes object
         """
         fig, ax = self.create_figure(ax=ax, **kwargs)
-        
+
         try:
             grid = self.grid
             hgrid = grid.pylibs_hgrid
-            
+
             # Get bathymetry data
             depths = hgrid.dp
             x, y = hgrid.x, hgrid.y
             triangles = hgrid.elnode
-            
+
             # Set default levels if not provided
             if levels is None:
                 levels = np.arange(
@@ -341,7 +341,7 @@ class GridPlotter(BasePlotter):
                     np.ceil(depths.max()) + 1,
                     max(1, int((depths.max() - depths.min()) / 20))
                 )
-            
+
             # Create contour plot
             cs = ax.tricontour(
                 x, y, triangles, depths,
@@ -350,16 +350,16 @@ class GridPlotter(BasePlotter):
                 linewidths=linewidths,
                 alpha=alpha
             )
-            
+
             # Add labels if requested
             if add_labels:
                 ax.clabel(cs, inline=True, fontsize=label_fontsize, fmt='%.0f')
-            
+
             # Set extent
             extent = get_geographic_extent(x, y)
             ax.set_xlim(extent[0], extent[1])
             ax.set_ylim(extent[2], extent[3])
-            
+
             # Add boundaries
             if self.plot_config.show_boundaries:
                 add_boundary_overlay(
@@ -367,11 +367,11 @@ class GridPlotter(BasePlotter):
                     boundary_colors=self.plot_config.boundary_colors,
                     linewidth=self.plot_config.boundary_linewidth
                 )
-            
+
         except Exception as e:
             logger.error(f"Error plotting contours: {e}")
             raise
-        
+
         return self.finalize_plot(fig, ax, title="SCHISM Depth Contours")
 
     def plot_boundaries(
@@ -386,7 +386,7 @@ class GridPlotter(BasePlotter):
     ) -> Tuple[Figure, Axes]:
         """
         Plot SCHISM model boundaries.
-        
+
         Parameters
         ----------
         ax : Optional[Axes]
@@ -404,7 +404,7 @@ class GridPlotter(BasePlotter):
             Whether to add boundary labels. Default is True.
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         fig : Figure
@@ -413,30 +413,31 @@ class GridPlotter(BasePlotter):
             Axes object
         """
         fig, ax = self.create_figure(ax=ax, **kwargs)
-        
+
         # Set default colors
         if colors is None:
             colors = self.plot_config.boundary_colors
-        
+
         # Set default boundary types
         if boundary_types is None:
             boundary_types = ["ocean", "land"]
-        
+
         try:
             grid = self.grid
             hgrid = grid.pylibs_hgrid
-            
+
             # Ensure boundaries are computed
             if hasattr(hgrid, "compute_bnd") and not hasattr(hgrid, "nob"):
                 hgrid.compute_bnd()
-            
+
             legend_elements = []
-            
+
             # Plot ocean boundaries
-            if "ocean" in boundary_types:
+            if "ocean" in boundary_types and hasattr(grid, 'ocean_boundary'):
                 try:
                     x_ocean, y_ocean = grid.ocean_boundary()
-                    if len(x_ocean) > 0:
+                    # Safe array length check to avoid truth value ambiguity
+                    if x_ocean is not None and y_ocean is not None and x_ocean.size > 0 and y_ocean.size > 0:
                         line = ax.plot(
                             x_ocean, y_ocean,
                             color=colors.get("ocean", "red"),
@@ -447,12 +448,13 @@ class GridPlotter(BasePlotter):
                         legend_elements.append(line)
                 except Exception as e:
                     logger.warning(f"Could not plot ocean boundaries: {e}")
-            
+
             # Plot land boundaries
-            if "land" in boundary_types:
+            if "land" in boundary_types and hasattr(grid, 'land_boundary'):
                 try:
                     x_land, y_land = grid.land_boundary()
-                    if len(x_land) > 0:
+                    # Safe array length check to avoid truth value ambiguity
+                    if x_land is not None and y_land is not None and x_land.size > 0 and y_land.size > 0:
                         line = ax.plot(
                             x_land, y_land,
                             color=colors.get("land", "green"),
@@ -463,7 +465,7 @@ class GridPlotter(BasePlotter):
                         legend_elements.append(line)
                 except Exception as e:
                     logger.warning(f"Could not plot land boundaries: {e}")
-            
+
             # Plot tidal boundaries if available
             if "tidal" in boundary_types:
                 try:
@@ -472,20 +474,20 @@ class GridPlotter(BasePlotter):
                     logger.info("Tidal boundary plotting not yet implemented")
                 except Exception as e:
                     logger.warning(f"Could not plot tidal boundaries: {e}")
-            
+
             # Set extent based on grid
             extent = get_geographic_extent(hgrid.x, hgrid.y)
             ax.set_xlim(extent[0], extent[1])
             ax.set_ylim(extent[2], extent[3])
-            
+
             # Add legend if we have boundary elements and labels are requested
             if legend_elements and add_labels:
                 ax.legend(handles=legend_elements, loc='best')
-            
+
         except Exception as e:
             logger.error(f"Error plotting boundaries: {e}")
             raise
-        
+
         return self.finalize_plot(fig, ax, title="SCHISM Boundaries")
 
     def plot_grid_quality(
@@ -497,7 +499,7 @@ class GridPlotter(BasePlotter):
     ) -> Tuple[Figure, Axes]:
         """
         Plot grid quality metrics.
-        
+
         Parameters
         ----------
         ax : Optional[Axes]
@@ -509,7 +511,7 @@ class GridPlotter(BasePlotter):
             Colormap for quality visualization. Default is 'RdYlBu_r'.
         **kwargs : dict
             Additional plotting parameters
-            
+
         Returns
         -------
         fig : Figure
@@ -518,11 +520,11 @@ class GridPlotter(BasePlotter):
             Axes object
         """
         fig, ax = self.create_figure(ax=ax, **kwargs)
-        
+
         try:
             grid = self.grid
             hgrid = grid.pylibs_hgrid
-            
+
             # Calculate quality metric
             if metric == "skewness":
                 quality_values = self._calculate_skewness(hgrid)
@@ -534,45 +536,45 @@ class GridPlotter(BasePlotter):
                 cbar_label = "Aspect Ratio"
             else:
                 raise ValueError(f"Unknown quality metric: {metric}")
-            
+
             # Plot quality values using proper triangulation
             from .utils import prepare_triangulation_data
             import matplotlib.tri as tri
-            
+
             # Get proper triangulation with special node handling
             x_coords, y_coords, triangles = prepare_triangulation_data(hgrid)
             triangulation = tri.Triangulation(x_coords, y_coords, triangles)
-            
+
             cs = ax.tripcolor(
                 triangulation,
                 quality_values,
                 cmap=cmap,
                 shading='flat'
             )
-            
+
             # Add colorbar
             cbar = self.add_colorbar(fig, ax, cs, label=cbar_label)
-            
+
             # Set extent
             extent = get_geographic_extent(hgrid.x, hgrid.y)
             ax.set_xlim(extent[0], extent[1])
             ax.set_ylim(extent[2], extent[3])
-            
+
         except Exception as e:
             logger.error(f"Error plotting grid quality: {e}")
             raise
-        
+
         return self.finalize_plot(fig, ax, title=title)
 
     def _calculate_skewness(self, hgrid) -> np.ndarray:
         """
         Calculate grid element skewness.
-        
+
         Parameters
         ----------
         hgrid : Any
             SCHISM horizontal grid object
-            
+
         Returns
         -------
         skewness : np.ndarray
@@ -587,12 +589,12 @@ class GridPlotter(BasePlotter):
     def _calculate_aspect_ratio(self, hgrid) -> np.ndarray:
         """
         Calculate grid element aspect ratios.
-        
+
         Parameters
         ----------
         hgrid : Any
             SCHISM horizontal grid object
-            
+
         Returns
         -------
         aspect_ratios : np.ndarray

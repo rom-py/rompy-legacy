@@ -750,13 +750,22 @@ class OverviewPlotter(BasePlotter):
         try:
             # Try to get atmospheric data from data plotter
             if hasattr(self.data_plotter, 'plot_atmospheric_spatial'):
-                self.data_plotter.plot_atmospheric_spatial(ax=ax, show_colorbar=False, **kwargs)
+                # Remove show_colorbar parameter that's not accepted by plot_atmospheric_spatial
+                filtered_kwargs = {k: v for k, v in kwargs.items() if k != 'show_colorbar'}
+                fig, _ = self.data_plotter.plot_atmospheric_spatial(ax=ax, **filtered_kwargs)
+                # Don't add colorbar for overview plots - keep it simple
+                if hasattr(fig, 'axes'):
+                    for a in fig.axes:
+                        if hasattr(a, 'collections'):
+                            for coll in a.collections:
+                                if hasattr(coll, 'colorbar') and coll.colorbar:
+                                    coll.colorbar.remove()
             else:
                 ax.text(0.5, 0.5, "Atmospheric data unavailable",
                        ha='center', va='center', transform=ax.transAxes)
         except Exception as e:
             logger.warning(f"Could not plot atmospheric overview: {e}")
-            ax.text(0.5, 0.5, "Atmospheric data unavailable",
+            ax.text(0.5, 0.5, "No atmospheric data available for analysis",
                    ha='center', va='center', transform=ax.transAxes)
         ax.set_title('Atmospheric Forcing', fontweight='bold')
 

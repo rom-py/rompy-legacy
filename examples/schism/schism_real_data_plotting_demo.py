@@ -191,6 +191,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
         else:
             plot_dir = None
 
+        # Collect figures for interactive display
+        interactive_figures = []
+
         # 1. Basic Grid Plots
         logger.info("Creating basic grid plots...")
         try:
@@ -198,9 +201,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "01_grid_structure.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved grid structure plot")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create grid plot: {e}")
 
@@ -211,9 +214,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "02_bathymetry.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved bathymetry plot")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create bathymetry plot: {e}")
 
@@ -224,9 +227,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "03_boundaries.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved boundaries plot")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create boundaries plot: {e}")
 
@@ -238,9 +241,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
                 if save_plots and plot_dir:
                     fig.savefig(plot_dir / "04_atmospheric_forcing.png", dpi=150, bbox_inches='tight')
                     logger.info("Saved atmospheric forcing plot")
+                    plt.close(fig)
                 else:
-                    plt.show()
-                plt.close(fig)
+                    interactive_figures.append(fig)
             except Exception as e:
                 logger.warning(f"Could not create atmospheric forcing plot: {e}")
 
@@ -253,9 +256,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
                     if save_plots and plot_dir:
                         fig.savefig(plot_dir / f"05_boundary_data_{i+1}.png", dpi=150, bbox_inches='tight')
                         logger.info(f"Saved boundary data plot {i+1}")
+                        plt.close(fig)
                     else:
-                        plt.show()
-                    plt.close(fig)
+                        interactive_figures.append(fig)
                 except Exception as e:
                     logger.warning(f"Could not create boundary data plot for {boundary_file}: {e}")
 
@@ -266,9 +269,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "06_comprehensive_overview.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved comprehensive overview")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create comprehensive overview: {e}")
 
@@ -279,9 +282,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "07_grid_analysis.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved grid analysis overview")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create grid analysis overview: {e}")
 
@@ -292,9 +295,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "08_data_analysis.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved data analysis overview")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create data analysis overview: {e}")
 
@@ -318,9 +321,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "09_validation_summary.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved validation summary")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
 
         except Exception as e:
             logger.warning(f"Could not run model validation: {e}")
@@ -333,9 +336,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "10_tidal_input_elevation.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved tidal input elevation plot")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create tidal input elevation plot: {e}")
 
@@ -345,9 +348,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "11_tidal_input_velocity.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved tidal input velocity plot")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create tidal input velocity plot: {e}")
 
@@ -357,9 +360,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "12_tidal_amplitude_phase_M2.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved tidal M2 amplitude/phase maps")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create tidal amplitude/phase maps: {e}")
 
@@ -372,9 +375,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
                 if save_plots and plot_dir:
                     fig.savefig(plot_dir / "13_schism_boundary_elevation.png", dpi=150, bbox_inches='tight')
                     logger.info("Saved SCHISM boundary elevation plot")
+                    plt.close(fig)
                 else:
-                    plt.show()
-                plt.close(fig)
+                    interactive_figures.append(fig)
             except Exception as e:
                 logger.warning(f"Could not create SCHISM boundary elevation plot: {e}")
 
@@ -384,9 +387,9 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
                 if save_plots and plot_dir:
                     fig.savefig(plot_dir / "14_schism_boundary_summary.png", dpi=150, bbox_inches='tight')
                     logger.info("Saved SCHISM boundary summary plot")
+                    plt.close(fig)
                 else:
-                    plt.show()
-                plt.close(fig)
+                    interactive_figures.append(fig)
             except Exception as e:
                 logger.warning(f"Could not create SCHISM boundary summary plot: {e}")
 
@@ -397,24 +400,126 @@ def create_plots_from_real_data(files: dict, model_run, save_plots: bool = False
             if save_plots and plot_dir:
                 fig.savefig(plot_dir / "15_tidal_analysis_overview.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved comprehensive tidal analysis overview")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create comprehensive tidal analysis overview: {e}")
 
-        # 13. Quality Assessment
+        # 13. Atmospheric Analysis Overview (Input vs Processed Data)
+        logger.info("Creating atmospheric analysis overview...")
+        try:
+            fig, axes = plotter.plot_atmospheric_analysis_overview(
+                time_hours=24,
+                plot_type="wind_speed",
+                variable="air",
+                figsize=(20, 12)
+            )
+            if save_plots and plot_dir:
+                fig.savefig(plot_dir / "16_atmospheric_analysis_overview.png", dpi=150, bbox_inches='tight')
+                logger.info("Saved atmospheric analysis overview")
+                plt.close(fig)
+            else:
+                interactive_figures.append(fig)
+        except Exception as e:
+            logger.warning(f"Could not create atmospheric analysis overview: {e}")
+
+        # 14. Ocean Boundary Analysis Overview - 2D (Input vs Processed Data)
+        logger.info("Creating 2D ocean boundary analysis overview...")
+        try:
+            fig, axes = plotter.plot_ocean_boundary_analysis_overview(
+                time_hours=24,
+                plot_type="elevation",
+                boundary_type="2d",
+                figsize=(20, 12)
+            )
+            if save_plots and plot_dir:
+                fig.savefig(plot_dir / "17_ocean_boundary_2d_overview.png", dpi=150, bbox_inches='tight')
+                logger.info("Saved 2D ocean boundary analysis overview")
+                plt.close(fig)
+            else:
+                interactive_figures.append(fig)
+        except Exception as e:
+            logger.warning(f"Could not create 2D ocean boundary analysis overview: {e}")
+
+        # 15. Ocean Boundary Analysis Overview - 3D (Input vs Processed Data)
+        logger.info("Creating 3D ocean boundary analysis overview...")
+        try:
+            fig, axes = plotter.plot_ocean_boundary_analysis_overview(
+                time_hours=24,
+                plot_type="velocity_magnitude",
+                boundary_type="3d",
+                figsize=(20, 12)
+            )
+            if save_plots and plot_dir:
+                fig.savefig(plot_dir / "18_ocean_boundary_3d_overview.png", dpi=150, bbox_inches='tight')
+                logger.info("Saved 3D ocean boundary analysis overview")
+                plt.close(fig)
+            else:
+                interactive_figures.append(fig)
+        except Exception as e:
+            logger.warning(f"Could not create 3D ocean boundary analysis overview: {e}")
+
+        # 16. Additional Atmospheric Plot Types
+        logger.info("Creating additional atmospheric plots...")
+        for plot_type in ["pressure", "temperature"]:
+            try:
+                fig, axes = plotter.plot_atmospheric_analysis_overview(
+                    time_hours=24,
+                    plot_type=plot_type,
+                    variable="air",
+                    figsize=(20, 12)
+                )
+                if save_plots and plot_dir:
+                    fig.savefig(plot_dir / f"19_atmospheric_{plot_type}_overview.png", dpi=150, bbox_inches='tight')
+                    logger.info(f"Saved atmospheric {plot_type} overview")
+                    plt.close(fig)
+                else:
+                    interactive_figures.append(fig)
+            except Exception as e:
+                logger.warning(f"Could not create atmospheric {plot_type} overview: {e}")
+
+        # 17. Additional Ocean Boundary Plot Types
+        logger.info("Creating additional ocean boundary plots...")
+        for plot_type in ["temperature", "salinity"]:
+            try:
+                fig, axes = plotter.plot_ocean_boundary_analysis_overview(
+                    time_hours=24,
+                    plot_type=plot_type,
+                    boundary_type="3d",
+                    figsize=(20, 12)
+                )
+                if save_plots and plot_dir:
+                    fig.savefig(plot_dir / f"20_ocean_boundary_{plot_type}_overview.png", dpi=150, bbox_inches='tight')
+                    logger.info(f"Saved ocean boundary {plot_type} overview")
+                    plt.close(fig)
+                else:
+                    interactive_figures.append(fig)
+            except Exception as e:
+                logger.warning(f"Could not create ocean boundary {plot_type} overview: {e}")
+
+        # 18. Quality Assessment
         logger.info("Creating quality assessment...")
         try:
             fig = plotter.plot_quality_assessment(figsize=(10, 10))
             if save_plots and plot_dir:
-                fig.savefig(plot_dir / "16_quality_assessment.png", dpi=150, bbox_inches='tight')
+                fig.savefig(plot_dir / "21_quality_assessment.png", dpi=150, bbox_inches='tight')
                 logger.info("Saved quality assessment")
+                plt.close(fig)
             else:
-                plt.show()
-            plt.close(fig)
+                interactive_figures.append(fig)
         except Exception as e:
             logger.warning(f"Could not create quality assessment: {e}")
+
+        # Show all plots at once for interactive mode
+        if interactive_figures:
+            logger.info(f"Displaying {len(interactive_figures)} plots interactively...")
+            logger.info("Close each plot window to see the next one, or close all to continue.")
+            plt.show()
+
+            # Clean up figures after showing
+            for fig in interactive_figures:
+                plt.close(fig)
 
         if save_plots and plot_dir:
             logger.info(f"All plots saved to: {plot_dir}")
@@ -500,6 +605,9 @@ def main():
                 logger.info("  - Tidal input data plots (TPXO elevation, velocity, amplitude/phase)")
                 logger.info("  - SCHISM boundary data plots (actual bctides.in data)")
                 logger.info("  - Comprehensive tidal analysis overview")
+                logger.info("  - Atmospheric input vs processed data comparison plots")
+                logger.info("  - Ocean boundary input vs processed data comparison plots (2D/3D)")
+                logger.info("  - Additional atmospheric and ocean boundary parameter plots")
                 logger.info("  - Model validation and quality assessment")
 
         return 0
