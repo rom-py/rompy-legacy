@@ -1,12 +1,13 @@
 FROM ubuntu:20.04
 
-WORKDIR /tmp/schism                                                                                                                                                                                                                                                                                                    0B        buildkit.dockerfile.v0
+WORKDIR /tmp/schism
 
-RUN apt-get update -y && apt-get upgrade -y &&\
-    apt-get install -y git vim sudo tar unzip subversion wget &&\    
-        gcc g++ gfortran lftp openmpi-bin libopenmpi-dev &&\
-        libnetcdf-dev libnetcdff-dev make cmake python3 python3-dev &&\
-     apt-get clean && rm -rf /var/lib/apt/lists/* 
+RUN apt-get update -y && apt-get upgrade -y && \
+    apt-get install -y \
+        git vim sudo tar unzip subversion wget \
+        gcc g++ gfortran lftp openmpi-bin libopenmpi-dev \
+        libnetcdf-dev libnetcdff-dev make cmake python3 python3-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY compile.sh v5.*.tar.gz /usr/src/
 COPY include_modules_wwm /usr/src/include_modules
