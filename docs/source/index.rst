@@ -10,7 +10,7 @@ This library takes an opinionated approach to combining the functionality of the
 
 There are two base classes BaseModel and BaseGrid. BaseModel implements the cookie-cutter code and model configuration packaging. BaseGrid defines a loose definition of the grid as two arrays of x, y points that establish the models geographic extents, bounding box and convex hull.
 
-At present only one example model has been implemented - the SwanModel (http://swanmodel.sourceforge.net/). An example cookie-cutter template for swan is provided in the ```rompy/templates``` folder. 
+At present only one example model has been implemented - the SwanModel (http://swanmodel.sourceforge.net/). An example cookie-cutter template for swan is provided in the ```rompy/templates``` folder.
 
 A model implementation will generally consist of the following components:
 
@@ -37,6 +37,7 @@ The final main component of the library is an intake driver that builds on the i
     models
     demo
     api
+    developer/index
     relational_diagrams
 
 Indices and tables
