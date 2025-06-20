@@ -40,7 +40,7 @@ find_project_root() {
 # Configuration
 SCHISM_VERSION="v5.11.1"
 PROJECT_ROOT="$(find_project_root)"
-BASE_OUTPUT_DIR="boundary_conditions_test_outputs"
+BASE_OUTPUT_DIR="$PROJECT_ROOT/boundary_conditions_test_outputs"
 EXAMPLES_DIR="$PROJECT_ROOT/notebooks/schism/boundary_conditions_examples"
 
 # Color codes for output
@@ -199,6 +199,22 @@ show_help() {
     done
 }
 
+# Extract forcing tidal data from $PROJECT_ROOT/tests/schism/test_data/tpxo9-neaus.tar.gz
+TIDAL_ARCHIVE="$PROJECT_ROOT/tests/schism/test_data/tpxo9-neaus.tar.gz"
+TIDAL_DIR="$PROJECT_ROOT/tests/schism/test_data"
+
+if [ ! -f "$TIDAL_ARCHIVE" ]; then
+    echo "Error: Tidal data archive not found at $TIDAL_ARCHIVE" >&2
+    exit 1
+fi
+
+if ! tar -xzf "$TIDAL_ARCHIVE" -C "$TIDAL_DIR"; then
+    echo "Error: Failed to extract $TIDAL_ARCHIVE" >&2
+    exit 1
+fi
+
+echo "Tidal data extracted successfully to $TIDAL_DIR"
+
 # Get list of examples to run based on category
 get_examples_to_run() {
     local examples_to_run=()
@@ -293,23 +309,33 @@ run_example() {
             schism_dir="schism_mixed_boundaries/mixed_boundaries_example"
             ;;
     esac
+    schism_dir="$PROJECT_ROOT/$schism_dir"
 
     if [[ ! -d "$schism_dir" ]]; then
         log_error "Generated SCHISM directory not found: $schism_dir"
         return 1
     fi
 
+    # Copy the station.in file if it exists to the schism_dir
+    local station_file="$PROJECT_ROOT/notebooks/schism/station.in"
+    if [[ -f "$station_file" ]]; then
+        log_info "Copying station.in file to SCHISM directory"
+        cp "$station_file" "$schism_dir/"
+    else
+        log_warning "station.in file not found, skipping copy"
+    fi
+
     # Step 2: Inspect directory structure
     log_info "Inspecting generated directory structure..."
-    docker run -v "./$schism_dir:/tmp/schism:Z" schism bash -c "ls /tmp/schism/ > /dev/null && echo 'Files in directory:' && find /tmp/schism -type f -name '*.in' -o -name '*.gr3' -o -name '*.nc'"
+    docker run -v "$schism_dir:/tmp/schism:Z" schism bash -c "ls /tmp/schism/ > /dev/null && echo 'Files in directory:' && find /tmp/schism -type f -name '*.in' -o -name '*.gr3' -o -name '*.nc'"
 
     # Step 3: Run SCHISM simulation
     log_info "Running SCHISM simulation..."
-    if docker run -v "./$schism_dir:/tmp/schism:Z" schism bash -c "cd /tmp/schism && mpirun --allow-run-as-root -n 8 schism_${SCHISM_VERSION} 4"; then
+    if docker run -v "$schism_dir:/tmp/schism:Z" schism bash -c "cd /tmp/schism && mpirun --allow-run-as-root -n 8 schism_${SCHISM_VERSION} 4"; then
         log_success "SCHISM simulation completed successfully for $example_name"
 
         # Check for output files
-        if docker run -v "./$schism_dir:/tmp/schism:Z" schism bash -c "ls -la /tmp/schism/outputs/*.nc" &>/dev/null; then
+        if docker run -v "$schism_dir:/tmp/schism:Z" schism bash -c "ls -la /tmp/schism/outputs/*.nc" &>/dev/null; then
             log_success "Output files generated successfully"
         else
             log_warning "No output files found - simulation may have failed"
