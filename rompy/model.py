@@ -15,7 +15,7 @@ import time as time_module
 import zipfile as zf
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Literal, Union
 
 from pydantic import Field
 
@@ -82,6 +82,9 @@ class ModelRun(RompyBaseModel):
 
     # Initialize formatting variables in __init__
 
+    model_type: Literal["modelrun"] = Field(
+        "modelrun", description="The model type for SCHISM."
+    )
     run_id: str = Field("run_id", description="The run id")
     period: TimeRange = Field(
         TimeRange(
