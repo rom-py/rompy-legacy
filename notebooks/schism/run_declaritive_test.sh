@@ -4,7 +4,7 @@ set -e
 
 # test=nml_3d_tidal_velocities
 # test=nml
-test="nml_3d_nontidal_velocities_new"
+test="nml_3d_tidal_velocities"
 version=v5.11.1
 
 
@@ -34,6 +34,6 @@ docker run -v ./schism_declaritive/test_schism_${test}:/tmp/schism:Z schism bash
 echo "------------ SCHISM run complete ----------------"
 
 
-# echo ""
-# echo "--------------- Preparing plots ------------------"
-# python ../../rompy/schism/utils.py ./schism_declaritive/test_schism_${test}/outputs/schout_1.nc
+echo ""
+echo "--------------- Preparing plots ------------------"
+python ../../rompy/schism/utils.py ./schism_declaritive/test_schism_${test}/outputs/out2d_1.nc

@@ -1312,16 +1312,16 @@ class DataPlotter(BasePlotter):
 
     def _get_tidal_frequency(self, constituent):
         """Get tidal frequency in cycles per hour for common constituents."""
-        # Tidal frequencies in cycles per hour
+        # Tidal frequencies in cycles per hour based on standard periods
         frequencies = {
-            'M2': 1.40519e-4 * 3600,  # Convert from cycles/second to cycles/hour
-            'S2': 1.45444e-4 * 3600,
-            'N2': 1.37880e-4 * 3600,
-            'K2': 1.45842e-4 * 3600,
-            'K1': 0.72921e-4 * 3600,
-            'O1': 0.67598e-4 * 3600,
-            'P1': 0.72523e-4 * 3600,
-            'Q1': 0.64959e-4 * 3600,
+            'M2': 1.0 / 12.421,  # Principal lunar semi-diurnal: 12.421 hours
+            'S2': 1.0 / 12.000,  # Principal solar semi-diurnal: 12.000 hours
+            'N2': 1.0 / 12.658,  # Lunar elliptic semi-diurnal: 12.658 hours
+            'K2': 1.0 / 11.967,  # Lunisolar semi-diurnal: 11.967 hours
+            'K1': 1.0 / 23.934,  # Lunar diurnal: 23.934 hours
+            'O1': 1.0 / 25.819,  # Principal lunar diurnal: 25.819 hours
+            'P1': 1.0 / 24.066,  # Principal solar diurnal: 24.066 hours
+            'Q1': 1.0 / 26.868,  # Lunar elliptic diurnal: 26.868 hours
         }
 
         # Check if constituent is a string name
