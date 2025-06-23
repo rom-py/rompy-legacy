@@ -201,8 +201,8 @@ def run(config, backend_config, dry_run, verbose, log_dir, show_warnings, ascii_
             logger.info("Dry run mode - skipping model execution")
             return
 
-        # Execute model
-        success = model_run.run(backend=backend_cfg)
+        # Execute model with workspace directory to avoid double generation
+        success = model_run.run(backend=backend_cfg, workspace_dir=staging_dir)
 
         elapsed = datetime.now() - start_time
         if success:
