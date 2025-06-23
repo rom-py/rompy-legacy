@@ -25,6 +25,7 @@ from rompy.schism.grid import SCHISMGrid
 from .bctides import Bctides
 from rompy.schism.boundary_core import (
     BoundaryHandler,
+    TidalDataset,
     BoundaryConfig,
     ElevationType,
     VelocityType,
@@ -60,35 +61,6 @@ def to_python_type(obj):
         return {k: to_python_type(v) for k, v in obj.items()}
     else:
         return obj
-
-
-class TidalDataset(RompyBaseModel):
-    """This class is used to define the tidal dataset"""
-
-    data_type: Literal["tidal_dataset"] = Field(
-        default="tidal_dataset",
-        description="Model type discriminator",
-    )
-    elevations: str = Field(..., description="Path to elevations file")
-    velocities: str = Field(..., description="Path to currents file")
-
-    def get(self, destdir: str | Path) -> str:
-        """Make tidal data files available.
-
-        Parameters
-        ----------
-        destdir : str | Path
-            Destination directory
-
-        Returns
-        -------
-        str
-            Path to the destination directory
-        """
-        # Set environment variables for tidal data paths
-        os.environ["TPXO_ELEVATION"] = str(self.elevations)
-        os.environ["TPXO_VELOCITY"] = str(self.velocities)
-        return str(destdir)
 
 
 class BoundarySetup(RompyBaseModel):
@@ -195,23 +167,6 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
     tidal_data: Optional[TidalDataset] = Field(
         None, description="Tidal dataset with elevation and velocity files"
     )
-
-    # Basic tidal configuration
-    constituents: List[str] = Field(
-        default_factory=lambda: ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"],
-        description="Tidal constituents to include",
-    )
-    tidal_database: str = Field(default="tpxo", description="Tidal database to use")
-
-    # Earth tidal potential settings
-    ntip: int = Field(
-        default=0,
-        description="Number of tidal potential regions (0 to disable, >0 to enable)",
-    )
-    tip_dp: float = Field(
-        default=1.0, description="Depth threshold for tidal potential calculations"
-    )
-    cutoff_depth: float = Field(default=50.0, description="Cutoff depth for tides")
 
     # Legacy boundary configuration
     flags: Optional[List[List[int]]] = Field(
@@ -451,30 +406,10 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
         # Use provided setup_type or fallback to instance attribute
         active_setup_type = setup_type or self.setup_type
 
-        # Get tidal data paths
-        tidal_elevations = None
-        tidal_velocities = None
-        if self.tidal_data:
-            tidal_elevations = self.tidal_data.elevations
-            tidal_velocities = self.tidal_data.velocities
-
-        # Ensure constituents is a valid list
-        constituents = (
-            self.constituents
-            if self.constituents is not None
-            else ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"]
-        )
-
         # Create boundary handler
         boundary = TidalBoundary(
             grid_path=grid.hgrid.source,
-            constituents=constituents,
-            tidal_database=self.tidal_database,
-            tidal_elevations=tidal_elevations,
-            tidal_velocities=tidal_velocities,
-            ntip=self.ntip,
-            tip_dp=self.tip_dp,
-            cutoff_depth=self.cutoff_depth,
+            tidal_data=self.tidal_data,
         )
 
         # Configure boundaries
@@ -646,10 +581,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
 
 def create_tidal_only_config(
     constituents: List[str] = None,
-    tidal_database: str = "tpxo",
-    tidal_elevations: str = None,
-    tidal_velocities: str = None,
-    ntip: int = 0,
+    tidal_model: str = "OCEANUM-atlas-v2",
 ) -> SCHISMDataTidesEnhanced:
     """Create a configuration for tidal-only boundaries.
 
@@ -657,40 +589,27 @@ def create_tidal_only_config(
     ----------
     constituents : list of str, optional
         Tidal constituents to use, defaults to major constituents
-    tidal_database : str, optional
-        Tidal database to use, by default "tpxo"
-    tidal_elevations : str, optional
-        Path to tidal elevations file
-    tidal_velocities : str, optional
-        Path to tidal velocities file
-    ntip : int, optional
-        Number of tidal potential regions, by default 0
-
+    tidal_model : str, optional
+        Tidal database to use, by default "OCEANUM-atlas-v2"
     Returns
     -------
     SCHISMDataTidesEnhanced
         Configured tidal data handler
     """
-    tidal_data = None
-    if tidal_elevations and tidal_velocities:
-        tidal_data = TidalDataset(
-            elevations=tidal_elevations, velocities=tidal_velocities
-        )
+    tidal_data = TidalDataset(
+        constituents=constituents or "major",
+        tidal_model=tidal_model,
+    )
 
     return SCHISMDataTidesEnhanced(
-        constituents=constituents or ["O1", "K1", "Q1", "P1", "M2", "S2", "K2", "N2"],
-        tidal_database=tidal_database,
         tidal_data=tidal_data,
-        ntip=ntip,
         setup_type="tidal",
     )
 
 
 def create_hybrid_config(
     constituents: List[str] = None,
-    tidal_database: str = "tpxo",
-    tidal_elevations: str = None,
-    tidal_velocities: str = None,
+    tidal_model: str = "OCEANUM-atlas-v2",
 ) -> SCHISMDataTidesEnhanced:
     """Create a configuration for hybrid tidal + external data boundaries.
 
@@ -698,27 +617,20 @@ def create_hybrid_config(
     ----------
     constituents : list of str, optional
         Tidal constituents to use, defaults to major constituents
-    tidal_database : str, optional
-        Tidal database to use, by default "tpxo"
-    tidal_elevations : str, optional
-        Path to tidal elevations file
-    tidal_velocities : str, optional
-        Path to tidal velocities file
+    tidal_model : str, optional
+        Tidal database to use, by default "OCEANUM-atlas-v2"
 
     Returns
     -------
     SCHISMDataTidesEnhanced
         Configured tidal data handler
     """
-    tidal_data = None
-    if tidal_elevations and tidal_velocities:
-        tidal_data = TidalDataset(
-            elevations=tidal_elevations, velocities=tidal_velocities
-        )
+    tidal_data = TidalDataset(
+        constituents=constituents or "major",
+        tidal_model=tidal_model,
+    )
 
     return SCHISMDataTidesEnhanced(
-        constituents=constituents or ["O1", "K1", "Q1", "P1", "M2", "S2", "K2", "N2"],
-        tidal_database=tidal_database,
         tidal_data=tidal_data,
         setup_type="hybrid",
     )
@@ -729,9 +641,7 @@ def create_river_config(
     river_flow: float = -100.0,
     other_boundaries: Literal["tidal", "none"] = "tidal",
     constituents: List[str] = None,
-    tidal_database: str = "tpxo",
-    tidal_elevations: str = None,
-    tidal_velocities: str = None,
+    tidal_model: str = "OCEANUM-atlas-v2",
 ) -> SCHISMDataTidesEnhanced:
     """Create a configuration with a river boundary.
 
@@ -745,28 +655,21 @@ def create_river_config(
         How to handle other boundaries, by default "tidal"
     constituents : list of str, optional
         Tidal constituents to use, defaults to major constituents
-    tidal_database : str, optional
-        Tidal database to use, by default "tpxo"
-    tidal_elevations : str, optional
-        Path to tidal elevations file
-    tidal_velocities : str, optional
-        Path to tidal velocities file
+    tidal_model : str, optional
+        Tidal database to use, by default "OCEANUM-atlas-v2"
 
     Returns
     -------
     SCHISMDataTidesEnhanced
         Configured tidal data handler
     """
-    tidal_data = None
-    if tidal_elevations and tidal_velocities:
-        tidal_data = TidalDataset(
-            elevations=tidal_elevations, velocities=tidal_velocities
-        )
+    tidal_data = TidalDataset(
+        constituents=constituents or "major",
+        tidal_model=tidal_model,
+    )
 
     # Create basic configuration
     config = SCHISMDataTidesEnhanced(
-        constituents=constituents or ["O1", "K1", "Q1", "P1", "M2", "S2", "K2", "N2"],
-        tidal_database=tidal_database,
         tidal_data=tidal_data,
         boundaries={},
     )
@@ -809,9 +712,7 @@ def create_nested_config(
     inflow_relax: float = 0.8,
     outflow_relax: float = 0.8,
     constituents: List[str] = None,
-    tidal_database: str = "tpxo",
-    tidal_elevations: str = None,
-    tidal_velocities: str = None,
+    tidal_model: str = "OCEANUM-atlas-v2",
 ) -> SCHISMDataTidesEnhanced:
     """Create a configuration for nested model with external data.
 
@@ -825,23 +726,18 @@ def create_nested_config(
         Relaxation factor for outflow, by default 0.8
     constituents : list of str, optional
         Tidal constituents to use if with_tides=True
-    tidal_database : str, optional
-        Tidal database to use if with_tides=True, by default "tpxo"
-    tidal_elevations : str, optional
-        Path to tidal elevations file if with_tides=True
-    tidal_velocities : str, optional
-        Path to tidal velocities file if with_tides=True
+    tidal_model : str, optional
+        Tidal database to use, by default "OCEANUM-atlas-v2"
 
     Returns
     -------
     SCHISMDataTidesEnhanced
         Configured tidal data handler
     """
-    tidal_data = None
-    if with_tides and tidal_elevations and tidal_velocities:
-        tidal_data = TidalDataset(
-            elevations=tidal_elevations, velocities=tidal_velocities
-        )
+    tidal_data = TidalDataset(
+        constituents=constituents or "major",
+        tidal_model=tidal_model,
+    )
 
     # Create boundary configuration
     if with_tides:
@@ -864,8 +760,6 @@ def create_nested_config(
         )
 
     return SCHISMDataTidesEnhanced(
-        constituents=constituents if with_tides else None,
-        tidal_database=tidal_database if with_tides else None,
         tidal_data=tidal_data,
         boundaries={0: default_config},  # Will be applied to all boundaries
     )

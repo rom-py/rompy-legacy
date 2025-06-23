@@ -16,7 +16,7 @@ import pandas as pd
 import xarray as xr
 
 # Ensure PyLibs is in path
-sys.path.append("/home/tdurrant/source/pylibs")
+# sys.path.append("/home/tdurrant/source/pylibs")  - TODO: review if this is needed
 
 logger = logging.getLogger(__name__)
 

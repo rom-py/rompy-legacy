@@ -199,9 +199,9 @@ show_help() {
     done
 }
 
-# Extract forcing tidal data from $PROJECT_ROOT/tests/schism/test_data/tpxo9-neaus.tar.gz
-TIDAL_ARCHIVE="$PROJECT_ROOT/tests/schism/test_data/tpxo9-neaus.tar.gz"
-TIDAL_DIR="$PROJECT_ROOT/tests/schism/test_data"
+# Extract forcing tidal data from $PROJECT_ROOT/tests/schism/test_data/tides/oceanum-atlas.tar.gz
+TIDAL_ARCHIVE="$PROJECT_ROOT/tests/schism/test_data/tides/oceanum-atlas.tar.gz"
+TIDAL_DIR="$PROJECT_ROOT/tests/schism/test_data/tides"
 
 if [ ! -f "$TIDAL_ARCHIVE" ]; then
     echo "Error: Tidal data archive not found at $TIDAL_ARCHIVE" >&2
@@ -283,30 +283,39 @@ run_example() {
     case "$example_name" in
         "basic_tidal")
             schism_dir="schism_tidal_basic/basic_tidal_example"
+            schism_exe_suffix=""
             ;;
         "extended_tidal")
             schism_dir="schism_tidal_extended/extended_tidal_example"
+            schism_exe_suffix=""
             ;;
         "tidal_with_potential")
             schism_dir="schism_tidal_potential/tidal_potential_example"
+            schism_exe_suffix=""
             ;;
         "hybrid_elevation")
             schism_dir="schism_hybrid_elevation/hybrid_elevation_example"
+            schism_exe_suffix=""
             ;;
         "full_hybrid")
             schism_dir="schism_full_hybrid/full_hybrid_example"
+            schism_exe_suffix=""
             ;;
         "simple_river")
             schism_dir="schism_simple_river/simple_river_example"
+            schism_exe_suffix=""
             ;;
         "multi_river")
             schism_dir="schism_multi_river/multi_river_example"
+            schism_exe_suffix=""
             ;;
         "nested_with_tides")
             schism_dir="schism_nested_with_tides/nested_with_tides_example"
+            schism_exe_suffix=""
             ;;
         "mixed_boundaries")
             schism_dir="schism_mixed_boundaries/mixed_boundaries_example"
+            schism_exe_suffix=""
             ;;
     esac
     schism_dir="$PROJECT_ROOT/$schism_dir"
@@ -331,7 +340,7 @@ run_example() {
 
     # Step 3: Run SCHISM simulation
     log_info "Running SCHISM simulation..."
-    if docker run -v "$schism_dir:/tmp/schism:Z" schism bash -c "cd /tmp/schism && mpirun --allow-run-as-root -n 8 schism_${SCHISM_VERSION} 4"; then
+    if docker run -v "$schism_dir:/tmp/schism:Z" schism bash -c "cd /tmp/schism && mpirun --allow-run-as-root -n 8 schism_${SCHISM_VERSION}${schism_exe_suffix} 4"; then
         log_success "SCHISM simulation completed successfully for $example_name"
 
         # Check for output files
@@ -363,6 +372,7 @@ main() {
     log_info "Project root: $PROJECT_ROOT"
     log_info "Examples directory: $EXAMPLES_DIR"
     log_info "SCHISM Version: $SCHISM_VERSION"
+    log_info "SCHISM Executable Suffix: $SCHISM_EXE_SUFFIX"
     log_info "Run category: $RUN_CATEGORY"
     log_info "Dry run: $DRY_RUN"
     log_info "Keep outputs: $KEEP_OUTPUTS"

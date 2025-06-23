@@ -51,7 +51,8 @@ from pathlib import Path
 from typing import Dict, List, Literal, Optional, Union, Any
 
 import numpy as np
-from pydantic import ConfigDict, Field, BaseModel
+from pydantic import ConfigDict, Field, BaseModel, field_validator
+
 
 # Ensure path to pylibs is available if needed
 if "/home/tdurrant/source/pylibs" not in sys.path:
@@ -112,6 +113,94 @@ class TidalSpecies(IntEnum):
     DIURNAL = 1  # Diurnal
     SEMI_DIURNAL = 2  # Semi-diurnal
 
+
+class TidalDataset(BaseModel):
+    """
+    This class is used to define the tidal dataset to use from an available pyTMD tidal database. 
+    Custom databases can be configured by providing a database.json file in the tidal database directory.
+    see https://pytmd.readthedocs.io/en/latest/getting_started/Getting-Started.html
+    """
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    tidal_database: Optional[Path] = Field(
+        None, description="Path to pyTMD tidal database directory. If None, defaults to pyTMD default."
+    )
+    tidal_model: Optional[str] = Field(
+        'FES2014', description="Name of the pyTMD tidal model to use (e.g., 'FES2014')"
+    )
+
+    # Basic tidal configuration
+    constituents: Union[List[str], str] = Field(
+        default_factory=lambda: ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"],
+        description="Tidal constituents to include",
+    )
+
+    # Earth tidal potential settings
+    tidal_potential: bool = Field(
+        default=False,
+        description="Apply Earth tidal potential loading to the model. The coefficients used any selected constituents with species 0, 1, 2.",
+    )
+    cutoff_depth: float = Field(default=50.0, description="Cutoff depth for Earth tidal potential loading to the model")
+
+    # Nodal corrections
+    nodal_corrections: bool = Field(
+        default=False,
+        description="Apply nodal corrections to tidal constituents",
+    )
+
+    tide_interpolation_method: str = Field(
+        default='bilinear',
+        description="Method for tidal interpolation. see https://pytmd.readthedocs.io/en/latest/api_reference/interpolate.html.",
+    )
+
+    extrapolate_tides: bool = Field(
+        default=False,
+        description="Extrapolate tidal constituents outside the domain. If False, will raise an error if any constituent is outside the domain.",
+    )
+
+    extrapolation_distance: float = Field(
+        default=50.0,
+        description="Distance in kilometre to extrapolate tidal constituents outside the tidal model. Only used if extrapolate_tides is True.",
+    )
+
+    extra_databases: Optional[List[Path]] = Field(
+        default=[], description="Extra tidal databases loaded from database.json if present"
+    )
+
+    def get(self) -> Dict[str, Any]:
+        """Get the tidal dataset as a dictionary."""
+
+        # Ensure extra_databases is a list of paths to JSON files
+        extra_databases = self.extra_databases
+        if self.tidal_database:
+            db_json = Path(self.tidal_database) / "database.json"
+            if db_json.exists():
+                if extra_databases is None:
+                    extra_databases = [db_json]
+                elif isinstance(extra_databases, list):
+                    if db_json not in extra_databases:
+                        extra_databases.append(db_json)
+
+        if len(extra_databases) > 0:
+            logger.info(f"Loading extra tidal databases from {extra_databases}")
+
+        return {
+            "constituents": self.constituents,
+            "tidal_database": self.tidal_database,
+            "tidal_model": self.tidal_model,
+            "tidal_potential": self.tidal_potential,
+            "cutoff_depth": self.cutoff_depth,
+            "nodal_corrections": self.nodal_corrections,
+            "tide_interpolation_method": self.tide_interpolation_method,
+            "extra_databases": extra_databases,
+        }
+
+    @field_validator("tidal_potential", "nodal_corrections", "extrapolate_tides", mode="before")
+    @classmethod
+    def ensure_python_bool(cls, v):
+        return bool(v)
+   
 
 class BoundaryConfig(BaseModel):
     """Configuration for a single SCHISM boundary segment."""
@@ -211,7 +300,7 @@ class BoundaryConfig(BaseModel):
             f"BoundaryConfig(elev_type={self.elev_type}, vel_type={self.vel_type}, "
             f"temp_type={self.temp_type}, salt_type={self.salt_type})"
         )
-
+ 
 
 class BoundaryHandler(BoundaryData):
     """Handler for SCHISM boundary conditions.
@@ -223,14 +312,8 @@ class BoundaryHandler(BoundaryData):
     def __init__(
         self,
         grid_path: Union[str, Path],
-        constituents: Union[str, List[str]] = "major",
-        tidal_database: str = "tpxo",
+        tidal_data: Optional[TidalDataset] = None,
         boundary_configs: Optional[Dict[int, BoundaryConfig]] = None,
-        tidal_elevations: Optional[str] = None,
-        tidal_velocities: Optional[str] = None,
-        ntip: int = 0,
-        tip_dp: float = 1.0,
-        cutoff_depth: float = 50.0,
         *args,
         **kwargs,
     ):
@@ -240,33 +323,16 @@ class BoundaryHandler(BoundaryData):
         ----------
         grid_path : str or Path
             Path to the SCHISM grid file
-        constituents : str or list of str, optional
-            Tidal constituents to use, by default "major"
-        tidal_database : str, optional
-            Tidal database to use, by default "tpxo"
+        tidal_data : TidalDataset, optional
+            Tidal dataset containing specification of tidal forcing
         boundary_configs : dict, optional
             Configuration for each boundary, keyed by boundary index
-        tidal_elevations : str, optional
-            Path to tidal elevations file
-        tidal_velocities : str, optional
-            Path to tidal velocities file
-        ntip : int, optional
-            Number of earth tidal potential regions, by default 0
-        tip_dp : float, optional
-            Depth threshold for tidal potential, by default 1.0
-        cutoff_depth : float, optional
-            Cutoff depth for tides, by default 50.0
+
         """
         super().__init__(grid_path, *args, **kwargs)
 
-        self.constituents = constituents
-        self.tidal_database = tidal_database if tidal_database is not None else "none"
-        self.boundary_configs = boundary_configs or {}
-        self.tidal_elevations = tidal_elevations
-        self.tidal_velocities = tidal_velocities
-        self.ntip = ntip
-        self.tip_dp = tip_dp
-        self.cutoff_depth = cutoff_depth
+        self.tidal_data = tidal_data 
+        self.boundary_configs = boundary_configs if boundary_configs is not None else {}
 
         # For storing start time and run duration
         self._start_time = None
@@ -640,11 +706,16 @@ class BoundaryHandler(BoundaryData):
         bctides = Bctides(
             hgrid=self.grid,
             flags=flags,
-            constituents=self.constituents,
-            tidal_database=self.tidal_database,
-            ntip=self.ntip,
-            tip_dp=self.tip_dp,
-            cutoff_depth=self.cutoff_depth,
+            constituents=self.tidal_data.constituents,
+            tidal_database=self.tidal_data.tidal_database,
+            tidal_model=self.tidal_data.tidal_model,
+            tidal_potential=self.tidal_data.tidal_potential,
+            cutoff_depth=self.tidal_data.cutoff_depth,
+            nodal_corrections=self.tidal_data.nodal_corrections,
+            tide_interpolation_method=self.tidal_data.tide_interpolation_method,
+            extrapolate_tides=self.tidal_data.extrapolate_tides,
+            extrapolation_distance=self.tidal_data.extrapolation_distance,
+            extra_databases=self.tidal_data.extra_databases,
             ethconst=ethconst,
             vthconst=vthconst,
             tthconst=tthconst,
@@ -654,8 +725,6 @@ class BoundaryHandler(BoundaryData):
             relax=constants.get("inflow_relax", []),  # For backward compatibility
             inflow_relax=inflow_relax,
             outflow_relax=outflow_relax,
-            tidal_elevations=self.tidal_elevations,
-            tidal_velocities=self.tidal_velocities,
             ncbn=ncbn,
             nfluxf=nfluxf,
             elev_th_path=None,  # Time history of elevation is not handled by this path yet
@@ -720,9 +789,12 @@ class BoundaryHandler(BoundaryData):
 def create_tidal_boundary(
     grid_path: Union[str, Path],
     constituents: Union[str, List[str]] = "major",
-    tidal_database: str = "tpxo",
-    tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None,
+    tidal_database: Union[str, Path] = None,
+    tidal_model: Optional[str] = 'FES2014',
+    nodal_corrections: bool = True,
+    tidal_potential: bool = True,
+    cutoff_depth: float = 50.0,
+    tide_interpolation_method: str = "bilinear",
 ) -> BoundaryHandler:
     """Create a tidal-only boundary.
 
@@ -732,24 +804,36 @@ def create_tidal_boundary(
         Path to SCHISM grid
     constituents : str or list, optional
         Tidal constituents, by default "major"
-    tidal_database : str, optional
-        Tidal database, by default "tpxo"
-    tidal_elevations : str, optional
-        Path to tidal elevation file
-    tidal_velocities : str, optional
-        Path to tidal velocity file
+    tidal_database : str or Path, optional
+        Tidal database path for pyTMD to use, by default None
+    tidal_model : str, optional
+        Tidal model to use, by default 'FES2014'
+    nodal_corrections : bool, optional
+        Whether to apply nodal corrections, by default True
+    tidal_potential : bool, optional
+        Whether to include tidal potential, by default True
+    cutoff_depth : float, optional
+        Depth threshold for tidal potential, by default 50.0
 
     Returns
     -------
     BoundaryHandler
         Configured tidal boundary
     """
+
+    tidal_data = TidalDataset(
+        constituents=constituents,
+        tidal_database=tidal_database,
+        tidal_model=tidal_model,
+        nodal_corrections=nodal_corrections,
+        tidal_potential=tidal_potential,
+        cutoff_depth=cutoff_depth,
+        tide_interpolation_method=tide_interpolation_method,)
+
     boundary = BoundaryHandler(
         grid_path=grid_path,
         constituents=constituents,
-        tidal_database=tidal_database,
-        tidal_elevations=tidal_elevations,
-        tidal_velocities=tidal_velocities,
+        tidal_data=tidal_data,
     )
 
     # Set default configuration for all boundaries: pure tidal
@@ -766,27 +850,33 @@ def create_tidal_boundary(
 
 
 def create_tidal_only_boundary_config(
-    constituents: List[str] = ["M2", "S2", "N2", "K1", "O1"],
-    tidal_database: str = "tpxo",
-    tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None,
-    ntip: int = 0,
+    constituents: Union[str, List[str]] = "major",
+    tidal_database: Union[str, Path] = None,
+    tidal_model: Optional[str] = 'FES2014',
+    nodal_corrections: bool = True,
+    tidal_potential: bool = True,
+    cutoff_depth: float = 50.0,
+    tide_interpolation_method: str = "bilinear",
 ):
     """
     Create a configuration where all open boundaries are treated as tidal boundaries.
 
     Parameters
     ----------
-    constituents : List[str]
-        Tidal constituents to include
-    tidal_database : str
-        Tidal database to use
-    tidal_elevations : str, optional
-        Path to tidal elevation data
-    tidal_velocities : str, optional
-        Path to tidal velocity data
-    ntip : int
-        Nodal factor method (0=standard)
+    constituents : str or list, optional
+        Tidal constituents to include, by default "major"
+    tidal_database : str or Path, optional
+        Path to tidal database for pyTMD, by default None
+    tidal_model : str, optional
+        Tidal model to use, by default 'FES2014'
+    nodal_corrections : bool, optional
+        Whether to apply nodal corrections, by default True
+    tidal_potential : bool, optional
+        Whether to include tidal potential, by default True
+    cutoff_depth : float, optional
+        Depth threshold for tidal potential, by default 50.0
+    tide_interpolation_method : str, optional
+        Method for tide interpolation, by default "bilinear"
 
     Returns
     -------
@@ -794,21 +884,21 @@ def create_tidal_only_boundary_config(
         Configured boundary conditions
     """
     from rompy.schism.data import SCHISMDataBoundaryConditions
-    from rompy.schism.tides_enhanced import TidalDataset
     
-    # Create tidal dataset if both paths are provided
-    tidal_data = None
-    if tidal_elevations and tidal_velocities:
-        tidal_data = TidalDataset(
-            elevations=tidal_elevations, velocities=tidal_velocities
-        )
+    # Create tidal dataset 
+    tidal_data = TidalDataset(
+        constituents=constituents,
+        tidal_database=tidal_database,
+        tidal_model=tidal_model,
+        nodal_corrections=nodal_corrections,
+        tidal_potential=tidal_potential,
+        cutoff_depth=cutoff_depth,
+        tide_interpolation_method=tide_interpolation_method,
+    )
 
     # Create the config with tidal setup
     config = SCHISMDataBoundaryConditions(
-        constituents=constituents,
-        tidal_database=tidal_database,
         tidal_data=tidal_data,
-        ntip=ntip,
         setup_type="tidal",
         boundaries={},
         hotstart_config=None,
@@ -818,10 +908,13 @@ def create_tidal_only_boundary_config(
 
 
 def create_hybrid_boundary_config(
-    constituents: List[str] = ["M2", "S2", "N2", "K1", "O1"],
-    tidal_database: str = "tpxo",
-    tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None,
+    constituents: Union[str, List[str]] = "major",
+    tidal_database: Union[str, Path] = None,
+    tidal_model: Optional[str] = 'FES2014',
+    nodal_corrections: bool = True,
+    tidal_potential: bool = True,
+    cutoff_depth: float = 50.0,
+    tide_interpolation_method: str = "bilinear",
     elev_source: Optional[Union[Any, Any]] = None,
     vel_source: Optional[Union[Any, Any]] = None,
     temp_source: Optional[Union[Any, Any]] = None,
@@ -832,14 +925,20 @@ def create_hybrid_boundary_config(
 
     Parameters
     ----------
-    constituents : List[str]
-        Tidal constituents to include
-    tidal_database : str
-        Tidal database to use
-    tidal_elevations : str, optional
-        Path to tidal elevation data
-    tidal_velocities : str, optional
-        Path to tidal velocity data
+    constituents : str or list, optional
+        Tidal constituents to include, by default "major"
+    tidal_database : str or Path, optional
+        Path to tidal database for pyTMD, by default None
+    tidal_model : str, optional
+        Tidal model to use, by default 'FES2014'
+    nodal_corrections : bool, optional
+        Whether to apply nodal corrections, by default True
+    tidal_potential : bool, optional
+        Whether to include tidal potential, by default True
+    cutoff_depth : float, optional
+        Depth threshold for tidal potential, by default 50.0
+    tide_interpolation_method : str, optional
+        Method for tide interpolation, by default "bilinear"
     elev_source : Union[DataBlob, SCHISMDataBoundary], optional
         Data source for elevation
     vel_source : Union[DataBlob, SCHISMDataBoundary], optional
@@ -857,17 +956,19 @@ def create_hybrid_boundary_config(
     from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
     from rompy.schism.tides_enhanced import TidalDataset
     
-    # Create tidal dataset if both paths are provided
-    tidal_data = None
-    if tidal_elevations and tidal_velocities:
-        tidal_data = TidalDataset(
-            elevations=tidal_elevations, velocities=tidal_velocities
-        )
+    # Create tidal dataset 
+    tidal_data = TidalDataset(
+        constituents=constituents,
+        tidal_database=tidal_database,
+        tidal_model=tidal_model,
+        nodal_corrections=nodal_corrections,
+        tidal_potential=tidal_potential,
+        cutoff_depth=cutoff_depth,
+        tide_interpolation_method=tide_interpolation_method,
+    )
 
     # Create the config with hybrid setup
     config = SCHISMDataBoundaryConditions(
-        constituents=constituents,
-        tidal_database=tidal_database,
         tidal_data=tidal_data,
         setup_type="hybrid",
         boundaries={
@@ -892,9 +993,13 @@ def create_river_boundary_config(
     river_boundary_index: int = 0,
     river_flow: float = -100.0,  # Negative for inflow
     other_boundaries: Literal["tidal", "hybrid", "none"] = "tidal",
-    constituents: List[str] = ["M2", "S2"],
-    tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None,
+    constituents: Union[str, List[str]] = "major",
+    tidal_database: Union[str, Path] = None,
+    tidal_model: Optional[str] = 'FES2014',
+    nodal_corrections: bool = True,
+    tidal_potential: bool = True,
+    cutoff_depth: float = 50.0,
+    tide_interpolation_method: str = "bilinear",
 ):
     """
     Create a configuration with a designated river boundary and optional tidal boundaries.
@@ -907,12 +1012,20 @@ def create_river_boundary_config(
         Flow rate (negative for inflow)
     other_boundaries : str
         How to treat other boundaries ("tidal", "hybrid", or "none")
-    constituents : List[str]
-        Tidal constituents to include (only used if other_boundaries="tidal" or "hybrid")
-    tidal_elevations : str, optional
-        Path to tidal elevation data (only if other_boundaries="tidal" or "hybrid")
-    tidal_velocities : str, optional
-        Path to tidal velocity data (only if other_boundaries="tidal" or "hybrid")
+    constituents : str or list, optional
+        Tidal constituents to include, by default "major"
+    tidal_database : str or Path, optional
+        Path to tidal database for pyTMD, by default None
+    tidal_model : str, optional
+        Tidal model to use, by default 'FES2014'
+    nodal_corrections : bool, optional
+        Whether to apply nodal corrections, by default True
+    tidal_potential : bool, optional
+        Whether to include tidal potential, by default True
+    cutoff_depth : float, optional
+        Depth threshold for tidal potential, by default 50.0
+    tide_interpolation_method : str, optional
+        Method for tide interpolation, by default "bilinear"
 
     Returns
     -------
@@ -926,17 +1039,19 @@ def create_river_boundary_config(
     tidal_data = None
     if (
         other_boundaries in ["tidal", "hybrid"]
-        and tidal_elevations
-        and tidal_velocities
     ):
         tidal_data = TidalDataset(
-            elevations=tidal_elevations, velocities=tidal_velocities
+            constituents=constituents,
+            tidal_database=tidal_database,
+            tidal_model=tidal_model,
+            nodal_corrections=nodal_corrections,
+            tidal_potential=tidal_potential,
+            cutoff_depth=cutoff_depth,
+            tide_interpolation_method=tide_interpolation_method,
         )
 
     # Create the basic config
     config = SCHISMDataBoundaryConditions(
-        constituents=constituents if other_boundaries in ["tidal", "hybrid"] else [],
-        tidal_database="tpxo" if other_boundaries in ["tidal", "hybrid"] else "",
         tidal_data=tidal_data,
         setup_type="river",
         hotstart_config=None,
@@ -958,13 +1073,17 @@ def create_nested_boundary_config(
     with_tides: bool = True,
     inflow_relax: float = 0.8,
     outflow_relax: float = 0.2,
-    constituents: List[str] = ["M2", "S2"],
-    tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None,
     elev_source: Optional[Union[Any, Any]] = None,
     vel_source: Optional[Union[Any, Any]] = None,
     temp_source: Optional[Union[Any, Any]] = None,
     salt_source: Optional[Union[Any, Any]] = None,
+    constituents: Union[str, List[str]] = "major",
+    tidal_database: Union[str, Path] = None,
+    tidal_model: Optional[str] = 'FES2014',
+    nodal_corrections: bool = True,
+    tidal_potential: bool = True,
+    cutoff_depth: float = 50.0,
+    tide_interpolation_method: str = "bilinear",
 ):
     """
     Create a configuration for nested model boundaries with external data.
@@ -977,12 +1096,6 @@ def create_nested_boundary_config(
         Relaxation parameter for inflow (0-1)
     outflow_relax : float
         Relaxation parameter for outflow (0-1)
-    constituents : List[str]
-        Tidal constituents to include (only used if with_tides=True)
-    tidal_elevations : str, optional
-        Path to tidal elevation data (only if with_tides=True)
-    tidal_velocities : str, optional
-        Path to tidal velocity data (only if with_tides=True)
     elev_source : Union[DataBlob, SCHISMDataBoundary], optional
         Data source for elevation
     vel_source : Union[DataBlob, SCHISMDataBoundary], optional
@@ -991,6 +1104,20 @@ def create_nested_boundary_config(
         Data source for temperature
     salt_source : Union[DataBlob, SCHISMDataBoundary], optional
         Data source for salinity
+    constituents : str or list, optional
+        Tidal constituents to include, by default "major"
+    tidal_database : str or Path, optional
+        Path to tidal database for pyTMD, by default None
+    tidal_model : str, optional
+        Tidal model to use, by default 'FES2014'
+    nodal_corrections : bool, optional
+        Whether to apply nodal corrections, by default True
+    tidal_potential : bool, optional
+        Whether to include tidal potential, by default True
+    cutoff_depth : float, optional
+        Depth threshold for tidal potential, by default 50.0
+    tide_interpolation_method : str, optional
+        Method for tide interpolation, by default "bilinear"
 
     Returns
     -------
@@ -1002,9 +1129,15 @@ def create_nested_boundary_config(
     
     # Create tidal dataset if both paths are provided and needed
     tidal_data = None
-    if with_tides and tidal_elevations and tidal_velocities:
+    if with_tides:
         tidal_data = TidalDataset(
-            elevations=tidal_elevations, velocities=tidal_velocities
+            constituents=constituents,
+            tidal_database=tidal_database,
+            tidal_model=tidal_model,
+            nodal_corrections=nodal_corrections,
+            tidal_potential=tidal_potential,
+            cutoff_depth=cutoff_depth,
+            tide_interpolation_method=tide_interpolation_method,
         )
 
     # Create the basic config
@@ -1043,9 +1176,12 @@ TidalBoundary = BoundaryHandler
 def create_hybrid_boundary(
     grid_path: Union[str, Path],
     constituents: Union[str, List[str]] = "major",
-    tidal_database: str = "tpxo",
-    tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None,
+    tidal_database: Union[str, Path] = None,
+    tidal_model: Optional[str] = 'FES2014',
+    nodal_corrections: bool = True,
+    tidal_potential: bool = True,
+    cutoff_depth: float = 50.0,
+    tide_interpolation_method: str = "bilinear",
 ) -> BoundaryHandler:
     """Create a hybrid boundary with tides + external data.
 
@@ -1054,25 +1190,39 @@ def create_hybrid_boundary(
     grid_path : str or Path
         Path to SCHISM grid
     constituents : str or list, optional
-        Tidal constituents, by default "major"
-    tidal_database : str, optional
-        Tidal database, by default "tpxo"
-    tidal_elevations : str, optional
-        Path to tidal elevation file
-    tidal_velocities : str, optional
-        Path to tidal velocity file
+        Tidal constituents to include, by default "major"
+    tidal_database : str or Path, optional
+        Path to tidal database for pyTMD, by default None
+    tidal_model : str, optional
+        Tidal model to use, by default 'FES2014'
+    nodal_corrections : bool, optional
+        Whether to apply nodal corrections, by default True
+    tidal_potential : bool, optional
+        Whether to include tidal potential, by default True
+    cutoff_depth : float, optional
+        Depth threshold for tidal potential, by default 50.0
+    tide_interpolation_method : str, optional
+        Method for tide interpolation, by default "bilinear"
 
     Returns
     -------
     BoundaryHandler
         Configured hybrid boundary
     """
-    boundary = BoundaryHandler(
-        grid_path=grid_path,
+
+    tidal_data = TidalDataset(
         constituents=constituents,
         tidal_database=tidal_database,
-        tidal_elevations=tidal_elevations,
-        tidal_velocities=tidal_velocities,
+        tidal_model=tidal_model,
+        nodal_corrections=nodal_corrections,
+        tidal_potential=tidal_potential,
+        cutoff_depth=cutoff_depth,
+        tide_interpolation_method=tide_interpolation_method,
+    )
+
+    boundary = BoundaryHandler(
+        grid_path=grid_path,
+        tidal_data=tidal_data
     )
 
     # Set default configuration for all boundaries: tidal + spacetime
@@ -1125,9 +1275,12 @@ def create_nested_boundary(
     inflow_relax: float = 0.8,
     outflow_relax: float = 0.8,
     constituents: Union[str, List[str]] = "major",
-    tidal_database: str = "tpxo",
-    tidal_elevations: Optional[str] = None,
-    tidal_velocities: Optional[str] = None,
+    tidal_database: Union[str, Path] = None,
+    tidal_model: Optional[str] = 'FES2014',
+    nodal_corrections: bool = True,
+    tidal_potential: bool = True,
+    cutoff_depth: float = 50.0,
+    tide_interpolation_method: str = "bilinear",
 ) -> BoundaryHandler:
     """Create a nested boundary with optional tides.
 
@@ -1142,25 +1295,42 @@ def create_nested_boundary(
     outflow_relax : float, optional
         Relaxation factor for outflow, by default 0.8
     constituents : str or list, optional
-        Tidal constituents if with_tides=True, by default "major"
-    tidal_database : str, optional
-        Tidal database if with_tides=True, by default "tpxo"
-    tidal_elevations : str, optional
-        Path to tidal elevation file if with_tides=True
-    tidal_velocities : str, optional
-        Path to tidal velocity file if with_tides=True
+        Tidal constituents to include, by default "major"
+    tidal_database : str or Path, optional
+        Path to tidal database for pyTMD, by default None
+    tidal_model : str, optional
+        Tidal model to use, by default 'FES2014'
+    nodal_corrections : bool, optional
+        Whether to apply nodal corrections, by default True
+    tidal_potential : bool, optional
+        Whether to include tidal potential, by default True
+    cutoff_depth : float, optional
+        Depth threshold for tidal potential, by default 50.0
+    tide_interpolation_method : str, optional
+        Method for tide interpolation, by default "bilinear"
 
     Returns
     -------
     BoundaryHandler
         Configured nested boundary
     """
+
+    tidal_data = None
+    if with_tides:
+        tidal_data = TidalDataset(
+            constituents=constituents,
+            tidal_database=tidal_database,
+            tidal_model=tidal_model,
+            nodal_corrections=nodal_corrections,
+            tidal_potential=tidal_potential,
+            cutoff_depth=cutoff_depth,
+            tide_interpolation_method=tide_interpolation_method,
+        )
+
     boundary = BoundaryHandler(
         grid_path=grid_path,
         constituents=constituents if with_tides else None,
-        tidal_database=tidal_database if with_tides else None,
-        tidal_elevations=tidal_elevations if with_tides else None,
-        tidal_velocities=tidal_velocities if with_tides else None,
+        tidal_data=tidal_data,
     )
 
     if with_tides:
