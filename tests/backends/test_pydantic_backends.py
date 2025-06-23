@@ -186,17 +186,13 @@ class TestDockerConfig:
 
     def test_dockerfile_validation(self):
         """Test Dockerfile validation."""
-        with TemporaryDirectory() as tmp_dir:
-            # Create a valid Dockerfile
-            dockerfile_path = Path(tmp_dir) / "Dockerfile"
-            dockerfile_path.write_text("FROM ubuntu:20.04\n")
+        # Test relative path (correct usage)
+        config = DockerConfig(dockerfile=Path("Dockerfile"))
+        assert config.dockerfile == Path("Dockerfile")
 
-            config = DockerConfig(dockerfile=dockerfile_path)
-            assert config.dockerfile == dockerfile_path
-
-            # Non-existent dockerfile should fail
-            with pytest.raises(ValidationError, match="Dockerfile does not exist"):
-                DockerConfig(dockerfile=Path("/non/existent/Dockerfile"))
+        # Absolute path should fail
+        with pytest.raises(ValidationError, match="Dockerfile path must be relative to build context"):
+            DockerConfig(dockerfile=Path("/absolute/path/Dockerfile"))
 
     def test_image_or_dockerfile_validation(self):
         """Test that either image or dockerfile must be provided."""
@@ -204,13 +200,9 @@ class TestDockerConfig:
         with pytest.raises(ValidationError, match="Either 'image' or 'dockerfile' must be provided"):
             DockerConfig()
 
-        # Should fail if both provided
-        with TemporaryDirectory() as tmp_dir:
-            dockerfile_path = Path(tmp_dir) / "Dockerfile"
-            dockerfile_path.write_text("FROM ubuntu:20.04\n")
-
-            with pytest.raises(ValidationError, match="Cannot specify both 'image' and 'dockerfile'"):
-                DockerConfig(image="test:latest", dockerfile=dockerfile_path)
+        # Should fail if both provided (use relative path to avoid absolute path validation error)
+        with pytest.raises(ValidationError, match="Cannot specify both 'image' and 'dockerfile'"):
+            DockerConfig(image="test:latest", dockerfile=Path("Dockerfile"))
 
     def test_cpu_validation(self):
         """Test CPU validation."""
@@ -259,6 +251,39 @@ class TestDockerConfig:
             # Invalid: non-existent host path
             with pytest.raises(ValidationError, match="Host path does not exist"):
                 DockerConfig(image="test:latest", volumes=["/non/existent:/app/data"])
+
+    def test_build_context_validation(self):
+        """Test build context validation."""
+        with TemporaryDirectory() as tmp_dir:
+            # Create build context directory
+            context_dir = Path(tmp_dir) / "context"
+            context_dir.mkdir()
+
+            # Create Dockerfile within context
+            dockerfile_path = context_dir / "Dockerfile"
+            dockerfile_path.write_text("FROM ubuntu:20.04\n")
+
+            # Valid build context with relative dockerfile
+            config = DockerConfig(dockerfile=Path("Dockerfile"), build_context=context_dir)
+            assert config.build_context == context_dir
+
+            # None should be valid (optional field)
+            config = DockerConfig(dockerfile=Path("Dockerfile"), build_context=None)
+            assert config.build_context is None
+
+            # Non-existent build context should fail
+            with pytest.raises(ValidationError, match="Build context directory does not exist"):
+                DockerConfig(dockerfile=Path("Dockerfile"), build_context=Path("/non/existent/dir"))
+
+            # File instead of directory should fail
+            test_file = Path(tmp_dir) / "test_file.txt"
+            test_file.write_text("test")
+            with pytest.raises(ValidationError, match="Build context must be a directory"):
+                DockerConfig(dockerfile=Path("Dockerfile"), build_context=test_file)
+
+            # Dockerfile that doesn't exist in build context should fail
+            with pytest.raises(ValidationError, match="Dockerfile does not exist"):
+                DockerConfig(dockerfile=Path("nonexistent/Dockerfile"), build_context=context_dir)
 
     def test_get_backend_class(self):
         """Test that get_backend_class returns the correct class."""

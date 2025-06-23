@@ -11,6 +11,7 @@ from datetime import datetime
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
+from rompy.backends.config import DockerConfig
 from rompy.core.config import BaseConfig
 from rompy.core.time import TimeRange
 from rompy.model import ModelRun
@@ -64,15 +65,16 @@ class TestDockerBackendIntegration:
         test_file = output_dir / "test_input.txt"
         test_file.write_text("test content")
 
+        # Create DockerConfig
+        config = DockerConfig(
+            image="ubuntu:20.04",
+            executable="echo 'Docker test successful'",
+            cpu=1
+        )
+
         # Mock the generate method to avoid template rendering
         with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            result = docker_backend.run(
-                model_run,
-                image="ubuntu:20.04",
-                executable="echo 'Docker test successful'",
-                mpiexec="",
-                cpu=1,
-            )
+            result = docker_backend.run(model_run, config)
 
         assert result is True
 
@@ -82,15 +84,16 @@ class TestDockerBackendIntegration:
         output_dir = tmp_path / model_run.run_id
         output_dir.mkdir(parents=True, exist_ok=True)
 
+        # Create DockerConfig
+        config = DockerConfig(
+            image="ubuntu:20.04",
+            executable="sh -c 'echo Docker test output > docker_test.txt'",
+            cpu=1
+        )
+
         # Mock the generate method
         with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            result = docker_backend.run(
-                model_run,
-                image="ubuntu:20.04",
-                executable="sh -c 'echo Docker test output > docker_test.txt'",
-                mpiexec="",
-                cpu=1,
-            )
+            result = docker_backend.run(model_run, config)
 
         assert result is True
 
@@ -105,19 +108,20 @@ class TestDockerBackendIntegration:
         output_dir = tmp_path / model_run.run_id
         output_dir.mkdir(parents=True, exist_ok=True)
 
+        # Create DockerConfig
+        config = DockerConfig(
+            image="ubuntu:20.04",
+            executable="sh -c 'echo $TEST_VAR > env_test.txt'",
+            env_vars={
+                "TEST_VAR": "test_value",
+                "ANOTHER_VAR": "another_value",
+            },
+            cpu=1
+        )
+
         # Mock the generate method
         with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            result = docker_backend.run(
-                model_run,
-                image="ubuntu:20.04",
-                executable="sh -c 'echo $TEST_VAR > env_test.txt'",
-                env_vars={
-                    "TEST_VAR": "test_value",
-                    "ANOTHER_VAR": "another_value",
-                },
-                mpiexec="",
-                cpu=1,
-            )
+            result = docker_backend.run(model_run, config)
 
         assert result is True
 
@@ -138,16 +142,17 @@ class TestDockerBackendIntegration:
         extra_file = extra_dir / "extra_file.txt"
         extra_file.write_text("extra data")
 
+        # Create DockerConfig
+        config = DockerConfig(
+            image="ubuntu:20.04",
+            executable="sh -c 'cat /extra/extra_file.txt > volume_test.txt'",
+            volumes=[f"{extra_dir}:/extra:Z"],
+            cpu=1
+        )
+
         # Mock the generate method
         with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            result = docker_backend.run(
-                model_run,
-                image="ubuntu:20.04",
-                executable="sh -c 'cat /extra/extra_file.txt > volume_test.txt'",
-                volumes=[f"{extra_dir}:/extra:Z"],
-                mpiexec="",
-                cpu=1,
-            )
+            result = docker_backend.run(model_run, config)
 
         assert result is True
 
@@ -161,15 +166,16 @@ class TestDockerBackendIntegration:
         output_dir = tmp_path / model_run.run_id
         output_dir.mkdir(parents=True, exist_ok=True)
 
+        # Create DockerConfig
+        config = DockerConfig(
+            image="nonexistent:image",
+            executable="echo",
+            cpu=1
+        )
+
         # Mock the generate method
         with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            result = docker_backend.run(
-                model_run,
-                image="nonexistent:image",
-                executable="echo",
-                mpiexec="",
-                cpu=1,
-            )
+            result = docker_backend.run(model_run, config)
 
         # Should return False for invalid image
         assert result is False
@@ -181,8 +187,10 @@ class TestDockerBackendIntegration:
 
     def test_prepare_image_with_dockerfile(self, docker_backend, tmp_path):
         """Test _prepare_image with a Dockerfile."""
-        # Create a simple Dockerfile
-        dockerfile = tmp_path / "Dockerfile"
+        # Create a build context with Dockerfile
+        context_dir = tmp_path / "build_context"
+        context_dir.mkdir()
+        dockerfile = context_dir / "Dockerfile"
         dockerfile.write_text("""
 FROM ubuntu:20.04
 RUN echo "test dockerfile"
@@ -194,15 +202,19 @@ RUN echo "test dockerfile"
             mock_run.return_value.stdout = "Successfully built image"
             mock_run.return_value.stderr = ""
 
-            result = docker_backend._prepare_image(None, str(dockerfile))
+            # Mock _image_exists to return False (image doesn't exist)
+            with patch.object(docker_backend, '_image_exists', return_value=False):
+                result = docker_backend._prepare_image(None, "Dockerfile", str(context_dir))
 
-            # Should return a generated image name
-            assert result.startswith("rompy-")
-            mock_run.assert_called_once()
+                # Should return a generated image name
+                assert result.startswith("rompy-")
+                mock_run.assert_called_once()
 
     def test_prepare_image_with_dockerfile_build_failure(self, docker_backend, tmp_path):
         """Test _prepare_image with a Dockerfile that fails to build."""
-        dockerfile = tmp_path / "Dockerfile"
+        context_dir = tmp_path / "build_context"
+        context_dir.mkdir()
+        dockerfile = context_dir / "Dockerfile"
         dockerfile.write_text("INVALID DOCKERFILE CONTENT")
 
         # Mock subprocess.run to simulate build failure
@@ -211,10 +223,164 @@ RUN echo "test dockerfile"
                 1, "docker build", stderr="Build failed"
             )
 
-            result = docker_backend._prepare_image(None, str(dockerfile))
+            # Mock _image_exists to return False (image doesn't exist)
+            with patch.object(docker_backend, '_image_exists', return_value=False):
+                result = docker_backend._prepare_image(None, "Dockerfile", str(context_dir))
 
-            # Should return None on build failure
-            assert result is None
+                # Should return None on build failure
+                assert result is None
+
+    def test_prepare_image_with_build_context(self, docker_backend, tmp_path):
+        """Test _prepare_image with custom build context."""
+        # Create a Dockerfile and build context
+        context_dir = tmp_path / "build_context"
+        context_dir.mkdir()
+        dockerfile = context_dir / "Dockerfile"
+        dockerfile.write_text("""
+FROM ubuntu:20.04
+COPY test.txt /app/
+""")
+
+        # Create a file in the build context
+        test_file = context_dir / "test.txt"
+        test_file.write_text("test content")
+
+        # Mock subprocess.run to avoid actually building
+        with patch('subprocess.run') as mock_run:
+            mock_run.return_value.returncode = 0
+            mock_run.return_value.stdout = "Successfully built image"
+            mock_run.return_value.stderr = ""
+
+            # Mock _image_exists to return False (image doesn't exist)
+            with patch.object(docker_backend, '_image_exists', return_value=False):
+                result = docker_backend._prepare_image(
+                    None, str(dockerfile), str(context_dir)
+                )
+
+                # Should return a generated image name
+                assert result.startswith("rompy-")
+
+                # Check that docker build was called with correct context
+                mock_run.assert_called_once()
+                call_args = mock_run.call_args[0][0]
+                assert str(context_dir) in call_args  # Build context should be included
+
+    def test_prepare_image_with_existing_image(self, docker_backend, tmp_path):
+        """Test _prepare_image with an image that already exists."""
+        context_dir = tmp_path / "build_context"
+        context_dir.mkdir()
+        dockerfile = context_dir / "Dockerfile"
+        dockerfile.write_text("""
+FROM ubuntu:20.04
+RUN echo "test dockerfile"
+""")
+
+        # Mock _image_exists to return True (image already exists)
+        with patch.object(docker_backend, '_image_exists', return_value=True):
+            # Mock subprocess.run to ensure it's NOT called
+            with patch('subprocess.run') as mock_run:
+                result = docker_backend._prepare_image(None, "Dockerfile", str(context_dir))
+
+                # Should return the existing image name
+                assert result.startswith("rompy-")
+                # Build should not be called since image exists
+                mock_run.assert_not_called()
+
+    def test_generate_image_name_deterministic(self, docker_backend, tmp_path):
+        """Test that _generate_image_name produces deterministic results."""
+        context_dir = tmp_path / "build_context"
+        context_dir.mkdir()
+        dockerfile = context_dir / "Dockerfile"
+        dockerfile.write_text("""
+FROM ubuntu:20.04
+RUN echo "test"
+""")
+
+        build_args = {"ARG1": "value1", "ARG2": "value2"}
+
+        # Generate image name twice with same inputs
+        name1 = docker_backend._generate_image_name(dockerfile, context_dir, build_args)
+        name2 = docker_backend._generate_image_name(dockerfile, context_dir, build_args)
+
+        # Should be identical
+        assert name1 == name2
+        assert name1.startswith("rompy-")
+        assert len(name1.split("-")[1]) == 12  # 12-character hash
+
+    def test_generate_image_name_different_content(self, docker_backend, tmp_path):
+        """Test that _generate_image_name produces different names for different content."""
+        context_dir = tmp_path / "build_context"
+        context_dir.mkdir()
+
+        dockerfile1 = context_dir / "Dockerfile1"
+        dockerfile1.write_text("FROM ubuntu:20.04\nRUN echo 'test1'")
+
+        dockerfile2 = context_dir / "Dockerfile2"
+        dockerfile2.write_text("FROM ubuntu:20.04\nRUN echo 'test2'")
+
+        name1 = docker_backend._generate_image_name(dockerfile1, context_dir)
+        name2 = docker_backend._generate_image_name(dockerfile2, context_dir)
+
+        # Should be different
+        assert name1 != name2
+        assert name1.startswith("rompy-")
+        assert name2.startswith("rompy-")
+
+    def test_generate_image_name_different_build_args(self, docker_backend, tmp_path):
+        """Test that _generate_image_name produces different names for different build args."""
+        context_dir = tmp_path / "build_context"
+        context_dir.mkdir()
+        dockerfile = context_dir / "Dockerfile"
+        dockerfile.write_text("FROM ubuntu:20.04\nRUN echo 'test'")
+
+        build_args1 = {"ARG1": "value1"}
+        build_args2 = {"ARG1": "value2"}
+
+        name1 = docker_backend._generate_image_name(dockerfile, context_dir, build_args1)
+        name2 = docker_backend._generate_image_name(dockerfile, context_dir, build_args2)
+
+        # Should be different
+        assert name1 != name2
+
+    def test_generate_image_name_unreadable_dockerfile(self, docker_backend, tmp_path):
+        """Test _generate_image_name with unreadable Dockerfile."""
+        context_dir = tmp_path / "build_context"
+        context_dir.mkdir()
+        dockerfile = context_dir / "nonexistent.dockerfile"
+
+        # Should fallback to timestamp-based naming
+        name = docker_backend._generate_image_name(dockerfile, context_dir)
+        assert name.startswith("rompy-")
+        # Should be longer than hash-based name (timestamp is longer)
+        assert len(name) > len("rompy-123456789012")
+
+    def test_image_exists_true(self, docker_backend):
+        """Test _image_exists when image exists."""
+        with patch('subprocess.run') as mock_run:
+            mock_run.return_value.returncode = 0
+            mock_run.return_value.stdout = "image exists"
+            mock_run.return_value.stderr = ""
+
+            result = docker_backend._image_exists("test:image")
+            assert result is True
+
+            # Check that docker image inspect was called
+            mock_run.assert_called_once()
+            call_args = mock_run.call_args[0][0]
+            assert "docker" in call_args
+            assert "image" in call_args
+            assert "inspect" in call_args
+            assert "test:image" in call_args
+
+    def test_image_exists_false(self, docker_backend):
+        """Test _image_exists when image doesn't exist."""
+        with patch('subprocess.run') as mock_run:
+            mock_run.side_effect = subprocess.CalledProcessError(
+                1, "docker image inspect", stderr="No such image"
+            )
+
+            result = docker_backend._image_exists("nonexistent:image")
+            assert result is False
 
     def test_get_run_command_simple(self, docker_backend):
         """Test _get_run_command with simple parameters."""
@@ -325,46 +491,56 @@ class TestDockerBackendMocked:
 
     def test_run_end_to_end_success(self, model_run, docker_backend, tmp_path):
         """Test complete run method with mocked Docker calls."""
+        # Create DockerConfig
+        config = DockerConfig(
+            image="test:image",
+            executable="echo",
+            cpu=1
+        )
+
         # Mock the generate method
         with patch('rompy.model.ModelRun.generate', return_value=str(tmp_path / model_run.run_id)):
             # Mock all Docker operations
             with patch.object(docker_backend, '_prepare_image', return_value="test:image"):
                 with patch.object(docker_backend, '_run_container', return_value=True):
-                    result = docker_backend.run(
-                        model_run,
-                        image="test:image",
-                        executable="echo",
-                        mpiexec="",
-                        cpu=1,
-                    )
+                    result = docker_backend.run(model_run, config)
 
                     assert result is True
 
     def test_run_end_to_end_image_failure(self, model_run, docker_backend, tmp_path):
         """Test complete run method with image preparation failure."""
+        # Create a build context with dockerfile
+        context_dir = tmp_path / "build_context"
+        context_dir.mkdir()
+        dockerfile = context_dir / "Dockerfile"
+        dockerfile.write_text("FROM ubuntu:20.04\n")
+
+        # Create DockerConfig
+        config = DockerConfig(
+            dockerfile=Path("Dockerfile"),  # Relative to build context
+            build_context=context_dir,
+            executable="echo",
+            cpu=1
+        )
+
         with patch('rompy.model.ModelRun.generate', return_value=str(tmp_path / model_run.run_id)):
             with patch.object(docker_backend, '_prepare_image', return_value=None):
-                result = docker_backend.run(
-                    model_run,
-                    dockerfile="invalid/dockerfile",
-                    executable="echo",
-                    mpiexec="",
-                    cpu=1,
-                )
+                result = docker_backend.run(model_run, config)
 
                 assert result is False
 
     def test_run_end_to_end_container_failure(self, model_run, docker_backend, tmp_path):
         """Test complete run method with container execution failure."""
+        # Create DockerConfig
+        config = DockerConfig(
+            image="test:image",
+            executable="echo",
+            cpu=1
+        )
+
         with patch('rompy.model.ModelRun.generate', return_value=str(tmp_path / model_run.run_id)):
             with patch.object(docker_backend, '_prepare_image', return_value="test:image"):
                 with patch.object(docker_backend, '_run_container', return_value=False):
-                    result = docker_backend.run(
-                        model_run,
-                        image="test:image",
-                        executable="echo",
-                        mpiexec="",
-                        cpu=1,
-                    )
+                    result = docker_backend.run(model_run, config)
 
                     assert result is False

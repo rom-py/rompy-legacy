@@ -22,12 +22,13 @@ class LocalRunBackend:
     on the local system.
     """
 
-    def run(self, model_run, config: 'LocalConfig') -> bool:
+    def run(self, model_run, config: 'LocalConfig', workspace_dir: Optional[str] = None) -> bool:
         """Run the model locally.
 
         Args:
             model_run: The ModelRun instance to execute
             config: LocalConfig instance with execution parameters
+            workspace_dir: Path to the generated workspace directory (if None, will generate)
 
         Returns:
             True if execution was successful, False otherwise
@@ -54,10 +55,14 @@ class LocalRunBackend:
         logger.info(f"Starting local execution for run_id: {model_run.run_id}")
 
         try:
-            # Generate model input files
-            logger.debug("Generating model input files...")
-            staging_dir = model_run.generate()
-            logger.info(f"Model inputs generated in: {staging_dir}")
+            # Use provided workspace or generate if not provided (for backwards compatibility)
+            if workspace_dir is None:
+                logger.warning("No workspace_dir provided, generating files (this may cause double generation in pipeline)")
+                staging_dir = model_run.generate()
+                logger.info(f"Model inputs generated in: {staging_dir}")
+            else:
+                logger.info(f"Using provided workspace directory: {workspace_dir}")
+                staging_dir = workspace_dir
 
             # Set working directory
             if exec_working_dir:

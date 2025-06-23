@@ -15,7 +15,7 @@ import time as time_module
 import zipfile as zf
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Literal, Union
+from typing import Any, Dict, Literal, Optional, Union
 
 from pydantic import Field
 
@@ -332,7 +332,7 @@ class ModelRun(RompyBaseModel):
         repr += f"\nconfig: {type(self.config)}\n"
         return repr
 
-    def run(self, backend: BackendConfig) -> bool:
+    def run(self, backend: BackendConfig, workspace_dir: Optional[str] = None) -> bool:
         """
         Run the model using the specified backend configuration.
 
@@ -341,6 +341,7 @@ class ModelRun(RompyBaseModel):
 
         Args:
             backend: Pydantic configuration object (LocalConfig, DockerConfig, etc.)
+            workspace_dir: Path to generated workspace directory (optional)
 
         Returns:
             True if execution was successful, False otherwise
@@ -369,8 +370,8 @@ class ModelRun(RompyBaseModel):
         backend_class = backend.get_backend_class()
         backend_instance = backend_class()
 
-        # Pass the config object to the backend
-        return backend_instance.run(self, config=backend)
+        # Pass the config object and workspace_dir to the backend
+        return backend_instance.run(self, config=backend, workspace_dir=workspace_dir)
 
     def postprocess(self, processor: str = "noop", **kwargs) -> Dict[str, Any]:
         """

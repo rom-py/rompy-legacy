@@ -7,6 +7,8 @@ import logging
 from pathlib import Path
 from typing import Dict, Any, Optional, Union
 
+from rompy.backends import LocalConfig, DockerConfig
+
 logger = logging.getLogger(__name__)
 
 class LocalPipelineBackend:
@@ -28,7 +30,7 @@ class LocalPipelineBackend:
 
         Args:
             model_run: The ModelRun instance to execute
-            run_backend: Backend to use for the run stage
+            run_backend: Backend to use for the run stage ("local" or "docker")
             processor: Processor to use for the postprocess stage
             run_kwargs: Additional parameters for the run stage
             process_kwargs: Additional parameters for the postprocess stage
@@ -103,7 +105,11 @@ class LocalPipelineBackend:
             logger.info(f"Stage 2: Running model using {run_backend} backend")
 
             try:
-                run_success = model_run.run(backend=run_backend, **run_kwargs)
+                # Create appropriate backend configuration
+                backend_config = self._create_backend_config(run_backend, run_kwargs)
+
+                # Pass the generated workspace directory to avoid duplicate generation
+                run_success = model_run.run(backend=backend_config, workspace_dir=staging_dir)
                 pipeline_results["run_success"] = run_success
 
                 if not run_success:
@@ -186,3 +192,35 @@ class LocalPipelineBackend:
                 logger.info("Cleanup completed")
         except Exception as e:
             logger.warning(f"Failed to cleanup output directory: {e}")
+
+    def _create_backend_config(self, run_backend: str, run_kwargs: Dict[str, Any]):
+        """Create appropriate backend configuration from string name and kwargs.
+
+        Args:
+            run_backend: Backend name ("local" or "docker")
+            run_kwargs: Additional configuration parameters
+
+        Returns:
+            Backend configuration object
+
+        Raises:
+            ValueError: If backend name is not supported
+        """
+        if run_backend == "local":
+            # Filter kwargs to only include valid LocalConfig fields
+            valid_fields = set(LocalConfig.model_fields.keys())
+            filtered_kwargs = {k: v for k, v in run_kwargs.items() if k in valid_fields}
+            if filtered_kwargs != run_kwargs:
+                invalid_fields = set(run_kwargs.keys()) - valid_fields
+                logger.warning(f"Ignoring invalid LocalConfig fields: {invalid_fields}")
+            return LocalConfig(**filtered_kwargs)
+        elif run_backend == "docker":
+            # Filter kwargs to only include valid DockerConfig fields
+            valid_fields = set(DockerConfig.model_fields.keys())
+            filtered_kwargs = {k: v for k, v in run_kwargs.items() if k in valid_fields}
+            if filtered_kwargs != run_kwargs:
+                invalid_fields = set(run_kwargs.keys()) - valid_fields
+                logger.warning(f"Ignoring invalid DockerConfig fields: {invalid_fields}")
+            return DockerConfig(**filtered_kwargs)
+        else:
+            raise ValueError(f"Unsupported backend: {run_backend}. Supported: local, docker")
