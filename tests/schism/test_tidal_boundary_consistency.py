@@ -135,13 +135,7 @@ def test_tidal_boundary_constituent_consistency(
         boundary = TidalBoundary(
             grid_path=grid_path,
             boundary_configs=configs,
-            constituents=[
-                "M2",
-                "S2",
-            ],  # Only use constituents available in the test dataset
-            tidal_database="tpxo",
-            tidal_elevations=tidal_dataset.elevations,
-            tidal_velocities=tidal_dataset.velocities,
+            tidal_data=tidal_dataset
         )
 
         # Set run parameters
@@ -195,12 +189,9 @@ def test_create_tidal_boundary_wrapper(
         # Create the boundary with the wrapper function
         boundary = create_tidal_boundary(
             grid_path=grid_path,
-            constituents=[
-                "M2",
-                "S2",
-            ],  # Only use constituents available in the test dataset
-            tidal_elevations=tidal_dataset.elevations,
-            tidal_velocities=tidal_dataset.velocities,
+            tidal_database=tidal_dataset.tidal_database,
+            constituents=tidal_dataset.constituents,
+            tidal_model=tidal_dataset.tidal_model,
         )
 
         # Set run parameters
@@ -241,12 +232,9 @@ def test_tidal_boundary_with_different_grids(
             # Create the boundary
             boundary = create_tidal_boundary(
                 grid_path=grid_path,
-                constituents=[
-                    "M2",
-                    "S2",
-                ],  # Only use constituents available in the test dataset
-                tidal_elevations=tidal_dataset.elevations,
-                tidal_velocities=tidal_dataset.velocities,
+                tidal_database=tidal_dataset.tidal_database,
+                constituents=tidal_dataset.constituents,
+                tidal_model=tidal_dataset.tidal_model,
             )
 
             # Set run parameters
@@ -281,9 +269,9 @@ def test_case_consistency(grid2d, tidal_dataset, mock_tidal_data, monkeypatch):
         grid_path = str(grid2d.hgrid.source)
         boundary = create_tidal_boundary(
             grid_path=grid_path,
-            constituents=["M2", "S2"],
-            tidal_elevations=tidal_dataset.elevations,
-            tidal_velocities=tidal_dataset.velocities,
+            tidal_database=tidal_dataset.tidal_database,
+            constituents=tidal_dataset.constituents,
+            tidal_model=tidal_dataset.tidal_model,
         )
 
         # Write the boundary file

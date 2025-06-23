@@ -132,7 +132,7 @@ class MockGrid:
         self.y = np.array([float(i) for i in range(60)])  # Latitudes
 
 
-def test_basic_bctides_format():
+def test_basic_bctides_format(tidal_data_files):
     """Test that a basic bctides.in file can be created and has correct format."""
     # Create a mock grid
     grid = MockGrid()
@@ -145,10 +145,8 @@ def test_basic_bctides_format():
         hgrid=grid,
         flags=flags,
         constituents=["M2", "S2"],
-        tidal_database=None,
-        ntip=0,
-        tip_dp=50.0,
-        cutoff_depth=50.0,
+        tidal_database=tidal_data_files,
+        tidal_model='OCEANUM-atlas',
     )
 
     # Set start time and duration
@@ -168,13 +166,6 @@ def test_basic_bctides_format():
     bctides._interpolate_tidal_data = mock_interpolate.__get__(
         bctides, bctides.__class__
     )
-
-    # Set tidal factors for each constituent
-    bctides.tnames = ["M2", "S2"]
-    bctides.freq = np.array([0.0001405189, 0.0001454441])  # Angular frequency (rad/s)
-    bctides.nodal = np.array([1.0, 1.0])  # Nodal factors
-    bctides.tear = np.array([0.0, 0.0])  # Earth equilibrium arguments (degrees)
-    bctides.amp = np.array([0.242334, 0.113033])  # Amplitude constants
 
     # Set empty constants to avoid file writing issues
     bctides.ethconst = {}

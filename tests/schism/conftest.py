@@ -20,7 +20,11 @@ from rompy.schism.data import (
     SCHISMDataBoundary,
     SCHISMDataSflux,
     SfluxAir,
-    TidalDataset,
+)
+from rompy.schism.boundary_core import (
+    BoundaryHandler,
+    TidalBoundary,  # Backward compatibility alias
+    TidalDataset
 )
 
 # Import directly from the new implementation
@@ -110,12 +114,24 @@ def grid_atmos_source(test_files_dir):
 
 
 @pytest.fixture
-def hycom_bnd2d(test_files_dir):
+def hycom_bnd_elev(test_files_dir):
     """Create a 2D hydrodynamic boundary source."""
     return DataGrid(
         source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
         coords=DatasetCoords(t="time", x="lon", y="lat"),
         variables=["surf_el"],
+        buffer=0.1,
+        filter=Filter(),
+        crop_data=True,
+    )
+
+@pytest.fixture
+def hycom_bnd_vel(test_files_dir):
+    """Create a 2D hydrodynamic boundary source."""
+    return DataGrid(
+        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        coords=DatasetCoords(t="time", x="lon", y="lat"),
+        variables=["u", "v"],
         buffer=0.1,
         filter=Filter(),
         crop_data=True,
@@ -138,21 +154,19 @@ def hycom_bnd_temp_3d(test_files_dir):
 @pytest.fixture
 def tidal_data_files(test_files_dir):
     """Return paths to tidal elevation and velocity files for testing."""
-    tpxo_dir = test_files_dir / "tpxo9-neaus"
-    return {
-        "elevation": str(tpxo_dir / "h_m2s2n2.nc"),
-        "velocity": str(tpxo_dir / "u_m2s2n2.nc"),
-    }
+    tidal_database = test_files_dir / "tides" 
+    return tidal_database
 
 
 @pytest.fixture
 def tidal_dataset(tidal_data_files):
     """Return a tidal dataset instance for testing."""
-    from rompy.schism.tides_enhanced import TidalDataset
+    from rompy.schism.boundary_core import TidalDataset
 
     return TidalDataset(
-        elevations=tidal_data_files["elevation"],
-        velocities=tidal_data_files["velocity"],
+        tidal_database=tidal_data_files,
+        constituents=["M2", "S2"],
+        model="OCEANUM-atlas"
     )
 
 

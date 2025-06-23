@@ -14,6 +14,7 @@ from rompy.schism.boundary_core import (
     ElevationType,
     VelocityType,
     TracerType,
+    TidalDataset
 )
 
 
@@ -71,9 +72,7 @@ def test_simple_bctides_format():
         # Create a simple tidal boundary
         boundary = TidalBoundary(
             grid_path=str(grid_path),
-            constituents=["M2", "S2"],
-            ntip=0,  # No earth tidal potential
-            tip_dp=50.0,
+            tidal_data=TidalDataset(model='OCEANUM-atlas',constituents=['M2', 'S2']),
         )
 
         # Configure a simple tidal boundary
