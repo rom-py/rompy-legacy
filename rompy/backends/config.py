@@ -175,6 +175,11 @@ class DockerConfig(BaseBackendConfig):
         description="Arguments to pass to docker build"
     )
 
+    build_context: Optional[Path] = Field(
+        None,
+        description="Docker build context directory (defaults to dockerfile parent directory)"
+    )
+
     volumes: List[str] = Field(
         default_factory=list,
         description="Additional volumes to mount (format: 'host_path:container_path')"
@@ -201,13 +206,23 @@ class DockerConfig(BaseBackendConfig):
     @field_validator('dockerfile')
     @classmethod
     def validate_dockerfile_exists(cls, v):
-        """Validate dockerfile exists if specified."""
+        """Validate dockerfile path format (should be relative)."""
+        if v is not None:
+            path = Path(v)
+            if path.is_absolute():
+                raise ValueError(f"Dockerfile path must be relative to build context: {path}")
+        return v
+
+    @field_validator('build_context')
+    @classmethod
+    def validate_build_context_exists(cls, v):
+        """Validate build context directory exists if specified."""
         if v is not None:
             path = Path(v)
             if not path.exists():
-                raise ValueError(f"Dockerfile does not exist: {path}")
-            if not path.is_file():
-                raise ValueError(f"Dockerfile is not a file: {path}")
+                raise ValueError(f"Build context directory does not exist: {path}")
+            if not path.is_dir():
+                raise ValueError(f"Build context must be a directory: {path}")
         return v
 
     @field_validator('volumes')
@@ -257,6 +272,14 @@ class DockerConfig(BaseBackendConfig):
 
         if self.image and self.dockerfile:
             raise ValueError("Cannot specify both 'image' and 'dockerfile'")
+
+        # Validate dockerfile exists within build context if both are specified
+        if self.dockerfile and self.build_context:
+            dockerfile_full_path = self.build_context / self.dockerfile
+            if not dockerfile_full_path.exists():
+                raise ValueError(f"Dockerfile does not exist: {dockerfile_full_path}")
+            if not dockerfile_full_path.is_file():
+                raise ValueError(f"Dockerfile is not a file: {dockerfile_full_path}")
 
     model_config = ConfigDict(
         json_schema_extra={
