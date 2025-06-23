@@ -7,7 +7,10 @@ import logging
 import os
 import subprocess
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+
+if TYPE_CHECKING:
+    from rompy.backends import LocalConfig
 
 logger = logging.getLogger(__name__)
 
@@ -19,21 +22,12 @@ class LocalRunBackend:
     on the local system.
     """
 
-    def run(self, model_run,
-            command: Optional[str] = None,
-            working_dir: Optional[Union[str, Path]] = None,
-            env_vars: Optional[Dict[str, str]] = None,
-            timeout: Optional[int] = None,
-            **kwargs) -> bool:
+    def run(self, model_run, config: 'LocalConfig') -> bool:
         """Run the model locally.
 
         Args:
             model_run: The ModelRun instance to execute
-            command: Optional shell command to run instead of config.run()
-            working_dir: Working directory for command execution
-            env_vars: Additional environment variables
-            timeout: Maximum execution time in seconds
-            **kwargs: Additional parameters (unused)
+            config: LocalConfig instance with execution parameters
 
         Returns:
             True if execution was successful, False otherwise
@@ -49,6 +43,14 @@ class LocalRunBackend:
         if not hasattr(model_run, 'run_id'):
             raise ValueError("model_run must have a run_id attribute")
 
+        # Use config parameters
+        exec_command = config.command
+        exec_working_dir = config.working_dir
+        exec_env_vars = config.env_vars
+        exec_timeout = config.timeout
+
+        logger.debug(f"Using LocalConfig: timeout={exec_timeout}, env_vars={list(exec_env_vars.keys())}")
+
         logger.info(f"Starting local execution for run_id: {model_run.run_id}")
 
         try:
@@ -58,8 +60,8 @@ class LocalRunBackend:
             logger.info(f"Model inputs generated in: {staging_dir}")
 
             # Set working directory
-            if working_dir:
-                work_dir = Path(working_dir)
+            if exec_working_dir:
+                work_dir = Path(exec_working_dir)
             else:
                 work_dir = Path(staging_dir) if staging_dir else Path(model_run.output_dir) / model_run.run_id
 
@@ -69,13 +71,13 @@ class LocalRunBackend:
 
             # Prepare environment
             env = os.environ.copy()
-            if env_vars:
-                env.update(env_vars)
-                logger.debug(f"Added environment variables: {list(env_vars.keys())}")
+            if exec_env_vars:
+                env.update(exec_env_vars)
+                logger.debug(f"Added environment variables: {list(exec_env_vars.keys())}")
 
             # Execute command or config.run()
-            if command:
-                success = self._execute_command(command, work_dir, env, timeout)
+            if exec_command:
+                success = self._execute_command(exec_command, work_dir, env, exec_timeout)
             else:
                 success = self._execute_config_run(model_run, work_dir, env)
 
@@ -87,7 +89,7 @@ class LocalRunBackend:
             return success
 
         except TimeoutError:
-            logger.error(f"Model execution timed out after {timeout} seconds")
+            logger.error(f"Model execution timed out after {exec_timeout} seconds")
             raise
         except Exception as e:
             logger.exception(f"Failed to run model locally: {e}")

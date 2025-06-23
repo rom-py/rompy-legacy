@@ -8,7 +8,10 @@ import os
 import pathlib
 import subprocess
 import time
-from typing import Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional
+
+if TYPE_CHECKING:
+    from rompy.backends import DockerConfig
 
 logger = logging.getLogger(__name__)
 
@@ -20,54 +23,49 @@ class DockerRunBackend:
     inside containers with appropriate volume mounts.
     """
 
-    def run(self, model_run,
-            image: Optional[str] = None,
-            dockerfile: Optional[str] = None,
-            executable: str = "/usr/local/bin/run.sh",
-            mpiexec: str = "",
-            cpu: int = 1,
-            build_args: Optional[Dict[str, str]] = None,
-            volumes: Optional[List[str]] = None,
-            env_vars: Optional[Dict[str, str]] = None,
-            **kwargs) -> bool:
+    def run(self, model_run, config: 'DockerConfig') -> bool:
         """Run the model inside a Docker container.
 
         Args:
             model_run: The ModelRun instance to execute
-            image: Docker image to use (if not building from Dockerfile)
-            dockerfile: Path to Dockerfile to build (if not using pre-built image)
-            executable: Path to the executable inside the container
-            mpiexec: MPI execution command (if using MPI)
-            cpu: Number of CPU cores to use
-            build_args: Arguments to pass to docker build
-            volumes: Additional volumes to mount
-            env_vars: Environment variables to pass to the container
-            **kwargs: Additional parameters
+            config: DockerConfig instance with execution parameters
 
         Returns:
             True if execution was successful, False otherwise
         """
+        # Use config parameters
+        exec_image = config.image
+        exec_dockerfile = str(config.dockerfile) if config.dockerfile else None
+        exec_executable = config.executable
+        exec_mpiexec = config.mpiexec
+        exec_cpu = config.cpu
+        exec_build_args = config.build_args
+        exec_volumes = config.volumes
+        exec_env_vars = config.env_vars
+
+        logger.debug(f"Using DockerConfig: image={exec_image}, cpu={exec_cpu}")
+
         # Generate model input files
         model_run.generate()
 
         try:
             # Build or use a Docker image
-            image_name = self._prepare_image(image, dockerfile, build_args)
+            image_name = self._prepare_image(exec_image, exec_dockerfile, exec_build_args)
             if not image_name:
                 return False
 
             # Set up the run command
-            run_command = self._get_run_command(executable, mpiexec, cpu)
+            run_command = self._get_run_command(exec_executable, exec_mpiexec, exec_cpu)
 
             # Set up volume mounts
-            volume_mounts = self._prepare_volumes(model_run, volumes)
+            volume_mounts = self._prepare_volumes(model_run, exec_volumes)
 
             # Run the Docker container
             success = self._run_container(
                 image_name=image_name,
                 run_command=run_command,
                 volume_mounts=volume_mounts,
-                env_vars=env_vars or {}
+                env_vars=exec_env_vars
             )
 
             return success
