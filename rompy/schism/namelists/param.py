@@ -551,11 +551,11 @@ class Vegetation(NamelistBaseModel):
         [1.0, 1.0, 1.0],
         description="Vertical scaling for drag coefficient. Only used if iveg=1.",
     )
-    veg_vert_scale_N: Optional[List[float]] = Field(
+    veg_vert_scale_n: Optional[List[float]] = Field(
         [1.0, 1.0, 1.0],
         description="Vertical scaling for number of stems per m^2. Only used if iveg=1.",
     )
-    veg_vert_scale_D: Optional[List[float]] = Field(
+    veg_vert_scale_d: Optional[List[float]] = Field(
         [1.0, 1.0, 1.0],
         description="Vertical scaling for stem diameter. Only used if iveg=1.",
     )
