@@ -21,10 +21,12 @@ RUN  ln -s /usr/bin/python3 /usr/bin/python
 RUN  chmod +x /usr/src/compile.sh
 
 COPY include_modules /usr/src/include_modules
+RUN  cd /usr/src && ./compile.sh "v5.13.0" ""
 RUN  cd /usr/src && ./compile.sh "v5.11.1" ""
 RUN  cd /usr/src && ./compile.sh "v5.9.0" ""
 
 COPY include_modules_wwm /usr/src/include_modules
+RUN  cd /usr/src && ./compile.sh "v5.13.0" "_WWM"
 RUN  cd /usr/src && ./compile.sh "v5.11.1" "_WWM"
 RUN  cd /usr/src && ./compile.sh "v5.9.0" "_WWM"
 
