@@ -53,3 +53,6 @@ def main(model, config, zip):
     model()
     if zip:
         model.zip()
+
+if __name__ == "__main__":
+    main()
