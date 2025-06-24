@@ -590,17 +590,17 @@ class Vegetation(NamelistBaseModel):
         if not all(isinstance(i, float) for i in v):
             raise ValueError("All elements in veg_vert_scale_cd must be floats")
         return v
-    @field_validator("veg_vert_scale_N")
+    @field_validator("veg_vert_scale_n")
     @classmethod
-    def validate_veg_vert_scale_N(cls, v, values):
+    def validate_veg_vert_scale_n(cls, v, values):
         if not all(isinstance(i, float) for i in v):
-            raise ValueError("All elements in veg_vert_scale_N must be floats")
+            raise ValueError("All elements in veg_vert_scale_n must be floats")
         return v
-    @field_validator("veg_vert_scale_D")
+    @field_validator("veg_vert_scale_d")
     @classmethod
-    def validate_veg_vert_scale_D(cls, v, values):
+    def validate_veg_vert_scale_d(cls, v, values):
         if not all(isinstance(i, float) for i in v):
-            raise ValueError("All elements in veg_vert_scale_D must be floats")
+            raise ValueError("All elements in veg_vert_scale_d must be floats")
         return v
     @field_validator("veg_lai")
     @classmethod
