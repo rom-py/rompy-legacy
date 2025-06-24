@@ -92,6 +92,10 @@ EXAMPLES["tidal_with_potential"]="${EXAMPLES_DIR}/01_tidal_only/tidal_with_poten
 EXAMPLE_DESCRIPTIONS["tidal_with_potential"]="Tidal forcing with earth tidal potential and self-attraction loading"
 EXAMPLE_CATEGORIES["tidal_with_potential"]="tidal"
 
+EXAMPLES["tide_wave"]="${EXAMPLES_DIR}/01_tidal_only/tide_wave.yaml"
+EXAMPLE_DESCRIPTIONS["tide_wave"]="Tidal forcing with wave interaction (WWM) for wave-current interaction"
+EXAMPLE_CATEGORIES["tide_wave"]="tidal"
+
 # Hybrid examples
 EXAMPLES["hybrid_elevation"]="${EXAMPLES_DIR}/02_hybrid/hybrid_elevation.yaml"
 EXAMPLE_DESCRIPTIONS["hybrid_elevation"]="Combined tidal and external elevation data (elev_type=5)"
@@ -292,6 +296,10 @@ run_example() {
         "tidal_with_potential")
             schism_dir="schism_tidal_potential/tidal_potential_example"
             schism_exe_suffix=""
+            ;;
+        "tide_wave")
+            schism_dir="schism_tide_wave/tide_wave_example"
+            schism_exe_suffix="_WWM"
             ;;
         "hybrid_elevation")
             schism_dir="schism_hybrid_elevation/hybrid_elevation_example"
