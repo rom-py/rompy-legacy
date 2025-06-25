@@ -17,6 +17,8 @@ import pyTMD
 import timescale
 import pandas as pd
 from pylib import ReadNC
+import xarray as xr
+from scipy.spatial import KDTree
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +43,7 @@ class Bctides:
         extrapolate_tides=False,
         extrapolation_distance=100.0,
         extra_databases=[],
+        mdt=None,
         ethconst=None,
         vthconst=None,
         tthconst=None,
@@ -129,6 +132,7 @@ class Bctides:
         self.extrapolate_tides = extrapolate_tides
         self.extrapolation_distance = extrapolation_distance
         self.extra_databases = extra_databases
+        self.mdt = mdt
         
         self.ethconst = ethconst
         self.vthconst = vthconst
@@ -286,8 +290,7 @@ class Bctides:
             return np.column_stack((amp_u, pha_u, amp_v, pha_v))
         else:
             raise ValueError(f"Unknown data_type: {data_type}")
-
-
+ 
     def write_bctides(self, output_file):
         """Generate bctides.in file directly using PyLibs approach.
 
@@ -361,9 +364,15 @@ class Bctides:
                     " 0 50.000 !number of earth tidal potential, cut-off depth for applying tidal potential\n"
                 )
 
-            # Write frequency info
             n_constituents = len(self.tnames)
+            if not self.mdt is None:
+                # If mdt is provided, we have a constant elevation for all constituents
+                n_constituents += 1
             f.write(f"{n_constituents} !nbfr\n")
+            if not self.mdt is None:
+                # Write mdt as a special constant elevation
+                f.write("z0\n")
+                f.write(f"0.0 0.0 0.0\n")
 
             # Write frequency info for each constituent
             for i, tname in enumerate(self.tnames):
@@ -431,15 +440,23 @@ class Bctides:
                 # Handle elevation boundary conditions based on flags
                 elev_type = bnd_flags[0] if len(bnd_flags) > 0 else 0
 
+                
+
                 # Type 1: Time history of elevation
                 if elev_type == 1:
                     f.write("! Time history of elevation will be read from elev.th\n")
                 # Type 2: Constant elevation
                 elif elev_type == 2 and len(self.ethconst) > 0:
-                    f.write("Z0\n")
-                    eth_val = self.ethconst[ibnd] if ibnd < len(self.ethconst) else 0.0
-                    for n in range(num_nodes):
-                        f.write(f"{eth_val} 0.0\n")
+                    if not self.mdt is None:
+                        logger.warning(
+                            "Using mdt value for constant elevation, ignoring ethconst"
+                        )
+                        pass
+                    else:
+                        f.write("Z0\n")
+                        eth_val = self.ethconst[ibnd] if ibnd < len(self.ethconst) else 0.0
+                        for n in range(num_nodes):
+                            f.write(f"{eth_val} 0.0\n")
                 # Type 4: Space-time varying elevation
                 elif elev_type == 4:
                     f.write(
@@ -449,6 +466,45 @@ class Bctides:
                 # Then write tidal constituents for elevation
                 # Only write tidal constituents for tidal elevation types (3 or 5)
                 if bnd_flags[0] == 3 or bnd_flags[0] == 5:
+                    # If mdt is provided, write the Z0
+                    if self.mdt is not None:
+                        f.write("z0\n")
+                        if isinstance(self.mdt, float):
+                            # If mdt is a single float, write it for all nodes
+                            for n in range(num_nodes):
+                                f.write(f"{self.mdt:.6f} 0.0\n")
+                        elif isinstance(self.mdt, (xr.Dataset, xr.DataArray)):
+                            # Use a KDTree to efficiently find the closest mdt point for each boundary node
+                            mdt_lons = self.mdt.x.values
+                            mdt_lats = self.mdt.y.values
+                            mdt_values = self.mdt.values
+                            # Filter any NaN values in mdt
+                            valid_mask = ~np.isnan(mdt_values)
+                            mdt_lons = mdt_lons[valid_mask]
+                            mdt_lats = mdt_lats[valid_mask]
+                            mdt_values = mdt_values[valid_mask]
+                            # Create KDTree for mdt points
+                            mdt_points = np.column_stack((mdt_lons, mdt_lats))
+                            bnd_points = np.column_stack((lons, lats))
+                            tree = KDTree(mdt_points)
+                            distances, indices = tree.query(bnd_points)
+                            tolerance = 0.1
+                            if np.any(distances > tolerance):
+                                n_pts = np.sum(distances > tolerance)
+                                logger.warning(
+                                    f"Found {n_pts} boundary points with mdt distance > {tolerance} degrees"
+                                )
+                            # Extract the mdt values for these points
+                            mdt_values = mdt_values[indices]
+                            for n in range(num_nodes):
+                                mdt_val = float(mdt_values[n])
+                                f.write(f"{mdt_val:.6f} 0.0\n")
+                        else:
+                            # If mdt is not a float or xr.Dataset, raise an error
+                            logger.error(
+                                f"Invalid mdt type: {type(self.mdt)}. Expected float or xr.Dataset."
+                            )
+
                     for i, tname in enumerate(self.tnames):
                         logger.info(f"Processing tide {tname} for boundary {ibnd+1}")
 
@@ -535,6 +591,10 @@ class Bctides:
                 # Then write tidal constituents for velocity
                 # Only write tidal constituents for tidal velocity types (3 or 5)
                 if vel_type == 3 or vel_type == 5:
+                    if self.mdt is not None:
+                        f.write("z0\n")
+                        for n in range(num_nodes):
+                            f.write(f"0.0 0.0 0.0 0.0\n")
                     for i, tname in enumerate(self.tnames):
                         # Write header for constituent first - use original case for consistency
                         f.write(f"{tname}\n")

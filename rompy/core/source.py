@@ -101,16 +101,25 @@ class SourceFile(SourceBase):
         description="Keyword arguments to pass to xarray.open_dataset",
     )
 
+    variable: Optional[str] = Field(
+        default=None,
+        description="Variable to select from the dataset",
+    )
+
     # Enable arbitrary types for Path objects
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def __str__(self) -> str:
         return f"SourceFile(uri={self.uri})"
 
-    def _open(self) -> xr.Dataset:
+    def _open(self) -> Union[xr.Dataset, xr.DataArray]:
         # Handle Path objects by using str() to ensure compatibility
         uri_str = str(self.uri) if isinstance(self.uri, Path) else self.uri
-        return xr.open_dataset(uri_str, **self.kwargs)
+        if self.variable:
+            # If a variable is specified, open the dataset and select the variable
+            return xr.open_dataset(uri_str, **self.kwargs)[self.variable]
+        else:
+            return xr.open_dataset(uri_str, **self.kwargs)
 
 
 class SourceIntake(SourceBase):

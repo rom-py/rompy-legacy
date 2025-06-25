@@ -38,7 +38,7 @@ find_project_root() {
 }
 
 # Configuration
-SCHISM_VERSION="v5.11.1"
+SCHISM_VERSION="v5.13.0"
 PROJECT_ROOT="$(find_project_root)"
 BASE_OUTPUT_DIR="$PROJECT_ROOT/boundary_conditions_test_outputs"
 EXAMPLES_DIR="$PROJECT_ROOT/notebooks/schism/boundary_conditions_examples"
@@ -95,6 +95,14 @@ EXAMPLE_CATEGORIES["tidal_with_potential"]="tidal"
 EXAMPLES["tide_wave"]="${EXAMPLES_DIR}/01_tidal_only/tide_wave.yaml"
 EXAMPLE_DESCRIPTIONS["tide_wave"]="Tidal forcing with wave interaction (WWM) for wave-current interaction"
 EXAMPLE_CATEGORIES["tide_wave"]="tidal"
+
+EXAMPLES["tidal_with_mdt"]="${EXAMPLES_DIR}/01_tidal_only/tidal_with_mdt.yaml"
+EXAMPLE_DESCRIPTIONS["tidal_with_mdt"]="Tidal forcing with Mean Dynamic Topography (MDT) correction"
+EXAMPLE_CATEGORIES["tidal_with_mdt"]="tidal"
+
+EXAMPLES["tidal_with_mdt_const"]="${EXAMPLES_DIR}/01_tidal_only/tidal_with_mdt_const.yaml"
+EXAMPLE_DESCRIPTIONS["tidal_with_mdt_const"]="Tidal forcing with constant MDT correction"
+EXAMPLE_CATEGORIES["tidal_with_mdt_const"]="tidal"
 
 # Hybrid examples
 EXAMPLES["hybrid_elevation"]="${EXAMPLES_DIR}/02_hybrid/hybrid_elevation.yaml"
@@ -300,6 +308,14 @@ run_example() {
         "tide_wave")
             schism_dir="schism_tide_wave/tide_wave_example"
             schism_exe_suffix="_WWM"
+            ;;
+        "tidal_with_mdt")
+            schism_dir="schism_tidal_with_mdt/tidal_with_mdt_example"
+            schism_exe_suffix=""
+            ;;
+        "tidal_with_mdt_const")
+            schism_dir="schism_tidal_with_mdt_const/tidal_with_mdt_const_example"
+            schism_exe_suffix=""
             ;;
         "hybrid_elevation")
             schism_dir="schism_hybrid_elevation/hybrid_elevation_example"

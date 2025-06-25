@@ -1428,7 +1428,7 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
         # # 1. Process tidal data if needed
         if self.tidal_data:
             logger.info(f"Processing tidal data from {self.tidal_data}")
-            self.tidal_data.get()
+            self.tidal_data.get(grid)
 
         # 2. Create boundary condition file (bctides.in)
         boundary = self._create_boundary_config(grid)

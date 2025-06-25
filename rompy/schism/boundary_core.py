@@ -68,6 +68,7 @@ except ImportError:
 # Import from local modules
 from .boundary import BoundaryData
 from .bctides import Bctides
+from rompy.core.boundary import DataBoundary
 
 logger = logging.getLogger(__name__)
 
@@ -126,8 +127,13 @@ class TidalDataset(BaseModel):
     tidal_database: Optional[Path] = Field(
         None, description="Path to pyTMD tidal database directory. If None, defaults to pyTMD default."
     )
+
     tidal_model: Optional[str] = Field(
         'FES2014', description="Name of the pyTMD tidal model to use (e.g., 'FES2014')"
+    )
+
+    mean_dynamic_topography: Optional[Union[DataBoundary, float]] = Field(
+        0.0, description="Path or value of mean dynamic topography file. Writes to z0 constituent."
     )
 
     # Basic tidal configuration
@@ -168,7 +174,7 @@ class TidalDataset(BaseModel):
         default=[], description="Extra tidal databases loaded from database.json if present"
     )
 
-    def get(self) -> Dict[str, Any]:
+    def get(self, grid) -> Dict[str, Any]:
         """Get the tidal dataset as a dictionary."""
 
         # Ensure extra_databases is a list of paths to JSON files
@@ -182,6 +188,17 @@ class TidalDataset(BaseModel):
                     if db_json not in extra_databases:
                         extra_databases.append(db_json)
 
+        # Setup MDT by extracting from the DataBoundary if provided or using a float value
+        if isinstance(self.mean_dynamic_topography, DataBoundary):
+            logger.info(f"Loading mean dynamic topography from {self.mean_dynamic_topography.source.uri}")
+            self._mdt = self.mean_dynamic_topography._sel_boundary(grid)
+            # Always extrapolate missing MDT from nearest neighbour
+            # self._mdt
+
+        elif isinstance(self.mean_dynamic_topography, (int, float)):
+            logger.info(f"Using mean dynamic topography value: {self.mean_dynamic_topography}")
+            self._mdt = self.mean_dynamic_topography
+
         if len(extra_databases) > 0:
             logger.info(f"Loading extra tidal databases from {extra_databases}")
 
@@ -194,6 +211,7 @@ class TidalDataset(BaseModel):
             "nodal_corrections": self.nodal_corrections,
             "tide_interpolation_method": self.tide_interpolation_method,
             "extra_databases": extra_databases,
+            "mean_dynamic_topography": self._mdt,
         }
 
     @field_validator("tidal_potential", "nodal_corrections", "extrapolate_tides", mode="before")
@@ -716,6 +734,7 @@ class BoundaryHandler(BoundaryData):
             extrapolate_tides=self.tidal_data.extrapolate_tides,
             extrapolation_distance=self.tidal_data.extrapolation_distance,
             extra_databases=self.tidal_data.extra_databases,
+            mdt=self.tidal_data._mdt,
             ethconst=ethconst,
             vthconst=vthconst,
             tthconst=tthconst,
