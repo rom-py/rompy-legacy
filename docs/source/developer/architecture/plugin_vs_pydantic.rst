@@ -1,64 +1,79 @@
 ===============================================
-Plugin Architecture vs Pydantic Union Patterns
+Configuration vs Execution Selection Patterns
 ===============================================
 
-One of the most important architectural decisions in rompy is the use of two different extension patterns for different types of functionality. Understanding when and why to use each pattern is crucial for effective rompy development.
+One of the most important architectural decisions in rompy is the use of two different selection patterns for different types of functionality. Both patterns use entry points for discovery, but differ in when and how selection occurs. Understanding when and why to use each pattern is crucial for effective rompy development.
 
 Overview
 ========
 
-rompy uses two distinct approaches for extensibility:
+rompy uses two distinct approaches for component selection:
 
-1. **Pydantic Union Pattern** for model configurations (``CONFIG_TYPES``)
-2. **Plugin Architecture Pattern** for execution backends (run, postprocess, pipeline)
+1. **Pydantic Discriminated Union Pattern** for model configurations (``CONFIG_TYPES``)
+2. **Runtime String Selection Pattern** for execution backends (run, postprocess, pipeline)
 
-This document explains the rationale behind this dual approach and provides guidance on when to use each pattern.
+Both patterns use Python entry points for plugin discovery, but serve fundamentally different purposes. This document explains the rationale behind this dual approach and provides guidance on when to use each pattern.
 
 The Two Patterns
 ================
 
-Pydantic Union Pattern (CONFIG_TYPES)
---------------------------------------
+Both patterns use Python entry points for plugin discovery, but differ in when and how selection occurs.
 
-Model configurations use Pydantic's discriminated union pattern:
+Pydantic Discriminated Union Pattern (CONFIG_TYPES)
+----------------------------------------------------
+
+Model configurations use entry points to build a discriminated union:
 
 .. code-block:: python
 
     from typing import Union
     from pydantic import Field
+    from rompy.utils import load_entry_points
+
+    # Load config types from entry points at import time
+    CONFIG_TYPES = load_entry_points("rompy.config")
 
     class ModelRun(RompyBaseModel):
         config: Union[CONFIG_TYPES] = Field(
             default_factory=BaseConfig,
             description="The configuration object",
-            discriminator="model_type",
+            discriminator="model_type",  # Selection via discriminator field
         )
 
-This approach requires all configuration types to be known at import time and uses a ``model_type`` discriminator field to determine which configuration class to instantiate.
+Selection happens at **model instantiation time** via the ``model_type`` discriminator field in the configuration data.
 
-Plugin Architecture Pattern (Backends)
----------------------------------------
+Runtime String Selection Pattern (Backends)
+--------------------------------------------
 
-Execution backends use runtime plugin loading via entry points:
+Execution backends use entry points for runtime selection:
 
 .. code-block:: python
 
-    def run(self, backend: str = "local", **kwargs) -> bool:
-        if backend not in RUN_BACKENDS:
-            available = list(RUN_BACKENDS.keys())
-            raise ValueError(f"Unknown run backend: {backend}...")
+    from rompy.utils import load_entry_points
 
+    # Load backends from entry points at import time
+    def _load_backends():
+        run_backends = {}
+        for backend in load_entry_points("rompy.run"):
+            name = backend.__name__.lower().replace('runbackend', '')
+            run_backends[name] = backend
+        return run_backends
+
+    RUN_BACKENDS = _load_backends()
+
+    def run(self, backend: str = "local", **kwargs) -> bool:
+        # Selection happens at execution time via string parameter
         backend_class = RUN_BACKENDS[backend]
         backend_instance = backend_class()
         return backend_instance.run(self, **kwargs)
 
-This approach dynamically discovers available backends at runtime and instantiates them on demand.
+Selection happens at **execution time** via string parameters passed to methods.
 
 Comparative Analysis
 ====================
 
-Pydantic Union Approach
-------------------------
+Pydantic Discriminated Union Approach
+--------------------------------------
 
 **✅ Strengths**
 
@@ -92,60 +107,65 @@ Pydantic Union Approach
 *Immutability*
     Once instantiated, configurations are immutable, preventing accidental modification during execution.
 
-**❌ Limitations**
-
-*Static Discovery*
-    All configuration types must be imported and available at startup time.
+*Plugin Support*
+    Uses entry points for discovery, allowing third-party configuration types.
 
     .. code-block:: python
 
-        # All configs loaded even if unused
+        # Third-party configs discovered via entry points
         CONFIG_TYPES = load_entry_points("rompy.config")
 
-*Tight Coupling*
-    Adding new configuration types requires changes to the core model and package reinstallation.
+**❌ Limitations**
 
-*Memory Overhead*
-    All configuration classes are loaded into memory regardless of usage.
+*Selection Timing*
+    Configuration type must be known at model instantiation time.
 
-*Installation Dependencies*
-    New configuration types must be installed as package dependencies.
+*State Coupling*
+    Configuration choice becomes part of persistent model state.
 
-Plugin Architecture Approach
------------------------------
+*Validation Completeness*
+    All possible configurations must be validated upfront, even if unused.
+
+Runtime String Selection Approach
+----------------------------------
 
 **✅ Strengths**
 
-*True Plugin Architecture*
-    Backends can be added without any changes to core rompy code.
+*Execution-Time Flexibility*
+    Backend choice can be made based on runtime conditions and environment.
 
     .. code-block:: python
 
-        # Third-party package can add backends via entry points
-        [project.entry-points."rompy.run"]
-        hpc_backend = "my_package.backends:HPCBackend"
+        # Different backends for different environments
+        backend = "docker" if has_docker() else "local"
+        model.run(backend=backend)
 
-*Lazy Loading*
-    Only instantiate backends when actually needed, reducing memory footprint and startup time.
+*Operational Independence*
+    Backend choice is independent of scientific configuration.
 
-*Runtime Discovery*
-    Dynamically discover what backends are available in the current environment.
-
-    .. code-block:: python
-
-        # Different backends available in different environments
-        available_backends = list(RUN_BACKENDS.keys())
-        # ['local'] on developer machine
-        # ['local', 'slurm', 'kubernetes'] on HPC cluster
-
-*Loose Coupling*
-    Backends are completely independent and can have their own dependencies.
-
-*Environment Flexibility*
+*Environment Adaptation*
     Same model configuration can use different backends based on deployment environment.
 
+    .. code-block:: python
+
+        # Same config, different execution strategies
+        model.run(backend="local")     # Development
+        model.run(backend="slurm")     # HPC cluster
+        model.run(backend="k8s")       # Cloud deployment
+
+*Plugin Support*
+    Uses entry points for discovery, allowing third-party backends.
+
+    .. code-block:: python
+
+        # Third-party backends discovered via entry points
+        RUN_BACKENDS = dict(load_entry_points("rompy.run"))
+
+*Lazy Instantiation*
+    Only instantiate backends when actually needed.
+
 *Optional Dependencies*
-    Graceful handling when optional backends aren't available (e.g., Docker not installed).
+    Graceful handling when optional backends aren't available.
 
 **❌ Limitations**
 
@@ -160,66 +180,65 @@ Plugin Architecture Approach
 *Late Validation*
     Backend availability and parameter validation happens during execution, not configuration.
 
-*Discovery Challenges*
-    Harder to know what backends are available during development and configuration.
-
-*Complex Error Handling*
-    More sophisticated error handling needed for missing backends and runtime failures.
-
-*Non-Serializable State*
+*Non-Serializable Choice*
     Backend choice is not part of the serializable model configuration.
+
+*Discovery Complexity*
+    Harder to know what backends are available during development.
 
 Why Different Patterns for Different Concerns?
 ===============================================
 
-The architectural decision reflects the **fundamental difference in purpose** between these two types of extensibility:
+The architectural decision reflects the **fundamental difference in purpose** between these two types of selection, despite both using entry points:
 
-Configuration vs Execution Separation
---------------------------------------
+State vs Behavior Separation
+-----------------------------
 
-**Configuration Represents Domain Logic**
+**Configuration Represents Persistent Domain State**
 
-Model configurations encode scientific and mathematical knowledge:
+Model configurations encode scientific and mathematical knowledge that must be preserved:
 
 - **What** physics to simulate (wave propagation, hydrodynamics)
 - **Where** to simulate it (grid definition, boundaries)
 - **When** to simulate it (time periods, forcing data)
 
-This domain knowledge needs:
+This domain state needs:
 
 - **Strong validation** (incorrect physics parameters = invalid science)
 - **Reproducibility** (same config = same results)
-- **Documentation** (clear schema for scientific parameters)
+- **Serialization** (configurations must be saveable and shareable)
 - **Immutability** (configurations shouldn't change during execution)
+- **Early validation** (catch errors before expensive computation starts)
 
-**Execution Represents Infrastructure Concerns**
+**Execution Represents Runtime Behavior**
 
-Execution backends handle operational and deployment concerns:
+Execution backends handle operational and deployment behavior:
 
 - **How** to run the model (local process, container, HPC queue)
 - **Where** to run it (laptop, cluster, cloud)
 - **With what resources** (CPU cores, memory, time limits)
 
-This infrastructure knowledge needs:
+This runtime behavior needs:
 
 - **Environment flexibility** (different options in different deployments)
-- **Optional dependencies** (some backends may not be available)
-- **Runtime adaptation** (choose backend based on current conditions)
+- **Late binding** (choose backend based on current conditions)
+- **Optional availability** (some backends may not be installed)
 - **Operational parameters** (that vary per execution, not per model)
+- **Ephemeral choice** (backend selection shouldn't be saved with scientific config)
 
 Practical Examples
 ==================
 
-Configuration Example (Pydantic Union)
----------------------------------------
+Configuration Example (Discriminated Union)
+--------------------------------------------
 
-Scientific parameters are validated and preserved:
+Scientific parameters are validated, serialized, and preserved:
 
 .. code-block:: yaml
 
     # This represents scientific intent - must be validated and preserved
     config:
-      model_type: swan
+      model_type: swan  # ← Discriminator field for Pydantic union selection
       grid:
         x0: 115.68      # Geographic coordinate - must be valid
         y0: -32.76      # Geographic coordinate - must be valid
@@ -229,48 +248,60 @@ Scientific parameters are validated and preserved:
         friction: MAD   # Physics model choice - affects results
         friction_coeff: 0.1  # Physics parameter - must be scientifically valid
 
-Any error in these parameters would produce scientifically invalid results, so they must be validated immediately.
+The ``model_type`` field triggers Pydantic's discriminated union to select the correct configuration class. Any error in these parameters would produce scientifically invalid results, so they must be validated at instantiation time.
 
-Execution Example (Plugin Architecture)
-----------------------------------------
+Execution Example (Runtime String Selection)
+---------------------------------------------
 
-Operational parameters vary by environment:
+Operational parameters vary by environment and are not serialized:
 
 .. code-block:: python
 
-    # Development environment
+    # Same config object, different execution environments
+    config_data = load_yaml("scientific_config.yaml")  # Contains model_type discriminator
+    model = ModelRun(**config_data)                     # Pydantic selects config class
+
+    # Development environment - runtime string selection
     model.run(
-        backend="local",
+        backend="local",        # ← String parameter for runtime selection
         timeout=600,
         env_vars={"OMP_NUM_THREADS": "2"}
     )
 
-    # Production HPC environment
+    # Production HPC environment - same config, different backend
     model.run(
-        backend="slurm",
+        backend="slurm",        # ← Different string, same config
         partition="compute",
         nodes=4,
         time_limit="24:00:00",
         env_vars={"OMP_NUM_THREADS": "16"}
     )
 
-    # Cloud deployment
+    # Cloud deployment - same config, cloud backend
     model.run(
-        backend="kubernetes",
+        backend="kubernetes",   # ← Runtime choice, not saved
         image="rompy/swan:v1.2.3",
-        resources={"cpu": "8", "memory": "32Gi"},
-        node_selector={"instance-type": "compute-optimized"}
+        resources={"cpu": "8", "memory": "32Gi"}
     )
 
-The same scientific configuration runs in all environments, but with different operational parameters.
+The same scientific configuration (with its ``model_type`` discriminator) runs in all environments, but with different runtime backend selections that are not part of the serializable state.
 
 Design Patterns in Practice
 ============================
 
-When to Use Pydantic Union Pattern
------------------------------------
+When to Use Discriminated Union Pattern
+----------------------------------------
 
-Use the Pydantic union pattern when extending rompy with:
+Use the discriminated union pattern when extending rompy with components that need to be:
+
+**✅ Part of Serializable State**
+    Components that must be saved, shared, and reproduced exactly.
+
+**✅ Validated at Instantiation**
+    Components where early validation prevents expensive failures later.
+
+**✅ Scientifically Critical**
+    Components where incorrect parameters lead to invalid scientific results.
 
 **✅ Model Configuration Types**
     New model types (SCHISM, XBeach, FVCOM) that define scientific computation.
@@ -278,19 +309,16 @@ Use the Pydantic union pattern when extending rompy with:
 **✅ Grid Definitions**
     New grid types that define spatial discretization approaches.
 
-**✅ Forcing Data Specifications**
-    New ways to specify input data (wind, waves, boundaries) with validation requirements.
-
 **✅ Physics Parameterizations**
     New physics options that require parameter validation and documentation.
 
-Example - Adding a new model type:
+Example - Adding a new model type with entry point registration:
 
 .. code-block:: python
 
     class XBeachConfig(BaseConfig):
         """XBeach model configuration."""
-        model_type: Literal["xbeach"] = "xbeach"
+        model_type: Literal["xbeach"] = "xbeach"  # Discriminator field
 
         # Validated scientific parameters
         grid: XBeachGrid
@@ -303,10 +331,25 @@ Example - Adding a new model type:
             # Ensure physics parameters are scientifically consistent
             return v
 
-When to Use Plugin Architecture Pattern
-----------------------------------------
+.. code-block:: toml
 
-Use the plugin architecture pattern when extending rompy with:
+    # Register via entry points for discovery
+    [project.entry-points."rompy.config"]
+    xbeach = "mypackage.config:XBeachConfig"
+
+When to Use Runtime String Selection Pattern
+---------------------------------------------
+
+Use the runtime string selection pattern when extending rompy with components that are:
+
+**✅ Environment-Specific**
+    Components that vary based on where the code is running.
+
+**✅ Operationally Focused**
+    Components that handle execution, processing, or infrastructure concerns.
+
+**✅ Optional Dependencies**
+    Components that may not be available in all environments.
 
 **✅ Execution Environments**
     New ways to run models (HPC schedulers, cloud platforms, containers).
@@ -317,10 +360,7 @@ Use the plugin architecture pattern when extending rompy with:
 **✅ Workflow Orchestration**
     New ways to coordinate multi-stage model workflows.
 
-**✅ Integration Points**
-    Connections to external systems (databases, monitoring, notifications).
-
-Example - Adding a new execution backend:
+Example - Adding a new execution backend with entry point registration:
 
 .. code-block:: python
 
@@ -338,18 +378,17 @@ Example - Adding a new execution backend:
             job_id = self._submit_job(job_script)
             return self._wait_for_completion(job_id)
 
-Register via entry points:
-
 .. code-block:: toml
 
+    # Register via entry points for discovery
     [project.entry-points."rompy.run"]
     slurm = "rompy_hpc.backends:SlurmBackend"
 
 Best Practices
 ==============
 
-For Configuration Extensions (Pydantic)
-----------------------------------------
+For Discriminated Union Extensions (Configuration)
+---------------------------------------------------
 
 **Comprehensive Validation**
     Implement validators that check scientific and mathematical consistency.
@@ -373,8 +412,16 @@ For Configuration Extensions (Pydantic)
 **Schema Versioning**
     Plan for configuration schema evolution and backward compatibility.
 
-For Backend Extensions (Plugin)
---------------------------------
+**Entry Point Registration**
+    Register new configuration types via entry points for automatic discovery.
+
+    .. code-block:: toml
+
+        [project.entry-points."rompy.config"]
+        mymodel = "mypackage.config:MyModelConfig"
+
+For Runtime String Selection Extensions (Backends)
+---------------------------------------------------
 
 **Robust Error Handling**
     Handle missing dependencies and environment issues gracefully.
@@ -399,17 +446,33 @@ For Backend Extensions (Plugin)
 **Resource Cleanup**
     Ensure proper cleanup of resources on success and failure.
 
+**Entry Point Registration**
+    Register new backends via entry points for automatic discovery.
+
+    .. code-block:: toml
+
+        [project.entry-points."rompy.run"]
+        mybackend = "mypackage.backends:MyBackend"
+
 Conclusion
 ==========
 
-The dual extension pattern in rompy reflects a sophisticated understanding of different types of extensibility requirements:
+The dual selection pattern in rompy reflects a sophisticated understanding of different types of component selection requirements:
 
-- **Domain extensions** (configurations) need type safety, validation, and reproducibility
-- **Infrastructure extensions** (backends) need flexibility, optional loading, and environment adaptation
+- **State-based selection** (configurations) needs early validation, serialization, and reproducibility
+- **Behavior-based selection** (backends) needs late binding, environment adaptation, and optional availability
 
-This architectural decision enables rompy to maintain scientific rigor while supporting diverse computational environments. When extending rompy, carefully consider whether your extension represents domain knowledge (use Pydantic) or infrastructure concerns (use plugins).
+Both patterns use entry points for plugin discovery, but differ fundamentally in **when selection occurs** and **what gets serialized**:
 
-The pattern demonstrates that **different types of extensibility have different requirements**, and a well-designed system should use the most appropriate mechanism for each type of extension rather than forcing everything into a single pattern.
+- **Configurations**: Selected at instantiation time via discriminator fields, become part of persistent state
+- **Backends**: Selected at execution time via string parameters, remain ephemeral operational choices
+
+This architectural decision enables rompy to maintain scientific rigor while supporting diverse computational environments. When extending rompy, carefully consider whether your extension represents:
+
+- **Persistent domain state** → Use discriminated unions with entry point discovery
+- **Runtime behavior choice** → Use string selection with entry point discovery
+
+The pattern demonstrates that **the same plugin discovery mechanism can serve different selection patterns**, and a well-designed system should choose the selection timing and state management approach that best fits the component's purpose.
 
 Further Reading
 ===============

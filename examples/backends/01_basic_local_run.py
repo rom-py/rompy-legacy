@@ -3,7 +3,7 @@ Example 1: Basic Local Run with No-Op Postprocessing
 
 This example demonstrates how to:
 1. Create a basic model run configuration
-2. Run the model locally
+2. Run the model locally using Pydantic configuration
 3. Perform no-op postprocessing
 """
 import logging
@@ -11,6 +11,7 @@ from datetime import datetime
 
 from rompy.model import ModelRun
 from rompy.core.time import TimeRange
+from rompy.backends import LocalConfig
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -30,9 +31,13 @@ def main():
         delete_existing=True,
     )
 
-    # Run the model locally
+    # Run the model locally using Pydantic configuration
     logger.info("Running model locally...")
-    success = model.run(backend="local")
+    local_config = LocalConfig(
+        timeout=3600,  # 1 hour timeout
+        command="echo 'Model execution completed'",  # Simple test command
+    )
+    success = model.run(backend=local_config)
     logger.info(f"Model run {'succeeded' if success else 'failed'}")
 
     # Postprocess the results (no-op by default)

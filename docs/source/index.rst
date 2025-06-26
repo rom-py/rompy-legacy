@@ -36,6 +36,8 @@ The final main component of the library is an intake driver that builds on the i
     core_concepts
     formatting_and_logging
     cli
+    backends
+    backend_configurations
     models
     demo
     api
