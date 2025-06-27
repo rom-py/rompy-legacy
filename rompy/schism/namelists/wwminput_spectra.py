@@ -375,7 +375,7 @@ class Sin4(NamelistBaseModel):
     swellf6: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
     swellf7: Optional[list] = Field([360000.0, ""], description="")
     z0rat: Optional[list] = Field(["3.999999910593033E-002", ""], description="")
-    sinbr: Optional[str] = Field("0.000000000000000E+000", description="")
+    sinbr: Optional[float] = Field(0.0, description="")
 
 
 class Sds4(NamelistBaseModel):
@@ -411,7 +411,7 @@ class Sds4(NamelistBaseModel):
     sdslfgen: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
     whitecapwidth: Optional[list] = Field([0.300000011920929, ""], description="")
     fxincut: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    fxdscut: Optional[str] = Field("0.000000000000000E+000", description="")
+    fxdscut: Optional[float] = Field(0.0, description="")
 
 
 class Nums(NamelistBaseModel):
@@ -686,12 +686,12 @@ class Station(NamelistBaseModel):
 
 class Petscoptions(NamelistBaseModel):
     ksptype: Optional[str] = Field("bcgs", description="")
-    rtol: Optional[str] = Field(
-        "1.E-20",
+    rtol: Optional[float] = Field(
+        1e-20,
         description="the relative convergence tolerance (relative decrease in the residual norm)",
     )
-    abstol: Optional[str] = Field(
-        "1.E-20",
+    abstol: Optional[float] = Field(
+        1e-20,
         description="the absolute convergence tolerance (absolute size of the residual norm)",
     )
     dtol: Optional[float] = Field(10000.0, description="the divergence tolerance")
