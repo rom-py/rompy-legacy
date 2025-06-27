@@ -1279,7 +1279,8 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
                 in [ElevationType.HARMONIC, ElevationType.HARMONICEXTERNAL]
             ) or (
                 hasattr(setup, "vel_type")
-                and setup.vel_type in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
+                and setup.vel_type
+                in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
             ):
                 needs_tidal_data = True
                 break

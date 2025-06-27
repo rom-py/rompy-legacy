@@ -178,7 +178,12 @@ class TestTidalBoundary:
         flags = boundary.get_flags_list()
 
         assert len(flags) == 4  # Should include boundary indices 0, 1, 2, 3
-        assert flags[0] == [int(ElevationType.HARMONIC), int(VelocityType.HARMONIC), 0, 0]
+        assert flags[0] == [
+            int(ElevationType.HARMONIC),
+            int(VelocityType.HARMONIC),
+            0,
+            0,
+        ]
         assert flags[1] == [
             int(ElevationType.CONSTANT),
             int(VelocityType.CONSTANT),

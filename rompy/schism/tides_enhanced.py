@@ -280,7 +280,8 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                 in [ElevationType.HARMONIC, ElevationType.HARMONICEXTERNAL]
             ) or (
                 hasattr(setup, "vel_type")
-                and setup.vel_type in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
+                and setup.vel_type
+                in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
             ):
                 needs_tidal_data = True
                 break
@@ -531,7 +532,9 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
                 # Pure tidal boundary
                 for i in range(grid.pylibs_hgrid.nob):
                     boundary.set_boundary_type(
-                        i, elev_type=ElevationType.HARMONIC, vel_type=VelocityType.HARMONIC
+                        i,
+                        elev_type=ElevationType.HARMONIC,
+                        vel_type=VelocityType.HARMONIC,
                     )
             elif active_setup_type == "hybrid":
                 # Tidal + external data

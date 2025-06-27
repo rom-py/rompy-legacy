@@ -147,7 +147,8 @@ class TestSCHISMDataTidesEnhanced:
         # Define boundary configurations
         boundaries = {
             0: BoundarySetup(
-                elev_type=int(ElevationType.HARMONIC), vel_type=int(VelocityType.HARMONIC)
+                elev_type=int(ElevationType.HARMONIC),
+                vel_type=int(VelocityType.HARMONIC),
             ),
             1: BoundarySetup(
                 elev_type=int(ElevationType.NONE),

@@ -795,7 +795,7 @@ def create_tidal_only_boundary_config(
     """
     from rompy.schism.data import SCHISMDataBoundaryConditions
     from rompy.schism.tides_enhanced import TidalDataset
-    
+
     # Create tidal dataset if both paths are provided
     tidal_data = None
     if tidal_elevations and tidal_velocities:
@@ -856,7 +856,7 @@ def create_hybrid_boundary_config(
     """
     from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
     from rompy.schism.tides_enhanced import TidalDataset
-    
+
     # Create tidal dataset if both paths are provided
     tidal_data = None
     if tidal_elevations and tidal_velocities:
@@ -921,7 +921,7 @@ def create_river_boundary_config(
     """
     from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
     from rompy.schism.tides_enhanced import TidalDataset
-    
+
     # Create tidal dataset if both paths are provided and needed
     tidal_data = None
     if (
@@ -999,7 +999,7 @@ def create_nested_boundary_config(
     """
     from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
     from rompy.schism.tides_enhanced import TidalDataset
-    
+
     # Create tidal dataset if both paths are provided and needed
     tidal_data = None
     if with_tides and tidal_elevations and tidal_velocities:
