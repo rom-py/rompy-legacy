@@ -125,15 +125,17 @@ class TidalDataset(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     tidal_database: Optional[Path] = Field(
-        None, description="Path to pyTMD tidal database directory. If None, defaults to pyTMD default."
+        None,
+        description="Path to pyTMD tidal database directory. If None, defaults to pyTMD default.",
     )
 
     tidal_model: Optional[str] = Field(
-        'FES2014', description="Name of the pyTMD tidal model to use (e.g., 'FES2014')"
+        "FES2014", description="Name of the pyTMD tidal model to use (e.g., 'FES2014')"
     )
 
     mean_dynamic_topography: Optional[Union[DataBoundary, float]] = Field(
-        0.0, description="Path or value of mean dynamic topography file. Writes to z0 constituent."
+        0.0,
+        description="Path or value of mean dynamic topography file. Writes to z0 constituent.",
     )
 
     # Basic tidal configuration
@@ -147,7 +149,10 @@ class TidalDataset(BaseModel):
         default=False,
         description="Apply Earth tidal potential loading to the model. The coefficients used any selected constituents with species 0, 1, 2.",
     )
-    cutoff_depth: float = Field(default=50.0, description="Cutoff depth for Earth tidal potential loading to the model")
+    cutoff_depth: float = Field(
+        default=50.0,
+        description="Cutoff depth for Earth tidal potential loading to the model",
+    )
 
     # Nodal corrections
     nodal_corrections: bool = Field(
@@ -156,7 +161,7 @@ class TidalDataset(BaseModel):
     )
 
     tide_interpolation_method: str = Field(
-        default='bilinear',
+        default="bilinear",
         description="Method for tidal interpolation. see https://pytmd.readthedocs.io/en/latest/api_reference/interpolate.html.",
     )
 
@@ -171,7 +176,8 @@ class TidalDataset(BaseModel):
     )
 
     extra_databases: Optional[List[Path]] = Field(
-        default=[], description="Extra tidal databases loaded from database.json if present"
+        default=[],
+        description="Extra tidal databases loaded from database.json if present",
     )
 
     def get(self, grid) -> Dict[str, Any]:
@@ -190,13 +196,17 @@ class TidalDataset(BaseModel):
 
         # Setup MDT by extracting from the DataBoundary if provided or using a float value
         if isinstance(self.mean_dynamic_topography, DataBoundary):
-            logger.info(f"Loading mean dynamic topography from {self.mean_dynamic_topography.source.uri}")
+            logger.info(
+                f"Loading mean dynamic topography from {self.mean_dynamic_topography.source.uri}"
+            )
             self._mdt = self.mean_dynamic_topography._sel_boundary(grid)
             # Always extrapolate missing MDT from nearest neighbour
             # self._mdt
 
         elif isinstance(self.mean_dynamic_topography, (int, float)):
-            logger.info(f"Using mean dynamic topography value: {self.mean_dynamic_topography}")
+            logger.info(
+                f"Using mean dynamic topography value: {self.mean_dynamic_topography}"
+            )
             self._mdt = self.mean_dynamic_topography
 
         if len(extra_databases) > 0:
@@ -222,7 +232,23 @@ class TidalDataset(BaseModel):
             if v.lower() == "major":
                 return ["m2", "s2", "n2", "k2", "k1", "o1", "p1", "q1"]
             elif v.lower() == "all":
-                return ["m2", "s2", "n2", "k2", "k1", "o1", "p1", "q1", "mm", "mf", "m4", "mn4", "ms4", "2n2", "s1"]
+                return [
+                    "m2",
+                    "s2",
+                    "n2",
+                    "k2",
+                    "k1",
+                    "o1",
+                    "p1",
+                    "q1",
+                    "mm",
+                    "mf",
+                    "m4",
+                    "mn4",
+                    "ms4",
+                    "2n2",
+                    "s1",
+                ]
             else:
                 # Assume it's a comma-separated string
                 return [c.strip().lower() for c in v.split(",")]
@@ -230,7 +256,9 @@ class TidalDataset(BaseModel):
             return [c.lower() if isinstance(c, str) else c for c in v]
         return v
 
-    @field_validator("tidal_potential", "nodal_corrections", "extrapolate_tides", mode="before")
+    @field_validator(
+        "tidal_potential", "nodal_corrections", "extrapolate_tides", mode="before"
+    )
     @classmethod
     def ensure_python_bool(cls, v):
         return bool(v)
@@ -750,7 +778,9 @@ class BoundaryHandler(BoundaryData):
             extrapolate_tides=self.tidal_data.extrapolate_tides,
             extrapolation_distance=self.tidal_data.extrapolation_distance,
             extra_databases=self.tidal_data.extra_databases,
-            mdt=getattr(self.tidal_data, '_mdt', self.tidal_data.mean_dynamic_topography),
+            mdt=getattr(
+                self.tidal_data, "_mdt", self.tidal_data.mean_dynamic_topography
+            ),
             ethconst=ethconst,
             vthconst=vthconst,
             tthconst=tthconst,
@@ -825,7 +855,7 @@ def create_tidal_boundary(
     grid_path: Union[str, Path],
     constituents: Union[str, List[str]] = "major",
     tidal_database: Union[str, Path] = None,
-    tidal_model: Optional[str] = 'FES2014',
+    tidal_model: Optional[str] = "FES2014",
     nodal_corrections: bool = True,
     tidal_potential: bool = True,
     cutoff_depth: float = 50.0,
@@ -863,7 +893,8 @@ def create_tidal_boundary(
         nodal_corrections=nodal_corrections,
         tidal_potential=tidal_potential,
         cutoff_depth=cutoff_depth,
-        tide_interpolation_method=tide_interpolation_method,)
+        tide_interpolation_method=tide_interpolation_method,
+    )
 
     boundary = BoundaryHandler(
         grid_path=grid_path,
@@ -886,7 +917,7 @@ def create_tidal_boundary(
 def create_tidal_only_boundary_config(
     constituents: Union[str, List[str]] = "major",
     tidal_database: Union[str, Path] = None,
-    tidal_model: Optional[str] = 'FES2014',
+    tidal_model: Optional[str] = "FES2014",
     nodal_corrections: bool = True,
     tidal_potential: bool = True,
     cutoff_depth: float = 50.0,
@@ -944,7 +975,7 @@ def create_tidal_only_boundary_config(
 def create_hybrid_boundary_config(
     constituents: Union[str, List[str]] = "major",
     tidal_database: Union[str, Path] = None,
-    tidal_model: Optional[str] = 'FES2014',
+    tidal_model: Optional[str] = "FES2014",
     nodal_corrections: bool = True,
     tidal_potential: bool = True,
     cutoff_depth: float = 50.0,
@@ -1029,7 +1060,7 @@ def create_river_boundary_config(
     other_boundaries: Literal["tidal", "hybrid", "none"] = "tidal",
     constituents: Union[str, List[str]] = "major",
     tidal_database: Union[str, Path] = None,
-    tidal_model: Optional[str] = 'FES2014',
+    tidal_model: Optional[str] = "FES2014",
     nodal_corrections: bool = True,
     tidal_potential: bool = True,
     cutoff_depth: float = 50.0,
@@ -1071,9 +1102,7 @@ def create_river_boundary_config(
 
     # Create tidal dataset if both paths are provided and needed
     tidal_data = None
-    if (
-        other_boundaries in ["tidal", "hybrid"]
-    ):
+    if other_boundaries in ["tidal", "hybrid"]:
         tidal_data = TidalDataset(
             constituents=constituents,
             tidal_database=tidal_database,
@@ -1113,7 +1142,7 @@ def create_nested_boundary_config(
     salt_source: Optional[Union[Any, Any]] = None,
     constituents: Union[str, List[str]] = "major",
     tidal_database: Union[str, Path] = None,
-    tidal_model: Optional[str] = 'FES2014',
+    tidal_model: Optional[str] = "FES2014",
     nodal_corrections: bool = True,
     tidal_potential: bool = True,
     cutoff_depth: float = 50.0,
@@ -1209,7 +1238,7 @@ def create_hybrid_boundary(
     grid_path: Union[str, Path],
     constituents: Union[str, List[str]] = "major",
     tidal_database: Union[str, Path] = None,
-    tidal_model: Optional[str] = 'FES2014',
+    tidal_model: Optional[str] = "FES2014",
     nodal_corrections: bool = True,
     tidal_potential: bool = True,
     cutoff_depth: float = 50.0,
@@ -1252,10 +1281,7 @@ def create_hybrid_boundary(
         tide_interpolation_method=tide_interpolation_method,
     )
 
-    boundary = BoundaryHandler(
-        grid_path=grid_path,
-        tidal_data=tidal_data
-    )
+    boundary = BoundaryHandler(grid_path=grid_path, tidal_data=tidal_data)
 
     # Set default configuration for all boundaries: tidal + spacetime
     boundary.set_boundary_type(
@@ -1308,7 +1334,7 @@ def create_nested_boundary(
     outflow_relax: float = 0.8,
     constituents: Union[str, List[str]] = "major",
     tidal_database: Union[str, Path] = None,
-    tidal_model: Optional[str] = 'FES2014',
+    tidal_model: Optional[str] = "FES2014",
     nodal_corrections: bool = True,
     tidal_potential: bool = True,
     cutoff_depth: float = 50.0,

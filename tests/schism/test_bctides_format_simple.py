@@ -146,7 +146,7 @@ def test_basic_bctides_format(tidal_data_files):
         flags=flags,
         constituents=["M2", "S2"],
         tidal_database=tidal_data_files,
-        tidal_model='OCEANUM-atlas',
+        tidal_model="OCEANUM-atlas",
     )
 
     # Set start time and duration

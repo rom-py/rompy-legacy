@@ -24,7 +24,7 @@ from rompy.schism.data import (
 from rompy.schism.boundary_core import (
     BoundaryHandler,
     TidalBoundary,  # Backward compatibility alias
-    TidalDataset
+    TidalDataset,
 )
 
 # Import directly from the new implementation
@@ -125,6 +125,7 @@ def hycom_bnd_elev(test_files_dir):
         crop_data=True,
     )
 
+
 @pytest.fixture
 def hycom_bnd_vel(test_files_dir):
     """Create a 2D hydrodynamic boundary source."""
@@ -150,6 +151,7 @@ def hycom_bnd_temp_3d(test_files_dir):
         crop_data=True,
     )
 
+
 @pytest.fixture
 def hycom_bnd2d(test_files_dir):
     """Create a 3D temperature boundary source."""
@@ -174,7 +176,7 @@ def tidal_dataset(tidal_data_files):
     return TidalDataset(
         tidal_database=tidal_data_files,
         constituents=["M2", "S2"],
-        tidal_model="OCEANUM-atlas"
+        tidal_model="OCEANUM-atlas",
     )
 
 

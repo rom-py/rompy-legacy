@@ -29,7 +29,7 @@ from rompy.schism.boundary_core import (
     TracerType,
     VelocityType,
     create_tidal_boundary,
-    TidalDataset
+    TidalDataset,
 )
 from rompy.schism.grid import SCHISMGrid
 
@@ -1214,7 +1214,8 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
 
     # Tidal dataset specification
     tidal_data: Optional[TidalDataset] = Field(
-        None, description="Tidal forcing dataset",
+        None,
+        description="Tidal forcing dataset",
     )
 
     # Boundary configurations with integrated data sources
@@ -1263,7 +1264,8 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
                 in [ElevationType.HARMONIC, ElevationType.HARMONICEXTERNAL]
             ) or (
                 hasattr(setup, "vel_type")
-                and setup.vel_type in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
+                and setup.vel_type
+                in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
             ):
                 needs_tidal_data = True
                 break
@@ -1324,7 +1326,10 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
         # Get tidal data paths
         tidal_database = None
         if self.tidal_data:
-            if hasattr(self.tidal_data, "tidal_database") and self.tidal_data.tidal_database:
+            if (
+                hasattr(self.tidal_data, "tidal_database")
+                and self.tidal_data.tidal_database
+            ):
                 tidal_database = str(self.tidal_data.tidal_database)
 
         # Ensure boundary information is computed

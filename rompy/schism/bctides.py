@@ -35,11 +35,11 @@ class Bctides:
         flags=None,
         constituents="major",
         tidal_database=None,
-        tidal_model='FES2014',
+        tidal_model="FES2014",
         tidal_potential=True,
         cutoff_depth=50.0,
         nodal_corrections=True,
-        tide_interpolation_method='bilinear',
+        tide_interpolation_method="bilinear",
         extrapolate_tides=False,
         extrapolation_distance=100.0,
         extra_databases=[],
@@ -192,7 +192,6 @@ class Bctides:
         self.tear = []
         self.species = []
 
-
     @property
     def start_date(self):
         """Get start date for tidal calculations."""
@@ -207,16 +206,20 @@ class Bctides:
         ts = timescale.time.Timescale().from_datetime(self._start_time)
         MJD = ts.MJD
         # Astronomical longitudes
-        if self.tidal_model.startswith('FES'):
+        if self.tidal_model.startswith("FES"):
             # FES models use ASTRO5 method
-            s, h, p, n, pp = pyTMD.astro.mean_longitudes(MJD, method='ASTRO5')
-            u, f = pyTMD.arguments.nodal_modulation(n, p, self.tnames, corrections='FES')
-            freq = pyTMD.arguments.frequency(self.tnames, corrections='FES')
+            s, h, p, n, pp = pyTMD.astro.mean_longitudes(MJD, method="ASTRO5")
+            u, f = pyTMD.arguments.nodal_modulation(
+                n, p, self.tnames, corrections="FES"
+            )
+            freq = pyTMD.arguments.frequency(self.tnames, corrections="FES")
         else:
             # Other models use ASTRO2 method
-            s, h, p, n, pp = pyTMD.astro.mean_longitudes(MJD, method='Cartwright')
-            u, f = pyTMD.arguments.nodal_modulation(n, p, self.tnames, corrections='OTIS')
-            freq = pyTMD.arguments.frequency(self.tnames, corrections='OTIS')
+            s, h, p, n, pp = pyTMD.astro.mean_longitudes(MJD, method="Cartwright")
+            u, f = pyTMD.arguments.nodal_modulation(
+                n, p, self.tnames, corrections="OTIS"
+            )
+            freq = pyTMD.arguments.frequency(self.tnames, corrections="OTIS")
 
         # Nodal corrections (u: phase, f: factor)
         u = u.squeeze()
@@ -247,7 +250,6 @@ class Bctides:
         # Store earth equilibrium argument for each constituent
         self.earth_equil_arg = G[0, :]
 
-
     def _interpolate_tidal_data(self, lons, lats, constituent, data_type="h"):
         """
         Interpolate tidal data for a constituent to boundary points using pyTMD extract_constants.
@@ -269,22 +271,51 @@ class Bctides:
             For elevation: [amp, pha] (shape: n_points, 2)
             For velocity: [u_amp, u_pha, v_amp, v_pha] (shape: n_points, 4)
         """
-        tmd_model = pyTMD.io.model(self.tidal_database, extra_databases=self.extra_databases)
+        tmd_model = pyTMD.io.model(
+            self.tidal_database, extra_databases=self.extra_databases
+        )
         if data_type == "h":
             amp, pha, _ = tmd_model.elevation(self.tidal_model).extract_constants(
-                lons, lats, constituents=[constituent], method='bilinear', crop=True, extrapolate=self.extrapolate_tides, cutoff=self.extrapolation_distance)
+                lons,
+                lats,
+                constituents=[constituent],
+                method="bilinear",
+                crop=True,
+                extrapolate=self.extrapolate_tides,
+                cutoff=self.extrapolation_distance,
+            )
             amp = amp.squeeze()
             pha = pha.squeeze()
             # Return shape (n_points, 2)
             return np.column_stack((amp, pha))
         elif data_type == "uv":
             amp_u, pha_u, _ = tmd_model.current(self.tidal_model).extract_constants(
-                lons, lats, type='u', constituents=[constituent], method='bilinear', crop=True, extrapolate=self.extrapolate_tides, cutoff=self.extrapolation_distance)
+                lons,
+                lats,
+                type="u",
+                constituents=[constituent],
+                method="bilinear",
+                crop=True,
+                extrapolate=self.extrapolate_tides,
+                cutoff=self.extrapolation_distance,
+            )
             amp_v, pha_v, _ = tmd_model.current(self.tidal_model).extract_constants(
-                lons, lats, type='v', constituents=[constituent], method='bilinear', crop=True, extrapolate=self.extrapolate_tides, cutoff=self.extrapolation_distance)
-            amp_u = amp_u.squeeze() / 100 # Convert cm/s to m/s - pyTMD always returns in cm/s
+                lons,
+                lats,
+                type="v",
+                constituents=[constituent],
+                method="bilinear",
+                crop=True,
+                extrapolate=self.extrapolate_tides,
+                cutoff=self.extrapolation_distance,
+            )
+            amp_u = (
+                amp_u.squeeze() / 100
+            )  # Convert cm/s to m/s - pyTMD always returns in cm/s
             pha_u = pha_u.squeeze()
-            amp_v = amp_v.squeeze() / 100 # Convert cm/s to m/s - pyTMD always returns in cm/s
+            amp_v = (
+                amp_v.squeeze() / 100
+            )  # Convert cm/s to m/s - pyTMD always returns in cm/s
             pha_v = pha_v.squeeze()
             # Return shape (n_points, 4)
             return np.column_stack((amp_u, pha_u, amp_v, pha_v))
@@ -321,8 +352,12 @@ class Bctides:
         self._get_tidal_factors()
 
         if self.nodal_corrections:
-            logger.info("Applying nodal phase corrections to earth equilibrium argument")
-            self.earth_equil_arg = np.mod(self.earth_equil_arg + self.nodal_phase_correction, 360.0)
+            logger.info(
+                "Applying nodal phase corrections to earth equilibrium argument"
+            )
+            self.earth_equil_arg = np.mod(
+                self.earth_equil_arg + self.nodal_phase_correction, 360.0
+            )
         else:
             logger.info("Setting nodal corrections to 1.0 (no corrections applied)")
             self.nodal_factor = [1.0] * len(self.tnames)
@@ -342,7 +377,9 @@ class Bctides:
 
             # Write tidal potential information
             # Use only constituents with species 0, 1, or 2 (long period, diurnal, semi-diurnal)
-            tidal_potential_indices = [i for i, s in enumerate(self.species) if s in (0, 1, 2)]
+            tidal_potential_indices = [
+                i for i, s in enumerate(self.species) if s in (0, 1, 2)
+            ]
             n_tidal_potential = len(tidal_potential_indices)
             if self.tidal_potential and n_tidal_potential > 0:
                 f.write(
@@ -440,8 +477,6 @@ class Bctides:
                 # Handle elevation boundary conditions based on flags
                 elev_type = bnd_flags[0] if len(bnd_flags) > 0 else 0
 
-
-
                 # Type 1: Time history of elevation
                 if elev_type == 1:
                     f.write("! Time history of elevation will be read from elev.th\n")
@@ -454,7 +489,9 @@ class Bctides:
                         pass
                     else:
                         f.write("Z0\n")
-                        eth_val = self.ethconst[ibnd] if ibnd < len(self.ethconst) else 0.0
+                        eth_val = (
+                            self.ethconst[ibnd] if ibnd < len(self.ethconst) else 0.0
+                        )
                         for n in range(num_nodes):
                             f.write(f"{eth_val} 0.0\n")
                 # Type 4: Space-time varying elevation
@@ -603,9 +640,7 @@ class Bctides:
                         # if self.tidal_velocities and os.path.exists(
                         #     self.tidal_velocities
                         # ):
-                        vel_data = self._interpolate_tidal_data(
-                            lons, lats, tname, "uv"
-                        )
+                        vel_data = self._interpolate_tidal_data(lons, lats, tname, "uv")
 
                         if self.nodal_corrections:
                             # Apply nodal correction to phase for u and v components

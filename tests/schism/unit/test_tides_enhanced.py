@@ -148,9 +148,7 @@ class TestSCHISMDataTidesEnhanced:
         """Test initialization with boundary configurations."""
         # Define boundary configurations
         boundaries = {
-            0: BoundarySetup(
-                elev_type=3, vel_type=3  # Harmonic types
-            ),
+            0: BoundarySetup(elev_type=3, vel_type=3),  # Harmonic types
             1: BoundarySetup(
                 elev_type=2, vel_type=2, const_flow=-100.0  # Constant types
             ),

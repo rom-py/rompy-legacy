@@ -133,9 +133,7 @@ def test_tidal_boundary_constituent_consistency(
 
         # Create a TidalBoundary instance with only the constituents in the test dataset (M2, S2, N2)
         boundary = TidalBoundary(
-            grid_path=grid_path,
-            boundary_configs=configs,
-            tidal_data=tidal_dataset
+            grid_path=grid_path, boundary_configs=configs, tidal_data=tidal_dataset
         )
 
         # Set run parameters

@@ -520,6 +520,7 @@ class Opt(NamelistBaseModel):
             raise ValueError("loadtide_coef must be set when iloadtide is 2 or 3")
         return self
 
+
 class Vegetation(NamelistBaseModel):
     # isav: Optional[int] = Field(
     #     0,
@@ -544,7 +545,7 @@ class Vegetation(NamelistBaseModel):
         """,
     )
     veg_vert_z: Optional[List[float]] = Field(
-        [0.,0.5,1.],
+        [0.0, 0.5, 1.0],
         description="Depths for vertical scaling of vegetation model (in meters).",
     )
     veg_vert_scale_cd: Optional[List[float]] = Field(
@@ -574,7 +575,7 @@ class Vegetation(NamelistBaseModel):
         if v not in [0, 1, 2]:
             raise ValueError("iveg must be 0, 1, or 2")
         return v
-    
+
     @field_validator("veg_vert_z")
     @classmethod
     def validate_veg_vert_z(cls, v):
@@ -584,30 +585,35 @@ class Vegetation(NamelistBaseModel):
         if not all(v[i] < v[i + 1] for i in range(len(v) - 1)):
             raise ValueError("veg_vert_z must be in ascending order")
         return v
+
     @field_validator("veg_vert_scale_cd")
     @classmethod
     def validate_veg_vert_scale_cd(cls, v, values):
         if not all(isinstance(i, float) for i in v):
             raise ValueError("All elements in veg_vert_scale_cd must be floats")
         return v
+
     @field_validator("veg_vert_scale_n")
     @classmethod
     def validate_veg_vert_scale_n(cls, v, values):
         if not all(isinstance(i, float) for i in v):
             raise ValueError("All elements in veg_vert_scale_n must be floats")
         return v
+
     @field_validator("veg_vert_scale_d")
     @classmethod
     def validate_veg_vert_scale_d(cls, v, values):
         if not all(isinstance(i, float) for i in v):
             raise ValueError("All elements in veg_vert_scale_d must be floats")
         return v
+
     @field_validator("veg_lai")
     @classmethod
     def validate_veg_lai(cls, v):
         if v < 0:
             raise ValueError("veg_lai must be non-negative")
         return v
+
     @field_validator("veg_cw")
     @classmethod
     def validate_veg_cw(cls, v):
@@ -856,7 +862,7 @@ class Vertical(NamelistBaseModel):
     @classmethod
     def check_rho0(cls, v):
         if v <= 900:
-        # if float(v.replace("d", "")) <= 0:
+            # if float(v.replace("d", "")) <= 0:
             raise ValueError("rho0 must be positive")
         return v
 

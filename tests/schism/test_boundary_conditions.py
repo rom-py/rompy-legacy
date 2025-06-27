@@ -26,7 +26,7 @@ from rompy.schism.boundary_core import (
     ElevationType,
     VelocityType,
     TracerType,
-    TidalDataset
+    TidalDataset,
 )
 from rompy.schism.data import (
     BoundarySetupWithSource,
@@ -205,8 +205,7 @@ class TestSCHISMDataBoundaryConditions:
 
         # Test that tidal setup type works with tidal data
         bc_tidal_valid = SCHISMDataBoundaryConditions(
-            tidal_data=tidal_dataset,
-            setup_type="tidal"
+            tidal_data=tidal_dataset, setup_type="tidal"
         )
         assert bc_tidal_valid.setup_type == "tidal"
 
@@ -235,8 +234,7 @@ class TestSCHISMDataBoundaryConditions:
     def test_tidal_data(self, tidal_dataset):
         """Test with actual tidal dataset."""
         # Create with tidal dataset
-        bc = SCHISMDataBoundaryConditions(tidal_data=tidal_dataset, setup_type="tidal"
-        )
+        bc = SCHISMDataBoundaryConditions(tidal_data=tidal_dataset, setup_type="tidal")
 
         assert bc.tidal_data == tidal_dataset
 
@@ -311,7 +309,9 @@ def test_tidal_only_factory(tidal_data_files):
     assert bc.tidal_data.tidal_model == "OCEANUM-atlas"
 
 
-def test_hybrid_factory(tidal_data_files, grid2d, time_range, temp_output_dir, hycom_bnd_elev):
+def test_hybrid_factory(
+    tidal_data_files, grid2d, time_range, temp_output_dir, hycom_bnd_elev
+):
     """Test the hybrid factory function with real data."""
     # Skip if the tidal data files don't exist
     # if not os.path.exists(tidal_data_files["elevation"]) or not os.path.exists(
@@ -329,7 +329,7 @@ def test_hybrid_factory(tidal_data_files, grid2d, time_range, temp_output_dir, h
         tidal_database=tidal_data_files,
         tidal_model="OCEANUM-atlas",
         constituents=["M2", "S2", "N2"],
-        elev_source=elev_source
+        elev_source=elev_source,
     )
 
     # Check the configuration
@@ -369,7 +369,9 @@ def test_river_factory(tidal_data_files):
     assert bc.boundaries[1].const_flow == -100.0
 
 
-def test_nested_factory(tidal_data_files, grid2d, time_range, temp_output_dir, hycom_bnd_elev, hycom_bnd_vel):
+def test_nested_factory(
+    tidal_data_files, grid2d, time_range, temp_output_dir, hycom_bnd_elev, hycom_bnd_vel
+):
     """Test the nested factory function with real data."""
     # # Skip if the tidal data files don't exist
     # if not os.path.exists(tidal_data_files["elevation"]) or not os.path.exists(
@@ -380,7 +382,6 @@ def test_nested_factory(tidal_data_files, grid2d, time_range, temp_output_dir, h
     # Create simple DataBlobs for sources
     elev_source = hycom_bnd_elev
     vel_source = hycom_bnd_vel
-
 
     # Create configuration with nested boundary
     bc = create_nested_boundary_config(

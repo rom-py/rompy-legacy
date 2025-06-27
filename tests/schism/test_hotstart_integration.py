@@ -150,7 +150,11 @@ class TestBoundaryConditionsHotstartIntegration:
         tidal_data_with_constituents = TidalDataset(
             tidal_database=tidal_dataset.tidal_database,
             tidal_model=tidal_dataset.tidal_model,
-            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
+            constituents=[
+                "M2",
+                "S2",
+                "N2",
+            ],  # Use only constituents available in test data
         )
 
         bc = SCHISMDataBoundaryConditions(
@@ -178,7 +182,11 @@ class TestBoundaryConditionsHotstartIntegration:
         tidal_data_with_constituents = TidalDataset(
             tidal_database=tidal_dataset.tidal_database,
             tidal_model=tidal_dataset.tidal_model,
-            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
+            constituents=[
+                "M2",
+                "S2",
+                "N2",
+            ],  # Use only constituents available in test data
         )
 
         bc = SCHISMDataBoundaryConditions(
@@ -207,7 +215,11 @@ class TestBoundaryConditionsHotstartIntegration:
         tidal_data_with_constituents = TidalDataset(
             tidal_database=tidal_dataset.tidal_database,
             tidal_model=tidal_dataset.tidal_model,
-            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
+            constituents=[
+                "M2",
+                "S2",
+                "N2",
+            ],  # Use only constituents available in test data
         )
 
         bc = SCHISMDataBoundaryConditions(
@@ -240,7 +252,11 @@ class TestBoundaryConditionsHotstartIntegration:
         tidal_data_with_constituents = TidalDataset(
             tidal_database=tidal_dataset.tidal_database,
             tidal_model=tidal_dataset.tidal_model,
-            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
+            constituents=[
+                "M2",
+                "S2",
+                "N2",
+            ],  # Use only constituents available in test data
         )
 
         bc = SCHISMDataBoundaryConditions(
@@ -258,7 +274,13 @@ class TestBoundaryConditionsHotstartIntegration:
                 bc._generate_hotstart(tmpdir, grid3d, time_range)
 
     def test_generate_hotstart_no_salt_source(
-        self, hycom_source, hycom_coords, tidal_dataset, grid3d, time_range, boundary_setup_no_sources
+        self,
+        hycom_source,
+        hycom_coords,
+        tidal_dataset,
+        grid3d,
+        time_range,
+        boundary_setup_no_sources,
     ):
         """Test _generate_hotstart raises error when no salinity source available."""
         # Create boundary setup with only temperature source
@@ -295,7 +317,13 @@ class TestBoundaryConditionsHotstartIntegration:
                 bc._generate_hotstart(tmpdir, grid3d, time_range)
 
     def test_multiple_boundaries_hotstart_source_selection(
-        self, hycom_source, hycom_coords, tidal_dataset, grid3d, time_range, boundary_setup_no_sources
+        self,
+        hycom_source,
+        hycom_coords,
+        tidal_dataset,
+        grid3d,
+        time_range,
+        boundary_setup_no_sources,
     ):
         """Test that hotstart uses sources from any boundary that has both temp and salt."""
         # Create first boundary without temp/salt sources
@@ -353,7 +381,11 @@ class TestBoundaryConditionsHotstartIntegration:
         tidal_data_with_constituents = TidalDataset(
             tidal_database=tidal_dataset.tidal_database,
             tidal_model=tidal_dataset.tidal_model,
-            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
+            constituents=[
+                "M2",
+                "S2",
+                "N2",
+            ],  # Use only constituents available in test data
         )
 
         bc = SCHISMDataBoundaryConditions(
@@ -380,7 +412,11 @@ class TestBoundaryConditionsHotstartIntegration:
         tidal_data_with_constituents = TidalDataset(
             tidal_database=tidal_dataset.tidal_database,
             tidal_model=tidal_dataset.tidal_model,
-            constituents=["M2", "S2", "N2"],  # Use only constituents available in test data
+            constituents=[
+                "M2",
+                "S2",
+                "N2",
+            ],  # Use only constituents available in test data
         )
 
         bc = SCHISMDataBoundaryConditions(
