@@ -131,7 +131,7 @@ def hycom_bnd_vel(test_files_dir):
     return DataGrid(
         source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
         coords=DatasetCoords(t="time", x="lon", y="lat"),
-        variables=["u", "v"],
+        variables=["water_u", "water_v"],
         buffer=0.1,
         filter=Filter(),
         crop_data=True,
@@ -150,11 +150,19 @@ def hycom_bnd_temp_3d(test_files_dir):
         crop_data=True,
     )
 
+@pytest.fixture
+def hycom_bnd2d(test_files_dir):
+    """Create a 3D temperature boundary source."""
+    return DataGrid(
+        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        coords=DatasetCoords(t="time", x="lon", y="lat", z="depth"),
+    )
+
 
 @pytest.fixture
 def tidal_data_files(test_files_dir):
     """Return paths to tidal elevation and velocity files for testing."""
-    tidal_database = test_files_dir / "tides" 
+    tidal_database = test_files_dir / "tides"
     return tidal_database
 
 
@@ -166,7 +174,7 @@ def tidal_dataset(tidal_data_files):
     return TidalDataset(
         tidal_database=tidal_data_files,
         constituents=["M2", "S2"],
-        model="OCEANUM-atlas"
+        tidal_model="OCEANUM-atlas"
     )
 
 

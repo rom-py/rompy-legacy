@@ -133,7 +133,7 @@ class Bctides:
         self.extrapolation_distance = extrapolation_distance
         self.extra_databases = extra_databases
         self.mdt = mdt
-        
+
         self.ethconst = ethconst
         self.vthconst = vthconst
         self.tthconst = tthconst
@@ -164,7 +164,7 @@ class Bctides:
         # Assume it's already a grid object
         self.gd = hgrid
 
-        # Define constituent sets
+        # Define constituent sets (using lowercase for pyTMD compatibility)
         self.major_constituents = ["o1", "k1", "q1", "p1", "m2", "s2", "k2", "n2"]
         self.minor_constituents = ["mm", "mf", "m4", "mn4", "ms4", "2n2", "s1"]
 
@@ -182,7 +182,7 @@ class Bctides:
         else:
             # Default to major constituents
             self.tnames = self.major_constituents
-        # Ensure tnames are unique and lowercase
+        # Ensure tnames are unique and lowercase (for pyTMD compatibility)
         self.tnames = list(set(t.lower() for t in self.tnames))
 
         # For storing tidal factors
@@ -217,8 +217,8 @@ class Bctides:
             s, h, p, n, pp = pyTMD.astro.mean_longitudes(MJD, method='Cartwright')
             u, f = pyTMD.arguments.nodal_modulation(n, p, self.tnames, corrections='OTIS')
             freq = pyTMD.arguments.frequency(self.tnames, corrections='OTIS')
-        
-        # Nodal corrections (u: phase, f: factor) 
+
+        # Nodal corrections (u: phase, f: factor)
         u = u.squeeze()
         f = f.squeeze()
         u_deg = np.rad2deg(u)
@@ -269,18 +269,18 @@ class Bctides:
             For elevation: [amp, pha] (shape: n_points, 2)
             For velocity: [u_amp, u_pha, v_amp, v_pha] (shape: n_points, 4)
         """
-        tmd_model = pyTMD.io.model(self.tidal_database)
+        tmd_model = pyTMD.io.model(self.tidal_database, extra_databases=self.extra_databases)
         if data_type == "h":
-            amp, pha, _ = tmd_model.elevation(self.tidal_model, extra_databases=self.extra_databases).extract_constants(
+            amp, pha, _ = tmd_model.elevation(self.tidal_model).extract_constants(
                 lons, lats, constituents=[constituent], method='bilinear', crop=True, extrapolate=self.extrapolate_tides, cutoff=self.extrapolation_distance)
             amp = amp.squeeze()
             pha = pha.squeeze()
             # Return shape (n_points, 2)
             return np.column_stack((amp, pha))
         elif data_type == "uv":
-            amp_u, pha_u, _ = tmd_model.current(self.tidal_model, extra_databases=self.extra_databases).extract_constants(
+            amp_u, pha_u, _ = tmd_model.current(self.tidal_model).extract_constants(
                 lons, lats, type='u', constituents=[constituent], method='bilinear', crop=True, extrapolate=self.extrapolate_tides, cutoff=self.extrapolation_distance)
-            amp_v, pha_v, _ = tmd_model.current(self.tidal_model, extra_databases=self.extra_databases).extract_constants(
+            amp_v, pha_v, _ = tmd_model.current(self.tidal_model).extract_constants(
                 lons, lats, type='v', constituents=[constituent], method='bilinear', crop=True, extrapolate=self.extrapolate_tides, cutoff=self.extrapolation_distance)
             amp_u = amp_u.squeeze() / 100 # Convert cm/s to m/s - pyTMD always returns in cm/s
             pha_u = pha_u.squeeze()
@@ -290,7 +290,7 @@ class Bctides:
             return np.column_stack((amp_u, pha_u, amp_v, pha_v))
         else:
             raise ValueError(f"Unknown data_type: {data_type}")
- 
+
     def write_bctides(self, output_file):
         """Generate bctides.in file directly using PyLibs approach.
 
@@ -440,7 +440,7 @@ class Bctides:
                 # Handle elevation boundary conditions based on flags
                 elev_type = bnd_flags[0] if len(bnd_flags) > 0 else 0
 
-                
+
 
                 # Type 1: Time history of elevation
                 if elev_type == 1:
@@ -523,7 +523,7 @@ class Bctides:
                                 # If no nodal corrections, just use the phase as is
                                 tidal_data[:, 1] = tidal_data[:, 1] % 360.0
 
-                            # Write header for constituent - use original case for consistency
+                            # Write header for constituent
                             f.write(f"{tname}\n")
 
                             # Write amplitude and phase for each node
@@ -596,7 +596,7 @@ class Bctides:
                         for n in range(num_nodes):
                             f.write(f"0.0 0.0 0.0 0.0\n")
                     for i, tname in enumerate(self.tnames):
-                        # Write header for constituent first - use original case for consistency
+                        # Write header for constituent first
                         f.write(f"{tname}\n")
 
                         # # Try to interpolate velocity data

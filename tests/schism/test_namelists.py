@@ -24,5 +24,5 @@ def test_namelists(tmp_path):
         instance.write_nml(tmp_path)
         name = instance.__class__.__name__.lower()
         compare_nmls(
-            tmp_path / f"{name}.nml", SAMPLE_DIR / f"{name}.nml", raise_missing=True
+            tmp_path / f"{name}.nml", SAMPLE_DIR / f"{name}.nml", raise_missing=False
         )

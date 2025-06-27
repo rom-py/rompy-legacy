@@ -1,8 +1,8 @@
 """
 Core SCHISM Boundary Conditions Module
 
-This module provides the core infrastructure for handling all types of SCHISM boundary 
-conditions including tidal, river, nested, and hybrid configurations. It serves as the 
+This module provides the core infrastructure for handling all types of SCHISM boundary
+conditions including tidal, river, nested, and hybrid configurations. It serves as the
 foundation for the SCHISM boundary conditions system.
 
 Key Components:
@@ -18,22 +18,22 @@ its role as the core boundary handling module for all boundary types, not just t
 Example Usage:
     ```python
     from rompy.schism.boundary_core import (
-        BoundaryHandler, 
-        ElevationType, 
+        BoundaryHandler,
+        ElevationType,
         VelocityType,
         create_tidal_boundary
     )
-    
+
     # Create a boundary handler
     boundary = BoundaryHandler(grid_path="hgrid.gr3")
-    
+
     # Configure tidal boundary
     boundary.set_boundary_type(
-        0, 
+        0,
         elev_type=ElevationType.HARMONIC,
         vel_type=VelocityType.HARMONIC
     )
-    
+
     # Or use factory function
     tidal_boundary = create_tidal_boundary(
         grid_path="hgrid.gr3",
@@ -117,7 +117,7 @@ class TidalSpecies(IntEnum):
 
 class TidalDataset(BaseModel):
     """
-    This class is used to define the tidal dataset to use from an available pyTMD tidal database. 
+    This class is used to define the tidal dataset to use from an available pyTMD tidal database.
     Custom databases can be configured by providing a database.json file in the tidal database directory.
     see https://pytmd.readthedocs.io/en/latest/getting_started/Getting-Started.html
     """
@@ -138,7 +138,7 @@ class TidalDataset(BaseModel):
 
     # Basic tidal configuration
     constituents: Union[List[str], str] = Field(
-        default_factory=lambda: ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"],
+        default_factory=lambda: ["m2", "s2", "n2", "k2", "k1", "o1", "p1", "q1"],
         description="Tidal constituents to include",
     )
 
@@ -214,11 +214,27 @@ class TidalDataset(BaseModel):
             "mean_dynamic_topography": self._mdt,
         }
 
+    @field_validator("constituents", mode="before")
+    @classmethod
+    def normalize_constituents_case(cls, v):
+        """Normalize constituent names to lowercase for pyTMD compatibility."""
+        if isinstance(v, str):
+            if v.lower() == "major":
+                return ["m2", "s2", "n2", "k2", "k1", "o1", "p1", "q1"]
+            elif v.lower() == "all":
+                return ["m2", "s2", "n2", "k2", "k1", "o1", "p1", "q1", "mm", "mf", "m4", "mn4", "ms4", "2n2", "s1"]
+            else:
+                # Assume it's a comma-separated string
+                return [c.strip().lower() for c in v.split(",")]
+        elif isinstance(v, list):
+            return [c.lower() if isinstance(c, str) else c for c in v]
+        return v
+
     @field_validator("tidal_potential", "nodal_corrections", "extrapolate_tides", mode="before")
     @classmethod
     def ensure_python_bool(cls, v):
         return bool(v)
-   
+
 
 class BoundaryConfig(BaseModel):
     """Configuration for a single SCHISM boundary segment."""
@@ -318,7 +334,7 @@ class BoundaryConfig(BaseModel):
             f"BoundaryConfig(elev_type={self.elev_type}, vel_type={self.vel_type}, "
             f"temp_type={self.temp_type}, salt_type={self.salt_type})"
         )
- 
+
 
 class BoundaryHandler(BoundaryData):
     """Handler for SCHISM boundary conditions.
@@ -349,7 +365,7 @@ class BoundaryHandler(BoundaryData):
         """
         super().__init__(grid_path, *args, **kwargs)
 
-        self.tidal_data = tidal_data 
+        self.tidal_data = tidal_data
         self.boundary_configs = boundary_configs if boundary_configs is not None else {}
 
         # For storing start time and run duration
@@ -734,7 +750,7 @@ class BoundaryHandler(BoundaryData):
             extrapolate_tides=self.tidal_data.extrapolate_tides,
             extrapolation_distance=self.tidal_data.extrapolation_distance,
             extra_databases=self.tidal_data.extra_databases,
-            mdt=self.tidal_data._mdt,
+            mdt=getattr(self.tidal_data, '_mdt', self.tidal_data.mean_dynamic_topography),
             ethconst=ethconst,
             vthconst=vthconst,
             tthconst=tthconst,
@@ -851,7 +867,6 @@ def create_tidal_boundary(
 
     boundary = BoundaryHandler(
         grid_path=grid_path,
-        constituents=constituents,
         tidal_data=tidal_data,
     )
 
@@ -903,8 +918,8 @@ def create_tidal_only_boundary_config(
         Configured boundary conditions
     """
     from rompy.schism.data import SCHISMDataBoundaryConditions
-    
-    # Create tidal dataset 
+
+    # Create tidal dataset
     tidal_data = TidalDataset(
         constituents=constituents,
         tidal_database=tidal_database,
@@ -974,8 +989,8 @@ def create_hybrid_boundary_config(
     """
     from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
     from rompy.schism.tides_enhanced import TidalDataset
-    
-    # Create tidal dataset 
+
+    # Create tidal dataset
     tidal_data = TidalDataset(
         constituents=constituents,
         tidal_database=tidal_database,
@@ -1053,7 +1068,7 @@ def create_river_boundary_config(
     """
     from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
     from rompy.schism.tides_enhanced import TidalDataset
-    
+
     # Create tidal dataset if both paths are provided and needed
     tidal_data = None
     if (
@@ -1145,7 +1160,7 @@ def create_nested_boundary_config(
     """
     from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
     from rompy.schism.tides_enhanced import TidalDataset
-    
+
     # Create tidal dataset if both paths are provided and needed
     tidal_data = None
     if with_tides:
@@ -1161,8 +1176,6 @@ def create_nested_boundary_config(
 
     # Create the basic config
     config = SCHISMDataBoundaryConditions(
-        constituents=constituents if with_tides else [],
-        tidal_database="tpxo" if with_tides else "",
         tidal_data=tidal_data,
         setup_type="nested",
         hotstart_config=None,

@@ -160,7 +160,7 @@ class TestSCHISMDataBoundaryConditions:
         # Create a basic boundary conditions object
         bc = SCHISMDataBoundaryConditions(tidal_data=tidal_dataset)
 
-        assert bc.tidal_data.constituents == ["M2", "S2"]
+        assert bc.tidal_data.constituents == ["m2", "s2"]
         assert bc.tidal_data.tidal_model == "OCEANUM-atlas"
         assert bc.boundaries == {}
 
@@ -199,12 +199,19 @@ class TestSCHISMDataBoundaryConditions:
             match="Tidal data is required for HARMONIC or HARMONICEXTERNAL boundary types",
         ):
             bc_tidal = SCHISMDataBoundaryConditions(
-                tidal_data=tidal_dataset,
                 setup_type="tidal"
+                # Missing tidal_data should cause validation error
             )
 
+        # Test that tidal setup type works with tidal data
+        bc_tidal_valid = SCHISMDataBoundaryConditions(
+            tidal_data=tidal_dataset,
+            setup_type="tidal"
+        )
+        assert bc_tidal_valid.setup_type == "tidal"
+
         # Test river setup type (should work without tidal data)
-        bc_river = SCHISMDataBoundaryConditions(constituents=[], setup_type="river")
+        bc_river = SCHISMDataBoundaryConditions(setup_type="river")
 
         assert bc_river.setup_type == "river"
 
@@ -257,55 +264,33 @@ class TestSCHISMDataBoundaryConditions:
         # Verify basic content of the file
         with open(bctides_path, "r") as f:
             content = f.read()
-            assert "M2" in content or "S2" in content
+            content_lower = content.lower()
+            assert "m2" in content_lower or "s2" in content_lower
 
 
 @pytest.mark.parametrize(
-    "function_name,expected_type,should_fail",
+    "function_name,expected_type",
     [
-        (
-            "create_tidal_only_boundary_config",
-            "tidal",
-            True,
-        ),  # Should fail without tidal data
-        (
-            "create_hybrid_boundary_config",
-            "hybrid",
-            True,
-        ),  # Should fail without tidal data
-        (
-            "create_river_boundary_config",
-            "river",
-            False,
-        ),  # Should work without tidal data
-        (
-            "create_nested_boundary_config",
-            "nested",
-            False,
-        ),  # Should work without tidal data
+        ("create_tidal_only_boundary_config", "tidal"),
+        ("create_hybrid_boundary_config", "hybrid"),
+        ("create_river_boundary_config", "river"),
+        ("create_nested_boundary_config", "nested"),
     ],
 )
-def test_factory_functions_basic(function_name, expected_type, should_fail):
+def test_factory_functions_basic(function_name, expected_type):
     """Test basic functionality of factory functions."""
     # Get the factory function
     import rompy.schism.boundary_conditions as bc_module
 
     factory_func = getattr(bc_module, function_name)
 
-    if should_fail:
-        # These functions should fail without proper tidal data
-        with pytest.raises(
-            ValueError,
-            match="Tidal data is required for HARMONIC or HARMONICEXTERNAL boundary types",
-        ):
-            factory_func()
-    else:
-        # These functions should work with minimal arguments
-        boundary_config = factory_func()
+    # All functions should work with minimal arguments during construction
+    # Validation happens later during .get() call when data is actually used
+    boundary_config = factory_func()
 
-        # Check the result
-        assert isinstance(boundary_config, SCHISMDataBoundaryConditions)
-        assert boundary_config.setup_type == expected_type
+    # Check the result
+    assert isinstance(boundary_config, SCHISMDataBoundaryConditions)
+    assert boundary_config.setup_type == expected_type
 
 
 def test_tidal_only_factory(tidal_data_files):
@@ -319,13 +304,14 @@ def test_tidal_only_factory(tidal_data_files):
 
     # Check the configuration
     assert bc.setup_type == "tidal"
-    assert bc.constituents == ["M2", "S2", "N2"]
+    # constituents are normalized to lowercase internally
+    assert bc.tidal_data.constituents == ["m2", "s2", "n2"]
     assert bc.tidal_data is not None
     assert bc.tidal_data.tidal_database == tidal_data_files
     assert bc.tidal_data.tidal_model == "OCEANUM-atlas"
 
 
-def test_hybrid_factory(tidal_data_files, grid2d, time_range, temp_output_dir, hycom_bnd2d):
+def test_hybrid_factory(tidal_data_files, grid2d, time_range, temp_output_dir, hycom_bnd_elev):
     """Test the hybrid factory function with real data."""
     # Skip if the tidal data files don't exist
     # if not os.path.exists(tidal_data_files["elevation"]) or not os.path.exists(
@@ -336,7 +322,7 @@ def test_hybrid_factory(tidal_data_files, grid2d, time_range, temp_output_dir, h
     # # Create a simple DataBlob for sources
     # elev_source = DataBlob(source=tidal_data_files["elevation"])
     # vel_source = DataBlob(source=tidal_data_files["velocity"])
-    elev_source = DataBlob(source=hycom_bnd2d.source)
+    elev_source = hycom_bnd_elev
 
     # Create configuration with data sources
     bc = create_hybrid_boundary_config(
@@ -348,7 +334,8 @@ def test_hybrid_factory(tidal_data_files, grid2d, time_range, temp_output_dir, h
 
     # Check the configuration
     assert bc.setup_type == "hybrid"
-    assert bc.constituents == ["M2", "S2", "N2"]
+    # constituents are normalized to lowercase internally
+    assert bc.tidal_data.constituents == ["m2", "s2", "n2"]
     assert bc.tidal_data is not None
     assert bc.tidal_data.tidal_database == tidal_data_files
     assert bc.tidal_data.tidal_model == "OCEANUM-atlas"
@@ -393,7 +380,7 @@ def test_nested_factory(tidal_data_files, grid2d, time_range, temp_output_dir, h
     # Create simple DataBlobs for sources
     elev_source = hycom_bnd_elev
     vel_source = hycom_bnd_vel
-    
+
 
     # Create configuration with nested boundary
     bc = create_nested_boundary_config(

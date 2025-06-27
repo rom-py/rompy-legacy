@@ -329,7 +329,7 @@ class SCHISMDataTidesEnhanced(RompyBaseModel):
             return self
 
         if self.setup_type in ["tidal", "hybrid"]:
-            if not self.constituents:
+            if not (self.tidal_data and self.tidal_data.constituents):
                 logger.warning(
                     "constituents are required for tidal or hybrid setup_type"
                 )
