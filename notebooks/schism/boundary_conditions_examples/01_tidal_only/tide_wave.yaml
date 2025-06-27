@@ -1,9 +1,9 @@
-output_dir: schism_tidal_potential
+output_dir: schism_tide_wave
 period:
   start: 20230101T00
   end: 20230101T12
   interval: 3600
-run_id: tidal_potential_example
+run_id: tide_wave_example
 delete_existing: true
 config:
   model_type: schism
@@ -16,6 +16,32 @@ config:
     drag: 2.5e-3
   data:
     data_type: schism
+    atmos:
+      air_1:
+        data_type: sflux_air
+        source:
+          model_type: file
+          uri: tests/schism/test_data/era5.nc
+        uwind_name: u10
+        vwind_name: v10
+        prmsl_name: msl
+        filter:
+          sort:
+            coords:
+              - latitude
+        buffer: 5
+    wave:
+      buffer: 0.0
+      coords:
+        t: time
+        x: lon
+        y: lat
+        z: depth
+      id: wavedata
+      source:
+        catalog_uri: tests/data/catalog.yaml
+        dataset_id: ausspec
+        model_type: intake
     boundary_conditions:
       data_type: boundary_conditions
       setup_type: tidal
@@ -46,8 +72,18 @@ config:
         ibtp: 0 # Dont solve tracer transport - no tracers
         nspool: 24 # number of time steps to spool        
         ihfskip: 1152 # number of time steps per output file
+      opt:
+        ihot: 0
+        nstep_wwm: 4
       schout:
         iof_hydro__1: 1 # elevation
         iof_hydro__26: 1 # vel. vector
+        iof_wwm__1: 1 # significant wave height
+        iof_wwm__2: 1 # mean wave period (TM01)
+        iof_wwm__9: 1 # peak wave period
+        iof_wwm__18: 1 # peak wave direction
         iout_sta: 1 # output sta
         nspool_sta: 4 # number of time steps to spool for sta
+    wwminput:
+      proc:
+        deltc: 600

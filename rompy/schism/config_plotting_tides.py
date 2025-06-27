@@ -197,8 +197,6 @@ def plot_tidal_stations(
                 lats = np.linspace(47, 48, len(stations))
 
                 # Create a synthetic dataset for plotting
-                # Ensure constituents are uppercase to match what's expected in the plot functions
-                constituents_upper = [c.upper() for c in constituents]
                 ds_dict = {
                     "amplitude": (
                         ["constituent", "station"],
@@ -210,7 +208,7 @@ def plot_tidal_stations(
                     ),
                     "lon": ("station", lons),
                     "lat": ("station", lats),
-                    "constituent": ("constituent", constituents_upper),
+                    "constituent": ("constituent", constituents),
                 }
 
                 dataset = xr.Dataset(ds_dict)
@@ -393,8 +391,6 @@ def plot_tidal_rose(
                 lats = np.linspace(47, 48, len(stations))
 
                 # Create a synthetic dataset for plotting
-                # Ensure constituents are uppercase to match what's expected in the plot functions
-                constituents_upper = [c.upper() for c in constituents]
                 ds_dict = {
                     "amplitude": (
                         ["constituent", "station"],
@@ -406,7 +402,7 @@ def plot_tidal_rose(
                     ),
                     "lon": ("station", lons),
                     "lat": ("station", lats),
-                    "constituent": ("constituent", constituents_upper),
+                    "constituent": ("constituent", constituents),
                 }
 
                 dataset = xr.Dataset(ds_dict)
@@ -649,8 +645,6 @@ def plot_tidal_dataset(self, figsize=(12, 8)):
                 lats = np.linspace(47, 48, len(stations))
 
                 # Create a synthetic dataset for plotting
-                # Ensure constituents are uppercase to match what's expected in the plot functions
-                constituents_upper = [c.upper() for c in constituents]
                 ds_dict = {
                     "amplitude": (
                         ["constituent", "station"],
@@ -662,7 +656,7 @@ def plot_tidal_dataset(self, figsize=(12, 8)):
                     ),
                     "lon": ("station", lons),
                     "lat": ("station", lats),
-                    "constituent": ("constituent", constituents_upper),
+                    "constituent": ("constituent", constituents),
                 }
 
                 dataset = xr.Dataset(ds_dict)

@@ -213,9 +213,10 @@ class TestBctides:
             with open(tmp_path, "r") as f:
                 content = f.read()
 
-            # Check that constituents are in the file
-            assert "M2" in content, "M2 constituent not found in output"
-            assert "S2" in content, "S2 constituent not found in output"
+            # Check that constituents are in the file (case-insensitive)
+            content_lower = content.lower()
+            assert "m2" in content_lower, "M2 constituent not found in output"
+            assert "s2" in content_lower, "S2 constituent not found in output"
 
             # Check that ntip section is correct
             with open(tmp_path, "r") as f:

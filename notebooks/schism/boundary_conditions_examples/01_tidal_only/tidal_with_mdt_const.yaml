@@ -1,9 +1,9 @@
-output_dir: schism_tidal_potential
+output_dir: schism_tidal_with_mdt_const
 period:
   start: 20230101T00
   end: 20230101T12
   interval: 3600
-run_id: tidal_potential_example
+run_id: tidal_with_mdt_const_example
 delete_existing: true
 config:
   model_type: schism
@@ -26,16 +26,14 @@ config:
         - M2
         - S2
         - N2
-        tide_interpolation_method: 'spline'
-        nodal_corrections: true
+        nodal_corrections: false
+        tidal_potential: false
         extrapolate_tides: true
-        extrapolation_distance: 50.0 # in km
-        tidal_potential: true
-        cutoff_depth: 40.0 # in m
+        mean_dynamic_topography: 0.6
       boundaries:
         0:
           elev_type: 3
-          vel_type: 3 #Includes tidal velocity
+          vel_type: 3
           temp_type: 0
           salt_type: 0
   nml:
@@ -51,3 +49,4 @@ config:
         iof_hydro__26: 1 # vel. vector
         iout_sta: 1 # output sta
         nspool_sta: 4 # number of time steps to spool for sta
+
