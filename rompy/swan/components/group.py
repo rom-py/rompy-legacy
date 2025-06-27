@@ -1,82 +1,80 @@
-"""SWAN group components."""
+"""
+SWAN Components Group Module
+
+This module provides group components for organizing SWAN model configurations in the ROMPY framework.
+"""
 
 import logging
-from typing import Annotated, Literal, Optional, Union, Any
-from pydantic import Field, model_validator, field_validator
+from typing import Annotated, Any, Literal, Optional, Union
 
-from rompy.swan.types import PhysicsOff
+from pydantic import Field, field_validator, model_validator
+
 from rompy.swan.components.base import BaseComponent
-from rompy.swan.components.startup import PROJECT, SET, MODE, COORDINATES
-from rompy.swan.components.inpgrid import (
-    REGULAR,
-    CURVILINEAR,
-    UNSTRUCTURED,
-    WIND,
-    ICE,
+from rompy.swan.components.inpgrid import CURVILINEAR, ICE, REGULAR, UNSTRUCTURED, WIND
+from rompy.swan.components.lockup import COMPUTE_NONSTAT, COMPUTE_STAT, STOP
+from rompy.swan.components.output import (
+    BLOCK,
+    BLOCKS,
+    CURVES,
+    FRAME,
+    GROUP,
+    ISOLINE,
+    NESTOUT,
+    NGRID,
+    NGRID_UNSTRUCTURED,
+    OUTPUT_OPTIONS,
+    POINTS,
+    POINTS_FILE,
+    QUANTITIES,
+    RAY,
+    SPECIAL_NAMES,
+    SPECOUT,
+    TABLE,
+    TEST,
 )
 from rompy.swan.components.physics import (
+    BRAGG,
+    BRAGG_FILE,
+    BRAGG_FT,
+    BREAKING_BKD,
+    BREAKING_CONSTANT,
+    DIFFRACTION,
+    FRICTION_COLLINS,
+    FRICTION_JONSWAP,
+    FRICTION_MADSEN,
+    FRICTION_RIPPLES,
     GEN1,
     GEN2,
     GEN3,
-    SSWELL_ROGERS,
-    SSWELL_ARDHUIN,
-    SSWELL_ZIEGER,
+    LIMITER,
+    MUD,
     NEGATINP,
-    WCAPPING_KOMEN,
-    WCAPPING_AB,
+    OBSTACLES,
+    OFF,
+    OFFS,
     QUADRUPL,
-    BREAKING_CONSTANT,
-    BREAKING_BKD,
-    FRICTION_JONSWAP,
-    FRICTION_COLLINS,
-    FRICTION_MADSEN,
-    FRICTION_RIPPLES,
+    SCAT,
+    SETUP,
+    SICE,
+    SICE_D15,
+    SICE_M18,
+    SICE_R19,
+    SICE_R21B,
+    SSWELL_ARDHUIN,
+    SSWELL_ROGERS,
+    SSWELL_ZIEGER,
+    SURFBEAT,
     TRIAD,
     TRIAD_DCTA,
     TRIAD_LTA,
     TRIAD_SPB,
-    VEGETATION,
-    MUD,
-    SICE,
-    SICE_R19,
-    SICE_D15,
-    SICE_M18,
-    SICE_R21B,
     TURBULENCE,
-    BRAGG,
-    BRAGG_FT,
-    BRAGG_FILE,
-    LIMITER,
-    OBSTACLES,
-    SETUP,
-    DIFFRACTION,
-    SURFBEAT,
-    SCAT,
-    OFF,
-    OFFS,
+    VEGETATION,
+    WCAPPING_AB,
+    WCAPPING_KOMEN,
 )
-from rompy.swan.components.output import (
-    FRAME,
-    GROUP,
-    RAY,
-    ISOLINE,
-    CURVES,
-    POINTS,
-    POINTS_FILE,
-    NGRID,
-    NGRID_UNSTRUCTURED,
-    QUANTITIES,
-    OUTPUT_OPTIONS,
-    BLOCK,
-    BLOCKS,
-    TABLE,
-    SPECOUT,
-    NESTOUT,
-    TEST,
-    SPECIAL_NAMES,
-)
-from rompy.swan.components.lockup import COMPUTE_STAT, COMPUTE_NONSTAT, STOP
-
+from rompy.swan.components.startup import COORDINATES, MODE, PROJECT, SET
+from rompy.swan.types import PhysicsOff
 
 logger = logging.getLogger(__name__)
 

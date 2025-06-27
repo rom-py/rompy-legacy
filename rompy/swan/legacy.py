@@ -1,18 +1,23 @@
-"""Legacy objects in SwanConfig."""
+"""
+SWAN Legacy Module
 
-import logging
+This module contains legacy components for backward compatibility with older versions
+of the SWAN model configuration in the ROMPY framework.
+"""
+
 from pathlib import Path
 from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field, field_validator
 
+from rompy.core.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.core.types import Coordinate, RompyBaseModel, Spectrum
 from rompy.swan.boundary import Boundnest1
 from rompy.swan.data import SwanDataGrid
 from rompy.swan.grid import SwanGrid
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class ForcingData(RompyBaseModel):

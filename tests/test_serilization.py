@@ -6,6 +6,13 @@ from envyaml import EnvYAML
 
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
+
+# Import test utilities
+from test_utils.logging import get_test_logger
+
+# Initialize logger
+logger = get_test_logger(__name__)
+
 from rompy.schism.config import SCHISMConfig, SCHISMGrid
 from rompy.schism.namelists import NML, Param, Wwminput
 from rompy.swan.config import SwanConfigComponents

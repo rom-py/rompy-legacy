@@ -5,6 +5,13 @@ import pytest
 from rompy.core.time import TimeRange
 
 
+# Import test utilities
+from test_utils.logging import get_test_logger
+
+# Initialize logger
+logger = get_test_logger(__name__)
+
+
 @pytest.fixture
 def dtr_hourly():
     return TimeRange(end="2019-01-02", duration="1d")

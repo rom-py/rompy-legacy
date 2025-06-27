@@ -116,7 +116,7 @@ MICE
    :nosignatures:
    :toctree: _generated/
 
-   rompy.schism.namelists.ice.Mice_in
+   rompy.schism.namelists.mice.Mice_in
    rompy.schism.namelists.mice.Mice
 
 ICM

@@ -1,14 +1,19 @@
-"""Model start up components."""
+"""
+SWAN Startup Components
 
-import logging
+This module contains components for initializing and configuring SWAN model runs,
+including project settings, coordinate systems, and run modes.
+"""
+
 from typing import Literal, Optional
-from pydantic import field_validator, Field
 
+from pydantic import Field, field_validator
+
+from rompy.core.logging import get_logger
 from rompy.swan.components.base import BaseComponent
 from rompy.swan.subcomponents.startup import CARTESIAN, SPHERICAL
 
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class PROJECT(BaseComponent):

@@ -2,13 +2,19 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
+from .utils import compare_files
 
 from rompy import TEMPLATES_DIR
 from rompy.core.config import BaseConfig
 from rompy.core.time import TimeRange
 from rompy.model import ModelRun
 
-from .utils import compare_files
+
+# Import test utilities
+from test_utils.logging import get_test_logger
+
+# Initialize logger
+logger = get_test_logger(__name__)
 
 here = Path(__file__).parent
 

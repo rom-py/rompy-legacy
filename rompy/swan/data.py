@@ -1,21 +1,29 @@
-import logging
+"""
+SWAN Data Module
+
+This module provides data handling functionality for the SWAN model within the ROMPY framework.
+"""
+
 import os
+import sys
+import time as time_module
+from datetime import timedelta
 from pathlib import Path
 from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
 import xarray as xr
-from pydantic import field_validator, Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 from rompy.core.data import DataGrid
+from rompy.core.logging import get_logger
 from rompy.core.time import TimeRange
-
+from rompy.formatting import get_formatted_box, get_formatted_header_footer, log_box
 from rompy.swan.grid import SwanGrid
 from rompy.swan.types import GridOptions
 
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 FILL_VALUE = -99.0
 
@@ -94,7 +102,32 @@ class SwanDataGrid(DataGrid):
                 self._filter_time(time)
 
         output_file = os.path.join(destdir, f"{self.var.value}.grd")
-        logger.info(f"\tWriting {self.var.value} to {output_file}")
+
+        # Create a formatted box for logging
+        log_box(
+            title=f"WRITING {self.var.value.upper()} GRID DATA",
+            logger=logger,
+            add_empty_line=False,
+        )
+
+        # Log output file and dataset information using bullet points
+        items = [f"Output file: {output_file}"]
+
+        # Add variable information if available
+        if self.z1:
+            shape_info = f"{self.ds[self.z1].shape}"
+            items.append(f"Variable: {self.z1} with shape {shape_info}")
+        if self.z2:
+            shape_info = f"{self.ds[self.z2].shape}"
+            items.append(f"Variable: {self.z2} with shape {shape_info}")
+
+        # Add scaling factor
+        items.append(f"Scaling factor: {self.fac}")
+
+        # Log all items as a bulleted list
+        logger.bullet_list(items, indent=2)
+
+        start_time = time_module.time()
         if self.var.value == "bottom":
             inpgrid, readgrid = self.ds.swan.to_bottom_grid(
                 output_file,
@@ -117,10 +150,77 @@ class SwanDataGrid(DataGrid):
                 rot=0.0,
                 var=self.var.name,
             )
+
+        # Log completion and processing time
+        elapsed_time = time_module.time() - start_time
+        file_size = Path(output_file).stat().st_size / (1024 * 1024)  # Size in MB
+
+        # Use the centralized functions from rompy package
+
+        # Log completion information as a bulleted list
+        logger.bullet_list(
+            [
+                f"Completed in {elapsed_time:.2f} seconds",
+                f"File size: {file_size:.2f} MB",
+            ],
+            indent=2,
+        )
+
         return f"{inpgrid}\n{readgrid}\n"
 
     def __str__(self):
         return f"SWANDataGrid {self.var.name}"
+
+    def _format_value(self, obj):
+        """Format SwanDataGrid values using the new formatting framework.
+
+        This method provides special formatting for SwanDataGrid objects.
+
+        Args:
+            obj: The object to format
+
+        Returns:
+            A formatted string or None to use default formatting
+        """
+        # Only format SwanDataGrid objects
+        if not isinstance(obj, SwanDataGrid):
+            return None
+
+        # Use the new formatting framework
+        from rompy.formatting import format_value
+
+        return format_value(obj)
+        lines.append(f"  {bullet} Variable:   {obj.var.name}")
+
+        # Add source information if available
+        if hasattr(obj, "source") and obj.source:
+            source_type = getattr(obj.source, "model_type", "unknown")
+            lines.append(f"  {bullet} Source:     {source_type}")
+
+            # Add dataset information if available
+            if hasattr(obj.source, "dataset_id"):
+                lines.append(f"  {bullet} Dataset ID: {obj.source.dataset_id}")
+
+        # Add coordinate information if available
+        if hasattr(obj, "coords") and obj.coords:
+            coords = [f"{k}={v}" for k, v in obj.coords.items()]
+            coords_str = ", ".join(coords)
+            lines.append(f"  {bullet} Coordinates: {coords_str}")
+
+        # Add scaling factor if available
+        if hasattr(obj, "fac"):
+            lines.append(f"  {bullet} Scale factor: {obj.fac}")
+
+        # Add z variables information if available
+        if hasattr(obj, "z1") and obj.z1:
+            lines.append(f"  {bullet} Z1 variable: {obj.z1}")
+        if hasattr(obj, "z2") and obj.z2:
+            lines.append(f"  {bullet} Z2 variable: {obj.z2}")
+
+        # Close with footer
+        lines.append(footer)
+
+        return "\n".join(lines)
 
 
 def dset_to_swan(
@@ -165,15 +265,47 @@ def dset_to_swan(
 
     # Write to ascii
     logger.debug(f"Writing SWAN ASCII file: {output_file}")
+
+    # Use formatting utilities imported at the top of the file
+
+    # Import formatting utilities at function level to avoid scoping issues
+    # Create a formatted box for logging
+    log_box(title="WRITING SWAN ASCII DATA", logger=logger)
+
+    start_time = time_module.time()
+    file_size = 0
+    total_times = len(dset[time_dim])
+
     with open(output_file, "w") as stream:
-        for time in dset[time_dim]:
-            logger.debug(
-                f"Appending Time {pd.to_datetime(time.values)} to {output_file}"
-            )
+        for i, t in enumerate(dset[time_dim]):
+            time_str = pd.to_datetime(t.values)
+            if (
+                i % max(1, total_times // 10) == 0 or i == total_times - 1
+            ):  # Log progress at 10% intervals
+                logger.debug(
+                    f"Writing progress: {i+1}/{total_times} times ({(i+1)/total_times*100:.1f}%) - Time: {time_str}"
+                )
+            else:
+                logger.debug(f"Appending Time {time_str} to {output_file}")
+
             for data_var in variables:
                 logger.debug(f"Appending Variable {data_var} to {output_file}")
-                data = dset[data_var].sel(time=time).fillna(fill_value).values
+                data = dset[data_var].sel(time=t).fillna(fill_value).values
                 np.savetxt(fname=stream, X=data, fmt=fmt, delimiter="\t")
+
+    elapsed_time = time_module.time() - start_time
+    file_size = Path(output_file).stat().st_size / (1024 * 1024)  # Size in MB
+
+    # Format the completion message
+    elapsed_str = f"{elapsed_time:.2f}"
+    size_str = f"{file_size:.2f}"
+    # Get a formatted completion box
+    completion_msg = f"COMPLETED: {elapsed_str} seconds, File size: {size_str} MB"
+    completion_box = get_formatted_box(completion_msg)
+    for line in completion_box.split("\n"):
+        logger.debug(line)
+
+    logger.debug(f"SWAN ASCII file written successfully to {output_file}")
 
     return output_file
 
@@ -327,7 +459,10 @@ class Swan_accessor(object):
         ds = self._obj
 
         # ds = ds.transpose((time,) + ds[x].dims)
-        dt = np.diff(ds[time].values).mean() / pd.to_timedelta(1, "h")
+        # Calculate time difference in hours
+        time_diffs = np.diff(ds[time].values)
+        dt = time_diffs.mean() / pd.to_timedelta(1, "h")
+        dt_str = f"{dt:.2f}"  # Format as string to avoid formatting issues
 
         inptimes = []
         with open(output_file, "wt") as f:
@@ -358,8 +493,15 @@ class Swan_accessor(object):
         # Create grid object from this dataset
         grid = self.grid(x=x, y=y, rot=rot)
 
-        inpgrid = f"INPGRID {var} {grid.inpgrid} NONSTATION {inptimes[0]} {dt} HR"
+        inpgrid = f"INPGRID {var} {grid.inpgrid} NONSTATION {inptimes[0]} {dt_str} HR"
         readinp = f"READINP {var} {fac} '{Path(output_file).name}' 3 0 1 0 FREE"
+
+        # Log detailed information about the generated grid
+        logger.debug(f"Created {var} grid with:")
+        logger.debug(f"  → Grid size: {grid.nx}x{grid.ny} points")
+        logger.debug(f"  → Resolution: dx={grid.dx}, dy={grid.dy}")
+        logger.debug(f"  → Time points: {len(inptimes)}")
+        logger.debug(f"  → Time interval: {dt_str} HR")
 
         return inpgrid, readinp
 
@@ -410,7 +552,12 @@ class Swan_accessor(object):
             )
             if len(ds_point.time) == len(self._obj.time):
                 if not np.any(np.isnan(ds_point[hs_var])):
-                    with open(f"{dest_path}/{j}.TPAR", "wt") as f:
+                    output_tpar = f"{dest_path}/{j}.TPAR"
+                    logger.debug(f"Writing boundary point {j} to {output_tpar}")
+                    logger.debug(f"  → Location: ({xp:.5f}, {yp:.5f})")
+                    logger.debug(f"  → Time points: {len(ds_point.time)}")
+
+                    with open(output_tpar, "wt") as f:
                         f.write("TPAR\n")
                         for t in range(len(ds_point.time)):
                             ds_row = ds_point.isel(time=t)

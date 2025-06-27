@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 from typing import Any, Literal, Optional, Union
 
@@ -6,6 +5,7 @@ from pydantic import ConfigDict, Field, model_serializer, model_validator
 
 from rompy.core.config import BaseConfig
 from rompy.core.data import DataBlob
+from rompy.core.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel, Spectrum
 
@@ -30,7 +30,7 @@ from .interface import TimeInterface
 from .namelists import NML
 from .namelists.param import Param
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 HERE = Path(__file__).parent
 
@@ -119,7 +119,6 @@ class SCHISMConfig(BaseConfig):
     plot_tidal_dataset = plot_tidal_dataset
 
     def __call__(self, runtime) -> str:
-        logger = logging.getLogger(__name__)
 
         logger.info(f"Generating grid files using {type(self.grid).__name__}")
         self.grid.get(runtime.staging_dir)

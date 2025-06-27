@@ -1,19 +1,24 @@
-"""Model output components."""
+"""
+SWAN Output Components
 
-import logging
-from typing import Literal, Optional, Union, Annotated
+This module contains components for configuring output locations and parameters
+for SWAN model results, including spatial points, curves, and nested grids.
+"""
+
 from abc import ABC
-from pydantic import field_validator, model_validator, Field
+from typing import Annotated, Literal, Optional, Union
 
-from rompy.swan.types import BlockOptions, IDLA
+from pydantic import Field, field_validator, model_validator
+
+from rompy.core.logging import get_logger
 from rompy.swan.components.base import BaseComponent, MultiComponents
-from rompy.swan.subcomponents.base import XY, IJ
+from rompy.swan.subcomponents.base import IJ, XY
+from rompy.swan.subcomponents.output import ABS, REL, SPEC1D, SPEC2D
 from rompy.swan.subcomponents.readgrid import GRIDREGULAR
 from rompy.swan.subcomponents.time import TimeRangeOpen
-from rompy.swan.subcomponents.output import SPEC1D, SPEC2D, ABS, REL
+from rompy.swan.types import IDLA, BlockOptions
 
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 SPECIAL_NAMES = ["BOTTGRID", "COMPGRID", "BOUNDARY", "BOUND_"]

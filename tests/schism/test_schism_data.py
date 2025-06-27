@@ -1,8 +1,16 @@
+import logging
 import os
 from datetime import datetime
 from pathlib import Path
 
 import pytest
+
+
+# Import test utilities
+from test_utils.logging import get_test_logger
+
+# Initialize logger
+logger = get_test_logger(__name__)
 
 pytest.importorskip("rompy.schism")
 import xarray as xr
@@ -20,7 +28,6 @@ from rompy.schism.data import (
 
 HERE = Path(__file__).parent
 DATAMESH_TOKEN = os.environ.get("DATAMESH_TOKEN")
-import logging
 
 logging.basicConfig(level=logging.INFO)
 

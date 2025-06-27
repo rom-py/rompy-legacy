@@ -1,14 +1,20 @@
+"""
+SWAN Grid Module
+
+This module provides grid-related functionality for the SWAN model within the ROMPY framework.
+"""
+
 from typing import Literal, Optional
-import logging
+
 import numpy as np
+from pydantic import Field, field_validator, model_validator
 from shapely.geometry import Polygon
-from pydantic import field_validator, Field, model_validator
 
 from rompy.core.grid import RegularGrid
+from rompy.core.logging import get_logger
 from rompy.swan.subcomponents.readgrid import GRIDREGULAR
 
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class SwanGrid(RegularGrid):

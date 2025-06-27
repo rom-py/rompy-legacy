@@ -1,42 +1,38 @@
-import logging
-import os
-import sys
 from datetime import datetime
 from enum import IntEnum
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, Literal, Optional, Union
 
 import numpy as np
 import pandas as pd
 import scipy as sp
 import xarray as xr
 from cloudpathlib import AnyPath
-from pydantic import ConfigDict, Field, field_validator, model_validator
-
+from pydantic import ConfigDict, Field, model_validator
 from pylib import compute_zcor, read_schism_bpfile, read_schism_hgrid, read_schism_vgrid
 
-from rompy.core.data import DataGrid
-from rompy.core.types import RompyBaseModel
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
-from rompy.core.data import DataBlob
+from rompy.core.data import DataBlob, DataGrid
 from rompy.core.time import TimeRange
+from rompy.core.types import RompyBaseModel
 from rompy.schism.bctides import Bctides
-from rompy.schism.boundary import Boundary3D
-from rompy.schism.boundary import BoundaryData
+from rompy.schism.boundary import Boundary3D, BoundaryData
 from rompy.schism.boundary_core import (
-    ElevationType,
     BoundaryHandler,
+    ElevationType,
+    TidalDataset,
     TracerType,
     VelocityType,
     create_tidal_boundary,
-    TidalDataset,
 )
 from rompy.schism.grid import SCHISMGrid
-
+from rompy.core.logging import get_logger
 from rompy.schism.tides_enhanced import BoundarySetup
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
+
+logger = get_logger(__name__)
 
 
 def to_python_type(value):
@@ -51,9 +47,6 @@ def to_python_type(value):
         return bool(value)
     else:
         return value
-
-
-logger = logging.getLogger(__name__)
 
 
 class SfluxSource(DataGrid):
@@ -225,7 +218,6 @@ class SfluxAir(SfluxSource):
 
     def __init__(self, **data):
         # Initialize logger at the beginning
-        logger = logging.getLogger(__name__)
 
         # Pre-process parameters before passing to pydantic
         # Map parameters without _name suffix to ones with suffix
@@ -377,7 +369,6 @@ class SCHISMDataSflux(RompyBaseModel):
 
             # If air is a dict, convert it to a SfluxAir instance
             if isinstance(air_value, dict):
-                logger = logging.getLogger(__name__)
                 try:
                     # Import here to avoid circular import
                     from rompy.schism.data import SfluxAir
@@ -405,14 +396,12 @@ class SCHISMDataSflux(RompyBaseModel):
                 # Import here to avoid circular import
                 from rompy.schism.data import SfluxAir
 
-                logger = logging.getLogger(__name__)
                 logger.info(
                     f"Converting air_1 dictionary to SfluxAir object: {self.air_1}"
                 )
                 self.air_1 = SfluxAir(**self.air_1)
                 logger.info(f"Successfully converted air_1 to SfluxAir instance")
             except Exception as e:
-                logger = logging.getLogger(__name__)
                 logger.error(f"Error converting air_1 dictionary to SfluxAir: {e}")
                 logger.error(f"Input data: {self.air_1}")
                 # We'll let validation continue with the dictionary
@@ -421,14 +410,12 @@ class SCHISMDataSflux(RompyBaseModel):
             try:
                 from rompy.schism.data import SfluxAir
 
-                logger = logging.getLogger(__name__)
                 logger.info(
                     f"Converting air_2 dictionary to SfluxAir object: {self.air_2}"
                 )
                 self.air_2 = SfluxAir(**self.air_2)
                 logger.info(f"Successfully converted air_2 to SfluxAir instance")
             except Exception as e:
-                logger = logging.getLogger(__name__)
                 logger.error(f"Error converting air_2 dictionary to SfluxAir: {e}")
                 logger.error(f"Input data: {self.air_2}")
 
