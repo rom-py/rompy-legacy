@@ -317,11 +317,11 @@ class Opt(NamelistBaseModel):
     flag_ic__10: Optional[int] = Field(1, description="TIMOR")
     flag_ic__11: Optional[int] = Field(1, description="FABM")
     flag_ic__12: Optional[int] = Field(0, description="DVD (must=0)")
-    gen_wsett: Optional[int] = Field(0, description="1.e-4")
+    gen_wsett: Optional[float] = Field(0, description="Settling vel [m/s] for GEN module")
     ibcc_mean: Optional[int] = Field(0, description="")
     rmaxvel: Optional[float] = Field(5.0, description="")
-    velmin_btrack: Optional[float] = Field(0.0001, description="")
-    btrack_nudge: Optional[float] = Field(0.009013, description="")
+    velmin_btrack: Optional[float] = Field(1e-4, description="min. vel for invoking btrack and for abnormal exit in quicksearch")
+    btrack_nudge: Optional[float] = Field(9.013e-3, description="Nudging factors for starting side/node")
     ihhat: Optional[int] = Field(1, description="")
     inunfl: Optional[int] = Field(0, description="")
     h0: Optional[float] = Field(
@@ -341,7 +341,7 @@ class Opt(NamelistBaseModel):
     itr_met: Optional[int] = Field(3, description="")
     h_tvd: Optional[float] = Field(5.0, description="cut-off depth (m)")
     eps1_tvd_imp: Optional[float] = Field(
-        0.0001,
+        1e-4,
         description="suggested value is 1.e-4, but for large suspended load, need to use a smaller value (e.g. 1.e-9)",
     )
     eps2_tvd_imp: Optional[float] = Field(1e-14, description="")
@@ -365,7 +365,7 @@ class Opt(NamelistBaseModel):
         description="order of temporal discretization: (1) Euler (default); (3): 3rd-order Runge-Kutta (only for benchmarking)",
     )
     epsilon1: Optional[float] = Field(
-        1e-15,
+        1e-3,
         description="coefficient for 2nd order weno smoother (larger values are more prone to numerical dispersion)",
     )
     epsilon2: Optional[float] = Field(
@@ -385,7 +385,7 @@ class Opt(NamelistBaseModel):
         description="ielad, if ielad=1, use ELAD method to suppress dispersion (inactive at the moment)",
     )
     small_elad: Optional[float] = Field(
-        0.0001, description="small (inactive at the moment)"
+        1e-4, description="small (inactive at the moment)"
     )
     nws: Optional[int] = Field(
         0,
@@ -438,8 +438,8 @@ class Opt(NamelistBaseModel):
         0, description="if /=0, precip will be turned off near land bnd"
     )
     itur: Optional[int] = Field(3, description="Default: 0")
-    dfv0: Optional[float] = Field(0.01, description="needed if itur=0")
-    dfh0: Optional[float] = Field(0.0001, description="needed if itur=0")
+    dfv0: Optional[float] = Field(1e-2, description="needed if itur=0")
+    dfh0: Optional[float] = Field(1e-4, description="needed if itur=0")
     mid: Optional[str] = Field("KL", description="needed if itur=3,5. Use KE if itur=5")
     stab: Optional[str] = Field(
         "KC",
