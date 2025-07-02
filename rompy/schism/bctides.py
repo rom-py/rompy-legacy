@@ -409,7 +409,7 @@ class Bctides:
             if not self.mdt is None:
                 # Write mdt as a special constant elevation
                 f.write("z0\n")
-                f.write(f"0.0 0.0 0.0\n")
+                f.write(f"0.0 1.0 0.0\n")
 
             # Write frequency info for each constituent
             for i, tname in enumerate(self.tnames):
