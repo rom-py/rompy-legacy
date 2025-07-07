@@ -29,10 +29,11 @@ from rompy.schism.boundary_core import (
     TracerType,
     VelocityType,
     create_tidal_boundary,
+    TidalDataset,
 )
 from rompy.schism.grid import SCHISMGrid
 
-from rompy.schism.tides_enhanced import BoundarySetup, TidalDataset
+from rompy.schism.tides_enhanced import BoundarySetup
 from rompy.utils import total_seconds
 
 from .namelists import Sflux_Inputs
@@ -1213,25 +1214,9 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
 
     # Tidal dataset specification
     tidal_data: Optional[TidalDataset] = Field(
-        None, description="Tidal dataset with elevation and velocity files"
+        None,
+        description="Tidal forcing dataset",
     )
-
-    # Basic tidal configuration
-    constituents: List[str] = Field(
-        default_factory=lambda: ["M2", "S2", "N2", "K2", "K1", "O1", "P1", "Q1"],
-        description="Tidal constituents to include",
-    )
-    tidal_database: str = Field(default="tpxo", description="Tidal database to use")
-
-    # Earth tidal potential settings
-    ntip: int = Field(
-        default=0,
-        description="Number of tidal potential regions (0 to disable, >0 to enable)",
-    )
-    tip_dp: float = Field(
-        default=1.0, description="Depth threshold for tidal potential calculations"
-    )
-    cutoff_depth: float = Field(default=50.0, description="Cutoff depth for tides")
 
     # Boundary configurations with integrated data sources
     boundaries: Dict[int, BoundarySetupWithSource] = Field(
@@ -1279,7 +1264,8 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
                 in [ElevationType.HARMONIC, ElevationType.HARMONICEXTERNAL]
             ) or (
                 hasattr(setup, "vel_type")
-                and setup.vel_type in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
+                and setup.vel_type
+                in [VelocityType.HARMONIC, VelocityType.HARMONICEXTERNAL]
             ):
                 needs_tidal_data = True
                 break
@@ -1299,10 +1285,6 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
             return self
 
         if self.setup_type in ["tidal", "hybrid"]:
-            if not self.constituents:
-                raise ValueError(
-                    "constituents are required for tidal or hybrid setup_type"
-                )
             if not self.tidal_data:
                 raise ValueError(
                     "tidal_data is required for tidal or hybrid setup_type"
@@ -1342,13 +1324,13 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
     def _create_boundary_config(self, grid):
         """Create a TidalBoundary object based on the configuration."""
         # Get tidal data paths
-        tidal_elevations = None
-        tidal_velocities = None
+        tidal_database = None
         if self.tidal_data:
-            if hasattr(self.tidal_data, "elevations") and self.tidal_data.elevations:
-                tidal_elevations = str(self.tidal_data.elevations)
-            if hasattr(self.tidal_data, "velocities") and self.tidal_data.velocities:
-                tidal_velocities = str(self.tidal_data.velocities)
+            if (
+                hasattr(self.tidal_data, "tidal_database")
+                and self.tidal_data.tidal_database
+            ):
+                tidal_database = str(self.tidal_data.tidal_database)
 
         # Ensure boundary information is computed
         if hasattr(grid.pylibs_hgrid, "compute_bnd"):
@@ -1401,13 +1383,7 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
             grid.pylibs_hgrid.write_hgrid(temp_path)
             grid_path = temp_path
 
-        boundary = create_tidal_boundary(
-            grid_path=grid_path,
-            constituents=self.constituents,
-            tidal_database=self.tidal_database,
-            tidal_elevations=tidal_elevations,
-            tidal_velocities=tidal_velocities,
-        )
+        boundary = BoundaryHandler(grid_path=grid_path, tidal_data=self.tidal_data)
 
         # Replace the TidalBoundary's grid with our pre-computed one to preserve boundary info
         boundary.grid = grid.pylibs_hgrid
@@ -1454,10 +1430,10 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
             logger.info(f"Creating destination directory: {destdir}")
             destdir.mkdir(parents=True, exist_ok=True)
 
-        # 1. Process tidal data if needed
+        # # 1. Process tidal data if needed
         if self.tidal_data:
             logger.info(f"Processing tidal data from {self.tidal_data}")
-            self.tidal_data.get(destdir)
+            self.tidal_data.get(grid)
 
         # 2. Create boundary condition file (bctides.in)
         boundary = self._create_boundary_config(grid)

@@ -21,13 +21,13 @@ logger = logging.getLogger(__name__)
 class NML(NamelistBaseModel):
     param: Optional[Param] = Field(description="Model paramaters", default=None)
     ice: Optional[Ice] = Field(description="Ice model parameters", default=None)
-    icm: Optional[Icm] = Field(description="Ice model parameters", default=None)
-    mice: Optional[Mice] = Field(description="Ice model parameters", default=None)
+    icm: Optional[Icm] = Field(description="Icm model parameters", default=None)
+    mice: Optional[Mice] = Field(description="Mice model parameters", default=None)
     sediment: Optional[Sediment] = Field(
         description="Sediment model parameters", default=None
     )
     cosine: Optional[Cosine] = Field(
-        description="Sediment model parameters", default=None
+        description="Cosine model parameters", default=None
     )
     wwminput: Optional[Wwminput] = Field(
         description="Wave model input parameters", default=None
@@ -118,7 +118,7 @@ class NML(NamelistBaseModel):
     def update_data_sources(self, datasources: dict):
         """Update the data sources in the namelist based on rompy data preparation."""
         update = {}
-        if datasources["wave"] is not None:
+        if ("wave" in datasources) and (datasources["wave"] is not None):
             if hasattr(
                 self, "wwminput"
             ):  # TODO change this check to the actual flag value
@@ -135,7 +135,7 @@ class NML(NamelistBaseModel):
                         }
                     }
                 )
-        if datasources["atmos"] is not None:
+        if ("atmos" in datasources) and (datasources["atmos"] is not None):
             if self.param.opt.nws is not 2:
                 logger.warn(
                     f"Overwriting param nws value of {self.param.opt.nws} to 2 to use rompy generated sflux data"

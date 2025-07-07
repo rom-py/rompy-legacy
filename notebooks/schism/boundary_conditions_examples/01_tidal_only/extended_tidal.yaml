@@ -1,0 +1,52 @@
+output_dir: schism_tidal_extended
+period:
+  start: 20230101T00
+  end: 20230101T12
+  interval: 1800
+run_id: extended_tidal_example
+delete_existing: true
+config:
+  model_type: schism
+  grid:
+    grid_type: schism
+    hgrid:
+      id: hgrid
+      model_type: data_blob
+      source: tests/schism/test_data/hgrid.gr3
+    drag: 2.5e-3
+  data:
+    data_type: schism
+    boundary_conditions:
+      data_type: boundary_conditions
+      setup_type: tidal
+      tidal_data:
+        tidal_database: tests/schism/test_data/tides
+        tidal_model: 'OCEANUM-atlas'
+        constituents:
+        - M2
+        - S2
+        - N2
+        tide_interpolation_method: 'spline'
+        nodal_corrections: true
+        extrapolate_tides: true
+        extrapolation_distance: 50.0 # in km  
+      boundaries:
+        0:
+          elev_type: 3
+          vel_type: 3
+          temp_type: 0
+          salt_type: 0
+  nml:
+    param:
+      core:
+        dt: 150.0
+        ibc: 1 # Barotropic
+        ibtp: 0 # Dont solve tracer transport - no tracers
+        nspool: 24 # number of time steps to spool        
+        ihfskip: 1152 # number of time steps per output file
+      schout:
+        iof_hydro__1: 1 # elevation
+        iof_hydro__26: 1 # vel. vector
+        iout_sta: 1 # output sta
+        nspool_sta: 4 # number of time steps to spool for sta
+

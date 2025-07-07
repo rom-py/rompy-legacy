@@ -47,18 +47,18 @@ Example Usage:
 
 __all__ = [
     "create_tidal_only_boundary_config",
-    "create_hybrid_boundary_config", 
+    "create_hybrid_boundary_config",
     "create_river_boundary_config",
     "create_nested_boundary_config",
     # Re-export core components
     "ElevationType",
-    "VelocityType", 
+    "VelocityType",
     "TracerType",
     "BoundaryConfig",
     "BoundaryHandler",
     "create_tidal_boundary",
     "create_hybrid_boundary",
-    "create_river_boundary", 
+    "create_river_boundary",
     "create_nested_boundary",
 ]
 

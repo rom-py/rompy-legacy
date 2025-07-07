@@ -19,7 +19,7 @@ from rompy.schism.data import (
     BoundarySetupWithSource,
     SCHISMDataBoundary,
 )
-from rompy.schism.tides_enhanced import TidalDataset
+from rompy.schism.boundary_core import TidalDataset
 
 
 class TestHotstartConfig:
@@ -95,10 +95,11 @@ class TestBoundaryConditionsHotstartIntegration:
     @pytest.fixture
     def tidal_dataset(self, test_files_dir):
         """Create a real tidal dataset."""
-        tpxo_dir = test_files_dir / "tpxo9-neaus"
+        tides_dir = test_files_dir / "tides"
         return TidalDataset(
-            elevations=str(tpxo_dir / "h_m2s2n2.nc"),
-            velocities=str(tpxo_dir / "u_m2s2n2.nc"),
+            tidal_database=tides_dir,
+            tidal_model="OCEANUM-atlas",
+            constituents=["M2", "S2", "N2"],
         )
 
     @pytest.fixture
@@ -145,13 +146,19 @@ class TestBoundaryConditionsHotstartIntegration:
         """Test boundary conditions with disabled hotstart."""
         hotstart_config = HotstartConfig(enabled=False)
 
-        bc = SCHISMDataBoundaryConditions(
+        # Update tidal dataset with specific constituents
+        tidal_data_with_constituents = TidalDataset(
+            tidal_database=tidal_dataset.tidal_database,
+            tidal_model=tidal_dataset.tidal_model,
             constituents=[
                 "M2",
                 "S2",
                 "N2",
             ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+        )
+
+        bc = SCHISMDataBoundaryConditions(
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
             hotstart_config=hotstart_config,
@@ -171,13 +178,19 @@ class TestBoundaryConditionsHotstartIntegration:
             output_filename="test_hotstart.nc",
         )
 
-        bc = SCHISMDataBoundaryConditions(
+        # Update tidal dataset with specific constituents
+        tidal_data_with_constituents = TidalDataset(
+            tidal_database=tidal_dataset.tidal_database,
+            tidal_model=tidal_dataset.tidal_model,
             constituents=[
                 "M2",
                 "S2",
                 "N2",
             ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+        )
+
+        bc = SCHISMDataBoundaryConditions(
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
             hotstart_config=hotstart_config,
@@ -198,13 +211,19 @@ class TestBoundaryConditionsHotstartIntegration:
             enabled=True, temp_var="temperature", salt_var="salinity"
         )
 
-        bc = SCHISMDataBoundaryConditions(
+        # Update tidal dataset with specific constituents
+        tidal_data_with_constituents = TidalDataset(
+            tidal_database=tidal_dataset.tidal_database,
+            tidal_model=tidal_dataset.tidal_model,
             constituents=[
                 "M2",
                 "S2",
                 "N2",
             ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+        )
+
+        bc = SCHISMDataBoundaryConditions(
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
             hotstart_config=hotstart_config,
@@ -229,13 +248,19 @@ class TestBoundaryConditionsHotstartIntegration:
         """Test _generate_hotstart raises error when no temperature source available."""
         hotstart_config = HotstartConfig(enabled=True)
 
-        bc = SCHISMDataBoundaryConditions(
+        # Update tidal dataset with specific constituents
+        tidal_data_with_constituents = TidalDataset(
+            tidal_database=tidal_dataset.tidal_database,
+            tidal_model=tidal_dataset.tidal_model,
             constituents=[
                 "M2",
                 "S2",
                 "N2",
             ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+        )
+
+        bc = SCHISMDataBoundaryConditions(
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
             boundaries={0: boundary_setup_no_sources},
             hotstart_config=hotstart_config,
@@ -249,7 +274,13 @@ class TestBoundaryConditionsHotstartIntegration:
                 bc._generate_hotstart(tmpdir, grid3d, time_range)
 
     def test_generate_hotstart_no_salt_source(
-        self, hycom_source, hycom_coords, tidal_dataset, grid3d, time_range
+        self,
+        hycom_source,
+        hycom_coords,
+        tidal_dataset,
+        grid3d,
+        time_range,
+        boundary_setup_no_sources,
     ):
         """Test _generate_hotstart raises error when no salinity source available."""
         # Create boundary setup with only temperature source
@@ -268,15 +299,13 @@ class TestBoundaryConditionsHotstartIntegration:
 
         hotstart_config = HotstartConfig(enabled=True)
 
+        # Use the existing tidal dataset (already configured with correct constituents)
+        tidal_data_with_constituents = tidal_dataset
+
         bc = SCHISMDataBoundaryConditions(
-            constituents=[
-                "M2",
-                "S2",
-                "N2",
-            ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
-            boundaries={0: boundary_setup},
+            boundaries={0: boundary_setup_no_sources},
             hotstart_config=hotstart_config,
         )
 
@@ -288,7 +317,13 @@ class TestBoundaryConditionsHotstartIntegration:
                 bc._generate_hotstart(tmpdir, grid3d, time_range)
 
     def test_multiple_boundaries_hotstart_source_selection(
-        self, hycom_source, hycom_coords, tidal_dataset, grid3d, time_range
+        self,
+        hycom_source,
+        hycom_coords,
+        tidal_dataset,
+        grid3d,
+        time_range,
+        boundary_setup_no_sources,
     ):
         """Test that hotstart uses sources from any boundary that has both temp and salt."""
         # Create first boundary without temp/salt sources
@@ -315,13 +350,11 @@ class TestBoundaryConditionsHotstartIntegration:
 
         hotstart_config = HotstartConfig(enabled=True)
 
+        # Use the existing tidal dataset (already configured with correct constituents)
+        tidal_data_with_constituents = tidal_dataset
+
         bc = SCHISMDataBoundaryConditions(
-            constituents=[
-                "M2",
-                "S2",
-                "N2",
-            ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
             boundaries={0: boundary_0, 1: boundary_1},
             hotstart_config=hotstart_config,
@@ -344,13 +377,19 @@ class TestBoundaryConditionsHotstartIntegration:
             output_filename="custom_hotstart.nc",
         )
 
-        bc = SCHISMDataBoundaryConditions(
+        # Update tidal dataset with specific constituents
+        tidal_data_with_constituents = TidalDataset(
+            tidal_database=tidal_dataset.tidal_database,
+            tidal_model=tidal_dataset.tidal_model,
             constituents=[
                 "M2",
                 "S2",
                 "N2",
             ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+        )
+
+        bc = SCHISMDataBoundaryConditions(
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
             hotstart_config=hotstart_config,
@@ -369,13 +408,19 @@ class TestBoundaryConditionsHotstartIntegration:
         """Test that the generated hotstart file has the correct structure."""
         hotstart_config = HotstartConfig(enabled=True)
 
-        bc = SCHISMDataBoundaryConditions(
+        # Update tidal dataset with specific constituents
+        tidal_data_with_constituents = TidalDataset(
+            tidal_database=tidal_dataset.tidal_database,
+            tidal_model=tidal_dataset.tidal_model,
             constituents=[
                 "M2",
                 "S2",
                 "N2",
             ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+        )
+
+        bc = SCHISMDataBoundaryConditions(
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
             hotstart_config=hotstart_config,
@@ -416,13 +461,11 @@ class TestBoundaryConditionsHotstartIntegration:
             output_filename="e2e_hotstart.nc",
         )
 
+        # Use the existing tidal dataset (already configured with correct constituents)
+        tidal_data_with_constituents = tidal_dataset
+
         bc = SCHISMDataBoundaryConditions(
-            constituents=[
-                "M2",
-                "S2",
-                "N2",
-            ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
             hotstart_config=hotstart_config,
@@ -445,13 +488,11 @@ class TestBoundaryConditionsHotstartIntegration:
         """Test that hotstart is not generated when disabled."""
         hotstart_config = HotstartConfig(enabled=False)
 
+        # Use the existing tidal dataset (already configured with correct constituents)
+        tidal_data_with_constituents = tidal_dataset
+
         bc = SCHISMDataBoundaryConditions(
-            constituents=[
-                "M2",
-                "S2",
-                "N2",
-            ],  # Use only constituents available in test data
-            tidal_data=tidal_dataset,
+            tidal_data=tidal_data_with_constituents,
             setup_type="hybrid",
             boundaries={0: boundary_setup_with_sources},
             hotstart_config=hotstart_config,
