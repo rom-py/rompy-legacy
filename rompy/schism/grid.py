@@ -1,7 +1,3 @@
-import logging
-
-# Import PyLibs for SCHISM grid handling directly
-import sys
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
@@ -26,12 +22,13 @@ from pylib import (
 from shapely.geometry import MultiPoint, Polygon
 
 from rompy.core.data import DataBlob
-from rompy.core.types import RompyBaseModel
 from rompy.core.grid import BaseGrid
+from rompy.core.logging import get_logger
+from rompy.core.types import RompyBaseModel
 
 from .vgrid import VGrid, create_2d_vgrid
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 G3ACCEPT = ["albedo", "diffmin", "diffmax", "watertype", "windrot_geo2proj"]
@@ -239,7 +236,6 @@ class VgridGenerator(GeneratorBase):
     )
 
     def generate(self, destdir: str | Path) -> Path:
-        logger = logging.getLogger(__name__)
         dest_path = Path(destdir) / "vgrid.in"
         logger.info(
             f"Generating vgrid.in at {dest_path} using unified VGrid implementation"
@@ -701,7 +697,6 @@ class SCHISMGrid(BaseGrid):
         return self
 
     def get(self, destdir: Path) -> dict:
-        logger = logging.getLogger(__name__)
         ret = {}
         dest_path = (
             Path(destdir) if isinstance(destdir, (str, Path)) else Path(str(destdir))
@@ -779,7 +774,6 @@ class SCHISMGrid(BaseGrid):
         Returns:
             Path: Path to tvd.prop file
         """
-        logger = logging.getLogger(__name__)
         dest = destdir / "tvd.prop"
 
         # For tvd.prop we need the number of elements

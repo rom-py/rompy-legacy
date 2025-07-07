@@ -4,6 +4,13 @@ from pathlib import Path
 
 import pytest
 
+
+# Import test utilities
+from test_utils.logging import get_test_logger
+
+# Initialize logger
+logger = get_test_logger(__name__)
+
 pytest.importorskip("rompy.schism")
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange

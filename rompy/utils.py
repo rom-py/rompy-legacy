@@ -1,15 +1,13 @@
-# -----------------------------------------------------------------------------
-# Copyright (c) 2020 - 2021, CSIRO
-#
-# All rights reserved.
-#
-# The full license is in the LICENSE file, distributed with this software.
-# -----------------------------------------------------------------------------
+"""
+Utility functions for ROMPY.
+
+This module provides various utility functions used throughout the ROMPY codebase.
+"""
 
 import importlib
-import logging
-from typing import Optional
 from importlib.metadata import entry_points
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -17,8 +15,9 @@ from scipy.spatial import KDTree
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, create_model
 
+from rompy.core.logging import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 def create_import_error_class(class_name):

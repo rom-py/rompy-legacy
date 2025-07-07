@@ -1,24 +1,29 @@
-"""Model numerics components."""
+"""
+SWAN Numerics Components
 
-import logging
-from typing import Literal, Optional, Union, Annotated
+This module contains components for configuring the numerical schemes and parameters
+used in SWAN for wave propagation, frequency shifting, and other numerical aspects.
+"""
+
+from typing import Annotated, Literal, Optional, Union
+
 from pydantic import Field
 
+from rompy.core.logging import get_logger
 from rompy.swan.components.base import BaseComponent
 from rompy.swan.subcomponents.numerics import (
-    BSBT,
-    GSE,
-    STOPC,
     ACCUR,
-    DIRIMPL,
-    SIGIMPL,
-    CTHETA,
+    BSBT,
     CSIGMA,
+    CTHETA,
+    DIRIMPL,
+    GSE,
     SETUP,
+    SIGIMPL,
+    STOPC,
 )
 
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 PROP_TYPE = Annotated[

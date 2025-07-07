@@ -1,16 +1,20 @@
-"""Readgrid subcomponents."""
+"""
+SWAN Read Grid Subcomponents
 
-import logging
-from typing import Literal, Optional, Union
+This module contains subcomponents for reading grid data in SWAN,
+including regular grids and various input formats.
+"""
+
 from abc import ABC
+from typing import Literal, Optional, Union
 
-from pydantic import Field, model_validator, field_validator
+from pydantic import Field, field_validator, model_validator
 
-from rompy.swan.types import GridOptions, IDLA
+from rompy.core.logging import get_logger
 from rompy.swan.subcomponents.base import BaseSubComponent
+from rompy.swan.types import IDLA, GridOptions
 
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class GRIDREGULAR(BaseSubComponent):
