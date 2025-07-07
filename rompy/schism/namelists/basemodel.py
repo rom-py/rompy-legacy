@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Any, Dict, Optional, Type, Union, get_type_hints
 
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, model_serializer, model_validator
 
 from rompy.core.types import RompyBaseModel
 
@@ -27,7 +27,7 @@ def get_model_field_type(
 
 
 def recursive_update(model: BaseModel, updates: Dict[str, Any]) -> BaseModel:
-    updates_applied = model.dict()
+    updates_applied = model.model_dump()
     model_fields = get_type_hints(model.__class__)
 
     for key, value in updates.items():
@@ -46,7 +46,7 @@ def recursive_update(model: BaseModel, updates: Dict[str, Any]) -> BaseModel:
         else:
             updates_applied[key] = value  # Extending with new fields, if any
 
-    return model.copy(update=updates_applied)
+    return model.model_copy(update=updates_applied)
 
 
 class NamelistBaseModel(RompyBaseModel):
@@ -61,10 +61,23 @@ class NamelistBaseModel(RompyBaseModel):
 
         return __lower__(values)
 
+    @model_serializer
+    def serialize_model(self, **kwargs):
+        """Custom serializer to handle proper serialization of nested components."""
+        result = {}
+
+        # Include only non-None fields in the serialized output
+        for field_name in self.model_fields:
+            value = getattr(self, field_name, None)
+            if value is not None and not field_name.startswith("_"):
+                result[field_name] = value
+
+        return result
+
     def update(self, update: Dict[str, Any]):
         """Update the namelist variable with new values. Reninitializes the instance, ensuring all validations are run"""
         updated_self = recursive_update(self, update)
-        updated_instance = self.__init__(**updated_self.dict())
+        updated_instance = self.__init__(**updated_self.model_dump())
         return updated_instance
 
     def render(self) -> str:
@@ -101,8 +114,14 @@ class NamelistBaseModel(RompyBaseModel):
     def boolean_to_string(self, value: bool) -> str:
         return "T" if value else "F"
 
-    def write_nml(self, workdir: Path) -> None:
-        """Write the namelist to a file"""
-        output = workdir / f"{self.__class__.__name__.lower()}.nml"
+    def write_nml(self, workdir: Path | str) -> None:
+        """Write the namelist to a file
+
+        Args:
+            workdir (Path|str): Working directory to write to
+        """
+        # Ensure workdir is a Path object
+        workdir_path = Path(workdir) if isinstance(workdir, str) else workdir
+        output = workdir_path / f"{self.__class__.__name__.lower()}.nml"
         with open(output, "w") as f:
             f.write(self.render())

@@ -11,7 +11,7 @@ logger = get_test_logger(__name__)
 import numpy as np
 import pytest
 import xarray as xr
-from utils import compare_files
+from tests.utils import compare_files
 
 from rompy.core.source import SourceFile
 from rompy.core.time import TimeRange

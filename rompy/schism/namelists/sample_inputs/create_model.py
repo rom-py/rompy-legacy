@@ -16,7 +16,7 @@ def create_pydantic_model(namelist_file):
 
 
 def create_cookiecutter_file(model, template_dir, output_dir):
-    cookiecutter(template_dir, extra_context=model.dict(), output_dir=output_dir)
+    cookiecutter(template_dir, extra_context=model.model_dump(), output_dir=output_dir)
 
 
 if __name__ == "__main__":

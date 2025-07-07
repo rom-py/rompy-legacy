@@ -17,7 +17,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from rompy.core.config import BaseConfig
 from rompy.core.logging import LogFormat, LoggingConfig, LogLevel, get_logger
