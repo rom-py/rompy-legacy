@@ -34,17 +34,17 @@ config:
         buffer: 5
     boundary_conditions:
       data_type: boundary_conditions
-      constituents:
+      setup_type: river
+      tidal_data:
+        tidal_database: tests/schism/test_data/tides
+        tidal_model: 'OCEANUM-atlas'
+        constituents:
         - M2
         - S2
         - N2
-      tidal_database: tpxo
-      setup_type: river
-      ntip: 0
-      cutoff_depth: 50.0
-      tidal_data:
-        elevations: tests/schism/test_data/tpxo9-neaus/h_m2s2n2.nc
-        velocities: tests/schism/test_data/tpxo9-neaus/u_m2s2n2.nc
+        nodal_corrections: false
+        tidal_potential: false
+        extrapolate_tides: true
       boundaries:
         0:
           elev_type: 3
