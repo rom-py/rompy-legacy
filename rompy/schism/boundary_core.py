@@ -59,15 +59,8 @@ if "/home/tdurrant/source/pylibs" not in sys.path:
     sys.path.append("/home/tdurrant/source/pylibs")
 
 # Import PyLibs functions if available
-try:
-    from pylib import schism_grid, read_schism_hgrid as pylib_read_schism_hgrid
-    from src.schism_file import read_schism_hgrid, loadz
-except ImportError:
-    logging.warning("PyLibs not found, some functionality may be limited")
-    schism_grid = None
-    pylib_read_schism_hgrid = None
-    read_schism_hgrid = None
-    loadz = None
+from pylib import schism_grid, read_schism_hgrid as pylib_read_schism_hgrid
+from src.schism_file import read_schism_hgrid, loadz
 
 # Import from local modules
 from .boundary import BoundaryData
