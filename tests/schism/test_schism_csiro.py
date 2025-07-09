@@ -12,12 +12,12 @@ from test_utils.logging import get_test_logger
 logger = get_test_logger(__name__)
 
 pytest.importorskip("rompy.schism")
-from utils import compare_files
-
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
 from rompy.model import ModelRun
-from rompy.schism import Inputs, SchismCSIROConfig, SCHISMGrid
+from rompy.schism.config_legacy import Inputs, SchismCSIROConfig
+from rompy.schism.grid import SCHISMGrid
+from tests.utils import compare_files
 
 here = Path(__file__).parent
 

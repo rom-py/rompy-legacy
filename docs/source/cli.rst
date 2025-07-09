@@ -8,14 +8,22 @@ The ROMPY Command Line Interface (CLI) provides a comprehensive set of tools for
 Overview
 --------
 
-ROMPY CLI has been redesigned with a modern command structure that separates different operations:
+ROMPY CLI supports both a modern command structure and legacy compatibility:
+
+**Modern Command Structure (Recommended):**
 
 .. code-block:: bash
 
     rompy <command> [options] [arguments]
 
-Available Commands
-------------------
+**Legacy Command Structure (Backward Compatibility):**
+
+.. code-block:: bash
+
+    rompy <model> <config-file> [options]
+
+Modern Commands
+---------------
 
 .. program:: rompy
 
@@ -90,46 +98,6 @@ create
     # Create template
     rompy backends create --backend-type local --output local_template.yml
 
-Backend Configuration Files
-----------------------------
-
-Backend configurations are defined in YAML or JSON files with a ``type`` field indicating the backend type:
-
-**Local Backend Configuration:**
-
-.. code-block:: yaml
-
-    type: local
-    timeout: 3600
-    env_vars:
-      OMP_NUM_THREADS: "4"
-      MODEL_DEBUG: "true"
-    command: "python run_model.py --verbose"
-    shell: true
-    capture_output: true
-
-**Docker Backend Configuration:**
-
-.. code-block:: yaml
-
-    type: docker
-    image: "swan:latest"
-    cpu: 4
-    memory: "2g"
-    timeout: 7200
-    env_vars:
-      SWAN_THREADS: "4"
-    volumes:
-      - "/data/input:/app/input:ro"
-      - "/data/output:/app/output:rw"
-    executable: "/usr/local/bin/swan"
-
-For complete configuration options, see :doc:`backend_configurations`.
-
-.. code-block:: bash
-
-    rompy run config.yaml --backend docker --timeout 3600 --env OMP_NUM_THREADS=4
-
 pipeline
 ~~~~~~~~
 
@@ -199,27 +167,6 @@ Validate model configuration without execution.
 
     rompy validate config.yaml
 
-backends
-~~~~~~~~
-
-Manage and inspect execution backends.
-
-.. code-block:: bash
-
-    rompy backends list
-
-**Subcommands:**
-
-.. option:: list
-
-    List all available backends (run, postprocess, pipeline)
-
-**Example:**
-
-.. code-block:: bash
-
-    rompy backends list
-
 schema
 ~~~~~~
 
@@ -240,6 +187,79 @@ Show configuration schema information.
 .. code-block:: bash
 
     rompy schema --model-type swan
+
+Legacy Command Structure
+------------------------
+
+For backward compatibility, the legacy command structure is still supported:
+
+.. code-block:: bash
+
+    rompy <model> <config-file> [OPTIONS]
+
+Where:
+- ``<model>``: The type of model to run (e.g., swan, schism)
+- ``<config-file>``: Path to a YAML or JSON configuration file
+
+**Available Models:**
+
+To list all available models, run:
+
+.. code-block:: bash
+
+    rompy --version
+
+**Legacy Options:**
+
+.. option:: --zip, --no-zip
+
+    Create a zip archive of the model files (default: False)
+
+**Legacy Examples:**
+
+.. code-block:: bash
+
+    # Run a SWAN model with a configuration file
+    rompy swan config.yml
+
+    # Run with zip output
+    rompy swan config.yml --zip
+
+Backend Configuration Files
+----------------------------
+
+Backend configurations are defined in YAML or JSON files with a ``type`` field indicating the backend type:
+
+**Local Backend Configuration:**
+
+.. code-block:: yaml
+
+    type: local
+    timeout: 3600
+    env_vars:
+      OMP_NUM_THREADS: "4"
+      MODEL_DEBUG: "true"
+    command: "python run_model.py --verbose"
+    shell: true
+    capture_output: true
+
+**Docker Backend Configuration:**
+
+.. code-block:: yaml
+
+    type: docker
+    image: "swan:latest"
+    cpu: 4
+    memory: "2g"
+    timeout: 7200
+    env_vars:
+      SWAN_THREADS: "4"
+    volumes:
+      - "/data/input:/app/input:ro"
+      - "/data/output:/app/output:rw"
+    executable: "/usr/local/bin/swan"
+
+For complete configuration options, see :doc:`backend_configurations`.
 
 Global Options
 --------------
@@ -307,29 +327,16 @@ Orchestrate complete workflows:
 Examples
 --------
 
-Basic Model Execution
-~~~~~~~~~~~~~~~~~~~~~
+Modern Workflow Examples
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-Execute a SWAN model with local backend:
-
-.. code-block:: bash
-
-    rompy run swan_config.yaml
-
-Execute with Docker backend and custom settings:
+Execute a SWAN model with typed backend configuration:
 
 .. code-block:: bash
 
-    rompy run schism_config.yaml \
-        --backend docker \
-        --timeout 7200 \
-        --env OMP_NUM_THREADS=8 \
-        --env SCHISM_USE_MPI=true
+    rompy run swan_config.yaml --backend-config local_backend.yml
 
-Complete Pipeline Workflow
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Run complete pipeline with analysis:
+Complete pipeline with analysis:
 
 .. code-block:: bash
 
@@ -338,10 +345,7 @@ Run complete pipeline with analysis:
         --processor analysis \
         --validate-stages
 
-Development Workflow
-~~~~~~~~~~~~~~~~~~~~
-
-Validate configuration and generate inputs for testing:
+Development workflow:
 
 .. code-block:: bash
 
@@ -351,22 +355,23 @@ Validate configuration and generate inputs for testing:
     # Generate inputs only
     rompy generate config.yaml --output-dir ./test_run
 
-    # Quick test run
-    rompy run config.yaml --dry-run --verbose
+    # Test run with dry-run
+    rompy run config.yaml --backend-config local.yml --dry-run
 
-Production Workflow
-~~~~~~~~~~~~~~~~~~~
+Legacy Workflow Examples
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Full production run with monitoring:
+Execute with legacy interface:
 
 .. code-block:: bash
 
-    rompy pipeline production_config.yaml \
-        --run-backend docker \
-        --processor full_analysis \
-        --log-dir ./logs \
-        --verbose \
-        --cleanup-on-failure
+    rompy swan config.yml --verbose --log-dir ./logs
+
+Production run with zip output:
+
+.. code-block:: bash
+
+    rompy schism production_config.yaml --zip --ascii-only
 
 Configuration Files
 -------------------
@@ -374,7 +379,7 @@ Configuration Files
 Enhanced Configuration Structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The new CLI supports enhanced configuration files with run and pipeline settings:
+The modern CLI supports enhanced configuration files with run and pipeline settings:
 
 .. code-block:: yaml
 
@@ -432,7 +437,7 @@ Set default values using environment variables:
     export ROMPY_ASCII_ONLY="1"
     export ROMPY_SIMPLE_LOGS="1"
 
-    rompy run config.yaml  # Uses environment settings
+    rompy run config.yaml --backend-config local.yml  # Uses environment settings
 
 Monitoring and Debugging
 -------------------------
@@ -444,8 +449,8 @@ Use multiple -v flags for increased verbosity:
 
 .. code-block:: bash
 
-    rompy run config.yaml -v      # INFO level
-    rompy run config.yaml -vv     # DEBUG level
+    rompy run config.yaml --backend-config local.yml -v      # INFO level
+    rompy run config.yaml --backend-config local.yml -vv     # DEBUG level
 
 Log Files
 ~~~~~~~~~
@@ -473,7 +478,7 @@ Validate configurations before running:
 .. code-block:: bash
 
     rompy validate config.yaml
-    rompy generate config.yaml --output-dir ./test
+    rompy backends validate backend_config.yml --backend-type local
 
 Migration from Legacy CLI
 --------------------------
@@ -485,10 +490,16 @@ The legacy CLI format is still supported for backward compatibility:
     # Legacy format (still works)
     rompy swan config.yaml --zip
 
-    # New format (recommended)
-    rompy run config.yaml --backend local
+    # Modern format (recommended)
+    rompy run config.yaml --backend-config local_backend.yml
 
-However, the new command structure provides more flexibility and features.
+The modern command structure provides more flexibility and features including:
+
+- Type-safe backend configurations
+- Pipeline orchestration
+- Enhanced validation
+- Better error handling
+- Structured logging
 
 Exit Codes
 ----------
@@ -510,6 +521,7 @@ Common Issues
 .. code-block:: bash
 
     rompy validate config.yaml
+    rompy backends validate backend_config.yml --backend-type local
 
 **Backend Not Available:**
 
@@ -521,7 +533,7 @@ Common Issues
 
 .. code-block:: bash
 
-    rompy run config.yaml --verbose --log-dir ./debug_logs
+    rompy run config.yaml --backend-config local.yml --verbose --log-dir ./debug_logs
 
 **Docker Issues:**
 
@@ -531,7 +543,17 @@ Common Issues
     rompy backends list | grep docker
 
     # Test with local backend first
-    rompy run config.yaml --backend local
+    rompy run config.yaml --backend-config local_backend.yml
+
+**Legacy Command Issues:**
+
+.. code-block:: bash
+
+    # Check available models
+    rompy --version
+
+    # Use verbose logging
+    rompy swan config.yml -vv --log-dir ./logs
 
 Getting Help
 ~~~~~~~~~~~~
@@ -546,3 +568,4 @@ Getting Help
     rompy --help
     rompy run --help
     rompy pipeline --help
+    rompy backends --help

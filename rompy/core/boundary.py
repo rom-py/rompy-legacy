@@ -1,8 +1,10 @@
 """Boundary classes."""
 
 import logging
+from importlib.metadata import entry_points
 from pathlib import Path
 from typing import Literal, Optional, Union
+
 import numpy as np
 import xarray as xr
 from pydantic import Field, field_validator
@@ -144,7 +146,10 @@ class DataBoundary(DataGrid):
             self.coords.x: xr.DataArray(xbnd, dims=("site",)),
             self.coords.y: xr.DataArray(ybnd, dims=("site",)),
         }
-        return getattr(self.ds, self.sel_method)(coords, **self.sel_method_kwargs)
+        ds = getattr(self.ds, self.sel_method)(coords, **self.sel_method_kwargs)
+        # rename the coordinates to x, y
+        ds = ds.rename({self.coords.x: "x", self.coords.y: "y"})
+        return ds
 
     def get(
         self, destdir: str | Path, grid: RegularGrid, time: Optional[TimeRange] = None

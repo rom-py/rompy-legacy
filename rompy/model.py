@@ -17,7 +17,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Literal, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from rompy.backends import BackendConfig
 from rompy.core.config import BaseConfig
@@ -26,6 +26,7 @@ from rompy.core.render import render
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
 from rompy.utils import load_entry_points
+
 
 # Initialize the logger
 logger = get_logger(__name__)
@@ -84,7 +85,7 @@ class ModelRun(RompyBaseModel):
     # Initialize formatting variables in __init__
 
     model_type: Literal["modelrun"] = Field(
-        "modelrun", description="The model type for SCHISM."
+        "modelrun", description="The model type."
     )
     run_id: str = Field("run_id", description="The run id")
     period: TimeRange = Field(
@@ -229,8 +230,6 @@ class ModelRun(RompyBaseModel):
             logger.debug(f"Configuration string formatting error: {str(e)}")
 
         logger.info("")
-        # Use helper functions to avoid circular imports
-        # No need to import or set USE_ASCII_ONLY, we use get_ascii_mode() directly
 
         # Use the log_box utility function
         from rompy.formatting import log_box
@@ -261,16 +260,23 @@ class ModelRun(RompyBaseModel):
             logger.info("Using static configuration...")
             cc_full["config"] = self.config
 
-        render(
-            cc_full,
-            self.config.template,
-            self.config.checkout,
+==== BASE ====
+        staging_dir = render(
+            cc_full, self.config.template, self.output_dir, self.config.checkout
+==== BASE ====
         )
 
         logger.info("")
-        logger.info(f"Successfully generated project in {self.staging_dir}")
-        logger.info("-----------------------------------------------------")
-        return self.staging_dir
+        # Use the log_box utility function
+        from rompy.formatting import log_box
+
+        log_box(
+            title="MODEL GENERATION COMPLETE",
+            logger=logger,
+            add_empty_line=False,
+        )
+        logger.info(f"Model files generated at: {staging_dir}")
+        return staging_dir
 
     def zip(self) -> str:
         """Zip the input files for the model run

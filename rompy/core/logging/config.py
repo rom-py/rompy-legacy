@@ -7,11 +7,11 @@ It uses Pydantic for validation and environment variable support.
 
 from __future__ import annotations
 
-import os
 import logging
-from pathlib import Path
-from typing import Optional, Dict, Any, ClassVar
+import os
 from enum import Enum
+from pathlib import Path
+from typing import Any, ClassVar, Dict, Optional
 
 from pydantic import ConfigDict, Field, field_validator, model_validator
 from pydantic_settings import BaseSettings
@@ -103,8 +103,8 @@ class LoggingConfig(BaseSettings):
         and ensures all loggers use the appropriate formatters and handlers.
         """
         # Import here to avoid circular imports
-        from .logger import RompyLogger, get_logger
         from .formatter import formatter as box_formatter
+        from .logger import RompyLogger, get_logger
 
         # First, set our custom logger class
         logging.setLoggerClass(RompyLogger)

@@ -1,14 +1,23 @@
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Union
 
 import numpy as np
 import pandas as pd
 from pydantic import (
+    ConfigDict,
     Field,
     PrivateAttr,
     field_validator,
     model_serializer,
     model_validator,
+)
+from pylib import (
+    compute_zcor,
+    create_schism_vgrid,
+    read_schism_hgrid,
+    read_schism_vgrid,
+    save_schism_grid,
+    schism_grid,
 )
 from shapely.geometry import MultiPoint, Polygon
 
@@ -16,12 +25,11 @@ from rompy.core.data import DataBlob
 from rompy.core.grid import BaseGrid
 from rompy.core.logging import get_logger
 from rompy.core.types import RompyBaseModel
-from rompy.schism.pyschism.mesh import Hgrid
-from rompy.schism.pyschism.mesh.base import Gr3
-from rompy.schism.pyschism.mesh.prop import Tvdflag
-from rompy.schism.pyschism.mesh.vgrid import LSC2, SZ, Vgrid
+
+from .vgrid import VGrid, create_2d_vgrid
 
 logger = get_logger(__name__)
+
 
 G3ACCEPT = ["albedo", "diffmin", "diffmax", "watertype", "windrot_geo2proj"]
 G3WARN = ["manning", "rough", "drag"]
@@ -110,227 +118,158 @@ class GR3Generator(GeneratorBase):
             ref = self.hgrid._copied
         else:
             ref = self.hgrid
+
+        # Determine the output filename
         dest = Path(destdir) / f"{self.gr3_type}.gr3"
-        hgrid = Gr3.open(ref, crs=self.crs)
-        grd = hgrid.copy()
-        grd.description = self.gr3_type
-        grd.nodes.values[:] = self.value
-        grd.write(dest, overwrite=True)
+
+        # Load the grid with PyLibs
+        try:
+            gd = schism_grid(ref)
+        except Exception:
+            gd = read_schism_hgrid(ref)
+
+        # Generate a standard gr3 file that matches PySchism format
+        # This follows the same format as hgrid.gr3: description, NE NP, node list, element list
+        logger.info(f"Generating {self.gr3_type}.gr3 with constant value {self.value}")
+
+        with open(dest, "w") as f:
+            # First line: Description
+            f.write(f"{self.gr3_type} gr3 file\n")
+
+            # Second line: NE NP (# of elements, # of nodes)
+            f.write(f"{gd.ne} {gd.np}\n")
+
+            # Write node information with the constant value
+            # Format: node_id x y value
+            for i in range(gd.np):
+                f.write(f"{i+1} {gd.x[i]:.8f} {gd.y[i]:.8f} {self.value:.8f}\n")
+
+            # Write element connectivity
+            # Format: element_id num_vertices vertex1 vertex2 ...
+            for i in range(gd.ne):
+                if hasattr(gd, "i34") and gd.i34 is not None:
+                    num_vertices = gd.i34[i]
+                elif hasattr(gd, "elnode") and gd.elnode is not None:
+                    # Count non-negative values for number of vertices
+                    num_vertices = sum(1 for x in gd.elnode[i] if x >= 0)
+                else:
+                    num_vertices = 3  # Default to triangles
+
+                # Write element connectivity line
+                if hasattr(gd, "elnode") and gd.elnode is not None:
+                    vertices = " ".join(
+                        str(gd.elnode[i, j] + 1) for j in range(num_vertices)
+                    )
+                    f.write(f"{i+1} {num_vertices} {vertices}\n")
+
+            # Add empty line at the end (part of PySchism gr3 format)
+            f.write("\n")
+            self._copied = dest
+            return dest
+
+        # For all other gr3 files (e.g., albedo, diffmin, diffmax, etc.), use standard node-based gr3 format
+        with open(dest, "w") as f:
+            f.write(f"{self.gr3_type} gr3 file\n")
+            f.write(f"{gd.np} {gd.ne}\n")
+
+            # Write node information with constant value
+            for i in range(gd.np):
+                f.write(f"{i+1} {gd.x[i]} {gd.y[i]} {self.value}\n")
+
+            # Write element connectivity
+            for i in range(gd.ne):
+                if hasattr(gd, "i34") and gd.i34 is not None:
+                    num_vertices = gd.i34[i]
+                elif hasattr(gd, "elnode") and gd.elnode is not None:
+                    # For triangular elements, count non-negative values
+                    num_vertices = sum(1 for x in gd.elnode[i] if x >= 0)
+                else:
+                    num_vertices = 3  # Default to triangles
+
+                if hasattr(gd, "elnode") and gd.elnode is not None:
+                    vertices = " ".join(
+                        str(gd.elnode[i, j] + 1) for j in range(num_vertices)
+                    )
+                    f.write(f"{i+1} {num_vertices} {vertices}\n")
+
         logger.info(f"Generated {self.gr3_type} with constant value of {self.value}")
         self._copied = dest
         return dest
 
 
-# class VgridGeneratorBase(GeneratorBase):
-
-
-class Vgrid2D(GeneratorBase):
-    model_type: Literal["vgrid2D_generator"] = Field(
-        "vgrid2D_generator", description="Model descriminator"
-    )
-
-    @model_serializer
-    def serialize_model(self, **kwargs):
-        """Custom serializer to handle proper serialization."""
-        result = {
-            field_name: getattr(self, field_name)
-            for field_name in self.model_fields
-            if getattr(self, field_name, None) is not None
-        }
-
-        # Remove private attributes
-        for key in list(result.keys()):
-            if key.startswith("_"):
-                del result[key]
-
-        return result
-
-    def generate(self, destdir: str | Path, hgrid=None) -> Path:
-        dest = Path(destdir) / "vgrid.in"
-        with open(dest, "w") as f:
-            f.write("2 !ivcor (1: LSC2; 2: SZ) ; type of mesh you are using\n")
-            f.write(
-                "2 1 1000000  !nvrt (# of S-levels) (=Nz); kz (# of Z-levels); hs (transition depth between S and Z); large in this case because is 2D implementation\n"
-            )
-            f.write("Z levels   !Z-levels in the lower portion\n")
-            f.write(
-                "1 -1000000   !level index, z-coordinates !use very large value for 2D; if 3D would have a list of z-levels here\n"
-            )
-            f.write("S levels      !S-levels\n")
-            f.write(
-                "40.0 1.0 0.0001  ! constants used in S-transformation: hc, theta_b, theta_f\n"
-            )
-            f.write("1 -1.0    !first S-level (sigma-coordinate must be -1)\n")
-            f.write("2 0.0     !last sigma-coordinate must be 0\n")
-            f.write(
-                "!for 3D, would have the levels index and sigma coordinate for each level\n"
-            )
-        self._copied = dest
-        return dest
-
-
-class Vgrid3D_LSC2(GeneratorBase):
-    model_type: Literal["vgrid3D_lsc2"] = Field(
-        "vgrid3D_lsc2", description="Model descriminator"
-    )
-
-    @model_serializer
-    def serialize_model(self, **kwargs):
-        """Custom serializer to handle proper serialization."""
-        result = {
-            field_name: getattr(self, field_name)
-            for field_name in self.model_fields
-            if getattr(self, field_name, None) is not None
-        }
-
-        # Remove private attributes
-        for key in list(result.keys()):
-            if key.startswith("_"):
-                del result[key]
-
-        return result
-
-    hgrid: DataBlob | Path = Field(..., description="Path to hgrid.gr3 file")
-    hsm: list[float] = Field(..., description="Depth for each master grid")
-    nv: list[int] = Field(..., description="Total number of vertical levels")
-    h_c: float = Field(
-        ..., description="Transition depth between sigma and z-coordinates"
-    )
-    theta_b: float = Field(..., description="Vertical resolution near the surface")
-    theta_f: float = Field(..., description="Vertical resolution near the seabed")
-    crs: str = Field("epsg:4326", description="Coordinate reference system")
-    _vgrid = PrivateAttr(default=None)
-
-    @property
-    def vgrid(self):
-        if self._vgrid is None:
-            self._vgrid = LSC2(
-                hsm=self.hsm,
-                nv=self.nv,
-                h_c=self.h_c,
-                theta_b=self.theta_b,
-                theta_f=self.theta_f,
-            )
-            logger.info("Generating LSC2 vgrid")
-            self._vgrid.calc_m_grid()
-            self._vgrid.calc_lsc2_att(self.hgrid, crs=self.crs)
-        return self._vgrid
-
-    def generate(self, destdir: str | Path) -> Path:
-        dest = Path(destdir) / "vgrid.in"
-        self.vgrid.write(dest)
-        return dest
-
-
-class Vgrid3D_SZ(GeneratorBase):
-    model_type: Literal["vgrid3D_sz"] = Field(
-        "vgrid3D_sz", description="Model descriminator"
-    )
-
-    @model_serializer
-    def serialize_model(self, **kwargs):
-        """Custom serializer to handle proper serialization."""
-        result = {
-            field_name: getattr(self, field_name)
-            for field_name in self.model_fields
-            if getattr(self, field_name, None) is not None
-        }
-
-        # Remove private attributes
-        for key in list(result.keys()):
-            if key.startswith("_"):
-                del result[key]
-
-        return result
-
-    hgrid: DataBlob | Path = Field(..., description="Path to hgrid.gr3 file")
-    h_s: float = Field(..., description="Depth for each master grid")
-    ztot: list[int] = Field(..., description="Total number of vertical levels")
-    h_c: float = Field(
-        ..., description="Transition depth between sigma and z-coordinates"
-    )
-    theta_b: float = Field(..., description="Vertical resolution near the surface")
-    theta_f: float = Field(..., description="Vertical resolution near the seabed")
-    sigma: list[float] = Field(..., description="Sigma levels")
-    _vgrid = PrivateAttr(default=None)
-
-    @property
-    def vgrid(self):
-        if self._vgrid is None:
-            self._vgrid = SZ(
-                h_s=self.h_s,
-                ztot=self.ztot,
-                h_c=self.h_c,
-                theta_b=self.theta_b,
-                theta_f=self.theta_f,
-                sigma=self.sigma,
-            )
-            logger.info("Generating SZ grid")
-        return self._vgrid
-
-    def generate(self, destdir: str | Path) -> Path:
-        dest = Path(destdir) / "vgrid.in"
-        self.vgrid.write(dest)
-        return dest
+# Vertical grid type constants (module level for easy importing)
+VGRID_TYPE_2D = "2d"
+VGRID_TYPE_LSC2 = "lsc2"
+VGRID_TYPE_SZ = "sz"
 
 
 class VgridGenerator(GeneratorBase):
     """
-    Generate vgrid.in.
-    This is all hardcoded for now, may look at making this more flexible in the future.
+    Generate vgrid.in using the unified VGrid class from rompy.schism.vgrid.
+    This class directly uses the VGrid API which mirrors the create_schism_vgrid function from PyLibs.
     """
 
-    model_type: Literal["vgrid_generator"] = Field(
-        "vgrid_generator", description="Model descriminator"
+    # VGrid configuration parameters
+    model_type: Literal["vgridgenerator"] = Field(
+        "vgridgenerator", description="Model discriminator"
     )
-    vgrid: Union[Vgrid2D, Vgrid3D_LSC2, Vgrid3D_SZ] = Field(
-        ...,
-        default_factory=Vgrid2D,
-        description="Type of vgrid to generate. 2d will create the minimum required for a 2d model. LSC2 will create a full vgrid for a 3d model using pyschsim's LSC2 class",
+    vgrid_type: str = Field(
+        default="2d",
+        description="Type of vertical grid to generate (2d, lsc2, or sz)",
     )
 
-    @model_serializer
-    def serialize_model(self, **kwargs):
-        """Custom serializer to handle proper serialization of the vgrid field."""
-        result = {
-            field_name: getattr(self, field_name)
-            for field_name in self.model_fields
-            if getattr(self, field_name, None) is not None
-        }
+    # Parameters for 3D grids
+    nvrt: int = Field(default=10, description="Number of vertical layers for 3D grids")
 
-        # Remove private attributes
-        for key in list(result.keys()):
-            if key.startswith("_"):
-                del result[key]
+    # Parameters specific to LSC2
+    hsm: float = Field(
+        default=1000.0, description="Transition depth for LSC2 vertical grid"
+    )
 
-        return result
+    # Parameters specific to SZ
+    h_c: float = Field(default=10.0, description="Critical depth for SZ vertical grid")
+    theta_b: float = Field(
+        default=0.5, description="Bottom theta parameter for SZ vertical grid"
+    )
+    theta_f: float = Field(
+        default=1.0, description="Surface theta parameter for SZ vertical grid"
+    )
 
     def generate(self, destdir: str | Path) -> Path:
-        dest = self.vgrid.generate(destdir=destdir)
-        return dest
+        dest_path = Path(destdir) / "vgrid.in"
+        logger.info(
+            f"Generating vgrid.in at {dest_path} using unified VGrid implementation"
+        )
 
-    def generate_legacy(self, destdir: str | Path) -> Path:
-        dest = Path(destdir) / "vgrid.in"
-        with open(dest, "w") as f:
-            f.write("2 !ivcor (1: LSC2; 2: SZ) ; type of mesh you are using\n")
-            f.write(
-                "2 1 1000000  !nvrt (# of S-levels) (=Nz); kz (# of Z-levels); hs (transition depth between S and Z); large in this case because is 2D implementation\n"
+        vgrid = self._create_vgrid_instance()
+        return vgrid.generate(destdir)
+
+    def _create_vgrid_instance(self) -> "VGrid":
+        """Create the appropriate VGrid instance based on configuration."""
+        from rompy.schism.vgrid import VGrid
+
+        if self.vgrid_type.lower() == "2d":
+            return create_2d_vgrid()
+        elif self.vgrid_type.lower() == "lsc2":
+            return VGrid.create_lsc2(nvrt=self.nvrt, h_s=self.hsm)
+        elif self.vgrid_type.lower() == "sz":
+            return VGrid.create_sz(
+                nvrt=self.nvrt, h_c=self.h_c, theta_b=self.theta_b, theta_f=self.theta_f
             )
-            f.write("Z levels   !Z-levels in the lower portion\n")
-            f.write(
-                "1 -1000000   !level index, z-coordinates !use very large value for 2D; if 3D would have a list of z-levels here\n"
-            )
-            f.write("S levels      !S-levels\n")
-            f.write(
-                "40.0 1.0 0.0001  ! constants used in S-transformation: hc, theta_b, theta_f\n"
-            )
-            f.write("1 -1.0    !first S-level (sigma-coordinate must be -1)\n")
-            f.write("2 0.0     !last sigma-coordinate must be 0\n")
-            f.write(
-                "!for 3D, would have the levels index and sigma coordinate for each level\n"
-            )
-        self._copied = dest
-        return dest
+        else:
+            logger.warning(f"Unknown vgrid_type '{self.vgrid_type}', defaulting to 2D")
+            return VGrid.create_lsc2(nvrt=2, h_s=-1.0e6)
+
+    def _create_2d_vgrid(self, destdir: str | Path) -> Path:
+        """Create a 2D vgrid.in file using the refactored VGrid class."""
+        logger.info(f"Creating 2D vgrid.in using VGrid.create_2d_vgrid()")
+        try:
+            # Create a 2D vgrid using the new implementation
+            vgrid = create_2d_vgrid()
+            return vgrid.generate(destdir)
+        except Exception as e:
+            logger.error(f"Error using VGrid.create_2d_vgrid: {e}")
+            return self._create_minimal_vgrid(destdir)
 
 
 class WWMBNDGR3Generator(GeneratorBase):
@@ -464,10 +403,9 @@ class SCHISMGrid(BaseGrid):
 
     grid_type: Literal["schism"] = Field("schism", description="Model descriminator")
     hgrid: DataBlob = Field(..., description="Path to hgrid.gr3 file")
-    vgrid: Optional[DataBlob | VgridGenerator] = Field(
-        default=None,
+    vgrid: Optional[DataBlob | VgridGenerator | VGrid] = Field(
         description="Path to vgrid.in file",
-        validate_default=True,
+        default_factory=create_2d_vgrid,
     )
 
     @model_validator(mode="after")
@@ -577,8 +515,8 @@ class SCHISMGrid(BaseGrid):
         validate_default=True,
     )
     crs: str = Field("epsg:4326", description="Coordinate reference system")
-    _pyschism_hgrid: Optional[Hgrid] = None
-    _pyschism_vgrid: Optional[Vgrid] = None
+    _pylibs_hgrid: Optional[schism_grid] = None
+    _pylibs_vgrid: Optional[object] = None
 
     @model_validator(mode="after")
     def validate_rough_drag_manning(cls, v):
@@ -622,171 +560,494 @@ class SCHISMGrid(BaseGrid):
 
     @property
     def x(self) -> np.ndarray:
-        return self.pyschism_hgrid.x
+        return self.pylibs_hgrid.x
 
     @property
     def y(self) -> np.ndarray:
-        return self.pyschism_hgrid.y
+        return self.pylibs_hgrid.y
 
     @property
+    def ne(self) -> int:
+        return self.pylibs_hgrid.ne
+
+    @property
+    def np(self) -> int:
+        return self.pylibs_hgrid.np
+
+    @property
+    def pylibs_hgrid(self):
+        if self._pylibs_hgrid is None:
+            grid_path = self.hgrid._copied or self.hgrid.source
+            try:
+                # Try to load as schism_grid first
+                self._pylibs_hgrid = schism_grid(grid_path)
+            except Exception:
+                # Fall back to read_schism_hgrid
+                self._pylibs_hgrid = read_schism_hgrid(grid_path)
+
+            # Compute all grid properties to ensure they're available
+            if hasattr(self._pylibs_hgrid, "compute_all"):
+                self._pylibs_hgrid.compute_all()
+
+            # Calculate boundary information
+            if hasattr(self._pylibs_hgrid, "compute_bnd"):
+                self._pylibs_hgrid.compute_bnd()
+
+        return self._pylibs_hgrid
+
+    @property
+    def pylibs_vgrid(self):
+        if self.vgrid is None:
+            return None
+        if self._pylibs_vgrid is None:
+            vgrid_path = self.vgrid._copied or self.vgrid.source
+            self._pylibs_vgrid = read_schism_vgrid(vgrid_path)
+        return self._pylibs_vgrid
+
+    # Legacy properties for backward compatibility
+    @property
     def pyschism_hgrid(self):
-        if self._pyschism_hgrid is None:
-            self._pyschism_hgrid = Hgrid.open(
-                self.hgrid._copied or self.hgrid.source, crs=self.crs
-            )
-        return self._pyschism_hgrid
+        logger.warning("pyschism_hgrid is deprecated, use pylibs_hgrid instead")
+        return self.pylibs_hgrid
 
     @property
     def pyschism_vgrid(self):
-        if self.vgrid is None:
-            return None
-        if self._pyschism_vgrid is None:
-            self._pyschism_vgrid = Vgrid.open(self.vgrid._copied or self.vgrid.source)
-        return self._pyschism_vgrid
+        logger.warning("pyschism_vgrid is deprecated, use pylibs_vgrid instead")
+        return self.pylibs_vgrid
 
     @property
     def is_3d(self):
-        if self.vgrid is not None:
-            return True
-        else:
+        if self.vgrid is None:
             return False
+        elif isinstance(self.vgrid, DataBlob):
+            return True
+        elif isinstance(self.vgrid, VgridGenerator):
+            # Check the vgrid_type attribute of the VgridGenerator
+            if self.vgrid.vgrid_type.lower() == VGRID_TYPE_2D:
+                return False
+            else:
+                return True
+        # Fallback for any other case (including when accessing the property before initialization)
+        return False
+
+    @property
+    def nob(self):
+        if not hasattr(self.pylibs_hgrid, "nobn"):
+            self.pylibs_hgrid.compute_bnd()
+        return self.pylibs_hgrid.nob
+
+    @property
+    def nobn(self):
+        if not hasattr(self.pylibs_hgrid, "nobn"):
+            self.pylibs_hgrid.compute_bnd()
+        return self.pylibs_hgrid.nobn
+
+    @property
+    def nvrt(self):
+        if self.is_3d:
+            return self.pylibs_vgrid.nvrt
+        else:
+            return None
+
+    def copy_to(self, destdir: Path) -> "SCHISMGrid":
+        """Copy the grid to a destination directory.
+
+        This method generates all the required grid files in the destination directory
+        and returns a new SCHISMGrid instance pointing to these files.
+
+        Parameters
+        ----------
+        destdir : Path
+            Destination directory
+
+        Returns
+        -------
+        SCHISMGrid
+            A new SCHISMGrid instance with sources pointing to the new files
+        """
+        # Copy grid to destination
+        self.get(destdir)
+
+        # Return self for method chaining
+        return self
 
     def get(self, destdir: Path) -> dict:
         ret = {}
+        dest_path = (
+            Path(destdir) if isinstance(destdir, (str, Path)) else Path(str(destdir))
+        )
+
+        # Ensure the output directory exists
+        if not dest_path.exists():
+            dest_path.mkdir(parents=True, exist_ok=True)
+            logger.info(f"Created output directory: {dest_path}")
+
+        # Process .gr3 files
         for filetype in G3FILES + ["hgrid"]:
             source = getattr(self, filetype)
             if source is not None:
                 ret[filetype] = source.get(destdir, name=f"{filetype}.gr3")
-        for filetype in GRIDLINKS + ["vgrid", "wwmbnd"]:
+
+        # Process other grid files, but handle vgrid separately
+        for filetype in GRIDLINKS + ["wwmbnd"]:
             source = getattr(self, filetype)
-            ret[filetype] = source.get(destdir)
+            if source is not None:
+                try:
+                    ret[filetype] = source.get(destdir)
+                except Exception as e:
+                    logger.error(f"Error generating {filetype}: {e}")
+
+        ret["vgrid"] = self.vgrid.get(destdir)
+
+        # Create symlinks for special grid files
+        try:
+            hgrid_gr3_path = dest_path / "hgrid.gr3"
+            if hgrid_gr3_path.exists():
+                # Create symlinks for hgrid_WWM.gr3 and hgrid.ll to hgrid.gr3
+                for symlink_name in ["hgrid.ll", "hgrid_WWM.gr3"]:
+                    symlink_path = dest_path / symlink_name
+                    if not symlink_path.exists():
+                        try:
+                            # Creating relative symlink
+                            symlink_path.symlink_to("hgrid.gr3")
+                            logger.info(f"Created symlink {symlink_path} -> hgrid.gr3")
+                        except Exception as e:
+                            logger.warning(
+                                f"Failed to create symlink {symlink_path}: {e}"
+                            )
+        except Exception as e:
+            logger.warning(f"Failed to create grid symlinks: {e}")
+
+        # Generate tvd.prop if needed
         self.generate_tvprop(destdir)
         return ret
 
+    # The _create_gr3_from_hgrid method has been removed as we now use PyLibs' native
+    # write_hgrid method to create gr3 files with uniform values
+
     def generate_tvprop(self, destdir: Path) -> Path:
-        """Generate tvprop.in file
+        """Generate tvd.prop file for SCHISM.
+
+        The tvd.prop file must have two columns in this format:
+        1. Two columns: `element_number TVD_flag` (space-separated)
+        2. One entry per element
+        3. TVD flag value of 1 for all entries (1 = upwind TVD)
+        4. Element numbers start from 1
+
+        Correct format:
+        ```
+        1 1
+        2 1
+        3 1
+        ...
+        317 1
+        ```
 
         Args:
             destdir (Path): Destination directory
 
         Returns:
-            iath: Path to tvprop.in file
+            Path: Path to tvd.prop file
         """
-        # TODO - should this be handled in the same way as the gr3 files? i.e. would you
-        # ever want to provide a file path to tvprop.in?
-        tvdflag = Tvdflag(
-            self.pyschism_hgrid, np.array([1] * len(self.pyschism_hgrid.elements))
-        )
         dest = destdir / "tvd.prop"
-        tvdflag.write(dest)
+
+        # For tvd.prop we need the number of elements
+        num_elements = self.pylibs_hgrid.ne  # Number of elements
+
+        logger.info(
+            f"Creating tvd.prop with two-column format for {num_elements} elements"
+        )
+
+        # Create the file with the proper format
+        with open(dest, "w") as f:
+            # Write element_number and TVD flag (1) for each element
+            for i in range(1, num_elements + 1):
+                f.write(f"{i} 1\n")
+
+        # Ensure file permissions are correct
+        try:
+            dest.chmod(0o644)  # User read/write, group/others read
+            logger.info(f"Successfully created tvd.prop with {num_elements} elements")
+        except Exception as e:
+            logger.warning(f"Failed to set permissions on tvd.prop: {e}")
+
         return dest
 
     def boundary(self, tolerance=None) -> Polygon:
-        bnd = self.pyschism_hgrid.boundaries.open.get_coordinates()
-        polygon = Polygon(zip(bnd.x.values, bnd.y.values))
+        gd = self.pylibs_hgrid
+
+        # Make sure boundaries are computed
+        if hasattr(gd, "compute_bnd") and not hasattr(gd, "nob"):
+            gd.compute_bnd()
+
+        if not hasattr(gd, "nob") or gd.nob is None or gd.nob == 0:
+            logger.warning("No open boundaries found in grid")
+            # Return an empty polygon
+            return Polygon()
+
+        # Extract coordinates for the first open boundary
+        boundary_nodes = gd.iobn[0]
+        x = gd.x[boundary_nodes]
+        y = gd.y[boundary_nodes]
+
+        # Create a polygon
+        polygon = Polygon(zip(x, y))
         if tolerance:
             polygon = polygon.simplify(tolerance=tolerance)
         return polygon
 
-    def plot(self, ax=None, **kwargs):
+    def plot_bnd(self, ax=None, add_coastlines=True, **kwargs):
+
+        # Make sure boundaries are computed if needed
+        if hasattr(self.pylibs_hgrid, "compute_bnd") and not hasattr(
+            self.pylibs_hgrid, "nob"
+        ):
+            self.pylibs_hgrid.compute_bnd()
+
+        # Use the native pylibs plotting function
+        return self.plot(fmt=3, **kwargs)
+
+    def plot_grid(self, ax=None, add_coastlines=True, **kwargs):
+        """
+        Plot just the grid triangulation.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes, optional
+            The axes to plot on. If None, a new figure is created.
+        add_coastlines : bool, optional:w
+
+            Whether to add coastlines to the plot (requires cartopy).
+        **kwargs : dict
+            Additional keyword arguments to pass to the pylibs plot functions.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+        """
+        return self.plot(fmt=0, **kwargs)
+
+    def plot_bathymetry(self, ax=None, add_coastlines=True, **kwargs):
+        """
+        Plot filled contours of depth/bathymetry.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes, optional
+            The axes to plot on. If None, a new figure is created.
+        add_coastlines : bool, optional
+            Whether to add coastlines to the plot (requires cartopy).
+        **kwargs : dict
+            Additional keyword arguments to pass to the pylibs plot functions.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+        """
+        return self.plot(fmt=1, **kwargs)
+
+    def plot_contours(self, ax=None, add_coastlines=True, **kwargs):
+        """
+        Plot contour lines of depth/bathymetry.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes, optional
+            The axes to plot on. If None, a new figure is created.
+        add_coastlines : bool, optional
+            Whether to add coastlines to the plot (requires cartopy).
+        **kwargs : dict
+            Additional keyword arguments to pass to the pylibs plot functions.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+        """
+        return self.plot(fmt=2, **kwargs)
+
+    def plot(self, ax=None, plot_type="domain", add_coastlines=True, **kwargs):
+        """
+        Plot the SCHISM grid using native pylibs plotting functionality.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes, optional
+            The axes to plot on. If None, a new figure is created.
+        plot_type : str, optional
+            Type of plot to create. Options are:
+            - 'domain': Plot the full domain with boundaries (default)
+            - 'grid': Plot just the grid triangulation
+            - 'bnd': Plot just the boundaries
+        add_coastlines : bool, optional
+            Whether to add coastlines to the plot (requires cartopy).
+        fmt : int, optional
+            Plotting format. Options are:
+            - 0: Plot grid only (default)
+            - 1: Plot filled contours of depth/bathymetry
+            - 2: Plot contour lines of depth/bathymetry
+            - 3: Plot boundaries only
+        value : numpy.ndarray, optional
+            Color values for plotting. If None, grid depth is used.
+        levels : int or array-like, optional
+            If int, number of contour levels to use (default 51).
+            If array-like, specific levels to plot.
+        clim : [min, max], optional
+            Value range for plot/colorbar. If None, determined from data.
+        cmap : str, optional
+            Colormap to use for depth visualization (default 'jet').
+        cb : bool, optional
+            Whether to add a colorbar to the plot (default True).
+        **kwargs : dict
+            Additional keyword arguments to pass to the pylibs plot functions.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object.
+        ax : matplotlib.axes.Axes
+            The axes object.
+
+        Examples
+        --------
+        # Plot grid with bathymetry as filled contours
+        >>> grid.plot(fmt=1, cmap='viridis', levels=20)
+
+        # Plot specific depth contours with custom range
+        >>> grid.plot(fmt=2, clim=[-100, 0], levels=[-100, -50, -20, -10, 0])
+        """
         import matplotlib.pyplot as plt
-        from cartopy import crs as ccrs
-        from matplotlib.tri import Triangulation
 
         if ax is None:
-            fig = plt.figure(figsize=(20, 10))
-            ax = fig.add_subplot(111, projection=ccrs.PlateCarree())
+            fig = plt.figure(figsize=(12, 10))
+            try:
+                # Try to create a cartopy axis if available
+                from cartopy import crs as ccrs
+
+                ax = fig.add_subplot(111, projection=ccrs.PlateCarree())
+                if add_coastlines:
+                    ax.coastlines()
+                    ax.gridlines(draw_labels=True)
+            except ImportError:
+                # Fall back to regular axis if cartopy isn't available
+                ax = fig.add_subplot(111)
         else:
             fig = plt.gcf()
-
-        meshtri = Triangulation(
-            self.pyschism_hgrid.x,
-            self.pyschism_hgrid.y,
-            self.pyschism_hgrid.elements.array,
-        )
-        ax.triplot(meshtri, color="k", alpha=0.3)
-
-        # open boundary nodes/info as geopandas df
-        gdf_open_boundary = self.pyschism_hgrid.boundaries.open
-
-        # make a pandas dataframe for easier lon/lat referencing during forcing condition generation
-        df_open_boundary = pd.DataFrame(
-            {
-                "schism_index": gdf_open_boundary.index_id[0],
-                "index": gdf_open_boundary.indexes[0],
-                "lon": gdf_open_boundary.get_coordinates().x,
-                "lat": gdf_open_boundary.get_coordinates().y,
-            }
-        ).reset_index(drop=True)
-
-        # create sub-sampled wave boundary
-        # #wave_boundary = redistribute_vertices(gdf_open_boundary.geometry[0], 0.2)
-        #
-        # df_wave_boundary = pd.DataFrame(
-        #     {"lon": wave_boundary.xy[0], "lat": wave_boundary.xy[1]}
-        # ).reset_index(drop=True)
-        gdf_open_boundary.plot(ax=ax, color="b")
-        ax.add_geometries(
-            self.pyschism_hgrid.boundaries.land.geometry.values,
-            facecolor="none",
-            edgecolor="g",
-            linewidth=2,
-            crs=ccrs.PlateCarree(),
-        )
-        ax.plot(
-            df_open_boundary["lon"],
-            df_open_boundary["lat"],
-            "+k",
-            transform=ccrs.PlateCarree(),
-            zorder=10,
-        )
-        ax.plot(
-            df_open_boundary["lon"],
-            df_open_boundary["lat"],
-            "xr",
-            transform=ccrs.PlateCarree(),
-            zorder=10,
-        )
-        # ax.plot(
-        #     df_wave_boundary["lon"],
-        #     df_wave_boundary["lat"],
-        #     "+k",
-        #     transform=ccrs.PlateCarree(),
-        #     zorder=10,
-        # )
-        # ax.plot(
-        #     df_wave_boundary["lon"],
-        #     df_wave_boundary["lat"],
-        #     "xr",
-        #     transform=ccrs.PlateCarree(),
-        #     zorder=10,
-        # )
-        ax.coastlines()
+        self.pylibs_hgrid.plot(**kwargs)
+        self.pylibs_hgrid.plot_bnd()
         return fig, ax
 
-    def plot_hgrid(self):
+    def plot_hgrid(self, figsize=(20, 10)):
+        """
+        Create a comprehensive two-panel visualization of the SCHISM grid.
+
+        Left panel shows bathymetry/depth, right panel shows the mesh and boundaries.
+
+        Parameters
+        ----------
+        figsize : tuple, optional
+            Size of the figure (width, height). Default is (20, 10).
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object containing both panels.
+        (ax1, ax2) : tuple of matplotlib.axes.Axes
+            The axes objects for the bathymetry and mesh panels.
+        """
         import matplotlib.pyplot as plt
-        from cartopy import crs as ccrs
+        import numpy as np
         from matplotlib.tri import Triangulation
 
-        fig = plt.figure(figsize=(20, 10))
-        ax = fig.add_subplot(121)
-        ax.set_title("Bathymetry")
+        # Create figure with two subplots
+        fig = plt.figure(figsize=figsize)
 
-        hgrid = Hgrid.open(self.hgrid._copied or self.hgrid.source)
-        self.pyschism_hgrid.make_plot(axes=ax)
+        # Left panel: Bathymetry
+        try:
+            from cartopy import crs as ccrs
 
-        ax = fig.add_subplot(122, projection=ccrs.PlateCarree())
-        self.plot(ax=ax)
-        ax.set_title("Mesh")
+            ax1 = fig.add_subplot(121, projection=ccrs.PlateCarree())
+            ax1.coastlines()
+        except ImportError:
+            ax1 = fig.add_subplot(121)
+
+        # Plot bathymetry using pylibs
+        gd = self.pylibs_hgrid
+        tri = Triangulation(gd.x, gd.y, triangles=gd.i34)
+        depth = -gd.dp  # Convert to positive for depth
+        cs = ax1.tricontourf(tri, depth, cmap="viridis")
+        plt.colorbar(cs, ax=ax1, label="Depth (m)")
+        ax1.set_title("Bathymetry")
+        ax1.set_xlabel("Longitude")
+        ax1.set_ylabel("Latitude")
+
+        # Right panel: Mesh and boundaries
+        try:
+            ax2 = fig.add_subplot(122, projection=ccrs.PlateCarree())
+            ax2.coastlines()
+        except ImportError:
+            ax2 = fig.add_subplot(122)
+
+        # Use the main plot method for the mesh
+        _, ax2 = self.plot(ax=ax2, plot_type="domain", linewidth=0.5, color="gray")
+        ax2.set_title("Grid Mesh and Boundaries")
+        ax2.set_xlabel("Longitude")
+        ax2.set_ylabel("Latitude")
+
+        plt.tight_layout()
+        return fig, (ax1, ax2)
 
     def ocean_boundary(self):
-        bnd = self.pyschism_hgrid.boundaries.open.get_coordinates()
-        return bnd.x.values, bnd.y.values
+        gd = self.pylibs_hgrid
+
+        # Make sure boundaries are computed
+        if hasattr(gd, "compute_bnd") and not hasattr(gd, "nob"):
+            gd.compute_bnd()
+
+        if not hasattr(gd, "nob") or gd.nob is None or gd.nob == 0:
+            logger.warning("No open boundaries found in grid")
+            return np.array([]), np.array([])
+
+        # Collect all open boundary coordinates
+        x_coords = []
+        y_coords = []
+
+        for i in range(gd.nob):
+            boundary_nodes = gd.iobn[i]
+            x_coords.extend(gd.x[boundary_nodes])
+            y_coords.extend(gd.y[boundary_nodes])
+
+        return np.array(x_coords), np.array(y_coords)
 
     def land_boundary(self):
-        bnd = self.pyschism_hgrid.boundaries.land.get_coordinates()
-        return bnd.x.values, bnd.y.values
+        gd = self.pylibs_hgrid
+
+        # Make sure boundaries are computed
+        if hasattr(gd, "compute_bnd") and not hasattr(gd, "nob"):
+            gd.compute_bnd()
+
+        if not hasattr(gd, "nlb") or gd.nlb is None or gd.nlb == 0:
+            logger.warning("No land boundaries found in grid")
+            return np.array([]), np.array([])
+
+        # Collect all land boundary coordinates
+        x_coords = []
+        y_coords = []
+
+        for i in range(gd.nlb):
+            boundary_nodes = gd.ilbn[i]
+            x_coords.extend(gd.x[boundary_nodes])
+            y_coords.extend(gd.y[boundary_nodes])
+
+        return np.array(x_coords), np.array(y_coords)
 
     def boundary_points(self, spacing=None) -> tuple:
         return self.ocean_boundary()
