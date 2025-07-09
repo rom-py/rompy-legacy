@@ -225,6 +225,9 @@ To list all available models, run:
     # Run with zip output
     rompy swan config.yml --zip
 
+    # Run with increased verbosity
+    rompy swan config.yml -v --log-dir ./logs
+
 Backend Configuration Files
 ----------------------------
 

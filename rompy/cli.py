@@ -6,7 +6,6 @@ This module provides the command-line interface for ROMPY.
 
 import json
 import sys
-import os
 import warnings
 from importlib.metadata import entry_points
 from pathlib import Path
@@ -16,7 +15,7 @@ from datetime import datetime
 import click
 import yaml
 
-from rompy.backends import LocalConfig, DockerConfig, BackendConfig
+from rompy.backends import LocalConfig, DockerConfig
 from rompy.model import ModelRun, RUN_BACKENDS, POSTPROCESSORS, PIPELINE_BACKENDS
 from rompy.core.logging import get_logger, LoggingConfig, LogLevel, LogFormat
 
@@ -56,18 +55,18 @@ def configure_logging(
         log_level = LogLevel.DEBUG
 
     # Determine log format
-    log_format = LogFormat.SIMPLE if simple_logs else LogFormat.DETAILED
+    log_format = LogFormat.SIMPLE if simple_logs else LogFormat.VERBOSE
 
     # Configure logging
     logging_config = LoggingConfig(
         level=log_level,
         format=log_format,
-        log_dir=log_dir,
+        log_dir=Path(log_dir) if log_dir else None,
         use_ascii=ascii_only,
     )
 
     # Apply configuration
-    logging_config.configure()
+    logging_config.configure_logging()
 
     # Handle warnings
     if show_warnings:
@@ -141,22 +140,29 @@ def load_config(config_path: str) -> Dict[str, Any]:
         raise click.UsageError("Config file is not valid JSON or YAML")
 
 
+def print_version(ctx, param, value):
+    """Callback to print version and exit."""
+    if not value or ctx.resilient_parsing:
+        return
+
+    # Import here to avoid circular imports
+    import rompy
+
+    click.echo(f"ROMPY Version: {rompy.__version__}")
+    click.echo(f"Available models: {', '.join(installed)}")
+    ctx.exit(0)
+
+
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.option("--version", is_flag=True, help="Show version information and exit")
+@click.option("--version", is_flag=True, expose_value=False, is_eager=True,
+              callback=print_version, help="Show version information and exit")
 @click.pass_context
-def cli(ctx, version):
+def cli(ctx):
     """ROMPY (Regional Ocean Modeling PYthon) - Ocean Model Configuration and Execution Tool.
 
     ROMPY provides tools for generating, running, and processing ocean, wave, and
     hydrodynamic model configurations with support for multiple execution backends.
     """
-    # Import here to avoid circular imports
-    import rompy
-
-    if version:
-        click.echo(f"ROMPY Version: {rompy.__version__}")
-        ctx.exit()
-
     # Ensure that ctx.obj exists and is a dict
     ctx.ensure_object(dict)
 
@@ -345,7 +351,7 @@ def validate(config, verbose, log_dir, show_warnings, ascii_only, simple_logs):
         config_data = load_config(config)
         model_run = ModelRun(**config_data)
 
-        logger.info(f"✅ Configuration is valid")
+        logger.info("✅ Configuration is valid")
         logger.info(f"Model type: {model_run.config.model_type}")
         logger.info(f"Run ID: {model_run.run_id}")
         logger.info(f"Period: {model_run.period}")
@@ -395,8 +401,8 @@ def list_backends(verbose, log_dir, show_warnings, ascii_only, simple_logs):
 
     # Show Pydantic backend configurations
     logger.info("\n⚙️  Backend Configurations:")
-    logger.info(f"  - LocalConfig → LocalRunBackend")
-    logger.info(f"  - DockerConfig → DockerRunBackend")
+    logger.info("  - LocalConfig → LocalRunBackend")
+    logger.info("  - DockerConfig → DockerRunBackend")
 
 
 @backends.command("validate")
@@ -515,6 +521,7 @@ def create_backend_config(backend_type, output, output_format, with_examples, ve
 
     try:
         # Create template configuration
+        config_data = {}
         if backend_type == "local":
             if with_examples:
                 config_data = {
@@ -598,7 +605,7 @@ def schema(model_type, verbose, log_dir, show_warnings, ascii_only, simple_logs)
 
 
 # Legacy command for backward compatibility
-@cli.command(hidden=True)
+@cli.command(name="legacy", hidden=True)
 @click.argument(
     "model", type=click.Choice(installed), envvar="ROMPY_MODEL", required=False
 )
@@ -676,6 +683,9 @@ def legacy_main(
         sys.exit(1)
 
 
+
+
+
 # Create a separate main function for legacy CLI usage
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
 @click.argument(
@@ -742,8 +752,7 @@ def main(
         rompy schism my_config.json --ascii-only
         rompy swan config.yml --simple-logs -v
     """
-    # Format the docstring with available models
-    main.__doc__ = main.__doc__.format(models=", ".join(installed))
+    # Docstring is already formatted - no need to modify
 
     # Configure warnings handling
     if not show_warnings:
@@ -757,15 +766,6 @@ def main(
         simple_logs=simple_logs,
         ascii_only=ascii_only,
         show_warnings=show_warnings,
-    )
-
-    # Get the logging config for reference
-    logging_config = LoggingConfig()
-
-    # Log the settings
-    logger.debug(f"ASCII mode set to: {logging_config.use_ascii}")
-    logger.debug(
-        f"Simple logs mode set to: {logging_config.format == LogFormat.SIMPLE} (no timestamps or module names)"
     )
 
     # Import here to avoid circular imports
@@ -827,5 +827,19 @@ def main(
         sys.exit(1)
 
 
-if __name__ == "__main__":
+# Legacy command routing for backward compatibility
+def legacy_routing():
+    """Route legacy command format to new CLI structure."""
+    import sys
+
+    # Check if we're being called with legacy format: rompy <model> <config> [options]
+    if len(sys.argv) >= 3 and sys.argv[1] in installed:
+        # This is legacy format - insert 'legacy' command
+        sys.argv.insert(1, 'legacy')
+
+    # Call the main CLI
     cli()
+
+
+if __name__ == "__main__":
+    legacy_routing()

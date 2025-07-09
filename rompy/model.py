@@ -259,6 +259,8 @@ class ModelRun(RompyBaseModel):
             logger.info("Using static configuration...")
             cc_full["config"] = self.config
 
+        # Render templates
+        logger.info(f"Rendering model templates to {self.output_dir}/{self.run_id}...")
         staging_dir = render(
             cc_full, self.config.template, self.output_dir, self.config.checkout
         )
