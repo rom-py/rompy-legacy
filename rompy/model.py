@@ -330,13 +330,6 @@ class ModelRun(RompyBaseModel):
     def __call__(self):
         return self.generate()
 
-    def __str__(self):
-        repr = f"\nrun_id: {self.run_id}"
-        repr += f"\nperiod: {self.period}"
-        repr += f"\noutput_dir: {self.output_dir}"
-        repr += f"\nconfig: {type(self.config)}\n"
-        return repr
-
     def run(self, backend: BackendConfig, workspace_dir: Optional[str] = None) -> bool:
         """
         Run the model using the specified backend configuration.
