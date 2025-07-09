@@ -27,7 +27,6 @@ from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
 from rompy.utils import load_entry_points
 
-
 # Initialize the logger
 logger = get_logger(__name__)
 
@@ -35,37 +34,39 @@ logger = get_logger(__name__)
 # Accepted config types are defined in the entry points of the rompy.config group
 CONFIG_TYPES = load_entry_points("rompy.config")
 
+
 def _load_backends():
     """Load backends from entry points with fallback handling."""
     run_backends = {}
     postprocessors = {}
     pipeline_backends = {}
-    
+
     # Load run backends
     try:
         for backend in load_entry_points("rompy.run"):
-            name = backend.__name__.lower().replace('runbackend', '')
+            name = backend.__name__.lower().replace("runbackend", "")
             run_backends[name] = backend
     except Exception as e:
         logger.warning(f"Failed to load run backends: {e}")
-    
+
     # Load postprocessors
     try:
         for proc in load_entry_points("rompy.postprocess"):
-            name = proc.__name__.lower().replace('postprocessor', '')
+            name = proc.__name__.lower().replace("postprocessor", "")
             postprocessors[name] = proc
     except Exception as e:
         logger.warning(f"Failed to load postprocessors: {e}")
-    
+
     # Load pipeline backends
     try:
         for backend in load_entry_points("rompy.pipeline"):
-            name = backend.__name__.lower().replace('pipelinebackend', '')
+            name = backend.__name__.lower().replace("pipelinebackend", "")
             pipeline_backends[name] = backend
     except Exception as e:
         logger.warning(f"Failed to load pipeline backends: {e}")
-    
+
     return run_backends, postprocessors, pipeline_backends
+
 
 # Load backends from entry points
 RUN_BACKENDS, POSTPROCESSORS, PIPELINE_BACKENDS = _load_backends()
@@ -84,9 +85,7 @@ class ModelRun(RompyBaseModel):
 
     # Initialize formatting variables in __init__
 
-    model_type: Literal["modelrun"] = Field(
-        "modelrun", description="The model type."
-    )
+    model_type: Literal["modelrun"] = Field("modelrun", description="The model type.")
     run_id: str = Field("run_id", description="The run id")
     period: TimeRange = Field(
         TimeRange(
@@ -260,10 +259,8 @@ class ModelRun(RompyBaseModel):
             logger.info("Using static configuration...")
             cc_full["config"] = self.config
 
-==== BASE ====
         staging_dir = render(
             cc_full, self.config.template, self.output_dir, self.config.checkout
-==== BASE ====
         )
 
         logger.info("")
