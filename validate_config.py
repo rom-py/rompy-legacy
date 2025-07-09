@@ -162,7 +162,8 @@ class ConfigValidator:
         valid_actions = {
             'move_files', 'create_readme', 'update_setup', 'rename',
             'create_package_structure', 'create_src_layout', 'create_modern_setup',
-            'merge_directory_contents', 'update_docs_config'
+            'merge_directory_contents', 'update_docs_config', 'create_plugin_docs',
+            'create_notebooks_index'
         }
 
         for i, action in enumerate(actions):
@@ -224,6 +225,26 @@ class ConfigValidator:
                     valid = False
                 elif not isinstance(action['merges'], list):
                     self._add_error(f"Repository '{repo_name}' merge_directory_contents 'merges' must be a list")
+                    valid = False
+
+            elif action_type == 'create_plugin_docs':
+                required_fields = ['package_name', 'plugin_name']
+                for field in required_fields:
+                    if field not in action:
+                        self._add_error(f"Repository '{repo_name}' create_plugin_docs action missing '{field}' field")
+                        valid = False
+
+            elif action_type == 'update_docs_config':
+                if 'package_name' not in action:
+                    self._add_error(f"Repository '{repo_name}' update_docs_config action missing 'package_name' field")
+                    valid = False
+
+            elif action_type == 'create_notebooks_index':
+                if 'ecosystem_packages' not in action:
+                    self._add_error(f"Repository '{repo_name}' create_notebooks_index action missing 'ecosystem_packages' field")
+                    valid = False
+                elif not isinstance(action['ecosystem_packages'], list):
+                    self._add_error(f"Repository '{repo_name}' create_notebooks_index 'ecosystem_packages' must be a list")
                     valid = False
 
         return valid

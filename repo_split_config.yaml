@@ -12,7 +12,7 @@ cleanup_after_split: false # Set to true to remove temporary directories
 # Define the split repositories
 repositories:
   rompy-core:
-    description: "Core rompy library with base functionality"
+    description: "Core rompy library with base functionality and plugin system"
     paths:
       # Include specific rompy subdirectories (excluding swan and schism)
       - "rompy/__init__.py"
@@ -43,22 +43,11 @@ repositories:
       - "tests/simulations/"
       - "tests/test_utils/"
       - "tests/utils/"
-      # Include core documentation
-      - "docs/Makefile"
-      - "docs/make.bat"
-      - "docs/modules.rst"
-      - "docs/requirements.txt"
-      - "docs/rompy.rst"
-      - "docs/environment.yml"
-      - "docs/source/api.rst"
-      - "docs/source/cli.rst"
-      - "docs/source/conf.py"
-      - "docs/source/core_concepts.rst"
-      - "docs/source/demo.rst"
-      - "docs/source/formatting_and_logging.rst"
-      - "docs/source/index.rst"
-      - "docs/source/models.rst"
-      - "docs/source/quickstart.rst"
+      # Include complete documentation structure
+      - "docs/"
+      - "!docs/source/swan/"
+      - "!docs/source/schism/"
+      - "!docs/source/notebooks/"
       # Include package configuration files
       - "pyproject.toml"
       - "setup.cfg"
@@ -83,22 +72,30 @@ repositories:
         merges:
           - from: "rompy"
             to: "src/rompy_core"
+      - action: "update_docs_config"
+        package_name: "rompy-core"
+        is_core_package: true
+        plugin_discovery: true
       - action: "update_setup"
         package_name: "rompy-core"
-        description: "Core rompy library for ocean wave modeling"
+        description: "Core rompy library for ocean wave modeling with plugin system"
         src_layout: true
       - action: "create_modern_setup"
         package_name: "rompy-core"
         package_module: "rompy_core"
-        description: "Core rompy library for ocean wave modeling"
+        description: "Core rompy library for ocean wave modeling with plugin system"
         dependencies: []
 
   rompy-swan:
-    description: "SWAN wave model integration for rompy"
+    description: "SWAN wave model plugin for rompy"
     paths:
       - "rompy/swan/"
       - "tests/swan/"
       - "docs/source/swan/"
+      - "docs/Makefile"
+      - "docs/make.bat"
+      - "docs/requirements.txt"
+      - "docs/environment.yml"
       - "docker/"
       - "pyproject.toml"
       - "setup.cfg"
@@ -127,25 +124,35 @@ repositories:
             to: "tests"
           - from: "docs/source/swan"
             to: "docs/source"
+      - action: "create_plugin_docs"
+        package_name: "rompy-swan"
+        plugin_name: "swan"
+        extends_core_docs: true
       - action: "update_setup"
         package_name: "rompy-swan"
-        description: "SWAN wave model integration for rompy"
+        description: "SWAN wave model plugin for rompy"
         src_layout: true
+        entry_points:
+          "rompy.plugins": "swan = rompy_swan:SwanPlugin"
         dependencies:
           - "rompy-core"
       - action: "create_modern_setup"
         package_name: "rompy-swan"
         package_module: "rompy_swan"
-        description: "SWAN wave model integration for rompy"
+        description: "SWAN wave model plugin for rompy"
         dependencies:
           - "rompy-core"
 
   rompy-schism:
-    description: "SCHISM model integration for rompy"
+    description: "SCHISM model plugin for rompy"
     paths:
       - "rompy/schism/"
       - "tests/schism/"
       - "docs/source/schism/"
+      - "docs/Makefile"
+      - "docs/make.bat"
+      - "docs/requirements.txt"
+      - "docs/environment.yml"
       - "pyproject.toml"
       - "setup.cfg"
       - "MANIFEST.in"
@@ -173,21 +180,27 @@ repositories:
             to: "tests"
           - from: "docs/source/schism"
             to: "docs/source"
+      - action: "create_plugin_docs"
+        package_name: "rompy-schism"
+        plugin_name: "schism"
+        extends_core_docs: true
       - action: "update_setup"
         package_name: "rompy-schism"
-        description: "SCHISM model integration for rompy"
+        description: "SCHISM model plugin for rompy"
         src_layout: true
+        entry_points:
+          "rompy.plugins": "schism = rompy_schism:SchismPlugin"
         dependencies:
           - "rompy-core"
       - action: "create_modern_setup"
         package_name: "rompy-schism"
         package_module: "rompy_schism"
-        description: "SCHISM model integration for rompy"
+        description: "SCHISM model plugin for rompy"
         dependencies:
           - "rompy-core"
 
   rompy-notebooks:
-    description: "Example notebooks and tutorials for rompy"
+    description: "Example notebooks and tutorials for rompy ecosystem"
     paths:
       - "notebooks/"
       - "docs/source/notebooks/"
@@ -198,28 +211,15 @@ repositories:
     post_split_actions:
       - action: "create_readme"
         template: "notebooks_readme"
-      - action: "update_setup"
-        package_name: "rompy-notebooks"
-        description: "Example notebooks and tutorials for rompy"
-        dependencies:
+      - action: "create_notebooks_index"
+        ecosystem_packages:
           - "rompy-core"
           - "rompy-swan"
           - "rompy-schism"
-
-  rompy-docs:
-    description: "Documentation for rompy ecosystem"
-    paths:
-      - "docs/"
-      - "README.md"
-      - "LICENSE"
-      - ".gitignore"
-      - ".gitattributes"
-      - ".readthedocs.yml"
-    post_split_actions:
-      - action: "create_readme"
-        template: "docs_readme"
-      - action: "update_docs_config"
-        ecosystem_packages:
+      - action: "update_setup"
+        package_name: "rompy-notebooks"
+        description: "Example notebooks and tutorials for rompy ecosystem"
+        dependencies:
           - "rompy-core"
           - "rompy-swan"
           - "rompy-schism"
@@ -236,34 +236,128 @@ templates:
     Install the required rompy packages:
 
     ```bash
-    pip install rompy-core rompy-swan rompy-schism
+    # Core package (always required)
+    pip install rompy-core
+
+    # Optional plugins (install as needed)
+    pip install rompy-swan      # For SWAN wave modeling
+    pip install rompy-schism    # For SCHISM modeling
     ```
 
     ## Notebooks
 
     - Browse the notebooks/ directory for examples
     - Each notebook includes setup instructions and explanations
+    - Notebooks are organized by plugin/functionality
+
+    ## Plugin-Based Examples
+
+    The notebooks demonstrate rompy's plugin architecture:
+    - **Core examples**: Basic rompy functionality
+    - **SWAN examples**: Wave modeling with SWAN (requires rompy-swan)
+    - **SCHISM examples**: SCHISM modeling (requires rompy-schism)
+    - **Integration examples**: Using multiple plugins together
 
     ## Contributing
 
     Please see the main rompy-core repository for contribution guidelines.
 
-  docs_readme: |
-    # Rompy Documentation
+  plugin_docs_conf: |
+    # Configuration for plugin documentation
+    # This extends the base rompy-core documentation configuration
 
-    This repository contains the documentation for the rompy ecosystem.
+    import sys
+    import os
+    sys.path.insert(0, os.path.abspath('../../src'))
 
-    ## Building Documentation
+    # Try to import base config from rompy-core
+    try:
+        from rompy_core.docs.conf_base import *
+    except ImportError:
+        # Fallback configuration if rompy-core not available
+        extensions = [
+            'sphinx.ext.autodoc',
+            'sphinx.ext.viewcode',
+            'sphinx.ext.intersphinx',
+            'sphinx.ext.napoleon',
+            'myst_parser',
+        ]
+        html_theme = 'sphinx_rtd_theme'
 
-    ```bash
-    cd docs
-    pip install -r requirements.txt
-    make html
-    ```
+    # Plugin-specific configuration
+    project = '{package_name}'
+    release = '1.0.0'
 
-    ## Contributing
+    # Intersphinx mapping for cross-references
+    intersphinx_mapping = {{
+        'rompy-core': ('https://rompy-core.readthedocs.io/', None),
+        'python': ('https://docs.python.org/3/', None),
+        'numpy': ('https://numpy.org/doc/stable/', None),
+        'pandas': ('https://pandas.pydata.org/docs/', None),
+    }}
 
-    Please see the main rompy-core repository for contribution guidelines.
+    # Plugin documentation settings
+    autodoc_default_options = {{
+        'members': True,
+        'member-order': 'bysource',
+        'special-members': '__init__',
+        'undoc-members': True,
+    }}
+
+  core_docs_conf: |
+    # Base configuration for rompy-core documentation
+    # This provides the foundation for all plugin documentation
+
+    import sys
+    import os
+    sys.path.insert(0, os.path.abspath('../../src'))
+
+    # Sphinx extensions
+    extensions = [
+        'sphinx.ext.autodoc',
+        'sphinx.ext.viewcode',
+        'sphinx.ext.intersphinx',
+        'sphinx.ext.napoleon',
+        'sphinx.ext.todo',
+        'myst_parser',
+        'sphinx_autodoc_typehints',
+    ]
+
+    # Project information
+    project = 'rompy-core'
+    author = 'Rompy Contributors'
+    release = '1.0.0'
+
+    # Theme and appearance
+    html_theme = 'sphinx_rtd_theme'
+    html_static_path = ['_static']
+    templates_path = ['_templates']
+
+    # Plugin discovery for documentation
+    def discover_rompy_plugins():
+        """Discover installed rompy plugins for documentation."""
+        try:
+            import pkg_resources
+            plugins = {{}}
+            for ep in pkg_resources.iter_entry_points('rompy.plugins'):
+                try:
+                    plugin = ep.load()
+                    plugins[ep.name] = {{
+                        'name': ep.name,
+                        'docs_url': getattr(plugin, '__docs_url__', None),
+                        'description': getattr(plugin, '__description__', ''),
+                        'version': getattr(plugin, '__version__', 'unknown'),
+                    }}
+                except ImportError:
+                    continue
+            return plugins
+        except ImportError:
+            return {{}}
+
+    # Make plugin discovery available to templates
+    html_context = {{
+        'rompy_plugins': discover_rompy_plugins(),
+    }}
 
 # Git settings
 git:

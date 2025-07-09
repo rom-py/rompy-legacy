@@ -284,7 +284,8 @@ class RepositorySplitter:
                 logger.info(f"Created README.md from template {template_name}")
 
     def _update_setup_files(self, target_dir: str, package_name: str,
-                           description: str, dependencies: List[str] = None, src_layout: bool = False):
+                           description: str, dependencies: List[str] = None, src_layout: bool = False,
+                           entry_points: Dict[str, str] = None):
         """Update setup.cfg and pyproject.toml for the new package."""
         setup_cfg_path = os.path.join(target_dir, 'setup.cfg')
         pyproject_path = os.path.join(target_dir, 'pyproject.toml')
@@ -292,13 +293,14 @@ class RepositorySplitter:
         if not self.dry_run:
             # Update setup.cfg if it exists
             if os.path.exists(setup_cfg_path):
-                self._update_setup_cfg(setup_cfg_path, package_name, description, src_layout)
+                self._update_setup_cfg(setup_cfg_path, package_name, description, src_layout, entry_points)
 
             # Update pyproject.toml if it exists
             if os.path.exists(pyproject_path):
-                self._update_pyproject_toml(pyproject_path, package_name, description, dependencies or [], src_layout)
+                self._update_pyproject_toml(pyproject_path, package_name, description, dependencies or [], src_layout, entry_points)
 
-    def _update_setup_cfg(self, setup_cfg_path: str, package_name: str, description: str, src_layout: bool = False):
+    def _update_setup_cfg(self, setup_cfg_path: str, package_name: str, description: str, src_layout: bool = False,
+                          entry_points: Dict[str, str] = None):
         """Update setup.cfg file."""
         # This is a simplified update - you might want to use configparser for more robust handling
         with open(setup_cfg_path, 'r') as f:
@@ -345,13 +347,22 @@ class RepositorySplitter:
             new_lines.append('[options.packages.find]')
             new_lines.append('where = src')
 
+        # Add entry points if specified
+        if entry_points:
+            new_lines.append('')
+            for group, entry_point in entry_points.items():
+                new_lines.append(f'[options.entry_points]')
+                new_lines.append(f'{group} =')
+                new_lines.append(f'    {entry_point}')
+
         with open(setup_cfg_path, 'w') as f:
             f.write('\n'.join(new_lines))
 
         logger.info(f"Updated setup.cfg for {package_name} with {'src layout' if src_layout else 'standard layout'}")
 
     def _update_pyproject_toml(self, pyproject_path: str, package_name: str,
-                              description: str, dependencies: List[str], src_layout: bool = False):
+                              description: str, dependencies: List[str], src_layout: bool = False,
+                              entry_points: Dict[str, str] = None):
         """Update pyproject.toml file."""
         try:
             import tomli_w
@@ -383,6 +394,16 @@ class RepositorySplitter:
                 # Configure setuptools to find packages in src
                 data['tool']['setuptools']['packages'] = {'find': {'where': ['src']}}
 
+            # Add entry points if specified
+            if entry_points:
+                if 'project' not in data:
+                    data['project'] = {}
+                if 'entry-points' not in data['project']:
+                    data['project']['entry-points'] = {}
+
+                for group, entry_point in entry_points.items():
+                    data['project']['entry-points'][group] = {entry_point.split(' = ')[0]: entry_point.split(' = ')[1]}
+
             with open(pyproject_path, 'wb') as f:
                 tomli_w.dump(data, f)
 
@@ -413,7 +434,8 @@ class RepositorySplitter:
                     action.get('package_name'),
                     action.get('description'),
                     action.get('dependencies', []),
-                    action.get('src_layout', False)
+                    action.get('src_layout', False),
+                    action.get('entry_points', {})
                 )
 
             elif action_type == 'rename':
@@ -449,8 +471,12 @@ class RepositorySplitter:
                         os.makedirs(package_dir, exist_ok=True)
                         logger.info(f"Created package directory: {package_dir}")
 
-                    # Create modern __init__.py with version handling
-                    self._create_modern_init_py(package_dir, package_name)
+                    # Determine if this is a plugin package
+                    is_plugin = package_name.startswith('rompy_') and package_name != 'rompy_core'
+                    plugin_name = package_name.replace('rompy_', '') if is_plugin else None
+
+                    # Create modern __init__.py with version handling and plugin metadata
+                    self._create_modern_init_py(package_dir, package_name, is_plugin, plugin_name)
 
             elif action_type == 'create_modern_setup':
                 # Create modern setup files with src layout
@@ -465,15 +491,45 @@ class RepositorySplitter:
                         description, dependencies
                     )
 
-    def _create_modern_init_py(self, package_dir: str, package_name: str):
-        """Create a modern __init__.py file with version handling."""
+            elif action_type == 'create_plugin_docs':
+                # Create plugin-specific documentation
+                package_name = action.get('package_name')
+                plugin_name = action.get('plugin_name')
+                extends_core_docs = action.get('extends_core_docs', False)
+
+                if package_name and plugin_name and not self.dry_run:
+                    self._create_plugin_documentation(
+                        target_dir, package_name, plugin_name, extends_core_docs
+                    )
+
+            elif action_type == 'update_docs_config':
+                # Update documentation configuration
+                package_name = action.get('package_name')
+                is_core = action.get('is_core_package', False)
+                plugin_discovery = action.get('plugin_discovery', False)
+
+                if package_name and not self.dry_run:
+                    self._update_docs_configuration(
+                        target_dir, package_name, is_core, plugin_discovery
+                    )
+
+            elif action_type == 'create_notebooks_index':
+                # Create notebooks index
+                ecosystem_packages = action.get('ecosystem_packages', [])
+
+                if ecosystem_packages and not self.dry_run:
+                    self._create_notebooks_index(target_dir, ecosystem_packages)
+
+    def _create_modern_init_py(self, package_dir: str, package_name: str, is_plugin: bool = False, plugin_name: str = None):
+        """Create a modern __init__.py file with version handling and plugin metadata."""
         init_file = os.path.join(package_dir, '__init__.py')
 
         # Create modern __init__.py content
-        init_content = f'''"""
+        if is_plugin and plugin_name:
+            init_content = f'''"""
 {package_name.replace('_', ' ').title()}
 
-Modern Python package for rompy ecosystem.
+{plugin_name.upper()} plugin for rompy ocean wave modeling framework.
 """
 
 try:
@@ -482,7 +538,53 @@ except ImportError:
     # Package is not installed, use a default version
     __version__ = "0.0.0+unknown"
 
-__all__ = ["__version__"]
+# Plugin metadata for discovery
+__plugin_name__ = "{plugin_name}"
+__description__ = "{plugin_name.upper()} plugin for rompy ocean wave modeling framework"
+__docs_url__ = "https://{package_name}.readthedocs.io/"
+
+# Plugin class (to be implemented)
+# class {plugin_name.title()}Plugin:
+#     """Plugin class for {plugin_name.upper()} integration."""
+#     pass
+
+__all__ = ["__version__", "__plugin_name__", "__description__", "__docs_url__"]
+'''
+        else:
+            init_content = f'''"""
+{package_name.replace('_', ' ').title()}
+
+Core rompy library for ocean wave modeling with plugin system.
+"""
+
+try:
+    from ._version import __version__
+except ImportError:
+    # Package is not installed, use a default version
+    __version__ = "0.0.0+unknown"
+
+def discover_plugins():
+    """Discover installed rompy plugins."""
+    try:
+        import pkg_resources
+        plugins = {{}}
+        for entry_point in pkg_resources.iter_entry_points('rompy.plugins'):
+            try:
+                plugin_module = entry_point.load()
+                plugins[entry_point.name] = {{
+                    'name': getattr(plugin_module, '__plugin_name__', entry_point.name),
+                    'description': getattr(plugin_module, '__description__', ''),
+                    'docs_url': getattr(plugin_module, '__docs_url__', ''),
+                    'version': getattr(plugin_module, '__version__', 'unknown'),
+                    'module': plugin_module,
+                }}
+            except ImportError:
+                continue
+        return plugins
+    except ImportError:
+        return {{}}
+
+__all__ = ["__version__", "discover_plugins"]
 '''
 
         with open(init_file, 'w') as f:
@@ -545,14 +647,162 @@ write_to = "src/{package_module}/_version.py"
 
         logger.info(f"Created basic modern pyproject.toml for {package_name}")
 
+    def _create_plugin_documentation(self, target_dir: str, package_name: str,
+                                   plugin_name: str, extends_core_docs: bool):
+        """Create plugin-specific documentation configuration."""
+        docs_dir = os.path.join(target_dir, 'docs', 'source')
+        os.makedirs(docs_dir, exist_ok=True)
+
+        # Create plugin-specific conf.py
+        conf_template = self.config.get('templates', {}).get('plugin_docs_conf', '')
+        if conf_template:
+            conf_content = conf_template.format(
+                package_name=package_name,
+                plugin_name=plugin_name
+            )
+
+            conf_path = os.path.join(docs_dir, 'conf.py')
+            with open(conf_path, 'w') as f:
+                f.write(conf_content)
+
+            logger.info(f"Created plugin documentation config for {package_name}")
+
+            # Create plugin-specific index.rst
+            index_content = f"""
+{package_name}
+{'=' * len(package_name)}
+
+{plugin_name.upper()} plugin for the rompy ocean wave modeling framework.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   installation
+   quickstart
+   api
+   examples
+
+Installation
+============
+
+.. code-block:: bash
+
+   pip install {package_name}
+
+API Reference
+=============
+
+.. automodule:: {package_name.replace('-', '_')}
+   :members:
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+"""
+
+            index_path = os.path.join(docs_dir, 'index.rst')
+            with open(index_path, 'w') as f:
+                f.write(index_content)
+
+            logger.info(f"Created plugin documentation index for {package_name}")
+
+    def _update_docs_configuration(self, target_dir: str, package_name: str,
+                                 is_core: bool, plugin_discovery: bool):
+        """Update documentation configuration for core package."""
+        if is_core and plugin_discovery:
+            docs_dir = os.path.join(target_dir, 'docs', 'source')
+            os.makedirs(docs_dir, exist_ok=True)
+
+            # Create base configuration that plugins can extend
+            conf_base_template = self.config.get('templates', {}).get('core_docs_conf', '')
+            if conf_base_template:
+                conf_base_path = os.path.join(target_dir, 'src', package_name.replace('-', '_'), 'docs', 'conf_base.py')
+                os.makedirs(os.path.dirname(conf_base_path), exist_ok=True)
+
+                with open(conf_base_path, 'w') as f:
+                    f.write(conf_base_template)
+
+                # Also create the main docs conf.py
+                conf_path = os.path.join(docs_dir, 'conf.py')
+                with open(conf_path, 'w') as f:
+                    f.write(conf_base_template)
+
+                logger.info(f"Created core documentation configuration for {package_name}")
+
+    def _create_notebooks_index(self, target_dir: str, ecosystem_packages: List[str]):
+        """Create an index for the notebooks repository."""
+        # Create a simple index.md for the notebooks
+        index_content = f"""
+# Rompy Ecosystem Examples
+
+This repository contains examples and tutorials for the rompy ecosystem.
+
+## Available Examples
+
+The examples are organized by functionality and required packages:
+
+### Core Examples
+Examples using only rompy-core functionality.
+
+### Plugin Examples
+Examples demonstrating specific plugins:
+
+"""
+
+        for package in ecosystem_packages:
+            if package != 'rompy-core':
+                plugin_name = package.replace('rompy-', '').upper()
+                index_content += f"- **{plugin_name}**: Examples using {package}\n"
+
+        index_content += """
+## Installation
+
+To run all examples, install the complete ecosystem:
+
+```bash
+"""
+
+        for package in ecosystem_packages:
+            index_content += f"pip install {package}\n"
+
+        index_content += """```
+
+For specific examples, install only the required packages as noted in each notebook.
+
+## Usage
+
+Each notebook is self-contained and includes:
+- Installation requirements
+- Setup instructions
+- Detailed explanations
+- Working examples
+
+Browse the notebooks/ directory to get started!
+"""
+
+        index_path = os.path.join(target_dir, 'README.md')
+        with open(index_path, 'w') as f:
+            f.write(index_content)
+
+        logger.info("Created notebooks index and README")
+
     def _cleanup_empty_directories(self, target_dir: str):
-        """Remove empty directories after filtering."""
+        """Remove empty directories after filtering, but exclude .git directories."""
         if self.dry_run:
             return
 
         for root, dirs, files in os.walk(target_dir, topdown=False):
             for dir_name in dirs:
                 dir_path = os.path.join(root, dir_name)
+
+                # Skip any directories inside .git to avoid corrupting the git repository
+                if '.git' in dir_path:
+                    continue
+
                 try:
                     if not os.listdir(dir_path):  # Directory is empty
                         os.rmdir(dir_path)
