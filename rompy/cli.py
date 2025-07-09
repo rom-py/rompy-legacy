@@ -7,13 +7,15 @@ This module provides the command-line interface for ROMPY.
 import json
 import sys
 import warnings
-from importlib.metadata import entry_points
+import importlib
+import importlib.metadata
 from pathlib import Path
 from typing import Optional, Dict, Any
 from datetime import datetime
 
 import click
 import yaml
+import rompy
 
 from rompy.backends import LocalConfig, DockerConfig
 from rompy.model import ModelRun, RUN_BACKENDS, POSTPROCESSORS, PIPELINE_BACKENDS
@@ -23,7 +25,7 @@ from rompy.core.logging import get_logger, LoggingConfig, LogLevel, LogFormat
 logger = get_logger(__name__)
 
 # Get installed entry points
-installed = entry_points(group="rompy.config").names
+installed = importlib.metadata.entry_points(group="rompy.config").names
 
 
 def configure_logging(
@@ -587,31 +589,221 @@ def create_backend_config(backend_type, output, output_format, with_examples, ve
         sys.exit(1)
 
 
-@cli.command()
-@click.option("--model-type", help="Show schema for specific model type")
-@add_common_options
-def schema(model_type, verbose, log_dir, show_warnings, ascii_only, simple_logs):
-    """Show configuration schema information."""
-    configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
-
-    logger.info("Available Model Types:")
-    for model in installed:
-        marker = "→" if model == model_type else " "
-        logger.info(f"  {marker} {model}")
-
-    if model_type:
-        logger.info(f"\nConfiguration schema for '{model_type}' would be shown here")
-        logger.info("(Schema introspection not yet implemented)")
-
-
-# Legacy command for backward compatibility
-@cli.command(name="legacy", hidden=True)
-@click.argument(
-    "model", type=click.Choice(installed), envvar="ROMPY_MODEL", required=False
+@cli.command(name="schema")
+@click.argument("model_type", default="ModelRun", type=str, required=False)
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(dir_okay=False, writable=True),
+    help="Output file to save the schema (default: print to stdout)",
 )
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(["json", "yaml"], case_sensitive=False),
+    default="json",
+    help="Output format (default: json)",
+)
+@add_common_options
+def schema(
+    model_type: str,
+    output: Optional[str] = None,
+    output_format: str = "json",
+    verbose: int = 0,
+    log_dir: Optional[str] = None,
+    show_warnings: bool = False,
+    ascii_only: bool = False,
+    simple_logs: bool = False,
+) -> None:
+    """Show JSON schema for a rompy model.
+
+    Examples:
+        # Show schema for ModelRun (default)
+        rompy schema
+
+        # Show schema for a specific model type
+        rompy schema "rompy.model.ModelRun"
+        rompy schema "rompy.swan.SWAN"
+
+        # Save schema to a file
+        rompy schema --output=model_schema.json
+        rompy schema --output=model_schema.yaml --format=yaml
+    """
+    # Configure logging
+    configure_logging(
+        verbosity=verbose,
+        log_dir=log_dir,
+        simple_logs=simple_logs,
+        ascii_only=ascii_only,
+        show_warnings=show_warnings,
+    )
+    
+    # Get logger for this module
+    logger = get_logger(__name__)
+    
+    try:
+        logger.debug(f"Showing schema for model: {model_type}")
+
+        # Import the model class
+        try:
+            if "." in model_type:
+                # Full module path provided (e.g., "rompy.model.ModelRun")
+                module_path, class_name = model_type.rsplit(".", 1)
+                logger.debug(f"Importing {class_name} from {module_path}")
+                module = importlib.import_module(module_path)
+                model_class = getattr(module, class_name)
+            else:
+                # Try to import from rompy.model first
+                try:
+                    logger.debug(f"Trying to import {model_type} from rompy.model")
+                    model_class = getattr(rompy.model, model_type)
+                except AttributeError:
+                    logger.debug(f"{model_type} not found in rompy.model, checking entry points")
+                    # Try to find the model in entry points with different approaches
+                    try:
+                        # Python 3.10+ style
+                        model_eps = importlib.metadata.entry_points()
+                        if hasattr(model_eps, 'select'):
+                            # Python 3.10+
+                            model_entries = model_eps.select(group='rompy.model')
+                        elif hasattr(model_eps, 'get'):
+                            # Python 3.8-3.9
+                            model_entries = model_eps.get('rompy.model', [])
+                        else:
+                            # Fallback for older Python versions
+                            model_entries = []
+                            if hasattr(model_eps, 'items'):
+                                for group, entries in model_eps.items():
+                                    if group == 'rompy.model':
+                                        model_entries = entries
+                                        break
+                    except Exception as e:
+                        logger.debug(f"Error getting entry points: {e}")
+                        model_entries = []
+                    
+                    # Try to find the model in entry points
+                    found = False
+                    for entry_point in model_entries:
+                        if entry_point.name.lower() == model_type.lower():
+                            logger.debug(f"Found {model_type} in entry points, loading...")
+                            model_class = entry_point.load()
+                            found = True
+                            break
+                    
+                    if not found:
+                        # Try direct import as a last resort
+                        try:
+                            model_class = importlib.import_module(f"rompy.{model_type.lower()}")
+                            found = True
+                        except ImportError:
+                            raise ImportError(
+                                f"No model found with name '{model_type}'. "
+                                "Please provide the full module path (e.g., 'rompy.swan.SWAN')"
+                            )
+            
+            logger.debug(f"Successfully imported model class: {model_class.__module__}.{model_class.__name__}")
+            
+        except (ImportError, AttributeError) as e:
+            # Initialize error message
+            error_msg = [f"Could not import model class '{model_type}'"]
+            
+            # Get available models from rompy.model
+            try:
+                from rompy.model import __all__ as model_classes
+                error_msg.append(f"Available models in rompy.model: {', '.join(model_classes)}")
+            except Exception as e:
+                logger.debug(f"Could not get models from rompy.model: {e}")
+            
+            # Try to get available models from entry points
+            try:
+                model_eps = importlib.metadata.entry_points()
+                if hasattr(model_eps, 'select'):
+                    # Python 3.10+
+                    model_entries = model_eps.select(group='rompy.model')
+                elif hasattr(model_eps, 'get'):
+                    # Python 3.8-3.9
+                    model_entries = model_eps.get('rompy.model', [])
+                else:
+                    # Fallback for older Python versions
+                    model_entries = []
+                    if hasattr(model_eps, 'items'):
+                        for group, entries in model_eps.items():
+                            if group == 'rompy.model':
+                                model_entries = entries
+                                break
+                
+                available_models = [ep.name for ep in model_entries]
+                if available_models:
+                    error_msg.append(f"Available models from entry points: {', '.join(available_models)}")
+                else:
+                    error_msg.append("No models found in entry points")
+                    
+            except Exception as ep_error:
+                error_msg.append(f"Error checking entry points: {ep_error}")
+            
+            # Log all error messages
+            for msg in error_msg:
+                logger.error(msg)
+            
+            # Add more detailed error info if verbose
+            if verbose > 0:
+                logger.error(f"Error details: {str(e)}")
+                import traceback
+                logger.error(traceback.format_exc())
+            
+            # Suggest using full module path
+            logger.error("\nTry using the full module path, e.g., 'rompy.swan.SWAN'")
+            logger.error("For a list of available models, run: python -m rompy.cli list-models")
+                
+            sys.exit(1)
+
+        # Generate the schema
+        schema = model_class.model_json_schema()
+
+        # Output the schema
+        if output:
+            output_path = Path(output)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            if output_format == "json":
+                with open(output_path, "w") as f:
+                    json.dump(schema, f, indent=2)
+            else:  # yaml
+                with open(output_path, "w") as f:
+                    yaml.dump(schema, f, default_flow_style=False)
+            logger.info(f"Schema written to {output_path}")
+        else:
+            if output_format == "json":
+                print(json.dumps(schema, indent=2))
+            else:  # yaml
+                print(yaml.dump(schema, default_flow_style=False))
+
+    except Exception as e:
+        logger.error(f"Error generating schema: {e}")
+        if verbose > 0:
+            import traceback
+            logger.error(traceback.format_exc())
+        sys.exit(1)
+
+
+@cli.command(name="legacy", hidden=True)
+@click.argument("model", type=click.Choice(installed), envvar="ROMPY_MODEL", required=False)
 @click.argument("config", envvar="ROMPY_CONFIG", required=False)
 @click.option("zip", "--zip/--no-zip", default=False, envvar="ROMPY_ZIP")
-@add_common_options
+@click.option("-v", "--verbose", count=True, help="Increase verbosity (can be used multiple times)")
+@click.option("--log-dir", envvar="ROMPY_LOG_DIR", help="Directory to save log files")
+@click.option("--show-warnings/--hide-warnings", default=False, help="Show Python warnings")
+@click.option(
+    "--ascii-only/--unicode",
+    default=False,
+    help="Use ASCII-only characters in output",
+    envvar="ROMPY_ASCII_ONLY",
+)
+@click.option(
+    "--simple-logs/--detailed-logs",
+    default=False,
+    help="Use simple log format without timestamps and module names",
+    envvar="ROMPY_SIMPLE_LOGS",
+)
 def legacy_main(
     model,
     config,
@@ -683,163 +875,13 @@ def legacy_main(
         sys.exit(1)
 
 
-
-
-
-# Create a separate main function for legacy CLI usage
-@click.command(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.argument(
-    "model", type=click.Choice(installed), envvar="ROMPY_MODEL", required=False
-)
-@click.argument("config", envvar="ROMPY_CONFIG", required=False)
-@click.option("zip", "--zip/--no-zip", default=False, envvar="ROMPY_ZIP")
-@click.option(
-    "-v",
-    "--verbose",
-    count=True,
-    help="Increase verbosity (can be used multiple times)",
-)
-@click.option("--log-dir", envvar="ROMPY_LOG_DIR", help="Directory to save log files")
-@click.option(
-    "--show-warnings/--hide-warnings", default=False, help="Show Python warnings"
-)
-@click.option(
-    "--ascii-only/--unicode",
-    default=False,
-    help="Use ASCII-only characters in output",
-    envvar="ROMPY_ASCII_ONLY",
-)
-@click.option(
-    "--simple-logs/--detailed-logs",
-    default=False,
-    help="Use simple log format without timestamps and module names",
-    envvar="ROMPY_SIMPLE_LOGS",
-)
-@click.option("--version", is_flag=True, help="Show version information and exit")
-def main(
-    model,
-    config,
-    zip,
-    verbose,
-    log_dir,
-    show_warnings,
-    ascii_only,
-    simple_logs,
-    version,
-):
-    """Run ROMPY model with the specified configuration.
-
-    ROMPY (Regional Ocean Modeling PYthon) is a tool for generating and running
-    ocean, wave, and hydrodynamic model configurations.
-
-    Usage: rompy <model> config.yml
-
-    Args:
-        model: Model type to use (one of: {models})
-        config: YAML or JSON configuration file
-
-    Options:
-        --zip/--no-zip          Create a zip archive of the model files
-        -v, --verbose           Increase verbosity (can be used multiple times)
-        --log-dir PATH          Directory to save log files
-        --show-warnings         Show Python warnings
-        --ascii-only            Use ASCII-only characters in output
-        --simple-logs           Use simple log format without timestamps and module names
-        --version               Show version information and exit
-
-    Examples:
-        rompy swan config.yml
-        rompy schism my_config.json --ascii-only
-        rompy swan config.yml --simple-logs -v
+def main():
+    """Entry point for the rompy CLI.
+    
+    This function is used by the console script entry point.
     """
-    # Docstring is already formatted - no need to modify
-
-    # Configure warnings handling
-    if not show_warnings:
-        # Capture warnings to prevent them from being displayed
-        warnings.filterwarnings("ignore")
-
-    # Configure logging with all parameters
-    configure_logging(
-        verbosity=verbose,
-        log_dir=log_dir,
-        simple_logs=simple_logs,
-        ascii_only=ascii_only,
-        show_warnings=show_warnings,
-    )
-
-    # Import here to avoid circular imports
-    import rompy
-
-    # If --version flag is specified, show version and exit
-    if version:
-        logger.info(f"ROMPY Version: {rompy.__version__}")
-        return
-
-    # If no model or config is provided, show help and available models
-    if not model or not config:
-        logger.info(f"ROMPY Version: {rompy.__version__}")
-        logger.info(f"Available models: {', '.join(installed)}")
-        logger.info("Run 'rompy --help' for usage information")
-        ctx = click.get_current_context()
-        click.echo(ctx.get_help())
-        ctx.exit()
-
-    try:
-        # Load configuration
-        config_data = load_config(config)
-
-        # Log version and execution information
-        logger.info(f"ROMPY Version: {rompy.__version__}")
-        logger.info(f"Running model: {model}")
-        logger.info(f"Configuration: {config}")
-
-        # Create and run the model
-        start_time = datetime.now()
-        logger.info("Running model...")
-        model_run = ModelRun(**config_data)
-        model_run()
-
-        if zip:
-            logger.info("Zipping model outputs...")
-            zip_file = model_run.zip()
-            logger.info(f"Model archive created: {zip_file}")
-
-        # Log completion time
-        elapsed = datetime.now() - start_time
-        logger.info(f"Model run completed in {elapsed.total_seconds():.2f} seconds")
-
-        if log_dir:
-            logger.info(f"Log directory: {log_dir}")
-    except TypeError as e:
-        if "unsupported format string" in str(e) and "timedelta" in str(e):
-            logger.error(f"Error with time format: {str(e)}")
-            logger.error(
-                "This is likely due to formatting issues with time duration values"
-            )
-            if verbose > 0:
-                logger.error("", exc_info=True)
-        else:
-            logger.error(f"Type error in model: {str(e)}", exc_info=verbose > 0)
-        sys.exit(1)
-    except Exception as e:
-        logger.error(f"Error running model: {str(e)}", exc_info=verbose > 0)
-        sys.exit(1)
-
-
-# Legacy command routing for backward compatibility
-def legacy_routing():
-    """Route legacy command format to new CLI structure."""
-    import sys
-
-    # Check if we're being called with legacy format: rompy <model> <config> [options]
-    if len(sys.argv) >= 3 and sys.argv[1] in installed:
-        # This is legacy format - insert 'legacy' command
-        sys.argv.insert(1, 'legacy')
-
-    # Call the main CLI
     cli()
 
 
 if __name__ == "__main__":
-    legacy_routing()
+    cli()
