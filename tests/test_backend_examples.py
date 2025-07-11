@@ -23,8 +23,9 @@ from rompy.core.time import TimeRange
 from datetime import datetime
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
+
 
 def test_pydantic_configs() -> bool:
     """Test that Pydantic configuration objects work correctly."""
@@ -33,9 +34,7 @@ def test_pydantic_configs() -> bool:
     try:
         # Test LocalConfig
         local_config = LocalConfig(
-            timeout=3600,
-            command="echo 'test'",
-            env_vars={"TEST": "value"}
+            timeout=3600, command="echo 'test'", env_vars={"TEST": "value"}
         )
         logger.info(f"✅ LocalConfig created: {local_config}")
 
@@ -46,7 +45,7 @@ def test_pydantic_configs() -> bool:
             cpu=2,
             memory="1g",
             volumes=["/tmp:/tmp:rw"],
-            env_vars={"TEST": "value"}
+            env_vars={"TEST": "value"},
         )
         logger.info(f"✅ DockerConfig created: {docker_config}")
 
@@ -55,6 +54,7 @@ def test_pydantic_configs() -> bool:
     except Exception as e:
         logger.error(f"❌ Pydantic config test failed: {e}")
         return False
+
 
 def test_model_run_integration() -> bool:
     """Test that ModelRun works with backend configurations."""
@@ -93,6 +93,7 @@ def test_model_run_integration() -> bool:
         logger.error(f"❌ ModelRun integration test failed: {e}")
         return False
 
+
 def test_backend_examples() -> List[Tuple[str, bool]]:
     """Test all backend example files."""
     logger.info("Testing backend example files...")
@@ -109,7 +110,7 @@ def test_backend_examples() -> List[Tuple[str, bool]]:
         "01_basic_local_run.py",
         "02_docker_run.py",
         "03_custom_postprocessor.py",
-        "04_complete_workflow.py"
+        "04_complete_workflow.py",
     ]
 
     for example_file in example_files:
@@ -121,7 +122,7 @@ def test_backend_examples() -> List[Tuple[str, bool]]:
 
         try:
             # Test that the file can be imported and parsed
-            with open(example_path, 'r') as f:
+            with open(example_path, "r") as f:
                 content = f.read()
 
             # Check for required imports
@@ -132,13 +133,15 @@ def test_backend_examples() -> List[Tuple[str, bool]]:
 
             backend_imports = [
                 "from rompy.backends import LocalConfig",
-                "from rompy.backends import DockerConfig"
+                "from rompy.backends import DockerConfig",
             ]
 
             has_required = all(imp in content for imp in required_imports)
             has_backend = any(imp in content for imp in backend_imports)
 
-            if has_required and (has_backend or "LocalConfig" in content or "DockerConfig" in content):
+            if has_required and (
+                has_backend or "LocalConfig" in content or "DockerConfig" in content
+            ):
                 logger.info(f"✅ {example_file} imports look correct")
                 results.append((example_file, True))
             else:
@@ -150,6 +153,7 @@ def test_backend_examples() -> List[Tuple[str, bool]]:
             results.append((example_file, False))
 
     return results
+
 
 def test_yaml_configs() -> List[Tuple[str, bool]]:
     """Test YAML configuration files."""
@@ -168,7 +172,7 @@ def test_yaml_configs() -> List[Tuple[str, bool]]:
         "docker_backend_examples.yml",
         "local_backend.yml",
         "docker_backend.yml",
-        "pipeline_config.yml"
+        "pipeline_config.yml",
     ]
 
     for yaml_file in yaml_files:
@@ -181,8 +185,8 @@ def test_yaml_configs() -> List[Tuple[str, bool]]:
         try:
             import yaml
 
-            with open(yaml_path, 'r') as f:
-                if yaml_file.endswith('_single.yml'):
+            with open(yaml_path, "r") as f:
+                if yaml_file.endswith("_single.yml"):
                     # Single document YAML
                     data = yaml.safe_load(f)
                     if data and isinstance(data, dict):
@@ -194,8 +198,12 @@ def test_yaml_configs() -> List[Tuple[str, bool]]:
                 else:
                     # Multi-document YAML
                     documents = list(yaml.safe_load_all(f))
-                    if documents and all(isinstance(doc, dict) for doc in documents if doc):
-                        logger.info(f"✅ {yaml_file} is valid multi-document YAML ({len(documents)} docs)")
+                    if documents and all(
+                        isinstance(doc, dict) for doc in documents if doc
+                    ):
+                        logger.info(
+                            f"✅ {yaml_file} is valid multi-document YAML ({len(documents)} docs)"
+                        )
                         results.append((yaml_file, True))
                     else:
                         logger.error(f"❌ {yaml_file} is not valid multi-document YAML")
@@ -206,6 +214,7 @@ def test_yaml_configs() -> List[Tuple[str, bool]]:
             results.append((yaml_file, False))
 
     return results
+
 
 def test_config_validation() -> bool:
     """Test configuration validation using our validation script."""
@@ -237,26 +246,29 @@ def test_config_validation() -> bool:
         logger.error(f"❌ Error running validation: {e}")
         return False
 
+
 def test_quickstart_example() -> bool:
     """Test that the quickstart example file exists and is valid."""
     logger.info("Testing quickstart example...")
 
     try:
-        quickstart_file = Path(__file__).parent.parent / "examples" / "quickstart_backend_example.py"
+        quickstart_file = (
+            Path(__file__).parent.parent / "examples" / "quickstart_backend_example.py"
+        )
 
         if not quickstart_file.exists():
             logger.warning("Quickstart example not found")
             return False
 
         # Check that it has the expected structure
-        with open(quickstart_file, 'r') as f:
+        with open(quickstart_file, "r") as f:
             content = f.read()
 
         required_elements = [
             "from rompy.backends import LocalConfig, DockerConfig",
             "from rompy.model import ModelRun",
             "def main():",
-            "if __name__ == \"__main__\":"
+            'if __name__ == "__main__":',
         ]
 
         missing = [elem for elem in required_elements if elem not in content]
@@ -271,11 +283,12 @@ def test_quickstart_example() -> bool:
         logger.error(f"❌ Error testing quickstart example: {e}")
         return False
 
+
 def run_all_tests() -> bool:
     """Run all tests and return overall success."""
-    logger.info("="*60)
+    logger.info("=" * 60)
     logger.info("ROMPY Backend Examples and Configurations Test Suite")
-    logger.info("="*60)
+    logger.info("=" * 60)
 
     all_passed = True
 
@@ -314,9 +327,9 @@ def run_all_tests() -> bool:
     logger.info("")
 
     # Summary
-    logger.info("="*60)
+    logger.info("=" * 60)
     logger.info("TEST SUMMARY")
-    logger.info("="*60)
+    logger.info("=" * 60)
 
     # Example results
     if example_results:
@@ -342,10 +355,12 @@ def run_all_tests() -> bool:
 
     return all_passed
 
+
 def main():
     """Main function."""
     success = run_all_tests()
     sys.exit(0 if success else 1)
+
 
 if __name__ == "__main__":
     main()

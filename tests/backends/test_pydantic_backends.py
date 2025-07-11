@@ -36,11 +36,15 @@ class TestBaseBackendConfig:
         assert config.timeout == 3600
 
         # Test minimum value
-        with pytest.raises(ValidationError, match="Input should be greater than or equal to 60"):
+        with pytest.raises(
+            ValidationError, match="Input should be greater than or equal to 60"
+        ):
             LocalConfig(timeout=30)
 
         # Test maximum value
-        with pytest.raises(ValidationError, match="Input should be less than or equal to 86400"):
+        with pytest.raises(
+            ValidationError, match="Input should be less than or equal to 86400"
+        ):
             LocalConfig(timeout=100000)
 
     def test_env_vars_validation(self):
@@ -63,7 +67,9 @@ class TestBaseBackendConfig:
             LocalConfig(env_vars={"key": ["not", "a", "string"]})
 
         # Invalid: empty key - custom validator should catch this
-        with pytest.raises(ValidationError, match="Environment variable keys cannot be empty"):
+        with pytest.raises(
+            ValidationError, match="Environment variable keys cannot be empty"
+        ):
             LocalConfig(env_vars={"": "value"})
 
     def test_working_dir_validation(self):
@@ -74,7 +80,9 @@ class TestBaseBackendConfig:
             assert config.working_dir == Path(tmp_dir)
 
             # Non-existent directory should fail
-            with pytest.raises(ValidationError, match="Working directory does not exist"):
+            with pytest.raises(
+                ValidationError, match="Working directory does not exist"
+            ):
                 LocalConfig(working_dir=Path("/non/existent/path"))
 
         # Test with file instead of directory
@@ -82,7 +90,9 @@ class TestBaseBackendConfig:
             file_path = Path(tmp_dir) / "test_file.txt"
             file_path.write_text("test")
 
-            with pytest.raises(ValidationError, match="Working directory is not a directory"):
+            with pytest.raises(
+                ValidationError, match="Working directory is not a directory"
+            ):
                 LocalConfig(working_dir=file_path)
 
     def test_extra_fields_forbidden(self):
@@ -114,7 +124,7 @@ class TestLocalConfig:
                 working_dir=Path(tmp_dir),
                 command="python run_model.py",
                 shell=False,
-                capture_output=False
+                capture_output=False,
             )
 
             assert config.timeout == 7200
@@ -177,7 +187,7 @@ class TestDockerConfig:
             "registry.example.com/repo/image:tag",
             "localhost:5000/image:latest",
             "simple-name",
-            "repo/image"
+            "repo/image",
         ]
 
         for image in valid_images:
@@ -191,17 +201,23 @@ class TestDockerConfig:
         assert config.dockerfile == Path("Dockerfile")
 
         # Absolute path should fail
-        with pytest.raises(ValidationError, match="Dockerfile path must be relative to build context"):
+        with pytest.raises(
+            ValidationError, match="Dockerfile path must be relative to build context"
+        ):
             DockerConfig(dockerfile=Path("/absolute/path/Dockerfile"))
 
     def test_image_or_dockerfile_validation(self):
         """Test that either image or dockerfile must be provided."""
         # Should fail if neither provided
-        with pytest.raises(ValidationError, match="Either 'image' or 'dockerfile' must be provided"):
+        with pytest.raises(
+            ValidationError, match="Either 'image' or 'dockerfile' must be provided"
+        ):
             DockerConfig()
 
         # Should fail if both provided (use relative path to avoid absolute path validation error)
-        with pytest.raises(ValidationError, match="Cannot specify both 'image' and 'dockerfile'"):
+        with pytest.raises(
+            ValidationError, match="Cannot specify both 'image' and 'dockerfile'"
+        ):
             DockerConfig(image="test:latest", dockerfile=Path("Dockerfile"))
 
     def test_cpu_validation(self):
@@ -211,11 +227,15 @@ class TestDockerConfig:
         assert config.cpu == 4
 
         # Invalid: too low
-        with pytest.raises(ValidationError, match="Input should be greater than or equal to 1"):
+        with pytest.raises(
+            ValidationError, match="Input should be greater than or equal to 1"
+        ):
             DockerConfig(image="test:latest", cpu=0)
 
         # Invalid: too high
-        with pytest.raises(ValidationError, match="Input should be less than or equal to 128"):
+        with pytest.raises(
+            ValidationError, match="Input should be less than or equal to 128"
+        ):
             DockerConfig(image="test:latest", cpu=256)
 
     def test_memory_validation(self):
@@ -238,14 +258,13 @@ class TestDockerConfig:
         """Test volume mount validation."""
         with TemporaryDirectory() as tmp_dir:
             # Valid volume mount
-            config = DockerConfig(
-                image="test:latest",
-                volumes=[f"{tmp_dir}:/app/data"]
-            )
+            config = DockerConfig(image="test:latest", volumes=[f"{tmp_dir}:/app/data"])
             assert config.volumes == [f"{tmp_dir}:/app/data"]
 
             # Invalid: missing colon
-            with pytest.raises(ValidationError, match="Volume mount must contain ':' separator"):
+            with pytest.raises(
+                ValidationError, match="Volume mount must contain ':' separator"
+            ):
                 DockerConfig(image="test:latest", volumes=["invalid_mount"])
 
             # Invalid: non-existent host path
@@ -264,7 +283,9 @@ class TestDockerConfig:
             dockerfile_path.write_text("FROM ubuntu:20.04\n")
 
             # Valid build context with relative dockerfile
-            config = DockerConfig(dockerfile=Path("Dockerfile"), build_context=context_dir)
+            config = DockerConfig(
+                dockerfile=Path("Dockerfile"), build_context=context_dir
+            )
             assert config.build_context == context_dir
 
             # None should be valid (optional field)
@@ -272,18 +293,27 @@ class TestDockerConfig:
             assert config.build_context is None
 
             # Non-existent build context should fail
-            with pytest.raises(ValidationError, match="Build context directory does not exist"):
-                DockerConfig(dockerfile=Path("Dockerfile"), build_context=Path("/non/existent/dir"))
+            with pytest.raises(
+                ValidationError, match="Build context directory does not exist"
+            ):
+                DockerConfig(
+                    dockerfile=Path("Dockerfile"),
+                    build_context=Path("/non/existent/dir"),
+                )
 
             # File instead of directory should fail
             test_file = Path(tmp_dir) / "test_file.txt"
             test_file.write_text("test")
-            with pytest.raises(ValidationError, match="Build context must be a directory"):
+            with pytest.raises(
+                ValidationError, match="Build context must be a directory"
+            ):
                 DockerConfig(dockerfile=Path("Dockerfile"), build_context=test_file)
 
             # Dockerfile that doesn't exist in build context should fail
             with pytest.raises(ValidationError, match="Dockerfile does not exist"):
-                DockerConfig(dockerfile=Path("nonexistent/Dockerfile"), build_context=context_dir)
+                DockerConfig(
+                    dockerfile=Path("nonexistent/Dockerfile"), build_context=context_dir
+                )
 
     def test_get_backend_class(self):
         """Test that get_backend_class returns the correct class."""
@@ -342,6 +372,7 @@ class TestBackendIntegration:
 
         # Create a temporary directory for staging
         import tempfile
+
         temp_dir = tempfile.mkdtemp()
         model_run.generate.return_value = temp_dir
         model_run.config.run.return_value = True
@@ -354,7 +385,7 @@ class TestBackendIntegration:
         config = LocalConfig(
             timeout=1800,
             env_vars={"TEST_VAR": "test_value"},
-            command="echo 'test command'"
+            command="echo 'test command'",
         )
 
         # Get backend class from config
@@ -367,7 +398,7 @@ class TestBackendIntegration:
             mock_model_run.generate.return_value = temp_dir
 
             # Mock subprocess for command execution
-            with patch('subprocess.run') as mock_run:
+            with patch("subprocess.run") as mock_run:
                 mock_run.return_value.returncode = 0
                 mock_run.return_value.stdout = "test output"
                 mock_run.return_value.stderr = ""
@@ -386,7 +417,7 @@ class TestBackendIntegration:
             image="test:latest",
             cpu=2,
             memory="1g",
-            env_vars={"DOCKER_VAR": "docker_value"}
+            env_vars={"DOCKER_VAR": "docker_value"},
         )
 
         # Get backend class from config
@@ -399,7 +430,7 @@ class TestBackendIntegration:
             mock_model_run.generate.return_value = temp_dir
 
             # Mock docker subprocess call
-            with patch('subprocess.run') as mock_run:
+            with patch("subprocess.run") as mock_run:
                 mock_run.return_value.returncode = 0
                 mock_run.return_value.stdout = "docker output"
                 mock_run.return_value.stderr = ""
@@ -418,7 +449,7 @@ class TestBackendIntegration:
         config = LocalConfig(
             command="echo 'pydantic config test'",
             timeout=1800,
-            env_vars={"CONFIG_VAR": "config_value"}
+            env_vars={"CONFIG_VAR": "config_value"},
         )
 
         backend = LocalRunBackend()
@@ -429,7 +460,7 @@ class TestBackendIntegration:
             mock_model_run.generate.return_value = temp_dir
 
             # Mock subprocess for command execution
-            with patch('subprocess.run') as mock_run:
+            with patch("subprocess.run") as mock_run:
                 mock_run.return_value.returncode = 0
                 mock_run.return_value.stdout = "test output"
                 mock_run.return_value.stderr = ""
@@ -447,9 +478,7 @@ class TestBackendConfigSerialization:
     def test_local_config_dict_round_trip(self):
         """Test LocalConfig to/from dict conversion."""
         original_config = LocalConfig(
-            timeout=7200,
-            env_vars={"KEY": "value"},
-            command="python script.py"
+            timeout=7200, env_vars={"KEY": "value"}, command="python script.py"
         )
 
         # Convert to dict
@@ -465,10 +494,7 @@ class TestBackendConfigSerialization:
     def test_docker_config_json_round_trip(self):
         """Test DockerConfig to/from JSON conversion."""
         original_config = DockerConfig(
-            image="test:latest",
-            cpu=4,
-            memory="2g",
-            env_vars={"DOCKER_ENV": "value"}
+            image="test:latest", cpu=4, memory="2g", env_vars={"DOCKER_ENV": "value"}
         )
 
         # Convert to JSON

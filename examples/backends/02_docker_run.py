@@ -6,6 +6,7 @@ This example demonstrates how to:
 2. Use a pre-built Docker image
 3. Mount custom volumes and set environment variables
 """
+
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -17,6 +18,7 @@ from rompy.backends import DockerConfig
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 def main():
     """Run a model in a Docker container with custom configuration."""
@@ -57,6 +59,7 @@ def main():
     success = model.run(backend=docker_config)
 
     logger.info(f"Model run {'succeeded' if success else 'failed'}")
+
 
 if __name__ == "__main__":
     main()

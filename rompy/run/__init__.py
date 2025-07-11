@@ -3,6 +3,7 @@ Local execution backend for model runs.
 
 This module provides the local run backend implementation.
 """
+
 import logging
 import os
 import subprocess
@@ -22,7 +23,9 @@ class LocalRunBackend:
     on the local system.
     """
 
-    def run(self, model_run, config: 'LocalConfig', workspace_dir: Optional[str] = None) -> bool:
+    def run(
+        self, model_run, config: "LocalConfig", workspace_dir: Optional[str] = None
+    ) -> bool:
         """Run the model locally.
 
         Args:
@@ -41,7 +44,7 @@ class LocalRunBackend:
         if not model_run:
             raise ValueError("model_run cannot be None")
 
-        if not hasattr(model_run, 'run_id'):
+        if not hasattr(model_run, "run_id"):
             raise ValueError("model_run must have a run_id attribute")
 
         # Use config parameters
@@ -50,14 +53,18 @@ class LocalRunBackend:
         exec_env_vars = config.env_vars
         exec_timeout = config.timeout
 
-        logger.debug(f"Using LocalConfig: timeout={exec_timeout}, env_vars={list(exec_env_vars.keys())}")
+        logger.debug(
+            f"Using LocalConfig: timeout={exec_timeout}, env_vars={list(exec_env_vars.keys())}"
+        )
 
         logger.info(f"Starting local execution for run_id: {model_run.run_id}")
 
         try:
             # Use provided workspace or generate if not provided (for backwards compatibility)
             if workspace_dir is None:
-                logger.warning("No workspace_dir provided, generating files (this may cause double generation in pipeline)")
+                logger.warning(
+                    "No workspace_dir provided, generating files (this may cause double generation in pipeline)"
+                )
                 staging_dir = model_run.generate()
                 logger.info(f"Model inputs generated in: {staging_dir}")
             else:
@@ -68,7 +75,11 @@ class LocalRunBackend:
             if exec_working_dir:
                 work_dir = Path(exec_working_dir)
             else:
-                work_dir = Path(staging_dir) if staging_dir else Path(model_run.output_dir) / model_run.run_id
+                work_dir = (
+                    Path(staging_dir)
+                    if staging_dir
+                    else Path(model_run.output_dir) / model_run.run_id
+                )
 
             if not work_dir.exists():
                 logger.error(f"Working directory does not exist: {work_dir}")
@@ -78,16 +89,22 @@ class LocalRunBackend:
             env = os.environ.copy()
             if exec_env_vars:
                 env.update(exec_env_vars)
-                logger.debug(f"Added environment variables: {list(exec_env_vars.keys())}")
+                logger.debug(
+                    f"Added environment variables: {list(exec_env_vars.keys())}"
+                )
 
             # Execute command or config.run()
             if exec_command:
-                success = self._execute_command(exec_command, work_dir, env, exec_timeout)
+                success = self._execute_command(
+                    exec_command, work_dir, env, exec_timeout
+                )
             else:
                 success = self._execute_config_run(model_run, work_dir, env)
 
             if success:
-                logger.info(f"Local execution completed successfully for run_id: {model_run.run_id}")
+                logger.info(
+                    f"Local execution completed successfully for run_id: {model_run.run_id}"
+                )
             else:
                 logger.error(f"Local execution failed for run_id: {model_run.run_id}")
 
@@ -100,8 +117,9 @@ class LocalRunBackend:
             logger.exception(f"Failed to run model locally: {e}")
             return False
 
-    def _execute_command(self, command: str, work_dir: Path, env: Dict[str, str],
-                        timeout: Optional[int]) -> bool:
+    def _execute_command(
+        self, command: str, work_dir: Path, env: Dict[str, str], timeout: Optional[int]
+    ) -> bool:
         """Execute a shell command.
 
         Args:
@@ -125,7 +143,7 @@ class LocalRunBackend:
                 timeout=timeout,
                 capture_output=True,
                 text=True,
-                check=False
+                check=False,
             )
 
             # Log output
@@ -151,7 +169,9 @@ class LocalRunBackend:
             logger.exception(f"Error executing command: {e}")
             return False
 
-    def _execute_config_run(self, model_run, work_dir: Path, env: Dict[str, str]) -> bool:
+    def _execute_config_run(
+        self, model_run, work_dir: Path, env: Dict[str, str]
+    ) -> bool:
         """Execute the model using config.run() method.
 
         Args:
@@ -164,7 +184,9 @@ class LocalRunBackend:
         """
         # Check if config has a run method
         if not hasattr(model_run.config, "run") or not callable(model_run.config.run):
-            logger.warning("Model config does not have a run method. Nothing to execute.")
+            logger.warning(
+                "Model config does not have a run method. Nothing to execute."
+            )
             return True
 
         logger.info("Executing model using config.run() method")

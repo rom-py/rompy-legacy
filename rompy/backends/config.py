@@ -29,26 +29,26 @@ class BaseBackendConfig(BaseModel, ABC):
         3600,
         ge=60,
         le=86400,
-        description="Maximum execution time in seconds (1 minute to 24 hours)"
+        description="Maximum execution time in seconds (1 minute to 24 hours)",
     )
 
     env_vars: Dict[str, str] = Field(
         default_factory=dict,
-        description="Additional environment variables to set during execution"
+        description="Additional environment variables to set during execution",
     )
 
     working_dir: Optional[Path] = Field(
         None,
-        description="Working directory for execution (defaults to model output directory)"
+        description="Working directory for execution (defaults to model output directory)",
     )
 
     model_config = ConfigDict(
         validate_assignment=True,
         extra="forbid",  # Don't allow extra fields
-        use_enum_values=True
+        use_enum_values=True,
     )
 
-    @field_validator('working_dir')
+    @field_validator("working_dir")
     @classmethod
     def validate_working_dir(cls, v):
         """Validate working directory exists if specified."""
@@ -60,7 +60,7 @@ class BaseBackendConfig(BaseModel, ABC):
                 raise ValueError(f"Working directory is not a directory: {path}")
         return v
 
-    @field_validator('env_vars')
+    @field_validator("env_vars")
     @classmethod
     def validate_env_vars(cls, v):
         """Validate environment variables."""
@@ -93,23 +93,21 @@ class LocalConfig(BaseBackendConfig):
     """
 
     command: Optional[str] = Field(
-        None,
-        description="Optional shell command to run instead of config.run()"
+        None, description="Optional shell command to run instead of config.run()"
     )
 
     shell: bool = Field(
-        True,
-        description="Whether to execute commands through the shell"
+        True, description="Whether to execute commands through the shell"
     )
 
     capture_output: bool = Field(
-        True,
-        description="Whether to capture stdout and stderr"
+        True, description="Whether to capture stdout and stderr"
     )
 
     def get_backend_class(self):
         """Return the LocalRunBackend class."""
         from rompy.run import LocalRunBackend
+
         return LocalRunBackend
 
     model_config = ConfigDict(
@@ -118,12 +116,9 @@ class LocalConfig(BaseBackendConfig):
                 {
                     "timeout": 7200,
                     "env_vars": {"OMP_NUM_THREADS": "4"},
-                    "command": "python run_model.py"
+                    "command": "python run_model.py",
                 },
-                {
-                    "timeout": 3600,
-                    "working_dir": "/path/to/model/dir"
-                }
+                {"timeout": 3600, "working_dir": "/path/to/model/dir"},
             ]
         }
     )
@@ -139,63 +134,46 @@ class DockerConfig(BaseBackendConfig):
     image: Optional[str] = Field(
         None,
         description="Docker image to use (required if not building from dockerfile)",
-        pattern=r'^[a-zA-Z0-9._:/-]+$'
+        pattern=r"^[a-zA-Z0-9._:/-]+$",
     )
 
     dockerfile: Optional[Path] = Field(
-        None,
-        description="Path to Dockerfile to build (alternative to image)"
+        None, description="Path to Dockerfile to build (alternative to image)"
     )
 
     executable: str = Field(
-        "/usr/local/bin/run.sh",
-        description="Path to executable inside the container"
+        "/usr/local/bin/run.sh", description="Path to executable inside the container"
     )
 
-    cpu: int = Field(
-        1,
-        ge=1,
-        le=128,
-        description="Number of CPU cores to allocate"
-    )
+    cpu: int = Field(1, ge=1, le=128, description="Number of CPU cores to allocate")
 
     memory: Optional[str] = Field(
-        None,
-        description="Memory limit (e.g., '2g', '512m')",
-        pattern=r'^\d+[kmgKMG]?$'
+        None, description="Memory limit (e.g., '2g', '512m')", pattern=r"^\d+[kmgKMG]?$"
     )
 
-    mpiexec: str = Field(
-        "",
-        description="MPI execution command (if using MPI)"
-    )
+    mpiexec: str = Field("", description="MPI execution command (if using MPI)")
 
     build_args: Dict[str, str] = Field(
-        default_factory=dict,
-        description="Arguments to pass to docker build"
+        default_factory=dict, description="Arguments to pass to docker build"
     )
 
     build_context: Optional[Path] = Field(
         None,
-        description="Docker build context directory (defaults to dockerfile parent directory)"
+        description="Docker build context directory (defaults to dockerfile parent directory)",
     )
 
     volumes: List[str] = Field(
         default_factory=list,
-        description="Additional volumes to mount (format: 'host_path:container_path')"
+        description="Additional volumes to mount (format: 'host_path:container_path')",
     )
 
     remove_container: bool = Field(
-        True,
-        description="Whether to remove container after execution"
+        True, description="Whether to remove container after execution"
     )
 
-    user: str = Field(
-        "root",
-        description="User to run as inside the container"
-    )
+    user: str = Field("root", description="User to run as inside the container")
 
-    @field_validator('image', 'dockerfile', mode='before')
+    @field_validator("image", "dockerfile", mode="before")
     @classmethod
     def validate_image_or_dockerfile(cls, v, info):
         """Validate that either image or dockerfile is provided, but not both."""
@@ -203,17 +181,19 @@ class DockerConfig(BaseBackendConfig):
         # This will be handled by model_validator
         return v
 
-    @field_validator('dockerfile')
+    @field_validator("dockerfile")
     @classmethod
     def validate_dockerfile_exists(cls, v):
         """Validate dockerfile path format (should be relative)."""
         if v is not None:
             path = Path(v)
             if path.is_absolute():
-                raise ValueError(f"Dockerfile path must be relative to build context: {path}")
+                raise ValueError(
+                    f"Dockerfile path must be relative to build context: {path}"
+                )
         return v
 
-    @field_validator('build_context')
+    @field_validator("build_context")
     @classmethod
     def validate_build_context_exists(cls, v):
         """Validate build context directory exists if specified."""
@@ -225,17 +205,19 @@ class DockerConfig(BaseBackendConfig):
                 raise ValueError(f"Build context must be a directory: {path}")
         return v
 
-    @field_validator('volumes')
+    @field_validator("volumes")
     @classmethod
     def validate_volumes(cls, v):
         """Validate volume mount specifications."""
         for volume in v:
-            if ':' not in volume:
+            if ":" not in volume:
                 raise ValueError(f"Volume mount must contain ':' separator: {volume}")
 
-            parts = volume.split(':')
+            parts = volume.split(":")
             if len(parts) < 2:
-                raise ValueError(f"Volume mount must have host:container format: {volume}")
+                raise ValueError(
+                    f"Volume mount must have host:container format: {volume}"
+                )
 
             host_path = Path(parts[0])
             if not host_path.exists():
@@ -243,13 +225,14 @@ class DockerConfig(BaseBackendConfig):
 
         return v
 
-    @field_validator('memory')
+    @field_validator("memory")
     @classmethod
     def validate_memory_format(cls, v):
         """Validate memory format."""
         if v is not None:
             import re
-            if not re.match(r'^\d+[kmg]?$', v.lower()):
+
+            if not re.match(r"^\d+[kmg]?$", v.lower()):
                 raise ValueError(
                     "Memory must be in format like '2g', '512m', or '1024' (bytes)"
                 )
@@ -258,6 +241,7 @@ class DockerConfig(BaseBackendConfig):
     def get_backend_class(self):
         """Return the DockerRunBackend class."""
         from rompy.run.docker import DockerRunBackend
+
         return DockerRunBackend
 
     @classmethod
@@ -289,14 +273,14 @@ class DockerConfig(BaseBackendConfig):
                     "cpu": 4,
                     "memory": "2g",
                     "timeout": 7200,
-                    "volumes": ["/data:/app/data"]
+                    "volumes": ["/data:/app/data"],
                 },
                 {
                     "dockerfile": "./docker/Dockerfile",
                     "cpu": 2,
                     "build_args": {"VERSION": "1.0"},
-                    "mpiexec": "mpirun"
-                }
+                    "mpiexec": "mpirun",
+                },
             ]
         }
     )

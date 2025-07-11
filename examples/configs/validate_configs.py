@@ -16,6 +16,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def validate_backend_config(config_data: Dict[str, Any]) -> List[str]:
     """Validate backend configuration structure.
 
@@ -28,41 +29,49 @@ def validate_backend_config(config_data: Dict[str, Any]) -> List[str]:
     errors = []
 
     # Check required fields
-    if 'backend_type' not in config_data:
+    if "backend_type" not in config_data:
         errors.append("Missing required field: backend_type")
         return errors
 
-    backend_type = config_data['backend_type']
-    if backend_type not in ['local', 'docker']:
-        errors.append(f"Invalid backend_type: {backend_type}. Must be 'local' or 'docker'")
+    backend_type = config_data["backend_type"]
+    if backend_type not in ["local", "docker"]:
+        errors.append(
+            f"Invalid backend_type: {backend_type}. Must be 'local' or 'docker'"
+        )
         return errors
 
     # Use direct format: backend_type: local, timeout: 3600, ...
     config = config_data.copy()
-    config.pop('backend_type', None)  # Remove backend_type from parameters
+    config.pop("backend_type", None)  # Remove backend_type from parameters
 
     # Validate common fields
-    if 'timeout' in config:
-        if not isinstance(config['timeout'], int) or config['timeout'] < 60 or config['timeout'] > 86400:
+    if "timeout" in config:
+        if (
+            not isinstance(config["timeout"], int)
+            or config["timeout"] < 60
+            or config["timeout"] > 86400
+        ):
             errors.append("timeout must be an integer between 60 and 86400")
 
-    if 'env_vars' in config:
-        if not isinstance(config['env_vars'], dict):
+    if "env_vars" in config:
+        if not isinstance(config["env_vars"], dict):
             errors.append("env_vars must be a dictionary")
 
     # Validate backend-specific fields
-    if backend_type == 'local':
-        if 'command' in config and not isinstance(config['command'], (str, type(None))):
+    if backend_type == "local":
+        if "command" in config and not isinstance(config["command"], (str, type(None))):
             errors.append("command must be a string or null")
-        if 'shell' in config and not isinstance(config['shell'], bool):
+        if "shell" in config and not isinstance(config["shell"], bool):
             errors.append("shell must be a boolean")
-        if 'capture_output' in config and not isinstance(config['capture_output'], bool):
+        if "capture_output" in config and not isinstance(
+            config["capture_output"], bool
+        ):
             errors.append("capture_output must be a boolean")
 
-    elif backend_type == 'docker':
+    elif backend_type == "docker":
         # Check that either image or dockerfile is provided
-        has_image = 'image' in config and config['image']
-        has_dockerfile = 'dockerfile' in config and config['dockerfile']
+        has_image = "image" in config and config["image"]
+        has_dockerfile = "dockerfile" in config and config["dockerfile"]
 
         if not has_image and not has_dockerfile:
             errors.append("Either 'image' or 'dockerfile' must be provided")
@@ -70,24 +79,32 @@ def validate_backend_config(config_data: Dict[str, Any]) -> List[str]:
         if has_image and has_dockerfile:
             errors.append("Cannot specify both 'image' and 'dockerfile'")
 
-        if 'cpu' in config:
-            if not isinstance(config['cpu'], int) or config['cpu'] < 1 or config['cpu'] > 128:
+        if "cpu" in config:
+            if (
+                not isinstance(config["cpu"], int)
+                or config["cpu"] < 1
+                or config["cpu"] > 128
+            ):
                 errors.append("cpu must be an integer between 1 and 128")
 
-        if 'memory' in config and config['memory']:
+        if "memory" in config and config["memory"]:
             import re
-            if not re.match(r'^\d+[kmgKMG]?$', config['memory']):
+
+            if not re.match(r"^\d+[kmgKMG]?$", config["memory"]):
                 errors.append("memory must be in format like '2g', '512m', or '1024'")
 
-        if 'volumes' in config:
-            if not isinstance(config['volumes'], list):
+        if "volumes" in config:
+            if not isinstance(config["volumes"], list):
                 errors.append("volumes must be a list")
             else:
-                for volume in config['volumes']:
-                    if ':' not in volume:
-                        errors.append(f"Volume mount must contain ':' separator: {volume}")
+                for volume in config["volumes"]:
+                    if ":" not in volume:
+                        errors.append(
+                            f"Volume mount must contain ':' separator: {volume}"
+                        )
 
     return errors
+
 
 def validate_pipeline_config(config_data: Dict[str, Any]) -> List[str]:
     """Validate pipeline configuration structure.
@@ -101,43 +118,44 @@ def validate_pipeline_config(config_data: Dict[str, Any]) -> List[str]:
     errors = []
 
     # Check required fields
-    if 'pipeline_backend' not in config_data:
+    if "pipeline_backend" not in config_data:
         errors.append("Missing required field: pipeline_backend")
 
-    if 'model_run' not in config_data:
+    if "model_run" not in config_data:
         errors.append("Missing required field: model_run")
     else:
-        model_run = config_data['model_run']
+        model_run = config_data["model_run"]
         if not isinstance(model_run, dict):
             errors.append("model_run must be a dictionary")
         else:
             # Validate model_run fields
-            if 'run_id' not in model_run:
+            if "run_id" not in model_run:
                 errors.append("model_run missing required field: run_id")
-            if 'output_dir' not in model_run:
+            if "output_dir" not in model_run:
                 errors.append("model_run missing required field: output_dir")
-            if 'period' not in model_run:
+            if "period" not in model_run:
                 errors.append("model_run missing required field: period")
             else:
-                period = model_run['period']
+                period = model_run["period"]
                 if not isinstance(period, dict):
                     errors.append("period must be a dictionary")
                 else:
-                    if 'start' not in period:
+                    if "start" not in period:
                         errors.append("period missing required field: start")
-                    if 'end' not in period:
+                    if "end" not in period:
                         errors.append("period missing required field: end")
 
-    if 'run_backend' not in config_data:
+    if "run_backend" not in config_data:
         errors.append("Missing required field: run_backend")
     else:
-        run_backend = config_data['run_backend']
+        run_backend = config_data["run_backend"]
         if isinstance(run_backend, dict):
             # Validate as backend config
             backend_errors = validate_backend_config(run_backend)
             errors.extend([f"run_backend.{error}" for error in backend_errors])
 
     return errors
+
 
 def validate_yaml_file(file_path: Path) -> bool:
     """Validate a single YAML configuration file.
@@ -151,7 +169,7 @@ def validate_yaml_file(file_path: Path) -> bool:
     logger.info(f"Validating {file_path.name}...")
 
     try:
-        with open(file_path, 'r') as f:
+        with open(file_path, "r") as f:
             # Load all documents from the YAML file
             documents = list(yaml.safe_load_all(f))
 
@@ -168,11 +186,11 @@ def validate_yaml_file(file_path: Path) -> bool:
             doc_name = f"document {i+1}" if len(documents) > 1 else "document"
 
             # Determine configuration type and validate
-            if 'pipeline_backend' in doc:
+            if "pipeline_backend" in doc:
                 # Pipeline configuration
                 errors = validate_pipeline_config(doc)
                 config_type = "pipeline"
-            elif 'backend_type' in doc:
+            elif "backend_type" in doc:
                 # Backend configuration
                 errors = validate_backend_config(doc)
                 config_type = "backend"
@@ -196,6 +214,7 @@ def validate_yaml_file(file_path: Path) -> bool:
     except Exception as e:
         logger.error(f"  ❌ Error validating {file_path.name}: {e}")
         return False
+
 
 def main():
     """Main validation function."""
@@ -228,6 +247,7 @@ def main():
     else:
         logger.error("❌ Some configuration files have validation errors")
         return False
+
 
 if __name__ == "__main__":
     success = main()

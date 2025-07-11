@@ -6,6 +6,7 @@ This example demonstrates how to:
 2. Create a custom postprocessor
 3. Use them together in a complete workflow
 """
+
 import logging
 import subprocess
 from datetime import datetime
@@ -19,6 +20,7 @@ from rompy.backends import LocalConfig
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 # 1. Define a custom postprocessor
 class FileInfoPostprocessor:
@@ -56,7 +58,9 @@ class FileInfoPostprocessor:
                     file_info[str(file_path.relative_to(output_dir))] = {
                         "size_bytes": file_size,
                         "size_mb": file_size / (1024 * 1024),
-                        "modified": datetime.fromtimestamp(file_path.stat().st_mtime).isoformat(),
+                        "modified": datetime.fromtimestamp(
+                            file_path.stat().st_mtime
+                        ).isoformat(),
                     }
                     total_size += file_size
 
@@ -75,6 +79,7 @@ class FileInfoPostprocessor:
                 "message": f"Failed to collect file info: {str(e)}",
                 "error": str(e),
             }
+
 
 def main():
     """Run a complete workflow with custom backend and postprocessor."""
@@ -116,7 +121,10 @@ def main():
         for file_path, info in results["files"].items():
             logger.info(f"  - {file_path} ({info['size_mb']:.2f} MB)")
     else:
-        logger.error(f"Postprocessing failed: {results.get('message', 'Unknown error')}")
+        logger.error(
+            f"Postprocessing failed: {results.get('message', 'Unknown error')}"
+        )
+
 
 if __name__ == "__main__":
     main()

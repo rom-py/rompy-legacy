@@ -6,6 +6,7 @@ This example demonstrates how to:
 2. Run the model locally using LocalConfig
 3. Perform no-op postprocessing
 """
+
 import logging
 from datetime import datetime
 
@@ -16,6 +17,7 @@ from rompy.backends import LocalConfig
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 def main():
     """Run a basic model locally with no-op postprocessing."""
@@ -44,6 +46,7 @@ def main():
     logger.info("Running postprocessing...")
     results = model.postprocess(processor="noop")
     logger.info(f"Postprocessing results: {results}")
+
 
 if __name__ == "__main__":
     main()

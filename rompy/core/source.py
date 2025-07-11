@@ -24,8 +24,7 @@ logger = logging.getLogger(__name__)
 
 # Import stubs for classes moved to rompy_binary_datasources
 try:
-    from rompy_binary_datasources import (SourceDataset,
-                                          SourceTimeseriesDataFrame)
+    from rompy_binary_datasources import SourceDataset, SourceTimeseriesDataFrame
 except ImportError:
     from rompy.utils import create_import_error_class
 

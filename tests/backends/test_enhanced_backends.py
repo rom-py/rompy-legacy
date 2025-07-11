@@ -4,6 +4,7 @@ Enhanced unit tests for the improved backend system with validation and error ha
 Tests cover the enhanced LocalRunBackend, NoopPostprocessor, and LocalPipelineBackend
 with their new validation, error handling, and logging capabilities.
 """
+
 import os
 import pytest
 import subprocess
@@ -82,11 +83,10 @@ class TestEnhancedLocalRunBackend:
         output_dir.mkdir(parents=True, exist_ok=True)
 
         config = LocalConfig(
-            command="echo 'test output' > test_file.txt",
-            working_dir=output_dir
+            command="echo 'test output' > test_file.txt", working_dir=output_dir
         )
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
             result = backend.run(model_run, config)
 
         assert result is True
@@ -102,11 +102,10 @@ class TestEnhancedLocalRunBackend:
         output_dir.mkdir(parents=True, exist_ok=True)
 
         config = LocalConfig(
-            command="exit 1",  # Command that will fail
-            working_dir=output_dir
+            command="exit 1", working_dir=output_dir  # Command that will fail
         )
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
             result = backend.run(model_run, config)
 
         assert result is False
@@ -122,12 +121,12 @@ class TestEnhancedLocalRunBackend:
         config = LocalConfig(
             command="sleep 10",  # Long running command
             timeout=60,  # Minimum allowed timeout
-            working_dir=output_dir
+            working_dir=output_dir,
         )
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
             # Mock subprocess.run to raise TimeoutExpired
-            with patch('subprocess.run') as mock_run:
+            with patch("subprocess.run") as mock_run:
                 mock_run.side_effect = subprocess.TimeoutExpired("sleep 10", 60)
                 with pytest.raises(TimeoutError, match="Command execution timed out"):
                     backend.run(model_run, config)
@@ -142,10 +141,10 @@ class TestEnhancedLocalRunBackend:
         config = LocalConfig(
             command="echo $TEST_VAR > env_test.txt",
             env_vars={"TEST_VAR": "test_value"},
-            working_dir=output_dir
+            working_dir=output_dir,
         )
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
             result = backend.run(model_run, config)
 
         assert result is True
@@ -162,13 +161,17 @@ class TestEnhancedLocalRunBackend:
 
         config = LocalConfig(working_dir=output_dir)
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
             result = backend.run(model_run_with_run_method, config)
 
         assert result is True
-        model_run_with_run_method.config.run.assert_called_once_with(model_run_with_run_method)
+        model_run_with_run_method.config.run.assert_called_once_with(
+            model_run_with_run_method
+        )
 
-    def test_run_with_config_run_method_failure(self, model_run_with_run_method, tmp_path):
+    def test_run_with_config_run_method_failure(
+        self, model_run_with_run_method, tmp_path
+    ):
         """Test execution failure using config.run() method."""
         backend = LocalRunBackend()
 
@@ -176,11 +179,13 @@ class TestEnhancedLocalRunBackend:
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Make config.run() raise an exception
-        model_run_with_run_method.config.run.side_effect = Exception("Config run failed")
+        model_run_with_run_method.config.run.side_effect = Exception(
+            "Config run failed"
+        )
 
         config = LocalConfig(working_dir=output_dir)
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
             result = backend.run(model_run_with_run_method, config)
 
         assert result is False
@@ -192,12 +197,9 @@ class TestEnhancedLocalRunBackend:
         nonexistent_dir = tmp_path / "nonexistent"
 
         # LocalConfig validation should catch this, but let's test runtime behavior
-        with patch('rompy.model.ModelRun.generate', return_value=str(tmp_path)):
+        with patch("rompy.model.ModelRun.generate", return_value=str(tmp_path)):
             with pytest.raises(ValueError, match="Working directory does not exist"):
-                LocalConfig(
-                    command="echo test",
-                    working_dir=nonexistent_dir
-                )
+                LocalConfig(command="echo test", working_dir=nonexistent_dir)
 
     def test_execute_config_run_no_method(self, model_run, tmp_path):
         """Test _execute_config_run when config has no run method."""
@@ -210,7 +212,9 @@ class TestEnhancedLocalRunBackend:
         # Should return True but log a warning
         assert result is True
 
-    def test_execute_config_run_non_boolean_return(self, model_run_with_run_method, tmp_path):
+    def test_execute_config_run_non_boolean_return(
+        self, model_run_with_run_method, tmp_path
+    ):
         """Test _execute_config_run when config.run() returns non-boolean."""
         backend = LocalRunBackend()
         output_dir = tmp_path / "test"
@@ -290,9 +294,7 @@ class TestEnhancedNoopPostprocessor:
         (custom_dir / "custom_file.txt").write_text("custom content")
 
         result = processor.process(
-            model_run,
-            validate_outputs=True,
-            output_dir=str(custom_dir)
+            model_run, validate_outputs=True, output_dir=str(custom_dir)
         )
 
         assert result["success"] is True
@@ -303,7 +305,7 @@ class TestEnhancedNoopPostprocessor:
         processor = NoopPostprocessor()
 
         # Mock Path to raise an exception
-        with patch('rompy.postprocess.Path') as mock_path:
+        with patch("rompy.postprocess.Path") as mock_path:
             mock_path.side_effect = Exception("File system error")
 
             result = processor.process(model_run)
@@ -349,7 +351,9 @@ class TestEnhancedLocalPipelineBackend:
         """Test pipeline failure during generate stage."""
         backend = LocalPipelineBackend()
 
-        with patch('rompy.model.ModelRun.generate', side_effect=Exception("Generate failed")):
+        with patch(
+            "rompy.model.ModelRun.generate", side_effect=Exception("Generate failed")
+        ):
             result = backend.execute(model_run)
 
         assert result["success"] is False
@@ -364,8 +368,8 @@ class TestEnhancedLocalPipelineBackend:
         output_dir = tmp_path / model_run.run_id
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            with patch('rompy.model.ModelRun.run', return_value=False):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
+            with patch("rompy.model.ModelRun.run", return_value=False):
                 result = backend.execute(model_run)
 
         assert result["success"] is False
@@ -380,8 +384,8 @@ class TestEnhancedLocalPipelineBackend:
         output_dir = tmp_path / model_run.run_id
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            with patch('rompy.model.ModelRun.run', side_effect=Exception("Run failed")):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
+            with patch("rompy.model.ModelRun.run", side_effect=Exception("Run failed")):
                 result = backend.execute(model_run)
 
         assert result["success"] is False
@@ -395,9 +399,12 @@ class TestEnhancedLocalPipelineBackend:
         output_dir = tmp_path / model_run.run_id
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            with patch('rompy.model.ModelRun.run', return_value=True):
-                with patch('rompy.model.ModelRun.postprocess', side_effect=Exception("Postprocess failed")):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
+            with patch("rompy.model.ModelRun.run", return_value=True):
+                with patch(
+                    "rompy.model.ModelRun.postprocess",
+                    side_effect=Exception("Postprocess failed"),
+                ):
                     result = backend.execute(model_run)
 
         assert result["success"] is False
@@ -415,15 +422,18 @@ class TestEnhancedLocalPipelineBackend:
 
         mock_postprocess_result = {"success": True, "message": "Postprocessing done"}
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            with patch('rompy.model.ModelRun.run', return_value=True):
-                with patch('rompy.model.ModelRun.postprocess', return_value=mock_postprocess_result):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
+            with patch("rompy.model.ModelRun.run", return_value=True):
+                with patch(
+                    "rompy.model.ModelRun.postprocess",
+                    return_value=mock_postprocess_result,
+                ):
                     result = backend.execute(
                         model_run,
                         run_backend="local",
                         processor="noop",
                         run_kwargs={"param1": "value1"},
-                        process_kwargs={"param2": "value2"}
+                        process_kwargs={"param2": "value2"},
                     )
 
         assert result["success"] is True
@@ -439,7 +449,9 @@ class TestEnhancedLocalPipelineBackend:
         backend = LocalPipelineBackend()
 
         # Create generate result but not the actual directory
-        with patch('rompy.model.ModelRun.generate', return_value=str(tmp_path / "nonexistent")):
+        with patch(
+            "rompy.model.ModelRun.generate", return_value=str(tmp_path / "nonexistent")
+        ):
             result = backend.execute(model_run, validate_stages=True)
 
         assert result["success"] is False
@@ -455,8 +467,8 @@ class TestEnhancedLocalPipelineBackend:
         test_file = output_dir / "test_file.txt"
         test_file.write_text("test content")
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            with patch('rompy.model.ModelRun.run', return_value=False):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
+            with patch("rompy.model.ModelRun.run", return_value=False):
                 result = backend.execute(model_run, cleanup_on_failure=True)
 
         assert result["success"] is False
@@ -486,7 +498,7 @@ class TestEnhancedLocalPipelineBackend:
         model_run.output_dir = tmp_path
 
         # Mock shutil.rmtree to raise an exception
-        with patch('shutil.rmtree', side_effect=Exception("Permission denied")):
+        with patch("shutil.rmtree", side_effect=Exception("Permission denied")):
             # Should not raise exception, just log warning
             backend._cleanup_outputs(model_run)
 
@@ -498,11 +510,17 @@ class TestEnhancedLocalPipelineBackend:
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Postprocessor returns success=False but doesn't raise exception
-        mock_postprocess_result = {"success": False, "message": "Postprocessing had issues"}
+        mock_postprocess_result = {
+            "success": False,
+            "message": "Postprocessing had issues",
+        }
 
-        with patch('rompy.model.ModelRun.generate', return_value=str(output_dir)):
-            with patch('rompy.model.ModelRun.run', return_value=True):
-                with patch('rompy.model.ModelRun.postprocess', return_value=mock_postprocess_result):
+        with patch("rompy.model.ModelRun.generate", return_value=str(output_dir)):
+            with patch("rompy.model.ModelRun.run", return_value=True):
+                with patch(
+                    "rompy.model.ModelRun.postprocess",
+                    return_value=mock_postprocess_result,
+                ):
                     result = backend.execute(model_run)
 
         # Pipeline should still succeed

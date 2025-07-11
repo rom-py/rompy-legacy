@@ -6,6 +6,7 @@ This example demonstrates how to:
 2. Register it for use with the model run
 3. Use it to process model outputs
 """
+
 import os
 import zipfile
 import logging
@@ -21,6 +22,7 @@ from rompy.backends import LocalConfig
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class ZipOutputsPostprocessor:
     """Custom postprocessor that zips the model outputs.
 
@@ -28,7 +30,9 @@ class ZipOutputsPostprocessor:
     that takes a model_run instance and returns a dictionary with results.
     """
 
-    def process(self, model_run, output_zip: str = "outputs.zip", **kwargs) -> Dict[str, Any]:
+    def process(
+        self, model_run, output_zip: str = "outputs.zip", **kwargs
+    ) -> Dict[str, Any]:
         """Zip the model outputs.
 
         Args:
@@ -43,7 +47,7 @@ class ZipOutputsPostprocessor:
         zip_path = output_dir.parent / output_zip
 
         try:
-            with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
                 for root, _, files in os.walk(output_dir):
                     for file in files:
                         file_path = Path(root) / file
@@ -62,6 +66,7 @@ class ZipOutputsPostprocessor:
                 "message": f"Failed to zip outputs: {str(e)}",
                 "error": str(e),
             }
+
 
 def main():
     """Run a model and process outputs with custom postprocessor."""
@@ -98,7 +103,10 @@ def main():
         logger.info(f"Successfully created zip archive: {results['zip_path']}")
         logger.info(f"Zipped {results.get('file_count', 'unknown')} files")
     else:
-        logger.error(f"Postprocessing failed: {results.get('message', 'Unknown error')}")
+        logger.error(
+            f"Postprocessing failed: {results.get('message', 'Unknown error')}"
+        )
+
 
 if __name__ == "__main__":
     main()

@@ -3,6 +3,7 @@ Docker backend for running models.
 
 This module provides a Docker-based execution backend for rompy models.
 """
+
 import hashlib
 import json
 import logging
@@ -25,7 +26,9 @@ class DockerRunBackend:
     inside containers with appropriate volume mounts.
     """
 
-    def run(self, model_run, config: 'DockerConfig', workspace_dir: Optional[str] = None) -> bool:
+    def run(
+        self, model_run, config: "DockerConfig", workspace_dir: Optional[str] = None
+    ) -> bool:
         """Run the model inside a Docker container.
 
         Args:
@@ -50,16 +53,21 @@ class DockerRunBackend:
 
         # Use provided workspace or generate if not provided (for backwards compatibility)
         if workspace_dir is None:
-            logger.warning("No workspace_dir provided, generating files (this may cause double generation in pipeline)")
+            logger.warning(
+                "No workspace_dir provided, generating files (this may cause double generation in pipeline)"
+            )
             workspace_dir = model_run.generate()
         else:
             logger.info(f"Using provided workspace directory: {workspace_dir}")
 
         try:
             # Build or use a Docker image
-            image_name = self._prepare_image(exec_image, exec_dockerfile,
-                                           str(config.build_context) if config.build_context else None,
-                                           exec_build_args)
+            image_name = self._prepare_image(
+                exec_image,
+                exec_dockerfile,
+                str(config.build_context) if config.build_context else None,
+                exec_build_args,
+            )
             if not image_name:
                 return False
 
@@ -67,14 +75,16 @@ class DockerRunBackend:
             run_command = self._get_run_command(exec_executable, exec_mpiexec, exec_cpu)
 
             # Set up volume mounts
-            volume_mounts = self._prepare_volumes(model_run, exec_volumes, workspace_dir)
+            volume_mounts = self._prepare_volumes(
+                model_run, exec_volumes, workspace_dir
+            )
 
             # Run the Docker container
             success = self._run_container(
                 image_name=image_name,
                 run_command=run_command,
                 volume_mounts=volume_mounts,
-                env_vars=exec_env_vars
+                env_vars=exec_env_vars,
             )
 
             return success
@@ -82,11 +92,13 @@ class DockerRunBackend:
             logger.exception(f"Failed to run model in Docker: {e}")
             return False
 
-    def _prepare_image(self,
-                      image: Optional[str],
-                      dockerfile: Optional[str],
-                      build_context: Optional[str] = None,
-                      build_args: Optional[Dict[str, str]] = None) -> Optional[str]:
+    def _prepare_image(
+        self,
+        image: Optional[str],
+        dockerfile: Optional[str],
+        build_context: Optional[str] = None,
+        build_args: Optional[Dict[str, str]] = None,
+    ) -> Optional[str]:
         """Prepare the Docker image to use.
 
         This will either use a pre-built image or build one from a Dockerfile.
@@ -118,7 +130,9 @@ class DockerRunBackend:
                 context_path = dockerfile_path.parent
 
             # Generate deterministic image name based on content
-            image_name = self._generate_image_name(dockerfile_path, context_path, build_args)
+            image_name = self._generate_image_name(
+                dockerfile_path, context_path, build_args
+            )
 
             # Check if image already exists
             if self._image_exists(image_name):
@@ -132,13 +146,18 @@ class DockerRunBackend:
                     build_args_list.extend(["--build-arg", f"{key}={value}"])
 
             # Build the Docker image
-            logger.info(f"Building Docker image {image_name} from {dockerfile} (context: {context_path})")
+            logger.info(
+                f"Building Docker image {image_name} from {dockerfile} (context: {context_path})"
+            )
             build_cmd = [
-                "docker", "build",
-                "-t", image_name,
-                "-f", str(dockerfile_path),  # Use full path for -f flag
+                "docker",
+                "build",
+                "-t",
+                image_name,
+                "-f",
+                str(dockerfile_path),  # Use full path for -f flag
                 *build_args_list,
-                str(context_path)
+                str(context_path),
             ]
 
             try:
@@ -147,7 +166,7 @@ class DockerRunBackend:
                     check=True,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
-                    text=True
+                    text=True,
                 )
                 logger.debug(f"Docker build output: {result.stdout}")
                 return image_name
@@ -159,10 +178,7 @@ class DockerRunBackend:
         logger.warning("No image or Dockerfile provided, using default rompy image")
         return "rompy/rompy:latest"
 
-    def _get_run_command(self,
-                         executable: str,
-                         mpiexec: str,
-                         cpu: int) -> str:
+    def _get_run_command(self, executable: str, mpiexec: str, cpu: int) -> str:
         """Create the run command to execute inside the container.
 
         Args:
@@ -183,13 +199,17 @@ class DockerRunBackend:
 
         if mpiexec:
             # Add --allow-run-as-root flag for MPI inside Docker containers
-            return f"{diagnostics} && {mpiexec} --allow-run-as-root -n {cpu} {executable}"
+            return (
+                f"{diagnostics} && {mpiexec} --allow-run-as-root -n {cpu} {executable}"
+            )
         return f"{diagnostics} && {executable}"
 
-    def _prepare_volumes(self,
-                        model_run,
-                        additional_volumes: Optional[List[str]] = None,
-                        workspace_dir: Optional[str] = None) -> List[str]:
+    def _prepare_volumes(
+        self,
+        model_run,
+        additional_volumes: Optional[List[str]] = None,
+        workspace_dir: Optional[str] = None,
+    ) -> List[str]:
         """Prepare volume mounts for the Docker container.
 
         Args:
@@ -216,11 +236,13 @@ class DockerRunBackend:
 
         return volumes
 
-    def _run_container(self,
-                      image_name: str,
-                      run_command: str,
-                      volume_mounts: List[str],
-                      env_vars: Dict[str, str]) -> bool:
+    def _run_container(
+        self,
+        image_name: str,
+        run_command: str,
+        volume_mounts: List[str],
+        env_vars: Dict[str, str],
+    ) -> bool:
         """Run the Docker container with the given configuration.
 
         Args:
@@ -234,9 +256,11 @@ class DockerRunBackend:
         """
         # Set up the Docker command
         docker_cmd = [
-            "docker", "run",
+            "docker",
+            "run",
             "--rm",  # Remove container after run
-            "--user", "root",  # Run as root to avoid permission issues
+            "--user",
+            "root",  # Run as root to avoid permission issues
         ]
 
         # Add environment variables
@@ -265,7 +289,7 @@ class DockerRunBackend:
                 check=False,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                text=True
+                text=True,
             )
 
             # Always log the output regardless of success/failure
@@ -288,10 +312,12 @@ class DockerRunBackend:
             logger.error(f"Command: {' '.join(docker_cmd)}")
             return False
 
-    def _generate_image_name(self,
-                           dockerfile_path: pathlib.Path,
-                           context_path: pathlib.Path,
-                           build_args: Optional[Dict[str, str]] = None) -> str:
+    def _generate_image_name(
+        self,
+        dockerfile_path: pathlib.Path,
+        context_path: pathlib.Path,
+        build_args: Optional[Dict[str, str]] = None,
+    ) -> str:
         """Generate a deterministic image name based on Dockerfile content and build args.
 
         Args:
@@ -310,7 +336,7 @@ class DockerRunBackend:
 
         # Hash Dockerfile content
         try:
-            with open(dockerfile_path, 'rb') as f:
+            with open(dockerfile_path, "rb") as f:
                 hasher.update(f.read())
         except Exception as e:
             logger.warning(f"Could not read Dockerfile for hashing: {e}")
@@ -344,7 +370,7 @@ class DockerRunBackend:
                 check=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                text=True
+                text=True,
             )
             logger.debug(f"Image {image_name} already exists")
             return True

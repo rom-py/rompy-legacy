@@ -23,8 +23,9 @@ from rompy.core.time import TimeRange
 from rompy.backends import LocalConfig, DockerConfig
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
+
 
 def example_local_basic():
     """Example 1: Basic local execution
@@ -68,6 +69,7 @@ def example_local_basic():
         except Exception as e:
             logger.error(f"❌ Model run failed: {e}")
 
+
 def example_local_advanced():
     """Example 2: Advanced local execution with environment variables
 
@@ -77,7 +79,9 @@ def example_local_advanced():
     logger.info("=" * 60)
     logger.info("Example 2: Advanced Local Execution")
     logger.info("=" * 60)
-    logger.info("This example shows environment variables and advanced local configuration.")
+    logger.info(
+        "This example shows environment variables and advanced local configuration."
+    )
     logger.info("")
 
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -101,10 +105,10 @@ def example_local_advanced():
                 "MODEL_DEBUG": "true",
                 "MODEL_PRECISION": "double",
                 "DATA_DIR": "/tmp/data",
-                "RESULTS_DIR": "/tmp/results"
+                "RESULTS_DIR": "/tmp/results",
             },
             shell=True,
-            capture_output=True
+            capture_output=True,
         )
 
         logger.info(f"LocalConfig with environment variables: {config}")
@@ -116,6 +120,7 @@ def example_local_advanced():
             logger.info("Key concepts: env_vars, shell=True, capture_output")
         except Exception as e:
             logger.error(f"❌ Model run failed: {e}")
+
 
 def example_docker_basic():
     """Example 3: Basic Docker execution
@@ -149,10 +154,7 @@ def example_docker_basic():
             memory="1g",
             executable="python -c \"print('Docker model execution complete'); import os; print(f'Working in: {os.getcwd()}')\"",
             volumes=[f"{temp_dir}:/app/work:rw"],
-            env_vars={
-                "PYTHONUNBUFFERED": "1",
-                "WORKDIR": "/app/work"
-            }
+            env_vars={"PYTHONUNBUFFERED": "1", "WORKDIR": "/app/work"},
         )
 
         logger.info(f"DockerConfig created: {config}")
@@ -165,6 +167,7 @@ def example_docker_basic():
         except Exception as e:
             logger.error(f"❌ Model run failed: {e}")
 
+
 def example_docker_advanced():
     """Example 4: Advanced Docker execution with volume mounts
 
@@ -174,7 +177,9 @@ def example_docker_advanced():
     logger.info("=" * 60)
     logger.info("Example 4: Advanced Docker Execution")
     logger.info("=" * 60)
-    logger.info("This example shows advanced Docker configuration with multiple volumes.")
+    logger.info(
+        "This example shows advanced Docker configuration with multiple volumes."
+    )
     logger.info("")
 
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -195,21 +200,18 @@ def example_docker_advanced():
             timeout=3600,  # 1 hour
             cpu=4,
             memory="2g",
-            executable="python -c \"print('Advanced Docker execution'); import os; print(f'Threads: {os.environ.get(\\\"MODEL_THREADS\\\", \\\"unknown\\\")}')\"",
+            executable='python -c "print(\'Advanced Docker execution\'); import os; print(f\'Threads: {os.environ.get(\\"MODEL_THREADS\\", \\"unknown\\")}\')"',
             mpiexec="",  # No MPI for this example
-            volumes=[
-                f"{temp_dir}:/app/work:rw",
-                "/tmp:/tmp:rw"
-            ],
+            volumes=[f"{temp_dir}:/app/work:rw", "/tmp:/tmp:rw"],
             env_vars={
                 "PYTHONUNBUFFERED": "1",
                 "MODEL_THREADS": "4",
                 "MODEL_PRECISION": "double",
                 "WORKDIR": "/app/work",
-                "TMPDIR": "/tmp"
+                "TMPDIR": "/tmp",
             },
             user="root",
-            remove_container=True
+            remove_container=True,
         )
 
         logger.info(f"DockerConfig with advanced settings: {config}")
@@ -218,9 +220,12 @@ def example_docker_advanced():
         try:
             success = model.run(backend=config)
             logger.info(f"✅ Model run {'succeeded' if success else 'failed'}")
-            logger.info("Key concepts: multiple volumes, resource allocation, container management")
+            logger.info(
+                "Key concepts: multiple volumes, resource allocation, container management"
+            )
         except Exception as e:
             logger.error(f"❌ Model run failed: {e}")
+
 
 def example_configuration_validation():
     """Example 5: Configuration validation
@@ -239,7 +244,7 @@ def example_configuration_validation():
         config = LocalConfig(
             timeout=3600,
             command="echo 'Valid configuration'",
-            env_vars={"TEST": "value"}
+            env_vars={"TEST": "value"},
         )
         logger.info("✅ Valid LocalConfig created successfully")
     except Exception as e:
@@ -250,7 +255,7 @@ def example_configuration_validation():
     try:
         config = LocalConfig(
             timeout=100000,  # Too high (max is 86400)
-            command="echo 'Invalid configuration'"
+            command="echo 'Invalid configuration'",
         )
         logger.info("❌ This should not succeed")
     except Exception as e:
@@ -258,12 +263,7 @@ def example_configuration_validation():
 
     # Valid Docker configuration
     try:
-        config = DockerConfig(
-            image="python:3.9-slim",
-            timeout=3600,
-            cpu=2,
-            memory="1g"
-        )
+        config = DockerConfig(image="python:3.9-slim", timeout=3600, cpu=2, memory="1g")
         logger.info("✅ Valid DockerConfig created successfully")
     except Exception as e:
         logger.error(f"❌ DockerConfig validation failed: {e}")
@@ -274,14 +274,17 @@ def example_configuration_validation():
         config = DockerConfig(
             timeout=3600,
             cpu=2,
-            memory="1g"
+            memory="1g",
             # Missing required image or dockerfile
         )
         logger.info("❌ This should not succeed")
     except Exception as e:
         logger.info(f"✅ Validation correctly caught error: {e}")
 
-    logger.info("Key concepts: Pydantic validation, error handling, configuration safety")
+    logger.info(
+        "Key concepts: Pydantic validation, error handling, configuration safety"
+    )
+
 
 def example_config_from_dict():
     """Example 6: Creating configurations from dictionaries (like YAML)
@@ -292,19 +295,18 @@ def example_config_from_dict():
     logger.info("=" * 60)
     logger.info("Example 6: Configuration from Dictionary")
     logger.info("=" * 60)
-    logger.info("This example shows creating configurations from dictionaries (like YAML files).")
+    logger.info(
+        "This example shows creating configurations from dictionaries (like YAML files)."
+    )
     logger.info("")
 
     # Simulate loading from YAML file
     local_config_data = {
         "timeout": 3600,
         "command": "python run_model.py",
-        "env_vars": {
-            "OMP_NUM_THREADS": "4",
-            "MODEL_DEBUG": "true"
-        },
+        "env_vars": {"OMP_NUM_THREADS": "4", "MODEL_DEBUG": "true"},
         "shell": True,
-        "capture_output": True
+        "capture_output": True,
     }
 
     docker_config_data = {
@@ -313,10 +315,7 @@ def example_config_from_dict():
         "cpu": 4,
         "memory": "2g",
         "volumes": ["/tmp:/tmp:rw"],
-        "env_vars": {
-            "PYTHONUNBUFFERED": "1",
-            "MODEL_THREADS": "4"
-        }
+        "env_vars": {"PYTHONUNBUFFERED": "1", "MODEL_THREADS": "4"},
     }
 
     try:
@@ -333,6 +332,7 @@ def example_config_from_dict():
     except Exception as e:
         logger.error(f"❌ Configuration creation failed: {e}")
 
+
 def example_postprocessing():
     """Example 7: Complete workflow with postprocessing
 
@@ -342,7 +342,9 @@ def example_postprocessing():
     logger.info("=" * 60)
     logger.info("Example 7: Complete Workflow with Postprocessing")
     logger.info("=" * 60)
-    logger.info("This example demonstrates a complete workflow: model run + postprocessing.")
+    logger.info(
+        "This example demonstrates a complete workflow: model run + postprocessing."
+    )
     logger.info("")
 
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -373,17 +375,24 @@ def example_postprocessing():
                 logger.info("Step 2: Running postprocessing...")
                 results = model.postprocess(processor="noop")
                 logger.info(f"✅ Postprocessing completed: {results}")
-                logger.info("Key concepts: complete workflow, model.run() + model.postprocess()")
+                logger.info(
+                    "Key concepts: complete workflow, model.run() + model.postprocess()"
+                )
 
         except Exception as e:
             logger.error(f"❌ Workflow failed: {e}")
+
 
 def main():
     """Run all tutorial examples"""
     logger.info("🚀 ROMPY Backend Tutorial")
     logger.info("========================")
-    logger.info("This tutorial covers essential ROMPY backend concepts through practical examples.")
-    logger.info("Each example builds on the previous one to show increasingly sophisticated usage.")
+    logger.info(
+        "This tutorial covers essential ROMPY backend concepts through practical examples."
+    )
+    logger.info(
+        "Each example builds on the previous one to show increasingly sophisticated usage."
+    )
     logger.info("")
 
     # Run examples
@@ -394,7 +403,7 @@ def main():
         example_docker_advanced,
         example_configuration_validation,
         example_config_from_dict,
-        example_postprocessing
+        example_postprocessing,
     ]
 
     completed_examples = 0
@@ -409,7 +418,9 @@ def main():
             logger.info("")
 
     logger.info("=" * 60)
-    logger.info(f"🎉 Tutorial completed! ({completed_examples}/{len(examples)} examples ran successfully)")
+    logger.info(
+        f"🎉 Tutorial completed! ({completed_examples}/{len(examples)} examples ran successfully)"
+    )
     logger.info("=" * 60)
     logger.info("What you learned:")
     logger.info("• Basic local execution with LocalConfig")
@@ -425,6 +436,7 @@ def main():
     logger.info("2. Try: rompy backends validate examples/configs/local_backend.yml")
     logger.info("3. Read the documentation for advanced features")
     logger.info("4. Create your own configuration files for your models")
+
 
 if __name__ == "__main__":
     main()

@@ -24,14 +24,15 @@ class TestSCHISMConfigSchema:
     @pytest.fixture
     def temp_grid_file(self):
         """Create a temporary grid file for testing."""
-        with tempfile.NamedTemporaryFile(suffix='.gr3', delete=False) as f:
-            f.write(b'test grid content')
+        with tempfile.NamedTemporaryFile(suffix=".gr3", delete=False) as f:
+            f.write(b"test grid content")
             temp_file = f.name
 
         yield temp_file
 
         # Cleanup
         import os
+
         if os.path.exists(temp_file):
             os.unlink(temp_file)
 
@@ -54,7 +55,7 @@ class TestSCHISMConfigSchema:
         assert isinstance(schema, dict)
 
         # Verify basic schema structure
-        assert 'type' in schema or '$defs' in schema
+        assert "type" in schema or "$defs" in schema
 
         # Verify schema can be serialized to JSON
         json_str = json.dumps(schema)
@@ -69,15 +70,15 @@ class TestSCHISMConfigSchema:
         schema = minimal_schism_config.model_json_schema()
 
         # Check for model_type and grid in schema
-        if 'properties' in schema:
-            properties = schema['properties']
-            assert 'model_type' in properties
-            assert 'grid' in properties
+        if "properties" in schema:
+            properties = schema["properties"]
+            assert "model_type" in properties
+            assert "grid" in properties
 
         # Check for required fields - grid is the main required field
-        if 'required' in schema:
-            required = schema['required']
-            assert 'grid' in required
+        if "required" in schema:
+            required = schema["required"]
+            assert "grid" in required
             # model_type may or may not be required depending on schema generation
 
     def test_schism_config_schema_handles_numpy_types(self, minimal_schism_config):
@@ -90,9 +91,9 @@ class TestSCHISMConfigSchema:
 
         # Verify no numpy types leak into the schema
         schema_str = json.dumps(schema)
-        assert 'numpy.bool' not in schema_str
-        assert 'numpy.integer' not in schema_str
-        assert 'numpy.floating' not in schema_str
+        assert "numpy.bool" not in schema_str
+        assert "numpy.integer" not in schema_str
+        assert "numpy.floating" not in schema_str
 
     def test_schism_config_schema_no_fallback_needed(self, minimal_schism_config):
         """Test that schema generation works without fallback after fixing numpy types."""
@@ -103,11 +104,11 @@ class TestSCHISMConfigSchema:
         assert isinstance(schema, dict)
 
         # Should have proper pydantic schema structure with definitions
-        assert '$defs' in schema or 'definitions' in schema or 'properties' in schema
+        assert "$defs" in schema or "definitions" in schema or "properties" in schema
 
         # Should contain detailed field information, not just basic types
         schema_str = str(schema)
-        assert 'SCHISMGrid' in schema_str or 'grid' in schema_str
+        assert "SCHISMGrid" in schema_str or "grid" in schema_str
 
     def test_schism_config_schema_json_serializable(self, minimal_schism_config):
         """Test that the schema is fully JSON serializable."""
@@ -135,7 +136,9 @@ class TestSCHISMConfigSchema:
             if isinstance(obj, dict):
                 for key, value in obj.items():
                     # Check key is not a numpy type
-                    assert not isinstance(key, (np.bool_, np.integer, np.floating, np.ndarray))
+                    assert not isinstance(
+                        key, (np.bool_, np.integer, np.floating, np.ndarray)
+                    )
                     # Check value recursively
                     check_no_numpy_objects(value)
             elif isinstance(obj, list):
@@ -143,7 +146,9 @@ class TestSCHISMConfigSchema:
                     check_no_numpy_objects(item)
             else:
                 # Check that the object itself is not a numpy type
-                assert not isinstance(obj, (np.bool_, np.integer, np.floating, np.ndarray))
+                assert not isinstance(
+                    obj, (np.bool_, np.integer, np.floating, np.ndarray)
+                )
 
         check_no_numpy_objects(schema)
 

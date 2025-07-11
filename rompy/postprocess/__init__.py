@@ -3,6 +3,7 @@ No-op postprocessor for model outputs.
 
 This module provides a basic postprocessor that does nothing.
 """
+
 import logging
 from pathlib import Path
 from typing import Dict, Any, Optional, Union
@@ -17,10 +18,13 @@ class NoopPostprocessor:
     It's useful as a base class or for testing.
     """
 
-    def process(self, model_run,
-                validate_outputs: bool = True,
-                output_dir: Optional[Union[str, Path]] = None,
-                **kwargs) -> Dict[str, Any]:
+    def process(
+        self,
+        model_run,
+        validate_outputs: bool = True,
+        output_dir: Optional[Union[str, Path]] = None,
+        **kwargs,
+    ) -> Dict[str, Any]:
         """Process the output of a model run (does nothing).
 
         Args:
@@ -39,7 +43,7 @@ class NoopPostprocessor:
         if not model_run:
             raise ValueError("model_run cannot be None")
 
-        if not hasattr(model_run, 'run_id'):
+        if not hasattr(model_run, "run_id"):
             raise ValueError("model_run must have a run_id attribute")
 
         logger.info(f"Starting no-op postprocessing for run_id: {model_run.run_id}")
@@ -59,21 +63,23 @@ class NoopPostprocessor:
                         "success": False,
                         "message": f"Output directory not found: {check_dir}",
                         "run_id": model_run.run_id,
-                        "output_dir": str(check_dir)
+                        "output_dir": str(check_dir),
                     }
                 else:
                     # Count files in output directory
                     file_count = sum(1 for f in check_dir.rglob("*") if f.is_file())
                     logger.info(f"Found {file_count} output files in {check_dir}")
 
-            logger.info(f"No-op postprocessing completed for run_id: {model_run.run_id}")
+            logger.info(
+                f"No-op postprocessing completed for run_id: {model_run.run_id}"
+            )
 
             return {
                 "success": True,
                 "message": "No postprocessing requested - validation only",
                 "run_id": model_run.run_id,
                 "output_dir": str(check_dir),
-                "validated": validate_outputs
+                "validated": validate_outputs,
             }
 
         except Exception as e:
@@ -81,6 +87,6 @@ class NoopPostprocessor:
             return {
                 "success": False,
                 "message": f"Error in postprocessor: {str(e)}",
-                "run_id": getattr(model_run, 'run_id', 'unknown'),
-                "error": str(e)
+                "run_id": getattr(model_run, "run_id", "unknown"),
+                "error": str(e),
             }

@@ -111,7 +111,9 @@ class TestModelRunPydanticIntegration:
             assert result is True
             # Verify DockerRunBackend was instantiated and called
             mock_docker_backend_class.assert_called_once()
-            mock_backend_instance.run.assert_called_once_with(model_run, config=config, workspace_dir=None)
+            mock_backend_instance.run.assert_called_once_with(
+                model_run, config=config, workspace_dir=None
+            )
 
     def test_run_with_invalid_backend_type(self, model_run):
         """Test ModelRun.run() raises TypeError for invalid backend types."""
