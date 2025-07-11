@@ -5,6 +5,7 @@ Shared fixtures for SCHISM tests.
 This module provides reusable pytest fixtures for testing SCHISM functionality.
 """
 
+import logging
 import os
 from pathlib import Path
 
@@ -16,20 +17,15 @@ from rompy.core.filters import Filter
 from rompy.core.source import SourceFile, SourceIntake
 from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords
-from rompy.schism.data import (
-    SCHISMDataBoundary,
-    SCHISMDataSflux,
-    SfluxAir,
-)
-from rompy.schism.boundary_core import (
-    BoundaryHandler,
-    TidalBoundary,  # Backward compatibility alias
-    TidalDataset,
-)
-
+from rompy.schism.boundary_core import \
+    TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import BoundaryHandler, TidalDataset
+from rompy.schism.data import SCHISMDataBoundary, SCHISMDataSflux, SfluxAir
 # Import directly from the new implementation
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.vgrid import VGrid as SchismVGrid
+
+logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
@@ -165,6 +161,13 @@ def hycom_bnd2d(test_files_dir):
 def tidal_data_files(test_files_dir):
     """Return paths to tidal elevation and velocity files for testing."""
     tidal_database = test_files_dir / "tides"
+    if not (tidal_database / "oceanum-atlas" / "grid_tpxo9_atlas_30_v2.nc").exists():
+        if (tidal_database / "oceanum-atlas.tar.gz").exists():
+            import tarfile
+
+            logger.info(f"Unpacking {tidal_database / 'oceanum-atlas.tar.gz'}")
+            with tarfile.open(tidal_database / "oceanum-atlas.tar.gz") as tar:
+                tar.extractall(path=tidal_database)
     return tidal_database
 
 
