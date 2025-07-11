@@ -37,8 +37,7 @@ The final main component of the library is an intake driver that builds on the i
     formatting_and_logging
     cli
     backends
-    backends_quickstart
-    backend_configurations
+    backend_reference
     models
     demo
     api

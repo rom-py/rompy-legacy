@@ -216,7 +216,7 @@ Backend configurations are defined in YAML or JSON files with a ``type`` field i
       - "/data/output:/app/output:rw"
     executable: "/usr/local/bin/swan"
 
-For complete configuration options, see :doc:`backend_configurations`.
+For complete configuration options, see :doc:`backend_reference`.
 
 Global Options
 --------------

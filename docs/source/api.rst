@@ -63,8 +63,8 @@ Types
     :no-index:
 
 
-Backend Configuration Classes
------------------------------
+Backend System
+--------------
 
 Backend Configurations
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -73,25 +73,21 @@ Backend Configurations
     :inherited-members: BaseModel
     :no-index:
 
-Backend Registry
-~~~~~~~~~~~~~~~~
-.. automodule:: rompy.backends
-    :members:
-    :no-index:
-
-
 Run Backends
-------------
-
-Local Run Backend
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
 .. automodule:: rompy.run
     :members:
     :no-index:
 
-Docker Run Backend
-~~~~~~~~~~~~~~~~~~
-.. automodule:: rompy.run.docker
+Postprocessors
+~~~~~~~~~~~~~~
+.. automodule:: rompy.backends.postprocessors
+    :members:
+    :no-index:
+
+Backend Registry
+~~~~~~~~~~~~~~~~
+.. automodule:: rompy.backends
     :members:
     :no-index:
 
