@@ -29,15 +29,23 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
-def test_data_dir():
-    """Return path to test data directory."""
-    return Path(__file__).parent / "data"
-
-
-@pytest.fixture
 def test_files_dir():
     """Return path to test files directory (old structure)."""
     return Path(__file__).parent / "test_data"
+
+
+@pytest.fixture
+def hycom_path(test_files_dir):
+    """Get the path to HYCOM data."""
+    hycomdata = test_files_dir / "hycom.nc"
+    if not hycomdata.exists():
+        from tests.utils import download_hycom
+
+        logging.info("Hycom test data not found, downloading...")
+        logging.info("This may take a while...only has to be done once.")
+        download_hycom(dest=test_files_dir, hgrid=test_files_dir / "hgrid.gr3")
+
+    return str(hycomdata)
 
 
 @pytest.fixture
@@ -110,10 +118,10 @@ def grid_atmos_source(test_files_dir):
 
 
 @pytest.fixture
-def hycom_bnd_elev(test_files_dir):
+def hycom_bnd_elev(test_files_dir, hycom_path):
     """Create a 2D hydrodynamic boundary source."""
     return DataGrid(
-        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat"),
         variables=["surf_el"],
         buffer=0.1,
@@ -123,10 +131,10 @@ def hycom_bnd_elev(test_files_dir):
 
 
 @pytest.fixture
-def hycom_bnd_vel(test_files_dir):
+def hycom_bnd_vel(test_files_dir, hycom_path):
     """Create a 2D hydrodynamic boundary source."""
     return DataGrid(
-        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat"),
         variables=["water_u", "water_v"],
         buffer=0.1,
@@ -136,10 +144,10 @@ def hycom_bnd_vel(test_files_dir):
 
 
 @pytest.fixture
-def hycom_bnd_temp_3d(test_files_dir):
+def hycom_bnd_temp_3d(test_files_dir, hycom_path):
     """Create a 3D temperature boundary source."""
     return DataGrid(
-        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat", z="depth"),
         variables=["water_temp"],
         buffer=0.1,
@@ -149,10 +157,10 @@ def hycom_bnd_temp_3d(test_files_dir):
 
 
 @pytest.fixture
-def hycom_bnd2d(test_files_dir):
+def hycom_bnd2d(test_files_dir, hycom_path):
     """Create a 3D temperature boundary source."""
     return DataGrid(
-        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat", z="depth"),
     )
 
