@@ -17,10 +17,10 @@ from rompy.core.filters import Filter
 from rompy.core.source import SourceFile, SourceIntake
 from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords
-from rompy.schism.boundary_core import \
-    TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import TidalBoundary  # Backward compatibility alias
 from rompy.schism.boundary_core import BoundaryHandler, TidalDataset
 from rompy.schism.data import SCHISMDataBoundary, SCHISMDataSflux, SfluxAir
+
 # Import directly from the new implementation
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.vgrid import VGrid as SchismVGrid
