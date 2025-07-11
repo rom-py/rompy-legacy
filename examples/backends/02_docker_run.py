@@ -12,6 +12,7 @@ from pathlib import Path
 
 from rompy.model import ModelRun
 from rompy.core.time import TimeRange
+from rompy.backends import DockerConfig
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -34,11 +35,10 @@ def main():
     # Create a data directory for volume mounting
     data_dir = Path("./data")
     data_dir.mkdir(exist_ok=True)
-    
+
     # Run the model in a Docker container
     logger.info("Running model in Docker...")
-    success = model.run(
-        backend="docker",
+    docker_config = DockerConfig(
         image="python:3.9-slim",  # Example image
         # Or build from a Dockerfile:
         # dockerfile="./Dockerfile",
@@ -54,7 +54,8 @@ def main():
             "DATA_DIR": "/data",
         },
     )
-    
+    success = model.run(backend=docker_config)
+
     logger.info(f"Model run {'succeeded' if success else 'failed'}")
 
 if __name__ == "__main__":

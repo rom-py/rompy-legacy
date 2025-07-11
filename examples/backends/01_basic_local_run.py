@@ -3,7 +3,7 @@ Example 1: Basic Local Run with No-Op Postprocessing
 
 This example demonstrates how to:
 1. Create a basic model run configuration
-2. Run the model locally using Pydantic configuration
+2. Run the model locally using LocalConfig
 3. Perform no-op postprocessing
 """
 import logging
@@ -31,7 +31,7 @@ def main():
         delete_existing=True,
     )
 
-    # Run the model locally using Pydantic configuration
+    # Run the model locally
     logger.info("Running model locally...")
     local_config = LocalConfig(
         timeout=3600,  # 1 hour timeout

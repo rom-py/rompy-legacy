@@ -14,86 +14,42 @@ from typing import Dict, Any, Optional
 
 from rompy.model import ModelRun
 from rompy.core.time import TimeRange
-# No need to import abstract base class anymore
+from rompy.backends import LocalConfig
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# 1. Define a custom run backend
-class ShellCommandBackend:
-    """Custom backend that runs shell commands."""
-    
-    def run(self, model_run, command: str, **kwargs) -> bool:
-        """Run a shell command in the model's output directory.
-        
-        Args:
-            model_run: The ModelRun instance
-            command: Shell command to run
-            **kwargs: Additional parameters
-            
-        Returns:
-            True if execution was successful, False otherwise
-        """
-        try:
-            # Generate model input files
-            model_run.generate()
-            
-            # Run the command in the model's output directory
-            output_dir = Path(model_run.output_dir) / model_run.run_id
-            logger.info(f"Running command in {output_dir}: {command}")
-            
-            result = subprocess.run(
-                command,
-                shell=True,
-                cwd=output_dir,
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            
-            logger.info(f"Command output:\n{result.stdout}")
-            if result.stderr:
-                logger.warning(f"Command stderr:\n{result.stderr}")
-                    
-            return True
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Command failed with code {e.returncode}: {e.stderr}")
-            return False
-        except Exception as e:
-            logger.exception(f"Error in custom backend: {e}")
-            return False
-
-# 2. Define a custom postprocessor
+# 1. Define a custom postprocessor
 class FileInfoPostprocessor:
     """Custom postprocessor that collects information about output files.
-    
+
     This class implements the postprocessor interface by providing a process() method
     that takes a model_run instance and returns a dictionary with results.
     """
-    
+
     def process(self, model_run, **kwargs) -> Dict[str, Any]:
         """Collect information about output files.
-        
+
         Args:
             model_run: The ModelRun instance
             **kwargs: Additional parameters
-            
+
         Returns:
             Dictionary with file information
         """
         output_dir = Path(model_run.output_dir) / model_run.run_id
-        
+
         if not output_dir.exists():
             return {
                 "success": False,
                 "message": f"Output directory not found: {output_dir}",
             }
-        
+
         try:
             file_info = {}
             total_size = 0
-            
+
             for file_path in output_dir.rglob("*"):
                 if file_path.is_file():
                     file_size = file_path.stat().st_size
@@ -103,7 +59,7 @@ class FileInfoPostprocessor:
                         "modified": datetime.fromtimestamp(file_path.stat().st_mtime).isoformat(),
                     }
                     total_size += file_size
-            
+
             return {
                 "success": True,
                 "message": f"Collected info for {len(file_info)} files",
@@ -112,7 +68,7 @@ class FileInfoPostprocessor:
                 "total_size_mb": total_size / (1024 * 1024),
                 "files": file_info,
             }
-            
+
         except Exception as e:
             return {
                 "success": False,
@@ -133,26 +89,26 @@ def main():
         output_dir="./output",
         delete_existing=True,
     )
-    
-    # 1. Run with custom backend
-    logger.info("Running model with custom backend...")
-    backend = ShellCommandBackend()
-    success = backend.run(
-        model,
+
+    # 1. Run with local backend using custom command
+    logger.info("Running model with local backend...")
+    local_config = LocalConfig(
+        timeout=3600,  # 1 hour timeout
         command="echo 'Running custom command' && \
                 echo 'This is a test file' > output.txt && \
                 ls -la > file_list.txt",
     )
-    
+    success = model.run(backend=local_config)
+
     if not success:
         logger.error("Model run failed")
         return
-    
+
     # 2. Process with custom postprocessor
     logger.info("Running custom postprocessor...")
     postprocessor = FileInfoPostprocessor()
     results = postprocessor.process(model)
-    
+
     if results["success"]:
         logger.info(f"Successfully processed {len(results['files'])} files")
         logger.info(f"Total output size: {results['total_size_mb']:.2f} MB")
