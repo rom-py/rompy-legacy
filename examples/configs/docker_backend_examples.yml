@@ -1,0 +1,134 @@
+# Docker Backend Configuration Examples
+# Multiple configuration examples for Docker execution
+
+# Basic Docker configuration
+backend_type: docker
+image: "swan:latest"
+timeout: 7200 # 2 hours - Maximum execution time in seconds (60-86400)
+executable: "/usr/local/bin/run.sh"
+cpu: 4
+memory: "2g"
+mpiexec: "mpirun -np 4"
+remove_container: true
+user: "modeluser"
+volumes:
+  - "/tmp:/app/data:rw"
+  - ".:/app/workspace:ro"
+env_vars:
+  MODEL_CONFIG: "production"
+  DATA_DIR: "/app/data"
+  OMP_NUM_THREADS: "4"
+  RESULTS_DIR: "/app/results"
+
+---
+# Building from Dockerfile
+backend_type: docker
+dockerfile: "./docker/Dockerfile"
+build_context: "./docker"
+build_args:
+  MODEL_VERSION: "2.1.0"
+  PYTHON_VERSION: "3.9"
+  COMPILER: "gcc"
+timeout: 10800 # 3 hours for build + run
+cpu: 8
+memory: "4g"
+mpiexec: "mpirun -np 8"
+volumes:
+  - "/scratch:/scratch:rw"
+  - "/data:/app/data:ro"
+env_vars:
+  PARALLEL_WORKERS: "8"
+  MODEL_DEBUG: "false"
+
+---
+# High-Performance Computing setup
+backend_type: docker
+image: "hpc-swan:latest"
+timeout: 86400 # 24 hours maximum
+cpu: 32
+memory: "64g"
+mpiexec: "mpirun --bind-to core --map-by core -np 32"
+user: "hpcuser" # Non-root for security
+volumes:
+  - "/ocean_data:/data:ro"
+  - "/scratch:/scratch:rw"
+  - "/results:/results:rw"
+env_vars:
+  OMP_NUM_THREADS: "1" # Use MPI instead of OpenMP
+  MODEL_PRECISION: "double"
+  OUTPUT_FREQUENCY: "3600"
+  SLURM_NTASKS: "32"
+
+---
+# Development setup with custom build
+backend_type: docker
+dockerfile: "./Dockerfile.dev"
+build_context: "."
+build_args:
+  DEV_MODE: "true"
+  INSTALL_DEBUG_TOOLS: "true"
+timeout: 3600
+cpu: 2
+memory: "2g"
+remove_container: false # Keep container for debugging
+volumes:
+  - "./src:/app/src:rw"
+  - "./tests:/app/tests:rw"
+  - "./config:/app/config:ro"
+  - "./logs:/app/logs:rw"
+env_vars:
+  ENV: "development"
+  LOG_LEVEL: "DEBUG"
+  PYTHONPATH: "/app/src"
+  PYTHONUNBUFFERED: "1"
+
+---
+# Minimal configuration for testing
+backend_type: docker
+image: "python:3.9-slim"
+timeout: 1800 # 30 minutes
+cpu: 1
+memory: "512m"
+executable: "python"
+volumes:
+  - ".:/app:rw"
+env_vars:
+  PYTHONPATH: "/app"
+
+---
+# GPU-enabled configuration
+backend_type: docker
+image: "tensorflow/tensorflow:latest-gpu"
+timeout: 14400 # 4 hours
+cpu: 8
+memory: "16g"
+# Note: GPU support would require additional Docker runtime configuration
+volumes:
+  - "/data:/app/data:ro"
+  - "/models:/app/models:rw"
+  - "/tmp:/tmp:rw"
+env_vars:
+  CUDA_VISIBLE_DEVICES: "0,1"
+  TF_FORCE_GPU_ALLOW_GROWTH: "true"
+  MODEL_PARALLEL: "true"
+
+---
+# Multi-stage processing
+backend_type: docker
+image: "oceanmodel:latest"
+timeout: 21600 # 6 hours
+cpu: 16
+memory: "32g"
+mpiexec: "mpirun -np 16"
+volumes:
+  - "/input_data:/data/input:ro"
+  - "/output_data:/data/output:rw"
+  - "/config:/app/config:ro"
+  - "/logs:/app/logs:rw"
+env_vars:
+  STAGE: "production"
+  INPUT_DIR: "/data/input"
+  OUTPUT_DIR: "/data/output"
+  CONFIG_DIR: "/app/config"
+  NPROC: "16"
+  MEMORY_PER_PROC: "2048" # MB per process
