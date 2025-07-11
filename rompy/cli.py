@@ -4,22 +4,23 @@ ROMPY Command Line Interface
 This module provides the command-line interface for ROMPY.
 """
 
+import importlib
+import importlib.metadata
 import json
 import sys
 import warnings
-import importlib
-import importlib.metadata
-from pathlib import Path
-from typing import Optional, Dict, Any
 from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, Optional
 
 import click
 import yaml
-import rompy
 
-from rompy.backends import LocalConfig, DockerConfig
-from rompy.model import ModelRun, RUN_BACKENDS, POSTPROCESSORS, PIPELINE_BACKENDS
-from rompy.core.logging import get_logger, LoggingConfig, LogLevel, LogFormat
+import rompy
+from rompy.backends import DockerConfig, LocalConfig
+from rompy.core.logging import LogFormat, LoggingConfig, LogLevel, get_logger
+from rompy.model import (PIPELINE_BACKENDS, POSTPROCESSORS, RUN_BACKENDS,
+                         ModelRun)
 
 # Initialize the logger
 logger = get_logger(__name__)
@@ -89,7 +90,9 @@ common_options = [
         count=True,
         help="Increase verbosity (can be used multiple times)",
     ),
-    click.option("--log-dir", envvar="ROMPY_LOG_DIR", help="Directory to save log files"),
+    click.option(
+        "--log-dir", envvar="ROMPY_LOG_DIR", help="Directory to save log files"
+    ),
     click.option(
         "--show-warnings/--hide-warnings", default=False, help="Show Python warnings"
     ),
@@ -107,11 +110,13 @@ common_options = [
     ),
 ]
 
+
 def add_common_options(f):
     """Decorator to add common CLI options to commands."""
     for option in reversed(common_options):
         f = option(f)
     return f
+
 
 def load_config(config_path: str) -> Dict[str, Any]:
     """Load configuration from file or string."""
@@ -156,8 +161,14 @@ def print_version(ctx, param, value):
 
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.option("--version", is_flag=True, expose_value=False, is_eager=True,
-              callback=print_version, help="Show version information and exit")
+@click.option(
+    "--version",
+    is_flag=True,
+    expose_value=False,
+    is_eager=True,
+    callback=print_version,
+    help="Show version information and exit",
+)
 @click.pass_context
 def cli(ctx):
     """ROMPY (Regional Ocean Modeling PYthon) - Ocean Model Configuration and Execution Tool.
@@ -171,18 +182,32 @@ def cli(ctx):
 
 @cli.command()
 @click.argument("config", type=click.Path(exists=True))
-@click.option("--backend-config", type=click.Path(exists=True), required=True, help="YAML/JSON file with backend configuration")
+@click.option(
+    "--backend-config",
+    type=click.Path(exists=True),
+    required=True,
+    help="YAML/JSON file with backend configuration",
+)
 @click.option("--dry-run", is_flag=True, help="Generate inputs only, don't run")
 @add_common_options
-def run(config, backend_config, dry_run, verbose, log_dir, show_warnings, ascii_only, simple_logs):
+def run(
+    config,
+    backend_config,
+    dry_run,
+    verbose,
+    log_dir,
+    show_warnings,
+    ascii_only,
+    simple_logs,
+):
     """Run a model configuration using Pydantic backend configuration.
 
     Examples:
         # Run with local backend configuration
-        rompy run config.yml --backend-config local_backend.yml
+        rompy run config.yml --backend-config unified_local_single.yml
 
         # Run with Docker backend configuration
-        rompy run config.yml --backend-config docker_backend.yml
+        rompy run config.yml --backend-config unified_docker_single.yml
     """
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
@@ -211,9 +236,13 @@ def run(config, backend_config, dry_run, verbose, log_dir, show_warnings, ascii_
 
         elapsed = datetime.now() - start_time
         if success:
-            logger.info(f"✅ Model completed successfully in {elapsed.total_seconds():.2f}s")
+            logger.info(
+                f"✅ Model completed successfully in {elapsed.total_seconds():.2f}s"
+            )
         else:
-            logger.error(f"❌ Model execution failed after {elapsed.total_seconds():.2f}s")
+            logger.error(
+                f"❌ Model execution failed after {elapsed.total_seconds():.2f}s"
+            )
             sys.exit(1)
 
     except Exception as e:
@@ -254,10 +283,25 @@ def _load_backend_config(backend_config_file):
 @click.argument("config", type=click.Path(exists=True))
 @click.option("--run-backend", default="local", help="Execution backend for run stage")
 @click.option("--processor", default="noop", help="Postprocessor to use")
-@click.option("--cleanup-on-failure/--no-cleanup", default=False, help="Clean up on failure")
-@click.option("--validate-stages/--no-validate", default=True, help="Validate each stage")
+@click.option(
+    "--cleanup-on-failure/--no-cleanup", default=False, help="Clean up on failure"
+)
+@click.option(
+    "--validate-stages/--no-validate", default=True, help="Validate each stage"
+)
 @add_common_options
-def pipeline(config, run_backend, processor, cleanup_on_failure, validate_stages, verbose, log_dir, show_warnings, ascii_only, simple_logs):
+def pipeline(
+    config,
+    run_backend,
+    processor,
+    cleanup_on_failure,
+    validate_stages,
+    verbose,
+    log_dir,
+    show_warnings,
+    ascii_only,
+    simple_logs,
+):
     """Run complete model pipeline (generate -> run -> postprocess)."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
@@ -268,7 +312,9 @@ def pipeline(config, run_backend, processor, cleanup_on_failure, validate_stages
 
         logger.info(f"Running pipeline for: {model_run.config.model_type}")
         logger.info(f"Run ID: {model_run.run_id}")
-        logger.info(f"Pipeline: generate → run({run_backend}) → postprocess({processor})")
+        logger.info(
+            f"Pipeline: generate → run({run_backend}) → postprocess({processor})"
+        )
 
         start_time = datetime.now()
 
@@ -278,7 +324,7 @@ def pipeline(config, run_backend, processor, cleanup_on_failure, validate_stages
             run_backend=run_backend,
             processor=processor,
             cleanup_on_failure=cleanup_on_failure,
-            validate_stages=validate_stages
+            validate_stages=validate_stages,
         )
 
         elapsed = datetime.now() - start_time
@@ -293,7 +339,9 @@ def pipeline(config, run_backend, processor, cleanup_on_failure, validate_stages
         if success:
             logger.info("✅ Pipeline completed successfully")
         else:
-            logger.error(f"❌ Pipeline failed: {results.get('message', 'Unknown error')}")
+            logger.error(
+                f"❌ Pipeline failed: {results.get('message', 'Unknown error')}"
+            )
             sys.exit(1)
 
     except Exception as e:
@@ -307,7 +355,9 @@ def pipeline(config, run_backend, processor, cleanup_on_failure, validate_stages
 @click.argument("config", type=click.Path(exists=True))
 @click.option("--output-dir", help="Override output directory")
 @add_common_options
-def generate(config, output_dir, verbose, log_dir, show_warnings, ascii_only, simple_logs):
+def generate(
+    config, output_dir, verbose, log_dir, show_warnings, ascii_only, simple_logs
+):
     """Generate model input files only."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
@@ -383,22 +433,22 @@ def list_backends(verbose, log_dir, show_warnings, ascii_only, simple_logs):
     logger.info("\n🏃 Run Backends:")
     for name, backend_class in RUN_BACKENDS.items():
         logger.info(f"  - {name}: {backend_class.__name__}")
-        if hasattr(backend_class, '__doc__') and backend_class.__doc__:
-            doc = backend_class.__doc__.strip().split('\n')[0]
+        if hasattr(backend_class, "__doc__") and backend_class.__doc__:
+            doc = backend_class.__doc__.strip().split("\n")[0]
             logger.info(f"    {doc}")
 
     logger.info("\n🔄 Postprocessors:")
     for name, proc_class in POSTPROCESSORS.items():
         logger.info(f"  - {name}: {proc_class.__name__}")
-        if hasattr(proc_class, '__doc__') and proc_class.__doc__:
-            doc = proc_class.__doc__.strip().split('\n')[0]
+        if hasattr(proc_class, "__doc__") and proc_class.__doc__:
+            doc = proc_class.__doc__.strip().split("\n")[0]
             logger.info(f"    {doc}")
 
     logger.info("\n🔗 Pipeline Backends:")
     for name, pipeline_class in PIPELINE_BACKENDS.items():
         logger.info(f"  - {name}: {pipeline_class.__name__}")
-        if hasattr(pipeline_class, '__doc__') and pipeline_class.__doc__:
-            doc = pipeline_class.__doc__.strip().split('\n')[0]
+        if hasattr(pipeline_class, "__doc__") and pipeline_class.__doc__:
+            doc = pipeline_class.__doc__.strip().split("\n")[0]
             logger.info(f"    {doc}")
 
     # Show Pydantic backend configurations
@@ -409,9 +459,15 @@ def list_backends(verbose, log_dir, show_warnings, ascii_only, simple_logs):
 
 @backends.command("validate")
 @click.argument("config_file", type=click.Path(exists=True))
-@click.option("--backend-type", type=click.Choice(["local", "docker"]), help="Backend type to validate as")
+@click.option(
+    "--backend-type",
+    type=click.Choice(["local", "docker"]),
+    help="Backend type to validate as",
+)
 @add_common_options
-def validate_backend_config(config_file, backend_type, verbose, log_dir, show_warnings, ascii_only, simple_logs):
+def validate_backend_config(
+    config_file, backend_type, verbose, log_dir, show_warnings, ascii_only, simple_logs
+):
     """Validate a backend configuration file."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
@@ -419,20 +475,24 @@ def validate_backend_config(config_file, backend_type, verbose, log_dir, show_wa
         # Load configuration
         config_data = load_config(config_file)
 
-        # Determine backend type
+        # Determine backend type and extract config parameters
         if backend_type:
             config_type = backend_type
+        elif "backend_type" in config_data:
+            config_type = config_data.pop("backend_type")
         elif "type" in config_data:
             config_type = config_data.pop("type")
         else:
-            raise click.UsageError("Backend type must be specified via --backend-type or 'type' field in config")
+            raise click.UsageError(
+                "Backend type must be specified via --backend-type or 'type' field in config"
+            )
 
         # Validate configuration
         if config_type == "local":
-            config = LocalConfig(**config_data)
+            config = LocalConfig(**config_params)
             logger.info("✅ Local backend configuration is valid")
         elif config_type == "docker":
-            config = DockerConfig(**config_data)
+            config = DockerConfig(**config_params)
             logger.info("✅ Docker backend configuration is valid")
         else:
             raise click.UsageError(f"Unknown backend type: {config_type}")
@@ -468,11 +528,31 @@ def validate_backend_config(config_file, backend_type, verbose, log_dir, show_wa
 
 
 @backends.command("schema")
-@click.option("--backend-type", type=click.Choice(["local", "docker"]), required=True, help="Backend type to show schema for")
-@click.option("--format", "output_format", type=click.Choice(["json", "yaml"]), default="json", help="Output format")
+@click.option(
+    "--backend-type",
+    type=click.Choice(["local", "docker"]),
+    required=True,
+    help="Backend type to show schema for",
+)
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(["json", "yaml"]),
+    default="json",
+    help="Output format",
+)
 @click.option("--examples", is_flag=True, help="Include examples in output")
 @add_common_options
-def show_backend_schema(backend_type, output_format, examples, verbose, log_dir, show_warnings, ascii_only, simple_logs):
+def show_backend_schema(
+    backend_type,
+    output_format,
+    examples,
+    verbose,
+    log_dir,
+    show_warnings,
+    ascii_only,
+    simple_logs,
+):
     """Show JSON schema for backend configurations."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
@@ -497,9 +577,11 @@ def show_backend_schema(backend_type, output_format, examples, verbose, log_dir,
         # Output schema
         if output_format == "json":
             import json
+
             output = json.dumps(schema, indent=2)
         else:  # yaml
             import yaml
+
             output = yaml.dump(schema, default_flow_style=False)
 
         click.echo(output)
@@ -512,12 +594,33 @@ def show_backend_schema(backend_type, output_format, examples, verbose, log_dir,
 
 
 @backends.command("create")
-@click.option("--backend-type", type=click.Choice(["local", "docker"]), required=True, help="Backend type to create")
+@click.option(
+    "--backend-type",
+    type=click.Choice(["local", "docker"]),
+    required=True,
+    help="Backend type to create",
+)
 @click.option("--output", type=click.Path(), help="Output file (default: stdout)")
-@click.option("--format", "output_format", type=click.Choice(["json", "yaml"]), default="yaml", help="Output format")
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(["json", "yaml"]),
+    default="yaml",
+    help="Output format",
+)
 @click.option("--with-examples", is_flag=True, help="Include example values")
 @add_common_options
-def create_backend_config(backend_type, output, output_format, with_examples, verbose, log_dir, show_warnings, ascii_only, simple_logs):
+def create_backend_config(
+    backend_type,
+    output,
+    output_format,
+    with_examples,
+    verbose,
+    log_dir,
+    show_warnings,
+    ascii_only,
+    simple_logs,
+):
     """Create a template backend configuration file."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
@@ -532,7 +635,7 @@ def create_backend_config(backend_type, output, output_format, with_examples, ve
                     "env_vars": {"OMP_NUM_THREADS": "4"},
                     "command": "python run_model.py",
                     "shell": True,
-                    "capture_output": True
+                    "capture_output": True,
                 }
             else:
                 config_data = {
@@ -541,7 +644,7 @@ def create_backend_config(backend_type, output, output_format, with_examples, ve
                     "env_vars": {},
                     "command": None,
                     "shell": True,
-                    "capture_output": True
+                    "capture_output": True,
                 }
         elif backend_type == "docker":
             if with_examples:
@@ -553,7 +656,7 @@ def create_backend_config(backend_type, output, output_format, with_examples, ve
                     "memory": "2g",
                     "env_vars": {"DOCKER_ENV": "value"},
                     "volumes": ["/data:/app/data"],
-                    "executable": "/usr/local/bin/run.sh"
+                    "executable": "/usr/local/bin/run.sh",
                 }
             else:
                 config_data = {
@@ -563,20 +666,22 @@ def create_backend_config(backend_type, output, output_format, with_examples, ve
                     "cpu": 1,
                     "env_vars": {},
                     "volumes": [],
-                    "executable": "/usr/local/bin/run.sh"
+                    "executable": "/usr/local/bin/run.sh",
                 }
 
         # Format output
         if output_format == "json":
             import json
+
             content = json.dumps(config_data, indent=2)
         else:  # yaml
             import yaml
+
             content = yaml.dump(config_data, default_flow_style=False)
 
         # Write to file or stdout
         if output:
-            with open(output, 'w') as f:
+            with open(output, "w") as f:
                 f.write(content)
             logger.info(f"✅ Backend configuration template created: {output}")
         else:
@@ -637,10 +742,10 @@ def schema(
         ascii_only=ascii_only,
         show_warnings=show_warnings,
     )
-    
+
     # Get logger for this module
     logger = get_logger(__name__)
-    
+
     try:
         logger.debug(f"Showing schema for model: {model_type}")
 
@@ -658,103 +763,119 @@ def schema(
                     logger.debug(f"Trying to import {model_type} from rompy.model")
                     model_class = getattr(rompy.model, model_type)
                 except AttributeError:
-                    logger.debug(f"{model_type} not found in rompy.model, checking entry points")
+                    logger.debug(
+                        f"{model_type} not found in rompy.model, checking entry points"
+                    )
                     # Try to find the model in entry points with different approaches
                     try:
                         # Python 3.10+ style
                         model_eps = importlib.metadata.entry_points()
-                        if hasattr(model_eps, 'select'):
+                        if hasattr(model_eps, "select"):
                             # Python 3.10+
-                            model_entries = model_eps.select(group='rompy.model')
-                        elif hasattr(model_eps, 'get'):
+                            model_entries = model_eps.select(group="rompy.model")
+                        elif hasattr(model_eps, "get"):
                             # Python 3.8-3.9
-                            model_entries = model_eps.get('rompy.model', [])
+                            model_entries = model_eps.get("rompy.model", [])
                         else:
                             # Fallback for older Python versions
                             model_entries = []
-                            if hasattr(model_eps, 'items'):
+                            if hasattr(model_eps, "items"):
                                 for group, entries in model_eps.items():
-                                    if group == 'rompy.model':
+                                    if group == "rompy.model":
                                         model_entries = entries
                                         break
                     except Exception as e:
                         logger.debug(f"Error getting entry points: {e}")
                         model_entries = []
-                    
+
                     # Try to find the model in entry points
                     found = False
                     for entry_point in model_entries:
                         if entry_point.name.lower() == model_type.lower():
-                            logger.debug(f"Found {model_type} in entry points, loading...")
+                            logger.debug(
+                                f"Found {model_type} in entry points, loading..."
+                            )
                             model_class = entry_point.load()
                             found = True
                             break
-                    
+
                     if not found:
                         # Try direct import as a last resort
                         try:
-                            model_class = importlib.import_module(f"rompy.{model_type.lower()}")
+                            model_class = importlib.import_module(
+                                f"rompy.{model_type.lower()}"
+                            )
                             found = True
                         except ImportError:
                             raise ImportError(
                                 f"No model found with name '{model_type}'. "
                                 "Please provide the full module path (e.g., 'rompy.swan.SWAN')"
                             )
-            
-            logger.debug(f"Successfully imported model class: {model_class.__module__}.{model_class.__name__}")
-            
+
+            logger.debug(
+                f"Successfully imported model class: {model_class.__module__}.{model_class.__name__}"
+            )
+
         except (ImportError, AttributeError) as e:
             # Initialize error message
             error_msg = [f"Could not import model class '{model_type}'"]
-            
+
             # Get available models from rompy.model
             try:
                 from rompy.model import __all__ as model_classes
-                error_msg.append(f"Available models in rompy.model: {', '.join(model_classes)}")
+
+                error_msg.append(
+                    f"Available models in rompy.model: {', '.join(model_classes)}"
+                )
             except Exception as e:
                 logger.debug(f"Could not get models from rompy.model: {e}")
-            
+
             # Try to get available models from entry points
             try:
                 model_eps = importlib.metadata.entry_points()
-                if hasattr(model_eps, 'select'):
+                if hasattr(model_eps, "select"):
                     # Python 3.10+
-                    model_entries = model_eps.select(group='rompy.model')
-                elif hasattr(model_eps, 'get'):
+                    model_entries = model_eps.select(group="rompy.model")
+                elif hasattr(model_eps, "get"):
                     # Python 3.8-3.9
-                    model_entries = model_eps.get('rompy.model', [])
+                    model_entries = model_eps.get("rompy.model", [])
                 else:
                     # Fallback for older Python versions
                     model_entries = []
-                    if hasattr(model_eps, 'items'):
+                    if hasattr(model_eps, "items"):
                         for group, entries in model_eps.items():
-                            if group == 'rompy.model':
+                            if group == "rompy.model":
                                 model_entries = entries
                                 break
-                
+
                 available_models = [ep.name for ep in model_entries]
                 if available_models:
-                    error_msg.append(f"Available models from entry points: {', '.join(available_models)}")
+                    error_msg.append(
+                        f"Available models from entry points: {', '.join(available_models)}"
+                    )
                 else:
                     error_msg.append("No models found in entry points")
-                    
+
             except Exception as ep_error:
                 error_msg.append(f"Error checking entry points: {ep_error}")
-            
+
             # Log all error messages
             for msg in error_msg:
                 logger.error(msg)
-            
+
             # Add more detailed error info if verbose
             if verbose > 0:
                 logger.error(f"Error details: {str(e)}")
                 import traceback
+
                 logger.error(traceback.format_exc())
-            
+
             # Suggest using full module path
             logger.error("\nTry using the full module path, e.g., 'rompy.swan.SWAN'")
-            logger.error("For a list of available models, run: python -m rompy.cli list-models")
-                
+            logger.error(
+                "For a list of available models, run: python -m rompy.cli list-models"
+            )
+
             sys.exit(1)
 
         # Generate the schema
@@ -781,17 +902,27 @@ def schema(
         logger.error(f"Error generating schema: {e}")
         if verbose > 0:
             import traceback
+
             logger.error(traceback.format_exc())
         sys.exit(1)
 
 
 @cli.command(name="legacy", hidden=True)
-@click.argument("model", type=click.Choice(installed), envvar="ROMPY_MODEL", required=False)
+@click.argument(
+    "model", type=click.Choice(installed), envvar="ROMPY_MODEL", required=False
+)
 @click.argument("config", envvar="ROMPY_CONFIG", required=False)
 @click.option("zip", "--zip/--no-zip", default=False, envvar="ROMPY_ZIP")
-@click.option("-v", "--verbose", count=True, help="Increase verbosity (can be used multiple times)")
+@click.option(
+    "-v",
+    "--verbose",
+    count=True,
+    help="Increase verbosity (can be used multiple times)",
+)
 @click.option("--log-dir", envvar="ROMPY_LOG_DIR", help="Directory to save log files")
-@click.option("--show-warnings/--hide-warnings", default=False, help="Show Python warnings")
+@click.option(
+    "--show-warnings/--hide-warnings", default=False, help="Show Python warnings"
+)
 @click.option(
     "--ascii-only/--unicode",
     default=False,
@@ -877,7 +1008,7 @@ def legacy_main(
 
 def main():
     """Entry point for the rompy CLI.
-    
+
     This function is used by the console script entry point.
     """
     cli()
