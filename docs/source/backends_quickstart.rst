@@ -491,55 +491,46 @@ Getting Help
     # Show configuration examples
     rompy backends create --backend-type local --with-examples
 
-Complete Example
-----------------
+Complete Tutorial
+-----------------
 
-A complete working example is available that demonstrates all the concepts in this quickstart:
-
-.. code-block:: python
-
-    # examples/quickstart_backend_example.py
-    from rompy.model import ModelRun
-    from rompy.backends import LocalConfig, DockerConfig
-    from rompy.core.time import TimeRange
-    from datetime import datetime
-
-    # Create model
-    model = ModelRun(
-        run_id="quickstart_example",
-        period=TimeRange(
-            start=datetime(2023, 1, 1),
-            end=datetime(2023, 1, 2),
-            interval="1H",
-        ),
-        output_dir="./output",
-        delete_existing=True,
-    )
-
-    # Local execution
-    local_config = LocalConfig(
-        timeout=3600,
-        command="echo 'Model completed'",
-        env_vars={"OMP_NUM_THREADS": "4"}
-    )
-    success = model.run(backend=local_config)
-
-    # Docker execution
-    docker_config = DockerConfig(
-        image="python:3.9-slim",
-        timeout=3600,
-        cpu=2,
-        memory="1g",
-        volumes=["/tmp:/tmp:rw"]
-    )
-    success = model.run(backend=docker_config)
-
-Run the complete example:
+A complete hands-on tutorial is available that demonstrates all the concepts in this quickstart:
 
 .. code-block:: bash
 
+    # Run the interactive tutorial
     cd rompy/examples
     python quickstart_backend_example.py
+
+The tutorial covers:
+
+1. **Basic Local Execution** - Simple LocalConfig usage
+2. **Advanced Local Configuration** - Environment variables and settings
+3. **Basic Docker Execution** - Running models in containers
+4. **Advanced Docker Configuration** - Resource allocation and volumes
+5. **Configuration Validation** - Error handling and validation
+6. **Dictionary-based Configuration** - Loading from YAML/JSON
+7. **Complete Workflow** - Model execution with postprocessing
+
+Each example builds on the previous one to show increasingly sophisticated usage patterns.
+
+Testing and Validation
+-----------------------
+
+To validate that your backend system is working correctly, you can run the test suite:
+
+.. code-block:: bash
+
+    # Run backend system tests
+    cd rompy/tests
+    python test_backend_examples.py
+
+This validates:
+- Backend configuration objects
+- Model integration
+- Example files
+- Configuration files
+- Validation scripts
 
 Next Steps
 ----------
