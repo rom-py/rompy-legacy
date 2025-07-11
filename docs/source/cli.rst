@@ -8,21 +8,13 @@ The ROMPY Command Line Interface (CLI) provides a comprehensive set of tools for
 Overview
 --------
 
-ROMPY CLI supports both a modern command structure and legacy compatibility:
-
-**Modern Command Structure (Recommended):**
+ROMPY CLI provides a comprehensive command structure:
 
 .. code-block:: bash
 
     rompy <command> [options] [arguments]
 
-**Legacy Command Structure (Backward Compatibility):**
-
-.. code-block:: bash
-
-    rompy <model> <config-file> [options]
-
-Modern Commands
+Commands
 ---------------
 
 .. program:: rompy
@@ -188,45 +180,7 @@ Show configuration schema information.
 
     rompy schema --model-type swan
 
-Legacy Command Structure
-------------------------
 
-For backward compatibility, the legacy command structure is still supported:
-
-.. code-block:: bash
-
-    rompy <model> <config-file> [OPTIONS]
-
-Where:
-- ``<model>``: The type of model to run (e.g., swan, schism)
-- ``<config-file>``: Path to a YAML or JSON configuration file
-
-**Available Models:**
-
-To list all available models, run:
-
-.. code-block:: bash
-
-    rompy --version
-
-**Legacy Options:**
-
-.. option:: --zip, --no-zip
-
-    Create a zip archive of the model files (default: False)
-
-**Legacy Examples:**
-
-.. code-block:: bash
-
-    # Run a SWAN model with a configuration file
-    rompy swan config.yml
-
-    # Run with zip output
-    rompy swan config.yml --zip
-
-    # Run with increased verbosity
-    rompy swan config.yml -v --log-dir ./logs
 
 Backend Configuration Files
 ----------------------------
@@ -361,20 +315,7 @@ Development workflow:
     # Test run with dry-run
     rompy run config.yaml --backend-config local.yml --dry-run
 
-Legacy Workflow Examples
-~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Execute with legacy interface:
-
-.. code-block:: bash
-
-    rompy swan config.yml --verbose --log-dir ./logs
-
-Production run with zip output:
-
-.. code-block:: bash
-
-    rompy schism production_config.yaml --zip --ascii-only
 
 Configuration Files
 -------------------
@@ -414,20 +355,7 @@ The modern CLI supports enhanced configuration files with run and pipeline setti
         processor: analysis
         cleanup_on_failure: false
 
-Legacy Configuration
-~~~~~~~~~~~~~~~~~~~~
 
-Simple configurations without run/pipeline sections are still supported:
-
-.. code-block:: yaml
-
-    run_id: simple_model
-    period:
-      start: 20230101T00
-      end: 20230102T00
-    config:
-      model_type: swan
-      # ... model configuration
 
 Environment Variables
 ---------------------
@@ -483,26 +411,7 @@ Validate configurations before running:
     rompy validate config.yaml
     rompy backends validate backend_config.yml --backend-type local
 
-Migration from Legacy CLI
---------------------------
 
-The legacy CLI format is still supported for backward compatibility:
-
-.. code-block:: bash
-
-    # Legacy format (still works)
-    rompy swan config.yaml --zip
-
-    # Modern format (recommended)
-    rompy run config.yaml --backend-config local_backend.yml
-
-The modern command structure provides more flexibility and features including:
-
-- Type-safe backend configurations
-- Pipeline orchestration
-- Enhanced validation
-- Better error handling
-- Structured logging
 
 Exit Codes
 ----------
@@ -548,15 +457,7 @@ Common Issues
     # Test with local backend first
     rompy run config.yaml --backend-config local_backend.yml
 
-**Legacy Command Issues:**
 
-.. code-block:: bash
-
-    # Check available models
-    rompy --version
-
-    # Use verbose logging
-    rompy swan config.yml -vv --log-dir ./logs
 
 Getting Help
 ~~~~~~~~~~~~

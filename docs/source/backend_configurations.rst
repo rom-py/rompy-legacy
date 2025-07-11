@@ -2,12 +2,12 @@
 Backend Configurations
 =============================
 
-ROMPY provides a modern, type-safe backend configuration system using Pydantic models. This system enables precise control over model execution environments while providing validation, IDE support, and clear error messages.
+ROMPY provides a type-safe backend configuration system using Pydantic models. This system enables precise control over model execution environments while providing validation, IDE support, and clear error messages.
 
 Overview
 --------
 
-Backend configurations are Pydantic models that define how and where models should be executed. Unlike the legacy kwargs-based approach, these configurations provide:
+Backend configurations are Pydantic models that define how and where models should be executed. These configurations provide:
 
 * **Type Safety**: Full validation at configuration time
 * **IDE Support**: Autocompletion and inline documentation
@@ -353,7 +353,7 @@ Security Considerations
            env_vars={"API_KEY": os.environ["API_KEY"]}
        )
 
-       # Bad: Hardcode sensitive data
+       # Avoid: Hardcode sensitive data
        config = LocalConfig(
            env_vars={"API_KEY": "secret-key-123"}
        )
@@ -420,45 +420,6 @@ You can extend the system with custom backend configurations:
     # Register with entry points in pyproject.toml
     # [project.entry-points."rompy.run"]
     # hpc = "mypackage.backends:HPCRunBackend"
-
-Migration from Legacy Kwargs
------------------------------
-
-If migrating from the legacy kwargs-based approach:
-
-**Before (kwargs):**
-
-.. code-block:: python
-
-    # Legacy approach - no validation, no IDE support
-    success = model_run.run(
-        backend="local",
-        timeout=3600,
-        command="python script.py",
-        env_vars={"OMP_NUM_THREADS": "4"}
-    )
-
-**After (Pydantic):**
-
-.. code-block:: python
-
-    # Modern approach - validated, type-safe
-    from rompy.backends import LocalConfig
-
-    config = LocalConfig(
-        timeout=3600,
-        command="python script.py",
-        env_vars={"OMP_NUM_THREADS": "4"}
-    )
-    success = model_run.run(backend=config)
-
-**Benefits of migration:**
-
-* Validation errors caught at configuration time, not execution time
-* IDE autocompletion and inline documentation
-* Configuration can be saved/loaded from files
-* Schema generation for documentation
-* Clear error messages for invalid parameters
 
 Troubleshooting
 ---------------

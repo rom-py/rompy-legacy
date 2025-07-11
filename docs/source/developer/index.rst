@@ -10,7 +10,7 @@ rompy is designed with extensibility and maintainability in mind, featuring a mo
    :maxdepth: 2
    :caption: Architecture & Design
 
-   architecture/plugin_vs_pydantic
+   architecture/selection_patterns
    architecture/configuration_patterns
    architecture/extensibility_guide
 
@@ -76,7 +76,7 @@ Quick Start for Developers
 
 If you're new to rompy development, start here:
 
-1. **Understanding the Architecture**: Read :doc:`architecture/plugin_vs_pydantic` to understand the core design patterns
+1. **Understanding the Architecture**: Read :doc:`architecture/selection_patterns` to understand the core design patterns
 
 2. **Setting Up Development**: Follow :doc:`contributing/development_setup` to get your environment ready
 
