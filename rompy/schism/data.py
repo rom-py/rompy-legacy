@@ -27,6 +27,7 @@ from rompy.schism.boundary_core import (
 )
 from rompy.schism.grid import SCHISMGrid
 from rompy.core.logging import get_logger
+from rompy.formatting import ARROW
 from rompy.schism.tides_enhanced import BoundarySetup
 from rompy.utils import total_seconds
 
@@ -1483,10 +1484,8 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
             if not hasattr(grid.pylibs_hgrid, "nob") and hasattr(
                 grid.pylibs_hgrid, "compute_all"
             ):
-                logger.info(
-                    "Running compute_all to ensure boundary information is available"
-                )
-                grid.pylibs_hgrid.compute_all()
+                if hasattr(grid.pylibs_hgrid, "compute_all"):
+                    grid.pylibs_hgrid.compute_all()
 
         # Verify boundary attributes are available
         if not hasattr(grid.pylibs_hgrid, "nob"):
@@ -1547,9 +1546,7 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
         Dict[str, str]
             Paths to generated files
         """
-        logger.info(
-            f"===== SCHISMDataBoundaryConditions.get called with destdir={destdir} ====="
-        )
+        # Processing boundary conditions
 
         # Convert destdir to Path object
         destdir = Path(destdir)
@@ -1561,7 +1558,7 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
 
         # # 1. Process tidal data if needed
         if self.tidal_data:
-            logger.info(f"Processing tidal data from {self.tidal_data}")
+            logger.info(f"{ARROW} Processing tidal constituents: {', '.join(self.tidal_data.constituents) if hasattr(self.tidal_data, 'constituents') else 'default'}")
             self.tidal_data.get(grid)
 
         # 2. Create boundary condition file (bctides.in)
@@ -1579,13 +1576,10 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
 
         # Generate bctides.in file
         bctides_path = destdir / "bctides.in"
-        logger.info(f"Writing bctides.in to: {bctides_path}")
+        logger.info(f"{ARROW} Generating boundary condition file: bctides.in")
 
         # Ensure grid object has complete boundary information before writing
-        if grid.pylibs_hgrid and hasattr(grid.pylibs_hgrid, "compute_all"):
-            logger.info(
-                "Running compute_all to ensure grid is ready for boundary writing"
-            )
+        if hasattr(grid.pylibs_hgrid, "compute_all"):
             grid.pylibs_hgrid.compute_all()
 
         # Double-check all required attributes are present
@@ -1603,9 +1597,8 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
             raise AttributeError(error_msg)
 
         # Write the boundary file - no fallbacks
-        logger.info(f"Writing boundary file to {bctides_path}")
         boundary.write_boundary_file(bctides_path)
-        logger.info(f"Successfully wrote bctides.in to {bctides_path}")
+        logger.info(f"{ARROW} Boundary conditions written successfully")
 
         # 3. Process ocean data based on boundary configurations
         processed_files = {"bctides": str(bctides_path)}

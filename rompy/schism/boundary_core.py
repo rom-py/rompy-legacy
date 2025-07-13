@@ -201,13 +201,12 @@ class TidalDataset(BaseModel):
             # self._mdt
 
         elif isinstance(self.mean_dynamic_topography, (int, float)):
-            logger.info(
-                f"Using mean dynamic topography value: {self.mean_dynamic_topography}"
-            )
+            # Using mean dynamic topography value
             self._mdt = self.mean_dynamic_topography
 
         if len(extra_databases) > 0:
-            logger.info(f"Loading extra tidal databases from {extra_databases}")
+            # Loading extra tidal databases
+            pass
 
         return {
             "constituents": self.constituents,
