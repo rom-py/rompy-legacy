@@ -647,7 +647,91 @@
             <span class="n">attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nml</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">attr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">attr</span><span class="o">.</span><span class="n">write_nml</span><span class="p">(</span><span class="n">workdir</span><span class="p">)</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Custom formatter for NML values.</span>
+
+<span class="sd">        This method provides special formatting for specific types used in</span>
+<span class="sd">        NML such as namelist components and parameters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj: The object to format</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A formatted string or None to use default formatting</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Import specific types and formatting utilities</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_formatted_header_footer</span>
+
+        <span class="c1"># Get ASCII mode setting from LoggingConfig</span>
+        <span class="n">logging_config</span> <span class="o">=</span> <span class="n">LoggingConfig</span><span class="p">()</span>
+        <span class="n">USE_ASCII_ONLY</span> <span class="o">=</span> <span class="n">logging_config</span><span class="o">.</span><span class="n">use_ascii</span>
+
+        <span class="c1"># Format NML (self-formatting)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">NML</span><span class="p">):</span>
+            <span class="n">header</span><span class="p">,</span> <span class="n">footer</span><span class="p">,</span> <span class="n">bullet</span> <span class="o">=</span> <span class="n">get_formatted_header_footer</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SCHISM NAMELIST CONFIGURATION&quot;</span><span class="p">,</span> <span class="n">use_ascii</span><span class="o">=</span><span class="n">USE_ASCII_ONLY</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+
+            <span class="c1"># List active namelist components</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;param&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;Parameters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">param</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;ice&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">ice</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;Ice&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">ice</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;icm&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">icm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;ICM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">icm</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;mice&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">mice</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;MICE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">mice</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;sediment&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">sediment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;Sediment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">sediment</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;cosine&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">cosine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;CoSiNE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">cosine</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;wwminput&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">wwminput</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;Wave&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">wwminput</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+
+            <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">comp_type</span> <span class="ow">in</span> <span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">comp_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">components</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> No modules configured&quot;</span><span class="p">)</span>
+
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">footer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Format Param class</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.param</span><span class="w"> </span><span class="kn">import</span> <span class="n">Param</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Param</span><span class="p">):</span>
+            <span class="n">header</span><span class="p">,</span> <span class="n">footer</span><span class="p">,</span> <span class="n">bullet</span> <span class="o">=</span> <span class="n">get_formatted_header_footer</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SCHISM PARAMETERS&quot;</span><span class="p">,</span> <span class="n">use_ascii</span><span class="o">=</span><span class="n">USE_ASCII_ONLY</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+
+            <span class="c1"># Add key parameter information</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;core&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">core</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">core</span><span class="p">,</span> <span class="s2">&quot;rnday&quot;</span><span class="p">):</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Run duration: </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">rnday</span><span class="si">}</span><span class="s2"> days&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">core</span><span class="p">,</span> <span class="s2">&quot;dt&quot;</span><span class="p">):</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Time step: </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">dt</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;opt&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">opt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">opt</span><span class="p">,</span> <span class="s2">&quot;nws&quot;</span><span class="p">):</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Wind forcing: NWS=</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">opt</span><span class="o">.</span><span class="n">nws</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">opt</span><span class="p">,</span> <span class="s2">&quot;ihot&quot;</span><span class="p">):</span>
+                    <span class="n">hotstart</span> <span class="o">=</span> <span class="s2">&quot;Enabled&quot;</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">opt</span><span class="o">.</span><span class="n">ihot</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;Disabled&quot;</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Hotstart: </span><span class="si">{</span><span class="n">hotstart</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">footer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Use the new formatting framework</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_value</span>
+        <span class="k">return</span> <span class="n">format_value</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
 
 
 

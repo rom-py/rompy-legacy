@@ -514,7 +514,6 @@
 <span class="sd">    ```</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
@@ -538,8 +537,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundaryData</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.bctides</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bctides</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataBoundary</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="ElevationType">
@@ -682,13 +682,12 @@
             <span class="c1"># self._mdt</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_dynamic_topography</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Using mean dynamic topography value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_dynamic_topography</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+            <span class="c1"># Using mean dynamic topography value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_mdt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_dynamic_topography</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">extra_databases</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading extra tidal databases from </span><span class="si">{</span><span class="n">extra_databases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Loading extra tidal databases</span>
+            <span class="k">pass</span>
 
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;constituents&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">constituents</span><span class="p">,</span>

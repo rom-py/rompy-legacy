@@ -1169,6 +1169,8 @@
 <div class="viewcode-block" id="SCHISMGrid.get">
 <a class="viewcode-back" href="../../../schism/_generated/rompy.schism.grid.SCHISMGrid.html#rompy.schism.grid.SCHISMGrid.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destdir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">ARROW</span>
+
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">dest_path</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destdir</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">))</span> <span class="k">else</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">destdir</span><span class="p">))</span>
@@ -1177,7 +1179,6 @@
         <span class="c1"># Ensure the output directory exists</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dest_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">dest_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created output directory: </span><span class="si">{</span><span class="n">dest_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Process .gr3 files</span>
         <span class="k">for</span> <span class="n">filetype</span> <span class="ow">in</span> <span class="n">G3FILES</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;hgrid&quot;</span><span class="p">]:</span>
@@ -1194,6 +1195,8 @@
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error generating </span><span class="si">{</span><span class="n">filetype</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
+        <span class="c1"># Generate vertical grid</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Generating vertical grid configuration&quot;</span><span class="p">)</span>
         <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;vgrid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vgrid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span>
 
         <span class="c1"># Create symlinks for special grid files</span>
@@ -1602,7 +1605,139 @@
                 <span class="k">del</span> <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">result</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Custom formatter for SCHISMGrid values.</span>
+
+<span class="sd">        This method provides special formatting for specific types used in</span>
+<span class="sd">        SCHISMGrid such as grid components and data sources.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj: The object to format</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A formatted string or None to use default formatting</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Import specific types and formatting utilities</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_formatted_header_footer</span>
+
+        <span class="c1"># Get ASCII mode setting from LoggingConfig</span>
+        <span class="n">logging_config</span> <span class="o">=</span> <span class="n">LoggingConfig</span><span class="p">()</span>
+        <span class="n">USE_ASCII_ONLY</span> <span class="o">=</span> <span class="n">logging_config</span><span class="o">.</span><span class="n">use_ascii</span>
+
+        <span class="c1"># Format SCHISMGrid (self-formatting)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">SCHISMGrid</span><span class="p">):</span>
+            <span class="n">header</span><span class="p">,</span> <span class="n">footer</span><span class="p">,</span> <span class="n">bullet</span> <span class="o">=</span> <span class="n">get_formatted_header_footer</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SCHISM GRID CONFIGURATION&quot;</span><span class="p">,</span> <span class="n">use_ascii</span><span class="o">=</span><span class="n">USE_ASCII_ONLY</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+
+            <span class="c1"># Add horizontal grid information</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;hgrid&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">hgrid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">hgrid_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">hgrid</span><span class="o">.</span><span class="n">uri</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">hgrid</span><span class="p">,</span> <span class="s2">&quot;uri&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">obj</span><span class="o">.</span><span class="n">hgrid</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hgrid_path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
+                    <span class="n">hgrid_path</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span> <span class="o">+</span> <span class="n">hgrid_path</span><span class="p">[</span><span class="o">-</span><span class="mi">47</span><span class="p">:]</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Horizontal Grid: </span><span class="si">{</span><span class="n">hgrid_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="c1"># Try to get grid statistics</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">np_points</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">np</span>
+                    <span class="n">ne_elements</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">ne</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Points: </span><span class="si">{</span><span class="n">np_points</span><span class="si">}</span><span class="s2">, Elements: </span><span class="si">{</span><span class="n">ne_elements</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+            <span class="c1"># Add vertical grid information</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;vgrid&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">vgrid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">vgrid_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">vgrid</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Vertical Grid: </span><span class="si">{</span><span class="n">vgrid_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="c1"># Add 2D/3D information</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">is_3d</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_3d</span>
+                    <span class="n">grid_dim</span> <span class="o">=</span> <span class="s2">&quot;3D&quot;</span> <span class="k">if</span> <span class="n">is_3d</span> <span class="k">else</span> <span class="s2">&quot;2D&quot;</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Dimension: </span><span class="si">{</span><span class="n">grid_dim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">is_3d</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;nvrt&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">nvrt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Vertical levels: </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">nvrt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+            <span class="c1"># Add boundary information</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">nob</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">nob</span>
+                <span class="k">if</span> <span class="n">nob</span> <span class="ow">and</span> <span class="n">nob</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Open Boundaries: </span><span class="si">{</span><span class="n">nob</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="c1"># Add friction information</span>
+            <span class="n">friction_types</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;drag&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">drag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">friction_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Drag&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;rough&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">rough</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">friction_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Roughness&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;manning&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">manning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">friction_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Manning&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">friction_types</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Friction: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">friction_types</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Add other grid files</span>
+            <span class="n">other_files</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;diffmin&quot;</span><span class="p">,</span> <span class="s2">&quot;diffmax&quot;</span><span class="p">,</span> <span class="s2">&quot;albedo&quot;</span><span class="p">,</span> <span class="s2">&quot;watertype&quot;</span><span class="p">,</span> <span class="s2">&quot;windrot_geo2proj&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">other_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">other_files</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Additional files: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">other_files</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Add coordinate system</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;crs&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">crs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> CRS: </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">crs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">footer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Format GR3Generator</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">GR3Generator</span><span class="p">):</span>
+            <span class="n">header</span><span class="p">,</span> <span class="n">footer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_formatted_header_footer</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;GR3 GENERATOR&quot;</span><span class="p">,</span> <span class="n">use_ascii</span><span class="o">=</span><span class="n">USE_ASCII_ONLY</span>
+            <span class="p">)</span>
+
+            <span class="n">gr3_type</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;gr3_type&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">header</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;  Type:  </span><span class="si">{</span><span class="n">gr3_type</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;  Value: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">footer</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Format VgridGenerator</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">VgridGenerator</span><span class="p">):</span>
+            <span class="n">header</span><span class="p">,</span> <span class="n">footer</span><span class="p">,</span> <span class="n">bullet</span> <span class="o">=</span> <span class="n">get_formatted_header_footer</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;VGRID GENERATOR&quot;</span><span class="p">,</span> <span class="n">use_ascii</span><span class="o">=</span><span class="n">USE_ASCII_ONLY</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;vgrid_type&quot;</span><span class="p">):</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Type: </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">vgrid_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;nlayer&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">nlayer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Layers: </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">nlayer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">footer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Use the new formatting framework</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_value</span>
+        <span class="k">return</span> <span class="n">format_value</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
 
 
 

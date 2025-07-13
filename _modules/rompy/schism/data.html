@@ -499,6 +499,7 @@
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMGrid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">ARROW</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.tides_enhanced</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundarySetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">total_seconds</span>
 
@@ -933,14 +934,37 @@
         <span class="n">destdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;sflux&quot;</span>
         <span class="n">destdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">namelistargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Collect information about active variables for logging</span>
+        <span class="n">active_variables</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">source_info</span> <span class="o">=</span> <span class="p">{}</span>
+
         <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;air_1&quot;</span><span class="p">,</span> <span class="s2">&quot;air_2&quot;</span><span class="p">,</span> <span class="s2">&quot;rad_1&quot;</span><span class="p">,</span> <span class="s2">&quot;rad_2&quot;</span><span class="p">,</span> <span class="s2">&quot;prc_1&quot;</span><span class="p">,</span> <span class="s2">&quot;prc_2&quot;</span><span class="p">]:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">data</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">variable</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching </span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">active_variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+
+            <span class="c1"># Get source information</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;uri&#39;</span><span class="p">):</span>
+                <span class="n">source_info</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uri</span><span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">namelistargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">namelist</span><span class="p">)</span>
             <span class="n">ret</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+
+        <span class="c1"># Log summary of atmospheric data processing</span>
+        <span class="k">if</span> <span class="n">active_variables</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Variables: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">active_variables</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">source_info</span><span class="p">:</span>
+                <span class="n">unique_sources</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">source_info</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_sources</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Source: </span><span class="si">{</span><span class="n">unique_sources</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Sources: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unique_sources</span><span class="p">)</span><span class="si">}</span><span class="s2"> files&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Output: </span><span class="si">{</span><span class="n">destdir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;nml&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Sflux_Inputs</span><span class="p">(</span><span class="o">**</span><span class="n">namelistargs</span><span class="p">)</span><span class="o">.</span><span class="n">write_nml</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span></div>
 
@@ -1035,13 +1059,13 @@
 <span class="sd">            Path to the netcdf file.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing wave data: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_data</span> <span class="ow">and</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter_time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel_boundary</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
         <span class="n">outfile</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.nc&quot;</span>
         <span class="n">ds</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">to_ww3</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Saved to </span><span class="si">{</span><span class="n">outfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved wave data to </span><span class="si">{</span><span class="n">outfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">outfile</span></div>
 
 
@@ -1126,7 +1150,13 @@
         <span class="n">outfile</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.th.nc&quot;</span>
         <span class="n">boundary_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_ds</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
         <span class="n">boundary_ds</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;NETCDF3_CLASSIC&quot;</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Saved to </span><span class="si">{</span><span class="n">outfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Log file details with dimensions</span>
+        <span class="k">if</span> <span class="s2">&quot;time_series&quot;</span> <span class="ow">in</span> <span class="n">boundary_ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">boundary_ds</span><span class="o">.</span><span class="n">time_series</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">outfile</span><span class="si">}</span><span class="s2"> (shape: </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved boundary data to </span><span class="si">{</span><span class="n">outfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">outfile</span></div>
 
 
@@ -1150,7 +1180,7 @@
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            Dataset formatted for SCHISM boundary input</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_data</span> <span class="ow">and</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter_time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
 
@@ -1489,10 +1519,9 @@
         <span class="n">schism_ds</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;calendar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;proleptic_gregorian&quot;</span>
 
         <span class="c1"># Handle missing values more robustly</span>
-        <span class="k">if</span> <span class="n">schism_ds</span><span class="o">.</span><span class="n">time_series</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Some values are null. Attempting to interpolate missing values...&quot;</span>
-            <span class="p">)</span>
+        <span class="n">null_count</span> <span class="o">=</span> <span class="n">schism_ds</span><span class="o">.</span><span class="n">time_series</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">null_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">null_count</span><span class="si">}</span><span class="s2"> null values, applying interpolation and filling&quot;</span><span class="p">)</span>
 
             <span class="c1"># Try interpolating along different dimensions</span>
             <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;nOpenBndNodes&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;nLevels&quot;</span><span class="p">]:</span>
@@ -1501,20 +1530,18 @@
                         <span class="n">dim</span><span class="o">=</span><span class="n">dim</span>
                     <span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">schism_ds</span><span class="o">.</span><span class="n">time_series</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Successfully interpolated all missing values along </span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2"> dimension&quot;</span>
-                        <span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Interpolated missing values along </span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2"> dimension&quot;</span><span class="p">)</span>
                         <span class="k">break</span>
 
             <span class="c1"># If still have NaNs, use more aggressive filling methods</span>
             <span class="k">if</span> <span class="n">schism_ds</span><span class="o">.</span><span class="n">time_series</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Using constant value for remaining missing data points&quot;</span><span class="p">)</span>
                 <span class="c1"># Find a reasonable fill value (median of non-NaN values)</span>
                 <span class="n">valid_values</span> <span class="o">=</span> <span class="n">schism_ds</span><span class="o">.</span><span class="n">time_series</span><span class="o">.</span><span class="n">values</span><span class="p">[</span>
                     <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">schism_ds</span><span class="o">.</span><span class="n">time_series</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
                 <span class="p">]</span>
                 <span class="n">fill_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">valid_values</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
                 <span class="n">schism_ds</span><span class="p">[</span><span class="s2">&quot;time_series&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">schism_ds</span><span class="o">.</span><span class="n">time_series</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">fill_value</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filled remaining nulls with constant value </span><span class="si">{</span><span class="n">fill_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Clean up encoding</span>
         <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">schism_ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
@@ -1573,40 +1600,189 @@
 <span class="sd">        Dict[str, Any]</span>
 <span class="sd">            Paths to generated files for each data component</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;===== SCHISMData.get called with destdir=</span><span class="si">{</span><span class="n">destdir</span><span class="si">}</span><span class="s2"> =====&quot;</span><span class="p">)</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">ARROW</span>
 
         <span class="c1"># Convert destdir to Path object</span>
         <span class="n">destdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span>
 
         <span class="c1"># Create destdir if it doesn&#39;t exist</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">destdir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating destination directory: </span><span class="si">{</span><span class="n">destdir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">destdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># Process atmospheric data</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing atmospheric data&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Processing atmospheric forcing data&quot;</span><span class="p">)</span>
             <span class="n">results</span><span class="p">[</span><span class="s2">&quot;atmos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Atmospheric data processed successfully&quot;</span><span class="p">)</span>
 
         <span class="c1"># Process wave data</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wave</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing wave data&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Processing wave boundary data&quot;</span><span class="p">)</span>
+            <span class="c1"># Get source information</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wave</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wave</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;uri&#39;</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Source: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wave</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uri</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wave</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wave</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;catalog_uri&#39;</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Source: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wave</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">catalog_uri</span><span class="si">}</span><span class="s2"> (dataset: </span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wave</span><span class="o">.</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dataset_id&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;unknown&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
             <span class="n">results</span><span class="p">[</span><span class="s2">&quot;wave&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wave</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destdir</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Output: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;wave&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Wave data processed successfully&quot;</span><span class="p">)</span>
 
         <span class="c1"># Process boundary conditions</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing boundary conditions&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Processing boundary conditions&quot;</span><span class="p">)</span>
             <span class="n">results</span><span class="p">[</span><span class="s2">&quot;boundary_conditions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                 <span class="n">destdir</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span>
             <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Boundary conditions processed successfully&quot;</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;===== SCHISMData.get completed. Generated files: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2"> =====&quot;</span>
-        <span class="p">)</span>
         <span class="k">return</span> <span class="n">results</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Custom formatter for SCHISMData values.</span>
+
+<span class="sd">        This method provides special formatting for specific types used in</span>
+<span class="sd">        SCHISMData such as atmospheric, wave, and boundary data components.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj: The object to format</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A formatted string or None to use default formatting</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Import specific types and formatting utilities</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_formatted_header_footer</span>
+
+        <span class="c1"># Get ASCII mode setting from LoggingConfig</span>
+        <span class="n">logging_config</span> <span class="o">=</span> <span class="n">LoggingConfig</span><span class="p">()</span>
+        <span class="n">USE_ASCII_ONLY</span> <span class="o">=</span> <span class="n">logging_config</span><span class="o">.</span><span class="n">use_ascii</span>
+
+        <span class="c1"># Format SCHISMData (self-formatting)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">SCHISMData</span><span class="p">):</span>
+            <span class="n">header</span><span class="p">,</span> <span class="n">footer</span><span class="p">,</span> <span class="n">bullet</span> <span class="o">=</span> <span class="n">get_formatted_header_footer</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SCHISM DATA CONFIGURATION&quot;</span><span class="p">,</span> <span class="n">use_ascii</span><span class="o">=</span><span class="n">USE_ASCII_ONLY</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+
+            <span class="c1"># Count and list data components</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;atmos&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">atmos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;Atmospheric&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">atmos</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="c1"># Add details for atmospheric data</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">atmos</span><span class="p">,</span> <span class="s2">&quot;air_1&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">air_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">air_sources</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">atmos</span><span class="p">,</span> <span class="s2">&quot;air_2&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">air_2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">air_sources</span> <span class="o">=</span> <span class="mi">2</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Air sources: </span><span class="si">{</span><span class="n">air_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">atmos</span><span class="p">,</span> <span class="s2">&quot;rad_1&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">rad_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">rad_sources</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">atmos</span><span class="p">,</span> <span class="s2">&quot;rad_2&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">rad_2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">rad_sources</span> <span class="o">=</span> <span class="mi">2</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Radiation sources: </span><span class="si">{</span><span class="n">rad_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;wave&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">wave</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;Wave&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">wave</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;boundary_conditions&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">boundary_conditions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s2">&quot;Boundary Conditions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+
+            <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">comp_type</span> <span class="ow">in</span> <span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">comp_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">components</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> No data components configured&quot;</span><span class="p">)</span>
+
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">footer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Format SCHISMDataSflux</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">SCHISMDataSflux</span><span class="p">):</span>
+            <span class="n">header</span><span class="p">,</span> <span class="n">footer</span><span class="p">,</span> <span class="n">bullet</span> <span class="o">=</span> <span class="n">get_formatted_header_footer</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;ATMOSPHERIC DATA (SFLUX)&quot;</span><span class="p">,</span> <span class="n">use_ascii</span><span class="o">=</span><span class="n">USE_ASCII_ONLY</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+
+            <span class="c1"># Count air sources</span>
+            <span class="n">air_sources</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;air_1&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">air_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">air_sources</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;air_2&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">air_2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">air_sources</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">air_sources</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Air sources: </span><span class="si">{</span><span class="n">air_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Count radiation sources</span>
+            <span class="n">rad_sources</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;rad_1&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">rad_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rad_sources</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;rad_2&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">rad_2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rad_sources</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">rad_sources</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Radiation sources: </span><span class="si">{</span><span class="n">rad_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Check for precipitation</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;prc_1&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">prc_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Precipitation: Available&quot;</span><span class="p">)</span>
+
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">footer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Format SCHISMDataWave</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">SCHISMDataWave</span><span class="p">):</span>
+            <span class="n">header</span><span class="p">,</span> <span class="n">footer</span><span class="p">,</span> <span class="n">bullet</span> <span class="o">=</span> <span class="n">get_formatted_header_footer</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;WAVE DATA&quot;</span><span class="p">,</span> <span class="n">use_ascii</span><span class="o">=</span><span class="n">USE_ASCII_ONLY</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;sel_method&quot;</span><span class="p">):</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Selection method: </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">sel_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">source_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Source: </span><span class="si">{</span><span class="n">source_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">footer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Format SCHISMDataBoundaryConditions</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">SCHISMDataBoundaryConditions</span><span class="p">):</span>
+            <span class="n">header</span><span class="p">,</span> <span class="n">footer</span><span class="p">,</span> <span class="n">bullet</span> <span class="o">=</span> <span class="n">get_formatted_header_footer</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;BOUNDARY CONDITIONS&quot;</span><span class="p">,</span> <span class="n">use_ascii</span><span class="o">=</span><span class="n">USE_ASCII_ONLY</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+
+            <span class="c1"># Count boundary setups</span>
+            <span class="n">boundary_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;boundaries&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">boundaries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">boundaries</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">boundary_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">boundaries</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">boundary_count</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">boundary_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Boundary setups: </span><span class="si">{</span><span class="n">boundary_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Check for tidal components</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;tidal&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">tidal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">bullet</span><span class="si">}</span><span class="s2"> Tidal forcing: Available&quot;</span><span class="p">)</span>
+
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">footer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Use the new formatting framework</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_value</span>
+        <span class="k">return</span> <span class="n">format_value</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
 
 
 
@@ -1878,10 +2054,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span><span class="p">,</span> <span class="s2">&quot;nob&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span>
                 <span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span><span class="p">,</span> <span class="s2">&quot;compute_all&quot;</span>
             <span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s2">&quot;Running compute_all to ensure boundary information is available&quot;</span>
-                <span class="p">)</span>
-                <span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span><span class="o">.</span><span class="n">compute_all</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span><span class="p">,</span> <span class="s2">&quot;compute_all&quot;</span><span class="p">):</span>
+                    <span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span><span class="o">.</span><span class="n">compute_all</span><span class="p">()</span>
 
         <span class="c1"># Verify boundary attributes are available</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span><span class="p">,</span> <span class="s2">&quot;nob&quot;</span><span class="p">):</span>
@@ -1944,9 +2118,7 @@
 <span class="sd">        Dict[str, str]</span>
 <span class="sd">            Paths to generated files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;===== SCHISMDataBoundaryConditions.get called with destdir=</span><span class="si">{</span><span class="n">destdir</span><span class="si">}</span><span class="s2"> =====&quot;</span>
-        <span class="p">)</span>
+        <span class="c1"># Processing boundary conditions</span>
 
         <span class="c1"># Convert destdir to Path object</span>
         <span class="n">destdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destdir</span><span class="p">)</span>
@@ -1958,7 +2130,7 @@
 
         <span class="c1"># # 1. Process tidal data if needed</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing tidal data from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Processing tidal constituents: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">constituents</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;constituents&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;default&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
 
         <span class="c1"># 2. Create boundary condition file (bctides.in)</span>
@@ -1976,13 +2148,10 @@
 
         <span class="c1"># Generate bctides.in file</span>
         <span class="n">bctides_path</span> <span class="o">=</span> <span class="n">destdir</span> <span class="o">/</span> <span class="s2">&quot;bctides.in&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing bctides.in to: </span><span class="si">{</span><span class="n">bctides_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Generating boundary condition file: bctides.in&quot;</span><span class="p">)</span>
 
         <span class="c1"># Ensure grid object has complete boundary information before writing</span>
-        <span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span><span class="p">,</span> <span class="s2">&quot;compute_all&quot;</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">&quot;Running compute_all to ensure grid is ready for boundary writing&quot;</span>
-            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span><span class="p">,</span> <span class="s2">&quot;compute_all&quot;</span><span class="p">):</span>
             <span class="n">grid</span><span class="o">.</span><span class="n">pylibs_hgrid</span><span class="o">.</span><span class="n">compute_all</span><span class="p">()</span>
 
         <span class="c1"># Double-check all required attributes are present</span>
@@ -2000,12 +2169,41 @@
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
 
         <span class="c1"># Write the boundary file - no fallbacks</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing boundary file to </span><span class="si">{</span><span class="n">bctides_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">boundary</span><span class="o">.</span><span class="n">write_boundary_file</span><span class="p">(</span><span class="n">bctides_path</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully wrote bctides.in to </span><span class="si">{</span><span class="n">bctides_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Boundary conditions written successfully&quot;</span><span class="p">)</span>
 
         <span class="c1"># 3. Process ocean data based on boundary configurations</span>
         <span class="n">processed_files</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bctides&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">bctides_path</span><span class="p">)}</span>
+
+        <span class="c1"># Collect variables to process and source information for logging</span>
+        <span class="n">variables_to_process</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">source_files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">setup</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">setup</span><span class="o">.</span><span class="n">elev_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ElevationType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">,</span> <span class="n">ElevationType</span><span class="o">.</span><span class="n">HARMONICEXTERNAL</span><span class="p">]</span> <span class="ow">and</span> <span class="n">setup</span><span class="o">.</span><span class="n">elev_source</span><span class="p">:</span>
+                <span class="n">variables_to_process</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;elevation&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">elev_source</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">elev_source</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;uri&#39;</span><span class="p">):</span>
+                    <span class="n">source_files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">elev_source</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uri</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">setup</span><span class="o">.</span><span class="n">vel_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">,</span> <span class="n">VelocityType</span><span class="o">.</span><span class="n">HARMONICEXTERNAL</span><span class="p">,</span> <span class="n">VelocityType</span><span class="o">.</span><span class="n">RELAXED</span><span class="p">]</span> <span class="ow">and</span> <span class="n">setup</span><span class="o">.</span><span class="n">vel_source</span><span class="p">:</span>
+                <span class="n">variables_to_process</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;velocity&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">vel_source</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">vel_source</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;uri&#39;</span><span class="p">):</span>
+                    <span class="n">source_files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">vel_source</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uri</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">setup</span><span class="o">.</span><span class="n">temp_type</span> <span class="o">==</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span> <span class="ow">and</span> <span class="n">setup</span><span class="o">.</span><span class="n">temp_source</span><span class="p">:</span>
+                <span class="n">variables_to_process</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;temperature&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">temp_source</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">temp_source</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;uri&#39;</span><span class="p">):</span>
+                    <span class="n">source_files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">temp_source</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uri</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">setup</span><span class="o">.</span><span class="n">salt_type</span> <span class="o">==</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span> <span class="ow">and</span> <span class="n">setup</span><span class="o">.</span><span class="n">salt_source</span><span class="p">:</span>
+                <span class="n">variables_to_process</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;salinity&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">salt_source</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">salt_source</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;uri&#39;</span><span class="p">):</span>
+                    <span class="n">source_files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">setup</span><span class="o">.</span><span class="n">salt_source</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uri</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">variables_to_process</span><span class="p">:</span>
+            <span class="n">unique_vars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">variables_to_process</span><span class="p">))</span>  <span class="c1"># Remove duplicates while preserving order</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Processing boundary data: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unique_vars</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">source_files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">source_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Source: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">source_files</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Sources: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">source_files</span><span class="p">)</span><span class="si">}</span><span class="s2"> files&quot;</span><span class="p">)</span>
 
         <span class="c1"># Process each data source based on the boundary type</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">setup</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2026,7 +2224,6 @@
                         <span class="c1"># Process using DataBlob interface</span>
                         <span class="n">file_path</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">elev_source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">destdir</span><span class="p">))</span>
                     <span class="n">processed_files</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;elev_boundary_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed elevation data for boundary </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="c1"># Process velocity data if needed</span>
             <span class="k">if</span> <span class="n">setup</span><span class="o">.</span><span class="n">vel_type</span> <span class="ow">in</span> <span class="p">[</span>
@@ -2046,7 +2243,6 @@
                         <span class="c1"># Process using DataBlob interface</span>
                         <span class="n">file_path</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">vel_source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">destdir</span><span class="p">))</span>
                     <span class="n">processed_files</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;vel_boundary_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed velocity data for boundary </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="c1"># Process temperature data if needed</span>
             <span class="k">if</span> <span class="n">setup</span><span class="o">.</span><span class="n">temp_type</span> <span class="o">==</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">:</span>
@@ -2062,7 +2258,6 @@
                         <span class="c1"># Process using DataBlob interface</span>
                         <span class="n">file_path</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">temp_source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">destdir</span><span class="p">))</span>
                     <span class="n">processed_files</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;temp_boundary_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed temperature data for boundary </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="c1"># Process salinity data if needed</span>
             <span class="k">if</span> <span class="n">setup</span><span class="o">.</span><span class="n">salt_type</span> <span class="o">==</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">:</span>
@@ -2078,13 +2273,18 @@
                         <span class="c1"># Process using DataBlob interface</span>
                         <span class="n">file_path</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">salt_source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">destdir</span><span class="p">))</span>
                     <span class="n">processed_files</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;salt_boundary_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed salinity data for boundary </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Generate hotstart file if configured</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotstart_config</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotstart_config</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ARROW</span><span class="si">}</span><span class="s2"> Generating hotstart file&quot;</span><span class="p">)</span>
             <span class="n">hotstart_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_hotstart</span><span class="p">(</span><span class="n">destdir</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
             <span class="n">processed_files</span><span class="p">[</span><span class="s2">&quot;hotstart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hotstart_path</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated hotstart file: </span><span class="si">{</span><span class="n">hotstart_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Output: </span><span class="si">{</span><span class="n">hotstart_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Log summary of processed files with more details</span>
+        <span class="n">boundary_data_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">processed_files</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;boundary&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">boundary_data_files</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Files: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">boundary_data_files</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">processed_files</span></div>
 
@@ -2137,6 +2337,11 @@
         <span class="n">salt_var_name</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hotstart_config</span><span class="o">.</span><span class="n">salt_var</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotstart_config</span> <span class="k">else</span> <span class="s2">&quot;salinity&quot;</span>
         <span class="p">)</span>
+
+        <span class="c1"># Log hotstart generation details</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Variables: </span><span class="si">{</span><span class="n">temp_var_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">salt_var_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">temp_source</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">temp_source</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;uri&#39;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Source: </span><span class="si">{</span><span class="n">temp_source</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uri</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">hotstart_data</span> <span class="o">=</span> <span class="n">SCHISMDataHotstart</span><span class="p">(</span>
             <span class="n">source</span><span class="o">=</span><span class="n">temp_source</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
