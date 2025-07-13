@@ -35,20 +35,6 @@ def grid3d():
     return grid
 
 
-@pytest.fixture
-def hycom_path():
-    """Get the path to HYCOM data."""
-    hycomdata = HERE / "test_data" / "hycom.nc"
-    if not hycomdata.exists():
-        from tests.utils import download_hycom
-
-        logging.info("Hycom test data not found, downloading...")
-        logging.info("This may take a while...only has to be done once.")
-        download_hycom(dest=HERE / "test_data", hgrid=HERE / "test_data" / "hgrid.gr3")
-
-    return hycomdata
-
-
 def test_hotstart_creation(tmp_path, grid3d, hycom_path):
     """Test creating a hotstart file from HYCOM data."""
     # Create a SCHISMDataHotstart instance
