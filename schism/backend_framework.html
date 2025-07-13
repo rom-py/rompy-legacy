@@ -1,0 +1,1224 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SCHISM Backend Framework &#8212; rompy 0.4.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=6c02275b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'schism/backend_framework';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SCHISM Backend Framework Tutorial" href="backend_tutorial.html" />
+    <link rel="prev" title="SCHISM Hotstart Configuration" href="hotstart.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4.0" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.4.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../formatting_and_logging.html">Formatting and Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backends.html">Backend Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend_reference.html">Backend Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../models.html">Models</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../swan/index.html">SWAN</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">SCHISM</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#grids">Grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#data">Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#boundary-conditions">Boundary Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#hotstart-configuration">Hotstart Configuration</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#backend-framework">Backend Framework</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">SCHISM Backend Framework</a></li>
+<li class="toctree-l4"><a class="reference internal" href="backend_tutorial.html">SCHISM Backend Framework Tutorial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.schism.data.SCHISMDataBoundaryConditions.html">rompy.schism.data.SCHISMDataBoundaryConditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.schism.data.BoundarySetupWithSource.html">rompy.schism.data.BoundarySetupWithSource</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.schism.boundary_conditions.create_tidal_only_boundary_config.html">rompy.schism.boundary_conditions.create_tidal_only_boundary_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.schism.boundary_conditions.create_hybrid_boundary_config.html">rompy.schism.boundary_conditions.create_hybrid_boundary_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.schism.boundary_conditions.create_river_boundary_config.html">rompy.schism.boundary_conditions.create_river_boundary_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_generated/rompy.schism.boundary_conditions.create_nested_boundary_config.html">rompy.schism.boundary_conditions.create_nested_boundary_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#config-minimal">Config Minimal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#full-namelist-implementation">Full Namelist Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../models.html" class="nav-link">Models</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">SCHISM</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">SCHISM Backend Framework</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="schism-backend-framework">
+<h1>SCHISM Backend Framework<a class="headerlink" href="#schism-backend-framework" title="Link to this heading">#</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>The SCHISM backend framework provides a unified approach to executing SCHISM simulations using the ROMPY backend system. This framework integrates SCHISM model execution with Docker containers, providing consistent, reproducible, and scalable model runs.</p>
+</section>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Docker Integration</strong> - Automatic Docker image building and container management</p></li>
+<li><p><strong>Backend Framework</strong> - Uses the unified ROMPY backend system</p></li>
+<li><p><strong>Boundary Conditions Testing</strong> - Comprehensive testing suite for boundary condition examples</p></li>
+<li><p><strong>Python-based Execution</strong> - Python scripts replace bash scripts for better maintainability</p></li>
+<li><p><strong>Automatic Resource Management</strong> - Proper cleanup and resource allocation</p></li>
+</ul>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
+<p>The backend framework consists of several key components:</p>
+<section id="backend-configuration">
+<h3>Backend Configuration<a class="headerlink" href="#backend-configuration" title="Link to this heading">#</a></h3>
+<p>The framework uses <code class="docutils literal notranslate"><span class="pre">DockerConfig</span></code> from the ROMPY backend system to configure Docker execution:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">DockerConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Docker configuration with automatic image building</span>
+<span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">dockerfile</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;Dockerfile&quot;</span><span class="p">),</span>
+    <span class="n">build_context</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;docker/schism&quot;</span><span class="p">),</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;4g&quot;</span><span class="p">,</span>
+    <span class="n">executable</span><span class="o">=</span><span class="s2">&quot;bash -c &#39;cd /tmp/schism &amp;&amp; mpirun --allow-run-as-root -n 8 schism_v5.13.0 4&#39;&quot;</span><span class="p">,</span>
+    <span class="n">volumes</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">schism_dir</span><span class="si">}</span><span class="s2">:/tmp/schism:rw&quot;</span><span class="p">],</span>
+    <span class="n">env_vars</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;OMPI_ALLOW_RUN_AS_ROOT&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OMPI_ALLOW_RUN_AS_ROOT_CONFIRM&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+    <span class="p">},</span>
+    <span class="n">remove_container</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="s2">&quot;root&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="model-execution">
+<h3>Model Execution<a class="headerlink" href="#model-execution" title="Link to this heading">#</a></h3>
+<p>The framework integrates with <code class="docutils literal notranslate"><span class="pre">ModelRun</span></code> for complete model execution:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Create model run</span>
+<span class="n">model_run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span>
+    <span class="n">run_id</span><span class="o">=</span><span class="s2">&quot;schism_example&quot;</span><span class="p">,</span>
+    <span class="n">period</span><span class="o">=</span><span class="n">TimeRange</span><span class="p">(</span>
+        <span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;1H&quot;</span>
+    <span class="p">),</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;/path/to/output&quot;</span><span class="p">,</span>
+    <span class="n">delete_existing</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># Generate configuration files</span>
+<span class="n">model_run</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+<span class="c1"># Execute with backend</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">docker_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="boundary-conditions-testing">
+<h2>Boundary Conditions Testing<a class="headerlink" href="#boundary-conditions-testing" title="Link to this heading">#</a></h2>
+<p>The framework includes a comprehensive testing system for SCHISM boundary conditions examples.</p>
+<section id="test-runner">
+<h3>Test Runner<a class="headerlink" href="#test-runner" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">run_boundary_conditions_examples.py</span></code> script provides automated testing of boundary condition configurations:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all examples</span>
+python<span class="w"> </span>run_boundary_conditions_examples.py
+
+<span class="c1"># Run specific categories</span>
+python<span class="w"> </span>run_boundary_conditions_examples.py<span class="w"> </span>--tidal
+python<span class="w"> </span>run_boundary_conditions_examples.py<span class="w"> </span>--hybrid
+python<span class="w"> </span>run_boundary_conditions_examples.py<span class="w"> </span>--river
+python<span class="w"> </span>run_boundary_conditions_examples.py<span class="w"> </span>--nested
+
+<span class="c1"># Run single example</span>
+python<span class="w"> </span>run_boundary_conditions_examples.py<span class="w"> </span>--single<span class="w"> </span>basic_tidal
+
+<span class="c1"># Dry run (validation only)</span>
+python<span class="w"> </span>run_boundary_conditions_examples.py<span class="w"> </span>--dry-run
+</pre></div>
+</div>
+</section>
+<section id="example-categories">
+<h3>Example Categories<a class="headerlink" href="#example-categories" title="Link to this heading">#</a></h3>
+<p>The testing framework supports several categories of boundary condition examples:</p>
+<p><strong>Tidal Examples:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">basic_tidal</span></code> - Pure tidal forcing with M2, S2, N2 constituents</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extended_tidal</span></code> - Enhanced tidal setup with refined parameters</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tidal_with_potential</span></code> - Tidal forcing with earth tidal potential</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tide_wave</span></code> - Tidal forcing with wave interaction (WWM)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tidal_with_mdt</span></code> - Tidal forcing with Mean Dynamic Topography correction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tidal_with_mdt_const</span></code> - Tidal forcing with constant MDT</p></li>
+</ul>
+<p><strong>Hybrid Examples:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hybrid_elevation</span></code> - Combined tidal and external elevation data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">full_hybrid</span></code> - Complete hybrid setup with all boundary types</p></li>
+</ul>
+<p><strong>River Examples:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">simple_river</span></code> - Single river inflow with tidal ocean boundary</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">multi_river</span></code> - Multiple river boundaries with different properties</p></li>
+</ul>
+<p><strong>Nested Examples:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nested_with_tides</span></code> - Nested boundary conditions with relaxation</p></li>
+</ul>
+</section>
+</section>
+<section id="docker-image-management">
+<h2>Docker Image Management<a class="headerlink" href="#docker-image-management" title="Link to this heading">#</a></h2>
+<p>The framework automatically manages Docker image building and container lifecycle.</p>
+<section id="automatic-image-building">
+<h3>Automatic Image Building<a class="headerlink" href="#automatic-image-building" title="Link to this heading">#</a></h3>
+<p>Docker images are built automatically from the SCHISM Dockerfile:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">dockerfile</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;Dockerfile&quot;</span><span class="p">),</span>
+    <span class="n">build_context</span><span class="o">=</span><span class="n">project_root</span> <span class="o">/</span> <span class="s2">&quot;docker&quot;</span> <span class="o">/</span> <span class="s2">&quot;schism&quot;</span><span class="p">,</span>
+    <span class="c1"># ... other parameters</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The framework will:</p>
+<ol class="arabic simple">
+<li><p>Locate the Dockerfile in the build context</p></li>
+<li><p>Build the Docker image with appropriate tags</p></li>
+<li><p>Use the built image for model execution</p></li>
+<li><p>Clean up containers after execution</p></li>
+</ol>
+</section>
+<section id="resource-management">
+<h3>Resource Management<a class="headerlink" href="#resource-management" title="Link to this heading">#</a></h3>
+<p>The framework provides proper resource allocation and cleanup:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>              <span class="c1"># Number of CPU cores</span>
+    <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;4g&quot;</span><span class="p">,</span>        <span class="c1"># Memory limit</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>       <span class="c1"># Execution timeout (seconds)</span>
+    <span class="n">remove_container</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Clean up after execution</span>
+    <span class="n">volumes</span><span class="o">=</span><span class="p">[</span>           <span class="c1"># Volume mounts</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">schism_dir</span><span class="si">}</span><span class="s2">:/tmp/schism:rw&quot;</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing-framework">
+<h2>Testing Framework<a class="headerlink" href="#testing-framework" title="Link to this heading">#</a></h2>
+<p>The backend framework includes comprehensive testing capabilities.</p>
+<section id="test-suite-components">
+<h3>Test Suite Components<a class="headerlink" href="#test-suite-components" title="Link to this heading">#</a></h3>
+<p>The test suite validates multiple aspects of the framework:</p>
+<p><strong>Initialization Testing:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_runner_initialization</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test that the runner initializes correctly.&quot;&quot;&quot;</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">SchismExampleRunner</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">runner</span><span class="o">.</span><span class="n">project_root</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">runner</span><span class="o">.</span><span class="n">examples_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">runner</span><span class="o">.</span><span class="n">examples</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p><strong>Configuration Validation:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_configuration_validation</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test that example configurations are valid.&quot;&quot;&quot;</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">SchismExampleRunner</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">runner</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">config_file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="c1"># Validate YAML structure</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">yaml_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s2">&quot;run_id&quot;</span> <span class="ow">in</span> <span class="n">yaml_data</span>
+        <span class="k">assert</span> <span class="s2">&quot;period&quot;</span> <span class="ow">in</span> <span class="n">yaml_data</span>
+        <span class="k">assert</span> <span class="s2">&quot;config&quot;</span> <span class="ow">in</span> <span class="n">yaml_data</span>
+</pre></div>
+</div>
+<p><strong>Docker Configuration Testing:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_docker_config_creation</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test Docker configuration creation.&quot;&quot;&quot;</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">SchismExampleRunner</span><span class="p">()</span>
+    <span class="n">test_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/tmp/test_schism&quot;</span><span class="p">)</span>
+    <span class="n">test_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="n">runner</span><span class="o">.</span><span class="n">_create_docker_config</span><span class="p">(</span><span class="n">test_path</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">config</span><span class="o">.</span><span class="n">dockerfile</span> <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;Dockerfile&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">config</span><span class="o">.</span><span class="n">build_context</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">config</span><span class="o">.</span><span class="n">cpu</span> <span class="o">==</span> <span class="mi">8</span>
+    <span class="k">assert</span> <span class="n">config</span><span class="o">.</span><span class="n">memory</span> <span class="o">==</span> <span class="s2">&quot;4g&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="running-tests">
+<h3>Running Tests<a class="headerlink" href="#running-tests" title="Link to this heading">#</a></h3>
+<p>Execute the test suite to validate the framework:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run comprehensive test suite</span>
+python<span class="w"> </span>test_backend_examples.py
+
+<span class="c1"># Expected output:</span>
+<span class="c1"># ============================================================</span>
+<span class="c1"># SCHISM Backend Framework Test Suite</span>
+<span class="c1"># ============================================================</span>
+<span class="c1"># Testing SchismExampleRunner initialization...             ✓</span>
+<span class="c1"># Testing example discovery...                              ✓</span>
+<span class="c1"># Testing configuration validation...                       ✓</span>
+<span class="c1"># Testing dry run functionality...                          ✓</span>
+<span class="c1"># Testing Docker configuration creation...                  ✓</span>
+<span class="c1"># Testing prerequisites...                                  ✓</span>
+<span class="c1"># ============================================================</span>
+<span class="c1"># TEST SUMMARY</span>
+<span class="c1"># ============================================================</span>
+<span class="c1"># Passed: 6</span>
+<span class="c1"># Failed: 0</span>
+<span class="c1"># Total:  6</span>
+<span class="c1">#</span>
+<span class="c1"># 🎉 All tests passed!</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration-examples">
+<h2>Configuration Examples<a class="headerlink" href="#configuration-examples" title="Link to this heading">#</a></h2>
+<section id="yaml-configuration">
+<h3>YAML Configuration<a class="headerlink" href="#yaml-configuration" title="Link to this heading">#</a></h3>
+<p>Configure backend execution in YAML configuration files:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic SCHISM configuration with backend</span>
+<span class="nt">run_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schism_example</span>
+<span class="nt">period</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2023-01-01T00:00:00</span>
+<span class="w">  </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2023-01-02T00:00:00</span>
+<span class="w">  </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1H</span>
+<span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schism_output</span>
+
+<span class="nt">config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">model_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schism</span>
+<span class="w">  </span><span class="nt">grid</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">grid_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schism</span>
+<span class="w">    </span><span class="nt">hgrid</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">model_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data_blob</span>
+<span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tests/schism/test_data/hgrid.gr3</span>
+
+<span class="w">  </span><span class="nt">data</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">data_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schism</span>
+<span class="w">    </span><span class="nt">boundary_conditions</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">data_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boundary_conditions</span>
+<span class="w">      </span><span class="nt">setup_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tidal</span>
+<span class="w">      </span><span class="nt">tidal_data</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">tidal_database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tests/schism/test_data/tides</span>
+<span class="w">        </span><span class="nt">tidal_model</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;OCEANUM-atlas&#39;</span>
+<span class="w">        </span><span class="nt">constituents</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">M2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">S2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">N2</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">boundaries</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">0</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">elev_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">          </span><span class="nt">vel_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">          </span><span class="nt">temp_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">          </span><span class="nt">salt_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</pre></div>
+</div>
+</section>
+<section id="python-configuration">
+<h3>Python Configuration<a class="headerlink" href="#python-configuration" title="Link to this heading">#</a></h3>
+<p>Configure backend execution programmatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">DockerConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Create model configuration</span>
+<span class="n">model_run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span>
+    <span class="n">run_id</span><span class="o">=</span><span class="s2">&quot;schism_backend_example&quot;</span><span class="p">,</span>
+    <span class="n">period</span><span class="o">=</span><span class="n">TimeRange</span><span class="p">(</span>
+        <span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;1H&quot;</span>
+    <span class="p">),</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;schism_output&quot;</span><span class="p">,</span>
+    <span class="n">delete_existing</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># Configure Docker backend</span>
+<span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">dockerfile</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;Dockerfile&quot;</span><span class="p">),</span>
+    <span class="n">build_context</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;docker/schism&quot;</span><span class="p">),</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;4g&quot;</span><span class="p">,</span>
+    <span class="n">executable</span><span class="o">=</span><span class="s2">&quot;bash -c &#39;cd /tmp/schism &amp;&amp; mpirun --allow-run-as-root -n 8 schism_v5.13.0 4&#39;&quot;</span><span class="p">,</span>
+    <span class="n">volumes</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">:/tmp/schism:rw&quot;</span><span class="p">],</span>
+    <span class="n">env_vars</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;OMPI_ALLOW_RUN_AS_ROOT&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OMPI_ALLOW_RUN_AS_ROOT_CONFIRM&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Generate configuration</span>
+<span class="n">model_run</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+<span class="c1"># Execute simulation</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">docker_config</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SCHISM simulation completed successfully&quot;</span><span class="p">)</span>
+    <span class="c1"># Process results</span>
+    <span class="n">model_run</span><span class="o">.</span><span class="n">postprocess</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SCHISM simulation failed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-usage">
+<h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">#</a></h2>
+<section id="custom-docker-images">
+<h3>Custom Docker Images<a class="headerlink" href="#custom-docker-images" title="Link to this heading">#</a></h3>
+<p>Use custom Docker images for specific SCHISM versions or configurations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build custom image with specific SCHISM version</span>
+<span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">dockerfile</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;Dockerfile.custom&quot;</span><span class="p">),</span>
+    <span class="n">build_context</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;docker/schism&quot;</span><span class="p">),</span>
+    <span class="n">build_args</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;SCHISM_VERSION&quot;</span><span class="p">:</span> <span class="s2">&quot;v5.11.1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ENABLE_WWM&quot;</span><span class="p">:</span> <span class="s2">&quot;ON&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="parallel-execution">
+<h3>Parallel Execution<a class="headerlink" href="#parallel-execution" title="Link to this heading">#</a></h3>
+<p>Configure parallel execution for multiple examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">DockerConfig</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_example</span><span class="p">(</span><span class="n">example_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a single example.&quot;&quot;&quot;</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">SchismExampleRunner</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">runner</span><span class="o">.</span><span class="n">_run_example</span><span class="p">(</span><span class="n">example_name</span><span class="p">)</span>
+
+<span class="c1"># Run multiple examples in parallel</span>
+<span class="n">examples</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;basic_tidal&quot;</span><span class="p">,</span> <span class="s2">&quot;extended_tidal&quot;</span><span class="p">,</span> <span class="s2">&quot;hybrid_elevation&quot;</span><span class="p">]</span>
+<span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+    <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">run_example</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">]</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">)]</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-optimization">
+<h3>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading">#</a></h3>
+<p>Optimize Docker configuration for better performance:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># High-performance configuration</span>
+<span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">dockerfile</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;Dockerfile&quot;</span><span class="p">),</span>
+    <span class="n">build_context</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;docker/schism&quot;</span><span class="p">),</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>                 <span class="c1"># More CPU cores</span>
+    <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;8g&quot;</span><span class="p">,</span>            <span class="c1"># More memory</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">7200</span><span class="p">,</span>           <span class="c1"># Longer timeout</span>
+    <span class="n">volumes</span><span class="o">=</span><span class="p">[</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">schism_dir</span><span class="si">}</span><span class="s2">:/tmp/schism:rw&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/tmp:/tmp:rw&quot;</span>      <span class="c1"># Additional temp space</span>
+    <span class="p">],</span>
+    <span class="n">env_vars</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;OMPI_ALLOW_RUN_AS_ROOT&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OMPI_ALLOW_RUN_AS_ROOT_CONFIRM&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OMP_NUM_THREADS&quot;</span><span class="p">:</span> <span class="s2">&quot;16&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading">#</a></h2>
+<p>The framework provides comprehensive error handling and logging.</p>
+<section id="common-error-scenarios">
+<h3>Common Error Scenarios<a class="headerlink" href="#common-error-scenarios" title="Link to this heading">#</a></h3>
+<p><strong>Docker Build Failures:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">docker_config</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;dockerfile&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Docker build failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Check Dockerfile and build context paths&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span>
+</pre></div>
+</div>
+<p><strong>Resource Constraints:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Handle resource constraint errors</span>
+<span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">dockerfile</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;Dockerfile&quot;</span><span class="p">),</span>
+    <span class="n">build_context</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;docker/schism&quot;</span><span class="p">),</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()),</span>  <span class="c1"># Don&#39;t exceed available CPUs</span>
+    <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;4g&quot;</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Volume Mount Issues:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ensure directories exist before mounting</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;schism_output&quot;</span><span class="p">)</span>
+<span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">volumes</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_dir</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}</span><span class="s2">:/tmp/schism:rw&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="logging-and-monitoring">
+<h3>Logging and Monitoring<a class="headerlink" href="#logging-and-monitoring" title="Link to this heading">#</a></h3>
+<p>Enable detailed logging for debugging:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="c1"># Configure logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Run with detailed logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting SCHISM backend execution&quot;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">docker_config</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution completed: </span><span class="si">{</span><span class="s1">&#39;success&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">success</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;failed&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">raise</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="migration-guide">
+<h2>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading">#</a></h2>
+<section id="migrating-from-bash-scripts">
+<h3>Migrating from Bash Scripts<a class="headerlink" href="#migrating-from-bash-scripts" title="Link to this heading">#</a></h3>
+<p>If you’re migrating from bash-based SCHISM execution:</p>
+<p><strong>Old Approach (Bash):</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>schism<span class="w"> </span>-f<span class="w"> </span>Dockerfile<span class="w"> </span>.
+docker<span class="w"> </span>run<span class="w"> </span>-v<span class="w"> </span><span class="nv">$PWD</span>:/tmp/schism<span class="w"> </span>schism<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;cd /tmp/schism &amp;&amp; mpirun --allow-run-as-root -n 8 schism_v5.13.0 4&quot;</span>
+</pre></div>
+</div>
+<p><strong>New Approach (Python + Backend Framework):</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">DockerConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Configure backend</span>
+<span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">dockerfile</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;Dockerfile&quot;</span><span class="p">),</span>
+    <span class="n">build_context</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">),</span>
+    <span class="n">executable</span><span class="o">=</span><span class="s2">&quot;bash -c &#39;cd /tmp/schism &amp;&amp; mpirun --allow-run-as-root -n 8 schism_v5.13.0 4&#39;&quot;</span><span class="p">,</span>
+    <span class="n">volumes</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="si">}</span><span class="s2">:/tmp/schism:rw&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Execute</span>
+<span class="n">model_run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span><span class="n">run_id</span><span class="o">=</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">docker_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="benefits-of-migration">
+<h3>Benefits of Migration<a class="headerlink" href="#benefits-of-migration" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Consistent Backend System</strong> - Uses the same backend framework as other ROMPY models</p></li>
+<li><p><strong>Automatic Image Building</strong> - No manual Docker commands required</p></li>
+<li><p><strong>Better Error Handling</strong> - Comprehensive exception handling and logging</p></li>
+<li><p><strong>Type Safety</strong> - Python type hints and Pydantic validation</p></li>
+<li><p><strong>Testing Framework</strong> - Built-in testing and validation capabilities</p></li>
+<li><p><strong>Maintainability</strong> - Python code is easier to maintain than bash scripts</p></li>
+</ol>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p><strong>Use Dockerfile Parameters</strong></p>
+<p>Always use <code class="docutils literal notranslate"><span class="pre">dockerfile</span></code> and <code class="docutils literal notranslate"><span class="pre">build_context</span></code> instead of pre-built images for reproducibility.</p>
+</li>
+<li><p><strong>Resource Management</strong></p>
+<p>Set appropriate CPU, memory, and timeout limits based on your model requirements.</p>
+</li>
+<li><p><strong>Volume Mounts</strong></p>
+<p>Use absolute paths for volume mounts to avoid path resolution issues.</p>
+</li>
+<li><p><strong>Environment Variables</strong></p>
+<p>Set required environment variables for MPI execution in Docker containers.</p>
+</li>
+<li><p><strong>Testing</strong></p>
+<p>Always test configurations with dry runs before full execution.</p>
+</li>
+<li><p><strong>Cleanup</strong></p>
+<p>Enable container cleanup with <code class="docutils literal notranslate"><span class="pre">remove_container=True</span></code> to avoid accumulating containers.</p>
+</li>
+</ol>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<section id="common-issues-and-solutions">
+<h3>Common Issues and Solutions<a class="headerlink" href="#common-issues-and-solutions" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt><strong>Docker Build Failures:</strong></dt><dd><ul class="simple">
+<li><p>Check that Dockerfile exists in build context</p></li>
+<li><p>Verify build context path is correct</p></li>
+<li><p>Ensure Docker daemon is running</p></li>
+</ul>
+</dd>
+<dt><strong>Container Execution Failures:</strong></dt><dd><ul class="simple">
+<li><p>Check volume mount paths exist</p></li>
+<li><p>Verify executable command syntax</p></li>
+<li><p>Review environment variable settings</p></li>
+</ul>
+</dd>
+<dt><strong>Resource Exhaustion:</strong></dt><dd><ul class="simple">
+<li><p>Reduce CPU/memory allocation</p></li>
+<li><p>Increase timeout values</p></li>
+<li><p>Monitor system resources during execution</p></li>
+</ul>
+</dd>
+<dt><strong>Permission Issues:</strong></dt><dd><ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">user:</span> <span class="pre">root</span></code> for MPI execution</p></li>
+<li><p>Set appropriate volume mount permissions</p></li>
+<li><p>Configure MPI environment variables</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="boundary_conditions.html"><span class="doc">SCHISM Boundary Conditions</span></a> - SCHISM boundary conditions documentation</p></li>
+<li><p><a class="reference internal" href="hotstart.html"><span class="doc">SCHISM Hotstart Configuration</span></a> - Hotstart configuration documentation</p></li>
+<li><p><a class="reference internal" href="../backends.html"><span class="doc">Backend Systems</span></a> - ROMPY backend framework documentation</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.DockerConfig</span></code> - Docker backend configuration</p></li>
+<li><p><a class="reference internal" href="../_generated/rompy.model.ModelRun.html#rompy.model.ModelRun" title="rompy.model.ModelRun"><code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.model.ModelRun</span></code></a> - Model execution framework</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hotstart.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SCHISM Hotstart Configuration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="backend_tutorial.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">SCHISM Backend Framework Tutorial</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backend-configuration">Backend Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-execution">Model Execution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-conditions-testing">Boundary Conditions Testing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-runner">Test Runner</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-categories">Example Categories</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-image-management">Docker Image Management</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-image-building">Automatic Image Building</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-management">Resource Management</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-framework">Testing Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-suite-components">Test Suite Components</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-tests">Running Tests</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-examples">Configuration Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yaml-configuration">YAML Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-configuration">Python Configuration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-usage">Advanced Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-docker-images">Custom Docker Images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution">Parallel Execution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-optimization">Performance Optimization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling">Error Handling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-error-scenarios">Common Error Scenarios</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-and-monitoring">Logging and Monitoring</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#migration-guide">Migration Guide</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#migrating-from-bash-scripts">Migrating from Bash Scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits-of-migration">Benefits of Migration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-issues-and-solutions">Common Issues and Solutions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/schism/backend_framework.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
