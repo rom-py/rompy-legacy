@@ -1070,6 +1070,138 @@ class SCHISMGrid(BaseGrid):
 
         return result
 
+    def _format_value(self, obj):
+        """Custom formatter for SCHISMGrid values.
+
+        This method provides special formatting for specific types used in
+        SCHISMGrid such as grid components and data sources.
+
+        Args:
+            obj: The object to format
+
+        Returns:
+            A formatted string or None to use default formatting
+        """
+        # Import specific types and formatting utilities
+        from rompy.core.logging import LoggingConfig
+        from rompy.formatting import get_formatted_header_footer
+
+        # Get ASCII mode setting from LoggingConfig
+        logging_config = LoggingConfig()
+        USE_ASCII_ONLY = logging_config.use_ascii
+
+        # Format SCHISMGrid (self-formatting)
+        if isinstance(obj, SCHISMGrid):
+            header, footer, bullet = get_formatted_header_footer(
+                title="SCHISM GRID CONFIGURATION", use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            # Add horizontal grid information
+            if hasattr(obj, "hgrid") and obj.hgrid is not None:
+                hgrid_path = str(obj.hgrid.uri if hasattr(obj.hgrid, "uri") else obj.hgrid)
+                if len(hgrid_path) > 50:
+                    hgrid_path = "..." + hgrid_path[-47:]
+                lines.append(f"  {bullet} Horizontal Grid: {hgrid_path}")
+
+                # Try to get grid statistics
+                try:
+                    np_points = obj.np
+                    ne_elements = obj.ne
+                    lines.append(f"      Points: {np_points}, Elements: {ne_elements}")
+                except:
+                    pass
+
+            # Add vertical grid information
+            if hasattr(obj, "vgrid") and obj.vgrid is not None:
+                vgrid_type = type(obj.vgrid).__name__
+                lines.append(f"  {bullet} Vertical Grid: {vgrid_type}")
+
+                # Add 2D/3D information
+                try:
+                    is_3d = obj.is_3d
+                    grid_dim = "3D" if is_3d else "2D"
+                    lines.append(f"      Dimension: {grid_dim}")
+
+                    if is_3d and hasattr(obj, "nvrt") and obj.nvrt is not None:
+                        lines.append(f"      Vertical levels: {obj.nvrt}")
+                except:
+                    pass
+
+            # Add boundary information
+            try:
+                nob = obj.nob
+                if nob and nob > 0:
+                    lines.append(f"  {bullet} Open Boundaries: {nob}")
+            except:
+                pass
+
+            # Add friction information
+            friction_types = []
+            if hasattr(obj, "drag") and obj.drag is not None:
+                friction_types.append("Drag")
+            if hasattr(obj, "rough") and obj.rough is not None:
+                friction_types.append("Roughness")
+            if hasattr(obj, "manning") and obj.manning is not None:
+                friction_types.append("Manning")
+
+            if friction_types:
+                lines.append(f"  {bullet} Friction: {', '.join(friction_types)}")
+
+            # Add other grid files
+            other_files = []
+            for attr in ["diffmin", "diffmax", "albedo", "watertype", "windrot_geo2proj"]:
+                if hasattr(obj, attr) and getattr(obj, attr) is not None:
+                    other_files.append(attr)
+
+            if other_files:
+                lines.append(f"  {bullet} Additional files: {', '.join(other_files)}")
+
+            # Add coordinate system
+            if hasattr(obj, "crs") and obj.crs is not None:
+                lines.append(f"  {bullet} CRS: {obj.crs}")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format GR3Generator
+        if isinstance(obj, GR3Generator):
+            header, footer, _ = get_formatted_header_footer(
+                title="GR3 GENERATOR", use_ascii=USE_ASCII_ONLY
+            )
+
+            gr3_type = getattr(obj, "gr3_type", "unknown")
+            value = getattr(obj, "value", "unknown")
+
+            return (
+                f"{header}\n"
+                f"  Type:  {gr3_type}\n"
+                f"  Value: {value}\n"
+                f"{footer}"
+            )
+
+        # Format VgridGenerator
+        if isinstance(obj, VgridGenerator):
+            header, footer, bullet = get_formatted_header_footer(
+                title="VGRID GENERATOR", use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            if hasattr(obj, "vgrid_type"):
+                lines.append(f"  {bullet} Type: {obj.vgrid_type}")
+
+            if hasattr(obj, "nlayer") and obj.nlayer is not None:
+                lines.append(f"  {bullet} Layers: {obj.nlayer}")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Use the new formatting framework
+        from rompy.formatting import format_value
+        return format_value(obj)
+
 
 if __name__ == "__main__":
     import cartopy.crs as ccrs

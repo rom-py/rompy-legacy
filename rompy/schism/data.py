@@ -1092,6 +1092,149 @@ class SCHISMData(RompyBaseModel):
         )
         return results
 
+    def _format_value(self, obj):
+        """Custom formatter for SCHISMData values.
+
+        This method provides special formatting for specific types used in
+        SCHISMData such as atmospheric, wave, and boundary data components.
+
+        Args:
+            obj: The object to format
+
+        Returns:
+            A formatted string or None to use default formatting
+        """
+        # Import specific types and formatting utilities
+        from rompy.core.logging import LoggingConfig
+        from rompy.formatting import get_formatted_header_footer
+
+        # Get ASCII mode setting from LoggingConfig
+        logging_config = LoggingConfig()
+        USE_ASCII_ONLY = logging_config.use_ascii
+
+        # Format SCHISMData (self-formatting)
+        if isinstance(obj, SCHISMData):
+            header, footer, bullet = get_formatted_header_footer(
+                title="SCHISM DATA CONFIGURATION", use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            # Count and list data components
+            components = {}
+            if hasattr(obj, "atmos") and obj.atmos is not None:
+                components["Atmospheric"] = type(obj.atmos).__name__
+                # Add details for atmospheric data
+                if hasattr(obj.atmos, "air_1") and obj.atmos.air_1 is not None:
+                    air_sources = 1
+                    if hasattr(obj.atmos, "air_2") and obj.atmos.air_2 is not None:
+                        air_sources = 2
+                    lines.append(f"      Air sources: {air_sources}")
+
+                if hasattr(obj.atmos, "rad_1") and obj.atmos.rad_1 is not None:
+                    rad_sources = 1
+                    if hasattr(obj.atmos, "rad_2") and obj.atmos.rad_2 is not None:
+                        rad_sources = 2
+                    lines.append(f"      Radiation sources: {rad_sources}")
+
+            if hasattr(obj, "wave") and obj.wave is not None:
+                components["Wave"] = type(obj.wave).__name__
+
+            if hasattr(obj, "boundary_conditions") and obj.boundary_conditions is not None:
+                components["Boundary Conditions"] = type(obj.boundary_conditions).__name__
+
+            for comp_name, comp_type in components.items():
+                lines.append(f"  {bullet} {comp_name}: {comp_type}")
+
+            if not components:
+                lines.append(f"  {bullet} No data components configured")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format SCHISMDataSflux
+        if isinstance(obj, SCHISMDataSflux):
+            header, footer, bullet = get_formatted_header_footer(
+                title="ATMOSPHERIC DATA (SFLUX)", use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            # Count air sources
+            air_sources = 0
+            if hasattr(obj, "air_1") and obj.air_1 is not None:
+                air_sources += 1
+            if hasattr(obj, "air_2") and obj.air_2 is not None:
+                air_sources += 1
+
+            if air_sources > 0:
+                lines.append(f"  {bullet} Air sources: {air_sources}")
+
+            # Count radiation sources
+            rad_sources = 0
+            if hasattr(obj, "rad_1") and obj.rad_1 is not None:
+                rad_sources += 1
+            if hasattr(obj, "rad_2") and obj.rad_2 is not None:
+                rad_sources += 1
+
+            if rad_sources > 0:
+                lines.append(f"  {bullet} Radiation sources: {rad_sources}")
+
+            # Check for precipitation
+            if hasattr(obj, "prc_1") and obj.prc_1 is not None:
+                lines.append(f"  {bullet} Precipitation: Available")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format SCHISMDataWave
+        if isinstance(obj, SCHISMDataWave):
+            header, footer, bullet = get_formatted_header_footer(
+                title="WAVE DATA", use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            if hasattr(obj, "sel_method"):
+                lines.append(f"  {bullet} Selection method: {obj.sel_method}")
+
+            if hasattr(obj, "source") and obj.source is not None:
+                source_type = type(obj.source).__name__
+                lines.append(f"  {bullet} Source: {source_type}")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format SCHISMDataBoundaryConditions
+        if isinstance(obj, SCHISMDataBoundaryConditions):
+            header, footer, bullet = get_formatted_header_footer(
+                title="BOUNDARY CONDITIONS", use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            # Count boundary setups
+            boundary_count = 0
+            if hasattr(obj, "boundaries") and obj.boundaries is not None:
+                if isinstance(obj.boundaries, list):
+                    boundary_count = len(obj.boundaries)
+                else:
+                    boundary_count = 1
+
+            if boundary_count > 0:
+                lines.append(f"  {bullet} Boundary setups: {boundary_count}")
+
+            # Check for tidal components
+            if hasattr(obj, "tidal") and obj.tidal is not None:
+                lines.append(f"  {bullet} Tidal forcing: Available")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Use the new formatting framework
+        from rompy.formatting import format_value
+        return format_value(obj)
+
 
 class HotstartConfig(RompyBaseModel):
     """
