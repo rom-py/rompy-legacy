@@ -2,7 +2,7 @@
 Boundary Conditions Factory Functions for SCHISM
 
 This module provides factory functions for creating boundary condition configurations
-for SCHISM simulations. The main classes (BoundarySetupWithSource and 
+for SCHISM simulations. The main classes (BoundarySetupWithSource and
 SCHISMDataBoundaryConditions) are defined in rompy.schism.data.
 
 Key Features:
@@ -21,7 +21,7 @@ Example Usage:
     from rompy.schism.boundary_conditions import create_tidal_only_boundary_config
     from rompy.schism.data import SCHISMData
     from rompy.core.data import DataBlob
-    
+
     # Simple tidal configuration
     bc = create_tidal_only_boundary_config(
         constituents=["M2", "S2", "N2", "K1", "O1"],
@@ -62,8 +62,6 @@ __all__ = [
     "create_nested_boundary",
 ]
 
-import logging
-
 # Import factory functions and core components from boundary_core
 from rompy.schism.boundary_core import (
     ElevationType,
@@ -80,8 +78,9 @@ from rompy.schism.boundary_core import (
     create_river_boundary_config,
     create_nested_boundary_config,
 )
+from rompy.core.logging import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 # All factory functions are now imported from boundary_core
 # This module serves as a high-level interface with documentation and re-exports

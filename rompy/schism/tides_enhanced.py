@@ -6,7 +6,6 @@ with support for all boundary condition types specified in the SCHISM
 documentation.
 """
 
-import logging
 import os
 from datetime import datetime
 from enum import IntEnum
@@ -38,7 +37,9 @@ from rompy.schism.boundary_core import (
     TidalBoundary,
 )
 
-logger = logging.getLogger(__name__)
+from rompy.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 # Utility function to convert numpy types to Python types

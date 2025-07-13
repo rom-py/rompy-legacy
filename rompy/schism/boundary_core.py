@@ -42,7 +42,6 @@ Example Usage:
     ```
 """
 
-import logging
 import os
 import sys
 from datetime import datetime
@@ -66,8 +65,9 @@ from src.schism_file import read_schism_hgrid, loadz
 from .boundary import BoundaryData
 from .bctides import Bctides
 from rompy.core.boundary import DataBoundary
+from rompy.core.logging import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class ElevationType(IntEnum):
@@ -201,13 +201,12 @@ class TidalDataset(BaseModel):
             # self._mdt
 
         elif isinstance(self.mean_dynamic_topography, (int, float)):
-            logger.info(
-                f"Using mean dynamic topography value: {self.mean_dynamic_topography}"
-            )
+            # Using mean dynamic topography value
             self._mdt = self.mean_dynamic_topography
 
         if len(extra_databases) > 0:
-            logger.info(f"Loading extra tidal databases from {extra_databases}")
+            # Loading extra tidal databases
+            pass
 
         return {
             "constituents": self.constituents,

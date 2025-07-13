@@ -5,7 +5,6 @@ This module provides a unified interface for creating SCHISM vertical grid files
 that aligns with the PyLibs API.
 """
 
-import logging
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
@@ -22,7 +21,9 @@ except ImportError:
         # Will handle this gracefully in the implementation
         pass
 
-logger = logging.getLogger(__name__)
+from rompy.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 class VGrid(BaseModel):
