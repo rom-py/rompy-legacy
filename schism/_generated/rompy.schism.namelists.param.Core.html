@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>rompy.schism.namelists.param.Core &#8212; rompy 0.3.1 documentation</title>
+    <title>rompy.schism.namelists.param.Core &#8212; rompy 0.4.0 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../_static/documentation_options.js?v=6c02275b"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -50,7 +50,7 @@
     <link rel="prev" title="rompy.schism.config.SchismCSIROConfig" href="rompy.schism.config.SchismCSIROConfig.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.3.1" />
+  <meta name="docsearch:version" content="0.4.0" />
   </head>
   
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.3.1 documentation</p>
+    <p class="title logo__title">rompy 0.4.0 documentation</p>
   
 </a></div>
     
@@ -168,6 +168,20 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
 <li class=" current active">
   <a class="nav-link dropdown-item nav-internal" href="../../models.html">
     Models
@@ -315,6 +329,20 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../../models.html">
     Models
@@ -382,11 +410,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../formatting_and_logging.html">Formatting and Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../backends.html">Backend Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../backend_reference.html">Backend Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../models.html">Models</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../swan/index.html">SWAN</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">SCHISM</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../index.html#grids">Grids</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#data">Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#boundary-conditions">Boundary Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#hotstart-configuration">Hotstart Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#config-minimal">Config Minimal</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#full-namelist-implementation">Full Namelist Implementation</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html#param">PARAM</a></li>
@@ -646,6 +678,19 @@
 <span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">864</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Stack spool for global output controls. Every ihfskip steps will be put into 1_*, 2_*, etc.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ihfskip&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;nbins_veg_vert&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of vertical bins for vegetation model. Only used if iveg=1.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nbins Veg Vert&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">   </span><span class="p">},</span>
 <span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
@@ -663,6 +708,7 @@
 <li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.ipre" title="rompy.schism.namelists.param.Core.ipre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipre</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.mdc2" title="rompy.schism.namelists.param.Core.mdc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mdc2</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.msc2" title="rompy.schism.namelists.param.Core.msc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msc2</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.nbins_veg_vert" title="rompy.schism.namelists.param.Core.nbins_veg_vert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbins_veg_vert</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.nspool" title="rompy.schism.namelists.param.Core.nspool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nspool</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.ntracer_age" title="rompy.schism.namelists.param.Core.ntracer_age"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ntracer_age</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.ntracer_gen" title="rompy.schism.namelists.param.Core.ntracer_gen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ntracer_gen</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
@@ -804,6 +850,20 @@
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_msc2" title="rompy.schism.namelists.param.Core.validate_msc2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_msc2</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="rompy.schism.namelists.param.Core.nbins_veg_vert">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nbins_veg_vert</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#rompy.schism.namelists.param.Core.nbins_veg_vert" title="Link to this definition">#</a></dt>
+<dd><p>Number of vertical bins for vegetation model. Only used if iveg=1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lowercase_property_keys__</span></code></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.namelists.param.Core.validate_ibc_ibtp" title="rompy.schism.namelists.param.Core.validate_ibc_ibtp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ibc_ibtp</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
@@ -1014,6 +1074,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.ipre"><code class="docutils literal notranslate"><span class="pre">Core.ipre</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.mdc2"><code class="docutils literal notranslate"><span class="pre">Core.mdc2</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.msc2"><code class="docutils literal notranslate"><span class="pre">Core.msc2</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.nbins_veg_vert"><code class="docutils literal notranslate"><span class="pre">Core.nbins_veg_vert</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.nspool"><code class="docutils literal notranslate"><span class="pre">Core.nspool</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.ntracer_age"><code class="docutils literal notranslate"><span class="pre">Core.ntracer_age</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.namelists.param.Core.ntracer_gen"><code class="docutils literal notranslate"><span class="pre">Core.ntracer_gen</span></code></a></li>

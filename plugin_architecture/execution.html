@@ -1,0 +1,1023 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Execution and Output Processing Plugin Architecture &#8212; rompy 0.4.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=6c02275b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'plugin_architecture/execution';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4.0" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.4.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../formatting_and_logging.html">Formatting and Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backends.html">Backend Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend_reference.html">Backend Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Execution and Output Processing Plugin Architecture</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="execution-and-output-processing-plugin-architecture">
+<h1>Execution and Output Processing Plugin Architecture<a class="headerlink" href="#execution-and-output-processing-plugin-architecture" title="Link to this heading">#</a></h1>
+<p>Rompy features a flexible plugin-based architecture that allows for extensible model execution and output processing. The system uses Python entry points to automatically discover and load backends, making it easy to extend with custom implementations.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>The plugin architecture is built around three main categories:</p>
+<ol class="arabic simple">
+<li><p><strong>Run Backends</strong> (<code class="docutils literal notranslate"><span class="pre">rompy.run</span></code>): Handle model execution in different environments</p></li>
+<li><p><strong>Postprocessors</strong> (<code class="docutils literal notranslate"><span class="pre">rompy.postprocess</span></code>): Handle model output analysis and transformation</p></li>
+<li><p><strong>Pipeline Backends</strong> (<code class="docutils literal notranslate"><span class="pre">rompy.pipeline</span></code>): Orchestrate complete model workflows</p></li>
+</ol>
+<p>Each category uses Python entry points for automatic discovery and loading, allowing third-party packages to easily extend rompy’s capabilities.</p>
+</section>
+<section id="run-backends">
+<h2>Run Backends<a class="headerlink" href="#run-backends" title="Link to this heading">#</a></h2>
+<p>Run backends are responsible for executing models in different environments. They all implement a common interface with a <code class="docutils literal notranslate"><span class="pre">run()</span></code> method.</p>
+<section id="built-in-run-backends">
+<h3>Built-in Run Backends<a class="headerlink" href="#built-in-run-backends" title="Link to this heading">#</a></h3>
+<section id="local-backend">
+<h4>Local Backend<a class="headerlink" href="#local-backend" title="Link to this heading">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">local</span></code> backend executes models directly on the local system:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic local execution</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
+
+<span class="c1"># With custom command</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span>
+    <span class="n">command</span><span class="o">=</span><span class="s2">&quot;./my_model_executable&quot;</span><span class="p">,</span>
+    <span class="n">env_vars</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;OMP_NUM_THREADS&quot;</span><span class="p">:</span> <span class="s2">&quot;4&quot;</span><span class="p">},</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="docker-backend">
+<h4>Docker Backend<a class="headerlink" href="#docker-backend" title="Link to this heading">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">docker</span></code> backend executes models inside Docker containers:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using pre-built image</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span>
+    <span class="n">image</span><span class="o">=</span><span class="s2">&quot;rompy/schism:latest&quot;</span><span class="p">,</span>
+    <span class="n">executable</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin/schism&quot;</span><span class="p">,</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">volumes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;./data:/data:ro&quot;</span><span class="p">],</span>
+    <span class="n">env_vars</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;MODEL_CONFIG&quot;</span><span class="p">:</span> <span class="s2">&quot;production&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Building from Dockerfile</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span>
+    <span class="n">dockerfile</span><span class="o">=</span><span class="s2">&quot;./docker/Dockerfile&quot;</span><span class="p">,</span>
+    <span class="n">build_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;MODEL_VERSION&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0&quot;</span><span class="p">},</span>
+    <span class="n">executable</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin/model&quot;</span><span class="p">,</span>
+    <span class="n">mpiexec</span><span class="o">=</span><span class="s2">&quot;mpiexec&quot;</span><span class="p">,</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="mi">8</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="custom-run-backends">
+<h3>Custom Run Backends<a class="headerlink" href="#custom-run-backends" title="Link to this heading">#</a></h3>
+<p>You can create custom run backends by implementing the run interface:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CustomRunBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom run backend example.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_run</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute the model run.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model_run: The ModelRun instance</span>
+<span class="sd">            **kwargs: Backend-specific parameters</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if successful, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Generate model inputs</span>
+            <span class="n">model_run</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+            <span class="c1"># Custom execution logic here</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_custom_logic</span><span class="p">(</span><span class="n">model_run</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Custom backend failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Register custom backends via entry points in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.entry-points.</span><span class="s2">&quot;rompy.run&quot;</span><span class="k">]</span>
+<span class="n">custom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mypackage.backends:CustomRunBackend&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="postprocessors">
+<h2>Postprocessors<a class="headerlink" href="#postprocessors" title="Link to this heading">#</a></h2>
+<p>Postprocessors handle analysis and transformation of model outputs. They implement a <code class="docutils literal notranslate"><span class="pre">process()</span></code> method that returns a dictionary with results.</p>
+<section id="built-in-postprocessors">
+<h3>Built-in Postprocessors<a class="headerlink" href="#built-in-postprocessors" title="Link to this heading">#</a></h3>
+<section id="no-op-processor">
+<h4>No-op Processor<a class="headerlink" href="#no-op-processor" title="Link to this heading">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">noop</span></code> processor provides basic validation without processing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic validation</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">processor</span><span class="o">=</span><span class="s2">&quot;noop&quot;</span><span class="p">)</span>
+
+<span class="c1"># With custom validation</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span>
+    <span class="n">processor</span><span class="o">=</span><span class="s2">&quot;noop&quot;</span><span class="p">,</span>
+    <span class="n">validate_outputs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;./custom_output&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="custom-postprocessors">
+<h3>Custom Postprocessors<a class="headerlink" href="#custom-postprocessors" title="Link to this heading">#</a></h3>
+<p>Create custom postprocessors by implementing the process interface:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AnalysisPostprocessor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom postprocessor for model analysis.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_run</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process model outputs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model_run: The ModelRun instance</span>
+<span class="sd">            **kwargs: Processor-specific parameters</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Processing results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">model_run</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run_id</span>
+
+            <span class="c1"># Custom analysis logic</span>
+            <span class="n">metrics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_metrics</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+            <span class="n">plots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_plots</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">,</span>
+                <span class="s2">&quot;plots&quot;</span><span class="p">:</span> <span class="n">plots</span><span class="p">,</span>
+                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Analysis completed successfully&quot;</span>
+            <span class="p">}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Analysis failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">}</span>
+</pre></div>
+</div>
+<p>Register via entry points:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.entry-points.</span><span class="s2">&quot;rompy.postprocess&quot;</span><span class="k">]</span>
+<span class="n">analysis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mypackage.processors:AnalysisPostprocessor&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="pipeline-backends">
+<h2>Pipeline Backends<a class="headerlink" href="#pipeline-backends" title="Link to this heading">#</a></h2>
+<p>Pipeline backends orchestrate the complete model workflow from input generation through execution to output processing.</p>
+<section id="built-in-pipeline-backends">
+<h3>Built-in Pipeline Backends<a class="headerlink" href="#built-in-pipeline-backends" title="Link to this heading">#</a></h3>
+<section id="local-pipeline">
+<h4>Local Pipeline<a class="headerlink" href="#local-pipeline" title="Link to this heading">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">local</span></code> pipeline executes all stages locally:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic pipeline</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span><span class="n">pipeline_backend</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
+
+<span class="c1"># With custom backends</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">pipeline_backend</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span>
+    <span class="n">run_backend</span><span class="o">=</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span>
+    <span class="n">processor</span><span class="o">=</span><span class="s2">&quot;analysis&quot;</span><span class="p">,</span>
+    <span class="n">run_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;rompy/model:latest&quot;</span><span class="p">,</span> <span class="s2">&quot;cpu&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+    <span class="n">process_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;create_plots&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+    <span class="n">cleanup_on_failure</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="custom-pipeline-backends">
+<h3>Custom Pipeline Backends<a class="headerlink" href="#custom-pipeline-backends" title="Link to this heading">#</a></h3>
+<p>Create custom pipeline backends for distributed or cloud execution:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CloudPipelineBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline backend for cloud execution.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_run</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute the complete pipeline.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model_run: The ModelRun instance</span>
+<span class="sd">            **kwargs: Pipeline-specific parameters</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Pipeline execution results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;run_id&quot;</span><span class="p">:</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run_id</span><span class="p">,</span>
+            <span class="s2">&quot;stages_completed&quot;</span><span class="p">:</span> <span class="p">[]</span>
+        <span class="p">}</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Stage 1: Generate inputs</span>
+            <span class="n">model_run</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;stages_completed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;generate&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Stage 2: Submit to cloud</span>
+            <span class="n">job_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_cloud_job</span><span class="p">(</span><span class="n">model_run</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;job_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">job_id</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;stages_completed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;submit&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Stage 3: Wait for completion</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wait_for_completion</span><span class="p">(</span><span class="n">job_id</span><span class="p">)</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;stages_completed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;execute&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Stage 4: Download and process results</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_download_results</span><span class="p">(</span><span class="n">job_id</span><span class="p">)</span>
+            <span class="n">processed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_outputs</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;outputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">processed</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;stages_completed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;postprocess&quot;</span><span class="p">)</span>
+
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">#</a></h2>
+<section id="error-handling">
+<h3>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Always wrap main logic in try-catch blocks</p></li>
+<li><p>Return appropriate boolean/dict responses</p></li>
+<li><p>Log errors with sufficient detail for debugging</p></li>
+<li><p>Clean up resources on failure when possible</p></li>
+</ul>
+</section>
+<section id="parameter-validation">
+<h3>Parameter Validation<a class="headerlink" href="#parameter-validation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Validate required parameters early</p></li>
+<li><p>Provide clear error messages for invalid inputs</p></li>
+<li><p>Use type hints for better IDE support</p></li>
+<li><p>Document all parameters in docstrings</p></li>
+</ul>
+</section>
+<section id="logging">
+<h3>Logging<a class="headerlink" href="#logging" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use structured logging with appropriate levels</p></li>
+<li><p>Include run_id and context in log messages</p></li>
+<li><p>Log progress for long-running operations</p></li>
+<li><p>Avoid logging sensitive information</p></li>
+</ul>
+</section>
+<section id="resource-management">
+<h3>Resource Management<a class="headerlink" href="#resource-management" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Clean up temporary files and directories</p></li>
+<li><p>Handle timeouts gracefully</p></li>
+<li><p>Implement proper cancellation mechanisms</p></li>
+<li><p>Monitor resource usage for long-running processes</p></li>
+</ul>
+</section>
+<section id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Write unit tests for all backend methods</p></li>
+<li><p>Mock external dependencies (Docker, cloud APIs)</p></li>
+<li><p>Test error conditions and edge cases</p></li>
+<li><p>Include integration tests where appropriate</p></li>
+</ul>
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<p>Complete examples demonstrating the plugin architecture can be found in the <code class="docutils literal notranslate"><span class="pre">examples/backends/</span></code> directory:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">01_basic_local_run.py</span></code>: Simple local execution</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">02_docker_run.py</span></code>: Docker container execution</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">03_custom_postprocessor.py</span></code>: Custom output processing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">04_complete_workflow.py</span></code>: End-to-end custom workflow</p></li>
+</ul>
+<p>For interactive examples, see the <code class="docutils literal notranslate"><span class="pre">notebooks/backend_examples.ipynb</span></code> notebook.</p>
+</section>
+<section id="module-rompy.run">
+<span id="api-reference"></span><h2>API Reference<a class="headerlink" href="#module-rompy.run" title="Link to this heading">#</a></h2>
+<p>Local execution backend for model runs.</p>
+<p>This module provides the local run backend implementation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rompy.run.LocalRunBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.run.</span></span><span class="sig-name descname"><span class="pre">LocalRunBackend</span></span><a class="reference internal" href="../_modules/rompy/run.html#LocalRunBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.run.LocalRunBackend" title="Link to this definition">#</a></dt>
+<dd><p>Execute models locally using the system’s Python interpreter.</p>
+<p>This is the simplest backend that just runs the model directly
+on the local system.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.run.LocalRunBackend.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_run</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LocalConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/rompy/run.html#LocalRunBackend.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.run.LocalRunBackend.run" title="Link to this definition">#</a></dt>
+<dd><p>Run the model locally.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_run</strong> – The ModelRun instance to execute</p></li>
+<li><p><strong>config</strong> – LocalConfig instance with execution parameters</p></li>
+<li><p><strong>workspace_dir</strong> – Path to the generated workspace directory (if None, will generate)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if execution was successful, False otherwise</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If model_run is invalid</p></li>
+<li><p><strong>TimeoutError</strong> – If execution exceeds timeout</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-rompy.postprocess">No-op postprocessor for model outputs.</p>
+<p>This module provides a basic postprocessor that does nothing.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rompy.postprocess.NoopPostprocessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.postprocess.</span></span><span class="sig-name descname"><span class="pre">NoopPostprocessor</span></span><a class="reference internal" href="../_modules/rompy/postprocess.html#NoopPostprocessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.postprocess.NoopPostprocessor" title="Link to this definition">#</a></dt>
+<dd><p>A postprocessor that does nothing.</p>
+<p>This is a placeholder implementation that simply returns a success message.
+It’s useful as a base class or for testing.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.postprocess.NoopPostprocessor.process">
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_run</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rompy/postprocess.html#NoopPostprocessor.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.postprocess.NoopPostprocessor.process" title="Link to this definition">#</a></dt>
+<dd><p>Process the output of a model run (does nothing).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_run</strong> – The ModelRun instance whose outputs to process</p></li>
+<li><p><strong>validate_outputs</strong> – Whether to validate that output directory exists</p></li>
+<li><p><strong>output_dir</strong> – Override output directory to check (defaults to model_run output)</p></li>
+<li><p><strong>**kwargs</strong> – Additional parameters (unused)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with processing results</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If model_run is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-rompy.pipeline">Local pipeline backend for model execution.</p>
+<p>This module provides the local pipeline backend implementation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rompy.pipeline.LocalPipelineBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rompy.pipeline.</span></span><span class="sig-name descname"><span class="pre">LocalPipelineBackend</span></span><a class="reference internal" href="../_modules/rompy/pipeline.html#LocalPipelineBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.pipeline.LocalPipelineBackend" title="Link to this definition">#</a></dt>
+<dd><p>Local pipeline backend that executes the full workflow locally.</p>
+<p>This backend uses the existing generate(), run() and postprocess() methods
+to execute the complete pipeline locally.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.pipeline.LocalPipelineBackend.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_run</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'local'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'noop'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup_on_failure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_stages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rompy/pipeline.html#LocalPipelineBackend.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.pipeline.LocalPipelineBackend.execute" title="Link to this definition">#</a></dt>
+<dd><p>Execute the model pipeline locally.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_run</strong> – The ModelRun instance to execute</p></li>
+<li><p><strong>run_backend</strong> – Backend to use for the run stage (“local” or “docker”)</p></li>
+<li><p><strong>processor</strong> – Processor to use for the postprocess stage</p></li>
+<li><p><strong>run_kwargs</strong> – Additional parameters for the run stage</p></li>
+<li><p><strong>process_kwargs</strong> – Additional parameters for the postprocess stage</p></li>
+<li><p><strong>cleanup_on_failure</strong> – Whether to cleanup outputs on pipeline failure</p></li>
+<li><p><strong>validate_stages</strong> – Whether to validate each stage before proceeding</p></li>
+<li><p><strong>**kwargs</strong> – Additional parameters (unused)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Combined results from the pipeline execution</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If model_run is invalid or parameters are invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-backends">Run Backends</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-run-backends">Built-in Run Backends</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#local-backend">Local Backend</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-backend">Docker Backend</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-run-backends">Custom Run Backends</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postprocessors">Postprocessors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-postprocessors">Built-in Postprocessors</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#no-op-processor">No-op Processor</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-postprocessors">Custom Postprocessors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-backends">Pipeline Backends</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-pipeline-backends">Built-in Pipeline Backends</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#local-pipeline">Local Pipeline</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-pipeline-backends">Custom Pipeline Backends</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling">Error Handling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-validation">Parameter Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logging">Logging</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-management">Resource Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-rompy.run">API Reference</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.run.LocalRunBackend"><code class="docutils literal notranslate"><span class="pre">LocalRunBackend</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.run.LocalRunBackend.run"><code class="docutils literal notranslate"><span class="pre">LocalRunBackend.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.postprocess.NoopPostprocessor"><code class="docutils literal notranslate"><span class="pre">NoopPostprocessor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.postprocess.NoopPostprocessor.process"><code class="docutils literal notranslate"><span class="pre">NoopPostprocessor.process()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.pipeline.LocalPipelineBackend"><code class="docutils literal notranslate"><span class="pre">LocalPipelineBackend</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.pipeline.LocalPipelineBackend.execute"><code class="docutils literal notranslate"><span class="pre">LocalPipelineBackend.execute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/plugin_architecture/execution.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>rompy.schism.namelists.param &#8212; rompy 0.3.1 documentation</title>
+    <title>rompy.schism.namelists.param &#8212; rompy 0.4.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../../../_static/documentation_options.js?v=6c02275b"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -47,7 +47,7 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.3.1" />
+  <meta name="docsearch:version" content="0.4.0" />
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.3.1 documentation</p>
+    <p class="title logo__title">rompy 0.4.0 documentation</p>
   
 </a></div>
     
@@ -165,6 +165,20 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../../../../models.html">
     Models
@@ -311,6 +325,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../../models.html">
     Models
   </a>
@@ -377,6 +405,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../formatting_and_logging.html">Formatting and Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../backends.html">Backend Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../backend_reference.html">Backend Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../demo.html">Demonstration notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API  Documentation</a></li>
@@ -494,6 +524,10 @@
     <span class="n">ihfskip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="mi">864</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Stack spool for global output controls. Every ihfskip steps will be put into 1_*, 2_*, etc.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">nbins_veg_vert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">2</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of vertical bins for vegetation model. Only used if iveg=1.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="Core.validate_ipre">
@@ -664,7 +698,7 @@
     <span class="p">)</span>
     <span class="n">start_day</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
     <span class="n">start_hour</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">)</span>
-    <span class="n">utc_start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">)</span>
+    <span class="n">utc_start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">)</span>
     <span class="n">ics</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Coordinate option&quot;</span><span class="p">)</span>
     <span class="n">ihot</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">ieos_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -760,7 +794,8 @@
         <span class="mi">2</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;needed if if_source/=0; ramp-up period in days for source/sinks (no ramp-up if &lt;=0)&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">meth_sink</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;options to treat sinks @ dry elem&quot;</span><span class="p">)</span>
+    <span class="c1"># Removed in SCHISM 5.12</span>
+    <span class="c1"># meth_sink: Optional[int] = Field(1, description=&quot;options to treat sinks @ dry elem&quot;)</span>
     <span class="n">lev_tr_source__1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
     <span class="n">lev_tr_source__2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>
     <span class="n">lev_tr_source__3</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;GEN&quot;</span><span class="p">)</span>
@@ -786,7 +821,7 @@
     <span class="n">hmin_man</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="mf">1.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;needed if nchi=-1: min. depth in Manning&#39;s formulation [m]&quot;</span>
     <span class="p">)</span>
-    <span class="n">ncor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;should usually be 1 if ics=2&quot;</span><span class="p">)</span>
+    <span class="n">ncor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;should usually be 1 if ics=2&quot;</span><span class="p">)</span>
     <span class="n">rlatitude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">46</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;if ncor=-1&quot;</span><span class="p">)</span>
     <span class="n">coricoef</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;if ncor=0&quot;</span><span class="p">)</span>
     <span class="n">ic_elev</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -1027,6 +1062,107 @@
 
 
 
+<span class="k">class</span><span class="w"> </span><span class="nc">Vegetation</span><span class="p">(</span><span class="n">NamelistBaseModel</span><span class="p">):</span>
+    <span class="c1"># isav: Optional[int] = Field(</span>
+    <span class="c1">#     0,</span>
+    <span class="c1">#     description=&quot;Flag for vegetation model. 0: off, 1: on. Requires additional input files if enabled.&quot;,</span>
+    <span class="c1"># )</span>
+    <span class="n">iveg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        !----------------------------------------------------------------------</span>
+<span class="s2">        ! Vegetation model</span>
+<span class="s2">        ! If iveg/=0, need 4 extra inputs: (1) veg_D.gr3 (depth is stem diameter in meters);</span>
+<span class="s2">        ! (2) veg_N.gr3 (depth is # of stems per m^2);</span>
+<span class="s2">        ! (3) veg_h.gr3 (height of canopy in meters);</span>
+<span class="s2">        ! (4) veg_cd.gr3 (drag coefficient).</span>
+<span class="s2">        ! With iveg=1, the vertical scaling is given by veg_vert_scale_[cd,N,D](1:nbins_veg_vert+1) below.</span>
+<span class="s2">        ! veg_vert_z(:) specify the distance from bed for each bin (ascending order starting from 0).</span>
+<span class="s2">        ! iveg=2: flex vegeation using Ganthy (2011) fomulation</span>
+
+<span class="s2">        ! If one of these depths=0 at a node, the code will set all to 0. </span>
+<span class="s2">        ! If USE_MARSH is on and isav=1, all .gr3 must have constant depths!</span>
+<span class="s2">        !----------------------------------------------------------------------</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">veg_vert_z</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Depths for vertical scaling of vegetation model (in meters).&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">veg_vert_scale_cd</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Vertical scaling for drag coefficient. Only used if iveg=1.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">veg_vert_scale_n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Vertical scaling for number of stems per m^2. Only used if iveg=1.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">veg_vert_scale_d</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Vertical scaling for stem diameter. Only used if iveg=1.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">veg_lai</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Leaf Area Index [-]; used if iveg=2. Ganthy suggests 0-10?&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">veg_cw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">1.5</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;calibration coefficient in diameter of bent leaf [-]; used if iveg=2. Ganthy suggests 0-25?&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;iveg&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_iveg</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;iveg must be 0, 1, or 2&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;veg_vert_z&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_veg_vert_z</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="c1"># Check if the list is in ascending order and contains floats</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All elements in veg_vert_z must be floats&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;veg_vert_z must be in ascending order&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;veg_vert_scale_cd&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_veg_vert_scale_cd</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All elements in veg_vert_scale_cd must be floats&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;veg_vert_scale_n&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_veg_vert_scale_n</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All elements in veg_vert_scale_n must be floats&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;veg_vert_scale_d&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_veg_vert_scale_d</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All elements in veg_vert_scale_d must be floats&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;veg_lai&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_veg_lai</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;veg_lai must be non-negative&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;veg_cw&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_veg_cw</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;veg_cw must be non-negative&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+
 <div class="viewcode-block" id="Vertical">
 <a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.param.Vertical.html#rompy.schism.namelists.param.Vertical">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Vertical</span><span class="p">(</span><span class="n">NamelistBaseModel</span><span class="p">):</span>
@@ -1089,10 +1225,6 @@
         <span class="mf">120.0</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Sea-level rise rate in mm/year for marsh model. Only used if USE_MARSH is on.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">isav</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="mi">0</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Flag for vegetation model. 0: off, 1: on. Requires additional input files if enabled.&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
     <span class="n">nstep_ice</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of SCHISM steps between calls to the ICE module.&quot;</span>
     <span class="p">)</span>
@@ -1102,11 +1234,11 @@
     <span class="n">rearth_eq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="mf">6378206.4</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Earth&#39;s radius at the equator in meters.&quot;</span>
     <span class="p">)</span>
-    <span class="n">shw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;4184.d0&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Specific heat of water (C_p) in J/kg/K.&quot;</span>
+    <span class="n">shw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">4184.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Specific heat of water (C_p) in J/kg/K.&quot;</span>
     <span class="p">)</span>
-    <span class="n">rho0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;1000.d0&quot;</span><span class="p">,</span>
+    <span class="n">rho0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">1000.0</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reference water density for Boussinesq approximation in kg/m^3.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">vclose_surf_frac</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -1285,16 +1417,6 @@
         <span class="k">return</span> <span class="n">v</span></div>
 
 
-<div class="viewcode-block" id="Vertical.check_isav">
-<a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.param.Vertical.html#rompy.schism.namelists.param.Vertical.check_isav">[docs]</a>
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;isav&quot;</span><span class="p">)</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">check_isav</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;isav must be 0 or 1&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">v</span></div>
-
-
 <div class="viewcode-block" id="Vertical.check_nstep_ice">
 <a class="viewcode-back" href="../../../../schism/_generated/rompy.schism.namelists.param.Vertical.html#rompy.schism.namelists.param.Vertical.check_nstep_ice">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;nstep_ice&quot;</span><span class="p">)</span>
@@ -1330,7 +1452,8 @@
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;shw&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_shw</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># if float(v.replace(&quot;d&quot;, &quot;&quot;)) &lt;= 0:</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;shw must be positive&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span></div>
 
@@ -1340,7 +1463,8 @@
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;rho0&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_rho0</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">900</span><span class="p">:</span>
+            <span class="c1"># if float(v.replace(&quot;d&quot;, &quot;&quot;)) &lt;= 0:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;rho0 must be positive&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span></div>
 
@@ -1463,7 +1587,7 @@
         <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;wind stress vector [m^2/s/s] {windStressX,Y}  2D vector&quot;</span>
     <span class="p">)</span>
     <span class="n">iof_hydro__16</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;depth-averaged vel vector [m/s] {depthAverageVelX,Y}  2D vector&quot;</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;depth-averaged vel vector [m/s] {depthAverageVelX,Y}  2D vector&quot;</span>
     <span class="p">)</span>
     <span class="n">iof_hydro__17</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;vertical velocity [m/s] </span><span class="si">{verticalVelocity}</span><span class="s2">  3D&quot;</span>
@@ -2050,6 +2174,7 @@
     <span class="n">core</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Core</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">Core</span><span class="p">)</span>
     <span class="n">opt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Opt</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">Opt</span><span class="p">)</span>
     <span class="n">vertical</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Vertical</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">Vertical</span><span class="p">)</span>
+    <span class="n">vegetation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Vegetation</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">Vegetation</span><span class="p">)</span>
     <span class="n">schout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Schout</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">Schout</span><span class="p">)</span></div>
 
 </pre></div>

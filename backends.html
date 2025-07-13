@@ -1,0 +1,1297 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Backend Systems &#8212; rompy 0.4.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=6c02275b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'backends';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Backend Reference" href="backend_reference.html" />
+    <link rel="prev" title="Command Line Interface" href="cli.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4.0" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.4.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="models.html">
+    Models
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formatting_and_logging.html">Formatting and Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Backend Systems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-components">Key Components</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-types">Configuration Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#localconfig-local-system-execution">LocalConfig - Local System Execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dockerconfig-container-execution">DockerConfig - Container Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-backend-configurations">Using Backend Configurations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#with-modelrun">With ModelRun</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-configuration-files">From Configuration Files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-management">Configuration Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-execution">Model Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-examples">Configuration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#environment-specific-configurations">Environment-Specific Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resource-based-configurations">Resource-Based Configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#validation-and-error-handling">Validation and Error Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#type-safety">Type Safety</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-validation">Configuration Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Configuration Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resource-planning">Resource Planning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#security-considerations">Security Considerations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-configuration-issues">Debugging Configuration Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#custom-backend-configurations">Custom Backend Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#postprocessors">Postprocessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schema-generation">Schema Generation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#complete-workflow-example">Complete Workflow Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pipeline-integration">Pipeline Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backend_reference.html">Backend Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Backend Systems</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="backend-systems">
+<h1>Backend Systems<a class="headerlink" href="#backend-systems" title="Link to this heading">#</a></h1>
+<p>ROMPY’s backend system provides flexible, type-safe execution environments for wave models. Whether you’re running simple local simulations or complex containerized workflows, the backend system handles execution, resource management, and result processing.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>Backend systems in ROMPY control <strong>how</strong> and <strong>where</strong> your models execute. They provide:</p>
+<ul class="simple">
+<li><p><strong>Execution Environments</strong>: Local system, Docker containers, HPC clusters</p></li>
+<li><p><strong>Resource Management</strong>: CPU, memory, and timeout controls</p></li>
+<li><p><strong>Type Safety</strong>: Pydantic-based configurations with validation</p></li>
+<li><p><strong>Reproducibility</strong>: Consistent execution across different environments</p></li>
+<li><p><strong>Scalability</strong>: From development to production deployments</p></li>
+</ul>
+<section id="key-components">
+<h3>Key Components<a class="headerlink" href="#key-components" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt><strong>Backend Configurations</strong></dt><dd><p>Type-safe Pydantic models that define execution parameters. See <code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.BaseBackendConfig</span></code> and its subclasses.</p>
+</dd>
+<dt><strong>Run Backends</strong></dt><dd><p>Execution engines that handle the actual model runs. See <a class="reference internal" href="plugin_architecture/execution.html#module-rompy.run" title="rompy.run"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rompy.run</span></code></a> for implementations.</p>
+</dd>
+<dt><strong>Postprocessors</strong></dt><dd><p>Components that handle results after model execution. See <code class="xref py py-mod docutils literal notranslate"><span class="pre">rompy.backends.postprocessors</span></code> for available processors.</p>
+</dd>
+<dt><strong>CLI Integration</strong></dt><dd><p>Command-line tools for configuration management and execution. See <a class="reference internal" href="cli.html"><span class="doc">Command Line Interface</span></a> for details.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
+<p>Get started with backends in three simple steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Create a Backend Configuration</strong></p></li>
+</ol>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># my_backend.yml</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
+<span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;python</span><span class="nv"> </span><span class="s">run_model.py&quot;</span>
+<span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">OMP_NUM_THREADS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Validate Your Configuration</strong></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>my_backend.yml
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p><strong>Run Your Model</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span>
+
+<span class="c1"># Load and run</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;model_config.yml&quot;</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;my_backend.yml&quot;</span><span class="p">)</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-types">
+<h2>Configuration Types<a class="headerlink" href="#configuration-types" title="Link to this heading">#</a></h2>
+<p>All backend configurations inherit from <code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.BaseBackendConfig</span></code> and provide type-safe, validated execution parameters.</p>
+<section id="localconfig-local-system-execution">
+<h3>LocalConfig - Local System Execution<a class="headerlink" href="#localconfig-local-system-execution" title="Link to this heading">#</a></h3>
+<p>Execute models directly on your local system using <code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.LocalConfig</span></code>.</p>
+<p><strong>Basic Usage:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="p">(</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>
+    <span class="n">command</span><span class="o">=</span><span class="s2">&quot;python run_simulation.py&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Advanced Configuration:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># local_advanced.yml</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7200</span><span class="w">  </span><span class="c1"># 2 hours</span>
+<span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;python</span><span class="nv"> </span><span class="s">run_simulation.py</span><span class="nv"> </span><span class="s">--verbose&quot;</span>
+<span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">capture_output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">OMP_NUM_THREADS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8&quot;</span>
+<span class="w">  </span><span class="nt">PYTHONPATH</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/custom/path&quot;</span>
+<span class="w">  </span><span class="nt">MODEL_DEBUG</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</pre></div>
+</div>
+<p><strong>Key Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Maximum execution time in seconds (60-86400)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code>: Shell command to execute (optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shell</span></code>: Execute through shell (default: True)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">capture_output</span></code>: Capture stdout/stderr (default: True)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">env_vars</span></code>: Environment variables to set</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">working_dir</span></code>: Working directory for execution</p></li>
+</ul>
+<p>For complete parameter documentation, see <code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.LocalConfig</span></code>.</p>
+</section>
+<section id="dockerconfig-container-execution">
+<h3>DockerConfig - Container Execution<a class="headerlink" href="#dockerconfig-container-execution" title="Link to this heading">#</a></h3>
+<p>Execute models inside Docker containers for reproducible, isolated environments using <code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.DockerConfig</span></code>.</p>
+<p><strong>Basic Usage:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">DockerConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">image</span><span class="o">=</span><span class="s2">&quot;swan:latest&quot;</span><span class="p">,</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;2g&quot;</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Advanced Configuration:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker_advanced.yml</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+<span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;swan:latest&quot;</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10800</span><span class="w">  </span><span class="c1"># 3 hours</span>
+<span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4g&quot;</span>
+<span class="nt">mpiexec</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mpirun</span><span class="nv"> </span><span class="s">-np</span><span class="nv"> </span><span class="s">8&quot;</span>
+<span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;modeluser&quot;</span>
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/data/input:/app/input:ro&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/data/output:/app/output:rw&quot;</span>
+<span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">MODEL_THREADS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8&quot;</span>
+<span class="w">  </span><span class="nt">DATA_DIR</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/app/input&quot;</span>
+</pre></div>
+</div>
+<p><strong>Building from Dockerfile:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker_build.yml</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+<span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./docker/Dockerfile&quot;</span>
+<span class="nt">build_context</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./docker&quot;</span>
+<span class="nt">build_args</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">MODEL_VERSION</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2.1.0&quot;</span>
+<span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2g&quot;</span>
+</pre></div>
+</div>
+<p><strong>Key Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">image</span></code>: Docker image to use (mutually exclusive with dockerfile)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dockerfile</span></code>: Path to Dockerfile to build (mutually exclusive with image)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu</span></code>: Number of CPU cores (1-128)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memory</span></code>: Memory limit (e.g., “2g”, “512m”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Maximum execution time in seconds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">volumes</span></code>: Volume mounts in “host:container:mode” format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">env_vars</span></code>: Environment variables to set</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">executable</span></code>: Path to executable inside container</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mpiexec</span></code>: MPI execution command for parallel runs</p></li>
+</ul>
+<p>For complete parameter documentation, see <code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.DockerConfig</span></code>.</p>
+</section>
+</section>
+<section id="using-backend-configurations">
+<h2>Using Backend Configurations<a class="headerlink" href="#using-backend-configurations" title="Link to this heading">#</a></h2>
+<section id="with-modelrun">
+<h3>With ModelRun<a class="headerlink" href="#with-modelrun" title="Link to this heading">#</a></h3>
+<p>Backend configurations integrate directly with ROMPY’s model execution via <a class="reference internal" href="_generated/rompy.model.ModelRun.html#rompy.model.ModelRun.run" title="rompy.model.ModelRun.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rompy.model.ModelRun.run()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span><span class="p">,</span> <span class="n">DockerConfig</span>
+
+<span class="c1"># Load your model</span>
+<span class="n">model_run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;model_config.yml&quot;</span><span class="p">)</span>
+
+<span class="c1"># Execute locally</span>
+<span class="n">local_config</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">local_config</span><span class="p">)</span>
+
+<span class="c1"># Execute in Docker</span>
+<span class="n">docker_config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">image</span><span class="o">=</span><span class="s2">&quot;rompy/swan:latest&quot;</span><span class="p">,</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;4g&quot;</span>
+<span class="p">)</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">docker_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="from-configuration-files">
+<h3>From Configuration Files<a class="headerlink" href="#from-configuration-files" title="Link to this heading">#</a></h3>
+<p>Load configurations from YAML or JSON files:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span><span class="p">,</span> <span class="n">DockerConfig</span>
+
+<span class="c1"># Load configuration</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;backend_config.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">config_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">backend_type</span> <span class="o">=</span> <span class="n">config_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">backend_type</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">backend_type</span> <span class="o">==</span> <span class="s2">&quot;docker&quot;</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>
+
+<span class="c1"># Use configuration</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="command-line-interface">
+<h2>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Link to this heading">#</a></h2>
+<p>The CLI provides comprehensive backend management capabilities. See <a class="reference internal" href="cli.html"><span class="doc">Command Line Interface</span></a> for complete details.</p>
+<section id="configuration-management">
+<h3>Configuration Management<a class="headerlink" href="#configuration-management" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Validate configuration</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>my_config.yml
+
+<span class="c1"># List available backends</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>list
+
+<span class="c1"># Show configuration schema</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>schema<span class="w"> </span>--backend-type<span class="w"> </span>docker
+
+<span class="c1"># Create configuration template</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>create<span class="w"> </span>--backend-type<span class="w"> </span><span class="nb">local</span><span class="w"> </span>--output<span class="w"> </span>template.yml
+</pre></div>
+</div>
+</section>
+<section id="model-execution">
+<h3>Model Execution<a class="headerlink" href="#model-execution" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run model with backend configuration</span>
+rompy<span class="w"> </span>run<span class="w"> </span>model_config.yml<span class="w"> </span>--backend-config<span class="w"> </span>my_backend.yml
+
+<span class="c1"># Run pipeline with configuration</span>
+rompy<span class="w"> </span>pipeline<span class="w"> </span>--config<span class="w"> </span>pipeline_config.yml
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration-examples">
+<h2>Configuration Examples<a class="headerlink" href="#configuration-examples" title="Link to this heading">#</a></h2>
+<section id="environment-specific-configurations">
+<h3>Environment-Specific Configurations<a class="headerlink" href="#environment-specific-configurations" title="Link to this heading">#</a></h3>
+<p><strong>Development Environment:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># dev_backend.yml</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1800</span><span class="w">  </span><span class="c1"># 30 minutes</span>
+<span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;python</span><span class="nv"> </span><span class="s">run_model.py</span><span class="nv"> </span><span class="s">--debug&quot;</span>
+<span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ENV</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;development&quot;</span>
+<span class="w">  </span><span class="nt">LOG_LEVEL</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DEBUG&quot;</span>
+<span class="w">  </span><span class="nt">PYTHONUNBUFFERED</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span>
+</pre></div>
+</div>
+<p><strong>Production Environment:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># prod_backend.yml</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+<span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mymodel:production&quot;</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">14400</span><span class="w">  </span><span class="c1"># 4 hours</span>
+<span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span>
+<span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;32g&quot;</span>
+<span class="nt">mpiexec</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mpirun</span><span class="nv"> </span><span class="s">-np</span><span class="nv"> </span><span class="s">16&quot;</span>
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/data/production:/app/data:ro&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/results/production:/app/results:rw&quot;</span>
+<span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ENV</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;production&quot;</span>
+<span class="w">  </span><span class="nt">LOG_LEVEL</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;INFO&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="resource-based-configurations">
+<h3>Resource-Based Configurations<a class="headerlink" href="#resource-based-configurations" title="Link to this heading">#</a></h3>
+<p><strong>Small Models:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
+<span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">OMP_NUM_THREADS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4&quot;</span>
+</pre></div>
+</div>
+<p><strong>Large Models:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+<span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;swan:hpc&quot;</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span><span class="w">  </span><span class="c1"># 24 hours</span>
+<span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">32</span>
+<span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;64g&quot;</span>
+<span class="nt">mpiexec</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mpirun</span><span class="nv"> </span><span class="s">-np</span><span class="nv"> </span><span class="s">32&quot;</span>
+<span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">OMP_NUM_THREADS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span>
+<span class="w">  </span><span class="nt">MODEL_PRECISION</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;double&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="validation-and-error-handling">
+<h2>Validation and Error Handling<a class="headerlink" href="#validation-and-error-handling" title="Link to this heading">#</a></h2>
+<section id="type-safety">
+<h3>Type Safety<a class="headerlink" href="#type-safety" title="Link to this heading">#</a></h3>
+<p>Pydantic provides comprehensive validation with clear error messages:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span><span class="p">,</span> <span class="n">DockerConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValidationError</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Invalid timeout (too short)</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Missing required image/dockerfile</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">()</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-validation">
+<h3>Configuration Validation<a class="headerlink" href="#configuration-validation" title="Link to this heading">#</a></h3>
+<p>Each configuration class validates fields according to execution environment requirements:</p>
+<p><strong>LocalConfig Validation:</strong>
+* Working directory must exist if specified
+* Environment variables must be string key-value pairs
+* Timeout must be between 60 and 86400 seconds</p>
+<p><strong>DockerConfig Validation:</strong>
+* Either <code class="docutils literal notranslate"><span class="pre">image</span></code> or <code class="docutils literal notranslate"><span class="pre">dockerfile</span></code> must be provided (not both)
+* CPU count must be between 1 and 128
+* Memory format must match pattern (e.g., “2g”, “512m”)
+* Volume mounts must use “host:container:mode” format
+* Docker image names must follow valid naming conventions</p>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>Configuration Management<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Version Control</strong>: Keep configuration files in version control</p></li>
+<li><p><strong>Environment Variables</strong>: Use environment variables for sensitive data:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="p">(</span>
+    <span class="n">env_vars</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;API_KEY&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;API_KEY&quot;</span><span class="p">]}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p><strong>Validation</strong>: Always validate configurations before production use:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>my_config.yml
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p><strong>Documentation</strong>: Document your configurations with comments:</p></li>
+</ol>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Production SWAN model configuration</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+<span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;swan:2.1.0&quot;</span><span class="w">  </span><span class="c1"># Pin specific version</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">14400</span><span class="w">  </span><span class="c1"># 4 hours for typical runs</span>
+<span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w">  </span><span class="c1"># Match server capabilities</span>
+</pre></div>
+</div>
+</section>
+<section id="resource-planning">
+<h3>Resource Planning<a class="headerlink" href="#resource-planning" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Start Small</strong>: Begin with conservative resource allocations</p></li>
+<li><p><strong>Monitor Usage</strong>: Track actual resource consumption</p></li>
+<li><p><strong>Scale Gradually</strong>: Increase resources based on measured needs</p></li>
+<li><p><strong>Set Realistic Timeouts</strong>: Base timeouts on model complexity</p></li>
+</ol>
+</section>
+<section id="security-considerations">
+<h3>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Container Security</strong>: Use appropriate user permissions:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">image</span><span class="o">=</span><span class="s2">&quot;myapp:latest&quot;</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="s2">&quot;appuser&quot;</span><span class="p">,</span>  <span class="c1"># Don&#39;t run as root</span>
+    <span class="n">volumes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;/data:/app/data:ro&quot;</span><span class="p">]</span>  <span class="c1"># Read-only when possible</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Environment Variables</strong>: Never hardcode sensitive data in configuration files</p></li>
+<li><p><strong>Volume Mounts</strong>: Use read-only mounts when possible</p></li>
+</ol>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading">#</a></h3>
+<p><strong>Configuration Validation Errors</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check configuration syntax</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>my_config.yml
+
+<span class="c1"># Show configuration schema</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>schema<span class="w"> </span>--backend-type<span class="w"> </span><span class="nb">local</span>
+</pre></div>
+</div>
+<p><strong>Docker Issues</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verify Docker image exists</span>
+docker<span class="w"> </span>images<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myimage
+
+<span class="c1"># Test Docker configuration</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>--backend-type<span class="w"> </span>docker<span class="w"> </span>docker_config.yml
+</pre></div>
+</div>
+<p><strong>Timeout Issues</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Increase timeout for long-running models</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">21600</span><span class="w">  </span><span class="c1"># 6 hours</span>
+</pre></div>
+</div>
+<p><strong>Memory Issues</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Increase memory allocation</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+<span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;swan:latest&quot;</span>
+<span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8g&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="debugging-configuration-issues">
+<h3>Debugging Configuration Issues<a class="headerlink" href="#debugging-configuration-issues" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Check Validation Errors</strong>:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValidationError</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">errors</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Field </span><span class="si">{</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;msg&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Verify Configuration Serialization</strong>:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p><strong>Test with Simple Examples</strong>:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start with minimal configuration</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+<span class="c1"># Add complexity gradually</span>
+</pre></div>
+</div>
+</section>
+<section id="getting-help">
+<h3>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># General help</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>--help
+
+<span class="c1"># Command-specific help</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>--help
+
+<span class="c1"># Show examples</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>create<span class="w"> </span>--backend-type<span class="w"> </span><span class="nb">local</span><span class="w"> </span>--with-examples
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-usage">
+<h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">#</a></h2>
+<section id="custom-backend-configurations">
+<h3>Custom Backend Configurations<a class="headerlink" href="#custom-backend-configurations" title="Link to this heading">#</a></h3>
+<p>Extend the system with custom backend types by inheriting from <code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.BaseBackendConfig</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseBackendConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">HPCConfig</span><span class="p">(</span><span class="n">BaseBackendConfig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for HPC cluster execution.&quot;&quot;&quot;</span>
+
+    <span class="n">queue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;SLURM queue name&quot;</span><span class="p">)</span>
+    <span class="n">nodes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">partition</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;compute&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_backend_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mypackage.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">HPCRunBackend</span>
+        <span class="k">return</span> <span class="n">HPCRunBackend</span>
+</pre></div>
+</div>
+<p>For detailed implementation guidance, see <a class="reference internal" href="backend_reference.html"><span class="doc">Backend Reference</span></a>.</p>
+</section>
+<section id="postprocessors">
+<h3>Postprocessors<a class="headerlink" href="#postprocessors" title="Link to this heading">#</a></h3>
+<p>Handle results after model execution using postprocessor classes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic postprocessing</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">processor</span><span class="o">=</span><span class="s2">&quot;archive&quot;</span><span class="p">)</span>
+
+<span class="c1"># Custom postprocessing</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model_run</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span>
+    <span class="n">processor</span><span class="o">=</span><span class="s2">&quot;custom_analyzer&quot;</span><span class="p">,</span>
+    <span class="n">output_format</span><span class="o">=</span><span class="s2">&quot;netcdf&quot;</span><span class="p">,</span>
+    <span class="n">compress</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>For available postprocessors, see <code class="xref py py-mod docutils literal notranslate"><span class="pre">rompy.backends.postprocessors</span></code>.</p>
+</section>
+<section id="schema-generation">
+<h3>Schema Generation<a class="headerlink" href="#schema-generation" title="Link to this heading">#</a></h3>
+<p>Generate configuration schemas for external tools:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span><span class="p">,</span> <span class="n">DockerConfig</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="c1"># Generate JSON schema</span>
+<span class="n">local_schema</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
+<span class="n">docker_schema</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
+
+<span class="c1"># Save schema for external validation</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;local_schema.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">local_schema</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-examples">
+<h2>Integration Examples<a class="headerlink" href="#integration-examples" title="Link to this heading">#</a></h2>
+<section id="complete-workflow-example">
+<h3>Complete Workflow Example<a class="headerlink" href="#complete-workflow-example" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRun</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">DockerConfig</span>
+
+<span class="c1"># Load model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;swan_model.yml&quot;</span><span class="p">)</span>
+
+<span class="c1"># Configure backend</span>
+<span class="n">backend</span> <span class="o">=</span> <span class="n">DockerConfig</span><span class="p">(</span>
+    <span class="n">image</span><span class="o">=</span><span class="s2">&quot;swan:latest&quot;</span><span class="p">,</span>
+    <span class="n">cpu</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;8g&quot;</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">7200</span><span class="p">,</span>
+    <span class="n">volumes</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;/data/bathymetry:/app/bathy:ro&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/data/forcing:/app/forcing:ro&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/results:/app/results:rw&quot;</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Execute</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model execution completed successfully&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model execution failed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pipeline-integration">
+<h3>Pipeline Integration<a class="headerlink" href="#pipeline-integration" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span><span class="p">,</span> <span class="n">DockerConfig</span>
+
+<span class="c1"># Create pipeline with different backends for different stages</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;preprocessing&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;backend&quot;</span><span class="p">:</span> <span class="n">LocalConfig</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1800</span><span class="p">),</span>
+        <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;python preprocess.py&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;simulation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;backend&quot;</span><span class="p">:</span> <span class="n">DockerConfig</span><span class="p">(</span>
+            <span class="n">image</span><span class="o">=</span><span class="s2">&quot;swan:latest&quot;</span><span class="p">,</span>
+            <span class="n">cpu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+            <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;32g&quot;</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="mi">14400</span>
+        <span class="p">)</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;postprocessing&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;backend&quot;</span><span class="p">:</span> <span class="n">LocalConfig</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span><span class="p">),</span>
+        <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;python postprocess.py&quot;</span>
+    <span class="p">}</span>
+<span class="p">])</span>
+
+<span class="c1"># Execute pipeline</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h2>
+<p>For complete API documentation, see:</p>
+<ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.BaseBackendConfig</span></code> - Base configuration class</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.LocalConfig</span></code> - Local execution configuration</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">rompy.backends.config.DockerConfig</span></code> - Docker execution configuration</p></li>
+<li><p><a class="reference internal" href="plugin_architecture/execution.html#module-rompy.run" title="rompy.run"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rompy.run</span></code></a> - Run backend implementations</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">rompy.backends.postprocessors</span></code> - Postprocessor implementations</p></li>
+<li><p><a class="reference internal" href="backend_reference.html"><span class="doc">Backend Reference</span></a> - Comprehensive technical reference</p></li>
+</ul>
+<p>The backend system provides a robust, type-safe foundation for model execution while maintaining flexibility for different deployment scenarios. From simple local development to complex containerized production environments, the backend system adapts to your needs while ensuring consistent, reproducible results.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cli.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Command Line Interface</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="backend_reference.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Backend Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components">Key Components</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-types">Configuration Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#localconfig-local-system-execution">LocalConfig - Local System Execution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dockerconfig-container-execution">DockerConfig - Container Execution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-backend-configurations">Using Backend Configurations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-modelrun">With ModelRun</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-configuration-files">From Configuration Files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line-interface">Command Line Interface</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-management">Configuration Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-execution">Model Execution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-examples">Configuration Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-specific-configurations">Environment-Specific Configurations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-based-configurations">Resource-Based Configurations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-and-error-handling">Validation and Error Handling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-safety">Type Safety</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-validation">Configuration Validation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Configuration Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-planning">Resource Planning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#security-considerations">Security Considerations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-issues">Common Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging-configuration-issues">Debugging Configuration Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-usage">Advanced Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-backend-configurations">Custom Backend Configurations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#postprocessors">Postprocessors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#schema-generation">Schema Generation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-examples">Integration Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-workflow-example">Complete Workflow Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-integration">Pipeline Integration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-reference">API Reference</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/backends.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

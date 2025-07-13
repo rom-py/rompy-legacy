@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Command Line Interface &#8212; rompy 0.3.1 documentation</title>
+    <title>Command Line Interface &#8212; rompy 0.4.0 documentation</title>
   
   
   
@@ -39,18 +39,18 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=4621528c"></script>
+    <script src="_static/documentation_options.js?v=6c02275b"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'cli';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Models" href="models.html" />
+    <link rel="next" title="Backend Systems" href="backends.html" />
     <link rel="prev" title="Formatting and Logging" href="formatting_and_logging.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.3.1" />
+  <meta name="docsearch:version" content="0.4.0" />
   </head>
   
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.3.1 documentation</p>
+    <p class="title logo__title">rompy 0.4.0 documentation</p>
   
 </a></div>
     
@@ -168,6 +168,20 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="models.html">
     Models
@@ -316,6 +330,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="models.html">
     Models
   </a>
@@ -382,15 +410,50 @@
 <li class="toctree-l1"><a class="reference internal" href="core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="formatting_and_logging.html">Formatting and Logging</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Command Line Interface</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#available-models">Available Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#options">Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configuration-file-format">Configuration File Format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#exit-codes">Exit Codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run">run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#backends">backends</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pipeline">pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate">generate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validate">validate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schema">schema</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#backend-configuration-files">Backend Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#global-options">Global Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backend-types">Backend Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run-backends">Run Backends</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#postprocessors">Postprocessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pipeline-backends">Pipeline Backends</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modern-workflow-examples">Modern Workflow Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-files">Configuration Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#enhanced-configuration-structure">Enhanced Configuration Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring-and-debugging">Monitoring and Debugging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#verbose-output">Verbose Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#log-files">Log Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#backend-information">Backend Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validation-and-testing">Validation and Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exit-codes">Exit Codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">Backend Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backend_reference.html">Backend Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Demonstration notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API  Documentation</a></li>
@@ -452,37 +515,200 @@
                   
   <section id="command-line-interface">
 <span id="cli"></span><h1>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Link to this heading">#</a></h1>
-<p>The ROMPY Command Line Interface (CLI) provides a convenient way to run ocean, wave, and hydrodynamic models with configuration files.</p>
-<section id="basic-usage">
-<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h2>
-<p>The basic syntax for running a model is:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>&lt;model&gt;<span class="w"> </span>&lt;config-file&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<p>The ROMPY Command Line Interface (CLI) provides a comprehensive set of tools for generating, running, and processing ocean, wave, and hydrodynamic model configurations with support for multiple execution backends.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>ROMPY CLI provides a comprehensive command structure:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span><span class="o">[</span>arguments<span class="o">]</span>
 </pre></div>
 </div>
-<p>Where:
-- <code class="docutils literal notranslate"><span class="pre">&lt;model&gt;</span></code>: The type of model to run (e.g., swan, schism)
-- <code class="docutils literal notranslate"><span class="pre">&lt;config-file&gt;</span></code>: Path to a YAML or JSON configuration file</p>
 </section>
-<section id="available-models">
-<h2>Available Models<a class="headerlink" href="#available-models" title="Link to this heading">#</a></h2>
-<p>To list all available models, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>--version
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">#</a></h2>
+<section id="run">
+<h3>run<a class="headerlink" href="#run" title="Link to this heading">#</a></h3>
+<p>Execute a model configuration using a Pydantic backend configuration.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>run<span class="w"> </span>&lt;config-file&gt;<span class="w"> </span>--backend-config<span class="w"> </span>&lt;backend-config-file&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
-<p>This will display the ROMPY version and a list of available models.</p>
-</section>
-<section id="options">
-<h2>Options<a class="headerlink" href="#options" title="Link to this heading">#</a></h2>
+<p><strong>Options:</strong></p>
 <dl class="std option">
-<dt class="sig sig-object std" id="cmdoption-rompy-zip">
-<span class="sig-name descname"><span class="pre">--zip</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-zip</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-zip" title="Link to this definition">#</a></dt>
-<dd><p>Create a zip archive of the model files (default: False)</p>
+<dt class="sig sig-object std" id="cmdoption-rompy-backend-config">
+<span class="sig-name descname"><span class="pre">--backend-config</span></span><span class="sig-prename descclassname"> <span class="pre">PATH</span></span><a class="headerlink" href="#cmdoption-rompy-backend-config" title="Link to this definition">#</a></dt>
+<dd><p><strong>Required.</strong> YAML/JSON file with backend configuration</p>
 </dd></dl>
 
 <dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-dry-run">
+<span class="sig-name descname"><span class="pre">--dry-run</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-dry-run" title="Link to this definition">#</a></dt>
+<dd><p>Generate inputs only, don’t run the model</p>
+</dd></dl>
+
+<p><strong>Examples:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run with local backend configuration</span>
+rompy<span class="w"> </span>run<span class="w"> </span>model.yml<span class="w"> </span>--backend-config<span class="w"> </span>local_backend.yml
+
+<span class="c1"># Run with Docker backend configuration</span>
+rompy<span class="w"> </span>run<span class="w"> </span>model.yml<span class="w"> </span>--backend-config<span class="w"> </span>docker_backend.yml
+
+<span class="c1"># Dry run (generate only, don&#39;t execute)</span>
+rompy<span class="w"> </span>run<span class="w"> </span>model.yml<span class="w"> </span>--backend-config<span class="w"> </span>local_backend.yml<span class="w"> </span>--dry-run
+</pre></div>
+</div>
+</section>
+<section id="backends">
+<h3>backends<a class="headerlink" href="#backends" title="Link to this heading">#</a></h3>
+<p>Manage execution backend configurations.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>backends<span class="w"> </span>&lt;subcommand&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Subcommands:</strong></p>
+<dl class="simple">
+<dt>list</dt><dd><p>List available backends and configuration types</p>
+</dd>
+<dt>validate</dt><dd><p>Validate a backend configuration file</p>
+</dd>
+<dt>schema</dt><dd><p>Generate JSON schema for backend configurations</p>
+</dd>
+<dt>create</dt><dd><p>Create template backend configuration files</p>
+</dd>
+</dl>
+<p><strong>Examples:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># List available backends</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>list
+
+<span class="c1"># Validate configuration</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>my_config.yml<span class="w"> </span>--backend-type<span class="w"> </span><span class="nb">local</span>
+
+<span class="c1"># Generate schema</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>schema<span class="w"> </span>--backend-type<span class="w"> </span>docker<span class="w"> </span>--format<span class="w"> </span>json
+
+<span class="c1"># Create template</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>create<span class="w"> </span>--backend-type<span class="w"> </span><span class="nb">local</span><span class="w"> </span>--output<span class="w"> </span>local_template.yml
+</pre></div>
+</div>
+</section>
+<section id="pipeline">
+<h3>pipeline<a class="headerlink" href="#pipeline" title="Link to this heading">#</a></h3>
+<p>Run the complete model pipeline: generate → run → postprocess.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>pipeline<span class="w"> </span>&lt;config-file&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-run-backend">
+<span class="sig-name descname"><span class="pre">--run-backend</span></span><span class="sig-prename descclassname"> <span class="pre">TEXT</span></span><a class="headerlink" href="#cmdoption-rompy-run-backend" title="Link to this definition">#</a></dt>
+<dd><p>Execution backend for run stage (default: local)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-processor">
+<span class="sig-name descname"><span class="pre">--processor</span></span><span class="sig-prename descclassname"> <span class="pre">TEXT</span></span><a class="headerlink" href="#cmdoption-rompy-processor" title="Link to this definition">#</a></dt>
+<dd><p>Postprocessor to use (default: noop)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-cleanup-on-failure">
+<span class="sig-name descname"><span class="pre">--cleanup-on-failure</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-cleanup</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-cleanup-on-failure" title="Link to this definition">#</a></dt>
+<dd><p>Clean up outputs on pipeline failure (default: False)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-validate-stages">
+<span class="sig-name descname"><span class="pre">--validate-stages</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-validate</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-validate-stages" title="Link to this definition">#</a></dt>
+<dd><p>Validate each stage before proceeding (default: True)</p>
+</dd></dl>
+
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>pipeline<span class="w"> </span>config.yaml<span class="w"> </span>--run-backend<span class="w"> </span>docker<span class="w"> </span>--processor<span class="w"> </span>analysis
+</pre></div>
+</div>
+</section>
+<section id="generate">
+<h3>generate<a class="headerlink" href="#generate" title="Link to this heading">#</a></h3>
+<p>Generate model input files without running the model.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>generate<span class="w"> </span>&lt;config-file&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-output-dir">
+<span class="sig-name descname"><span class="pre">--output-dir</span></span><span class="sig-prename descclassname"> <span class="pre">PATH</span></span><a class="headerlink" href="#cmdoption-rompy-output-dir" title="Link to this definition">#</a></dt>
+<dd><p>Override output directory from configuration</p>
+</dd></dl>
+
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>generate<span class="w"> </span>config.yaml<span class="w"> </span>--output-dir<span class="w"> </span>./test_inputs
+</pre></div>
+</div>
+</section>
+<section id="validate">
+<h3>validate<a class="headerlink" href="#validate" title="Link to this heading">#</a></h3>
+<p>Validate model configuration without execution.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>validate<span class="w"> </span>&lt;config-file&gt;
+</pre></div>
+</div>
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>validate<span class="w"> </span>config.yaml
+</pre></div>
+</div>
+</section>
+<section id="schema">
+<h3>schema<a class="headerlink" href="#schema" title="Link to this heading">#</a></h3>
+<p>Show configuration schema information.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>schema<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-model-type">
+<span class="sig-name descname"><span class="pre">--model-type</span></span><span class="sig-prename descclassname"> <span class="pre">TEXT</span></span><a class="headerlink" href="#cmdoption-rompy-model-type" title="Link to this definition">#</a></dt>
+<dd><p>Show schema for specific model type</p>
+</dd></dl>
+
+<p><strong>Example:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>schema<span class="w"> </span>--model-type<span class="w"> </span>swan
+</pre></div>
+</div>
+</section>
+</section>
+<section id="backend-configuration-files">
+<h2>Backend Configuration Files<a class="headerlink" href="#backend-configuration-files" title="Link to this heading">#</a></h2>
+<p>Backend configurations are defined in YAML or JSON files with a <code class="docutils literal notranslate"><span class="pre">type</span></code> field indicating the backend type:</p>
+<p><strong>Local Backend Configuration:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
+<span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">OMP_NUM_THREADS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4&quot;</span>
+<span class="w">  </span><span class="nt">MODEL_DEBUG</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;python</span><span class="nv"> </span><span class="s">run_model.py</span><span class="nv"> </span><span class="s">--verbose&quot;</span>
+<span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">capture_output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p><strong>Docker Backend Configuration:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+<span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;swan:latest&quot;</span>
+<span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2g&quot;</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7200</span>
+<span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SWAN_THREADS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4&quot;</span>
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/data/input:/app/input:ro&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/data/output:/app/output:rw&quot;</span>
+<span class="nt">executable</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/usr/local/bin/swan&quot;</span>
+</pre></div>
+</div>
+<p>For complete configuration options, see <a class="reference internal" href="backend_reference.html"><span class="doc">Backend Reference</span></a>.</p>
+</section>
+<section id="global-options">
+<h2>Global Options<a class="headerlink" href="#global-options" title="Link to this heading">#</a></h2>
+<p>All commands support these common options:</p>
+<dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-rompy-v">
 <span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbose</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-v" title="Link to this definition">#</a></dt>
-<dd><p>Increase verbosity (can be used multiple times for more detail)</p>
+<dd><p>Increase verbosity (can be used multiple times: -v, -vv)</p>
 </dd></dl>
 
 <dl class="std option">
@@ -493,20 +719,20 @@
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-rompy-show-warnings">
-<span class="sig-name descname"><span class="pre">--show-warnings</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-show-warnings" title="Link to this definition">#</a></dt>
-<dd><p>Show Python warnings (default: False)</p>
+<span class="sig-name descname"><span class="pre">--show-warnings</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--hide-warnings</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-show-warnings" title="Link to this definition">#</a></dt>
+<dd><p>Show or hide Python warnings (default: hide)</p>
 </dd></dl>
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-rompy-ascii-only">
-<span class="sig-name descname"><span class="pre">--ascii-only</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-ascii-only" title="Link to this definition">#</a></dt>
-<dd><p>Use ASCII-only characters in output (default: False)</p>
+<span class="sig-name descname"><span class="pre">--ascii-only</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--unicode</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-ascii-only" title="Link to this definition">#</a></dt>
+<dd><p>Use ASCII-only characters in output (default: unicode)</p>
 </dd></dl>
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-rompy-simple-logs">
-<span class="sig-name descname"><span class="pre">--simple-logs</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-simple-logs" title="Link to this definition">#</a></dt>
-<dd><p>Use simple log format without timestamps and module names (default: False)</p>
+<span class="sig-name descname"><span class="pre">--simple-logs</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--detailed-logs</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-simple-logs" title="Link to this definition">#</a></dt>
+<dd><p>Use simple log format without timestamps and module names (default: detailed)</p>
 </dd></dl>
 
 <dl class="std option">
@@ -516,58 +742,197 @@
 </dd></dl>
 
 </section>
+<section id="backend-types">
+<h2>Backend Types<a class="headerlink" href="#backend-types" title="Link to this heading">#</a></h2>
+<p>ROMPY supports multiple execution backends through its plugin architecture:</p>
+<section id="run-backends">
+<h3>Run Backends<a class="headerlink" href="#run-backends" title="Link to this heading">#</a></h3>
+<p>Execute models in different environments:</p>
+<ul class="simple">
+<li><p><strong>local</strong>: Execute directly on the local system</p></li>
+<li><p><strong>docker</strong>: Execute inside Docker containers</p></li>
+<li><p><strong>slurm</strong>: Execute via SLURM job scheduler (if available)</p></li>
+<li><p><strong>kubernetes</strong>: Execute on Kubernetes clusters (if available)</p></li>
+</ul>
+</section>
+<section id="postprocessors">
+<h3>Postprocessors<a class="headerlink" href="#postprocessors" title="Link to this heading">#</a></h3>
+<p>Handle model output analysis and transformation:</p>
+<ul class="simple">
+<li><p><strong>noop</strong>: No-operation processor (validation only)</p></li>
+<li><p><strong>analysis</strong>: Statistical analysis and metrics calculation</p></li>
+<li><p><strong>visualization</strong>: Generate plots and animations</p></li>
+<li><p><strong>netcdf</strong>: NetCDF output processing and compression</p></li>
+</ul>
+</section>
+<section id="pipeline-backends">
+<h3>Pipeline Backends<a class="headerlink" href="#pipeline-backends" title="Link to this heading">#</a></h3>
+<p>Orchestrate complete workflows:</p>
+<ul class="simple">
+<li><p><strong>local</strong>: Execute all stages locally</p></li>
+<li><p><strong>hpc</strong>: HPC-optimized pipeline execution</p></li>
+<li><p><strong>cloud</strong>: Cloud-native pipeline execution</p></li>
+</ul>
+</section>
+</section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
-<p>Run a SWAN model with a configuration file:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>swan<span class="w"> </span>config.yml
+<section id="modern-workflow-examples">
+<h3>Modern Workflow Examples<a class="headerlink" href="#modern-workflow-examples" title="Link to this heading">#</a></h3>
+<p>Execute a SWAN model with typed backend configuration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>run<span class="w"> </span>swan_config.yaml<span class="w"> </span>--backend-config<span class="w"> </span>local_backend.yml
 </pre></div>
 </div>
-<p>Run with increased verbosity and save logs to a directory:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>swan<span class="w"> </span>config.yml<span class="w"> </span>-v<span class="w"> </span>--log-dir<span class="w"> </span>./logs
+<p>Complete pipeline with analysis:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>pipeline<span class="w"> </span>ocean_model.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--run-backend<span class="w"> </span><span class="nb">local</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--processor<span class="w"> </span>analysis<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validate-stages
 </pre></div>
 </div>
-<p>Run with ASCII-only output and simple logging format:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>swan<span class="w"> </span>config.yml<span class="w"> </span>--ascii-only<span class="w"> </span>--simple-logs
+<p>Development workflow:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Validate configuration</span>
+rompy<span class="w"> </span>validate<span class="w"> </span>config.yaml
+
+<span class="c1"># Generate inputs only</span>
+rompy<span class="w"> </span>generate<span class="w"> </span>config.yaml<span class="w"> </span>--output-dir<span class="w"> </span>./test_run
+
+<span class="c1"># Test run with dry-run</span>
+rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span>--backend-config<span class="w"> </span>local.yml<span class="w"> </span>--dry-run
 </pre></div>
 </div>
+</section>
+</section>
+<section id="configuration-files">
+<h2>Configuration Files<a class="headerlink" href="#configuration-files" title="Link to this heading">#</a></h2>
+<section id="enhanced-configuration-structure">
+<h3>Enhanced Configuration Structure<a class="headerlink" href="#enhanced-configuration-structure" title="Link to this heading">#</a></h3>
+<p>The modern CLI supports enhanced configuration files with run and pipeline settings:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic model configuration</span>
+<span class="nt">run_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_ocean_model</span>
+<span class="nt">period</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20230101T00</span>
+<span class="w">  </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20230102T00</span>
+<span class="w">  </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
+<span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./outputs</span>
+
+<span class="nt">config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">model_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schism</span>
+<span class="w">  </span><span class="c1"># ... model-specific configuration</span>
+
+<span class="c1"># Run configuration (optional)</span>
+<span class="nt">run</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">  </span><span class="nt">local</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">env_vars</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">OMP_NUM_THREADS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4&quot;</span>
+<span class="w">    </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
+
+<span class="c1"># Pipeline configuration (optional)</span>
+<span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">  </span><span class="nt">local</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">run_backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+<span class="w">    </span><span class="nt">processor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">analysis</span>
+<span class="w">    </span><span class="nt">cleanup_on_failure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="environment-variables">
 <h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading">#</a></h2>
-<p>You can set the following environment variables as an alternative to command-line options:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ROMPY_MODEL</span></code>: Default model to use</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ROMPY_CONFIG</span></code>: Default configuration file</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ROMPY_ZIP</span></code>: Set to “1” to enable zip output</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ROMPY_LOG_DIR</span></code>: Directory for log files</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ROMPY_ASCII_ONLY</span></code>: Set to “1” for ASCII-only output</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ROMPY_SIMPLE_LOGS</span></code>: Set to “1” for simple log format</p></li>
-</ul>
-</section>
-<section id="configuration-file-format">
-<h2>Configuration File Format<a class="headerlink" href="#configuration-file-format" title="Link to this heading">#</a></h2>
-<p>The configuration file can be in either YAML or JSON format. The structure depends on the specific model being used. Refer to the model’s documentation for details.</p>
-<p>Example YAML configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">model_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;swan&quot;</span>
-<span class="nt">start_time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2023-01-01T00:00:00&quot;</span>
-<span class="nt">end_time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2023-01-02T00:00:00&quot;</span>
-<span class="nt">time_step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
-<span class="nt">grid</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">nx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
-<span class="w">    </span><span class="nt">ny</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
-<span class="w">    </span><span class="nt">dx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">dy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="c1"># Additional model-specific parameters...</span>
+<p>Set default values using environment variables:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_LOG_DIR</span><span class="o">=</span><span class="s2">&quot;./logs&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_ASCII_ONLY</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_SIMPLE_LOGS</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+
+rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span>--backend-config<span class="w"> </span>local.yml<span class="w">  </span><span class="c1"># Uses environment settings</span>
 </pre></div>
 </div>
 </section>
+<section id="monitoring-and-debugging">
+<h2>Monitoring and Debugging<a class="headerlink" href="#monitoring-and-debugging" title="Link to this heading">#</a></h2>
+<section id="verbose-output">
+<h3>Verbose Output<a class="headerlink" href="#verbose-output" title="Link to this heading">#</a></h3>
+<p>Use multiple -v flags for increased verbosity:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span>--backend-config<span class="w"> </span>local.yml<span class="w"> </span>-v<span class="w">      </span><span class="c1"># INFO level</span>
+rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span>--backend-config<span class="w"> </span>local.yml<span class="w"> </span>-vv<span class="w">     </span><span class="c1"># DEBUG level</span>
+</pre></div>
+</div>
+</section>
+<section id="log-files">
+<h3>Log Files<a class="headerlink" href="#log-files" title="Link to this heading">#</a></h3>
+<p>Save detailed logs to files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>pipeline<span class="w"> </span>config.yaml<span class="w"> </span>--log-dir<span class="w"> </span>./logs<span class="w"> </span>--verbose
+</pre></div>
+</div>
+</section>
+<section id="backend-information">
+<h3>Backend Information<a class="headerlink" href="#backend-information" title="Link to this heading">#</a></h3>
+<p>Inspect available backends:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>backends<span class="w"> </span>list
+</pre></div>
+</div>
+</section>
+<section id="validation-and-testing">
+<h3>Validation and Testing<a class="headerlink" href="#validation-and-testing" title="Link to this heading">#</a></h3>
+<p>Validate configurations before running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>validate<span class="w"> </span>config.yaml
+rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>backend_config.yml<span class="w"> </span>--backend-type<span class="w"> </span><span class="nb">local</span>
+</pre></div>
+</div>
+</section>
+</section>
 <section id="exit-codes">
 <h2>Exit Codes<a class="headerlink" href="#exit-codes" title="Link to this heading">#</a></h2>
-<p>The CLI uses the following exit codes:</p>
+<p>The CLI uses standard exit codes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Success</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: Error running the model</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code>: Invalid arguments or configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: Execution error</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code>: Configuration or argument error</p></li>
 </ul>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading">#</a></h3>
+<p><strong>Configuration Validation Errors:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>validate<span class="w"> </span>config.yaml
+rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>backend_config.yml<span class="w"> </span>--backend-type<span class="w"> </span><span class="nb">local</span>
+</pre></div>
+</div>
+<p><strong>Backend Not Available:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>backends<span class="w"> </span>list
+</pre></div>
+</div>
+<p><strong>Execution Failures:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span>--backend-config<span class="w"> </span>local.yml<span class="w"> </span>--verbose<span class="w"> </span>--log-dir<span class="w"> </span>./debug_logs
+</pre></div>
+</div>
+<p><strong>Docker Issues:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if Docker backend is available</span>
+rompy<span class="w"> </span>backends<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>docker
+
+<span class="c1"># Test with local backend first</span>
+rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span>--backend-config<span class="w"> </span>local_backend.yml
+</pre></div>
+</div>
+</section>
+<section id="getting-help">
+<h3>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">--help</span></code> with any command for detailed options</p></li>
+<li><p>Check the developer documentation for architectural details</p></li>
+<li><p>Use verbose logging for debugging execution issues</p></li>
+<li><p>Validate configurations before running production jobs</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>--help
+rompy<span class="w"> </span>run<span class="w"> </span>--help
+rompy<span class="w"> </span>pipeline<span class="w"> </span>--help
+rompy<span class="w"> </span>backends<span class="w"> </span>--help
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -591,11 +956,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="models.html"
+       href="backends.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Models</p>
+        <p class="prev-next-title">Backend Systems</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -618,13 +983,46 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-models">Available Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#options">Options</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#commands">Commands</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run">run</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backends">backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline">pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate">generate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validate">validate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">schema</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backend-configuration-files">Backend Configuration Files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-options">Global Options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backend-types">Backend Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-backends">Run Backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#postprocessors">Postprocessors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-backends">Pipeline Backends</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modern-workflow-examples">Modern Workflow Examples</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-files">Configuration Files</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enhanced-configuration-structure">Enhanced Configuration Structure</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables">Environment Variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-file-format">Configuration File Format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monitoring-and-debugging">Monitoring and Debugging</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verbose-output">Verbose Output</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-files">Log Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backend-information">Backend Information</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-and-testing">Validation and Testing</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exit-codes">Exit Codes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-issues">Common Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

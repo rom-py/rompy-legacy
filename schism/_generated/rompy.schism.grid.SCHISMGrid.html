@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>rompy.schism.grid.SCHISMGrid &#8212; rompy 0.3.1 documentation</title>
+    <title>rompy.schism.grid.SCHISMGrid &#8212; rompy 0.4.0 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../_static/documentation_options.js?v=6c02275b"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -50,7 +50,7 @@
     <link rel="prev" title="SCHISM" href="../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.3.1" />
+  <meta name="docsearch:version" content="0.4.0" />
   </head>
   
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">rompy 0.3.1 documentation</p>
+    <p class="title logo__title">rompy 0.4.0 documentation</p>
   
 </a></div>
     
@@ -168,6 +168,20 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
 <li class=" current active">
   <a class="nav-link dropdown-item nav-internal" href="../../models.html">
     Models
@@ -315,6 +329,20 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../../models.html">
     Models
@@ -382,6 +410,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../formatting_and_logging.html">Formatting and Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../backends.html">Backend Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../backend_reference.html">Backend Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../models.html">Models</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../swan/index.html">SWAN</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">SCHISM</a><ul class="current">
@@ -390,6 +420,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#data">Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#boundary-conditions">Boundary Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#hotstart-configuration">Hotstart Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#config-minimal">Config Minimal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#full-namelist-implementation">Full Namelist Implementation</a></li>
 </ul>
@@ -492,10 +524,12 @@
 <span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/VgridGenerator&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/VGrid&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">         </span><span class="p">],</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to vgrid.in file&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid&quot;</span>
 <span class="w">      </span><span class="p">},</span>
@@ -824,189 +858,112 @@
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GridLinker&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;Vgrid2D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;VGrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Base class for SCHISM vertical grid generation.\nThis class directly mirrors the PyLibs create_schism_vgrid API.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid2D_generator&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid2D_generator&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model descriminator&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">         </span><span class="p">},</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid2D&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;Vgrid3D_LSC2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid3D_lsc2&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid3D_lsc2&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model descriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schism_vgrid&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schism_vgrid&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model discriminator&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;hgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;ivcor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical coordinate type (1=LSC2, 2=SZ)&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ivcor&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;nvrt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of vertical layers&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nvrt&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;zlevels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">                  </span><span class="p">{</span>
-<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
+<span class="w">                     </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">                     </span><span class="p">},</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
 <span class="w">                  </span><span class="p">},</span>
 <span class="w">                  </span><span class="p">{</span>
-<span class="w">                     </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
 <span class="w">                  </span><span class="p">}</span>
 <span class="w">               </span><span class="p">],</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid.gr3 file&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hgrid&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;hsm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Depth for each master grid&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
-<span class="w">               </span><span class="p">},</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hsm&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;nv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Total number of vertical levels&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
-<span class="w">               </span><span class="p">},</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nv&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-1000000.0</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Z levels or transition depth (h_s)&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Zlevels&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;h_c&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transition depth between sigma and z-coordinates&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Critical depth for SZ coordinate&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;H C&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;theta_b&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical resolution near the surface&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bottom theta parameter for SZ&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta B&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;theta_f&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical resolution near the seabed&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Surface theta parameter for SZ&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta F&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;crs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;epsg:4326&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Coordinate reference system&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Crs&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">         </span><span class="p">},</span>
-<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;hgrid&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;hsm&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;nv&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;h_c&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;theta_b&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;theta_f&quot;</span>
-<span class="w">         </span><span class="p">],</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid3D_LSC2&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;Vgrid3D_SZ&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid3D_sz&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid3D_sz&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model descriminator&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;hgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                  </span><span class="p">{</span>
-<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/DataBlob&quot;</span>
-<span class="w">                  </span><span class="p">},</span>
-<span class="w">                  </span><span class="p">{</span>
-<span class="w">                     </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
-<span class="w">                  </span><span class="p">}</span>
-<span class="w">               </span><span class="p">],</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to hgrid.gr3 file&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hgrid&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;h_s&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Depth for each master grid&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;H S&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;ztot&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Total number of vertical levels&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
-<span class="w">               </span><span class="p">},</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ztot&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;h_c&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transition depth between sigma and z-coordinates&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;H C&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;theta_b&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical resolution near the surface&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta B&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;theta_f&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical resolution near the seabed&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta F&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;sigma&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sigma levels&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
-<span class="w">               </span><span class="p">},</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sigma&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">         </span><span class="p">},</span>
-<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;hgrid&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;h_s&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;ztot&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;h_c&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;theta_b&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;theta_f&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;sigma&quot;</span>
-<span class="w">         </span><span class="p">],</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid3D_SZ&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;VGrid&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;VgridGenerator&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Generate vgrid.in.\nThis is all hardcoded for now, may look at making this more flexible in the future.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Generate vgrid.in using the unified VGrid class from rompy.schism.vgrid.\nThis class directly uses the VGrid API which mirrors the create_schism_vgrid function from PyLibs.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid_generator&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgrid_generator&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model descriminator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgridgenerator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vgridgenerator&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model discriminator&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Type&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="nt">&quot;vgrid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                  </span><span class="p">{</span>
-<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/Vgrid2D&quot;</span>
-<span class="w">                  </span><span class="p">},</span>
-<span class="w">                  </span><span class="p">{</span>
-<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/Vgrid3D_LSC2&quot;</span>
-<span class="w">                  </span><span class="p">},</span>
-<span class="w">                  </span><span class="p">{</span>
-<span class="w">                     </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/Vgrid3D_SZ&quot;</span>
-<span class="w">                  </span><span class="p">}</span>
-<span class="w">               </span><span class="p">],</span>
-<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Type of vgrid to generate. 2d will create the minimum required for a 2d model. LSC2 will create a full vgrid for a 3d model using pyschsim&#39;s LSC2 class&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid&quot;</span>
+<span class="w">            </span><span class="nt">&quot;vgrid_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2d&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Type of vertical grid to generate (2d, lsc2, or sz)&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vgrid Type&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;nvrt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of vertical layers for 3D grids&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nvrt&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;hsm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1000.0</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transition depth for LSC2 vertical grid&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hsm&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;h_c&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Critical depth for SZ vertical grid&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;H C&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;theta_b&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bottom theta parameter for SZ vertical grid&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta B&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;theta_f&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Surface theta parameter for SZ vertical grid&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Theta F&quot;</span><span class="p">,</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">         </span><span class="p">},</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;VgridGenerator&quot;</span><span class="p">,</span>
@@ -1073,7 +1030,7 @@
 <li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgridll" title="rompy.schism.grid.SCHISMGrid.hgridll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hgridll</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GridLinker</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.manning" title="rompy.schism.grid.SCHISMGrid.manning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manning</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.rough" title="rompy.schism.grid.SCHISMGrid.rough"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rough</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.vgrid" title="rompy.schism.grid.SCHISMGrid.vgrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vgrid</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.VgridGenerator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.vgrid" title="rompy.schism.grid.SCHISMGrid.vgrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vgrid</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.VgridGenerator</span> <span class="pre">|</span> <span class="pre">rompy.schism.vgrid.VGrid</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.watertype" title="rompy.schism.grid.SCHISMGrid.watertype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watertype</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.windrot_geo2proj" title="rompy.schism.grid.SCHISMGrid.windrot_geo2proj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">windrot_geo2proj</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.GR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.wwmbnd" title="rompy.schism.grid.SCHISMGrid.wwmbnd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wwmbnd</span> <span class="pre">(rompy.core.data.DataBlob</span> <span class="pre">|</span> <span class="pre">rompy.schism.grid.WWMBNDGR3Generator</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
@@ -1262,7 +1219,7 @@
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.vgrid">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vgrid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">VgridGenerator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.vgrid" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vgrid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../_generated/rompy.core.data.DataBlob.html#rompy.core.data.DataBlob" title="rompy.core.data.DataBlob"><span class="pre">DataBlob</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">VgridGenerator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">VGrid</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.vgrid" title="Link to this definition">#</a></dt>
 <dd><p>Path to vgrid.in file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
@@ -1358,18 +1315,50 @@ specified spacing, otherwise all points are returned.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.generate_tvprop">
-<span class="sig-name descname"><span class="pre">generate_tvprop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.generate_tvprop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.generate_tvprop" title="Link to this definition">#</a></dt>
-<dd><p>Generate tvprop.in file</p>
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.copy_to">
+<span class="sig-name descname"><span class="pre">copy_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid" title="rompy.schism.grid.SCHISMGrid"><span class="pre">SCHISMGrid</span></a></span></span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.copy_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.copy_to" title="Link to this definition">#</a></dt>
+<dd><p>Copy the grid to a destination directory.</p>
+<p>This method generates all the required grid files in the destination directory
+and returns a new SCHISMGrid instance pointing to these files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>destdir</strong> (<em>Path</em>) – Destination directory</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Path to tvprop.in file</p>
+<dd class="field-even"><p>A new SCHISMGrid instance with sources pointing to the new files</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>iath</p>
+<dd class="field-odd"><p><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid" title="rompy.schism.grid.SCHISMGrid">SCHISMGrid</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.generate_tvprop">
+<span class="sig-name descname"><span class="pre">generate_tvprop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.generate_tvprop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.generate_tvprop" title="Link to this definition">#</a></dt>
+<dd><p>Generate tvd.prop file for SCHISM.</p>
+<p>The tvd.prop file must have two columns in this format:
+1. Two columns: <cite>element_number TVD_flag</cite> (space-separated)
+2. One entry per element
+3. TVD flag value of 1 for all entries (1 = upwind TVD)
+4. Element numbers start from 1</p>
+<p>Correct format:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">1</span> <span class="pre">1</span>
+<span class="pre">2</span> <span class="pre">1</span>
+<span class="pre">3</span> <span class="pre">1</span>
+<span class="pre">...</span>
+<span class="pre">317</span> <span class="pre">1</span>
+<span class="pre">`</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>destdir</strong> (<em>Path</em>) – Destination directory</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to tvd.prop file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1381,12 +1370,12 @@ specified spacing, otherwise all points are returned.</p></li>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.gr3_source_validator">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gr3_source_validator</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmin" title="rompy.schism.grid.SCHISMGrid.diffmin"><em class="xref py py-obj"><span class="pre">diffmin</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.windrot_geo2proj" title="rompy.schism.grid.SCHISMGrid.windrot_geo2proj"><em class="xref py py-obj"><span class="pre">windrot_geo2proj</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.rough" title="rompy.schism.grid.SCHISMGrid.rough"><em class="xref py py-obj"><span class="pre">rough</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.watertype" title="rompy.schism.grid.SCHISMGrid.watertype"><em class="xref py py-obj"><span class="pre">watertype</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.manning" title="rompy.schism.grid.SCHISMGrid.manning"><em class="xref py py-obj"><span class="pre">manning</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.albedo" title="rompy.schism.grid.SCHISMGrid.albedo"><em class="xref py py-obj"><span class="pre">albedo</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmax" title="rompy.schism.grid.SCHISMGrid.diffmax"><em class="xref py py-obj"><span class="pre">diffmax</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.drag" title="rompy.schism.grid.SCHISMGrid.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.gr3_source_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gr3_source_validator</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmax" title="rompy.schism.grid.SCHISMGrid.diffmax"><em class="xref py py-obj"><span class="pre">diffmax</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.manning" title="rompy.schism.grid.SCHISMGrid.manning"><em class="xref py py-obj"><span class="pre">manning</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.watertype" title="rompy.schism.grid.SCHISMGrid.watertype"><em class="xref py py-obj"><span class="pre">watertype</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.windrot_geo2proj" title="rompy.schism.grid.SCHISMGrid.windrot_geo2proj"><em class="xref py py-obj"><span class="pre">windrot_geo2proj</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.drag" title="rompy.schism.grid.SCHISMGrid.drag"><em class="xref py py-obj"><span class="pre">drag</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.diffmin" title="rompy.schism.grid.SCHISMGrid.diffmin"><em class="xref py py-obj"><span class="pre">diffmin</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.rough" title="rompy.schism.grid.SCHISMGrid.rough"><em class="xref py py-obj"><span class="pre">rough</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.albedo" title="rompy.schism.grid.SCHISMGrid.albedo"><em class="xref py py-obj"><span class="pre">albedo</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.gr3_source_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.gridlink_validator">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gridlink_validator</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgridll" title="rompy.schism.grid.SCHISMGrid.hgridll"><em class="xref py py-obj"><span class="pre">hgridll</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgrid_WWM" title="rompy.schism.grid.SCHISMGrid.hgrid_WWM"><em class="xref py py-obj"><span class="pre">hgrid_WWM</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.gridlink_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.gridlink_validator" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gridlink_validator</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgrid_WWM" title="rompy.schism.grid.SCHISMGrid.hgrid_WWM"><em class="xref py py-obj"><span class="pre">hgrid_WWM</span></em></a><em class="property"><span class="pre">,</span> </em><a class="reference internal" href="#rompy.schism.grid.SCHISMGrid.hgridll" title="rompy.schism.grid.SCHISMGrid.hgridll"><em class="xref py py-obj"><span class="pre">hgridll</span></em></a><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.gridlink_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.gridlink_validator" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1416,14 +1405,135 @@ specified spacing, otherwise all points are returned.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot" title="Link to this definition">#</a></dt>
-<dd><p>Plot the grid</p>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'domain'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_coastlines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the SCHISM grid using native pylibs plotting functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em><em>, </em><em>optional</em>) – The axes to plot on. If None, a new figure is created.</p></li>
+<li><p><strong>plot_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of plot to create. Options are:
+- ‘domain’: Plot the full domain with boundaries (default)
+- ‘grid’: Plot just the grid triangulation
+- ‘bnd’: Plot just the boundaries</p></li>
+<li><p><strong>add_coastlines</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to add coastlines to the plot (requires cartopy).</p></li>
+<li><p><strong>fmt</strong> (<em>int</em><em>, </em><em>optional</em>) – Plotting format. Options are:
+- 0: Plot grid only (default)
+- 1: Plot filled contours of depth/bathymetry
+- 2: Plot contour lines of depth/bathymetry
+- 3: Plot boundaries only</p></li>
+<li><p><strong>value</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – Color values for plotting. If None, grid depth is used.</p></li>
+<li><p><strong>levels</strong> (<em>int</em><em> or </em><em>array-like</em><em>, </em><em>optional</em>) – If int, number of contour levels to use (default 51).
+If array-like, specific levels to plot.</p></li>
+<li><p><strong>clim</strong> (<em>[</em><em>min</em><em>, </em><em>max</em><em>]</em><em>, </em><em>optional</em>) – Value range for plot/colorbar. If None, determined from data.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – Colormap to use for depth visualization (default ‘jet’).</p></li>
+<li><p><strong>cb</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to add a colorbar to the plot (default True).</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the pylibs plot functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The figure object.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The axes object.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p># Plot grid with bathymetry as filled contours
+&gt;&gt;&gt; grid.plot(fmt=1, cmap=’viridis’, levels=20)</p>
+<p># Plot specific depth contours with custom range
+&gt;&gt;&gt; grid.plot(fmt=2, clim=[-100, 0], levels=[-100, -50, -20, -10, 0])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.plot_bathymetry">
+<span class="sig-name descname"><span class="pre">plot_bathymetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_coastlines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot_bathymetry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot_bathymetry" title="Link to this definition">#</a></dt>
+<dd><p>Plot filled contours of depth/bathymetry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em><em>, </em><em>optional</em>) – The axes to plot on. If None, a new figure is created.</p></li>
+<li><p><strong>add_coastlines</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to add coastlines to the plot (requires cartopy).</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the pylibs plot functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The figure object.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The axes object.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.plot_bnd">
+<span class="sig-name descname"><span class="pre">plot_bnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_coastlines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot_bnd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot_bnd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.plot_contours">
+<span class="sig-name descname"><span class="pre">plot_contours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_coastlines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot_contours"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot_contours" title="Link to this definition">#</a></dt>
+<dd><p>Plot contour lines of depth/bathymetry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em><em>, </em><em>optional</em>) – The axes to plot on. If None, a new figure is created.</p></li>
+<li><p><strong>add_coastlines</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to add coastlines to the plot (requires cartopy).</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the pylibs plot functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The figure object.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The axes object.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.plot_grid">
+<span class="sig-name descname"><span class="pre">plot_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_coastlines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot_grid" title="Link to this definition">#</a></dt>
+<dd><p>Plot just the grid triangulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em><em>, </em><em>optional</em>) – The axes to plot on. If None, a new figure is created.</p></li>
+<li><p><strong>add_coastlines</strong> (<em>bool</em><em>, </em><em>optional:w</em>) – Whether to add coastlines to the plot (requires cartopy).</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the pylibs plot functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The figure object.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The axes object.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.plot_hgrid">
-<span class="sig-name descname"><span class="pre">plot_hgrid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot_hgrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot_hgrid" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">plot_hgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(20,</span> <span class="pre">10)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rompy/schism/grid.html#SCHISMGrid.plot_hgrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.plot_hgrid" title="Link to this definition">#</a></dt>
+<dd><p>Create a comprehensive two-panel visualization of the SCHISM grid.</p>
+<p>Left panel shows bathymetry/depth, right panel shows the mesh and boundaries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Size of the figure (width, height). Default is (20, 10).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The figure object containing both panels.</p></li>
+<li><p><strong>(ax1, ax2)</strong> (<em>tuple of matplotlib.axes.Axes</em>) – The axes objects for the bathymetry and mesh panels.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.serialize_model">
@@ -1455,6 +1565,41 @@ specified spacing, otherwise all points are returned.</p></li>
 <dl class="py property">
 <dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.is_3d">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_3d</span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.is_3d" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.ne">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ne</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.ne" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.nob">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nob</span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.nob" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.nobn">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nobn</span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.nobn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.np">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">np</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.np" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.nvrt">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nvrt</span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.nvrt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.pylibs_hgrid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pylibs_hgrid</span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.pylibs_hgrid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rompy.schism.grid.SCHISMGrid.pylibs_vgrid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pylibs_vgrid</span></span><a class="headerlink" href="#rompy.schism.grid.SCHISMGrid.pylibs_vgrid" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -1546,6 +1691,7 @@ specified spacing, otherwise all points are returned.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.wwmbnd"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.wwmbnd</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.boundary"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.boundary()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.boundary_points"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.boundary_points()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.copy_to"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.copy_to()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.generate_tvprop"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.generate_tvprop()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.get"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.get()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.gr3_source_validator"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.gr3_source_validator</span></code></a></li>
@@ -1554,6 +1700,10 @@ specified spacing, otherwise all points are returned.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.model_post_init"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.model_post_init()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.ocean_boundary"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.ocean_boundary()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.plot"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.plot_bathymetry"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.plot_bathymetry()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.plot_bnd"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.plot_bnd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.plot_contours"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.plot_contours()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.plot_grid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.plot_grid()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.plot_hgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.plot_hgrid()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.serialize_model"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.serialize_model()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.validate_gr3_fields"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.validate_gr3_fields</span></code></a></li>
@@ -1561,6 +1711,13 @@ specified spacing, otherwise all points are returned.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.vgrid_validator"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.vgrid_validator</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.wwmbnd_validator"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.wwmbnd_validator</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.is_3d"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.is_3d</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.ne"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.ne</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.nob"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.nob</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.nobn"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.nobn</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.np"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.np</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.nvrt"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.nvrt</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.pylibs_hgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.pylibs_hgrid</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.pylibs_vgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.pylibs_vgrid</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.pyschism_hgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.pyschism_hgrid</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.pyschism_vgrid"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.pyschism_vgrid</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.schism.grid.SCHISMGrid.x"><code class="docutils literal notranslate"><span class="pre">SCHISMGrid.x</span></code></a></li>

@@ -1,0 +1,1020 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Component Selection Patterns &#8212; rompy 0.4.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=6c02275b"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer/architecture/selection_patterns';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4.0" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.4.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../formatting_and_logging.html">Formatting and Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../backends.html">Backend Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../backend_reference.html">Backend Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Component Selection Patterns</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="component-selection-patterns">
+<h1>Component Selection Patterns<a class="headerlink" href="#component-selection-patterns" title="Link to this heading">#</a></h1>
+<p>One of the most important architectural decisions in rompy is the use of two different selection patterns for different types of functionality. Both patterns use entry points for discovery, but differ in when and how selection occurs. Understanding when and why to use each pattern is crucial for effective rompy development.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>rompy uses two distinct approaches for component selection:</p>
+<ol class="arabic simple">
+<li><p><strong>Pydantic Discriminated Union Pattern</strong> for model configurations (<code class="docutils literal notranslate"><span class="pre">CONFIG_TYPES</span></code>)</p></li>
+<li><p><strong>Runtime String Selection Pattern</strong> for execution backends (run, postprocess, pipeline)</p></li>
+</ol>
+<p>Both patterns use Python entry points for plugin discovery, but serve fundamentally different purposes. This document explains the rationale behind this dual approach and provides guidance on when to use each pattern.</p>
+</section>
+<section id="the-two-patterns">
+<h2>The Two Patterns<a class="headerlink" href="#the-two-patterns" title="Link to this heading">#</a></h2>
+<p>Both patterns use Python entry points for plugin discovery, but differ in when and how selection occurs.</p>
+<section id="pydantic-discriminated-union-pattern-config-types">
+<h3>Pydantic Discriminated Union Pattern (CONFIG_TYPES)<a class="headerlink" href="#pydantic-discriminated-union-pattern-config-types" title="Link to this heading">#</a></h3>
+<p>Model configurations use entry points to build a discriminated union:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_entry_points</span>
+
+<span class="c1"># Load config types from entry points at import time</span>
+<span class="n">CONFIG_TYPES</span> <span class="o">=</span> <span class="n">load_entry_points</span><span class="p">(</span><span class="s2">&quot;rompy.config&quot;</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelRun</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">):</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CONFIG_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">BaseConfig</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The configuration object&quot;</span><span class="p">,</span>
+        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;model_type&quot;</span><span class="p">,</span>  <span class="c1"># Selection via discriminator field</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Selection happens at <strong>model instantiation time</strong> via the <code class="docutils literal notranslate"><span class="pre">model_type</span></code> discriminator field in the configuration data.</p>
+</section>
+<section id="runtime-string-selection-pattern-backends">
+<h3>Runtime String Selection Pattern (Backends)<a class="headerlink" href="#runtime-string-selection-pattern-backends" title="Link to this heading">#</a></h3>
+<p>Execution backends use entry points for runtime selection:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_entry_points</span>
+
+<span class="c1"># Load backends from entry points at import time</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_backends</span><span class="p">():</span>
+    <span class="n">run_backends</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">backend</span> <span class="ow">in</span> <span class="n">load_entry_points</span><span class="p">(</span><span class="s2">&quot;rompy.run&quot;</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;runbackend&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">run_backends</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">backend</span>
+    <span class="k">return</span> <span class="n">run_backends</span>
+
+<span class="n">RUN_BACKENDS</span> <span class="o">=</span> <span class="n">_load_backends</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="c1"># Selection happens at execution time via string parameter</span>
+    <span class="n">backend_class</span> <span class="o">=</span> <span class="n">RUN_BACKENDS</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span>
+    <span class="n">backend_instance</span> <span class="o">=</span> <span class="n">backend_class</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">backend_instance</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Selection happens at <strong>execution time</strong> via string parameters passed to methods.</p>
+</section>
+</section>
+<section id="comparative-analysis">
+<h2>Comparative Analysis<a class="headerlink" href="#comparative-analysis" title="Link to this heading">#</a></h2>
+<section id="pydantic-discriminated-union-approach">
+<h3>Pydantic Discriminated Union Approach<a class="headerlink" href="#pydantic-discriminated-union-approach" title="Link to this heading">#</a></h3>
+<p><strong>✅ Strengths</strong></p>
+<dl>
+<dt><em>Strong Type Safety</em></dt><dd><p>Full Pydantic validation happens at model instantiation time, catching configuration errors early in the workflow.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Validation happens here - invalid configs rejected immediately</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;swan&quot;</span><span class="p">,</span> <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}})</span>
+</pre></div>
+</div>
+</dd>
+<dt><em>IDE Support &amp; Developer Experience</em></dt><dd><p>Excellent autocomplete, type checking, and refactoring support in modern IDEs.</p>
+</dd>
+<dt><em>Serialization &amp; Reproducibility</em></dt><dd><p>Configuration is part of the model state and fully serializable, enabling reproducible science.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Complete model configuration saved as YAML</span>
+<span class="nt">config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">model_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">swan</span>
+<span class="w">  </span><span class="nt">grid</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">x0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">115.68</span>
+<span class="w">    </span><span class="nt">y0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-32.76</span>
+<span class="w">    </span><span class="c1"># ... full configuration preserved</span>
+</pre></div>
+</div>
+</dd>
+<dt><em>Schema Documentation</em></dt><dd><p>Clear, declarative schema with automatic documentation generation and validation rules.</p>
+</dd>
+<dt><em>Immutability</em></dt><dd><p>Once instantiated, configurations are immutable, preventing accidental modification during execution.</p>
+</dd>
+<dt><em>Plugin Support</em></dt><dd><p>Uses entry points for discovery, allowing third-party configuration types.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Third-party configs discovered via entry points</span>
+<span class="n">CONFIG_TYPES</span> <span class="o">=</span> <span class="n">load_entry_points</span><span class="p">(</span><span class="s2">&quot;rompy.config&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p><strong>❌ Limitations</strong></p>
+<dl class="simple">
+<dt><em>Selection Timing</em></dt><dd><p>Configuration type must be known at model instantiation time.</p>
+</dd>
+<dt><em>State Coupling</em></dt><dd><p>Configuration choice becomes part of persistent model state.</p>
+</dd>
+<dt><em>Validation Completeness</em></dt><dd><p>All possible configurations must be validated upfront, even if unused.</p>
+</dd>
+</dl>
+</section>
+<section id="runtime-string-selection-approach">
+<h3>Runtime String Selection Approach<a class="headerlink" href="#runtime-string-selection-approach" title="Link to this heading">#</a></h3>
+<p><strong>✅ Strengths</strong></p>
+<dl>
+<dt><em>Execution-Time Flexibility</em></dt><dd><p>Backend choice can be made based on runtime conditions and environment.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Different backends for different environments</span>
+<span class="n">backend</span> <span class="o">=</span> <span class="s2">&quot;docker&quot;</span> <span class="k">if</span> <span class="n">has_docker</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;local&quot;</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><em>Operational Independence</em></dt><dd><p>Backend choice is independent of scientific configuration.</p>
+</dd>
+<dt><em>Environment Adaptation</em></dt><dd><p>Same model configuration can use different backends based on deployment environment.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Same config, different execution strategies</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>     <span class="c1"># Development</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;slurm&quot;</span><span class="p">)</span>     <span class="c1"># HPC cluster</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;k8s&quot;</span><span class="p">)</span>       <span class="c1"># Cloud deployment</span>
+</pre></div>
+</div>
+</dd>
+<dt><em>Plugin Support</em></dt><dd><p>Uses entry points for discovery, allowing third-party backends.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Third-party backends discovered via entry points</span>
+<span class="n">RUN_BACKENDS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">load_entry_points</span><span class="p">(</span><span class="s2">&quot;rompy.run&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+<dt><em>Lazy Instantiation</em></dt><dd><p>Only instantiate backends when actually needed.</p>
+</dd>
+<dt><em>Optional Dependencies</em></dt><dd><p>Graceful handling when optional backends aren’t available.</p>
+</dd>
+</dl>
+<p><strong>❌ Limitations</strong></p>
+<dl>
+<dt><em>Reduced Type Safety</em></dt><dd><p>Backend selection via strings means errors are only caught at execution time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Error only discovered when run() is called</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;typo_backend&quot;</span><span class="p">)</span>  <span class="c1"># ValueError at runtime</span>
+</pre></div>
+</div>
+</dd>
+<dt><em>Late Validation</em></dt><dd><p>Backend availability and parameter validation happens during execution, not configuration.</p>
+</dd>
+<dt><em>Non-Serializable Choice</em></dt><dd><p>Backend choice is not part of the serializable model configuration.</p>
+</dd>
+<dt><em>Discovery Complexity</em></dt><dd><p>Harder to know what backends are available during development.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="why-different-patterns-for-different-concerns">
+<h2>Why Different Patterns for Different Concerns?<a class="headerlink" href="#why-different-patterns-for-different-concerns" title="Link to this heading">#</a></h2>
+<p>The architectural decision reflects the <strong>fundamental difference in purpose</strong> between these two types of selection, despite both using entry points:</p>
+<section id="state-vs-behavior-separation">
+<h3>State vs Behavior Separation<a class="headerlink" href="#state-vs-behavior-separation" title="Link to this heading">#</a></h3>
+<p><strong>Configuration Represents Persistent Domain State</strong></p>
+<p>Model configurations encode scientific and mathematical knowledge that must be preserved:</p>
+<ul class="simple">
+<li><p><strong>What</strong> physics to simulate (wave propagation, hydrodynamics)</p></li>
+<li><p><strong>Where</strong> to simulate it (grid definition, boundaries)</p></li>
+<li><p><strong>When</strong> to simulate it (time periods, forcing data)</p></li>
+</ul>
+<p>This domain state needs:</p>
+<ul class="simple">
+<li><p><strong>Strong validation</strong> (incorrect physics parameters = invalid science)</p></li>
+<li><p><strong>Reproducibility</strong> (same config = same results)</p></li>
+<li><p><strong>Serialization</strong> (configurations must be saveable and shareable)</p></li>
+<li><p><strong>Immutability</strong> (configurations shouldn’t change during execution)</p></li>
+<li><p><strong>Early validation</strong> (catch errors before expensive computation starts)</p></li>
+</ul>
+<p><strong>Execution Represents Runtime Behavior</strong></p>
+<p>Execution backends handle operational and deployment behavior:</p>
+<ul class="simple">
+<li><p><strong>How</strong> to run the model (local process, container, HPC queue)</p></li>
+<li><p><strong>Where</strong> to run it (laptop, cluster, cloud)</p></li>
+<li><p><strong>With what resources</strong> (CPU cores, memory, time limits)</p></li>
+</ul>
+<p>This runtime behavior needs:</p>
+<ul class="simple">
+<li><p><strong>Environment flexibility</strong> (different options in different deployments)</p></li>
+<li><p><strong>Late binding</strong> (choose backend based on current conditions)</p></li>
+<li><p><strong>Optional availability</strong> (some backends may not be installed)</p></li>
+<li><p><strong>Operational parameters</strong> (that vary per execution, not per model)</p></li>
+<li><p><strong>Ephemeral choice</strong> (backend selection shouldn’t be saved with scientific config)</p></li>
+</ul>
+</section>
+</section>
+<section id="practical-examples">
+<h2>Practical Examples<a class="headerlink" href="#practical-examples" title="Link to this heading">#</a></h2>
+<section id="configuration-example-discriminated-union">
+<h3>Configuration Example (Discriminated Union)<a class="headerlink" href="#configuration-example-discriminated-union" title="Link to this heading">#</a></h3>
+<p>Scientific parameters are validated, serialized, and preserved:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># This represents scientific intent - must be validated and preserved</span>
+<span class="nt">config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">model_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">swan</span><span class="w">  </span><span class="c1"># ← Discriminator field for Pydantic union selection</span>
+<span class="w">  </span><span class="nt">grid</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">x0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">115.68</span><span class="w">      </span><span class="c1"># Geographic coordinate - must be valid</span>
+<span class="w">    </span><span class="nt">y0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-32.76</span><span class="w">      </span><span class="c1"># Geographic coordinate - must be valid</span>
+<span class="w">    </span><span class="nt">dx</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span><span class="w">       </span><span class="c1"># Grid resolution - affects numerical accuracy</span>
+<span class="w">    </span><span class="nt">dy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span><span class="w">       </span><span class="c1"># Grid resolution - affects numerical accuracy</span>
+<span class="w">  </span><span class="nt">physics</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">friction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MAD</span><span class="w">   </span><span class="c1"># Physics model choice - affects results</span>
+<span class="w">    </span><span class="nt">friction_coeff</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w">  </span><span class="c1"># Physics parameter - must be scientifically valid</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">model_type</span></code> field triggers Pydantic’s discriminated union to select the correct configuration class. Any error in these parameters would produce scientifically invalid results, so they must be validated at instantiation time.</p>
+</section>
+<section id="execution-example-runtime-string-selection">
+<h3>Execution Example (Runtime String Selection)<a class="headerlink" href="#execution-example-runtime-string-selection" title="Link to this heading">#</a></h3>
+<p>Operational parameters vary by environment and are not serialized:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Same config object, different execution environments</span>
+<span class="n">config_data</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="s2">&quot;scientific_config.yaml&quot;</span><span class="p">)</span>  <span class="c1"># Contains model_type discriminator</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>                     <span class="c1"># Pydantic selects config class</span>
+
+<span class="c1"># Development environment - runtime string selection</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span>        <span class="c1"># ← String parameter for runtime selection</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">env_vars</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;OMP_NUM_THREADS&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Production HPC environment - same config, different backend</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;slurm&quot;</span><span class="p">,</span>        <span class="c1"># ← Different string, same config</span>
+    <span class="n">partition</span><span class="o">=</span><span class="s2">&quot;compute&quot;</span><span class="p">,</span>
+    <span class="n">nodes</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">time_limit</span><span class="o">=</span><span class="s2">&quot;24:00:00&quot;</span><span class="p">,</span>
+    <span class="n">env_vars</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;OMP_NUM_THREADS&quot;</span><span class="p">:</span> <span class="s2">&quot;16&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Cloud deployment - same config, cloud backend</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;kubernetes&quot;</span><span class="p">,</span>   <span class="c1"># ← Runtime choice, not saved</span>
+    <span class="n">image</span><span class="o">=</span><span class="s2">&quot;rompy/swan:v1.2.3&quot;</span><span class="p">,</span>
+    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cpu&quot;</span><span class="p">:</span> <span class="s2">&quot;8&quot;</span><span class="p">,</span> <span class="s2">&quot;memory&quot;</span><span class="p">:</span> <span class="s2">&quot;32Gi&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The same scientific configuration (with its <code class="docutils literal notranslate"><span class="pre">model_type</span></code> discriminator) runs in all environments, but with different runtime backend selections that are not part of the serializable state.</p>
+</section>
+</section>
+<section id="design-patterns-in-practice">
+<h2>Design Patterns in Practice<a class="headerlink" href="#design-patterns-in-practice" title="Link to this heading">#</a></h2>
+<section id="when-to-use-discriminated-union-pattern">
+<h3>When to Use Discriminated Union Pattern<a class="headerlink" href="#when-to-use-discriminated-union-pattern" title="Link to this heading">#</a></h3>
+<p>Use the discriminated union pattern when extending rompy with components that need to be:</p>
+<dl class="simple">
+<dt><strong>✅ Part of Serializable State</strong></dt><dd><p>Components that must be saved, shared, and reproduced exactly.</p>
+</dd>
+<dt><strong>✅ Validated at Instantiation</strong></dt><dd><p>Components where early validation prevents expensive failures later.</p>
+</dd>
+<dt><strong>✅ Scientifically Critical</strong></dt><dd><p>Components where incorrect parameters lead to invalid scientific results.</p>
+</dd>
+<dt><strong>✅ Model Configuration Types</strong></dt><dd><p>New model types (SCHISM, XBeach, FVCOM) that define scientific computation.</p>
+</dd>
+<dt><strong>✅ Grid Definitions</strong></dt><dd><p>New grid types that define spatial discretization approaches.</p>
+</dd>
+<dt><strong>✅ Physics Parameterizations</strong></dt><dd><p>New physics options that require parameter validation and documentation.</p>
+</dd>
+</dl>
+<p>Example - Adding a new model type with entry point registration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">XBeachConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;XBeach model configuration.&quot;&quot;&quot;</span>
+    <span class="n">model_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;xbeach&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbeach&quot;</span>  <span class="c1"># Discriminator field</span>
+
+    <span class="c1"># Validated scientific parameters</span>
+    <span class="n">grid</span><span class="p">:</span> <span class="n">XBeachGrid</span>
+    <span class="n">physics</span><span class="p">:</span> <span class="n">XBeachPhysics</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">XBeachOutputs</span>
+
+    <span class="c1"># Strong validation rules</span>
+    <span class="nd">@validator</span><span class="p">(</span><span class="s1">&#39;physics&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_physics_consistency</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="c1"># Ensure physics parameters are scientifically consistent</span>
+        <span class="k">return</span> <span class="n">v</span>
+</pre></div>
+</div>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Register via entry points for discovery</span>
+<span class="k">[project.entry-points.</span><span class="s2">&quot;rompy.config&quot;</span><span class="k">]</span>
+<span class="n">xbeach</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mypackage.config:XBeachConfig&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="when-to-use-runtime-string-selection-pattern">
+<h3>When to Use Runtime String Selection Pattern<a class="headerlink" href="#when-to-use-runtime-string-selection-pattern" title="Link to this heading">#</a></h3>
+<p>Use the runtime string selection pattern when extending rompy with components that are:</p>
+<dl class="simple">
+<dt><strong>✅ Environment-Specific</strong></dt><dd><p>Components that vary based on where the code is running.</p>
+</dd>
+<dt><strong>✅ Operationally Focused</strong></dt><dd><p>Components that handle execution, processing, or infrastructure concerns.</p>
+</dd>
+<dt><strong>✅ Optional Dependencies</strong></dt><dd><p>Components that may not be available in all environments.</p>
+</dd>
+<dt><strong>✅ Execution Environments</strong></dt><dd><p>New ways to run models (HPC schedulers, cloud platforms, containers).</p>
+</dd>
+<dt><strong>✅ Output Processing</strong></dt><dd><p>New analysis, visualization, or data transformation capabilities.</p>
+</dd>
+<dt><strong>✅ Workflow Orchestration</strong></dt><dd><p>New ways to coordinate multi-stage model workflows.</p>
+</dd>
+</dl>
+<p>Example - Adding a new execution backend with entry point registration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SlurmBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute models via SLURM job scheduler.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_run</span><span class="p">,</span> <span class="n">partition</span><span class="o">=</span><span class="s2">&quot;compute&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Submit model to SLURM queue.&quot;&quot;&quot;</span>
+        <span class="c1"># Generate SLURM job script</span>
+        <span class="n">job_script</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_slurm_script</span><span class="p">(</span>
+            <span class="n">model_run</span><span class="p">,</span> <span class="n">partition</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Submit job and monitor execution</span>
+        <span class="n">job_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_job</span><span class="p">(</span><span class="n">job_script</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wait_for_completion</span><span class="p">(</span><span class="n">job_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Register via entry points for discovery</span>
+<span class="k">[project.entry-points.</span><span class="s2">&quot;rompy.run&quot;</span><span class="k">]</span>
+<span class="n">slurm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;rompy_hpc.backends:SlurmBackend&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">#</a></h2>
+<section id="for-discriminated-union-extensions-configuration">
+<h3>For Discriminated Union Extensions (Configuration)<a class="headerlink" href="#for-discriminated-union-extensions-configuration" title="Link to this heading">#</a></h3>
+<dl>
+<dt><strong>Comprehensive Validation</strong></dt><dd><p>Implement validators that check scientific and mathematical consistency.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@validator</span><span class="p">(</span><span class="s1">&#39;grid_resolution&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_resolution</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Grid resolution must be positive&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Very coarse resolution may affect accuracy&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong>Clear Documentation</strong></dt><dd><p>Provide detailed docstrings explaining scientific meaning and valid ranges.</p>
+</dd>
+<dt><strong>Immutable Design</strong></dt><dd><p>Avoid mutable state that could change during model execution.</p>
+</dd>
+<dt><strong>Schema Versioning</strong></dt><dd><p>Plan for configuration schema evolution and backward compatibility.</p>
+</dd>
+<dt><strong>Entry Point Registration</strong></dt><dd><p>Register new configuration types via entry points for automatic discovery.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.entry-points.</span><span class="s2">&quot;rompy.config&quot;</span><span class="k">]</span>
+<span class="n">mymodel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mypackage.config:MyModelConfig&quot;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+<section id="for-runtime-string-selection-extensions-backends">
+<h3>For Runtime String Selection Extensions (Backends)<a class="headerlink" href="#for-runtime-string-selection-extensions-backends" title="Link to this heading">#</a></h3>
+<dl>
+<dt><strong>Robust Error Handling</strong></dt><dd><p>Handle missing dependencies and environment issues gracefully.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_run</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_backend</span><span class="p">(</span><span class="n">model_run</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Backend dependencies not available: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Backend execution failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong>Environment Detection</strong></dt><dd><p>Check if the backend can run in the current environment.</p>
+</dd>
+<dt><strong>Parameter Validation</strong></dt><dd><p>Validate backend-specific parameters at execution time.</p>
+</dd>
+<dt><strong>Resource Cleanup</strong></dt><dd><p>Ensure proper cleanup of resources on success and failure.</p>
+</dd>
+<dt><strong>Entry Point Registration</strong></dt><dd><p>Register new backends via entry points for automatic discovery.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.entry-points.</span><span class="s2">&quot;rompy.run&quot;</span><span class="k">]</span>
+<span class="n">mybackend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mypackage.backends:MyBackend&quot;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>The dual selection pattern in rompy reflects a sophisticated understanding of different types of component selection requirements:</p>
+<ul class="simple">
+<li><p><strong>State-based selection</strong> (configurations) needs early validation, serialization, and reproducibility</p></li>
+<li><p><strong>Behavior-based selection</strong> (backends) needs late binding, environment adaptation, and optional availability</p></li>
+</ul>
+<p>Both patterns use entry points for plugin discovery, but differ fundamentally in <strong>when selection occurs</strong> and <strong>what gets serialized</strong>:</p>
+<ul class="simple">
+<li><p><strong>Configurations</strong>: Selected at instantiation time via discriminator fields, become part of persistent state</p></li>
+<li><p><strong>Backends</strong>: Selected at execution time via string parameters, remain ephemeral operational choices</p></li>
+</ul>
+<p>This architectural decision enables rompy to maintain scientific rigor while supporting diverse computational environments. When extending rompy, carefully consider whether your extension represents:</p>
+<ul class="simple">
+<li><p><strong>Persistent domain state</strong> → Use discriminated unions with entry point discovery</p></li>
+<li><p><strong>Runtime behavior choice</strong> → Use string selection with entry point discovery</p></li>
+</ul>
+<p>The pattern demonstrates that <strong>the same plugin discovery mechanism can serve different selection patterns</strong>, and a well-designed system should choose the selection timing and state management approach that best fits the component’s purpose.</p>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span class="xref std std-doc">../extending/custom_backends</span> - Practical guide to creating new backends</p></li>
+<li><p><span class="xref std std-doc">../extending/custom_models</span> - Guide to adding new model configurations</p></li>
+<li><p><span class="xref std std-doc">../api_design/entry_points</span> - Technical details on the entry point system</p></li>
+<li><p><span class="xref std std-doc">configuration_patterns</span> - Deep dive into configuration design patterns</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-patterns">The Two Patterns</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-discriminated-union-pattern-config-types">Pydantic Discriminated Union Pattern (CONFIG_TYPES)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-string-selection-pattern-backends">Runtime String Selection Pattern (Backends)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparative-analysis">Comparative Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-discriminated-union-approach">Pydantic Discriminated Union Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-string-selection-approach">Runtime String Selection Approach</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-different-patterns-for-different-concerns">Why Different Patterns for Different Concerns?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-vs-behavior-separation">State vs Behavior Separation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-examples">Practical Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-example-discriminated-union">Configuration Example (Discriminated Union)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#execution-example-runtime-string-selection">Execution Example (Runtime String Selection)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design-patterns-in-practice">Design Patterns in Practice</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-discriminated-union-pattern">When to Use Discriminated Union Pattern</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-runtime-string-selection-pattern">When to Use Runtime String Selection Pattern</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-discriminated-union-extensions-configuration">For Discriminated Union Extensions (Configuration)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-runtime-string-selection-extensions-backends">For Runtime String Selection Extensions (Backends)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/developer/architecture/selection_patterns.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

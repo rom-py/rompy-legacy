@@ -1,0 +1,2020 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rompy.schism.boundary_core &#8212; rompy 0.4.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/rompy/schism/boundary_core';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4.0" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">rompy 0.4.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../quickstart.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../core_concepts.html">
+    Core Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../formatting_and_logging.html">
+    Formatting and Logging
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../cli.html">
+    Command Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../backends.html">
+    Backend Systems
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../backend_reference.html">
+    Backend Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../models.html">
+    Models
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../demo.html">
+    Demonstration notebooks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API  Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/rom-py/rompy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../formatting_and_logging.html">Formatting and Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../backends.html">Backend Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../backend_reference.html">Backend Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo.html">Demonstration notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API  Documentation</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">rompy.schism.boundary_core</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for rompy.schism.boundary_core</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Core SCHISM Boundary Conditions Module</span>
+
+<span class="sd">This module provides the core infrastructure for handling all types of SCHISM boundary</span>
+<span class="sd">conditions including tidal, river, nested, and hybrid configurations. It serves as the</span>
+<span class="sd">foundation for the SCHISM boundary conditions system.</span>
+
+<span class="sd">Key Components:</span>
+<span class="sd">- Boundary condition type enums (ElevationType, VelocityType, TracerType)</span>
+<span class="sd">- BoundaryConfig class for individual boundary configuration</span>
+<span class="sd">- BoundaryHandler class for comprehensive boundary management</span>
+<span class="sd">- Factory functions for creating common boundary setups</span>
+<span class="sd">- High-level configuration functions for complex scenarios</span>
+
+<span class="sd">This module was formerly named boundary_tides.py but was renamed to better reflect</span>
+<span class="sd">its role as the core boundary handling module for all boundary types, not just tidal.</span>
+
+<span class="sd">Example Usage:</span>
+<span class="sd">    ```python</span>
+<span class="sd">    from rompy.schism.boundary_core import (</span>
+<span class="sd">        BoundaryHandler,</span>
+<span class="sd">        ElevationType,</span>
+<span class="sd">        VelocityType,</span>
+<span class="sd">        create_tidal_boundary</span>
+<span class="sd">    )</span>
+
+<span class="sd">    # Create a boundary handler</span>
+<span class="sd">    boundary = BoundaryHandler(grid_path=&quot;hgrid.gr3&quot;)</span>
+
+<span class="sd">    # Configure tidal boundary</span>
+<span class="sd">    boundary.set_boundary_type(</span>
+<span class="sd">        0,</span>
+<span class="sd">        elev_type=ElevationType.HARMONIC,</span>
+<span class="sd">        vel_type=VelocityType.HARMONIC</span>
+<span class="sd">    )</span>
+
+<span class="sd">    # Or use factory function</span>
+<span class="sd">    tidal_boundary = create_tidal_boundary(</span>
+<span class="sd">        grid_path=&quot;hgrid.gr3&quot;,</span>
+<span class="sd">        constituents=[&quot;M2&quot;, &quot;S2&quot;, &quot;K1&quot;, &quot;O1&quot;]</span>
+<span class="sd">    )</span>
+<span class="sd">    ```</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntEnum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">field_validator</span>
+
+
+<span class="c1"># Ensure path to pylibs is available if needed</span>
+<span class="k">if</span> <span class="s2">&quot;/home/tdurrant/source/pylibs&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/home/tdurrant/source/pylibs&quot;</span><span class="p">)</span>
+
+<span class="c1"># Import PyLibs functions if available</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylib</span><span class="w"> </span><span class="kn">import</span> <span class="n">schism_grid</span><span class="p">,</span> <span class="n">read_schism_hgrid</span> <span class="k">as</span> <span class="n">pylib_read_schism_hgrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.schism_file</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_schism_hgrid</span><span class="p">,</span> <span class="n">loadz</span>
+
+<span class="c1"># Import from local modules</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundaryData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.bctides</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bctides</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataBoundary</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ElevationType">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.ElevationType">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ElevationType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Elevation boundary condition types.&quot;&quot;&quot;</span>
+
+    <span class="n">NONE</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Not specified</span>
+    <span class="n">TIMEHIST</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Time history from elev.th</span>
+    <span class="n">CONSTANT</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Constant elevation</span>
+    <span class="n">HARMONIC</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Harmonic tidal constituents</span>
+    <span class="n">EXTERNAL</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># External model data from elev2D.th.nc</span>
+    <span class="n">HARMONICEXTERNAL</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># Combination of harmonic and external data</span></div>
+
+
+
+<div class="viewcode-block" id="VelocityType">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.VelocityType">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VelocityType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Velocity boundary condition types.&quot;&quot;&quot;</span>
+
+    <span class="n">NONE</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Not specified</span>
+    <span class="n">TIMEHIST</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Time history from flux.th</span>
+    <span class="n">CONSTANT</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Constant discharge</span>
+    <span class="n">HARMONIC</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Harmonic tidal constituents</span>
+    <span class="n">EXTERNAL</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># External model data from uv3D.th.nc</span>
+    <span class="n">HARMONICEXTERNAL</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># Combination of harmonic and external data</span>
+    <span class="n">FLATHER</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># Flather type radiation boundary</span>
+    <span class="n">RELAXED</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span>  <span class="c1"># 3D input with relaxation</span></div>
+
+
+
+<div class="viewcode-block" id="TracerType">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.TracerType">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TracerType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Temperature/salinity boundary condition types.&quot;&quot;&quot;</span>
+
+    <span class="n">NONE</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Not specified</span>
+    <span class="n">TIMEHIST</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Time history from temp/salt.th</span>
+    <span class="n">CONSTANT</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Constant temperature/salinity</span>
+    <span class="n">INITIAL</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Initial profile for inflow</span>
+    <span class="n">EXTERNAL</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># External model 3D input</span></div>
+
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TidalSpecies</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tidal species types.&quot;&quot;&quot;</span>
+
+    <span class="n">LONG_PERIOD</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Long period (declinational)</span>
+    <span class="n">DIURNAL</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Diurnal</span>
+    <span class="n">SEMI_DIURNAL</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Semi-diurnal</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TidalDataset</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is used to define the tidal dataset to use from an available pyTMD tidal database.</span>
+<span class="sd">    Custom databases can be configured by providing a database.json file in the tidal database directory.</span>
+<span class="sd">    see https://pytmd.readthedocs.io/en/latest/getting_started/Getting-Started.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">tidal_database</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to pyTMD tidal database directory. If None, defaults to pyTMD default.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">tidal_model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;FES2014&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the pyTMD tidal model to use (e.g., &#39;FES2014&#39;)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">mean_dynamic_topography</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBoundary</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path or value of mean dynamic topography file. Writes to z0 constituent.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Basic tidal configuration</span>
+    <span class="n">constituents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;m2&quot;</span><span class="p">,</span> <span class="s2">&quot;s2&quot;</span><span class="p">,</span> <span class="s2">&quot;n2&quot;</span><span class="p">,</span> <span class="s2">&quot;k2&quot;</span><span class="p">,</span> <span class="s2">&quot;k1&quot;</span><span class="p">,</span> <span class="s2">&quot;o1&quot;</span><span class="p">,</span> <span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="s2">&quot;q1&quot;</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tidal constituents to include&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Earth tidal potential settings</span>
+    <span class="n">tidal_potential</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Apply Earth tidal potential loading to the model. The coefficients used any selected constituents with species 0, 1, 2.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">cutoff_depth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Cutoff depth for Earth tidal potential loading to the model&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Nodal corrections</span>
+    <span class="n">nodal_corrections</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Apply nodal corrections to tidal constituents&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">tide_interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Method for tidal interpolation. see https://pytmd.readthedocs.io/en/latest/api_reference/interpolate.html.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">extrapolate_tides</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Extrapolate tidal constituents outside the domain. If False, will raise an error if any constituent is outside the domain.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">extrapolation_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Distance in kilometre to extrapolate tidal constituents outside the tidal model. Only used if extrapolate_tides is True.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">extra_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Extra tidal databases loaded from database.json if present&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the tidal dataset as a dictionary.&quot;&quot;&quot;</span>
+
+        <span class="c1"># Ensure extra_databases is a list of paths to JSON files</span>
+        <span class="n">extra_databases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_databases</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tidal_database</span><span class="p">:</span>
+            <span class="n">db_json</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_database</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;database.json&quot;</span>
+            <span class="k">if</span> <span class="n">db_json</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">extra_databases</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">extra_databases</span> <span class="o">=</span> <span class="p">[</span><span class="n">db_json</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">extra_databases</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">db_json</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">extra_databases</span><span class="p">:</span>
+                        <span class="n">extra_databases</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db_json</span><span class="p">)</span>
+
+        <span class="c1"># Setup MDT by extracting from the DataBoundary if provided or using a float value</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_dynamic_topography</span><span class="p">,</span> <span class="n">DataBoundary</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Loading mean dynamic topography from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_dynamic_topography</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uri</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mdt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_dynamic_topography</span><span class="o">.</span><span class="n">_sel_boundary</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+            <span class="c1"># Always extrapolate missing MDT from nearest neighbour</span>
+            <span class="c1"># self._mdt</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_dynamic_topography</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Using mean dynamic topography value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_dynamic_topography</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mdt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_dynamic_topography</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">extra_databases</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading extra tidal databases from </span><span class="si">{</span><span class="n">extra_databases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;constituents&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">constituents</span><span class="p">,</span>
+            <span class="s2">&quot;tidal_database&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tidal_database</span><span class="p">,</span>
+            <span class="s2">&quot;tidal_model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tidal_model</span><span class="p">,</span>
+            <span class="s2">&quot;tidal_potential&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tidal_potential</span><span class="p">,</span>
+            <span class="s2">&quot;cutoff_depth&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoff_depth</span><span class="p">,</span>
+            <span class="s2">&quot;nodal_corrections&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodal_corrections</span><span class="p">,</span>
+            <span class="s2">&quot;tide_interpolation_method&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tide_interpolation_method</span><span class="p">,</span>
+            <span class="s2">&quot;extra_databases&quot;</span><span class="p">:</span> <span class="n">extra_databases</span><span class="p">,</span>
+            <span class="s2">&quot;mean_dynamic_topography&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mdt</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;constituents&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">normalize_constituents_case</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalize constituent names to lowercase for pyTMD compatibility.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;major&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;m2&quot;</span><span class="p">,</span> <span class="s2">&quot;s2&quot;</span><span class="p">,</span> <span class="s2">&quot;n2&quot;</span><span class="p">,</span> <span class="s2">&quot;k2&quot;</span><span class="p">,</span> <span class="s2">&quot;k1&quot;</span><span class="p">,</span> <span class="s2">&quot;o1&quot;</span><span class="p">,</span> <span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="s2">&quot;q1&quot;</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span>
+                    <span class="s2">&quot;m2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;s2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;n2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;k2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;k1&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;o1&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;p1&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;q1&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;mm&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;mf&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;m4&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;mn4&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;ms4&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;2n2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;s1&quot;</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Assume it&#39;s a comma-separated string</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span>
+        <span class="s2">&quot;tidal_potential&quot;</span><span class="p">,</span> <span class="s2">&quot;nodal_corrections&quot;</span><span class="p">,</span> <span class="s2">&quot;extrapolate_tides&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span>
+    <span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ensure_python_bool</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="BoundaryConfig">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.BoundaryConfig">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BoundaryConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for a single SCHISM boundary segment.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Required fields with default values</span>
+    <span class="n">elev_type</span><span class="p">:</span> <span class="n">ElevationType</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">ElevationType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Elevation boundary condition type&quot;</span>
+    <span class="p">)</span>
+    <span class="n">vel_type</span><span class="p">:</span> <span class="n">VelocityType</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Velocity boundary condition type&quot;</span>
+    <span class="p">)</span>
+    <span class="n">temp_type</span><span class="p">:</span> <span class="n">TracerType</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Temperature boundary condition type&quot;</span>
+    <span class="p">)</span>
+    <span class="n">salt_type</span><span class="p">:</span> <span class="n">TracerType</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Salinity boundary condition type&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Optional fields for specific boundary types</span>
+    <span class="c1"># Elevation constants (for ElevationType.CONSTANT)</span>
+    <span class="n">ethconst</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Constant elevation value (for CONSTANT type)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Velocity/flow constants (for VelocityType.CONSTANT)</span>
+    <span class="n">vthconst</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Constant velocity/flow value (for CONSTANT type)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Temperature constants and parameters</span>
+    <span class="n">tthconst</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Constant temperature value (for CONSTANT type)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">tobc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Temperature nudging factor (0-1, 1 is strongest nudging)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">temp_th_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to temperature time history file (for type 1)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">temp_3d_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to 3D temperature file (for type 4)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Salinity constants and parameters</span>
+    <span class="n">sthconst</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Constant salinity value (for CONSTANT type)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">sobc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Salinity nudging factor (0-1, 1 is strongest nudging)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">salt_th_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to salinity time history file (for type 1)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">salt_3d_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to 3D salinity file (for type 4)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Velocity/flow time history parameters (for VelocityType.TIMEHIST)</span>
+    <span class="n">flow_th_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to flow time history file (for type 1)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Relaxation parameters for velocity (for VelocityType.RELAXED)</span>
+    <span class="n">inflow_relax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Relaxation factor for inflow (0-1, 1 is strongest nudging)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">outflow_relax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Relaxation factor for outflow (0-1, 1 is strongest nudging)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Flather boundary values (for VelocityType.FLATHER)</span>
+    <span class="n">eta_mean</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mean elevation profile for Flather boundary&quot;</span>
+    <span class="p">)</span>
+    <span class="n">vn_mean</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mean velocity profile for Flather boundary&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Space-time parameters</span>
+    <span class="n">elev_st_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to space-time elevation file (for SPACETIME type)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">vel_st_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Path to space-time velocity file (for SPACETIME type)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of the boundary configuration.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;BoundaryConfig(elev_type=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">elev_type</span><span class="si">}</span><span class="s2">, vel_type=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vel_type</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;temp_type=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_type</span><span class="si">}</span><span class="s2">, salt_type=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">salt_type</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="BoundaryHandler">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.BoundaryHandler">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BoundaryHandler</span><span class="p">(</span><span class="n">BoundaryData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handler for SCHISM boundary conditions.</span>
+
+<span class="sd">    This class extends BoundaryData to handle all SCHISM boundary condition types</span>
+<span class="sd">    including tidal, river, nested, and hybrid configurations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">grid_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+        <span class="n">tidal_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TidalDataset</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">boundary_configs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">BoundaryConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the boundary handler.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        grid_path : str or Path</span>
+<span class="sd">            Path to the SCHISM grid file</span>
+<span class="sd">        tidal_data : TidalDataset, optional</span>
+<span class="sd">            Tidal dataset containing specification of tidal forcing</span>
+<span class="sd">        boundary_configs : dict, optional</span>
+<span class="sd">            Configuration for each boundary, keyed by boundary index</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">grid_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span> <span class="o">=</span> <span class="n">tidal_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span> <span class="o">=</span> <span class="n">boundary_configs</span> <span class="k">if</span> <span class="n">boundary_configs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+
+        <span class="c1"># For storing start time and run duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rnday</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Additional file paths for various boundary types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp_th_path</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Temperature time history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp_3d_path</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 3D temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">salt_th_path</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Salinity time history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">salt_3d_path</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 3D salinity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flow_th_path</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Flow time history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elev_st_path</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Space-time elevation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vel_st_path</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Space-time velocity</span>
+
+<div class="viewcode-block" id="BoundaryHandler.set_boundary_config">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.BoundaryHandler.set_boundary_config">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_boundary_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boundary_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BoundaryConfig</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set configuration for a specific boundary.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        boundary_index : int</span>
+<span class="sd">            Index of the boundary</span>
+<span class="sd">        config : BoundaryConfig</span>
+<span class="sd">            Configuration for the boundary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="p">[</span><span class="n">boundary_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span></div>
+
+
+<div class="viewcode-block" id="BoundaryHandler.set_boundary_type">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.BoundaryHandler.set_boundary_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_boundary_type</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">boundary_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">elev_type</span><span class="p">:</span> <span class="n">ElevationType</span><span class="p">,</span>
+        <span class="n">vel_type</span><span class="p">:</span> <span class="n">VelocityType</span><span class="p">,</span>
+        <span class="n">temp_type</span><span class="p">:</span> <span class="n">TracerType</span> <span class="o">=</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+        <span class="n">salt_type</span><span class="p">:</span> <span class="n">TracerType</span> <span class="o">=</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set boundary types for a specific boundary.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        boundary_index : int</span>
+<span class="sd">            Index of the boundary</span>
+<span class="sd">        elev_type : ElevationType</span>
+<span class="sd">            Elevation boundary condition type</span>
+<span class="sd">        vel_type : VelocityType</span>
+<span class="sd">            Velocity boundary condition type</span>
+<span class="sd">        temp_type : TracerType, optional</span>
+<span class="sd">            Temperature boundary condition type</span>
+<span class="sd">        salt_type : TracerType, optional</span>
+<span class="sd">            Salinity boundary condition type</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional parameters for the boundary configuration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">BoundaryConfig</span><span class="p">(</span>
+            <span class="n">elev_type</span><span class="o">=</span><span class="n">elev_type</span><span class="p">,</span>
+            <span class="n">vel_type</span><span class="o">=</span><span class="n">vel_type</span><span class="p">,</span>
+            <span class="n">temp_type</span><span class="o">=</span><span class="n">temp_type</span><span class="p">,</span>
+            <span class="n">salt_type</span><span class="o">=</span><span class="n">salt_type</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_boundary_config</span><span class="p">(</span><span class="n">boundary_index</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BoundaryHandler.set_run_parameters">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.BoundaryHandler.set_run_parameters">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_run_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">run_days</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set start time and run duration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        start_time : datetime or list</span>
+<span class="sd">            Start time for the simulation</span>
+<span class="sd">        run_days : float</span>
+<span class="sd">            Duration of the simulation in days</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rnday</span> <span class="o">=</span> <span class="n">run_days</span></div>
+
+
+<div class="viewcode-block" id="BoundaryHandler.get_flags_list">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.BoundaryHandler.get_flags_list">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_flags_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get list of boundary flags for Bctides.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of list of int</span>
+<span class="sd">            Boundary flags for each boundary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>  <span class="c1"># Default to tidal</span>
+
+        <span class="c1"># Find max boundary without using default parameter</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="p">:</span>
+            <span class="c1"># Convert keys to list and find max</span>
+            <span class="n">boundary_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">max_boundary</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">boundary_keys</span><span class="p">)</span> <span class="k">if</span> <span class="n">boundary_keys</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">max_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="n">flags</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">max_boundary</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="p">:</span>
+                <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">flags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">elev_type</span><span class="p">),</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vel_type</span><span class="p">),</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">temp_type</span><span class="p">),</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">salt_type</span><span class="p">),</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">flags</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">flags</span></div>
+
+
+<div class="viewcode-block" id="BoundaryHandler.get_constant_values">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.BoundaryHandler.get_constant_values">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_constant_values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get constant values for boundaries.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dictionary of constant values for each boundary type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ethconst&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;vthconst&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;tthconst&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;sthconst&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;tobc&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;sobc&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;inflow_relax&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;outflow_relax&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;eta_mean&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;vn_mean&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;temp_th_path&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;temp_3d_path&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;salt_th_path&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;salt_3d_path&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;flow_th_path&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;elev_st_path&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;vel_st_path&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="c1"># Find max boundary without using default parameter</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="p">:</span>
+            <span class="c1"># Convert keys to list and find max</span>
+            <span class="n">boundary_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">max_boundary</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">boundary_keys</span><span class="p">)</span> <span class="k">if</span> <span class="n">boundary_keys</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">max_boundary</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">max_boundary</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="p">:</span>
+                <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+                <span class="c1"># Handle type 2 (constant) boundaries</span>
+                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">elev_type</span> <span class="o">==</span> <span class="n">ElevationType</span><span class="o">.</span><span class="n">CONSTANT</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;ethconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">config</span><span class="o">.</span><span class="n">ethconst</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">ethconst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;ethconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">vel_type</span> <span class="o">==</span> <span class="n">VelocityType</span><span class="o">.</span><span class="n">CONSTANT</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;vthconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">config</span><span class="o">.</span><span class="n">vthconst</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">vthconst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;vthconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">temp_type</span> <span class="o">==</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">CONSTANT</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;tthconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">config</span><span class="o">.</span><span class="n">tthconst</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">tthconst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;tthconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">salt_type</span> <span class="o">==</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">CONSTANT</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;sthconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">config</span><span class="o">.</span><span class="n">sthconst</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">sthconst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;sthconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+
+                <span class="c1"># Nudging factors for temperature and salinity</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;tobc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">tobc</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">tobc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">1.0</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;sobc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sobc</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">sobc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">1.0</span><span class="p">)</span>
+
+                <span class="c1"># Temperature and salinity file paths</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;temp_th_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">temp_th_path</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;temp_3d_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">temp_3d_path</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;salt_th_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">salt_th_path</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;salt_3d_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">salt_3d_path</span><span class="p">)</span>
+
+                <span class="c1"># Flow time history path</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;flow_th_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">flow_th_path</span><span class="p">)</span>
+
+                <span class="c1"># Space-time file paths</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;elev_st_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">elev_st_path</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;vel_st_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vel_st_path</span><span class="p">)</span>
+
+                <span class="c1"># Relaxation factors for velocity</span>
+                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">vel_type</span> <span class="o">==</span> <span class="n">VelocityType</span><span class="o">.</span><span class="n">RELAXED</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;inflow_relax&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">config</span><span class="o">.</span><span class="n">inflow_relax</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">inflow_relax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.5</span>
+                    <span class="p">)</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;outflow_relax&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">config</span><span class="o">.</span><span class="n">outflow_relax</span>
+                        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">outflow_relax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                        <span class="k">else</span> <span class="mf">0.1</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;inflow_relax&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Default values</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;outflow_relax&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+                <span class="c1"># Handle Flather boundaries</span>
+                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">vel_type</span> <span class="o">==</span> <span class="n">VelocityType</span><span class="o">.</span><span class="n">FLATHER</span><span class="p">:</span>
+                    <span class="c1"># Create default values if none provided</span>
+                    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">eta_mean</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="c1"># For testing, create a simple array of zeros with size = num nodes on this boundary</span>
+                        <span class="c1"># In practice, this should be filled with actual mean elevation values</span>
+                        <span class="n">num_nodes</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">nobn</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;nobn&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">nobn</span><span class="p">)</span>
+                            <span class="k">else</span> <span class="mi">1</span>
+                        <span class="p">)</span>
+                        <span class="n">eta_mean</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_nodes</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">eta_mean</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">eta_mean</span>
+
+                    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">vn_mean</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="c1"># For testing, create a simple array of arrays with zeros</span>
+                        <span class="n">num_nodes</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">nobn</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;nobn&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">nobn</span><span class="p">)</span>
+                            <span class="k">else</span> <span class="mi">1</span>
+                        <span class="p">)</span>
+                        <span class="c1"># Assume 5 vertical levels for testing</span>
+                        <span class="n">vn_mean</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">)]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">vn_mean</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">vn_mean</span>
+
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;eta_mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eta_mean</span><span class="p">)</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;vn_mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vn_mean</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;eta_mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;vn_mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Default values for missing boundaries</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;ethconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;vthconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;tthconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;sthconst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;tobc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;sobc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;inflow_relax&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;outflow_relax&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;eta_mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;vn_mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;temp_th_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;temp_3d_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;salt_th_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;salt_3d_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;flow_th_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;elev_st_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;vel_st_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="BoundaryHandler.create_bctides">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.BoundaryHandler.create_bctides">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_bctides</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bctides</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Bctides instance from this configuration.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Bctides</span>
+<span class="sd">            Configured Bctides instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_flags_list</span><span class="p">()</span>
+        <span class="n">constants</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_constant_values</span><span class="p">()</span>
+
+        <span class="c1"># Clean up lists to avoid None values</span>
+        <span class="n">ethconst</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;ethconst&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;ethconst&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">vthconst</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;vthconst&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;vthconst&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">tthconst</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;tthconst&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;tthconst&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">sthconst</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;sthconst&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;sthconst&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">tobc</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;tobc&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;tobc&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">sobc</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;sobc&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;sobc&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">inflow_relax</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;inflow_relax&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;inflow_relax&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">outflow_relax</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;outflow_relax&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;outflow_relax&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Add flow and flux boundary information</span>
+        <span class="n">ncbn</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">nfluxf</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Count the number of flow and flux boundaries</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_configs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Count flow boundaries - both CONSTANT type with non-zero flow value</span>
+            <span class="c1"># and type 1 (time history) are considered flow boundaries</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">vel_type</span> <span class="o">==</span> <span class="n">VelocityType</span><span class="o">.</span><span class="n">CONSTANT</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">vthconst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vel_type</span> <span class="o">==</span> <span class="n">VelocityType</span><span class="o">.</span><span class="n">TIMEHIST</span><span class="p">):</span>
+                <span class="n">ncbn</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Count flux boundaries - type 3 with flux specified</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">vel_type</span> <span class="o">==</span> <span class="n">VelocityType</span><span class="o">.</span><span class="n">HARMONIC</span><span class="p">:</span>
+                <span class="n">nfluxf</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Extract file paths</span>
+        <span class="n">temp_th_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temp_th_path&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temp_th_path&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">temp_3d_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temp_3d_path&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temp_3d_path&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">salt_th_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;salt_th_path&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;salt_th_path&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">salt_3d_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;salt_3d_path&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;salt_3d_path&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">flow_th_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;flow_th_path&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;flow_th_path&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">elev_st_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;elev_st_path&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;elev_st_path&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">vel_st_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;vel_st_path&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;vel_st_path&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Extract Flather boundary data if available</span>
+        <span class="n">eta_mean</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;eta_mean&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span> <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;eta_mean&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">vn_mean</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;vn_mean&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span> <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;vn_mean&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="c1"># Ensure grid boundaries are computed before creating Bctides</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;compute_bnd&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;nob&quot;</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Computing grid boundaries for Bctides&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">compute_bnd</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;nob&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;compute_all&quot;</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s2">&quot;Running compute_all to ensure grid boundaries are available&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">compute_all</span><span class="p">()</span>
+
+            <span class="c1"># Verify boundaries were computed</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;nob&quot;</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;Failed to compute grid boundaries - grid has no &#39;nob&#39; attribute&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Grid boundaries could not be computed&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Create Bctides object with all the enhanced parameters</span>
+        <span class="n">bctides</span> <span class="o">=</span> <span class="n">Bctides</span><span class="p">(</span>
+            <span class="n">hgrid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span>
+            <span class="n">flags</span><span class="o">=</span><span class="n">flags</span><span class="p">,</span>
+            <span class="n">constituents</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">constituents</span><span class="p">,</span>
+            <span class="n">tidal_database</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">tidal_database</span><span class="p">,</span>
+            <span class="n">tidal_model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">tidal_model</span><span class="p">,</span>
+            <span class="n">tidal_potential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">tidal_potential</span><span class="p">,</span>
+            <span class="n">cutoff_depth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">cutoff_depth</span><span class="p">,</span>
+            <span class="n">nodal_corrections</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">nodal_corrections</span><span class="p">,</span>
+            <span class="n">tide_interpolation_method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">tide_interpolation_method</span><span class="p">,</span>
+            <span class="n">extrapolate_tides</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">extrapolate_tides</span><span class="p">,</span>
+            <span class="n">extrapolation_distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">extrapolation_distance</span><span class="p">,</span>
+            <span class="n">extra_databases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">extra_databases</span><span class="p">,</span>
+            <span class="n">mdt</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="p">,</span> <span class="s2">&quot;_mdt&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tidal_data</span><span class="o">.</span><span class="n">mean_dynamic_topography</span>
+            <span class="p">),</span>
+            <span class="n">ethconst</span><span class="o">=</span><span class="n">ethconst</span><span class="p">,</span>
+            <span class="n">vthconst</span><span class="o">=</span><span class="n">vthconst</span><span class="p">,</span>
+            <span class="n">tthconst</span><span class="o">=</span><span class="n">tthconst</span><span class="p">,</span>
+            <span class="n">sthconst</span><span class="o">=</span><span class="n">sthconst</span><span class="p">,</span>
+            <span class="n">tobc</span><span class="o">=</span><span class="n">tobc</span><span class="p">,</span>
+            <span class="n">sobc</span><span class="o">=</span><span class="n">sobc</span><span class="p">,</span>
+            <span class="n">relax</span><span class="o">=</span><span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inflow_relax&quot;</span><span class="p">,</span> <span class="p">[]),</span>  <span class="c1"># For backward compatibility</span>
+            <span class="n">inflow_relax</span><span class="o">=</span><span class="n">inflow_relax</span><span class="p">,</span>
+            <span class="n">outflow_relax</span><span class="o">=</span><span class="n">outflow_relax</span><span class="p">,</span>
+            <span class="n">ncbn</span><span class="o">=</span><span class="n">ncbn</span><span class="p">,</span>
+            <span class="n">nfluxf</span><span class="o">=</span><span class="n">nfluxf</span><span class="p">,</span>
+            <span class="n">elev_th_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Time history of elevation is not handled by this path yet</span>
+            <span class="n">elev_st_path</span><span class="o">=</span><span class="n">elev_st_path</span><span class="p">,</span>
+            <span class="n">flow_th_path</span><span class="o">=</span><span class="n">flow_th_path</span><span class="p">,</span>
+            <span class="n">vel_st_path</span><span class="o">=</span><span class="n">vel_st_path</span><span class="p">,</span>
+            <span class="n">temp_th_path</span><span class="o">=</span><span class="n">temp_th_path</span><span class="p">,</span>
+            <span class="n">temp_3d_path</span><span class="o">=</span><span class="n">temp_3d_path</span><span class="p">,</span>
+            <span class="n">salt_th_path</span><span class="o">=</span><span class="n">salt_th_path</span><span class="p">,</span>
+            <span class="n">salt_3d_path</span><span class="o">=</span><span class="n">salt_3d_path</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Set additional properties for Flather boundaries</span>
+        <span class="k">if</span> <span class="n">eta_mean</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eta_mean</span><span class="p">):</span>
+            <span class="n">bctides</span><span class="o">.</span><span class="n">eta_mean</span> <span class="o">=</span> <span class="n">eta_mean</span>
+        <span class="k">if</span> <span class="n">vn_mean</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vn_mean</span><span class="p">):</span>
+            <span class="n">bctides</span><span class="o">.</span><span class="n">vn_mean</span> <span class="o">=</span> <span class="n">vn_mean</span>
+
+        <span class="c1"># Set start time and run duration</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rnday</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bctides</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span>
+            <span class="n">bctides</span><span class="o">.</span><span class="n">_rnday</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rnday</span>
+
+        <span class="k">return</span> <span class="n">bctides</span></div>
+
+
+<div class="viewcode-block" id="BoundaryHandler.write_boundary_file">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.BoundaryHandler.write_boundary_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_boundary_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the bctides.in file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        output_path : str or Path</span>
+<span class="sd">            Path to write the file</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Path</span>
+<span class="sd">            Path to the written file</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If start_time and rnday are not set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rnday</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;start_time and rnday must be set before writing boundary file&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Create Bctides object</span>
+        <span class="n">bctides</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_bctides</span><span class="p">()</span>
+
+        <span class="c1"># Write file</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+        <span class="n">bctides</span><span class="o">.</span><span class="n">write_bctides</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output_path</span></div>
+</div>
+
+
+
+<span class="c1"># Factory functions for common configurations</span>
+
+
+<div class="viewcode-block" id="create_tidal_boundary">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.create_tidal_boundary">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_tidal_boundary</span><span class="p">(</span>
+    <span class="n">grid_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">constituents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;major&quot;</span><span class="p">,</span>
+    <span class="n">tidal_database</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tidal_model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;FES2014&quot;</span><span class="p">,</span>
+    <span class="n">nodal_corrections</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">tidal_potential</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">cutoff_depth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+    <span class="n">tide_interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bilinear&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundaryHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a tidal-only boundary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid_path : str or Path</span>
+<span class="sd">        Path to SCHISM grid</span>
+<span class="sd">    constituents : str or list, optional</span>
+<span class="sd">        Tidal constituents, by default &quot;major&quot;</span>
+<span class="sd">    tidal_database : str or Path, optional</span>
+<span class="sd">        Tidal database path for pyTMD to use, by default None</span>
+<span class="sd">    tidal_model : str, optional</span>
+<span class="sd">        Tidal model to use, by default &#39;FES2014&#39;</span>
+<span class="sd">    nodal_corrections : bool, optional</span>
+<span class="sd">        Whether to apply nodal corrections, by default True</span>
+<span class="sd">    tidal_potential : bool, optional</span>
+<span class="sd">        Whether to include tidal potential, by default True</span>
+<span class="sd">    cutoff_depth : float, optional</span>
+<span class="sd">        Depth threshold for tidal potential, by default 50.0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    BoundaryHandler</span>
+<span class="sd">        Configured tidal boundary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tidal_data</span> <span class="o">=</span> <span class="n">TidalDataset</span><span class="p">(</span>
+        <span class="n">constituents</span><span class="o">=</span><span class="n">constituents</span><span class="p">,</span>
+        <span class="n">tidal_database</span><span class="o">=</span><span class="n">tidal_database</span><span class="p">,</span>
+        <span class="n">tidal_model</span><span class="o">=</span><span class="n">tidal_model</span><span class="p">,</span>
+        <span class="n">nodal_corrections</span><span class="o">=</span><span class="n">nodal_corrections</span><span class="p">,</span>
+        <span class="n">tidal_potential</span><span class="o">=</span><span class="n">tidal_potential</span><span class="p">,</span>
+        <span class="n">cutoff_depth</span><span class="o">=</span><span class="n">cutoff_depth</span><span class="p">,</span>
+        <span class="n">tide_interpolation_method</span><span class="o">=</span><span class="n">tide_interpolation_method</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">boundary</span> <span class="o">=</span> <span class="n">BoundaryHandler</span><span class="p">(</span>
+        <span class="n">grid_path</span><span class="o">=</span><span class="n">grid_path</span><span class="p">,</span>
+        <span class="n">tidal_data</span><span class="o">=</span><span class="n">tidal_data</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Set default configuration for all boundaries: pure tidal</span>
+    <span class="n">boundary</span><span class="o">.</span><span class="n">set_boundary_type</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>  <span class="c1"># Will be applied to all boundaries</span>
+        <span class="n">elev_type</span><span class="o">=</span><span class="n">ElevationType</span><span class="o">.</span><span class="n">HARMONIC</span><span class="p">,</span>
+        <span class="n">vel_type</span><span class="o">=</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">HARMONIC</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">boundary</span></div>
+
+
+
+<span class="c1"># High-level factory functions for creating boundary configurations</span>
+
+
+<div class="viewcode-block" id="create_tidal_only_boundary_config">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.create_tidal_only_boundary_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_tidal_only_boundary_config</span><span class="p">(</span>
+    <span class="n">constituents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;major&quot;</span><span class="p">,</span>
+    <span class="n">tidal_database</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tidal_model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;FES2014&quot;</span><span class="p">,</span>
+    <span class="n">nodal_corrections</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">tidal_potential</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">cutoff_depth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+    <span class="n">tide_interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bilinear&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a configuration where all open boundaries are treated as tidal boundaries.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    constituents : str or list, optional</span>
+<span class="sd">        Tidal constituents to include, by default &quot;major&quot;</span>
+<span class="sd">    tidal_database : str or Path, optional</span>
+<span class="sd">        Path to tidal database for pyTMD, by default None</span>
+<span class="sd">    tidal_model : str, optional</span>
+<span class="sd">        Tidal model to use, by default &#39;FES2014&#39;</span>
+<span class="sd">    nodal_corrections : bool, optional</span>
+<span class="sd">        Whether to apply nodal corrections, by default True</span>
+<span class="sd">    tidal_potential : bool, optional</span>
+<span class="sd">        Whether to include tidal potential, by default True</span>
+<span class="sd">    cutoff_depth : float, optional</span>
+<span class="sd">        Depth threshold for tidal potential, by default 50.0</span>
+<span class="sd">    tide_interpolation_method : str, optional</span>
+<span class="sd">        Method for tide interpolation, by default &quot;bilinear&quot;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    SCHISMDataBoundaryConditions</span>
+<span class="sd">        Configured boundary conditions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMDataBoundaryConditions</span>
+
+    <span class="c1"># Create tidal dataset</span>
+    <span class="n">tidal_data</span> <span class="o">=</span> <span class="n">TidalDataset</span><span class="p">(</span>
+        <span class="n">constituents</span><span class="o">=</span><span class="n">constituents</span><span class="p">,</span>
+        <span class="n">tidal_database</span><span class="o">=</span><span class="n">tidal_database</span><span class="p">,</span>
+        <span class="n">tidal_model</span><span class="o">=</span><span class="n">tidal_model</span><span class="p">,</span>
+        <span class="n">nodal_corrections</span><span class="o">=</span><span class="n">nodal_corrections</span><span class="p">,</span>
+        <span class="n">tidal_potential</span><span class="o">=</span><span class="n">tidal_potential</span><span class="p">,</span>
+        <span class="n">cutoff_depth</span><span class="o">=</span><span class="n">cutoff_depth</span><span class="p">,</span>
+        <span class="n">tide_interpolation_method</span><span class="o">=</span><span class="n">tide_interpolation_method</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Create the config with tidal setup</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">SCHISMDataBoundaryConditions</span><span class="p">(</span>
+        <span class="n">tidal_data</span><span class="o">=</span><span class="n">tidal_data</span><span class="p">,</span>
+        <span class="n">setup_type</span><span class="o">=</span><span class="s2">&quot;tidal&quot;</span><span class="p">,</span>
+        <span class="n">boundaries</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">hotstart_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">config</span></div>
+
+
+
+<div class="viewcode-block" id="create_hybrid_boundary_config">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.create_hybrid_boundary_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_hybrid_boundary_config</span><span class="p">(</span>
+    <span class="n">constituents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;major&quot;</span><span class="p">,</span>
+    <span class="n">tidal_database</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tidal_model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;FES2014&quot;</span><span class="p">,</span>
+    <span class="n">nodal_corrections</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">tidal_potential</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">cutoff_depth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+    <span class="n">tide_interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bilinear&quot;</span><span class="p">,</span>
+    <span class="n">elev_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">vel_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">temp_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">salt_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a configuration for hybrid harmonic + external data boundaries.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    constituents : str or list, optional</span>
+<span class="sd">        Tidal constituents to include, by default &quot;major&quot;</span>
+<span class="sd">    tidal_database : str or Path, optional</span>
+<span class="sd">        Path to tidal database for pyTMD, by default None</span>
+<span class="sd">    tidal_model : str, optional</span>
+<span class="sd">        Tidal model to use, by default &#39;FES2014&#39;</span>
+<span class="sd">    nodal_corrections : bool, optional</span>
+<span class="sd">        Whether to apply nodal corrections, by default True</span>
+<span class="sd">    tidal_potential : bool, optional</span>
+<span class="sd">        Whether to include tidal potential, by default True</span>
+<span class="sd">    cutoff_depth : float, optional</span>
+<span class="sd">        Depth threshold for tidal potential, by default 50.0</span>
+<span class="sd">    tide_interpolation_method : str, optional</span>
+<span class="sd">        Method for tide interpolation, by default &quot;bilinear&quot;</span>
+<span class="sd">    elev_source : Union[DataBlob, SCHISMDataBoundary], optional</span>
+<span class="sd">        Data source for elevation</span>
+<span class="sd">    vel_source : Union[DataBlob, SCHISMDataBoundary], optional</span>
+<span class="sd">        Data source for velocity</span>
+<span class="sd">    temp_source : Union[DataBlob, SCHISMDataBoundary], optional</span>
+<span class="sd">        Data source for temperature</span>
+<span class="sd">    salt_source : Union[DataBlob, SCHISMDataBoundary], optional</span>
+<span class="sd">        Data source for salinity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    SCHISMDataBoundaryConditions</span>
+<span class="sd">        Configured boundary conditions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMDataBoundaryConditions</span><span class="p">,</span> <span class="n">BoundarySetupWithSource</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.tides_enhanced</span><span class="w"> </span><span class="kn">import</span> <span class="n">TidalDataset</span>
+
+    <span class="c1"># Create tidal dataset</span>
+    <span class="n">tidal_data</span> <span class="o">=</span> <span class="n">TidalDataset</span><span class="p">(</span>
+        <span class="n">constituents</span><span class="o">=</span><span class="n">constituents</span><span class="p">,</span>
+        <span class="n">tidal_database</span><span class="o">=</span><span class="n">tidal_database</span><span class="p">,</span>
+        <span class="n">tidal_model</span><span class="o">=</span><span class="n">tidal_model</span><span class="p">,</span>
+        <span class="n">nodal_corrections</span><span class="o">=</span><span class="n">nodal_corrections</span><span class="p">,</span>
+        <span class="n">tidal_potential</span><span class="o">=</span><span class="n">tidal_potential</span><span class="p">,</span>
+        <span class="n">cutoff_depth</span><span class="o">=</span><span class="n">cutoff_depth</span><span class="p">,</span>
+        <span class="n">tide_interpolation_method</span><span class="o">=</span><span class="n">tide_interpolation_method</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Create the config with hybrid setup</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">SCHISMDataBoundaryConditions</span><span class="p">(</span>
+        <span class="n">tidal_data</span><span class="o">=</span><span class="n">tidal_data</span><span class="p">,</span>
+        <span class="n">setup_type</span><span class="o">=</span><span class="s2">&quot;hybrid&quot;</span><span class="p">,</span>
+        <span class="n">boundaries</span><span class="o">=</span><span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="n">BoundarySetupWithSource</span><span class="p">(</span>
+                <span class="n">elev_type</span><span class="o">=</span><span class="n">ElevationType</span><span class="o">.</span><span class="n">HARMONICEXTERNAL</span><span class="p">,</span>
+                <span class="n">vel_type</span><span class="o">=</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">HARMONICEXTERNAL</span><span class="p">,</span>
+                <span class="n">temp_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span> <span class="k">if</span> <span class="n">temp_source</span> <span class="k">else</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">INITIAL</span><span class="p">,</span>
+                <span class="n">salt_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span> <span class="k">if</span> <span class="n">salt_source</span> <span class="k">else</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">INITIAL</span><span class="p">,</span>
+                <span class="n">elev_source</span><span class="o">=</span><span class="n">elev_source</span><span class="p">,</span>
+                <span class="n">vel_source</span><span class="o">=</span><span class="n">vel_source</span><span class="p">,</span>
+                <span class="n">temp_source</span><span class="o">=</span><span class="n">temp_source</span><span class="p">,</span>
+                <span class="n">salt_source</span><span class="o">=</span><span class="n">salt_source</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">},</span>
+        <span class="n">hotstart_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">config</span></div>
+
+
+
+<div class="viewcode-block" id="create_river_boundary_config">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.create_river_boundary_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_river_boundary_config</span><span class="p">(</span>
+    <span class="n">river_boundary_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">river_flow</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">100.0</span><span class="p">,</span>  <span class="c1"># Negative for inflow</span>
+    <span class="n">other_boundaries</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;tidal&quot;</span><span class="p">,</span> <span class="s2">&quot;hybrid&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;tidal&quot;</span><span class="p">,</span>
+    <span class="n">constituents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;major&quot;</span><span class="p">,</span>
+    <span class="n">tidal_database</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tidal_model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;FES2014&quot;</span><span class="p">,</span>
+    <span class="n">nodal_corrections</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">tidal_potential</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">cutoff_depth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+    <span class="n">tide_interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bilinear&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a configuration with a designated river boundary and optional tidal boundaries.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    river_boundary_index : int</span>
+<span class="sd">        Index of the river boundary</span>
+<span class="sd">    river_flow : float</span>
+<span class="sd">        Flow rate (negative for inflow)</span>
+<span class="sd">    other_boundaries : str</span>
+<span class="sd">        How to treat other boundaries (&quot;tidal&quot;, &quot;hybrid&quot;, or &quot;none&quot;)</span>
+<span class="sd">    constituents : str or list, optional</span>
+<span class="sd">        Tidal constituents to include, by default &quot;major&quot;</span>
+<span class="sd">    tidal_database : str or Path, optional</span>
+<span class="sd">        Path to tidal database for pyTMD, by default None</span>
+<span class="sd">    tidal_model : str, optional</span>
+<span class="sd">        Tidal model to use, by default &#39;FES2014&#39;</span>
+<span class="sd">    nodal_corrections : bool, optional</span>
+<span class="sd">        Whether to apply nodal corrections, by default True</span>
+<span class="sd">    tidal_potential : bool, optional</span>
+<span class="sd">        Whether to include tidal potential, by default True</span>
+<span class="sd">    cutoff_depth : float, optional</span>
+<span class="sd">        Depth threshold for tidal potential, by default 50.0</span>
+<span class="sd">    tide_interpolation_method : str, optional</span>
+<span class="sd">        Method for tide interpolation, by default &quot;bilinear&quot;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    SCHISMDataBoundaryConditions</span>
+<span class="sd">        Configured boundary conditions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMDataBoundaryConditions</span><span class="p">,</span> <span class="n">BoundarySetupWithSource</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.tides_enhanced</span><span class="w"> </span><span class="kn">import</span> <span class="n">TidalDataset</span>
+
+    <span class="c1"># Create tidal dataset if both paths are provided and needed</span>
+    <span class="n">tidal_data</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">other_boundaries</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;tidal&quot;</span><span class="p">,</span> <span class="s2">&quot;hybrid&quot;</span><span class="p">]:</span>
+        <span class="n">tidal_data</span> <span class="o">=</span> <span class="n">TidalDataset</span><span class="p">(</span>
+            <span class="n">constituents</span><span class="o">=</span><span class="n">constituents</span><span class="p">,</span>
+            <span class="n">tidal_database</span><span class="o">=</span><span class="n">tidal_database</span><span class="p">,</span>
+            <span class="n">tidal_model</span><span class="o">=</span><span class="n">tidal_model</span><span class="p">,</span>
+            <span class="n">nodal_corrections</span><span class="o">=</span><span class="n">nodal_corrections</span><span class="p">,</span>
+            <span class="n">tidal_potential</span><span class="o">=</span><span class="n">tidal_potential</span><span class="p">,</span>
+            <span class="n">cutoff_depth</span><span class="o">=</span><span class="n">cutoff_depth</span><span class="p">,</span>
+            <span class="n">tide_interpolation_method</span><span class="o">=</span><span class="n">tide_interpolation_method</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Create the basic config</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">SCHISMDataBoundaryConditions</span><span class="p">(</span>
+        <span class="n">tidal_data</span><span class="o">=</span><span class="n">tidal_data</span><span class="p">,</span>
+        <span class="n">setup_type</span><span class="o">=</span><span class="s2">&quot;river&quot;</span><span class="p">,</span>
+        <span class="n">hotstart_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Add the river boundary</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">river_boundary_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">BoundarySetupWithSource</span><span class="p">(</span>
+        <span class="n">elev_type</span><span class="o">=</span><span class="n">ElevationType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+        <span class="n">vel_type</span><span class="o">=</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">CONSTANT</span><span class="p">,</span>
+        <span class="n">temp_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+        <span class="n">salt_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+        <span class="n">const_flow</span><span class="o">=</span><span class="n">river_flow</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">config</span></div>
+
+
+
+<div class="viewcode-block" id="create_nested_boundary_config">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.create_nested_boundary_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_nested_boundary_config</span><span class="p">(</span>
+    <span class="n">with_tides</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">inflow_relax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">outflow_relax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">elev_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">vel_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">temp_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">salt_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">constituents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;major&quot;</span><span class="p">,</span>
+    <span class="n">tidal_database</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tidal_model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;FES2014&quot;</span><span class="p">,</span>
+    <span class="n">nodal_corrections</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">tidal_potential</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">cutoff_depth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+    <span class="n">tide_interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bilinear&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a configuration for nested model boundaries with external data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    with_tides : bool</span>
+<span class="sd">        Include tidal components</span>
+<span class="sd">    inflow_relax : float</span>
+<span class="sd">        Relaxation parameter for inflow (0-1)</span>
+<span class="sd">    outflow_relax : float</span>
+<span class="sd">        Relaxation parameter for outflow (0-1)</span>
+<span class="sd">    elev_source : Union[DataBlob, SCHISMDataBoundary], optional</span>
+<span class="sd">        Data source for elevation</span>
+<span class="sd">    vel_source : Union[DataBlob, SCHISMDataBoundary], optional</span>
+<span class="sd">        Data source for velocity</span>
+<span class="sd">    temp_source : Union[DataBlob, SCHISMDataBoundary], optional</span>
+<span class="sd">        Data source for temperature</span>
+<span class="sd">    salt_source : Union[DataBlob, SCHISMDataBoundary], optional</span>
+<span class="sd">        Data source for salinity</span>
+<span class="sd">    constituents : str or list, optional</span>
+<span class="sd">        Tidal constituents to include, by default &quot;major&quot;</span>
+<span class="sd">    tidal_database : str or Path, optional</span>
+<span class="sd">        Path to tidal database for pyTMD, by default None</span>
+<span class="sd">    tidal_model : str, optional</span>
+<span class="sd">        Tidal model to use, by default &#39;FES2014&#39;</span>
+<span class="sd">    nodal_corrections : bool, optional</span>
+<span class="sd">        Whether to apply nodal corrections, by default True</span>
+<span class="sd">    tidal_potential : bool, optional</span>
+<span class="sd">        Whether to include tidal potential, by default True</span>
+<span class="sd">    cutoff_depth : float, optional</span>
+<span class="sd">        Depth threshold for tidal potential, by default 50.0</span>
+<span class="sd">    tide_interpolation_method : str, optional</span>
+<span class="sd">        Method for tide interpolation, by default &quot;bilinear&quot;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    SCHISMDataBoundaryConditions</span>
+<span class="sd">        Configured boundary conditions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMDataBoundaryConditions</span><span class="p">,</span> <span class="n">BoundarySetupWithSource</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.tides_enhanced</span><span class="w"> </span><span class="kn">import</span> <span class="n">TidalDataset</span>
+
+    <span class="c1"># Create tidal dataset if both paths are provided and needed</span>
+    <span class="n">tidal_data</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">with_tides</span><span class="p">:</span>
+        <span class="n">tidal_data</span> <span class="o">=</span> <span class="n">TidalDataset</span><span class="p">(</span>
+            <span class="n">constituents</span><span class="o">=</span><span class="n">constituents</span><span class="p">,</span>
+            <span class="n">tidal_database</span><span class="o">=</span><span class="n">tidal_database</span><span class="p">,</span>
+            <span class="n">tidal_model</span><span class="o">=</span><span class="n">tidal_model</span><span class="p">,</span>
+            <span class="n">nodal_corrections</span><span class="o">=</span><span class="n">nodal_corrections</span><span class="p">,</span>
+            <span class="n">tidal_potential</span><span class="o">=</span><span class="n">tidal_potential</span><span class="p">,</span>
+            <span class="n">cutoff_depth</span><span class="o">=</span><span class="n">cutoff_depth</span><span class="p">,</span>
+            <span class="n">tide_interpolation_method</span><span class="o">=</span><span class="n">tide_interpolation_method</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Create the basic config</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">SCHISMDataBoundaryConditions</span><span class="p">(</span>
+        <span class="n">tidal_data</span><span class="o">=</span><span class="n">tidal_data</span><span class="p">,</span>
+        <span class="n">setup_type</span><span class="o">=</span><span class="s2">&quot;nested&quot;</span><span class="p">,</span>
+        <span class="n">hotstart_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Determine elevation type based on tides setting</span>
+    <span class="n">elev_type</span> <span class="o">=</span> <span class="n">ElevationType</span><span class="o">.</span><span class="n">HARMONICEXTERNAL</span> <span class="k">if</span> <span class="n">with_tides</span> <span class="k">else</span> <span class="n">ElevationType</span><span class="o">.</span><span class="n">EXTERNAL</span>
+
+    <span class="c1"># Add the nested boundary configuration</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">BoundarySetupWithSource</span><span class="p">(</span>
+        <span class="n">elev_type</span><span class="o">=</span><span class="n">elev_type</span><span class="p">,</span>
+        <span class="n">vel_type</span><span class="o">=</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">RELAXED</span><span class="p">,</span>
+        <span class="n">temp_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span> <span class="k">if</span> <span class="n">temp_source</span> <span class="k">else</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+        <span class="n">salt_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span> <span class="k">if</span> <span class="n">salt_source</span> <span class="k">else</span> <span class="n">TracerType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+        <span class="n">inflow_relax</span><span class="o">=</span><span class="n">inflow_relax</span><span class="p">,</span>
+        <span class="n">outflow_relax</span><span class="o">=</span><span class="n">outflow_relax</span><span class="p">,</span>
+        <span class="n">elev_source</span><span class="o">=</span><span class="n">elev_source</span><span class="p">,</span>
+        <span class="n">vel_source</span><span class="o">=</span><span class="n">vel_source</span><span class="p">,</span>
+        <span class="n">temp_source</span><span class="o">=</span><span class="n">temp_source</span><span class="p">,</span>
+        <span class="n">salt_source</span><span class="o">=</span><span class="n">salt_source</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">config</span></div>
+
+
+
+<span class="c1"># Backward compatibility alias</span>
+<span class="n">TidalBoundary</span> <span class="o">=</span> <span class="n">BoundaryHandler</span>
+
+
+<div class="viewcode-block" id="create_hybrid_boundary">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.create_hybrid_boundary">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_hybrid_boundary</span><span class="p">(</span>
+    <span class="n">grid_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">constituents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;major&quot;</span><span class="p">,</span>
+    <span class="n">tidal_database</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tidal_model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;FES2014&quot;</span><span class="p">,</span>
+    <span class="n">nodal_corrections</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">tidal_potential</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">cutoff_depth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+    <span class="n">tide_interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bilinear&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundaryHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a hybrid boundary with tides + external data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid_path : str or Path</span>
+<span class="sd">        Path to SCHISM grid</span>
+<span class="sd">    constituents : str or list, optional</span>
+<span class="sd">        Tidal constituents to include, by default &quot;major&quot;</span>
+<span class="sd">    tidal_database : str or Path, optional</span>
+<span class="sd">        Path to tidal database for pyTMD, by default None</span>
+<span class="sd">    tidal_model : str, optional</span>
+<span class="sd">        Tidal model to use, by default &#39;FES2014&#39;</span>
+<span class="sd">    nodal_corrections : bool, optional</span>
+<span class="sd">        Whether to apply nodal corrections, by default True</span>
+<span class="sd">    tidal_potential : bool, optional</span>
+<span class="sd">        Whether to include tidal potential, by default True</span>
+<span class="sd">    cutoff_depth : float, optional</span>
+<span class="sd">        Depth threshold for tidal potential, by default 50.0</span>
+<span class="sd">    tide_interpolation_method : str, optional</span>
+<span class="sd">        Method for tide interpolation, by default &quot;bilinear&quot;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    BoundaryHandler</span>
+<span class="sd">        Configured hybrid boundary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tidal_data</span> <span class="o">=</span> <span class="n">TidalDataset</span><span class="p">(</span>
+        <span class="n">constituents</span><span class="o">=</span><span class="n">constituents</span><span class="p">,</span>
+        <span class="n">tidal_database</span><span class="o">=</span><span class="n">tidal_database</span><span class="p">,</span>
+        <span class="n">tidal_model</span><span class="o">=</span><span class="n">tidal_model</span><span class="p">,</span>
+        <span class="n">nodal_corrections</span><span class="o">=</span><span class="n">nodal_corrections</span><span class="p">,</span>
+        <span class="n">tidal_potential</span><span class="o">=</span><span class="n">tidal_potential</span><span class="p">,</span>
+        <span class="n">cutoff_depth</span><span class="o">=</span><span class="n">cutoff_depth</span><span class="p">,</span>
+        <span class="n">tide_interpolation_method</span><span class="o">=</span><span class="n">tide_interpolation_method</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">boundary</span> <span class="o">=</span> <span class="n">BoundaryHandler</span><span class="p">(</span><span class="n">grid_path</span><span class="o">=</span><span class="n">grid_path</span><span class="p">,</span> <span class="n">tidal_data</span><span class="o">=</span><span class="n">tidal_data</span><span class="p">)</span>
+
+    <span class="c1"># Set default configuration for all boundaries: tidal + spacetime</span>
+    <span class="n">boundary</span><span class="o">.</span><span class="n">set_boundary_type</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>  <span class="c1"># Will be applied to all boundaries</span>
+        <span class="n">elev_type</span><span class="o">=</span><span class="n">ElevationType</span><span class="o">.</span><span class="n">HARMONICEXTERNAL</span><span class="p">,</span>
+        <span class="n">vel_type</span><span class="o">=</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">HARMONICEXTERNAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">boundary</span></div>
+
+
+
+<div class="viewcode-block" id="create_river_boundary">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.create_river_boundary">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_river_boundary</span><span class="p">(</span>
+    <span class="n">grid_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">river_flow</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">100.0</span><span class="p">,</span>  <span class="c1"># Negative for inflow</span>
+    <span class="n">river_boundary_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundaryHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a river boundary with constant flow.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid_path : str or Path</span>
+<span class="sd">        Path to SCHISM grid</span>
+<span class="sd">    river_flow : float, optional</span>
+<span class="sd">        River flow value (negative for inflow), by default -100.0</span>
+<span class="sd">    river_boundary_index : int, optional</span>
+<span class="sd">        Index of the river boundary, by default 0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    BoundaryHandler</span>
+<span class="sd">        Configured river boundary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">boundary</span> <span class="o">=</span> <span class="n">BoundaryHandler</span><span class="p">(</span><span class="n">grid_path</span><span class="o">=</span><span class="n">grid_path</span><span class="p">)</span>
+
+    <span class="c1"># Set river boundary</span>
+    <span class="n">boundary</span><span class="o">.</span><span class="n">set_boundary_type</span><span class="p">(</span>
+        <span class="n">river_boundary_index</span><span class="p">,</span>
+        <span class="n">elev_type</span><span class="o">=</span><span class="n">ElevationType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>  <span class="c1"># No elevation specified</span>
+        <span class="n">vel_type</span><span class="o">=</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">CONSTANT</span><span class="p">,</span>  <span class="c1"># Constant flow</span>
+        <span class="n">vthconst</span><span class="o">=</span><span class="n">river_flow</span><span class="p">,</span>  <span class="c1"># Flow value</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">boundary</span></div>
+
+
+
+<div class="viewcode-block" id="create_nested_boundary">
+<a class="viewcode-back" href="../../../schism/boundary_conditions.html#rompy.schism.boundary_conditions.create_nested_boundary">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_nested_boundary</span><span class="p">(</span>
+    <span class="n">grid_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">with_tides</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">inflow_relax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">outflow_relax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">constituents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;major&quot;</span><span class="p">,</span>
+    <span class="n">tidal_database</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tidal_model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;FES2014&quot;</span><span class="p">,</span>
+    <span class="n">nodal_corrections</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">tidal_potential</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">cutoff_depth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+    <span class="n">tide_interpolation_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bilinear&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundaryHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a nested boundary with optional tides.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid_path : str or Path</span>
+<span class="sd">        Path to SCHISM grid</span>
+<span class="sd">    with_tides : bool, optional</span>
+<span class="sd">        Whether to include tides, by default False</span>
+<span class="sd">    inflow_relax : float, optional</span>
+<span class="sd">        Relaxation factor for inflow, by default 0.8</span>
+<span class="sd">    outflow_relax : float, optional</span>
+<span class="sd">        Relaxation factor for outflow, by default 0.8</span>
+<span class="sd">    constituents : str or list, optional</span>
+<span class="sd">        Tidal constituents to include, by default &quot;major&quot;</span>
+<span class="sd">    tidal_database : str or Path, optional</span>
+<span class="sd">        Path to tidal database for pyTMD, by default None</span>
+<span class="sd">    tidal_model : str, optional</span>
+<span class="sd">        Tidal model to use, by default &#39;FES2014&#39;</span>
+<span class="sd">    nodal_corrections : bool, optional</span>
+<span class="sd">        Whether to apply nodal corrections, by default True</span>
+<span class="sd">    tidal_potential : bool, optional</span>
+<span class="sd">        Whether to include tidal potential, by default True</span>
+<span class="sd">    cutoff_depth : float, optional</span>
+<span class="sd">        Depth threshold for tidal potential, by default 50.0</span>
+<span class="sd">    tide_interpolation_method : str, optional</span>
+<span class="sd">        Method for tide interpolation, by default &quot;bilinear&quot;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    BoundaryHandler</span>
+<span class="sd">        Configured nested boundary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tidal_data</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">with_tides</span><span class="p">:</span>
+        <span class="n">tidal_data</span> <span class="o">=</span> <span class="n">TidalDataset</span><span class="p">(</span>
+            <span class="n">constituents</span><span class="o">=</span><span class="n">constituents</span><span class="p">,</span>
+            <span class="n">tidal_database</span><span class="o">=</span><span class="n">tidal_database</span><span class="p">,</span>
+            <span class="n">tidal_model</span><span class="o">=</span><span class="n">tidal_model</span><span class="p">,</span>
+            <span class="n">nodal_corrections</span><span class="o">=</span><span class="n">nodal_corrections</span><span class="p">,</span>
+            <span class="n">tidal_potential</span><span class="o">=</span><span class="n">tidal_potential</span><span class="p">,</span>
+            <span class="n">cutoff_depth</span><span class="o">=</span><span class="n">cutoff_depth</span><span class="p">,</span>
+            <span class="n">tide_interpolation_method</span><span class="o">=</span><span class="n">tide_interpolation_method</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">boundary</span> <span class="o">=</span> <span class="n">BoundaryHandler</span><span class="p">(</span>
+        <span class="n">grid_path</span><span class="o">=</span><span class="n">grid_path</span><span class="p">,</span>
+        <span class="n">constituents</span><span class="o">=</span><span class="n">constituents</span> <span class="k">if</span> <span class="n">with_tides</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tidal_data</span><span class="o">=</span><span class="n">tidal_data</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">with_tides</span><span class="p">:</span>
+        <span class="c1"># Tides + external data with relaxation</span>
+        <span class="n">boundary</span><span class="o">.</span><span class="n">set_boundary_type</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>  <span class="c1"># Will be applied to all boundaries</span>
+            <span class="n">elev_type</span><span class="o">=</span><span class="n">ElevationType</span><span class="o">.</span><span class="n">HARMONICEXTERNAL</span><span class="p">,</span>
+            <span class="n">vel_type</span><span class="o">=</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">RELAXED</span><span class="p">,</span>
+            <span class="n">temp_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">,</span>
+            <span class="n">salt_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">,</span>
+            <span class="n">inflow_relax</span><span class="o">=</span><span class="n">inflow_relax</span><span class="p">,</span>
+            <span class="n">outflow_relax</span><span class="o">=</span><span class="n">outflow_relax</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Just external data with relaxation</span>
+        <span class="n">boundary</span><span class="o">.</span><span class="n">set_boundary_type</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>  <span class="c1"># Will be applied to all boundaries</span>
+            <span class="n">elev_type</span><span class="o">=</span><span class="n">ElevationType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">,</span>
+            <span class="n">vel_type</span><span class="o">=</span><span class="n">VelocityType</span><span class="o">.</span><span class="n">RELAXED</span><span class="p">,</span>
+            <span class="n">temp_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">,</span>
+            <span class="n">salt_type</span><span class="o">=</span><span class="n">TracerType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">,</span>
+            <span class="n">inflow_relax</span><span class="o">=</span><span class="n">inflow_relax</span><span class="p">,</span>
+            <span class="n">outflow_relax</span><span class="o">=</span><span class="n">outflow_relax</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">boundary</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, CSIRO and rompy contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
