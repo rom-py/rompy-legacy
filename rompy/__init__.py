@@ -26,7 +26,7 @@ warnings.filterwarnings(
 )
 
 # __version__ = _version.get_versions()["version"]
-__version__ = "0.4.1"
+__version__ = "0.5.0"
 
 # Import logging configuration
 from .core.logging import LoggingConfig
