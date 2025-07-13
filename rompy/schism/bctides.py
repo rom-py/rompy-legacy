@@ -4,7 +4,6 @@ Tidal boundary conditions for SCHISM.
 A direct implementation based on PyLibs scripts/gen_bctides.py with no fallbacks.
 """
 
-import logging
 import os
 import subprocess
 import sys
@@ -19,8 +18,9 @@ import pandas as pd
 from pylib import ReadNC
 import xarray as xr
 from scipy.spatial import KDTree
+from rompy.core.logging import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class Bctides:

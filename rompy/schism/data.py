@@ -1058,38 +1058,37 @@ class SCHISMData(RompyBaseModel):
         Dict[str, Any]
             Paths to generated files for each data component
         """
-        logger.info(f"===== SCHISMData.get called with destdir={destdir} =====")
+        from rompy.formatting import ARROW
 
         # Convert destdir to Path object
         destdir = Path(destdir)
 
         # Create destdir if it doesn't exist
         if not destdir.exists():
-            logger.info(f"Creating destination directory: {destdir}")
             destdir.mkdir(parents=True, exist_ok=True)
 
         results = {}
 
         # Process atmospheric data
         if self.atmos:
-            logger.info("Processing atmospheric data")
+            logger.info(f"{ARROW} Processing atmospheric forcing data")
             results["atmos"] = self.atmos.get(destdir, grid, time)
+            logger.info(f"{ARROW} Atmospheric data processed successfully")
 
         # Process wave data
         if self.wave:
-            logger.info("Processing wave data")
+            logger.info(f"{ARROW} Processing wave boundary data")
             results["wave"] = self.wave.get(destdir, grid, time)
+            logger.info(f"{ARROW} Wave data processed successfully")
 
         # Process boundary conditions
         if self.boundary_conditions:
-            logger.info("Processing boundary conditions")
+            logger.info(f"{ARROW} Processing boundary conditions")
             results["boundary_conditions"] = self.boundary_conditions.get(
                 destdir, grid, time
             )
+            logger.info(f"{ARROW} Boundary conditions processed successfully")
 
-        logger.info(
-            f"===== SCHISMData.get completed. Generated files: {list(results.keys())} ====="
-        )
         return results
 
     def _format_value(self, obj):

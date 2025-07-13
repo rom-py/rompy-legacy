@@ -672,6 +672,8 @@ class SCHISMGrid(BaseGrid):
         return self
 
     def get(self, destdir: Path) -> dict:
+        from rompy.formatting import ARROW
+
         ret = {}
         dest_path = (
             Path(destdir) if isinstance(destdir, (str, Path)) else Path(str(destdir))
@@ -680,7 +682,6 @@ class SCHISMGrid(BaseGrid):
         # Ensure the output directory exists
         if not dest_path.exists():
             dest_path.mkdir(parents=True, exist_ok=True)
-            logger.info(f"Created output directory: {dest_path}")
 
         # Process .gr3 files
         for filetype in G3FILES + ["hgrid"]:
@@ -697,6 +698,8 @@ class SCHISMGrid(BaseGrid):
                 except Exception as e:
                     logger.error(f"Error generating {filetype}: {e}")
 
+        # Generate vertical grid
+        logger.info(f"{ARROW} Generating vertical grid configuration")
         ret["vgrid"] = self.vgrid.get(destdir)
 
         # Create symlinks for special grid files

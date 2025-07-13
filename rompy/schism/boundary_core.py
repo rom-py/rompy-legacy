@@ -42,7 +42,6 @@ Example Usage:
     ```
 """
 
-import logging
 import os
 import sys
 from datetime import datetime
@@ -66,8 +65,9 @@ from src.schism_file import read_schism_hgrid, loadz
 from .boundary import BoundaryData
 from .bctides import Bctides
 from rompy.core.boundary import DataBoundary
+from rompy.core.logging import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class ElevationType(IntEnum):

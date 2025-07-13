@@ -123,19 +123,89 @@ class SCHISMConfig(BaseConfig):
     plot_tidal_dataset = plot_tidal_dataset
 
     def __call__(self, runtime) -> str:
+        from rompy.formatting import log_box, ARROW
 
-        logger.info(f"Generating grid files using {type(self.grid).__name__}")
+        # Grid generation section
+        log_box(
+            title="GENERATING GRID FILES",
+            logger=logger,
+            add_empty_line=False,
+        )
+        logger.info(f"{ARROW} Grid type: {type(self.grid).__name__}")
+
+        # Log grid details
+        if hasattr(self.grid, "hgrid") and self.grid.hgrid is not None:
+            hgrid_source = str(getattr(self.grid.hgrid, "source", self.grid.hgrid))
+            if len(hgrid_source) > 60:
+                hgrid_source = "..." + hgrid_source[-57:]
+            logger.info(f"{ARROW} Horizontal grid: {hgrid_source}")
+
+        if hasattr(self.grid, "vgrid") and self.grid.vgrid is not None:
+            vgrid_type = type(self.grid.vgrid).__name__
+            logger.info(f"{ARROW} Vertical grid: {vgrid_type}")
+
+        # Generate grid files
         self.grid.get(runtime.staging_dir)
+        logger.info(f"{ARROW} Grid files generated successfully")
 
-        if self.data is not None and self.nml is not None:
-            self.nml.update_data_sources(
-                self.data.get(
-                    destdir=runtime.staging_dir, grid=self.grid, time=runtime.period
-                )
+        # Data processing section
+        if self.data is not None:
+            log_box(
+                title="PROCESSING INPUT DATA",
+                logger=logger,
+                add_empty_line=False,
             )
+
+            # Log data components
+            data_components = []
+            if hasattr(self.data, "atmos") and self.data.atmos is not None:
+                data_components.append("Atmospheric")
+            if hasattr(self.data, "wave") and self.data.wave is not None:
+                data_components.append("Wave")
+            if hasattr(self.data, "boundary_conditions") and self.data.boundary_conditions is not None:
+                data_components.append("Boundary Conditions")
+
+            if data_components:
+                logger.info(f"{ARROW} Components: {', '.join(data_components)}")
+
+            # Process data
+            data_results = self.data.get(
+                destdir=runtime.staging_dir, grid=self.grid, time=runtime.period
+            )
+
+            if self.nml is not None:
+                self.nml.update_data_sources(data_results)
+
+            logger.info(f"{ARROW} Input data processed successfully")
+
+        # Namelist configuration section
         if self.nml is not None:
+            log_box(
+                title="CONFIGURING NAMELISTS",
+                logger=logger,
+                add_empty_line=False,
+            )
+
+            # Log active modules
+            active_modules = []
+            if hasattr(self.nml, "param") and self.nml.param is not None:
+                active_modules.append("Parameters")
+            if hasattr(self.nml, "ice") and self.nml.ice is not None:
+                active_modules.append("Ice")
+            if hasattr(self.nml, "icm") and self.nml.icm is not None:
+                active_modules.append("ICM")
+            if hasattr(self.nml, "sediment") and self.nml.sediment is not None:
+                active_modules.append("Sediment")
+            if hasattr(self.nml, "wwminput") and self.nml.wwminput is not None:
+                active_modules.append("Wave")
+
+            if active_modules:
+                logger.info(f"{ARROW} Active modules: {', '.join(active_modules)}")
+
+            # Update times and write namelists
             self.nml.update_times(period=runtime.period)
             self.nml.write_nml(runtime.staging_dir)
+            logger.info(f"{ARROW} Namelists configured successfully")
 
         return str(runtime.staging_dir)
 
