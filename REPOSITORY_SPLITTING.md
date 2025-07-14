@@ -10,7 +10,27 @@ The rompy repository will be split into the following packages:
 2. **rompy-swan** - SWAN wave model integration
 3. **rompy-schism** - SCHISM model integration
 4. **rompy-notebooks** - Example notebooks and tutorials
-5. **rompy-docs** - Documentation for the entire ecosystem
+
+## New Features
+
+### Automatic Import Correction
+
+The splitting process now includes automatic import correction to ensure all split packages work correctly:
+
+- **rompy-core**: Internal imports are converted to use the new package structure
+- **rompy-swan**: Swan-specific imports are converted to `rompy_swan`, other rompy imports to `rompy_core`
+- **rompy-schism**: Schism-specific imports are converted to `rompy_schism`, other rompy imports to `rompy_core`
+- **Notebooks**: Excluded from automatic correction (to be addressed separately)
+
+### Comprehensive Split Testing
+
+A new testing script (`test_split.py`) validates that the split was successful by:
+
+- Creating a clean virtual environment
+- Installing all split packages in development mode
+- Running import tests to verify package structure
+- Running test suites for each package
+- Providing detailed reporting on success/failure
 
 ## Prerequisites
 
@@ -53,6 +73,15 @@ pip install PyYAML>=6.0 git-filter-repo>=2.38.0 tomli>=2.0.0 tomli-w>=1.0.0
    ls -la ../split-repos/
    ```
 
+5. **Test the split repositories:**
+   ```bash
+   # Comprehensive testing with virtual environment
+   python test_split.py ../split-repos/
+   
+   # Or test individual packages
+   python test_split.py ../split-repos/ --package rompy-core
+   ```
+
 ## Configuration
 
 The splitting process is controlled by `repo_split_config.yaml`. Key sections include:
@@ -81,6 +110,7 @@ Available actions:
 - `create_package_structure` - Create proper Python package structure
 - `create_src_layout` - Create modern src/ directory structure
 - `create_modern_setup` - Generate complete modern packaging setup
+- `correct_imports` - Automatically correct imports for the target package type
 
 ## Process Details
 
@@ -92,8 +122,10 @@ Available actions:
 4. **Maintains** all branches and tags
 5. **Restructures** files according to post-split actions
 6. **Creates modern src/ layout** following Python packaging best practices
-7. **Updates** package configuration files (pyproject.toml, setup.cfg)
-8. **Generates** modern development tools (tox.ini, pre-commit, GitHub Actions)
+6. **Updates** package configuration files (pyproject.toml, setup.cfg)
+7. **Generates** modern development tools (tox.ini, pre-commit, GitHub Actions)
+8. **Corrects imports** automatically for each package type
+9. **Validates** the split with comprehensive testing
 
 ### Directory Structure
 
@@ -161,7 +193,27 @@ repositories:
       - action: "update_setup"
         package_name: "my-new-repo"
         description: "Description for my new repo"
+      - action: "correct_imports"
+        package_type: "core"  # or "swan", "schism", "notebooks"
+        target_package: "my_new_repo"
 ```
+
+### Import Correction Configuration
+
+The import correction feature uses these configuration options:
+
+```yaml
+post_split_actions:
+  - action: "correct_imports"
+    package_type: "core"      # Package type: "core", "swan", "schism", "notebooks"
+    target_package: "rompy_core"  # Target package name for imports
+```
+
+Package types determine correction patterns:
+- **core**: Converts internal rompy imports to target package imports
+- **swan**: Converts swan imports to target package, other rompy imports to rompy_core
+- **schism**: Converts schism imports to target package, other rompy imports to rompy_core
+- **notebooks**: Reserved for future notebook-specific handling
 
 ### Custom Templates
 
@@ -234,6 +286,48 @@ For detailed debugging:
 python split_repository.py --config repo_split_config.yaml --verbose
 ```
 
+## Testing Split Repositories
+
+### Comprehensive Testing Script
+
+Use the dedicated testing script to validate your split:
+
+```bash
+# Test all packages with virtual environment
+python test_split.py ../split-repos/
+
+# Test specific package only
+python test_split.py ../split-repos/ --package rompy-core
+
+# Keep virtual environment for debugging
+python test_split.py ../split-repos/ --no-cleanup
+
+# Use custom virtual environment location
+python test_split.py ../split-repos/ --venv-dir /tmp/my-test-env
+```
+
+### What the Test Script Does
+
+1. **Creates** a clean virtual environment
+2. **Installs** packages in dependency order (core first, then plugins)
+3. **Tests imports** to verify package structure is correct
+4. **Runs test suites** using pytest for each package
+5. **Reports** detailed success/failure information
+6. **Cleans up** automatically (unless --no-cleanup is used)
+
+### Using Makefile Commands
+
+```bash
+# Comprehensive testing with virtual environment (recommended)
+make test-split
+
+# Test specific package
+make test-split-package PACKAGE=rompy-core
+
+# Basic repository structure validation
+make test-splits
+```
+
 ## Best Practices
 
 ### Before Splitting
@@ -246,13 +340,15 @@ python split_repository.py --config repo_split_config.yaml --verbose
 
 ### After Splitting
 
-1. **Review each repository** independently
-2. **Test package installations** and imports using modern src/ layout
-3. **Verify git history** is preserved (`git log --oneline`)
-4. **Check all branches** are present (`git branch -a`)
-5. **Test cross-package dependencies**
-6. **Validate modern packaging** works correctly (`pip install -e .`)
-7. **Run development tools** (pytest, black, mypy, etc.)
+1. **Run comprehensive testing** using `python test_split.py ../split-repos/`
+2. **Review each repository** independently
+3. **Verify import corrections** worked properly by checking sample files
+4. **Test package installations** and imports using modern src/ layout
+5. **Verify git history** is preserved (`git log --oneline`)
+6. **Check all branches** are present (`git branch -a`)
+7. **Test cross-package dependencies**
+8. **Validate modern packaging** works correctly (`pip install -e .`)
+9. **Run development tools** (pytest, black, mypy, etc.)
 
 ### Creating Remote Repositories
 
@@ -331,6 +427,17 @@ done
 
 ### Automated Testing
 
+Use the comprehensive test script for validation:
+```bash
+# Test all repositories at once
+python test_split.py ../split-repos/
+
+# Test individual repositories
+python test_split.py ../split-repos/ --package rompy-core
+python test_split.py ../split-repos/ --package rompy-swan
+python test_split.py ../split-repos/ --package rompy-schism
+```
+
 Test each split repository with modern tooling:
 ```bash
 cd ../split-repos/rompy-core
@@ -353,6 +460,19 @@ isort --check-only src tests
 mypy src
 ```
 
+### Verifying Import Corrections
+
+Check that imports were corrected properly:
+```bash
+# Check for any remaining old-style imports
+grep -r "from rompy\." ../split-repos/rompy-swan/src/
+grep -r "import rompy\." ../split-repos/rompy-swan/src/
+
+# Should see corrected imports like:
+# from rompy_core.core import ...
+# from rompy_swan import ...
+```
+
 ## Maintenance
 
 ### Re-running Splits
@@ -361,13 +481,16 @@ The configuration is designed to be reusable. To re-run:
 1. Update the configuration file
 2. Remove previous results: `rm -rf ../split-repos/`
 3. Re-run the split script
+4. Test the new split: `python test_split.py ../split-repos/`
 
 ### Updating Configurations
 
 When the source repository structure changes:
 1. Update paths in `repo_split_config.yaml`
-2. Validate the new configuration
-3. Re-run the split
+2. Update import correction patterns if needed
+3. Validate the new configuration
+4. Re-run the split
+5. Test the updated split thoroughly
 
 ## Security Considerations
 

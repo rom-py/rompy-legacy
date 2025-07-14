@@ -85,6 +85,9 @@ repositories:
         package_module: "rompy_core"
         description: "Core rompy library for ocean wave modeling with plugin system"
         dependencies: []
+      - action: "correct_imports"
+        package_type: "core"
+        target_package: "rompy_core"
 
   rompy-swan:
     description: "SWAN wave model plugin for rompy"
@@ -142,6 +145,9 @@ repositories:
         description: "SWAN wave model plugin for rompy"
         dependencies:
           - "rompy-core"
+      - action: "correct_imports"
+        package_type: "swan"
+        target_package: "rompy_swan"
 
   rompy-schism:
     description: "SCHISM model plugin for rompy"
@@ -198,6 +204,9 @@ repositories:
         description: "SCHISM model plugin for rompy"
         dependencies:
           - "rompy-core"
+      - action: "correct_imports"
+        package_type: "schism"
+        target_package: "rompy_schism"
 
   rompy-notebooks:
     description: "Example notebooks and tutorials for rompy ecosystem"

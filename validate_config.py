@@ -163,7 +163,7 @@ class ConfigValidator:
             'move_files', 'create_readme', 'update_setup', 'rename',
             'create_package_structure', 'create_src_layout', 'create_modern_setup',
             'merge_directory_contents', 'update_docs_config', 'create_plugin_docs',
-            'create_notebooks_index'
+            'create_notebooks_index', 'correct_imports'
         }
 
         for i, action in enumerate(actions):
@@ -246,6 +246,20 @@ class ConfigValidator:
                 elif not isinstance(action['ecosystem_packages'], list):
                     self._add_error(f"Repository '{repo_name}' create_notebooks_index 'ecosystem_packages' must be a list")
                     valid = False
+
+            elif action_type == 'correct_imports':
+                required_fields = ['package_type', 'target_package']
+                for field in required_fields:
+                    if field not in action:
+                        self._add_error(f"Repository '{repo_name}' correct_imports action missing '{field}' field")
+                        valid = False
+
+                # Validate package_type values
+                if 'package_type' in action:
+                    valid_package_types = {'core', 'swan', 'schism', 'notebooks'}
+                    if action['package_type'] not in valid_package_types:
+                        self._add_error(f"Repository '{repo_name}' correct_imports has invalid package_type: {action['package_type']}. Must be one of: {valid_package_types}")
+                        valid = False
 
         return valid
 

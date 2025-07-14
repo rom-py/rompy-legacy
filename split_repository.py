@@ -520,6 +520,155 @@ class RepositorySplitter:
                 if ecosystem_packages and not self.dry_run:
                     self._create_notebooks_index(target_dir, ecosystem_packages)
 
+            elif action_type == 'correct_imports':
+                # Correct imports for the split repository
+                package_type = action.get('package_type')
+                target_package = action.get('target_package')
+
+                if package_type and target_package and not self.dry_run:
+                    self._correct_imports(target_dir, package_type, target_package)
+
+    def _correct_imports(self, target_dir: str, package_type: str, target_package: str):
+        """
+        Correct imports in Python files for the split repository.
+
+        Args:
+            target_dir: Target directory containing the split repository
+            package_type: Type of package ('core', 'swan', 'schism', 'notebooks')
+            target_package: Name of the target package (e.g., 'rompy_core', 'rompy_swan')
+        """
+        logger.info(f"Correcting imports for {package_type} package: {target_package}")
+
+        # Define import correction patterns for each package type
+        corrections = self._get_import_corrections(package_type, target_package)
+
+        # Find all Python files (excluding notebooks for now)
+        python_files = []
+        for root, dirs, files in os.walk(target_dir):
+            # Skip notebook directories
+            if 'notebooks' in root:
+                continue
+            for file in files:
+                if file.endswith('.py'):
+                    python_files.append(os.path.join(root, file))
+
+        logger.info(f"Found {len(python_files)} Python files to process")
+
+        # Apply corrections to each file
+        files_modified = 0
+        for file_path in python_files:
+            if self._apply_import_corrections(file_path, corrections):
+                files_modified += 1
+
+        logger.info(f"Modified imports in {files_modified} files")
+
+    def _get_import_corrections(self, package_type: str, target_package: str) -> list:
+        """
+        Get the import correction patterns for a specific package type.
+
+        Args:
+            package_type: Type of package ('core', 'swan', 'schism', 'notebooks')
+            target_package: Name of the target package
+
+        Returns:
+            List of (pattern, replacement) tuples for import corrections
+        """
+        corrections = []
+
+        if package_type == 'core':
+            # For rompy-core, convert absolute rompy imports to relative imports where appropriate
+            # But be careful not to break imports that should remain absolute
+            corrections.extend([
+                # Convert internal imports to relative
+                (r'^from rompy\.core', f'from {target_package}.core'),
+                (r'^from rompy\.([^.\s]+)', f'from {target_package}.\\1'),
+                (r'^import rompy\.core', f'import {target_package}.core'),
+                (r'^import rompy\.([^.\s]+)', f'import {target_package}.\\1'),
+                # Convert simple rompy import to target package
+                (r'^import rompy$', f'import {target_package}'),
+                (r'^from rompy import', f'from {target_package} import'),
+            ])
+
+        elif package_type == 'swan':
+            # For rompy-swan, convert swan-specific imports and other rompy imports
+            corrections.extend([
+                # Convert swan-specific imports
+                (r'^from rompy\.swan', f'from {target_package}'),
+                (r'^import rompy\.swan', f'import {target_package}'),
+                # Convert other rompy imports to rompy-core
+                (r'^from rompy\.core', 'from rompy_core.core'),
+                (r'^from rompy\.([^.\s]+)', 'from rompy_core.\\1'),
+                (r'^import rompy\.core', 'import rompy_core.core'),
+                (r'^import rompy\.([^.\s]+)', 'import rompy_core.\\1'),
+                # Convert simple rompy import to rompy-core (but be careful about context)
+                (r'^import rompy$', 'import rompy_core'),
+                (r'^from rompy import', 'from rompy_core import'),
+            ])
+
+        elif package_type == 'schism':
+            # For rompy-schism, convert schism-specific imports and other rompy imports
+            corrections.extend([
+                # Convert schism-specific imports
+                (r'^from rompy\.schism', f'from {target_package}'),
+                (r'^import rompy\.schism', f'import {target_package}'),
+                # Convert other rompy imports to rompy-core
+                (r'^from rompy\.core', 'from rompy_core.core'),
+                (r'^from rompy\.([^.\s]+)', 'from rompy_core.\\1'),
+                (r'^import rompy\.core', 'import rompy_core.core'),
+                (r'^import rompy\.([^.\s]+)', 'import rompy_core.\\1'),
+                # Convert simple rompy import to rompy-core
+                (r'^import rompy$', 'import rompy_core'),
+                (r'^from rompy import', 'from rompy_core import'),
+            ])
+
+        elif package_type == 'notebooks':
+            # For notebooks, we'll handle these later as requested
+            pass
+
+        return corrections
+
+    def _apply_import_corrections(self, file_path: str, corrections: list) -> bool:
+        """
+        Apply import corrections to a single Python file.
+
+        Args:
+            file_path: Path to the Python file
+            corrections: List of (pattern, replacement) tuples
+
+        Returns:
+            True if the file was modified, False otherwise
+        """
+        import re
+
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            original_content = content
+            lines = content.splitlines()
+            modified_lines = []
+
+            for line in lines:
+                modified_line = line
+                for pattern, replacement in corrections:
+                    modified_line = re.sub(pattern, replacement, modified_line)
+                modified_lines.append(modified_line)
+
+            modified_content = '\n'.join(modified_lines)
+
+            # Only write if content changed
+            if modified_content != original_content:
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(modified_content)
+                logger.debug(f"Modified imports in: {file_path}")
+                return True
+
+            return False
+
+        except Exception as e:
+            logger.warning(f"Failed to process {file_path}: {e}")
+            return False
+
     def _create_modern_init_py(self, package_dir: str, package_name: str, is_plugin: bool = False, plugin_name: str = None):
         """Create a modern __init__.py file with version handling and plugin metadata."""
         init_file = os.path.join(package_dir, '__init__.py')
