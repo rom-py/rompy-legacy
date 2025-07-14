@@ -417,6 +417,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pipeline">pipeline</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#generate">generate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#validate">validate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-sources">Configuration Sources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#schema">schema</a></li>
 </ul>
 </li>
@@ -436,7 +437,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#enhanced-configuration-structure">Enhanced Configuration Structure</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-loading">Configuration Loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#global-settings">Global Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#container-and-ci-cd-usage">Container and CI/CD Usage</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#monitoring-and-debugging">Monitoring and Debugging</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#verbose-output">Verbose Output</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#log-files">Log Files</a></li>
@@ -528,7 +534,7 @@
 <section id="run">
 <h3>run<a class="headerlink" href="#run" title="Link to this heading">#</a></h3>
 <p>Execute a model configuration using a Pydantic backend configuration.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>run<span class="w"> </span>&lt;config-file&gt;<span class="w"> </span>--backend-config<span class="w"> </span>&lt;backend-config-file&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>run<span class="w"> </span><span class="o">[</span>&lt;config-file&gt;<span class="o">]</span><span class="w"> </span>--backend-config<span class="w"> </span>&lt;backend-config-file&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
 <p><strong>Options:</strong></p>
@@ -544,6 +550,12 @@
 <dd><p>Generate inputs only, don’t run the model</p>
 </dd></dl>
 
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-config-from-env">
+<span class="sig-name descname"><span class="pre">--config-from-env</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-config-from-env" title="Link to this definition">#</a></dt>
+<dd><p>Load configuration from ROMPY_CONFIG environment variable instead of file</p>
+</dd></dl>
+
 <p><strong>Examples:</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run with local backend configuration</span>
 rompy<span class="w"> </span>run<span class="w"> </span>model.yml<span class="w"> </span>--backend-config<span class="w"> </span>local_backend.yml
@@ -553,6 +565,10 @@ rompy<span class="w"> </span>run<span class="w"> </span>model.yml<span class="w"
 
 <span class="c1"># Dry run (generate only, don&#39;t execute)</span>
 rompy<span class="w"> </span>run<span class="w"> </span>model.yml<span class="w"> </span>--backend-config<span class="w"> </span>local_backend.yml<span class="w"> </span>--dry-run
+
+<span class="c1"># Load configuration from environment variable</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_CONFIG</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>model.yml<span class="k">)</span><span class="s2">&quot;</span>
+rompy<span class="w"> </span>run<span class="w"> </span>--config-from-env<span class="w"> </span>--backend-config<span class="w"> </span>local_backend.yml
 </pre></div>
 </div>
 </section>
@@ -591,7 +607,7 @@ rompy<span class="w"> </span>backends<span class="w"> </span>create<span class="
 <section id="pipeline">
 <h3>pipeline<a class="headerlink" href="#pipeline" title="Link to this heading">#</a></h3>
 <p>Run the complete model pipeline: generate → run → postprocess.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>pipeline<span class="w"> </span>&lt;config-file&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>pipeline<span class="w"> </span><span class="o">[</span>&lt;config-file&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
 <p><strong>Options:</strong></p>
@@ -619,6 +635,12 @@ rompy<span class="w"> </span>backends<span class="w"> </span>create<span class="
 <dd><p>Validate each stage before proceeding (default: True)</p>
 </dd></dl>
 
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-0">
+<span class="sig-name descname"><span class="pre">--config-from-env</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-0" title="Link to this definition">#</a></dt>
+<dd><p>Load configuration from ROMPY_CONFIG environment variable instead of file</p>
+</dd></dl>
+
 <p><strong>Example:</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>pipeline<span class="w"> </span>config.yaml<span class="w"> </span>--run-backend<span class="w"> </span>docker<span class="w"> </span>--processor<span class="w"> </span>analysis
 </pre></div>
@@ -627,7 +649,7 @@ rompy<span class="w"> </span>backends<span class="w"> </span>create<span class="
 <section id="generate">
 <h3>generate<a class="headerlink" href="#generate" title="Link to this heading">#</a></h3>
 <p>Generate model input files without running the model.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>generate<span class="w"> </span>&lt;config-file&gt;<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>generate<span class="w"> </span><span class="o">[</span>&lt;config-file&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
 <p><strong>Options:</strong></p>
@@ -635,6 +657,12 @@ rompy<span class="w"> </span>backends<span class="w"> </span>create<span class="
 <dt class="sig sig-object std" id="cmdoption-rompy-output-dir">
 <span class="sig-name descname"><span class="pre">--output-dir</span></span><span class="sig-prename descclassname"> <span class="pre">PATH</span></span><a class="headerlink" href="#cmdoption-rompy-output-dir" title="Link to this definition">#</a></dt>
 <dd><p>Override output directory from configuration</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-1">
+<span class="sig-name descname"><span class="pre">--config-from-env</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-1" title="Link to this definition">#</a></dt>
+<dd><p>Load configuration from ROMPY_CONFIG environment variable instead of file</p>
 </dd></dl>
 
 <p><strong>Example:</strong></p>
@@ -645,13 +673,46 @@ rompy<span class="w"> </span>backends<span class="w"> </span>create<span class="
 <section id="validate">
 <h3>validate<a class="headerlink" href="#validate" title="Link to this heading">#</a></h3>
 <p>Validate model configuration without execution.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>validate<span class="w"> </span>&lt;config-file&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>validate<span class="w"> </span><span class="o">[</span>&lt;config-file&gt;<span class="o">]</span>
 </pre></div>
 </div>
-<p><strong>Example:</strong></p>
+<p><strong>Options:</strong></p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-2">
+<span class="sig-name descname"><span class="pre">--config-from-env</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-2" title="Link to this definition">#</a></dt>
+<dd><p>Load configuration from ROMPY_CONFIG environment variable instead of file</p>
+</dd></dl>
+
+<p><strong>Examples:</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>validate<span class="w"> </span>config.yaml
+
+<span class="c1"># Validate configuration from environment variable</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_CONFIG</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>config.yaml<span class="k">)</span><span class="s2">&quot;</span>
+rompy<span class="w"> </span>validate<span class="w"> </span>--config-from-env
 </pre></div>
 </div>
+</section>
+<section id="configuration-sources">
+<h3>Configuration Sources<a class="headerlink" href="#configuration-sources" title="Link to this heading">#</a></h3>
+<p>ROMPY CLI commands support loading configuration from two sources:</p>
+<p><strong>File-based Configuration:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>validate<span class="w"> </span>config.yaml
+rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span>--backend-config<span class="w"> </span>local.yml
+</pre></div>
+</div>
+<p><strong>Environment Variable Configuration:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_CONFIG</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>config.yaml<span class="k">)</span><span class="s2">&quot;</span>
+rompy<span class="w"> </span>validate<span class="w"> </span>--config-from-env
+rompy<span class="w"> </span>run<span class="w"> </span>--config-from-env<span class="w"> </span>--backend-config<span class="w"> </span>local.yml
+</pre></div>
+</div>
+<p><strong>Important Notes:</strong></p>
+<ul class="simple">
+<li><p>You cannot specify both a config file and <code class="docutils literal notranslate"><span class="pre">--config-from-env</span></code> simultaneously</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">ROMPY_CONFIG</span></code> environment variable must contain valid JSON or YAML</p></li>
+<li><p>Environment variable configuration is ideal for containers, CI/CD, and cloud deployments</p></li>
+<li><p>All commands that accept configuration support both methods</p></li>
+</ul>
 </section>
 <section id="schema">
 <h3>schema<a class="headerlink" href="#schema" title="Link to this heading">#</a></h3>
@@ -733,6 +794,12 @@ rompy<span class="w"> </span>backends<span class="w"> </span>create<span class="
 <dt class="sig sig-object std" id="cmdoption-rompy-simple-logs">
 <span class="sig-name descname"><span class="pre">--simple-logs</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--detailed-logs</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-simple-logs" title="Link to this definition">#</a></dt>
 <dd><p>Use simple log format without timestamps and module names (default: detailed)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-rompy-3">
+<span class="sig-name descname"><span class="pre">--config-from-env</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-rompy-3" title="Link to this definition">#</a></dt>
+<dd><p>Load configuration from ROMPY_CONFIG environment variable instead of file</p>
 </dd></dl>
 
 <dl class="std option">
@@ -841,6 +908,37 @@ rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="
 </section>
 <section id="environment-variables">
 <h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading">#</a></h2>
+<section id="configuration-loading">
+<h3>Configuration Loading<a class="headerlink" href="#configuration-loading" title="Link to this heading">#</a></h3>
+<p>Load configuration from environment variables instead of files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set configuration in environment variable (JSON format)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_CONFIG</span><span class="o">=</span><span class="s1">&#39;{</span>
+<span class="s1">  &quot;run_id&quot;: &quot;env_example&quot;,</span>
+<span class="s1">  &quot;output_dir&quot;: &quot;./output&quot;,</span>
+<span class="s1">  &quot;period&quot;: {&quot;start&quot;: &quot;20230101T000000&quot;, &quot;duration&quot;: &quot;1d&quot;},</span>
+<span class="s1">  &quot;config&quot;: {&quot;model_type&quot;: &quot;swanconfig&quot;}</span>
+<span class="s1">}&#39;</span>
+
+<span class="c1"># Use environment variable configuration</span>
+rompy<span class="w"> </span>validate<span class="w"> </span>--config-from-env
+rompy<span class="w"> </span>generate<span class="w"> </span>--config-from-env
+rompy<span class="w"> </span>run<span class="w"> </span>--config-from-env<span class="w"> </span>--backend-config<span class="w"> </span>local.yml
+
+<span class="c1"># YAML format is also supported</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_CONFIG</span><span class="o">=</span><span class="s2">&quot;</span>
+<span class="s2">run_id: env_yaml_example</span>
+<span class="s2">output_dir: ./output</span>
+<span class="s2">period:</span>
+<span class="s2">  start: 20230101T000000</span>
+<span class="s2">  duration: 1d</span>
+<span class="s2">config:</span>
+<span class="s2">  model_type: swanconfig</span>
+<span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="global-settings">
+<h3>Global Settings<a class="headerlink" href="#global-settings" title="Link to this heading">#</a></h3>
 <p>Set default values using environment variables:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_LOG_DIR</span><span class="o">=</span><span class="s2">&quot;./logs&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_ASCII_ONLY</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
@@ -849,6 +947,24 @@ rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="
 rompy<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span>--backend-config<span class="w"> </span>local.yml<span class="w">  </span><span class="c1"># Uses environment settings</span>
 </pre></div>
 </div>
+</section>
+<section id="container-and-ci-cd-usage">
+<h3>Container and CI/CD Usage<a class="headerlink" href="#container-and-ci-cd-usage" title="Link to this heading">#</a></h3>
+<p>Environment variable configuration is particularly useful for containerized deployments:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Docker usage</span>
+docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">ROMPY_CONFIG</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>config.yml<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span>rompy:latest<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>rompy<span class="w"> </span>validate<span class="w"> </span>--config-from-env
+
+<span class="c1"># Kubernetes ConfigMap</span>
+kubectl<span class="w"> </span>create<span class="w"> </span>configmap<span class="w"> </span>rompy-config<span class="w"> </span>--from-file<span class="o">=</span><span class="nv">ROMPY_CONFIG</span><span class="o">=</span>config.yml
+<span class="c1"># Then reference in pod spec as environment variable</span>
+
+<span class="c1"># CI/CD Pipeline</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_CONFIG</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>envsubst<span class="w"> </span>&lt;<span class="w"> </span>config_template.yml<span class="k">)</span><span class="s2">&quot;</span>
+rompy<span class="w"> </span>pipeline<span class="w"> </span>--config-from-env<span class="w"> </span>--run-backend<span class="w"> </span>docker
+</pre></div>
+</div>
+</section>
 </section>
 <section id="monitoring-and-debugging">
 <h2>Monitoring and Debugging<a class="headerlink" href="#monitoring-and-debugging" title="Link to this heading">#</a></h2>
@@ -899,6 +1015,10 @@ rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class
 <p><strong>Configuration Validation Errors:</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rompy<span class="w"> </span>validate<span class="w"> </span>config.yaml
 rompy<span class="w"> </span>backends<span class="w"> </span>validate<span class="w"> </span>backend_config.yml<span class="w"> </span>--backend-type<span class="w"> </span><span class="nb">local</span>
+
+<span class="c1"># Test environment variable configuration</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROMPY_CONFIG</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>config.yaml<span class="k">)</span><span class="s2">&quot;</span>
+rompy<span class="w"> </span>validate<span class="w"> </span>--config-from-env
 </pre></div>
 </div>
 <p><strong>Backend Not Available:</strong></p>
@@ -990,6 +1110,7 @@ rompy<span class="w"> </span>backends<span class="w"> </span>--help
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline">pipeline</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate">generate</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validate">validate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-sources">Configuration Sources</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">schema</a></li>
 </ul>
 </li>
@@ -1009,7 +1130,12 @@ rompy<span class="w"> </span>backends<span class="w"> </span>--help
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enhanced-configuration-structure">Enhanced Configuration Structure</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables">Environment Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables">Environment Variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-loading">Configuration Loading</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-settings">Global Settings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#container-and-ci-cd-usage">Container and CI/CD Usage</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monitoring-and-debugging">Monitoring and Debugging</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verbose-output">Verbose Output</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-files">Log Files</a></li>

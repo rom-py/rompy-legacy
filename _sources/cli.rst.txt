@@ -26,7 +26,7 @@ Execute a model configuration using a Pydantic backend configuration.
 
 .. code-block:: bash
 
-    rompy run <config-file> --backend-config <backend-config-file> [OPTIONS]
+    rompy run [<config-file>] --backend-config <backend-config-file> [OPTIONS]
 
 **Options:**
 
@@ -37,6 +37,10 @@ Execute a model configuration using a Pydantic backend configuration.
 .. option:: --dry-run
 
     Generate inputs only, don't run the model
+
+.. option:: --config-from-env
+
+    Load configuration from ROMPY_CONFIG environment variable instead of file
 
 **Examples:**
 
@@ -50,6 +54,10 @@ Execute a model configuration using a Pydantic backend configuration.
 
     # Dry run (generate only, don't execute)
     rompy run model.yml --backend-config local_backend.yml --dry-run
+
+    # Load configuration from environment variable
+    export ROMPY_CONFIG="$(cat model.yml)"
+    rompy run --config-from-env --backend-config local_backend.yml
 
 backends
 ~~~~~~~~
@@ -97,7 +105,7 @@ Run the complete model pipeline: generate → run → postprocess.
 
 .. code-block:: bash
 
-    rompy pipeline <config-file> [OPTIONS]
+    rompy pipeline [<config-file>] [OPTIONS]
 
 **Options:**
 
@@ -117,6 +125,10 @@ Run the complete model pipeline: generate → run → postprocess.
 
     Validate each stage before proceeding (default: True)
 
+.. option:: --config-from-env
+
+    Load configuration from ROMPY_CONFIG environment variable instead of file
+
 **Example:**
 
 .. code-block:: bash
@@ -130,13 +142,17 @@ Generate model input files without running the model.
 
 .. code-block:: bash
 
-    rompy generate <config-file> [OPTIONS]
+    rompy generate [<config-file>] [OPTIONS]
 
 **Options:**
 
 .. option:: --output-dir PATH
 
     Override output directory from configuration
+
+.. option:: --config-from-env
+
+    Load configuration from ROMPY_CONFIG environment variable instead of file
 
 **Example:**
 
@@ -151,13 +167,50 @@ Validate model configuration without execution.
 
 .. code-block:: bash
 
-    rompy validate <config-file>
+    rompy validate [<config-file>]
 
-**Example:**
+**Options:**
+
+.. option:: --config-from-env
+
+    Load configuration from ROMPY_CONFIG environment variable instead of file
+
+**Examples:**
 
 .. code-block:: bash
 
     rompy validate config.yaml
+
+    # Validate configuration from environment variable
+    export ROMPY_CONFIG="$(cat config.yaml)"
+    rompy validate --config-from-env
+
+Configuration Sources
+~~~~~~~~~~~~~~~~~~~~~
+
+ROMPY CLI commands support loading configuration from two sources:
+
+**File-based Configuration:**
+
+.. code-block:: bash
+
+    rompy validate config.yaml
+    rompy run config.yaml --backend-config local.yml
+
+**Environment Variable Configuration:**
+
+.. code-block:: bash
+
+    export ROMPY_CONFIG="$(cat config.yaml)"
+    rompy validate --config-from-env
+    rompy run --config-from-env --backend-config local.yml
+
+**Important Notes:**
+
+- You cannot specify both a config file and ``--config-from-env`` simultaneously
+- The ``ROMPY_CONFIG`` environment variable must contain valid JSON or YAML
+- Environment variable configuration is ideal for containers, CI/CD, and cloud deployments
+- All commands that accept configuration support both methods
 
 schema
 ~~~~~~
@@ -242,6 +295,10 @@ All commands support these common options:
 .. option:: --simple-logs, --detailed-logs
 
     Use simple log format without timestamps and module names (default: detailed)
+
+.. option:: --config-from-env
+
+    Load configuration from ROMPY_CONFIG environment variable instead of file
 
 .. option:: --version
 
@@ -360,6 +417,40 @@ The modern CLI supports enhanced configuration files with run and pipeline setti
 Environment Variables
 ---------------------
 
+Configuration Loading
+~~~~~~~~~~~~~~~~~~~~~~
+
+Load configuration from environment variables instead of files:
+
+.. code-block:: bash
+
+    # Set configuration in environment variable (JSON format)
+    export ROMPY_CONFIG='{
+      "run_id": "env_example",
+      "output_dir": "./output",
+      "period": {"start": "20230101T000000", "duration": "1d"},
+      "config": {"model_type": "swanconfig"}
+    }'
+
+    # Use environment variable configuration
+    rompy validate --config-from-env
+    rompy generate --config-from-env
+    rompy run --config-from-env --backend-config local.yml
+
+    # YAML format is also supported
+    export ROMPY_CONFIG="
+    run_id: env_yaml_example
+    output_dir: ./output
+    period:
+      start: 20230101T000000
+      duration: 1d
+    config:
+      model_type: swanconfig
+    "
+
+Global Settings
+~~~~~~~~~~~~~~~
+
 Set default values using environment variables:
 
 .. code-block:: bash
@@ -369,6 +460,25 @@ Set default values using environment variables:
     export ROMPY_SIMPLE_LOGS="1"
 
     rompy run config.yaml --backend-config local.yml  # Uses environment settings
+
+Container and CI/CD Usage
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Environment variable configuration is particularly useful for containerized deployments:
+
+.. code-block:: bash
+
+    # Docker usage
+    docker run -e ROMPY_CONFIG="$(cat config.yml)" rompy:latest \
+      rompy validate --config-from-env
+
+    # Kubernetes ConfigMap
+    kubectl create configmap rompy-config --from-file=ROMPY_CONFIG=config.yml
+    # Then reference in pod spec as environment variable
+
+    # CI/CD Pipeline
+    export ROMPY_CONFIG="$(envsubst < config_template.yml)"
+    rompy pipeline --config-from-env --run-backend docker
 
 Monitoring and Debugging
 -------------------------
@@ -434,6 +544,10 @@ Common Issues
 
     rompy validate config.yaml
     rompy backends validate backend_config.yml --backend-type local
+
+    # Test environment variable configuration
+    export ROMPY_CONFIG="$(cat config.yaml)"
+    rompy validate --config-from-env
 
 **Backend Not Available:**
 
