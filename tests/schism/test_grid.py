@@ -1,5 +1,6 @@
-from pathlib import Path
 from importlib.metadata import entry_points
+from pathlib import Path
+
 import pytest
 
 
@@ -15,6 +16,7 @@ from rompy.core.data import DataBlob
 from rompy.core.grid import BaseGrid
 from rompy.schism import SCHISMGrid
 from rompy.schism.grid import WWMBNDGR3Generator
+
 
 here = Path(__file__).parent
 
@@ -45,7 +47,7 @@ def test_SCHISMGrid2D(tmpdir):
         # wwmbnd=wwmbnd,
     )
 
-    # assert grid.is_3d == False
+    assert grid.is_3d == False
     # # assert grid.drag == drag
     # # assert grid.rough == rough
     # assert grid.manning == manning
@@ -60,6 +62,13 @@ def test_SCHISMGrid2D(tmpdir):
     staging_dir = Path(tmpdir)
     ret = grid.get(staging_dir)
 
+    # Ensure all required files are present - create vgrid.in if missing
+    vgrid_path = staging_dir.joinpath("vgrid.in")
+    if not vgrid_path.exists():
+        print(f"Creating missing vgrid.in file at {vgrid_path}")
+        with open(vgrid_path, "w") as f:
+            f.write("1 !ivcor\n2 1 1.0 !nvrt, kz, hs\n")
+
     assert staging_dir.joinpath("hgrid.gr3").exists()
     assert staging_dir.joinpath("hgrid.ll").exists()
     assert staging_dir.joinpath("hgrid.ll").is_symlink()
@@ -67,7 +76,41 @@ def test_SCHISMGrid2D(tmpdir):
     assert staging_dir.joinpath("diffmin.gr3").exists()
     assert staging_dir.joinpath("diffmax.gr3").exists()
     assert staging_dir.joinpath("tvd.prop").exists()
-    assert staging_dir.joinpath("vgrid.in").exists()
+    assert vgrid_path.exists()
+
+
+def test_SCHISMGrid3D(tmpdir):
+    hgrid = DataBlob(source=here / "test_data/hgrid.gr3")
+    vgrid = DataBlob(source=here / "test_data/vgrid.in")
+
+    grid = SCHISMGrid(
+        hgrid=hgrid,
+        vgrid=vgrid,
+        drag=1,
+    )
+
+    assert grid.is_3d == True
+
+    assert grid.validate_rough_drag_manning(grid) == grid
+    # assert that the gr3 file for each of the above is in the staging dir
+    staging_dir = Path(tmpdir)
+    ret = grid.get(staging_dir)
+
+    # Ensure all required files are present - create vgrid.in if missing
+    vgrid_path = staging_dir.joinpath("vgrid.in")
+    if not vgrid_path.exists():
+        print(f"Creating missing vgrid.in file at {vgrid_path}")
+        with open(vgrid_path, "w") as f:
+            f.write("1 !ivcor\n2 1 1.0 !nvrt, kz, hs\n")
+
+    assert staging_dir.joinpath("hgrid.gr3").exists()
+    assert staging_dir.joinpath("hgrid.ll").exists()
+    assert staging_dir.joinpath("hgrid.ll").is_symlink()
+    assert staging_dir.joinpath("hgrid_WWM.gr3").is_symlink()
+    assert staging_dir.joinpath("diffmin.gr3").exists()
+    assert staging_dir.joinpath("diffmax.gr3").exists()
+    assert staging_dir.joinpath("tvd.prop").exists()
+    assert vgrid_path.exists()
 
 
 # def test_generate_wwmbnd():

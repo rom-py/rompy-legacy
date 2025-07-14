@@ -2,7 +2,14 @@
 
 from typing import List, Literal, Optional
 
-from pydantic import Field, field_validator, model_validator, root_validator, validator
+from pydantic import (
+    Field,
+    field_validator,
+    model_validator,
+    root_validator,
+    validator,
+    ConfigDict,
+)
 
 from rompy.schism.namelists.basemodel import NamelistBaseModel
 
@@ -211,5 +218,4 @@ class Sediment(NamelistBaseModel):
         None, description="Optional parameters for non-cohesive sediment model"
     )
 
-    class Config:
-        title = "Non-cohesive Sediment Model Parameters"
+    model_config = ConfigDict(title="Non-cohesive Sediment Model Parameters")

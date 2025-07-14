@@ -13,7 +13,7 @@ from test_utils.logging import get_test_logger
 logger = get_test_logger(__name__)
 
 # pytest.importorskip("rompy.schism")
-from utils import compare_files
+from tests.utils import compare_files
 
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange

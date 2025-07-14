@@ -1,0 +1,147 @@
+output_dir: schism_declaritive
+period:
+  start: 20230101T00
+  end: 20230101T12
+  interval: 3600
+run_id: test_schism_nml_3d_nontidal_velocities_new
+delete_existing: True
+config:
+  model_type: schism
+  grid:
+    grid_type: schism
+    hgrid:
+      id: hgrid
+      model_type: data_blob
+      source: tests/schism/test_data/hgrid.gr3
+    drag: 1
+    vgrid:
+      model_type: data_blob
+      source: tests/schism/test_data/vgrid.in
+  data:
+    data_type: schism
+    atmos:
+      air_1:
+        data_type: sflux_air
+        source: 
+          model_type: file
+          uri: "tests/schism/test_data/era5.nc"
+        uwind_name: u10
+        vwind_name: v10
+        prmsl_name: msl
+        filter:
+          sort: {coords: [latitude]}
+        buffer: 5
+
+    # New unified boundary conditions configuration
+    boundary_conditions:
+      data_type: boundary_conditions
+      # Unified boundary configuration for non-tidal velocities
+      setup_type: "hybrid"
+      tidal_data:
+        tidal_database: tests/schism/test_data/tides
+        tidal_model: 'OCEANUM-atlas'
+        constituents:
+        - M2
+        - S2
+        - N2
+        tide_interpolation_method: 'spline'
+        nodal_corrections: true
+        extrapolate_tides: true
+        extrapolation_distance: 50.0 # in km
+        tidal_potential: true
+        cutoff_depth: 40.0 # in m
+      # Hotstart configuration using the same data sources as boundary conditions
+      hotstart_config:
+        enabled: true
+        temp_var: temperature
+        salt_var: salinity
+        output_filename: hotstart.nc
+      boundaries:
+        0:  # Applied to all open boundaries
+          elev_type: 5  # HARMONICEXTERNAL: Combined harmonic + external data
+          vel_type: 5   # EXTERNAL: External velocity data
+          temp_type: 4  # EXTERNAL: External temperature data
+          salt_type: 4  # EXTERNAL: External salinity data
+          elev_source:
+            data_type: boundary
+            source: 
+              model_type: file
+              uri: tests/schism/test_data/hycom.nc
+            variables:
+              - surf_el
+            coords:
+              t: time
+              x: xlon
+              y: ylat
+          vel_source:
+            data_type: boundary
+            source: 
+              model_type: file
+              uri: tests/schism/test_data/hycom.nc
+            variables:
+              - water_u
+              - water_v
+            coords:
+              t: time
+              x: xlon
+              y: ylat
+              z: depth
+          temp_source:
+            data_type: boundary
+            source: 
+              model_type: file
+              uri: tests/schism/test_data/hycom.nc
+            variables:
+              - temperature
+            coords:
+              t: time
+              x: xlon
+              y: ylat
+              z: depth
+          salt_source:
+            data_type: boundary
+            source: 
+              model_type: file
+              uri: tests/schism/test_data/hycom.nc
+            variables:
+              - salinity
+            coords:
+              t: time
+              x: xlon
+              y: ylat
+              z: depth
+    wave:
+      buffer: 0.0
+      coords:
+        t: time
+        x: lon
+        y: lat
+        z: depth
+      id: wavedata
+      source:
+        catalog_uri: tests/data/catalog.yaml
+        dataset_id: ausspec
+        model_type: intake
+  nml:
+    param:
+      core:
+        dt: 150.0
+        ibc: 0
+        ibtp: 1
+        nspool: 24 # number of time steps to spool        
+        ihfskip: 1152 # number of time steps per output file
+      schout:
+        iof_hydro__1: 1 # elevation
+        iof_hydro__2: 1 # mslp
+        iof_hydro__14: 1 # wind speed
+        iof_hydro__16: 1 # surface velocities
+        iof_hydro__18: 1 # water temperature
+        iof_hydro__19: 1 # salinity
+        iof_hydro__26: 1 # vel. vector
+        iof_wwm__1: 1 # significant wave height
+        iof_wwm__2: 1 # mean wave period (TM01)
+        iof_wwm__9: 1 # peak wave period
+        iof_wwm__18: 1 # peak wave direction
+    wwminput:
+      proc:
+        deltc: 600

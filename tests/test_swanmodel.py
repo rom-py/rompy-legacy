@@ -1,6 +1,6 @@
 from pathlib import Path
 import pytest
-from utils import compare_files
+from tests.utils import compare_files
 
 from rompy.model import ModelRun
 
