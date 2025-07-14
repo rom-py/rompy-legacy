@@ -7,6 +7,7 @@ This module provides the command-line interface for ROMPY.
 import importlib
 import importlib.metadata
 import json
+import os
 import sys
 import warnings
 from datetime import datetime
@@ -107,6 +108,11 @@ common_options = [
         help="Use simple log format without timestamps and module names",
         envvar="ROMPY_SIMPLE_LOGS",
     ),
+    click.option(
+        "--config-from-env",
+        is_flag=True,
+        help="Load configuration from ROMPY_CONFIG environment variable instead of file",
+    ),
 ]
 
 
@@ -117,16 +123,33 @@ def add_common_options(f):
     return f
 
 
-def load_config(config_path: str) -> Dict[str, Any]:
-    """Load configuration from file or string."""
-    try:
-        with open(config_path, "r") as f:
-            content = f.read()
-    except (FileNotFoundError, IsADirectoryError, OSError):
-        # Not a file, treat as raw string
-        content = config_path
+def load_config(config_path: str, from_env: bool = False, env_var: str = "ROMPY_CONFIG") -> Dict[str, Any]:
+    """Load configuration from file, string, or environment variable.
 
-    logger.info(f"Loading config from: {config_path}")
+    Args:
+        config_path: Path to config file or raw config string
+        from_env: If True, load from environment variable instead of config_path
+        env_var: Environment variable name to load from when from_env=True
+
+    Returns:
+        Dict containing parsed configuration
+
+    Raises:
+        click.UsageError: If config cannot be loaded or parsed
+    """
+    if from_env:
+        content = os.environ.get(env_var)
+        if content is None:
+            raise click.UsageError(f"Environment variable {env_var} is not set")
+        logger.info(f"Loading config from environment variable: {env_var}")
+    else:
+        try:
+            with open(config_path, "r") as f:
+                content = f.read()
+        except (FileNotFoundError, IsADirectoryError, OSError):
+            # Not a file, treat as raw string
+            content = config_path
+        logger.info(f"Loading config from: {config_path}")
 
     # Try JSON first
     try:
@@ -180,7 +203,7 @@ def cli(ctx):
 
 
 @cli.command()
-@click.argument("config", type=click.Path(exists=True))
+@click.argument("config", type=click.Path(exists=True), required=False)
 @click.option(
     "--backend-config",
     type=click.Path(exists=True),
@@ -198,6 +221,7 @@ def run(
     show_warnings,
     ascii_only,
     simple_logs,
+    config_from_env,
 ):
     """Run a model configuration using Pydantic backend configuration.
 
@@ -207,12 +231,21 @@ def run(
 
         # Run with Docker backend configuration
         rompy run config.yml --backend-config unified_docker_single.yml
+
+        # Run with config from environment variable
+        rompy run --config-from-env --backend-config unified_local_single.yml
     """
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
+    # Validate config source
+    if config_from_env and config:
+        raise click.UsageError("Cannot specify both config file and --config-from-env")
+    if not config_from_env and not config:
+        raise click.UsageError("Must specify either config file or --config-from-env")
+
     try:
         # Load model configuration
-        config_data = load_config(config)
+        config_data = load_config(config, from_env=config_from_env)
         model_run = ModelRun(**config_data)
 
         logger.info(f"Running model: {model_run.config.model_type}")
@@ -279,7 +312,7 @@ def _load_backend_config(backend_config_file):
 
 
 @cli.command()
-@click.argument("config", type=click.Path(exists=True))
+@click.argument("config", type=click.Path(exists=True), required=False)
 @click.option("--run-backend", default="local", help="Execution backend for run stage")
 @click.option("--processor", default="noop", help="Postprocessor to use")
 @click.option(
@@ -300,13 +333,20 @@ def pipeline(
     show_warnings,
     ascii_only,
     simple_logs,
+    config_from_env,
 ):
-    """Run complete model pipeline (generate -> run -> postprocess)."""
+    """Run full model pipeline: generate → run → postprocess."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
+
+    # Validate config source
+    if config_from_env and config:
+        raise click.UsageError("Cannot specify both config file and --config-from-env")
+    if not config_from_env and not config:
+        raise click.UsageError("Must specify either config file or --config-from-env")
 
     try:
         # Load configuration
-        config_data = load_config(config)
+        config_data = load_config(config, from_env=config_from_env)
         model_run = ModelRun(**config_data)
 
         logger.info(f"Running pipeline for: {model_run.config.model_type}")
@@ -351,18 +391,24 @@ def pipeline(
 
 
 @cli.command()
-@click.argument("config", type=click.Path(exists=True))
+@click.argument("config", type=click.Path(exists=True), required=False)
 @click.option("--output-dir", help="Override output directory")
 @add_common_options
 def generate(
-    config, output_dir, verbose, log_dir, show_warnings, ascii_only, simple_logs
+    config, output_dir, verbose, log_dir, show_warnings, ascii_only, simple_logs, config_from_env
 ):
     """Generate model input files only."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
+    # Validate config source
+    if config_from_env and config:
+        raise click.UsageError("Cannot specify both config file and --config-from-env")
+    if not config_from_env and not config:
+        raise click.UsageError("Must specify either config file or --config-from-env")
+
     try:
         # Load configuration
-        config_data = load_config(config)
+        config_data = load_config(config, from_env=config_from_env)
         if output_dir:
             config_data["output_dir"] = output_dir
 
@@ -391,15 +437,21 @@ def generate(
 
 
 @cli.command()
-@click.argument("config", type=click.Path(exists=True))
+@click.argument("config", type=click.Path(exists=True), required=False)
 @add_common_options
-def validate(config, verbose, log_dir, show_warnings, ascii_only, simple_logs):
+def validate(config, verbose, log_dir, show_warnings, ascii_only, simple_logs, config_from_env):
     """Validate model configuration."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
+    # Validate config source
+    if config_from_env and config:
+        raise click.UsageError("Cannot specify both config file and --config-from-env")
+    if not config_from_env and not config:
+        raise click.UsageError("Must specify either config file or --config-from-env")
+
     try:
         # Load and validate configuration
-        config_data = load_config(config)
+        config_data = load_config(config, from_env=config_from_env)
         model_run = ModelRun(**config_data)
 
         logger.info("✅ Configuration is valid")
