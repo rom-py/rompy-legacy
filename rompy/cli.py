@@ -475,7 +475,7 @@ def backends():
 
 @backends.command("list")
 @add_common_options
-def list_backends(verbose, log_dir, show_warnings, ascii_only, simple_logs):
+def list_backends(verbose, log_dir, show_warnings, ascii_only, simple_logs, config_from_env):
     """List available backends."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
@@ -517,7 +517,7 @@ def list_backends(verbose, log_dir, show_warnings, ascii_only, simple_logs):
 )
 @add_common_options
 def validate_backend_config(
-    config_file, backend_type, verbose, log_dir, show_warnings, ascii_only, simple_logs
+    config_file, backend_type, verbose, log_dir, show_warnings, ascii_only, simple_logs, config_from_env
 ):
     """Validate a backend configuration file."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
@@ -540,10 +540,10 @@ def validate_backend_config(
 
         # Validate configuration
         if config_type == "local":
-            config = LocalConfig(**config_params)
+            config = LocalConfig(**config_data)
             logger.info("✅ Local backend configuration is valid")
         elif config_type == "docker":
-            config = DockerConfig(**config_params)
+            config = DockerConfig(**config_data)
             logger.info("✅ Docker backend configuration is valid")
         else:
             raise click.UsageError(f"Unknown backend type: {config_type}")
@@ -603,6 +603,7 @@ def show_backend_schema(
     show_warnings,
     ascii_only,
     simple_logs,
+    config_from_env,
 ):
     """Show JSON schema for backend configurations."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
@@ -617,7 +618,7 @@ def show_backend_schema(
             raise click.UsageError(f"Unknown backend type: {backend_type}")
 
         # Generate schema
-        schema = config_class.schema()
+        schema = config_class.model_json_schema()
 
         if not examples:
             # Remove examples from schema
@@ -671,6 +672,7 @@ def create_backend_config(
     show_warnings,
     ascii_only,
     simple_logs,
+    config_from_env,
 ):
     """Create a template backend configuration file."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
@@ -770,6 +772,7 @@ def schema(
     show_warnings: bool = False,
     ascii_only: bool = False,
     simple_logs: bool = False,
+    config_from_env: bool = False,
 ) -> None:
     """Show JSON schema for a rompy model.
 
