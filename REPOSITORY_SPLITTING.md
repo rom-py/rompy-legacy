@@ -32,6 +32,16 @@ A new testing script (`test_split.py`) validates that the split was successful b
 - Running test suites for each package
 - Providing detailed reporting on success/failure
 
+### Cookiecutter Template Integration
+
+The splitting process now supports optional integration with the cookiecutter-rompy template to create modern, consistent package structures:
+
+- **Template-based structure**: Uses the cookiecutter-rompy template for standardized project layout
+- **Modern packaging**: Includes pyproject.toml, tox.ini, and other modern Python packaging files
+- **Plugin configuration**: Pre-configured entry points for rompy plugin discovery
+- **Merge strategies**: Flexible options for combining existing code with template structure
+- **History preservation**: Maintains git history while applying modern structure
+
 ## Prerequisites
 
 Before running the splitting process, ensure you have the following installed:
@@ -48,6 +58,16 @@ pip install PyYAML>=6.0 git-filter-repo>=2.38.0 tomli>=2.0.0 tomli-w>=1.0.0
 
 - Python 3.7+
 - Git 2.20+
+- cookiecutter (optional, for enhanced package structure)
+
+### Optional: Cookiecutter Integration
+
+For enhanced package structure using the cookiecutter-rompy template:
+
+```bash
+# Install cookiecutter for template-based package generation
+pip install cookiecutter
+```
 - git-filter-repo (installed via pip)
 - Sufficient disk space (the process creates temporary clones)
 
@@ -111,6 +131,33 @@ Available actions:
 - `create_src_layout` - Create modern src/ directory structure
 - `create_modern_setup` - Generate complete modern packaging setup
 - `correct_imports` - Automatically correct imports for the target package type
+- `apply_cookiecutter_template` - Apply cookiecutter-rompy template for enhanced structure
+
+### Cookiecutter Template Action
+
+The `apply_cookiecutter_template` action provides enhanced package structure:
+
+```yaml
+- action: "apply_cookiecutter_template"
+  template_repo: "/path/to/cookiecutter-rompy"  # or remote URL
+  merge_strategy: "overlay"  # overlay, replace, or preserve
+  template_context:
+    full_name: "Rompy Contributors"
+    email: "developers@rompy.com"
+    github_username: "rom-py"
+    model_name: "swan"  # plugin model name
+    project_name: "rompy-swan"
+    project_short_description: "SWAN wave model plugin for rompy"
+    version: "1.0.0"
+    use_pytest: "y"
+    command_line_interface: "No command-line interface"
+    open_source_license: "MIT license"
+```
+
+**Merge Strategies:**
+- `overlay` - Template files take priority, preserve git history and existing code
+- `replace` - Use template structure, preserve only git history
+- `preserve` - Add missing files from template, keep all existing files
 
 ## Process Details
 
@@ -126,6 +173,37 @@ Available actions:
 7. **Generates** modern development tools (tox.ini, pre-commit, GitHub Actions)
 8. **Corrects imports** automatically for each package type
 9. **Validates** the split with comprehensive testing
+
+## Configuration Options
+
+### Standard Configuration (`repo_split_config.yaml`)
+
+The standard configuration uses the current manual approach for package setup:
+- Manual pyproject.toml creation
+- Custom setup file generation
+- Basic modern packaging structure
+
+### Enhanced Configuration (`repo_split_config_with_cookiecutter.yaml`)
+
+The enhanced configuration integrates cookiecutter-rompy template:
+- Template-based pyproject.toml with plugin entry points
+- Standardized CI/CD setup (GitHub Actions, tox, pre-commit)
+- Consistent documentation structure
+- Modern development tools (ruff, mypy, coverage)
+- Plugin-specific code templates
+
+### Choosing the Right Configuration
+
+**Use Standard Configuration if:**
+- You want full control over package structure
+- You prefer manual configuration
+- You don't need cookiecutter consistency
+
+**Use Enhanced Configuration if:**
+- You want consistent structure across all plugins
+- You prefer template-based standardization
+- You plan to create additional rompy plugins
+- You want modern Python packaging best practices
 
 ### Directory Structure
 

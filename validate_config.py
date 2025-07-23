@@ -163,7 +163,8 @@ class ConfigValidator:
             'move_files', 'create_readme', 'update_setup', 'rename',
             'create_package_structure', 'create_src_layout', 'create_modern_setup',
             'merge_directory_contents', 'update_docs_config', 'create_plugin_docs',
-            'create_notebooks_index', 'correct_imports'
+            'create_notebooks_index', 'correct_imports', 'remove_files',
+            'apply_cookiecutter_template'
         }
 
         for i, action in enumerate(actions):
@@ -198,6 +199,40 @@ class ConfigValidator:
                     valid = False
                 elif action['template'] not in self.config.get('templates', {}):
                     self._add_error(f"Repository '{repo_name}' references non-existent template: {action['template']}")
+                    valid = False
+
+            elif action_type == 'apply_cookiecutter_template':
+                if 'template_repo' not in action:
+                    self._add_error(f"Repository '{repo_name}' apply_cookiecutter_template action missing 'template_repo' field")
+                    valid = False
+                else:
+                    template_repo = action['template_repo']
+                    # Check if template_repo is a local path and exists
+                    if not template_repo.startswith(('http://', 'https://', 'git@', 'git+')):
+                        # It's a local path, check if it exists
+                        template_path = os.path.abspath(template_repo)
+                        if not os.path.exists(template_path):
+                            self._add_error(f"Repository '{repo_name}' cookiecutter template path does not exist: {template_path}")
+                            valid = False
+                        elif not os.path.isdir(template_path):
+                            self._add_error(f"Repository '{repo_name}' cookiecutter template path is not a directory: {template_path}")
+                            valid = False
+                        else:
+                            # Check for cookiecutter.json
+                            cookiecutter_json = os.path.join(template_path, 'cookiecutter.json')
+                            if not os.path.exists(cookiecutter_json):
+                                self._add_warning(f"Repository '{repo_name}' cookiecutter template missing cookiecutter.json: {cookiecutter_json}")
+
+                # Validate merge_strategy if provided
+                merge_strategy = action.get('merge_strategy', 'overlay')
+                valid_strategies = {'overlay', 'replace', 'preserve'}
+                if merge_strategy not in valid_strategies:
+                    self._add_error(f"Repository '{repo_name}' apply_cookiecutter_template has invalid merge_strategy: {merge_strategy}. Must be one of: {valid_strategies}")
+                    valid = False
+
+                # Validate template_context if provided
+                if 'template_context' in action and not isinstance(action['template_context'], dict):
+                    self._add_error(f"Repository '{repo_name}' apply_cookiecutter_template 'template_context' must be a dictionary")
                     valid = False
 
             elif action_type == 'update_setup':
@@ -260,6 +295,21 @@ class ConfigValidator:
                     if action['package_type'] not in valid_package_types:
                         self._add_error(f"Repository '{repo_name}' correct_imports has invalid package_type: {action['package_type']}. Must be one of: {valid_package_types}")
                         valid = False
+
+            elif action_type == 'remove_files':
+                # Validate that at least one of files or patterns is provided
+                if 'files' not in action and 'patterns' not in action:
+                    self._add_error(f"Repository '{repo_name}' remove_files action must have either 'files' or 'patterns' field")
+                    valid = False
+
+                # Validate that files and patterns are lists if present
+                if 'files' in action and not isinstance(action['files'], list):
+                    self._add_error(f"Repository '{repo_name}' remove_files 'files' must be a list")
+                    valid = False
+
+                if 'patterns' in action and not isinstance(action['patterns'], list):
+                    self._add_error(f"Repository '{repo_name}' remove_files 'patterns' must be a list")
+                    valid = False
 
         return valid
 

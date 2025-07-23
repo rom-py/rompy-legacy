@@ -25,6 +25,13 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional
 import logging
 
+# Import cookiecutter if available
+try:
+    from cookiecutter.main import cookiecutter
+    COOKIECUTTER_AVAILABLE = True
+except ImportError:
+    COOKIECUTTER_AVAILABLE = False
+
 # Import modern templates if available
 try:
     from templates.modern_setup_templates import create_modern_setup_files
@@ -158,16 +165,21 @@ class RepositorySplitter:
         Returns:
             List of git-filter-repo arguments
         """
-        filters = []
+        include_paths = []
+        exclude_paths = []
 
+        # Separate includes and excludes
         for path in paths:
             if path.startswith('!'):
-                # Exclude path
-                exclude_path = path[1:]  # Remove the !
-                filters.extend(['--path-glob', exclude_path, '--invert-paths'])
+                exclude_paths.append(path[1:])  # Remove the !
             else:
-                # Include path
-                filters.extend(['--path-glob', path])
+                include_paths.append(path)
+
+        filters = []
+
+        # Add all include paths first
+        for path in include_paths:
+            filters.extend(['--path', path])
 
         return filters
 
@@ -185,23 +197,11 @@ class RepositorySplitter:
         # Build the filter command
         cmd = ['git-filter-repo', '--force']
 
-        # Process paths to build include/exclude filters
-        include_paths = []
-        exclude_paths = []
+        # Use the helper method to build path filters
+        path_filters = self._build_path_filters(paths)
+        cmd.extend(path_filters)
 
-        for path in paths:
-            if path.startswith('!'):
-                exclude_paths.append(path[1:])  # Remove the !
-            else:
-                include_paths.append(path)
 
-        # Add include paths
-        for path in include_paths:
-            cmd.extend(['--path', path])
-
-        # Add exclude paths
-        for path in exclude_paths:
-            cmd.extend(['--path', path, '--invert-paths'])
 
         # Run the filter
         self._run_command(cmd, cwd=target_dir)
@@ -528,6 +528,25 @@ class RepositorySplitter:
                 if package_type and target_package and not self.dry_run:
                     self._correct_imports(target_dir, package_type, target_package)
 
+            elif action_type == 'remove_files':
+                # Remove unwanted files after filtering
+                files_to_remove = action.get('files', [])
+                patterns_to_remove = action.get('patterns', [])
+
+                if (files_to_remove or patterns_to_remove) and not self.dry_run:
+                    self._remove_files(target_dir, files_to_remove, patterns_to_remove)
+
+            elif action_type == 'apply_cookiecutter_template':
+                # Apply cookiecutter template for enhanced package structure
+                template_repo = action.get('template_repo')
+                template_context = action.get('template_context', {})
+                merge_strategy = action.get('merge_strategy', 'overlay')
+
+                if template_repo and not self.dry_run:
+                    self._apply_cookiecutter_template(
+                        target_dir, template_repo, template_context, merge_strategy
+                    )
+
     def _correct_imports(self, target_dir: str, package_type: str, target_package: str):
         """
         Correct imports in Python files for the split repository.
@@ -561,6 +580,150 @@ class RepositorySplitter:
                 files_modified += 1
 
         logger.info(f"Modified imports in {files_modified} files")
+
+    def _apply_cookiecutter_template(self, target_dir: str, template_repo: str,
+                                   template_context: Dict[str, Any], merge_strategy: str):
+        """
+        Apply a cookiecutter template to enhance the split repository structure.
+
+        Args:
+            target_dir: Target directory containing the split repository
+            template_repo: Path or URL to cookiecutter template
+            template_context: Context variables for template rendering
+            merge_strategy: How to handle conflicts ('overlay', 'replace', 'preserve')
+        """
+        logger.info(f"Applying cookiecutter template: {template_repo}")
+
+        if not COOKIECUTTER_AVAILABLE:
+            logger.error("Cookiecutter is not available. Install with: pip install cookiecutter")
+            return
+
+        # Create a temporary directory for cookiecutter output
+        with tempfile.TemporaryDirectory() as temp_dir:
+            try:
+                # Apply cookiecutter template
+                output_dir = cookiecutter(
+                    template_repo,
+                    extra_context=template_context,
+                    output_dir=temp_dir,
+                    no_input=True,
+                    overwrite_if_exists=True
+                )
+
+                logger.info(f"Cookiecutter generated project at: {output_dir}")
+
+                # Merge the generated files with the existing split repository
+                self._merge_cookiecutter_output(target_dir, output_dir, merge_strategy)
+
+            except Exception as e:
+                logger.error(f"Failed to apply cookiecutter template: {e}")
+                raise
+
+    def _merge_cookiecutter_output(self, target_dir: str, cookiecutter_output: str,
+                                 merge_strategy: str):
+        """
+        Merge cookiecutter output with the existing split repository.
+
+        Args:
+            target_dir: Target directory of the split repository
+            cookiecutter_output: Directory containing cookiecutter output
+            merge_strategy: Strategy for handling conflicts
+        """
+        logger.info(f"Merging cookiecutter output with merge strategy: {merge_strategy}")
+
+        # Files to preserve from original (git history preservation is key)
+        preserve_files = {'.git', '.gitignore', 'README.md', 'LICENSE', 'HISTORY.rst'}
+
+        # Files to always take from cookiecutter (modern infrastructure only)
+        cookiecutter_priority = {'pyproject.toml', 'setup.cfg', 'tox.ini', 'requirements_dev.txt',
+                                'ruff.toml', '.editorconfig', 'Makefile', 'MANIFEST.in', '.travis.yml',
+                                'AUTHORS.rst', 'CODE_OF_CONDUCT.rst', 'CONTRIBUTING.rst'}
+
+        # Directories to completely exclude from cookiecutter (we manage these ourselves)
+        exclude_cookiecutter_dirs = {'src', 'tests', 'docs', 'examples', 'notebooks'}
+
+        # Always preserve existing Python files and other source code
+        preserve_source_extensions = {'.py', '.rst', '.md', '.yml', '.yaml', '.json', '.txt', '.sh'}
+
+        for root, dirs, files in os.walk(cookiecutter_output):
+            # Calculate relative path from cookiecutter output
+            rel_path = os.path.relpath(root, cookiecutter_output)
+
+            # Skip the top-level directory itself
+            if rel_path == '.':
+                rel_path = ''
+
+            # Check if this directory should be excluded from cookiecutter
+            # Check both with and without trailing slash, and check if any path component matches
+            path_parts = rel_path.split('/') if rel_path else []
+            should_exclude_dir = any(
+                rel_path.startswith(exclude_dir + '/') or
+                rel_path == exclude_dir or
+                exclude_dir in path_parts
+                for exclude_dir in exclude_cookiecutter_dirs
+            )
+
+            if should_exclude_dir:
+                logger.debug(f"Skipping cookiecutter directory: {rel_path}")
+                continue
+
+            # Create corresponding directory in target
+            target_subdir = os.path.join(target_dir, rel_path) if rel_path else target_dir
+            os.makedirs(target_subdir, exist_ok=True)
+
+            # Copy files based on merge strategy
+            for file in files:
+                src_file = os.path.join(root, file)
+                dst_file = os.path.join(target_subdir, file)
+
+                should_copy = False
+
+                if merge_strategy == 'replace':
+                    # Replace everything except preserved files
+                    should_copy = file not in preserve_files
+
+                elif merge_strategy == 'overlay':
+                    # Check if file has an extension that indicates source code
+                    file_ext = os.path.splitext(file)[1]
+                    is_source_file = file_ext in preserve_source_extensions
+
+                    # Always take specific infrastructure files from cookiecutter
+                    if file in cookiecutter_priority:
+                        should_copy = True
+                        logger.debug(f"Taking infrastructure file from cookiecutter: {file}")
+
+                    # NEVER overwrite existing source files anywhere, especially .py files
+                    elif (is_source_file and os.path.exists(dst_file)) or file_ext == '.py':
+                        should_copy = False
+                        logger.debug(f"Preserving existing source file: {rel_path}/{file}")
+
+                    # Don't overwrite preserved files
+                    elif file in preserve_files:
+                        should_copy = False
+                        logger.debug(f"Preserving protected file: {file}")
+
+                    # Only add completely new files that don't exist
+                    elif not os.path.exists(dst_file):
+                        should_copy = True
+                        logger.debug(f"Adding new file from cookiecutter: {rel_path}/{file}")
+
+                    # Default: don't overwrite existing files
+                    else:
+                        should_copy = False
+                        logger.debug(f"Preserving existing file: {rel_path}/{file}")
+
+                elif merge_strategy == 'preserve':
+                    # Only add files that don't exist
+                    should_copy = not os.path.exists(dst_file)
+
+                if should_copy:
+                    try:
+                        shutil.copy2(src_file, dst_file)
+                        logger.debug(f"Copied: {file} -> {rel_path}")
+                    except Exception as e:
+                        logger.warning(f"Failed to copy {file}: {e}")
+
+        logger.info("Cookiecutter template merge completed")
 
     def _get_import_corrections(self, package_type: str, target_package: str) -> list:
         """
@@ -668,6 +831,56 @@ class RepositorySplitter:
         except Exception as e:
             logger.warning(f"Failed to process {file_path}: {e}")
             return False
+
+    def _remove_files(self, target_dir: str, files_to_remove: list, patterns_to_remove: list):
+        """
+        Remove unwanted files and directories after git filtering.
+
+        Args:
+            target_dir: Target directory containing the split repository
+            files_to_remove: List of specific files/directories to remove
+            patterns_to_remove: List of glob patterns to match for removal
+        """
+        import glob
+        import os
+
+        logger.info(f"Removing unwanted files from {target_dir}")
+
+        removed_count = 0
+
+        # Remove specific files/directories
+        for file_path in files_to_remove:
+            full_path = os.path.join(target_dir, file_path)
+            if os.path.exists(full_path):
+                try:
+                    if os.path.isdir(full_path):
+                        shutil.rmtree(full_path)
+                        logger.debug(f"Removed directory: {file_path}")
+                    else:
+                        os.remove(full_path)
+                        logger.debug(f"Removed file: {file_path}")
+                    removed_count += 1
+                except Exception as e:
+                    logger.warning(f"Failed to remove {file_path}: {e}")
+
+        # Remove files matching patterns
+        for pattern in patterns_to_remove:
+            pattern_path = os.path.join(target_dir, pattern)
+            matching_files = glob.glob(pattern_path, recursive=True)
+            for file_path in matching_files:
+                try:
+                    rel_path = os.path.relpath(file_path, target_dir)
+                    if os.path.isdir(file_path):
+                        shutil.rmtree(file_path)
+                        logger.debug(f"Removed directory (pattern): {rel_path}")
+                    else:
+                        os.remove(file_path)
+                        logger.debug(f"Removed file (pattern): {rel_path}")
+                    removed_count += 1
+                except Exception as e:
+                    logger.warning(f"Failed to remove {rel_path}: {e}")
+
+        logger.info(f"Removed {removed_count} files/directories")
 
     def _create_modern_init_py(self, package_dir: str, package_name: str, is_plugin: bool = False, plugin_name: str = None):
         """Create a modern __init__.py file with version handling and plugin metadata."""
