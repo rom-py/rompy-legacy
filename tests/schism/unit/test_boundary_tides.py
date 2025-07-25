@@ -96,7 +96,7 @@ class TestBoundaryConfig:
 def sample_grid_path():
     """Return path to a test grid file."""
     grid_path = (
-        Path(__file__).parent.parent / "hgrid_20kmto60km_rompyschism_testing.gr3"
+        Path(__file__).parent.parent / "hgrid_20kmto60km_schism_testing.gr3"
     )
     if not grid_path.exists():
         pytest.skip("Test grid file not found")

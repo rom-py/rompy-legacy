@@ -1,3 +1,6 @@
+# NOTE: This file previously used PySchism modules which have been removed.
+# Consider updating to use PyLibs equivalents or other alternatives.
+# PySchism imports have been commented out - functionality may be limited.
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -5,8 +8,8 @@ from time import time
 
 import xarray as xr
 from matplotlib.transforms import Bbox
-from pyschism.forcing.hycom.hycom2schism import DownloadHycom
-from pyschism.mesh.hgrid import Hgrid
+# from pyschism.forcing.hycom.hycom2schism import DownloadHycom  # TODO: Replace with PyLibs equivalent
+# from pyschism.mesh.hgrid import Hgrid  # TODO: Replace with PyLibs equivalent
 
 """
 Download hycom data for Fortran scripts.

@@ -17,6 +17,8 @@ from pydantic import BaseModel, ConfigDict, create_model
 
 from rompy.core.logging import get_logger
 
+# load_config will be imported lazily to avoid circular imports
+
 logger = get_logger(__name__)
 
 
@@ -73,6 +75,15 @@ def load_entry_points(egroup: str, etype: Optional[str] = None):
         if enames[1] == etype:
             sources.append(ep.load())
     return tuple(sources)
+
+
+def load_config(*args, **kwargs):
+    """Load configuration from file, string, or environment variable.
+
+    This is a lazy import wrapper to avoid circular imports.
+    """
+    from rompy.cli import load_config as _load_config
+    return _load_config(*args, **kwargs)
 
 
 def dict_product(d):

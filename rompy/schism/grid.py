@@ -128,7 +128,7 @@ class GR3Generator(GeneratorBase):
         except Exception:
             gd = read_schism_hgrid(ref)
 
-        # Generate a standard gr3 file that matches PySchism format
+        # Generate a standard gr3 file that matches SCHISM format
         # This follows the same format as hgrid.gr3: description, NE NP, node list, element list
         logger.info(f"Generating {self.gr3_type}.gr3 with constant value {self.value}")
 
@@ -162,7 +162,7 @@ class GR3Generator(GeneratorBase):
                     )
                     f.write(f"{i+1} {num_vertices} {vertices}\n")
 
-            # Add empty line at the end (part of PySchism gr3 format)
+            # Add empty line at the end (part of SCHISM gr3 format)
             f.write("\n")
             self._copied = dest
             return dest

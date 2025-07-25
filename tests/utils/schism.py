@@ -2,6 +2,9 @@
 SCHISM-specific utility functions for tests.
 """
 
+# NOTE: This file previously used PySchism modules which have been removed.
+# Consider updating to use PyLibs equivalents or other alternatives.
+# PySchism imports have been commented out - functionality may be limited.
 import logging
 import os
 import tarfile
@@ -28,8 +31,8 @@ def download_hycom(dest=Path("./"), hgrid=Path("./hgrid.gr3")):
     To use the actual implementation, the caller should import the necessary modules.
     """
     try:
-        from rompy.schism.pyschism.forcing.hycom.hycom2schism import DownloadHycom
-        from rompy.schism.pyschism.mesh.hgrid import Hgrid
+        # from rompy.schism.pyschism.forcing.hycom.hycom2schism import DownloadHycom  # TODO: Replace with PyLibs equivalent
+        # from rompy.schism.pyschism.mesh.hgrid import Hgrid  # TODO: Replace with PyLibs equivalent
 
         hgrid = Hgrid.open(hgrid, crs="epsg:4326")
         date = datetime(2023, 1, 1)

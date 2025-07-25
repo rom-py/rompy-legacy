@@ -61,7 +61,7 @@ def test_simple_bctides_format():
     # Create a temporary directory for our test
     with tempfile.TemporaryDirectory() as temp_dir:
         # Find grid file path
-        grid_path = Path(__file__).parent / "hgrid_20kmto60km_rompyschism_testing.gr3"
+        grid_path = Path(__file__).parent / "hgrid_20kmto60km_schism_testing.gr3"
         if not grid_path.exists():
             grid_path = Path(__file__).parent / "test_data" / "hgrid.gr3"
 
