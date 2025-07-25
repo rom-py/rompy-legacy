@@ -38,10 +38,15 @@ def fix_test_imports_in_file(file_path):
             # Fix name references that are not imports
             (r'= rompy\.', '= rompy_core.'),
             (r'\(rompy\.', '(rompy_core.'),
+
+            # Fix test_utils imports to be relative
+            (r'from test_utils\.', 'from .test_utils.'),
+            (r'import test_utils\.', 'import .test_utils.'),
         ]
 
         for pattern, replacement in patterns:
             content = re.sub(pattern, replacement, content)
+
 
         # Write back if changed
         if content != original_content:
@@ -153,20 +158,18 @@ def main():
 
     print("🚀 Fixing remaining test imports for repository split completion...")
 
-    # Fix imports in core package tests
-    core_tests_dir = split_dir / "rompy-core" / "tests"
-
-    if core_tests_dir.exists():
-        print("🔧 Fixing test imports in rompy-core...")
-
-        test_files = list(core_tests_dir.rglob("*.py"))
-        fixed_count = 0
-
-        for test_file in test_files:
-            if fix_test_imports_in_file(test_file):
-                fixed_count += 1
-
-        print(f"✅ Fixed imports in {fixed_count} test files")
+    # Fix imports in all split package tests
+    packages = ["rompy-core", "rompy-swan", "rompy-schism"]
+    for package in packages:
+        tests_dir = split_dir / package / "tests"
+        if tests_dir.exists():
+            print(f"🔧 Fixing test imports in {package}...")
+            test_files = list(tests_dir.rglob("*.py"))
+            fixed_count = 0
+            for test_file in test_files:
+                if fix_test_imports_in_file(test_file):
+                    fixed_count += 1
+            print(f"✅ Fixed imports in {fixed_count} test files for {package}")
 
     # Create minimal stubs for missing modules
     print("🔧 Creating minimal module stubs...")

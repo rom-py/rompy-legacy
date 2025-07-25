@@ -142,6 +142,20 @@ def main():
     ], "Apply Manual Fixes"):
         return 1
 
+    # Step 8.5: Remove all 'disabled' directories from split packages
+    if not run_command([
+        "python", "cleanup_split_disabled_dirs.py",
+        "--split-repos-dir", "../split-repos"
+    ], "Cleanup Disabled Directories"):
+        logger.warning("⚠️ Cleanup of disabled directories failed - this may cause test collection errors")
+
+    # Step 8.6: Create universal test_utils in all split packages
+    if not run_command([
+        "python", "create_universal_test_utils.py",
+        "--split-repos-dir", "../split-repos"
+    ], "Create Universal test_utils"):
+        logger.warning("⚠️ Creation of universal test_utils failed - this may cause test import errors")
+
     # Step 9: Setup Testing Environments
     packages = ['rompy-core', 'rompy-swan', 'rompy-schism']
 

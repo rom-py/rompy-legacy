@@ -9,6 +9,49 @@ import sys
 from pathlib import Path
 
 
+def fix_data_file():
+    """Fix the Union type in rompy-core/src/rompy_core/core/data.py"""
+    print("🔧 Fixing data.py Union type...")
+
+    split_dir = Path("../split-repos").resolve()
+    data_file = split_dir / "rompy-core" / "src" / "rompy_core" / "core" / "data.py"
+
+    if not data_file.exists():
+        print(f"⚠️  Data file not found: {data_file}")
+        return False
+
+    try:
+        with open(data_file, 'r') as f:
+            content = f.read()
+
+        # Remove AnyPath from Union type
+        content = content.replace(
+            "source: Union[SOURCE_TYPES_TS, AnyPath] = Field(",
+            "source: Union[SOURCE_TYPES_TS] = Field("
+        )
+
+        # Check if there are any other instances we need to fix
+        if "source: Union[SOURCE_TYPES_TS + (AnyPath,)]" in content:
+            content = content.replace(
+                "source: Union[SOURCE_TYPES_TS + (AnyPath,)] = Field(",
+                "source: Union[SOURCE_TYPES_TS] = Field("
+            )
+
+        with open(data_file, 'w') as f:
+            f.write(content)
+
+        print("✅ Fixed data.py Union type")
+        return True
+
+    except Exception as e:
+        print(f"❌ Error fixing data.py: {e}")
+        return False
+
+
+
+
+
+
 def apply_core_exports_fix():
     """Fix the commented exports in rompy-core/src/rompy_core/core/__init__.py"""
     print("🔧 Fixing core exports...")
@@ -333,6 +376,7 @@ def main():
         sys.exit(1)
 
     fixes = [
+        ("Data File Fix", fix_data_file),
         ("Core Exports", apply_core_exports_fix),
         ("Utils load_config", apply_utils_load_config_fix),
         ("Swan Components", apply_swan_components_fix),
