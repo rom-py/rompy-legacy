@@ -26,11 +26,10 @@ warnings.filterwarnings(
 )
 
 # __version__ = _version.get_versions()["version"]
-__version__ = "0.5.2"
+__version__ = "0.5.3"
 
 # Import logging configuration
 from .core.logging import LoggingConfig
-
 # Import and re-export formatting utilities
 from .formatting import get_formatted_box, get_formatted_header_footer
 
