@@ -481,6 +481,60 @@ def generate(
 
 @cli.command()
 @click.argument("config", type=click.Path(exists=True), required=False)
+@click.option("--processor", default="noop", help="Postprocessor to use (default: noop)")
+@click.option("--output-dir", help="Override output directory for postprocessing")
+@click.option("--validate-outputs/--no-validate", default=True, help="Validate outputs exist (default: True)")
+@add_common_options
+def postprocess(
+    config,
+    processor,
+    output_dir,
+    validate_outputs,
+    verbose,
+    log_dir,
+    show_warnings,
+    ascii_only,
+    simple_logs,
+    config_from_env,
+):
+    """Run postprocessing on model outputs using the specified postprocessor."""
+    configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
+
+    # Validate config source
+    if config_from_env and config:
+        raise click.UsageError("Cannot specify both config file and --config-from-env")
+    if not config_from_env and not config:
+        raise click.UsageError("Must specify either config file or --config-from-env")
+
+    try:
+        # Load configuration
+        config_data = load_config(config, from_env=config_from_env)
+        model_run = ModelRun(**config_data)
+
+        logger.info(f"Running postprocessing for: {model_run.config.model_type}")
+        logger.info(f"Run ID: {model_run.run_id}")
+        logger.info(f"Postprocessor: {processor}")
+
+        # Run postprocessing
+        start_time = datetime.now()
+        results = model_run.postprocess(
+            processor=processor,
+            output_dir=output_dir,
+            validate_outputs=validate_outputs,
+        )
+        elapsed = datetime.now() - start_time
+
+        logger.info(f"✅ Postprocessing completed in {elapsed.total_seconds():.2f}s")
+        logger.info(f"Results: {results}")
+
+    except Exception as e:
+        logger.error(f"❌ Postprocessing failed: {e}")
+        if verbose > 0:
+            logger.exception("Full traceback:")
+        sys.exit(1)
+
+@cli.command()
+@click.argument("config", type=click.Path(exists=True), required=False)
 @add_common_options
 def validate(
     config, verbose, log_dir, show_warnings, ascii_only, simple_logs, config_from_env
