@@ -15,10 +15,12 @@ import time as time_module
 import zipfile as zf
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Literal, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
+from rompy.backends import BackendConfig
+from rompy.backends.config import BaseBackendConfig
 from rompy.core.config import BaseConfig
 from rompy.core.logging import LogFormat, LoggingConfig, LogLevel, get_logger
 from rompy.core.render import render
@@ -34,6 +36,43 @@ logger = get_logger(__name__)
 CONFIG_TYPES = load_entry_points("rompy.config")
 
 
+def _load_backends():
+    """Load backends from entry points with fallback handling."""
+    run_backends = {}
+    postprocessors = {}
+    pipeline_backends = {}
+
+    # Load run backends
+    try:
+        for backend in load_entry_points("rompy.run"):
+            name = backend.__name__.lower().replace("runbackend", "")
+            run_backends[name] = backend
+    except Exception as e:
+        logger.warning(f"Failed to load run backends: {e}")
+
+    # Load postprocessors
+    try:
+        for proc in load_entry_points("rompy.postprocess"):
+            name = proc.__name__.lower().replace("postprocessor", "")
+            postprocessors[name] = proc
+    except Exception as e:
+        logger.warning(f"Failed to load postprocessors: {e}")
+
+    # Load pipeline backends
+    try:
+        for backend in load_entry_points("rompy.pipeline"):
+            name = backend.__name__.lower().replace("pipelinebackend", "")
+            pipeline_backends[name] = backend
+    except Exception as e:
+        logger.warning(f"Failed to load pipeline backends: {e}")
+
+    return run_backends, postprocessors, pipeline_backends
+
+
+# Load backends from entry points
+RUN_BACKENDS, POSTPROCESSORS, PIPELINE_BACKENDS = _load_backends()
+
+
 class ModelRun(RompyBaseModel):
     """A model run.
 
@@ -47,6 +86,7 @@ class ModelRun(RompyBaseModel):
 
     # Initialize formatting variables in __init__
 
+    model_type: Literal["modelrun"] = Field("modelrun", description="The model type.")
     run_id: str = Field("run_id", description="The run id")
     period: TimeRange = Field(
         TimeRange(
@@ -190,8 +230,6 @@ class ModelRun(RompyBaseModel):
             logger.debug(f"Configuration string formatting error: {str(e)}")
 
         logger.info("")
-        # Use helper functions to avoid circular imports
-        # No need to import or set USE_ASCII_ONLY, we use get_ascii_mode() directly
 
         # Use the log_box utility function
         from rompy.formatting import log_box
@@ -229,9 +267,6 @@ class ModelRun(RompyBaseModel):
         )
 
         logger.info("")
-        # Use helper functions to avoid circular imports
-        # No need to import or set USE_ASCII_ONLY, we use get_ascii_mode() directly
-
         # Use the log_box utility function
         from rompy.formatting import log_box
 
@@ -296,4 +331,114 @@ class ModelRun(RompyBaseModel):
     def __call__(self):
         return self.generate()
 
-    # Formatting is now handled by the formatting module
+    def run(self, backend: BackendConfig, workspace_dir: Optional[str] = None) -> bool:
+        """
+        Run the model using the specified backend configuration.
+
+        This method uses Pydantic configuration objects that provide type safety
+        and validation for all backend parameters.
+
+        Args:
+            backend: Pydantic configuration object (LocalConfig, DockerConfig, etc.)
+            workspace_dir: Path to generated workspace directory (optional)
+
+        Returns:
+            True if execution was successful, False otherwise
+
+        Raises:
+            TypeError: If backend is not a BackendConfig instance
+
+        Examples:
+            from rompy.backends import LocalConfig, DockerConfig
+
+            # Local execution
+            model.run(LocalConfig(timeout=3600, command="python run.py"))
+
+            # Docker execution
+            model.run(DockerConfig(image="swan:latest", cpu=4, memory="2g"))
+        """
+        if not isinstance(backend, BaseBackendConfig):
+            raise TypeError(
+                f"Backend must be a subclass of BaseBackendConfig, "
+                f"got {type(backend).__name__}"
+            )
+
+        logger.debug(f"Using backend config: {type(backend).__name__}")
+
+        # Get the backend class directly from the configuration
+        backend_class = backend.get_backend_class()
+        backend_instance = backend_class()
+
+        # Pass the config object and workspace_dir to the backend
+        return backend_instance.run(self, config=backend, workspace_dir=workspace_dir)
+
+    def postprocess(self, processor: str = "noop", **kwargs) -> Dict[str, Any]:
+        """
+        Postprocess the model outputs using the specified processor.
+
+        This method uses entry points to load and execute the appropriate postprocessor.
+        Available processors are automatically discovered from the rompy.postprocess entry point group.
+
+        Built-in processors:
+        - "noop": A placeholder processor that does nothing but returns success
+
+        Args:
+            processor: Name of the postprocessor to use (default: "noop")
+            **kwargs: Additional processor-specific parameters
+
+        Returns:
+            Dictionary with results from the postprocessing
+
+        Raises:
+            ValueError: If the specified processor is not available
+        """
+        # Get the requested postprocessor class from entry points
+        if processor not in POSTPROCESSORS:
+            available = list(POSTPROCESSORS.keys())
+            raise ValueError(
+                f"Unknown postprocessor: {processor}. "
+                f"Available processors: {', '.join(available)}"
+            )
+
+        # Create an instance and process the outputs
+        processor_class = POSTPROCESSORS[processor]
+        processor_instance = processor_class()
+        return processor_instance.process(self, **kwargs)
+
+    def pipeline(self, pipeline_backend: str = "local", **kwargs) -> Dict[str, Any]:
+        """
+        Run the complete model pipeline (generate, run, postprocess) using the specified pipeline backend.
+
+        This method executes the entire model workflow from input generation through running
+        the model to postprocessing outputs. It uses entry points to load and execute the
+        appropriate pipeline backend from the rompy.pipeline entry point group.
+
+        Built-in pipeline backends:
+        - "local": Execute the complete pipeline locally using the existing ModelRun methods
+
+        Args:
+            pipeline_backend: Name of the pipeline backend to use (default: "local")
+            **kwargs: Additional backend-specific parameters. Common parameters include:
+                - run_backend: Backend to use for the run stage (for local pipeline)
+                - processor: Processor to use for postprocessing (for local pipeline)
+                - run_kwargs: Additional parameters for the run stage
+                - process_kwargs: Additional parameters for postprocessing
+
+        Returns:
+            Dictionary with results from the pipeline execution
+
+        Raises:
+            ValueError: If the specified pipeline backend is not available
+        """
+        # Get the requested pipeline backend class from entry points
+        if pipeline_backend not in PIPELINE_BACKENDS:
+            available = list(PIPELINE_BACKENDS.keys())
+            raise ValueError(
+                f"Unknown pipeline backend: {pipeline_backend}. "
+                f"Available backends: {', '.join(available)}"
+            )
+
+        # Create an instance and execute the pipeline
+        backend_class = PIPELINE_BACKENDS[pipeline_backend]
+        backend_instance = backend_class()
+        return backend_instance.execute(self, **kwargs)

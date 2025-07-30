@@ -18,7 +18,6 @@ from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords, RompyBaseModel, Slice
 from rompy.utils import load_entry_points
 
-
 logger = logging.getLogger(__name__)
 
 
