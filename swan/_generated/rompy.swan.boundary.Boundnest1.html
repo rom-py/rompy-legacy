@@ -566,12 +566,6 @@
 <span class="w">         </span><span class="p">],</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Source&quot;</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;link&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Whether to create a symbolic link instead of copying the file&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Link&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;boolean&quot;</span>
-<span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">            </span><span class="p">{</span>
@@ -1112,7 +1106,6 @@
 <li><p><a class="reference internal" href="#rompy.swan.boundary.Boundnest1.filter" title="rompy.swan.boundary.Boundnest1.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span> <span class="pre">(Optional[Filter])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.boundary.Boundnest1.grid_type" title="rompy.swan.boundary.Boundnest1.grid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_type</span> <span class="pre">(Literal['boundary_wave_station'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.boundary.Boundnest1.id" title="rompy.swan.boundary.Boundnest1.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#rompy.swan.boundary.Boundnest1.link" title="rompy.swan.boundary.Boundnest1.link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link</span> <span class="pre">(bool)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.boundary.Boundnest1.model_type" title="rompy.swan.boundary.Boundnest1.model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">(Literal['boundnest1',</span> <span class="pre">'BOUNDNEST1'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.boundary.Boundnest1.rectangle" title="rompy.swan.boundary.Boundnest1.rectangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rectangle</span> <span class="pre">(Literal['closed',</span> <span class="pre">'open'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#rompy.swan.boundary.Boundnest1.sel_method" title="rompy.swan.boundary.Boundnest1.sel_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sel_method</span> <span class="pre">(Literal['idw',</span> <span class="pre">'nearest'])</span></code></a></p></li>
@@ -1163,12 +1156,6 @@
 <dt class="sig sig-object py" id="rompy.swan.boundary.Boundnest1.id">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#rompy.swan.boundary.Boundnest1.id" title="Link to this definition">#</a></dt>
 <dd><p>Unique identifier for this data source</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="rompy.swan.boundary.Boundnest1.link">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#rompy.swan.boundary.Boundnest1.link" title="Link to this definition">#</a></dt>
-<dd><p>Whether to create a symbolic link instead of copying the file</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
@@ -1248,21 +1235,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="rompy.swan.boundary.Boundnest1.model_post_init">
-<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_BoundaryWaveStation__context</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rompy.swan.boundary.Boundnest1.model_post_init" title="Link to this definition">#</a></dt>
-<dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
-<p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> – The BaseModel instance.</p></li>
-<li><p><strong>context</strong> – The context.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -1321,7 +1293,6 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.filter"><code class="docutils literal notranslate"><span class="pre">Boundnest1.filter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.grid_type"><code class="docutils literal notranslate"><span class="pre">Boundnest1.grid_type</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.id"><code class="docutils literal notranslate"><span class="pre">Boundnest1.id</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.link"><code class="docutils literal notranslate"><span class="pre">Boundnest1.link</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.model_type"><code class="docutils literal notranslate"><span class="pre">Boundnest1.model_type</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.rectangle"><code class="docutils literal notranslate"><span class="pre">Boundnest1.rectangle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.sel_method"><code class="docutils literal notranslate"><span class="pre">Boundnest1.sel_method</span></code></a></li>
@@ -1331,7 +1302,6 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.time_buffer"><code class="docutils literal notranslate"><span class="pre">Boundnest1.time_buffer</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.variables"><code class="docutils literal notranslate"><span class="pre">Boundnest1.variables</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.get"><code class="docutils literal notranslate"><span class="pre">Boundnest1.get()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rompy.swan.boundary.Boundnest1.model_post_init"><code class="docutils literal notranslate"><span class="pre">Boundnest1.model_post_init()</span></code></a></li>
 </ul>
 </li>
 </ul>
