@@ -14,7 +14,7 @@ def fix_test_imports_in_file(file_path):
     """Fix imports in a single test file"""
 
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
 
         original_content = content
@@ -25,32 +25,27 @@ def fix_test_imports_in_file(file_path):
             (r'patch\("rompy\.model\.', 'patch("rompy_core.model.'),
             (r'patch\("rompy\.run\.', 'patch("rompy_core.run.'),
             (r'patch\("rompy\.', 'patch("rompy_core.'),
-
             # Fix direct imports
-            (r'import rompy\.', 'import rompy_core.'),
-            (r'from rompy\.', 'from rompy_core.'),
-
+            (r"import rompy\.", "import rompy_core."),
+            (r"from rompy\.", "from rompy_core."),
             # Fix attribute access
-            (r'rompy\.core\.source\.', 'rompy_core.core.source.'),
-            (r'rompy\.model\.', 'rompy_core.model.'),
-            (r'rompy\.run\.', 'rompy_core.run.'),
-
+            (r"rompy\.core\.source\.", "rompy_core.core.source."),
+            (r"rompy\.model\.", "rompy_core.model."),
+            (r"rompy\.run\.", "rompy_core.run."),
             # Fix name references that are not imports
-            (r'= rompy\.', '= rompy_core.'),
-            (r'\(rompy\.', '(rompy_core.'),
-
+            (r"= rompy\.", "= rompy_core."),
+            (r"\(rompy\.", "(rompy_core."),
             # Fix test_utils imports to be relative
-            (r'from test_utils\.', 'from .test_utils.'),
-            (r'import test_utils\.', 'import .test_utils.'),
+            (r"from test_utils\.", "from .test_utils."),
+            (r"import test_utils\.", "import .test_utils."),
         ]
 
         for pattern, replacement in patterns:
             content = re.sub(pattern, replacement, content)
 
-
         # Write back if changed
         if content != original_content:
-            with open(file_path, 'w', encoding='utf-8') as f:
+            with open(file_path, "w", encoding="utf-8") as f:
                 f.write(content)
             return True
 
@@ -71,22 +66,24 @@ def remove_problematic_tests():
     problematic_patterns = [
         "**/test*docker*",
         "**/test*enhanced_backends*",
-        "**/test*integration*"
+        "**/test*integration*",
     ]
 
     removed_count = 0
 
     for pattern in problematic_patterns:
         for test_file in core_tests.glob(pattern):
-            if test_file.is_file() and test_file.name.endswith('.py'):
+            if test_file.is_file() and test_file.name.endswith(".py"):
                 # Check if it references missing modules
                 try:
-                    with open(test_file, 'r') as f:
+                    with open(test_file, "r") as f:
                         content = f.read()
 
-                    if ('rompy.run.docker' in content or
-                        'DockerRunBackend' in content or
-                        'LocalRunBackend' in content):
+                    if (
+                        "rompy.run.docker" in content
+                        or "DockerRunBackend" in content
+                        or "LocalRunBackend" in content
+                    ):
 
                         # Move to disabled directory
                         disabled_dir = test_file.parent / "disabled"
@@ -103,48 +100,53 @@ def remove_problematic_tests():
     return removed_count
 
 
-def create_minimal_test_fixtures():
-    """Create minimal fixtures for missing modules to prevent test failures"""
-
-    split_dir = Path("../split-repos").resolve()
-    core_src = split_dir / "rompy-core" / "src" / "rompy_core"
-
-    # Create minimal run module with stub classes
-    run_module = core_src / "run"
-    run_module.mkdir(exist_ok=True)
-
-    run_init = run_module / "__init__.py"
-    with open(run_init, 'w') as f:
-        f.write('''"""
-Minimal run module stubs for rompy-core.
-Full run functionality moved to separate backend packages.
-"""
-
-class LocalRunBackend:
-    """Stub for LocalRunBackend"""
-    def __init__(self, *args, **kwargs):
-        raise ImportError("LocalRunBackend functionality moved to rompy-backends package")
-
-class RunBackendBase:
-    """Stub for RunBackendBase"""
-    def __init__(self, *args, **kwargs):
-        raise ImportError("Run backend functionality moved to rompy-backends package")
-''')
-
-    # Create docker stub
-    docker_module = run_module / "docker.py"
-    with open(docker_module, 'w') as f:
-        f.write('''"""
-Docker run backend stub for rompy-core.
-"""
-
-class DockerRunBackend:
-    """Stub for DockerRunBackend"""
-    def __init__(self, *args, **kwargs):
-        raise ImportError("DockerRunBackend functionality moved to rompy-backends package")
-''')
-
-    print("✅ Created minimal run module stubs")
+# def create_minimal_test_fixtures():
+#     """Create minimal fixtures for missing modules to prevent test failures"""
+#
+#     split_dir = Path("../split-repos").resolve()
+#     core_src = split_dir / "rompy-core" / "src" / "rompy_core"
+#
+#     # Create minimal run module with stub classes
+#     run_module = core_src / "run"
+#     run_module.mkdir(exist_ok=True)
+#
+#     run_init = run_module / "__init__.py"
+#     with open(run_init, "w") as f:
+#         f.write(
+#             '''"""
+# Minimal run module stubs for rompy-core.
+# Full run functionality moved to separate backend packages.
+# """
+#
+# class LocalRunBackend:
+#     """Stub for LocalRunBackend"""
+#     def __init__(self, *args, **kwargs):
+#         raise ImportError("LocalRunBackend functionality moved to rompy-backends package")
+#
+# class RunBackendBase:
+#     """Stub for RunBackendBase"""
+#     def __init__(self, *args, **kwargs):
+#         raise ImportError("Run backend functionality moved to rompy-backends package")
+# '''
+#         )
+#
+#     # Create docker stub
+#     docker_module = run_module / "docker.py"
+#     with open(docker_module, "w") as f:
+#         f.write(
+#             '''"""
+# Docker run backend stub for rompy-core.
+# """
+#
+# class DockerRunBackend:
+#     """Stub for DockerRunBackend"""
+#     def __init__(self, *args, **kwargs):
+#         raise ImportError("DockerRunBackend functionality moved to rompy-backends package")
+# '''
+#         )
+#
+#     print("✅ Created minimal run module stubs")
+#
 
 
 def main():
@@ -171,9 +173,9 @@ def main():
                     fixed_count += 1
             print(f"✅ Fixed imports in {fixed_count} test files for {package}")
 
-    # Create minimal stubs for missing modules
-    print("🔧 Creating minimal module stubs...")
-    create_minimal_test_fixtures()
+    # # Create minimal stubs for missing modules
+    # print("🔧 Creating minimal module stubs...")
+    # create_minimal_test_fixtures()
 
     # Remove the most problematic tests that can't be easily fixed
     print("🔧 Disabling problematic tests...")
