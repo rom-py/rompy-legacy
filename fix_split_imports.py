@@ -36,37 +36,34 @@ class ImportCorrector:
         if package_type == "core":
             return [
                 # Core package imports
-                (r'from rompy\.core\.', 'from rompy_core.core.'),
-                (r'from rompy\.utils', 'from rompy_core.utils'),
-                (r'from rompy\.model', 'from rompy_core.model'),
-                (r'from rompy\.run', 'from rompy_core.run'),
-                (r'from rompy\.cli', 'from rompy_core.cli'),
-                (r'from rompy\.backends', 'from rompy_core.backends'),
-                (r'from rompy\.postprocess', 'from rompy_core.postprocess'),
-                (r'from rompy\.pipeline', 'from rompy_core.pipeline'),
-                (r'from rompy\.intake', 'from rompy_core.intake'),
-                (r'from rompy\.configuration', 'from rompy_core.configuration'),
-                (r'from rompy\.templates', 'from rompy_core.templates'),
-
+                (r"from rompy\.core\.", "from rompy_core.core."),
+                (r"from rompy\.utils", "from rompy_core.utils"),
+                (r"from rompy\.model", "from rompy_core.model"),
+                (r"from rompy\.run", "from rompy_core.run"),
+                (r"from rompy\.formatting", "from rompy_core.formatting"),
+                (r"from rompy\.cli", "from rompy_core.cli"),
+                (r"from rompy\.backends", "from rompy_core.backends"),
+                (r"from rompy\.postprocess", "from rompy_core.postprocess"),
+                (r"from rompy\.pipeline", "from rompy_core.pipeline"),
+                (r"from rompy\.intake", "from rompy_core.intake"),
+                (r"from rompy\.configuration", "from rompy_core.configuration"),
+                (r"from rompy\.templates", "from rompy_core.templates"),
                 # Import statements
-                (r'import rompy\.core\.', 'import rompy_core.core.'),
-                (r'import rompy\.utils', 'import rompy_core.utils'),
-                (r'import rompy\.model', 'import rompy_core.model'),
-                (r'import rompy\.run', 'import rompy_core.run'),
-                (r'import rompy\.cli', 'import rompy_core.cli'),
-                (r'import rompy\.backends', 'import rompy_core.backends'),
-
+                (r"import rompy\.core\.", "import rompy_core.core."),
+                (r"import rompy\.utils", "import rompy_core.utils"),
+                (r"import rompy\.model", "import rompy_core.model"),
+                (r"import rompy\.run", "import rompy_core.run"),
+                (r"import rompy\.cli", "import rompy_core.cli"),
+                (r"import rompy\.backends", "import rompy_core.backends"),
                 # Direct module references
-                (r'rompy\.core\.', 'rompy_core.core.'),
-                (r'rompy\.utils\.', 'rompy_core.utils.'),
-                (r'rompy\.model\.', 'rompy_core.model.'),
-                (r'rompy\.run\.', 'rompy_core.run.'),
-                (r'rompy\.cli\.', 'rompy_core.cli.'),
-
+                (r"rompy\.core\.", "rompy_core.core."),
+                (r"rompy\.utils\.", "rompy_core.utils."),
+                (r"rompy\.model\.", "rompy_core.model."),
+                (r"rompy\.run\.", "rompy_core.run."),
+                (r"rompy\.cli\.", "rompy_core.cli."),
                 # Entry point references
                 (r'"rompy\.', '"rompy_core.'),
                 (r"'rompy\.", "'rompy_core."),
-
                 # Special cases for imports within strings
                 (r'patch\("rompy\.', 'patch("rompy_core.'),
                 (r'Mock\("rompy\.', 'Mock("rompy_core.'),
@@ -74,20 +71,17 @@ class ImportCorrector:
         elif package_type == "swan":
             return [
                 # Swan specific imports
-                (r'from rompy\.swan\.', 'from rompy_swan.'),
-                (r'import rompy\.swan\.', 'import rompy_swan.'),
-                (r'rompy\.swan\.', 'rompy_swan.'),
-
+                (r"from rompy\.swan\.", "from rompy_swan."),
+                (r"import rompy\.swan\.", "import rompy_swan."),
+                (r"rompy\.swan\.", "rompy_swan."),
                 # Core imports (swan depends on core)
-                (r'from rompy\.core\.', 'from rompy_core.core.'),
-                (r'from rompy\.utils', 'from rompy_core.utils'),
-                (r'import rompy\.core\.', 'import rompy_core.core.'),
-                (r'rompy\.core\.', 'rompy_core.core.'),
-
+                (r"from rompy\.core\.", "from rompy_core.core."),
+                (r"from rompy\.utils", "from rompy_core.utils"),
+                (r"import rompy\.core\.", "import rompy_core.core."),
+                (r"rompy\.core\.", "rompy_core.core."),
                 # Entry points
                 (r'"rompy\.swan\.', '"rompy_swan.'),
                 (r"'rompy\.swan\.", "'rompy_swan."),
-
                 # Patch references
                 (r'patch\("rompy\.swan\.', 'patch("rompy_swan.'),
                 (r'patch\("rompy\.core\.', 'patch("rompy_core.core.'),
@@ -95,20 +89,17 @@ class ImportCorrector:
         elif package_type == "schism":
             return [
                 # Schism specific imports
-                (r'from rompy\.schism\.', 'from rompy_schism.'),
-                (r'import rompy\.schism\.', 'import rompy_schism.'),
-                (r'rompy\.schism\.', 'rompy_schism.'),
-
+                (r"from rompy\.schism\.", "from rompy_schism."),
+                (r"import rompy\.schism\.", "import rompy_schism."),
+                (r"rompy\.schism\.", "rompy_schism."),
                 # Core imports (schism depends on core)
-                (r'from rompy\.core\.', 'from rompy_core.core.'),
-                (r'from rompy\.utils', 'from rompy_core.utils'),
-                (r'import rompy\.core\.', 'import rompy_core.core.'),
-                (r'rompy\.core\.', 'rompy_core.core.'),
-
+                (r"from rompy\.core\.", "from rompy_core.core."),
+                (r"from rompy\.utils", "from rompy_core.utils"),
+                (r"import rompy\.core\.", "import rompy_core.core."),
+                (r"rompy\.core\.", "rompy_core.core."),
                 # Entry points
                 (r'"rompy\.schism\.', '"rompy_schism.'),
                 (r"'rompy\.schism\.", "'rompy_schism."),
-
                 # Patch references
                 (r'patch\("rompy\.schism\.', 'patch("rompy_schism.'),
                 (r'patch\("rompy\.core\.', 'patch("rompy_core.core.'),
@@ -120,12 +111,14 @@ class ImportCorrector:
         """Get patterns for optional imports that might not be present."""
         return [
             # General rompy imports that might need context-specific fixing
-            (r'from rompy import', 'from rompy_core import'),
-            (r'import rompy$', 'import rompy_core'),
-            (r'import rompy,', 'import rompy_core,'),
+            (r"from rompy import", "from rompy_core import"),
+            (r"import rompy$", "import rompy_core"),
+            (r"import rompy,", "import rompy_core,"),
         ]
 
-    def apply_import_corrections(self, file_path: Path, patterns: List[Tuple[str, str]]) -> int:
+    def apply_import_corrections(
+        self, file_path: Path, patterns: List[Tuple[str, str]]
+    ) -> int:
         """Apply import corrections to a single file.
 
         Args:
@@ -136,7 +129,7 @@ class ImportCorrector:
             Number of corrections applied
         """
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
 
             original_content = content
@@ -150,7 +143,7 @@ class ImportCorrector:
 
             # Only write if changes were made
             if content != original_content:
-                with open(file_path, 'w', encoding='utf-8') as f:
+                with open(file_path, "w", encoding="utf-8") as f:
                     f.write(content)
                 return corrections_in_file
 
@@ -173,10 +166,10 @@ class ImportCorrector:
 
         for root, dirs, files in os.walk(directory):
             # Skip hidden directories and __pycache__
-            dirs[:] = [d for d in dirs if not d.startswith('.') and d != '__pycache__']
+            dirs[:] = [d for d in dirs if not d.startswith(".") and d != "__pycache__"]
 
             for file in files:
-                if file.endswith('.py'):
+                if file.endswith(".py"):
                     python_files.append(Path(root) / file)
 
         return python_files
@@ -199,7 +192,7 @@ class ImportCorrector:
                 "exists": False,
                 "files_found": 0,
                 "files_modified": 0,
-                "corrections_applied": 0
+                "corrections_applied": 0,
             }
 
         # Get patterns for this package type
@@ -207,9 +200,13 @@ class ImportCorrector:
         optional_patterns = self.get_optional_import_patterns()
         all_patterns = patterns + optional_patterns
 
-        print(f"🔧 Correcting imports for {package_type} package: {package_name.replace('-', '_')}")
+        print(
+            f"🔧 Correcting imports for {package_type} package: {package_name.replace('-', '_')}"
+        )
         print(f"   Target directory: {package_dir}")
-        print(f"   Using {len(patterns)} import patterns + {len(optional_patterns)} optional patterns")
+        print(
+            f"   Using {len(patterns)} import patterns + {len(optional_patterns)} optional patterns"
+        )
 
         # Find all Python files
         python_files = self.find_python_files(package_dir)
@@ -228,7 +225,9 @@ class ImportCorrector:
                 status = "modified" if corrections > 0 else "unchanged"
                 print(f"  ✅ {rel_path} - {corrections} corrections ({status})")
 
-        print(f"✅ Completed {package_type}: {files_modified}/{len(python_files)} files modified with {total_corrections} corrections")
+        print(
+            f"✅ Completed {package_type}: {files_modified}/{len(python_files)} files modified with {total_corrections} corrections"
+        )
 
         return {
             "package": package_name,
@@ -236,7 +235,7 @@ class ImportCorrector:
             "exists": True,
             "files_found": len(python_files),
             "files_modified": files_modified,
-            "corrections_applied": total_corrections
+            "corrections_applied": total_corrections,
         }
 
     def generate_report(self, results: List[dict]) -> str:
@@ -256,7 +255,9 @@ class ImportCorrector:
 
         total_files = sum(r["files_found"] for r in results if r["exists"])
         total_modified = sum(r["files_modified"] for r in results if r["exists"])
-        total_corrections = sum(r["corrections_applied"] for r in results if r["exists"])
+        total_corrections = sum(
+            r["corrections_applied"] for r in results if r["exists"]
+        )
 
         report.append(f"Total files processed: {total_files}")
         report.append(f"Total files modified: {total_modified}")
@@ -279,10 +280,12 @@ class ImportCorrector:
             report.append(f"  Corrections applied: {result['corrections_applied']}")
             report.append("")
 
-            if result['files_modified'] > 0:
+            if result["files_modified"] > 0:
                 report.append("  Modified files:")
                 # This is simplified - in a real implementation we'd track individual files
-                report.append(f"    - Multiple files modified ({result['files_modified']} total)")
+                report.append(
+                    f"    - Multiple files modified ({result['files_modified']} total)"
+                )
             report.append("")
 
         report.append("=" * 80)
@@ -299,17 +302,13 @@ def main():
     parser.add_argument(
         "--split-repos-dir",
         default="../split-repos",
-        help="Directory containing split repositories"
+        help="Directory containing split repositories",
     )
-    parser.add_argument(
-        "--all",
-        action="store_true",
-        help="Process all packages"
-    )
+    parser.add_argument("--all", action="store_true", help="Process all packages")
     parser.add_argument(
         "--package",
         choices=["core", "swan", "schism"],
-        help="Process specific package only"
+        help="Process specific package only",
     )
 
     args = parser.parse_args()
@@ -330,7 +329,7 @@ def main():
         packages = [
             ("rompy-core", "core"),
             ("rompy-swan", "swan"),
-            ("rompy-schism", "schism")
+            ("rompy-schism", "schism"),
         ]
 
         for package_name, package_type in packages:
@@ -341,7 +340,7 @@ def main():
         package_map = {
             "core": ("rompy-core", "core"),
             "swan": ("rompy-swan", "swan"),
-            "schism": ("rompy-schism", "schism")
+            "schism": ("rompy-schism", "schism"),
         }
 
         package_name, package_type = package_map[args.package]
@@ -355,7 +354,9 @@ def main():
     if notebooks_dir.exists():
         src_dir = notebooks_dir / "src" / "rompy_notebooks"
         if not src_dir.exists():
-            print("⚠️  Source directory not found: ../split-repos/rompy-notebooks/src/rompy_notebooks")
+            print(
+                "⚠️  Source directory not found: ../split-repos/rompy-notebooks/src/rompy_notebooks"
+            )
 
     # Generate and save report
     report = corrector.generate_report(results)
@@ -363,7 +364,7 @@ def main():
 
     # Save report to file
     report_file = "import_correction_report___main__.txt"
-    with open(report_file, 'w') as f:
+    with open(report_file, "w") as f:
         f.write(report)
     print(f"📄 Report written to: {report_file}")
 
