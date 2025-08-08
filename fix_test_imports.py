@@ -40,6 +40,8 @@ def fix_test_imports_in_file(file_path):
             (r"import \.test_utils", "import tests.test_utils"),
             (r"import test_utils", "import tests.test_utils"),
             (r"from test_utils", "from tests.test_utils"),
+            (r"from tests.schism", "from tests"),
+            (r"tests/schism/test_data", "tests/test_data"),
         ]
 
         for pattern, replacement in patterns:
