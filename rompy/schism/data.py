@@ -449,6 +449,9 @@ class SCHISMDataSflux(RompyBaseModel):
             data.id = variable
             logger.info(f"Fetching {variable}")
             namelistargs.update(data.namelist)
+            # Expand time by one day on each end
+            if time is not None:
+                time = TimeRange(start=time.start - pd.Timedelta(days=1), end=time.end + pd.Timedelta(days=1))
             ret[variable] = data.get(destdir, grid, time)
         ret["nml"] = Sflux_Inputs(**namelistargs).write_nml(destdir)
         return ret
