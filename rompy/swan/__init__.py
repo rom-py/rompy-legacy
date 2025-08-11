@@ -8,7 +8,7 @@ This module provides interfaces and utilities for working with the SWAN
 import os
 from pathlib import Path
 
-from rompy.core.logging import LoggingConfig, get_logger
+from rompy.logging import LoggingConfig, get_logger
 
 logger = get_logger(__name__)
 

@@ -1,5 +1,5 @@
 """
-Tests for the rompy.core.logging module.
+Tests for the rompy.logging module.
 
 This module tests the centralized logging and formatting utilities.
 """
@@ -13,7 +13,7 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
-from rompy.core.logging import (
+from rompy.logging import (
     LoggingConfig,
     LogLevel,
     LogFormat,

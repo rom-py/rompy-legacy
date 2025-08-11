@@ -6,7 +6,7 @@ from pydantic import ConfigDict, Field, model_serializer, model_validator
 
 from rompy.core.config import BaseConfig
 from rompy.core.data import DataBlob
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel, Spectrum
 
@@ -222,7 +222,7 @@ class SCHISMConfig(BaseConfig):
             A formatted string or None to use default formatting
         """
         # Import specific types and formatting utilities
-        from rompy.core.logging import LoggingConfig
+        from rompy.logging import LoggingConfig
         from rompy.formatting import get_formatted_header_footer
 
         # Get ASCII mode setting from LoggingConfig

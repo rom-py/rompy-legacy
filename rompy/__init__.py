@@ -10,7 +10,7 @@ import warnings
 from pathlib import Path
 
 # Import the new logging system
-from .core.logging import LogFormat, LoggingConfig, LogLevel, get_logger
+from .logging import LogFormat, LoggingConfig, LogLevel, get_logger
 
 # Initialize the logger with default configuration
 logger = get_logger(__name__)
@@ -29,7 +29,7 @@ warnings.filterwarnings(
 __version__ = "0.5.3"
 
 # Import logging configuration
-from .core.logging import LoggingConfig
+from .logging import LoggingConfig
 # Import and re-export formatting utilities
 from .formatting import get_formatted_box, get_formatted_header_footer
 
