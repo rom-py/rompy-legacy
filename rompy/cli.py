@@ -123,7 +123,9 @@ def add_common_options(f):
     return f
 
 
-def load_config(config_path: str, from_env: bool = False, env_var: str = "ROMPY_CONFIG") -> Dict[str, Any]:
+def load_config(
+    config_path: str, from_env: bool = False, env_var: str = "ROMPY_CONFIG"
+) -> Dict[str, Any]:
     """Load configuration from file, string, or environment variable.
 
     Args:
@@ -284,6 +286,39 @@ def run(
         sys.exit(1)
 
 
+def _get_backend_config_registry():
+    """
+    Build a registry of backend config classes from entry points and built-ins.
+    Returns: dict mapping backend type name to config class
+    """
+    registry = {
+        "local": LocalConfig,
+        "docker": DockerConfig,
+    }
+    # Try to load from entry points (rompy.config and rompy.backend_config)
+    try:
+        eps = importlib.metadata.entry_points()
+        # Support both 'rompy.config' and 'rompy.backend_config' for flexibility
+        for group in ["rompy.config", "rompy.backend_config"]:
+            if hasattr(eps, "select"):  # Python 3.10+
+                entries = eps.select(group=group)
+            elif hasattr(eps, "get"):  # Python 3.8-3.9
+                entries = eps.get(group, [])
+            else:
+                entries = []
+            for ep in entries:
+                try:
+                    cls = ep.load()
+                    registry[ep.name] = cls
+                except Exception as e:
+                    logger.warning(
+                        f"Failed to load backend config entry point {ep.name}: {e}"
+                    )
+    except Exception as e:
+        logger.warning(f"Could not load backend config entry points: {e}")
+    return registry
+
+
 def _load_backend_config(backend_config_file):
     """Load backend configuration from config file.
 
@@ -301,14 +336,14 @@ def _load_backend_config(backend_config_file):
         raise click.UsageError("Backend configuration must include a 'type' field")
 
     backend_type = config_data.pop("type")
-
-    # Create appropriate config
-    if backend_type == "local":
-        return LocalConfig(**config_data)
-    elif backend_type == "docker":
-        return DockerConfig(**config_data)
+    registry = _get_backend_config_registry()
+    if backend_type in registry:
+        return registry[backend_type](**config_data)
     else:
-        raise click.UsageError(f"Unknown backend type in config: {backend_type}")
+        available = ", ".join(registry.keys())
+        raise click.UsageError(
+            f"Unknown backend type in config: {backend_type}. Available types: {available}"
+        )
 
 
 @cli.command()
@@ -395,7 +430,14 @@ def pipeline(
 @click.option("--output-dir", help="Override output directory")
 @add_common_options
 def generate(
-    config, output_dir, verbose, log_dir, show_warnings, ascii_only, simple_logs, config_from_env
+    config,
+    output_dir,
+    verbose,
+    log_dir,
+    show_warnings,
+    ascii_only,
+    simple_logs,
+    config_from_env,
 ):
     """Generate model input files only."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
@@ -438,8 +480,64 @@ def generate(
 
 @cli.command()
 @click.argument("config", type=click.Path(exists=True), required=False)
+@click.option("--processor", default="noop", help="Postprocessor to use (default: noop)")
+@click.option("--output-dir", help="Override output directory for postprocessing")
+@click.option("--validate-outputs/--no-validate", default=True, help="Validate outputs exist (default: True)")
 @add_common_options
-def validate(config, verbose, log_dir, show_warnings, ascii_only, simple_logs, config_from_env):
+def postprocess(
+    config,
+    processor,
+    output_dir,
+    validate_outputs,
+    verbose,
+    log_dir,
+    show_warnings,
+    ascii_only,
+    simple_logs,
+    config_from_env,
+):
+    """Run postprocessing on model outputs using the specified postprocessor."""
+    configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
+
+    # Validate config source
+    if config_from_env and config:
+        raise click.UsageError("Cannot specify both config file and --config-from-env")
+    if not config_from_env and not config:
+        raise click.UsageError("Must specify either config file or --config-from-env")
+
+    try:
+        # Load configuration
+        config_data = load_config(config, from_env=config_from_env)
+        model_run = ModelRun(**config_data)
+
+        logger.info(f"Running postprocessing for: {model_run.config.model_type}")
+        logger.info(f"Run ID: {model_run.run_id}")
+        logger.info(f"Postprocessor: {processor}")
+
+        # Run postprocessing
+        start_time = datetime.now()
+        results = model_run.postprocess(
+            processor=processor,
+            output_dir=output_dir,
+            validate_outputs=validate_outputs,
+        )
+        elapsed = datetime.now() - start_time
+
+        logger.info(f"✅ Postprocessing completed in {elapsed.total_seconds():.2f}s")
+        logger.info(f"Results: {results}")
+
+    except Exception as e:
+        logger.error(f"❌ Postprocessing failed: {e}")
+        if verbose > 0:
+            logger.exception("Full traceback:")
+        sys.exit(1)
+
+@cli.command()
+@click.argument("config", type=click.Path(exists=True), required=False)
+@add_common_options
+def validate(
+    config, verbose, log_dir, show_warnings, ascii_only, simple_logs, config_from_env
+):
     """Validate model configuration."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
@@ -475,7 +573,9 @@ def backends():
 
 @backends.command("list")
 @add_common_options
-def list_backends(verbose, log_dir, show_warnings, ascii_only, simple_logs):
+def list_backends(
+    verbose, log_dir, show_warnings, ascii_only, simple_logs, config_from_env
+):
     """List available backends."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
 
@@ -517,7 +617,14 @@ def list_backends(verbose, log_dir, show_warnings, ascii_only, simple_logs):
 )
 @add_common_options
 def validate_backend_config(
-    config_file, backend_type, verbose, log_dir, show_warnings, ascii_only, simple_logs
+    config_file,
+    backend_type,
+    verbose,
+    log_dir,
+    show_warnings,
+    ascii_only,
+    simple_logs,
+    config_from_env,
 ):
     """Validate a backend configuration file."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
@@ -540,10 +647,10 @@ def validate_backend_config(
 
         # Validate configuration
         if config_type == "local":
-            config = LocalConfig(**config_params)
+            config = LocalConfig(**config_data)
             logger.info("✅ Local backend configuration is valid")
         elif config_type == "docker":
-            config = DockerConfig(**config_params)
+            config = DockerConfig(**config_data)
             logger.info("✅ Docker backend configuration is valid")
         else:
             raise click.UsageError(f"Unknown backend type: {config_type}")
@@ -603,6 +710,7 @@ def show_backend_schema(
     show_warnings,
     ascii_only,
     simple_logs,
+    config_from_env,
 ):
     """Show JSON schema for backend configurations."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
@@ -617,7 +725,7 @@ def show_backend_schema(
             raise click.UsageError(f"Unknown backend type: {backend_type}")
 
         # Generate schema
-        schema = config_class.schema()
+        schema = config_class.model_json_schema()
 
         if not examples:
             # Remove examples from schema
@@ -671,6 +779,7 @@ def create_backend_config(
     show_warnings,
     ascii_only,
     simple_logs,
+    config_from_env,
 ):
     """Create a template backend configuration file."""
     configure_logging(verbose, log_dir, simple_logs, ascii_only, show_warnings)
@@ -770,6 +879,7 @@ def schema(
     show_warnings: bool = False,
     ascii_only: bool = False,
     simple_logs: bool = False,
+    config_from_env: bool = False,
 ) -> None:
     """Show JSON schema for a rompy model.
 

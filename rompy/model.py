@@ -20,6 +20,7 @@ from typing import Any, Dict, Literal, Optional, Union
 from pydantic import Field, model_validator
 
 from rompy.backends import BackendConfig
+from rompy.backends.config import BaseBackendConfig
 from rompy.core.config import BaseConfig
 from rompy.logging import LogFormat, LoggingConfig, LogLevel, get_logger
 from rompy.core.render import render
@@ -356,9 +357,9 @@ class ModelRun(RompyBaseModel):
             # Docker execution
             model.run(DockerConfig(image="swan:latest", cpu=4, memory="2g"))
         """
-        if not isinstance(backend, BackendConfig):
+        if not isinstance(backend, BaseBackendConfig):
             raise TypeError(
-                f"Backend must be a BackendConfig instance, "
+                f"Backend must be a subclass of BaseBackendConfig, "
                 f"got {type(backend).__name__}"
             )
 
