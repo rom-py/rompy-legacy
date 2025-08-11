@@ -135,9 +135,13 @@ def test_backend_examples():
         has_required = all(imp in content for imp in required_imports)
         has_backend = any(imp in content for imp in backend_imports)
 
-        assert has_required, f"{example_file} missing required imports: {required_imports}"
-        assert has_backend or "LocalConfig" in content or "DockerConfig" in content, f"{example_file} missing backend configuration imports"
-        
+        assert (
+            has_required
+        ), f"{example_file} missing required imports: {required_imports}"
+        assert (
+            has_backend or "LocalConfig" in content or "DockerConfig" in content
+        ), f"{example_file} missing backend configuration imports"
+
         logger.info(f"✅ {example_file} imports look correct")
 
 
@@ -170,13 +174,17 @@ def test_yaml_configs():
             config_data = yaml.safe_load(f)
 
         # Basic validation - check that it's a valid YAML and has expected structure
-        assert isinstance(config_data, dict), f"{yaml_file} is not a valid configuration dictionary"
-        
+        assert isinstance(
+            config_data, dict
+        ), f"{yaml_file} is not a valid configuration dictionary"
+
         # Check for common configuration keys
         expected_keys = ["model", "backend", "run_id", "period"]
         has_expected = any(key in config_data for key in expected_keys)
-        
-        assert has_expected, f"{yaml_file} missing expected configuration keys: {expected_keys}"
+
+        assert (
+            has_expected
+        ), f"{yaml_file} missing expected configuration keys: {expected_keys}"
         logger.info(f"✅ {yaml_file} is valid YAML with expected structure")
 
 
@@ -194,12 +202,10 @@ def test_config_validation():
     # Test that the validation script can be imported
     import importlib.util
 
-    spec = importlib.util.spec_from_file_location(
-        "validate_config", validation_script
-    )
+    spec = importlib.util.spec_from_file_location("validate_config", validation_script)
     assert spec is not None, "Could not create spec for validation script"
     assert spec.loader is not None, "Could not get loader for validation script"
-    
+
     validate_module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(validate_module)
     logger.info("✅ Configuration validation script imported successfully")
@@ -228,6 +234,8 @@ def test_quickstart_example():
     ]
 
     missing_elements = [elem for elem in required_elements if elem not in content]
-    
-    assert not missing_elements, f"Quickstart example missing elements: {missing_elements}"
+
+    assert (
+        not missing_elements
+    ), f"Quickstart example missing elements: {missing_elements}"
     logger.info("✅ Quickstart example contains expected elements")

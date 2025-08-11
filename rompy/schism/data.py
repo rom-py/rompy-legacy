@@ -1306,16 +1306,16 @@ class BoundarySetupWithSource(BoundarySetup):
     for both boundary conditions and their data sources.
     """
 
-    elev_source: Optional[Union[DataBlob, "SCHISMDataBoundary"]] = Field(
+    elev_source: Optional[Union[DataBlob, DataGrid, SCHISMDataBoundary]] = Field(
         None, description="Data source for elevation boundary condition"
     )
-    vel_source: Optional[Union[DataBlob, "SCHISMDataBoundary"]] = Field(
+    vel_source: Optional[Union[DataBlob, DataGrid, SCHISMDataBoundary]] = Field(
         None, description="Data source for velocity boundary condition"
     )
-    temp_source: Optional[Union[DataBlob, "SCHISMDataBoundary"]] = Field(
+    temp_source: Optional[Union[DataBlob, DataGrid, SCHISMDataBoundary]] = Field(
         None, description="Data source for temperature boundary condition"
     )
-    salt_source: Optional[Union[DataBlob, "SCHISMDataBoundary"]] = Field(
+    salt_source: Optional[Union[DataBlob, DataGrid, SCHISMDataBoundary]] = Field(
         None, description="Data source for salinity boundary condition"
     )
 

@@ -118,13 +118,19 @@ class TestModelRunPydanticIntegration:
     def test_run_with_invalid_backend_type(self, model_run):
         """Test ModelRun.run() raises TypeError for invalid backend types."""
         # Invalid types should raise TypeError
-        with pytest.raises(TypeError, match="Backend must be a BackendConfig instance"):
+        with pytest.raises(
+            TypeError, match="Backend must be a subclass of BaseBackendConfig"
+        ):
             model_run.run(backend="invalid_string")
 
-        with pytest.raises(TypeError, match="Backend must be a BackendConfig instance"):
+        with pytest.raises(
+            TypeError, match="Backend must be a subclass of BaseBackendConfig"
+        ):
             model_run.run(backend={"invalid": "dict"})
 
-        with pytest.raises(TypeError, match="Backend must be a BackendConfig instance"):
+        with pytest.raises(
+            TypeError, match="Backend must be a subclass of BaseBackendConfig"
+        ):
             model_run.run(backend=123)
 
     def test_run_with_local_config_env_vars(self, model_run, tmp_path):
