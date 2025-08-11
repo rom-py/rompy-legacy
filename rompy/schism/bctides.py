@@ -18,7 +18,7 @@ import pandas as pd
 from pylib import ReadNC
 import xarray as xr
 from scipy.spatial import KDTree
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.formatting import ARROW
 
 logger = get_logger(__name__)

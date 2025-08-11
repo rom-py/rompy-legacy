@@ -37,7 +37,7 @@ from rompy.schism.boundary_core import (
     TidalBoundary,
 )
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 

@@ -13,7 +13,7 @@ from numpy import inf
 from pandas import Timestamp
 from pydantic import Field, field_validator, model_validator
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.swan.components.base import BaseComponent
 from rompy.swan.subcomponents.time import NONSTATIONARY, STATIONARY
 

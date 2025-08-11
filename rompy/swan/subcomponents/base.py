@@ -9,7 +9,7 @@ from typing import Literal, Optional
 
 from pydantic import ConfigDict, Field, model_validator
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.core.types import RompyBaseModel
 
 logger = get_logger(__name__)

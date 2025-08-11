@@ -23,7 +23,7 @@ from shapely.geometry import MultiPoint, Polygon
 
 from rompy.core.data import DataBlob
 from rompy.core.grid import BaseGrid
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.core.types import RompyBaseModel
 
 from .vgrid import VGrid, create_2d_vgrid
@@ -1086,7 +1086,7 @@ class SCHISMGrid(BaseGrid):
             A formatted string or None to use default formatting
         """
         # Import specific types and formatting utilities
-        from rompy.core.logging import LoggingConfig
+        from rompy.logging import LoggingConfig
         from rompy.formatting import get_formatted_header_footer
 
         # Get ASCII mode setting from LoggingConfig

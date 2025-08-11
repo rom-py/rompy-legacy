@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Optional, Union
 import numpy as np
 import pandas as pd
 import xarray as xr
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 

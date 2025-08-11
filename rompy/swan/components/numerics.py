@@ -9,7 +9,7 @@ from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.swan.components.base import BaseComponent
 from rompy.swan.subcomponents.numerics import (
     ACCUR,

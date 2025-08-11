@@ -21,7 +21,7 @@ from pydantic import Field, model_validator
 
 from rompy.backends import BackendConfig
 from rompy.core.config import BaseConfig
-from rompy.core.logging import LogFormat, LoggingConfig, LogLevel, get_logger
+from rompy.logging import LogFormat, LoggingConfig, LogLevel, get_logger
 from rompy.core.render import render
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel

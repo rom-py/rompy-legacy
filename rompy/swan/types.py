@@ -7,7 +7,7 @@ implementation, including grid types, boundary conditions, and physics options.
 
 from enum import Enum, IntEnum
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 
