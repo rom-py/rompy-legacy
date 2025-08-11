@@ -9,7 +9,7 @@ from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field, model_validator
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.swan.subcomponents.base import IJ, XY, BaseSubComponent
 
 logger = get_logger(__name__)

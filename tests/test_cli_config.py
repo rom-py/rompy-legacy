@@ -194,6 +194,16 @@ class TestCLIConfigFromEnv:
                 ])
                 assert result.exit_code == 0
 
+    def test_postprocess_with_config_from_env(self):
+        """Test postprocess command with config from environment variable."""
+        with patch.dict(os.environ, {'ROMPY_CONFIG': self.config_json}):
+            with patch('rompy.cli.ModelRun') as mock_model_run:
+                result = self.runner.invoke(cli, [
+                    'postprocess', '--config-from-env', '--processor', 'noop'
+                ])
+                assert result.exit_code == 0
+                assert mock_model_run.called
+
     def test_config_from_env_missing_variable(self):
         """Test error when ROMPY_CONFIG environment variable is missing."""
         with patch.dict(os.environ, {}, clear=True):
@@ -231,6 +241,24 @@ class TestCLIBackwardCompatibility:
             "output_dir": "/tmp/test_output",
             "period": {"start": "2020-01-01", "end": "2020-01-02"}
         }
+
+    def test_postprocess_error_on_missing_config(self):
+        """Test error when neither config file nor --config-from-env is specified for postprocess."""
+        result = self.runner.invoke(cli, ['postprocess'])
+        assert result.exit_code != 0
+        assert "Must specify either" in result.output
+
+    def test_postprocess_error_on_both_config_and_env(self):
+        """Test error when both config file and --config-from-env are specified for postprocess."""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            json.dump(self.config_data, f)
+            config_path = f.name
+        try:
+            result = self.runner.invoke(cli, ['postprocess', config_path, '--config-from-env'])
+            assert result.exit_code != 0
+            assert "Cannot specify both" in result.output
+        finally:
+            os.unlink(config_path)
 
     def test_validate_with_config_file(self):
         """Test that validate command still works with config files."""
@@ -283,6 +311,21 @@ class TestCLIBackwardCompatibility:
             os.unlink(config_path)
             os.unlink(backend_path)
 
+    def test_postprocess_with_config_file(self):
+        """Test that postprocess command works with config files."""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            json.dump(self.config_data, f)
+            config_path = f.name
+        try:
+            with patch('rompy.cli.ModelRun') as mock_model_run:
+                result = self.runner.invoke(cli, [
+                    'postprocess', config_path, '--processor', 'noop'
+                ])
+                assert result.exit_code == 0
+                assert mock_model_run.called
+        finally:
+            os.unlink(config_path)
+
 
 class TestCLIHelpOutput:
     """Test that help output includes information about environment variable option."""
@@ -313,5 +356,11 @@ class TestCLIHelpOutput:
     def test_pipeline_help_includes_config_from_env(self):
         """Test that pipeline command help mentions --config-from-env option."""
         result = self.runner.invoke(cli, ['pipeline', '--help'])
+        assert result.exit_code == 0
+        assert '--config-from-env' in result.output
+
+    def test_postprocess_help_includes_config_from_env(self):
+        """Test that postprocess command help mentions --config-from-env option."""
+        result = self.runner.invoke(cli, ['postprocess', '--help'])
         assert result.exit_code == 0
         assert '--config-from-env' in result.output

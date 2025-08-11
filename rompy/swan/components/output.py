@@ -10,7 +10,7 @@ from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field, field_validator, model_validator
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.swan.components.base import BaseComponent, MultiComponents
 from rompy.swan.subcomponents.base import IJ, XY
 from rompy.swan.subcomponents.output import ABS, REL, SPEC1D, SPEC2D

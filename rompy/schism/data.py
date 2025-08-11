@@ -26,7 +26,7 @@ from rompy.schism.boundary_core import (
     create_tidal_boundary,
 )
 from rompy.schism.grid import SCHISMGrid
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.formatting import ARROW
 from rompy.schism.tides_enhanced import BoundarySetup
 from rompy.utils import total_seconds
@@ -1138,7 +1138,7 @@ class SCHISMData(RompyBaseModel):
             A formatted string or None to use default formatting
         """
         # Import specific types and formatting utilities
-        from rompy.core.logging import LoggingConfig
+        from rompy.logging import LoggingConfig
         from rompy.formatting import get_formatted_header_footer
 
         # Get ASCII mode setting from LoggingConfig

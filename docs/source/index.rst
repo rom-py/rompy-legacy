@@ -41,6 +41,7 @@ The final main component of the library is an intake driver that builds on the i
     models
     demo
     api
+    developer/index
 
 Indices and tables
 ==================

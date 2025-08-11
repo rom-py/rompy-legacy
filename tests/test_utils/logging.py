@@ -8,8 +8,8 @@ import logging
 import os
 from typing import Optional, Union, Type
 
-# Import from rompy.core.logging
-from rompy.core.logging import get_logger, config, LogLevel, LogFormat
+# Import from rompy.logging
+from rompy.logging import get_logger, config, LogLevel, LogFormat
 
 # Global logger instance
 logger = None

@@ -78,7 +78,7 @@ from rompy.schism.boundary_core import (
     create_river_boundary_config,
     create_nested_boundary_config,
 )
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 

@@ -11,7 +11,7 @@ from typing import Annotated, Literal, Optional, Union
 from pydantic import Field, model_validator
 
 from rompy.core.config import BaseConfig
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.formatting import get_formatted_box, get_formatted_header_footer
 from rompy.swan.components import boundary, cgrid, numerics
 from rompy.swan.components.group import INPGRIDS, LOCKUP, OUTPUT, PHYSICS, STARTUP
@@ -217,7 +217,7 @@ class SwanConfigComponents(BaseConfig):
             A formatted string or None to use default formatting
         """
         # Import specific types if needed
-        from rompy.core.logging import LoggingConfig
+        from rompy.logging import LoggingConfig
         from rompy.swan.grid import SwanGrid
 
         # Get ASCII mode setting from LoggingConfig
@@ -524,7 +524,7 @@ class SwanConfigComponents(BaseConfig):
 
     def __call__(self, runtime) -> str:
         # Use the new LoggingConfig for logging settings
-        from rompy.core.logging import LoggingConfig
+        from rompy.logging import LoggingConfig
 
         logging_config = LoggingConfig()
         USE_ASCII_ONLY = logging_config.use_ascii

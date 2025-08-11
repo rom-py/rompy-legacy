@@ -8,8 +8,8 @@ visually appealing output in the ROMPY codebase.
 import os
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
-from rompy.core.logging import LogFormat, LoggingConfig, LogLevel, get_logger
-from rompy.core.logging.formatter import BoxFormatter, BoxStyle, formatter
+from rompy.logging import LogFormat, LoggingConfig, LogLevel, get_logger
+from rompy.logging.formatter import BoxFormatter, BoxStyle, formatter
 
 # Initialize the logger
 logger = get_logger(__name__)
@@ -77,7 +77,7 @@ def configure_logging(verbosity: int = 0, log_dir: Optional[str] = None) -> None
     """Configure logging for ROMPY based on verbosity level and environment settings.
 
     This function is maintained for backward compatibility. The new logging system
-    is now configured through the LoggingConfig class in rompy.core.logging.
+    is now configured through the LoggingConfig class in rompy.logging.
 
     Args:
         verbosity: Level of verbosity (0=INFO, 1=VERBOSE, 2=DEBUG)
@@ -246,7 +246,7 @@ def log_box(
         add_empty_line: Whether to add an empty line after the box
     """
     # Import here to avoid circular imports
-    from rompy.core.logging import RompyLogger, get_logger
+    from rompy.logging import RompyLogger, get_logger
 
     # Ensure we have a valid logger
     if logger is None:
@@ -259,7 +259,7 @@ def log_box(
 
     # Ensure the logger is properly initialized
     if not hasattr(logger, "_box_formatter") or logger._box_formatter is None:
-        from rompy.core.logging.formatter import formatter as default_formatter
+        from rompy.logging.formatter import formatter as default_formatter
 
         logger._box_formatter = default_formatter
 

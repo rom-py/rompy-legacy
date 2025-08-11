@@ -65,7 +65,7 @@ from src.schism_file import read_schism_hgrid, loadz
 from .boundary import BoundaryData
 from .bctides import Bctides
 from rompy.core.boundary import DataBoundary
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 
