@@ -157,7 +157,7 @@ def main():
         logger.warning("⚠️ Creation of universal test_utils failed - this may cause test import errors")
 
     # Step 9: Setup Testing Environments
-    packages = ['rompy-core', 'rompy-swan', 'rompy-schism']
+    packages = ['rompy', 'rompy-swan', 'rompy-schism']
 
     # Setup retry configuration
     max_retries = 1 if args.retry_setup else 0
@@ -167,8 +167,8 @@ def main():
     core_success = run_command([
         "python", "setup_split_testing.py",
         "--split-repos-dir", "../split-repos",
-        "--package", "rompy-core"
-    ], f"Setup Testing Environment for rompy-core", max_retries=max_retries, retry_delay=retry_delay)
+        "--package", "rompy"
+    ], f"Setup Testing Environment for rompy", max_retries=max_retries, retry_delay=retry_delay)
 
     if not core_success:
         logger.warning("⚠️ Core environment setup failed - this may cause other package setups to fail")
@@ -225,7 +225,7 @@ def main():
         logger.info(f"   cd ../split-repos/{package} && pip install -e .")
     logger.info("3. Set up remote repositories and CI/CD")
 
-    if "rompy-core" in test_results and not test_results["rompy-core"]:
+    if "rompy" in test_results and not test_results["rompy"]:
         logger.info("")
         logger.info("⚠️ TROUBLESHOOTING SUGGESTIONS:")
         logger.info("- Check if entry points are properly defined in pyproject.toml")

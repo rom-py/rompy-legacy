@@ -60,9 +60,9 @@ class VirtualEnvironmentManager:
         self.results = {}
         self.errors = []
 
-        # Package dependency order (rompy-core must be installed first)
+        # Package dependency order (rompy must be installed first)
         self.package_order = [
-            ("rompy-core", "rompy_core"),
+            ("rompy", "rompy"),
             ("rompy-swan", "rompy_swan"),
             ("rompy-schism", "rompy_schism"),
             ("rompy-notebooks", "rompy_notebooks"),
@@ -221,7 +221,7 @@ class VirtualEnvironmentManager:
         self, package_name: str, venv_path: Path
     ) -> bool:
         """
-        Install inter-package dependencies (e.g., rompy-swan depends on rompy-core).
+        Install inter-package dependencies (e.g., rompy-swan depends on rompy).
 
         Args:
             package_name: Name of the package
@@ -234,9 +234,9 @@ class VirtualEnvironmentManager:
 
         # Define inter-package dependencies
         dependencies = {
-            "rompy-swan": ["rompy-core"],
-            "rompy-schism": ["rompy-core"],
-            "rompy-notebooks": ["rompy-core", "rompy-swan", "rompy-schism"],
+            "rompy-swan": ["rompy"],
+            "rompy-schism": ["rompy"],
+            "rompy-notebooks": ["rompy", "rompy-swan", "rompy-schism"],
         }
 
         if package_name not in dependencies:
@@ -466,17 +466,17 @@ class VirtualEnvironmentManager:
 
         if parallel:
             # For parallel execution, we need to respect dependencies
-            # rompy-core first, then swan/schism in parallel, then notebooks
+            # rompy first, then swan/schism in parallel, then notebooks
 
-            # Phase 1: rompy-core
+            # Phase 1: rompy
             core_result = self.setup_package_environment(
-                "rompy-core", "rompy_core", skip_tests
+                "rompy", "rompy", skip_tests
             )
             all_results["package_results"].append(core_result)
 
             if not core_result["success"]:
                 logger.error(
-                    "❌ rompy-core setup failed, cannot continue with dependent packages"
+                    "❌ rompy setup failed, cannot continue with dependent packages"
                 )
                 all_results["failed_setups"] = len(self.package_order)
                 return all_results
@@ -664,7 +664,7 @@ Examples:
 
     parser.add_argument(
         "--package",
-        choices=["rompy-core", "rompy-swan", "rompy-schism", "rompy-notebooks"],
+        choices=["rompy", "rompy-swan", "rompy-schism", "rompy-notebooks"],
         help="Set up environment for specific package only",
     )
 
@@ -704,6 +704,9 @@ Examples:
 
     args = parser.parse_args()
 
+    # Convert split_repos_dir to Path
+    args.split_repos_dir = Path(args.split_repos_dir)
+
     # Configure logging level
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
@@ -724,7 +727,7 @@ Examples:
             logger.info(f"🚀 Setting up testing environment for {args.package}")
 
             module_map = {
-                "rompy-core": "rompy_core",
+                "rompy": "rompy",
                 "rompy-swan": "rompy_swan",
                 "rompy-schism": "rompy_schism",
                 "rompy-notebooks": "rompy_notebooks",
@@ -776,4 +779,87 @@ Examples:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Virtual Environment Testing Framework for ROMPY Repository Split")
+    parser.add_argument("--split-repos-dir", required=True, help="Directory containing split repositories")
+    parser.add_argument("--package", choices=["rompy", "rompy-swan", "rompy-schism", "rompy-notebooks"], help="Specific package to test")
+    parser.add_argument("--python", default="python3", help="Python executable to use for virtual environments (default: python3)")
+    parser.add_argument("--clean", action="store_true", help="Clean existing virtual environments before setup")
+    parser.add_argument("--rebuild", action="store_true", help="Force rebuild of virtual environments (implies --clean)")
+    parser.add_argument("--skip-tests", action="store_true", help="Skip running tests, only set up environments")
+    parser.add_argument("--parallel", action="store_true", help="Set up environments in parallel where possible")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging")
+
+    args = parser.parse_args()
+
+    # Convert split_repos_dir to Path
+    args.split_repos_dir = Path(args.split_repos_dir)
+
+    # Configure logging level
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Validate arguments
+    if not args.split_repos_dir.exists():
+        logger.error(f"Split repositories directory not found: {args.split_repos_dir}")
+        sys.exit(1)
+
+    # Initialize environment manager
+    env_manager = VirtualEnvironmentManager(args.split_repos_dir, args.python)
+
+    try:
+
+        # Set up environments
+        if args.package:
+            # Single package setup
+            logger.info(f"🚀 Setting up testing environment for {args.package}")
+
+            module_map = {
+                "rompy": "rompy",
+                "rompy-swan": "rompy_swan",
+                "rompy-schism": "rompy_schism",
+                "rompy-notebooks": "rompy_notebooks",
+            }
+
+            module_name = module_map[args.package]
+            results = env_manager.setup_package_environment(
+                args.package, module_name, args.skip_tests
+            )
+        else:
+            # All packages setup
+            results = env_manager.setup_all_environments(args.skip_tests, args.parallel)
+
+        # Generate and display report
+        report = env_manager.generate_report(results)
+        print(report)
+
+        # Write report to file
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        report_file = f"testing_environment_report_{timestamp}.txt"
+        with open(report_file, "w") as f:
+            f.write(report)
+        logger.info(f"📄 Report written to: {report_file}")
+
+        # Write JSON results for programmatic access
+        json_file = f"testing_environment_results_{timestamp}.json"
+        with open(json_file, "w") as f:
+            json.dump(results, f, indent=2, default=str)
+        logger.info(f"📄 JSON results written to: {json_file}")
+
+        # Exit with appropriate code
+        if env_manager.errors or (
+            isinstance(results, dict)
+            and not results.get("overall_success", results.get("success", False))
+        ):
+            logger.error("❌ Environment setup completed with errors")
+            sys.exit(1)
+        else:
+            logger.info("🎉 All testing environments set up successfully!")
+            sys.exit(0)
+
+    except KeyboardInterrupt:
+        logger.info("❌ Operation cancelled by user")
+        sys.exit(1)
+    except Exception as e:
+        logger.error(f"❌ Unexpected error: {e}")
+        logger.debug(traceback.format_exc())
+        sys.exit(1)

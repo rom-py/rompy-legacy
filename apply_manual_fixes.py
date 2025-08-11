@@ -10,11 +10,11 @@ from pathlib import Path
 
 
 def fix_data_file():
-    """Fix the Union type in rompy-core/src/rompy_core/core/data.py"""
+    """Fix the Union type in rompy/src/rompy/core/data.py"""
     print("🔧 Fixing data.py Union type...")
 
     split_dir = Path("../split-repos").resolve()
-    data_file = split_dir / "rompy-core" / "src" / "rompy_core" / "core" / "data.py"
+    data_file = split_dir / "rompy" / "src" / "rompy" / "core" / "data.py"
 
     if not data_file.exists():
         print(f"⚠️  Data file not found: {data_file}")
@@ -49,11 +49,11 @@ def fix_data_file():
 
 
 def apply_core_exports_fix():
-    """Fix the commented exports in rompy-core/src/rompy_core/core/__init__.py"""
+    """Fix the commented exports in rompy/src/rompy/core/__init__.py"""
     print("🔧 Fixing core exports...")
 
     split_dir = Path("../split-repos").resolve()
-    core_init = split_dir / "rompy-core" / "src" / "rompy_core" / "core" / "__init__.py"
+    core_init = split_dir / "rompy" / "src" / "rompy" / "core" / "__init__.py"
 
     if not core_init.exists():
         print(f"⚠️  Core __init__.py not found: {core_init}")
@@ -96,11 +96,11 @@ def apply_core_exports_fix():
 
 
 def apply_utils_load_config_fix():
-    """Add load_config function to rompy-core utils.py"""
+    """Add load_config function to rompy utils.py"""
     print("🔧 Adding load_config to utils...")
 
     split_dir = Path("../split-repos").resolve()
-    utils_file = split_dir / "rompy-core" / "src" / "rompy_core" / "utils.py"
+    utils_file = split_dir / "rompy" / "src" / "rompy" / "utils.py"
 
     if not utils_file.exists():
         print(f"⚠️  Utils file not found: {utils_file}")
@@ -174,11 +174,11 @@ def apply_swan_components_fix():
 
 
 def apply_source_unpacking_fix():
-    """Fix the unpacking error in rompy-core source.py"""
+    """Fix the unpacking error in rompy source.py"""
     print("🔧 Fixing source.py unpacking error...")
 
     split_dir = Path("../split-repos").resolve()
-    source_file = split_dir / "rompy-core" / "src" / "rompy_core" / "core" / "source.py"
+    source_file = split_dir / "rompy" / "src" / "rompy" / "core" / "source.py"
 
     if not source_file.exists():
         print(f"⚠️  Source file not found: {source_file}")

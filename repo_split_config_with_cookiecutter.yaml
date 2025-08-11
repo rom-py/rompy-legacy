@@ -11,7 +11,7 @@ cleanup_after_split: false # Set to true to remove temporary directories
 
 # Define the split repositories with optional cookiecutter enhancement
 repositories:
-  rompy-core:
+  rompy:
     description: "Core rompy library with base functionality and plugin system"
     paths:
       # Include specific rompy subdirectories (excluding swan and schism)
@@ -79,7 +79,7 @@ repositories:
           email: "developers@rompy.com"
           github_username: "rom-py"
           model_name: "core"
-          project_name: "rompy-core"
+          project_name: "rompy"
           project_short_description: "Core rompy library for ocean wave modeling with plugin system"
           pypi_username: "rom-py"
           version: "1.0.0"
@@ -91,22 +91,22 @@ repositories:
           open_source_license: "MIT license"
       # Then apply standard splitting actions
       - action: "create_src_layout"
-        base_package: "rompy_core"
+        base_package: "rompy"
       - action: "merge_directory_contents"
         merges:
           - from: "rompy"
-            to: "src/rompy_core"
+            to: "src/rompy"
       - action: "remove_files"
         files:
           - "tests/swan/"
           - "tests/schism/"
         patterns:
           - "tests/test_swan*.py"
-          - "src/rompy_core/swan/"
-          - "src/rompy_core/schism/"
+          - "src/rompy/swan/"
+          - "src/rompy/schism/"
       - action: "correct_imports"
         package_type: "core"
-        target_package: "rompy_core"
+        target_package: "rompy"
 
   rompy-swan:
     description: "SWAN wave model plugin for rompy"
@@ -184,6 +184,27 @@ repositories:
           command_line_interface: "No command-line interface"
           create_author_file: "y"
           open_source_license: "MIT license"
+          dependencies: |
+            [
+              "rompy",
+              "gcsfs",
+              "zarr"
+            ]
+          optional_dependencies_test: |
+            [
+              "pytest",
+              "envyaml",
+              "coverage"
+            ]
+          optional_dependencies_docs: |
+            [
+              "autodoc_pydantic",
+              "ipython",
+              "nbsphinx",
+              "pydata_sphinx_theme",
+              "sphinx<7.3.6",
+              "sphinx-collections"
+            ]
       - action: "correct_imports"
         package_type: "swan"
         target_package: "rompy_swan"
@@ -259,6 +280,32 @@ repositories:
           command_line_interface: "No command-line interface"
           create_author_file: "y"
           open_source_license: "MIT license"
+          dependencies: |
+            [
+              "rompy",
+              "pylibs-ocean",
+              "pytmd"
+            ]
+          optional_dependencies_test: |
+            [
+              "pytest",
+              "envyaml",
+              "coverage"
+            ]
+          optional_dependencies_docs: |
+            [
+              "autodoc_pydantic",
+              "ipython",
+              "nbsphinx",
+              "pydata_sphinx_theme",
+              "sphinx<7.3.6",
+              "sphinx-collections"
+            ]
+          optional_dependencies_extra: |
+            [
+              "gcsfs",
+              "zarr"
+            ]
       - action: "correct_imports"
         package_type: "schism"
         target_package: "rompy_schism"

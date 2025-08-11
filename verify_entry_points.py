@@ -86,25 +86,25 @@ def check_installed_entry_points() -> Dict[str, List[str]]:
 def test_load_entry_points_function(split_repos_dir: Path) -> bool:
     """Test the load_entry_points function by importing it and calling it."""
     # Add split_repos_dir to sys.path to allow importing
-    sys.path.insert(0, str(split_repos_dir / "rompy-core" / "src"))
+    sys.path.insert(0, str(split_repos_dir / "rompy" / "src"))
 
     try:
         # Try to import the utils module
-        logger.info("📦 Attempting to import rompy_core.utils...")
-        import rompy_core.utils
+        logger.info("📦 Attempting to import rompy.utils...")
+        import rompy.utils
 
         # Get the load_entry_points function
-        load_entry_points = rompy_core.utils.load_entry_points
+        load_entry_points = rompy.utils.load_entry_points
 
-        # Test with rompy_core.source
-        logger.info("🔍 Testing load_entry_points with rompy_core.source...")
-        sources = load_entry_points("rompy_core.source")
-        logger.info(f"  ✅ load_entry_points('rompy_core.source') returned {len(sources)} entries")
+        # Test with rompy.source
+        logger.info("🔍 Testing load_entry_points with rompy.source...")
+        sources = load_entry_points("rompy.source")
+        logger.info(f"  ✅ load_entry_points('rompy.source') returned {len(sources)} entries")
 
-        # Test with rompy_core.source, etype=timeseries
-        logger.info("🔍 Testing load_entry_points with rompy_core.source, etype=timeseries...")
-        sources_ts = load_entry_points("rompy_core.source", etype="timeseries")
-        logger.info(f"  ✅ load_entry_points('rompy_core.source', etype='timeseries') returned {len(sources_ts)} entries")
+        # Test with rompy.source, etype=timeseries
+        logger.info("🔍 Testing load_entry_points with rompy.source, etype=timeseries...")
+        sources_ts = load_entry_points("rompy.source", etype="timeseries")
+        logger.info(f"  ✅ load_entry_points('rompy.source', etype='timeseries') returned {len(sources_ts)} entries")
 
         # Check if SOURCE_TYPES_TS is empty
         if len(sources_ts) == 0:
@@ -119,13 +119,13 @@ def test_load_entry_points_function(split_repos_dir: Path) -> bool:
         return False
     finally:
         # Remove split_repos_dir from sys.path
-        if str(split_repos_dir / "rompy-core" / "src") in sys.path:
-            sys.path.remove(str(split_repos_dir / "rompy-core" / "src"))
+        if str(split_repos_dir / "rompy" / "src") in sys.path:
+            sys.path.remove(str(split_repos_dir / "rompy" / "src"))
 
 
 def test_source_types_ts_in_data(split_repos_dir: Path) -> bool:
     """Test that SOURCE_TYPES_TS is properly defined and used in data.py."""
-    data_py_path = split_repos_dir / "rompy-core" / "src" / "rompy_core" / "core" / "data.py"
+    data_py_path = split_repos_dir / "rompy" / "src" / "rompy" / "core" / "data.py"
 
     if not data_py_path.exists():
         logger.error(f"❌ data.py not found: {data_py_path}")
@@ -179,13 +179,22 @@ def main():
     logger.info("🔍 Verifying entry points...")
     logger.info("=" * 80)
 
-    # Check each package's pyproject.toml
-    packages = ['rompy-core', 'rompy-swan', 'rompy-schism']
+    # Update all package checks and paths to use 'rompy' instead of 'rompy-core' or 'rompy_core'
+    PACKAGE_NAMES = ['rompy', 'rompy-swan', 'rompy-schism']
     all_verified = True
 
-    for package in packages:
+    for package in PACKAGE_NAMES:
         logger.info(f"\n📦 Checking {package}...")
-        package_dir = split_repos_dir / package
+        if package == 'rompy':
+            package_dir = Path(f"../split-repos/rompy/src/rompy")
+        elif package == 'rompy-swan':
+            package_dir = Path(f"../split-repos/rompy-swan/src/rompy_swan")
+        elif package == 'rompy-schism':
+            package_dir = Path(f"../split-repos/rompy-schism/src/rompy_schism")
+        else:
+            logger.warning(f"⚠️ Unknown package: {package}")
+            all_verified = False
+            continue
 
         if not package_dir.exists():
             logger.warning(f"⚠️ Package directory not found: {package_dir}")
@@ -203,7 +212,7 @@ def main():
             timeseries_entries = [e for e in entries if ":timeseries" in e]
             if timeseries_entries:
                 logger.info(f"    ✅ Found {len(timeseries_entries)} timeseries entries: {timeseries_entries}")
-            elif package == "rompy-core" and "rompy_core.source" in group:
+            elif package == "rompy" and "rompy_core.source" in group:
                 logger.warning(f"    ⚠️ No timeseries entries found in {group}")
                 all_verified = False
 

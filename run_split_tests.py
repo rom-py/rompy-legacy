@@ -65,7 +65,7 @@ class TestRunner:
 
         # Test order (based on dependencies)
         self.test_order = [
-            ('rompy-core', 'rompy_core'),
+            ('rompy', 'rompy'),
             ('rompy-swan', 'rompy_swan'),
             ('rompy-schism', 'rompy_schism'),
             ('rompy-notebooks', 'rompy_notebooks'),
@@ -273,12 +273,12 @@ class TestRunner:
         ]
 
         # Add package-specific import tests
-        if module_name == 'rompy_core':
+        if module_name == 'rompy':
             import_tests.extend([
-                "from rompy_core.core import BaseConfig",
-                "from rompy_core.model import ModelRun",
-                "from rompy_core.formatting import configure_logging",
-                "from rompy_core.utils import load_config",
+                "from rompy.core import BaseConfig",
+                "from rompy.model import ModelRun",
+                "from rompy.formatting import configure_logging",
+                "from rompy.utils import load_config",
             ])
         elif module_name == 'rompy_swan':
             import_tests.extend([
@@ -571,7 +571,7 @@ print(f"Import time: {{end - start:.4f}} seconds")
             # Core first, then swan/schism in parallel, then notebooks
 
             # Phase 1: rompy-core
-            core_result = self.run_package_tests('rompy-core', 'rompy_core', coverage,
+            core_result = self.run_package_tests('rompy', 'rompy', coverage,
                                                skip_integration, skip_performance)
             all_results["package_results"].append(core_result)
             self._update_summary(all_results["summary"], core_result["status"])
@@ -744,7 +744,7 @@ Examples:
 
     parser.add_argument(
         '--package',
-        choices=['rompy-core', 'rompy-swan', 'rompy-schism', 'rompy-notebooks'],
+        choices=['rompy', 'rompy-swan', 'rompy-schism', 'rompy-notebooks'],
         help='Run tests for specific package only'
     )
 
@@ -786,6 +786,9 @@ Examples:
 
     args = parser.parse_args()
 
+    # Convert split_repos_dir to Path
+    args.split_repos_dir = Path(args.split_repos_dir)
+
     # Configure logging level
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
@@ -809,7 +812,7 @@ Examples:
             logger.info(f"🚀 Running tests for {args.package}")
 
             module_map = {
-                'rompy-core': 'rompy_core',
+                'rompy': 'rompy',
                 'rompy-swan': 'rompy_swan',
                 'rompy-schism': 'rompy_schism',
                 'rompy-notebooks': 'rompy_notebooks',
@@ -859,4 +862,87 @@ Examples:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Comprehensive Test Runner for ROMPY Repository Split")
+    parser.add_argument("--split-repos-dir", required=True, help="Directory containing split repositories")
+    parser.add_argument("--package", choices=["rompy", "rompy-swan", "rompy-schism", "rompy-notebooks"], help="Specific package to test")
+    parser.add_argument("--coverage", action="store_true", help="Collect test coverage data")
+    parser.add_argument("--parallel", action="store_true", help="Run tests in parallel where possible")
+    parser.add_argument("--basic-only", action="store_true", help="Run only basic unit and import tests (skip integration and performance)")
+    parser.add_argument("--skip-integration", action="store_true", help="Skip integration tests")
+    parser.add_argument("--skip-performance", action="store_true", help="Skip performance tests")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging")
+    args = parser.parse_args()
+
+    # Convert split_repos_dir to Path
+    args.split_repos_dir = Path(args.split_repos_dir)
+
+    # Configure logging level
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Validate arguments
+    if not args.split_repos_dir.exists():
+        logger.error(f"Split repositories directory not found: {args.split_repos_dir}")
+        sys.exit(1)
+
+    # Handle basic-only flag
+    skip_integration = args.skip_integration or args.basic_only
+    skip_performance = args.skip_performance or args.basic_only
+
+    # Initialize test runner
+    test_runner = TestRunner(args.split_repos_dir)
+
+    try:
+        # Run tests
+        if args.package:
+            # Single package testing
+            logger.info(f"🚀 Running tests for {args.package}")
+
+            module_map = {
+                'rompy': 'rompy',
+                'rompy-swan': 'rompy_swan',
+                'rompy-schism': 'rompy_schism',
+                'rompy-notebooks': 'rompy_notebooks',
+            }
+
+            module_name = module_map[args.package]
+            results = test_runner.run_package_tests(args.package, module_name, args.coverage,
+                                                   skip_integration, skip_performance)
+        else:
+            # All packages testing
+            results = test_runner.run_all_tests(args.coverage, args.parallel,
+                                              skip_integration, skip_performance)
+
+        # Generate and display report
+        report = test_runner.generate_report(results)
+        print(report)
+
+        # Write report to file
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        report_file = f"test_report_{timestamp}.txt"
+        with open(report_file, 'w') as f:
+            f.write(report)
+        logger.info(f"📄 Report written to: {report_file}")
+
+        # Write JSON results for programmatic access
+        json_file = f"test_results_{timestamp}.json"
+        with open(json_file, 'w') as f:
+            json.dump(results, f, indent=2, default=str)
+        logger.info(f"📄 JSON results written to: {json_file}")
+
+        # Exit with appropriate code
+        success = results.get("overall_success", results.get("status") == "passed")
+        if not success or test_runner.errors:
+            logger.error("❌ Tests completed with failures")
+            sys.exit(1)
+        else:
+            logger.info("🎉 All tests passed successfully!")
+            sys.exit(0)
+
+    except KeyboardInterrupt:
+        logger.info("❌ Operation cancelled by user")
+        sys.exit(1)
+    except Exception as e:
+        logger.error(f"❌ Unexpected error: {e}")
+        logger.debug(traceback.format_exc())
+        sys.exit(1)

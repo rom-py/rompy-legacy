@@ -128,6 +128,7 @@ class ImportCorrector:
         Returns:
             Number of corrections applied
         """
+
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
@@ -136,6 +137,11 @@ class ImportCorrector:
             corrections_in_file = 0
 
             for old_pattern, new_pattern in patterns:
+                # Update patterns to use 'rompy' as the core
+                if 'rompy_core' in old_pattern or 'rompy-core' in old_pattern:
+                    old_pattern = old_pattern.replace('rompy_core', 'rompy').replace('rompy-core', 'rompy')
+                if 'rompy_core' in new_pattern or 'rompy-core' in new_pattern:
+                    new_pattern = new_pattern.replace('rompy_core', 'rompy').replace('rompy-core', 'rompy')
                 matches = re.findall(old_pattern, content)
                 if matches:
                     content = re.sub(old_pattern, new_pattern, content)

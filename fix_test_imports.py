@@ -19,29 +19,18 @@ def fix_test_imports_in_file(file_path):
 
         original_content = content
 
-        # Fix rompy module references to rompy_core
+        # Fix import patterns to ensure core package is 'rompy', not 'rompy_core'
         patterns = [
-            # Fix patch references
-            (r'patch\("rompy\.model\.', 'patch("rompy_core.model.'),
-            (r'patch\("rompy\.run\.', 'patch("rompy_core.run.'),
-            (r'patch\("rompy\.', 'patch("rompy_core.'),
-            # Fix direct imports
-            (r"import rompy\.", "import rompy_core."),
-            (r"from rompy\.", "from rompy_core."),
-            # Fix attribute access
-            (r"rompy\.core\.source\.", "rompy_core.core.source."),
-            (r"rompy\.model\.", "rompy_core.model."),
-            (r"rompy\.run\.", "rompy_core.run."),
-            # Fix name references that are not imports
-            (r"= rompy\.", "= rompy_core."),
-            (r"\(rompy\.", "(rompy_core."),
-            # Fix test_utils imports to be absolute (from tests.test_utils...)
-            (r"from \.test_utils", "from tests.test_utils"),
-            (r"import \.test_utils", "import tests.test_utils"),
+            # Revert any previous rompy_core rewrites
+            (r"import rompy_core\\.", "import rompy."),
+            (r"from rompy_core\\.", "from rompy."),
+            (r"import rompy-core\\.", "import rompy."),
+            (r"from rompy-core\\.", "from rompy."),
+            # Ensure test_utils imports are absolute
+            (r"from \\.test_utils", "from tests.test_utils"),
+            (r"import \\.test_utils", "import tests.test_utils"),
             (r"import test_utils", "import tests.test_utils"),
             (r"from test_utils", "from tests.test_utils"),
-            (r"from tests.schism", "from tests"),
-            (r"tests/schism/test_data", "tests/test_data"),
         ]
 
         for pattern, replacement in patterns:
@@ -49,7 +38,7 @@ def fix_test_imports_in_file(file_path):
 
         # Write back if changed
         if content != original_content:
-            with open(file_path, "w", encoding="utf-8") as f:
+            with open(file_pathlogging.getLogger(__name__), "w", encoding="utf-8") as f:
                 f.write(content)
             return True
 
@@ -64,7 +53,7 @@ def remove_problematic_tests():
     """Remove or disable tests that reference missing modules"""
 
     split_dir = Path("../split-repos").resolve()
-    core_tests = split_dir / "rompy-core" / "tests"
+    core_tests = split_dir / "rompy" / "tests"
 
     # Tests that reference missing run modules
     problematic_patterns = [
@@ -155,7 +144,7 @@ def remove_problematic_tests():
 def ensure_test_package_files():
     """Recursively add __init__.py to all test dirs and conftest.py to top-level tests/ in split repos."""
     split_dir = Path("../split-repos").resolve()
-    packages = ["rompy-core", "rompy-swan", "rompy-schism"]
+    packages = ["rompy", "rompy-swan", "rompy-schism"]
     for package in packages:
         tests_dir = split_dir / package / "tests"
         if tests_dir.exists():
@@ -182,7 +171,7 @@ def main():
     print("🚀 Fixing remaining test imports for repository split completion...")
 
     # Fix imports in all split package tests
-    packages = ["rompy-core", "rompy-swan", "rompy-schism"]
+    packages = ["rompy", "rompy-swan", "rompy-schism"]
     for package in packages:
         tests_dir = split_dir / package / "tests"
         if tests_dir.exists():
@@ -200,13 +189,13 @@ def main():
     print("✅ Ensured __init__.py and conftest.py in all test directories")
 
     # Remove the most problematic tests that can't be easily fixed
-    print("🔧 Disabling problematic tests...")
-    removed_count = remove_problematic_tests()
-    print(f"✅ Disabled {removed_count} problematic test files")
+    # print("🔧 Disabling problematic tests...")
+    # removed_count = remove_problematic_tests()
+    # print(f"✅ Disabled {removed_count} problematic test files")
 
     print("🎉 All test import fixes completed!")
     print("\nKey improvements:")
-    print("- Fixed rompy.* -> rompy_core.* references in test files")
+    print("- Fixed rompy.* references in test files")
     print("- Created minimal stubs for missing run modules")
     print("- Disabled tests that reference unavailable backend functionality")
     print("- Ensured __init__.py and conftest.py in all test directories")

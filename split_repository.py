@@ -615,9 +615,118 @@ class RepositorySplitter:
                 # Merge the generated files with the existing split repository
                 self._merge_cookiecutter_output(target_dir, output_dir, merge_strategy)
 
+                # Move dependency injection to after all merges
+                self._inject_dependencies_from_template_context(target_dir, template_context)
+
             except Exception as e:
                 logger.error(f"Failed to apply cookiecutter template: {e}")
                 raise
+
+    def _inject_dependencies_from_template_context(self, target_dir: str, template_context: dict):
+        """
+        Inject dependencies from template_context into pyproject.toml in target_dir.
+        Handles dependencies, optional_dependencies_test, optional_dependencies_docs, and any other optional dependencies.
+        If dependencies are empty and the package is 'rompy', extract them from the original monorepo's pyproject.toml.
+        Only update the dependencies/optional-dependencies keys, preserving all other fields (e.g. entry-points).
+        If [project.entry-points."rompy.source"] is missing or empty, copy from the monorepo if present.
+        For [project.entry-points."rompy.config"] in the core package, ensure only the base entry remains.
+        """
+        import ast
+        try:
+            import tomli
+            import tomli_w
+        except ImportError:
+            logger.warning("tomli/tomli_w not available, skipping pyproject.toml dependency injection")
+            return
+
+        pyproject_path = os.path.join(target_dir, 'pyproject.toml')
+        logger.info(f"[inject_deps] Looking for pyproject.toml at: {pyproject_path}")
+        if not os.path.exists(pyproject_path):
+            logger.warning(f"[inject_deps] No pyproject.toml found in {target_dir}, skipping dependency injection")
+            return
+
+        # Parse dependency fields from template_context
+        dependencies = []
+        optional_deps = {}
+        for key, value in template_context.items():
+            if key == 'dependencies' and value:
+                try:
+                    dependencies = ast.literal_eval(value) if isinstance(value, str) else value
+                    logger.info(f"[inject_deps] Parsed dependencies: {dependencies}")
+                except Exception as e:
+                    logger.warning(f"[inject_deps] Failed to parse dependencies: {e}")
+            elif key.startswith('optional_dependencies_') and value:
+                group = key[len('optional_dependencies_'):]
+                try:
+                    optional_deps[group] = ast.literal_eval(value) if isinstance(value, str) else value
+                    logger.info(f"[inject_deps] Parsed optional deps for {group}: {optional_deps[group]}")
+                except Exception as e:
+                    logger.warning(f"[inject_deps] Failed to parse {key}: {e}")
+
+        # If dependencies are empty and this is the rompy core package, extract from monorepo pyproject.toml
+        package_name = template_context.get('package_name') or template_context.get('repo_name') or os.path.basename(target_dir)
+        monorepo_entry_points = None
+        if not dependencies and package_name == 'rompy':
+            # Find the original monorepo pyproject.toml
+            monorepo_pyproject = os.path.join(os.path.dirname(__file__), 'pyproject.toml')
+            logger.info(f"[inject_deps] No dependencies in template_context for rompy, extracting from monorepo: {monorepo_pyproject}")
+            if os.path.exists(monorepo_pyproject):
+                with open(monorepo_pyproject, 'rb') as f:
+                    monorepo_data = tomli.load(f)
+                deps = monorepo_data.get('project', {}).get('dependencies', [])
+                opt_deps = monorepo_data.get('project', {}).get('optional-dependencies', {})
+                dependencies = deps
+                optional_deps = opt_deps
+                # Also get entry-points from monorepo
+                monorepo_entry_points = monorepo_data.get('project', {}).get('entry-points', {})
+                logger.info(f"[inject_deps] Extracted dependencies from monorepo: {dependencies}")
+                logger.info(f"[inject_deps] Extracted optional dependencies from monorepo: {optional_deps}")
+                logger.info(f"[inject_deps] Extracted entry-points from monorepo: {monorepo_entry_points}")
+            else:
+                logger.warning(f"[inject_deps] Could not find monorepo pyproject.toml at {monorepo_pyproject}")
+
+        # Read pyproject.toml
+        with open(pyproject_path, 'rb') as f:
+            data = tomli.load(f)
+
+        # Only update dependencies and optional-dependencies keys, preserve all other fields
+        if 'project' not in data:
+            data['project'] = {}
+        if dependencies:
+            data['project']['dependencies'] = dependencies
+        # Only update optional-dependencies, preserve any other keys (like entry-points)
+        if optional_deps:
+            if 'optional-dependencies' not in data['project']:
+                data['project']['optional-dependencies'] = {}
+            for group, deps in optional_deps.items():
+                data['project']['optional-dependencies'][group] = deps
+
+        # If this is rompy, ensure entry-points.rompy.source is present and non-empty
+        if package_name == 'rompy':
+            # Check if entry-points.rompy.source is missing or empty
+            entry_points = data['project'].get('entry-points', {})
+            rompy_source = entry_points.get('rompy.source') if entry_points else None
+            if (not rompy_source or (isinstance(rompy_source, dict) and not rompy_source)) and monorepo_entry_points:
+                # Copy from monorepo if present
+                if 'entry-points' not in data['project']:
+                    data['project']['entry-points'] = {}
+                if 'rompy.source' in monorepo_entry_points:
+                    data['project']['entry-points']['rompy.source'] = monorepo_entry_points['rompy.source']
+                    logger.info(f"[inject_deps] Injected rompy.source entry-points from monorepo into split package.")
+            # Ensure only the correct rompy.config entry remains
+            if 'rompy.config' in data['project'].get('entry-points', {}):
+                data['project']['entry-points']['rompy.config'] = {
+                    'base': 'rompy.core.config:BaseConfig'
+                }
+                logger.info(f"[inject_deps] Set rompy.config entry-point to only base=rompy.core.config:BaseConfig for core package.")
+
+        # Write back
+        with open(pyproject_path, 'wb') as f:
+            tomli_w.dump(data, f)
+        logger.info(f"[inject_deps] Injected dependencies into pyproject.toml in {target_dir}")
+        # Log the resulting file for debug
+        with open(pyproject_path, 'r') as f:
+            logger.info(f"[inject_deps] Final pyproject.toml contents:\n{f.read()}")
 
     def _merge_cookiecutter_output(self, target_dir: str, cookiecutter_output: str,
                                  merge_strategy: str):
@@ -759,13 +868,13 @@ class RepositorySplitter:
                 (r'^from rompy\.swan', f'from {target_package}'),
                 (r'^import rompy\.swan', f'import {target_package}'),
                 # Convert other rompy imports to rompy-core
-                (r'^from rompy\.core', 'from rompy_core.core'),
-                (r'^from rompy\.([^.\s]+)', 'from rompy_core.\\1'),
-                (r'^import rompy\.core', 'import rompy_core.core'),
-                (r'^import rompy\.([^.\s]+)', 'import rompy_core.\\1'),
+                (r'^from rompy\.core', 'from rompy'),
+                (r'^from rompy\.([^.\s]+)', 'from rompy.\\1'),
+                (r'^import rompy\.core', 'import rompy'),
+                (r'^import rompy\.([^.\s]+)', 'import rompy.\\1'),
                 # Convert simple rompy import to rompy-core (but be careful about context)
-                (r'^import rompy$', 'import rompy_core'),
-                (r'^from rompy import', 'from rompy_core import'),
+                (r'^import rompy$', 'import rompy'),
+                (r'^from rompy import', 'from rompy import'),
             ])
 
         elif package_type == 'schism':
@@ -775,13 +884,13 @@ class RepositorySplitter:
                 (r'^from rompy\.schism', f'from {target_package}'),
                 (r'^import rompy\.schism', f'import {target_package}'),
                 # Convert other rompy imports to rompy-core
-                (r'^from rompy\.core', 'from rompy_core.core'),
-                (r'^from rompy\.([^.\s]+)', 'from rompy_core.\\1'),
-                (r'^import rompy\.core', 'import rompy_core.core'),
-                (r'^import rompy\.([^.\s]+)', 'import rompy_core.\\1'),
+                (r'^from rompy\.core', 'from rompy'),
+                (r'^from rompy\.([^.\s]+)', 'from rompy.\\1'),
+                (r'^import rompy\.core', 'import rompy'),
+                (r'^import rompy\.([^.\s]+)', 'import rompy.\\1'),
                 # Convert simple rompy import to rompy-core
-                (r'^import rompy$', 'import rompy_core'),
-                (r'^from rompy import', 'from rompy_core import'),
+                (r'^import rompy$', 'import rompy'),
+                (r'^from rompy import', 'from rompy import'),
             ])
 
         elif package_type == 'notebooks':
