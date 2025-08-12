@@ -542,7 +542,7 @@
 <p>ROMPY’s logging system is built on Python’s standard <cite>logging</cite> module but provides additional features and consistency.</p>
 <section id="basic-usage">
 <h3>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
 
 <span class="c1"># Get a logger for your module</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -588,12 +588,14 @@
 </table>
 </div>
 <p>Programmatic configuration is also available:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">configure_logging</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
 
-<span class="n">configure_logging</span><span class="p">(</span>
+<span class="c1"># Configure logging</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">LoggingConfig</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
     <span class="n">level</span><span class="o">=</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span>
-    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;detailed&quot;</span><span class="p">,</span>
-    <span class="n">log_file</span><span class="o">=</span><span class="s2">&quot;rompy.log&quot;</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;verbose&quot;</span><span class="p">,</span>
+    <span class="n">log_dir</span><span class="o">=</span><span class="s2">&quot;./logs&quot;</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -642,25 +644,32 @@
 <p>ROMPY provides utilities for creating consistent, visually appealing output.</p>
 <section id="boxes-and-sections">
 <h3>Boxes and Sections<a class="headerlink" href="#boxes-and-sections" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span><span class="p">,</span> <span class="n">section</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_formatted_box</span><span class="p">,</span> <span class="n">log_box</span>
 
 <span class="c1"># Create a simple box</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">box</span><span class="p">(</span><span class="s2">&quot;Important Message&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">get_formatted_box</span><span class="p">(</span><span class="s2">&quot;Important Message&quot;</span><span class="p">))</span>
 
-<span class="c1"># Create a section with content</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="p">(</span><span class="s2">&quot;Processing Results&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Item 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Item 2&quot;</span><span class="p">,</span> <span class="s2">&quot;Item 3&quot;</span><span class="p">]))</span>
+<span class="c1"># Create a section with content - using the logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">log_box</span><span class="p">(</span><span class="s2">&quot;Processing Results&quot;</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="progress-indicators">
 <h3>Progress Indicators<a class="headerlink" href="#progress-indicators" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProgressBar</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_horizontal_line</span>
 
-<span class="k">with</span> <span class="n">ProgressBar</span><span class="p">(</span><span class="s2">&quot;Processing&quot;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-        <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># Show progress with logging</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting processing...&quot;</span><span class="p">)</span>
+<span class="n">log_horizontal_line</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Progress: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&quot;Processing complete!&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -685,8 +694,8 @@
 <section id="example-integration">
 <h2>Example Integration<a class="headerlink" href="#example-integration" title="Link to this heading">#</a></h2>
 <p>Here’s how these components work together in a typical ROMPY module:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">section</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">section</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">RompyBaseModel</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>

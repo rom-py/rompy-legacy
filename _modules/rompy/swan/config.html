@@ -498,7 +498,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseConfig</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_formatted_box</span><span class="p">,</span> <span class="n">get_formatted_header_footer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components</span><span class="w"> </span><span class="kn">import</span> <span class="n">boundary</span><span class="p">,</span> <span class="n">cgrid</span><span class="p">,</span> <span class="n">numerics</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.group</span><span class="w"> </span><span class="kn">import</span> <span class="n">INPGRIDS</span><span class="p">,</span> <span class="n">LOCKUP</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">,</span> <span class="n">PHYSICS</span><span class="p">,</span> <span class="n">STARTUP</span>
@@ -736,7 +736,7 @@
 <span class="sd">            A formatted string or None to use default formatting</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Import specific types if needed</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanGrid</span>
 
         <span class="c1"># Get ASCII mode setting from LoggingConfig</span>
@@ -1043,7 +1043,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># Use the new LoggingConfig for logging settings</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
 
         <span class="n">logging_config</span> <span class="o">=</span> <span class="n">LoggingConfig</span><span class="p">()</span>
         <span class="n">USE_ASCII_ONLY</span> <span class="o">=</span> <span class="n">logging_config</span><span class="o">.</span><span class="n">use_ascii</span>

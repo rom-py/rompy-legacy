@@ -513,7 +513,7 @@
     <span class="n">create_tidal_boundary</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMGrid</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">ARROW</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.tides_enhanced</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundarySetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">total_seconds</span>
@@ -1669,7 +1669,7 @@
 <span class="sd">            A formatted string or None to use default formatting</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Import specific types and formatting utilities</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingConfig</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.formatting</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_formatted_header_footer</span>
 
         <span class="c1"># Get ASCII mode setting from LoggingConfig</span>
@@ -1843,16 +1843,16 @@
 <span class="sd">    for both boundary conditions and their data sources.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">elev_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="s2">&quot;SCHISMDataBoundary&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">elev_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">DataGrid</span><span class="p">,</span> <span class="n">SCHISMDataBoundary</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Data source for elevation boundary condition&quot;</span>
     <span class="p">)</span>
-    <span class="n">vel_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="s2">&quot;SCHISMDataBoundary&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">vel_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">DataGrid</span><span class="p">,</span> <span class="n">SCHISMDataBoundary</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Data source for velocity boundary condition&quot;</span>
     <span class="p">)</span>
-    <span class="n">temp_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="s2">&quot;SCHISMDataBoundary&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">temp_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">DataGrid</span><span class="p">,</span> <span class="n">SCHISMDataBoundary</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Data source for temperature boundary condition&quot;</span>
     <span class="p">)</span>
-    <span class="n">salt_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="s2">&quot;SCHISMDataBoundary&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">salt_source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">DataBlob</span><span class="p">,</span> <span class="n">DataGrid</span><span class="p">,</span> <span class="n">SCHISMDataBoundary</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Data source for salinity boundary condition&quot;</span>
     <span class="p">)</span>
 
