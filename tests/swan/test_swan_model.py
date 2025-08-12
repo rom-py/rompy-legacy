@@ -6,15 +6,14 @@ from pathlib import Path
 
 import pytest
 from envyaml import EnvYAML
+# Import test utilities
+from test_utils.logging import get_test_logger
 
 from rompy.core.source import SourceIntake
 from rompy.model import ModelRun
 from rompy.swan import Boundnest1
 from rompy.swan.config import SwanConfigComponents
 from rompy.swan.interface import BoundaryInterface
-
-# Import test utilities
-from test_utils.logging import get_test_logger
 
 # Initialize logger
 logger = get_test_logger(__name__)
@@ -31,7 +30,6 @@ def config_dict():
 
 def test_swan_model(tmpdir, config_dict):
     config = SwanConfigComponents(
-        template=str(HERE / "../../rompy/templates/swancomp"),
         startup=config_dict["startup"],
         cgrid=config_dict["cgrid"],
         inpgrid=config_dict["inpgrid"],
@@ -54,7 +52,6 @@ def test_swan_model(tmpdir, config_dict):
 
 def test_swan_model_boundary(tmpdir, config_dict):
     config = SwanConfigComponents(
-        template=str(HERE / "../../rompy/templates/swancomp"),
         startup=config_dict["startup"],
         cgrid=config_dict["cgrid"],
         inpgrid=config_dict["inpgrid"],
