@@ -24,24 +24,20 @@ import argparse
 import json
 import logging
 import os
+import re
 import subprocess
 import sys
 import time
+import traceback
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-import traceback
-import re
-
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler('run_split_tests.log')
-    ]
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(), logging.FileHandler("run_split_tests.log")],
 )
 logger = logging.getLogger(__name__)
 
@@ -59,34 +55,39 @@ class TestRunner:
             split_repos_dir: Directory containing all split repositories
         """
         self.split_repos_dir = Path(split_repos_dir).resolve()
-        self.venv_base_dir = self.split_repos_dir / ".testing-envs"
+        self.venv_base_dir = self.split_repos_dir
         self.results = {}
         self.errors = []
 
         # Test order (based on dependencies)
         self.test_order = [
-            ('rompy', 'rompy'),
-            ('rompy-swan', 'rompy_swan'),
-            ('rompy-schism', 'rompy_schism'),
-            ('rompy-notebooks', 'rompy_notebooks'),
+            ("rompy", "rompy"),
+            ("rompy-swan", "rompy_swan"),
+            ("rompy-schism", "rompy_schism"),
+            ("rompy-notebooks", "rompy_notebooks"),
         ]
 
     def get_venv_python(self, venv_path: Path) -> Path:
         """Get the Python executable path for a virtual environment."""
-        if os.name == 'nt':  # Windows
+        if os.name == "nt":  # Windows
             return venv_path / "Scripts" / "python.exe"
         else:  # Unix-like
             return venv_path / "bin" / "python"
 
     def get_venv_pip(self, venv_path: Path) -> Path:
         """Get the pip executable path for a virtual environment."""
-        if os.name == 'nt':  # Windows
+        if os.name == "nt":  # Windows
             return venv_path / "Scripts" / "pip.exe"
         else:  # Unix-like
             return venv_path / "bin" / "pip"
 
-    def run_command(self, command: List[str], cwd: Optional[Path] = None,
-                   capture_output: bool = True, timeout: int = 600) -> Tuple[bool, str, str]:
+    def run_command(
+        self,
+        command: List[str],
+        cwd: Optional[Path] = None,
+        capture_output: bool = True,
+        timeout: int = 600,
+    ) -> Tuple[bool, str, str]:
         """
         Run a command and return success status and output.
 
@@ -110,7 +111,7 @@ class TestRunner:
                 capture_output=capture_output,
                 text=True,
                 timeout=timeout,
-                check=False
+                check=False,
             )
 
             success = result.returncode == 0
@@ -120,7 +121,9 @@ class TestRunner:
             return success, stdout, stderr
 
         except subprocess.TimeoutExpired:
-            error_msg = f"Command timed out after {timeout} seconds: {' '.join(command)}"
+            error_msg = (
+                f"Command timed out after {timeout} seconds: {' '.join(command)}"
+            )
             logger.error(error_msg)
             return False, "", error_msg
         except Exception as e:
@@ -139,46 +142,53 @@ class TestRunner:
             Dictionary with parsed test statistics
         """
         stats = {
-            'total_tests': 0,
-            'passed': 0,
-            'failed': 0,
-            'skipped': 0,
-            'errors': 0,
-            'warnings': 0,
-            'duration': 0.0,
-            'success_rate': 0.0
+            "total_tests": 0,
+            "passed": 0,
+            "failed": 0,
+            "skipped": 0,
+            "errors": 0,
+            "warnings": 0,
+            "duration": 0.0,
+            "success_rate": 0.0,
         }
 
         try:
             # Extract test counts from pytest summary line
             # Example: "= 85 passed, 2 skipped in 15.23s ="
-            summary_pattern = r'=+\s*(\d+)\s+passed(?:,\s*(\d+)\s+failed)?(?:,\s*(\d+)\s+skipped)?(?:,\s*(\d+)\s+error)?.*?in\s+([\d.]+)s\s*=+'
+            summary_pattern = r"=+\s*(\d+)\s+passed(?:,\s*(\d+)\s+failed)?(?:,\s*(\d+)\s+skipped)?(?:,\s*(\d+)\s+error)?.*?in\s+([\d.]+)s\s*=+"
             match = re.search(summary_pattern, output)
 
             if match:
-                stats['passed'] = int(match.group(1) or 0)
-                stats['failed'] = int(match.group(2) or 0)
-                stats['skipped'] = int(match.group(3) or 0)
-                stats['errors'] = int(match.group(4) or 0)
-                stats['duration'] = float(match.group(5) or 0)
-                stats['total_tests'] = stats['passed'] + stats['failed'] + stats['skipped'] + stats['errors']
+                stats["passed"] = int(match.group(1) or 0)
+                stats["failed"] = int(match.group(2) or 0)
+                stats["skipped"] = int(match.group(3) or 0)
+                stats["errors"] = int(match.group(4) or 0)
+                stats["duration"] = float(match.group(5) or 0)
+                stats["total_tests"] = (
+                    stats["passed"]
+                    + stats["failed"]
+                    + stats["skipped"]
+                    + stats["errors"]
+                )
 
             # Calculate success rate
-            if stats['total_tests'] > 0:
-                stats['success_rate'] = (stats['passed'] / stats['total_tests']) * 100
+            if stats["total_tests"] > 0:
+                stats["success_rate"] = (stats["passed"] / stats["total_tests"]) * 100
 
             # Count warnings
-            warning_pattern = r'(\d+)\s+warning'
+            warning_pattern = r"(\d+)\s+warning"
             warning_match = re.search(warning_pattern, output)
             if warning_match:
-                stats['warnings'] = int(warning_match.group(1))
+                stats["warnings"] = int(warning_match.group(1))
 
         except Exception as e:
             logger.warning(f"Failed to parse pytest output: {e}")
 
         return stats
 
-    def run_basic_tests(self, package_name: str, venv_path: Path, coverage: bool = False) -> Dict:
+    def run_basic_tests(
+        self, package_name: str, venv_path: Path, coverage: bool = False
+    ) -> Dict:
         """
         Run basic unit tests for a package.
 
@@ -210,48 +220,68 @@ class TestRunner:
                 "status": "no_tests",
                 "message": "No tests directory found",
                 "stats": {},
-                "duration": 0.0
+                "duration": 0.0,
             }
 
         # Prepare pytest command
-        pytest_cmd = [str(python_exe), "-m", "pytest", str(tests_dir), "-v", "--tb=short"]
+        pytest_cmd = [
+            str(python_exe),
+            "-m",
+            "pytest",
+            str(tests_dir),
+            "-v",
+            "--tb=short",
+        ]
 
         if coverage:
-            pytest_cmd.extend([
-                "--cov", str(package_dir / "src"),
-                "--cov-report", "term-missing",
-                "--cov-report", f"html:{package_dir}/htmlcov"
-            ])
+            pytest_cmd.extend(
+                [
+                    "--cov",
+                    str(package_dir / "src"),
+                    "--cov-report",
+                    "term-missing",
+                    "--cov-report",
+                    f"html:{package_dir}/htmlcov",
+                ]
+            )
 
         # Add HTML report
-        pytest_cmd.extend(["--html", str(package_dir / "test_report.html"), "--self-contained-html"])
+        pytest_cmd.extend(
+            ["--html", str(package_dir / "test_report.html"), "--self-contained-html"]
+        )
 
         # Run pytest
         start_time = time.time()
-        success, stdout, stderr = self.run_command(pytest_cmd, cwd=package_dir, timeout=900)
+        success, stdout, stderr = self.run_command(
+            pytest_cmd, cwd=package_dir, timeout=900
+        )
         end_time = time.time()
 
         # Parse test output
         stats = self.parse_pytest_output(stdout)
-        stats['duration'] = end_time - start_time
+        stats["duration"] = end_time - start_time
 
         result = {
             "status": "passed" if success else "failed",
             "stats": stats,
-            "duration": stats['duration'],
+            "duration": stats["duration"],
             "stdout": stdout,
-            "stderr": stderr
+            "stderr": stderr,
         }
 
         if success:
-            logger.info(f"✅ Basic tests passed for {package_name} "
-                       f"({stats['passed']}/{stats['total_tests']} tests, {stats['duration']:.1f}s)")
+            logger.info(
+                f"✅ Basic tests passed for {package_name} "
+                f"({stats['passed']}/{stats['total_tests']} tests, {stats['duration']:.1f}s)"
+            )
         else:
             logger.error(f"❌ Basic tests failed for {package_name}")
 
         return result
 
-    def run_import_tests(self, package_name: str, module_name: str, venv_path: Path) -> Dict:
+    def run_import_tests(
+        self, package_name: str, module_name: str, venv_path: Path
+    ) -> Dict:
         """
         Run import tests to verify all modules can be imported.
 
@@ -273,43 +303,51 @@ class TestRunner:
         ]
 
         # Add package-specific import tests
-        if module_name == 'rompy':
-            import_tests.extend([
-                "from rompy.core import BaseConfig",
-                "from rompy.model import ModelRun",
-                "from rompy.formatting import configure_logging",
-                "from rompy.utils import load_config",
-            ])
-        elif module_name == 'rompy_swan':
-            import_tests.extend([
-                "from rompy_swan import SwanConfig",
-                "from rompy_swan.components import SwanGrid",
-            ])
-        elif module_name == 'rompy_schism':
-            import_tests.extend([
-                "from rompy_schism import SCHISMConfig",
-                "from rompy_schism import SCHISMGrid",
-            ])
+        if module_name == "rompy":
+            import_tests.extend(
+                [
+                    "from rompy.core import BaseConfig",
+                    "from rompy.model import ModelRun",
+                    "from rompy.formatting import configure_logging",
+                    "from rompy.utils import load_config",
+                ]
+            )
+        elif module_name == "rompy_swan":
+            import_tests.extend(
+                [
+                    "from rompy_swan import SwanConfig",
+                    "from rompy_swan.components import SwanGrid",
+                ]
+            )
+        elif module_name == "rompy_schism":
+            import_tests.extend(
+                [
+                    "from rompy_schism import SCHISMConfig",
+                    "from rompy_schism import SCHISMGrid",
+                ]
+            )
 
         results = []
         total_time = 0
 
         for test in import_tests:
             start_time = time.time()
-            success, stdout, stderr = self.run_command([
-                str(python_exe), "-c", test
-            ], timeout=30)
+            success, stdout, stderr = self.run_command(
+                [str(python_exe), "-c", test], timeout=30
+            )
             end_time = time.time()
 
             duration = end_time - start_time
             total_time += duration
 
-            results.append({
-                "test": test,
-                "success": success,
-                "duration": duration,
-                "error": stderr if not success else None
-            })
+            results.append(
+                {
+                    "test": test,
+                    "success": success,
+                    "duration": duration,
+                    "error": stderr if not success else None,
+                }
+            )
 
             if success:
                 logger.debug(f"  ✅ {test}")
@@ -324,10 +362,12 @@ class TestRunner:
             "passed": passed,
             "total": total,
             "duration": total_time,
-            "tests": results
+            "tests": results,
         }
 
-        logger.info(f"{'✅' if passed == total else '❌'} Import tests: {passed}/{total} passed")
+        logger.info(
+            f"{'✅' if passed == total else '❌'} Import tests: {passed}/{total} passed"
+        )
 
         return result
 
@@ -348,17 +388,17 @@ class TestRunner:
 
         integration_tests = []
 
-        if package_name == 'rompy-swan':
+        if package_name == "rompy-swan":
             integration_tests = [
                 "import rompy_core; import rompy_swan; print('Core + Swan integration OK')",
                 "from rompy_core.core import BaseConfig; from rompy_swan import SwanConfig; print('Config integration OK')",
             ]
-        elif package_name == 'rompy-schism':
+        elif package_name == "rompy-schism":
             integration_tests = [
                 "import rompy_core; import rompy_schism; print('Core + Schism integration OK')",
                 "from rompy_core.core import BaseConfig; from rompy_schism import SCHISMConfig; print('Config integration OK')",
             ]
-        elif package_name == 'rompy-notebooks':
+        elif package_name == "rompy-notebooks":
             integration_tests = [
                 "import rompy_core; import rompy_swan; import rompy_schism; print('All packages integration OK')",
                 "from rompy_core.model import ModelRun; print('ModelRun integration OK')",
@@ -368,7 +408,7 @@ class TestRunner:
             return {
                 "status": "skipped",
                 "message": "No integration tests defined for this package",
-                "tests": []
+                "tests": [],
             }
 
         results = []
@@ -376,21 +416,23 @@ class TestRunner:
 
         for test in integration_tests:
             start_time = time.time()
-            success, stdout, stderr = self.run_command([
-                str(python_exe), "-c", test
-            ], timeout=60)
+            success, stdout, stderr = self.run_command(
+                [str(python_exe), "-c", test], timeout=60
+            )
             end_time = time.time()
 
             duration = end_time - start_time
             total_time += duration
 
-            results.append({
-                "test": test,
-                "success": success,
-                "duration": duration,
-                "output": stdout,
-                "error": stderr if not success else None
-            })
+            results.append(
+                {
+                    "test": test,
+                    "success": success,
+                    "duration": duration,
+                    "output": stdout,
+                    "error": stderr if not success else None,
+                }
+            )
 
             if success:
                 logger.debug("  ✅ Integration test passed")
@@ -405,10 +447,12 @@ class TestRunner:
             "passed": passed,
             "total": total,
             "duration": total_time,
-            "tests": results
+            "tests": results,
         }
 
-        logger.info(f"{'✅' if passed == total else '❌'} Integration tests: {passed}/{total} passed")
+        logger.info(
+            f"{'✅' if passed == total else '❌'} Integration tests: {passed}/{total} passed"
+        )
 
         return result
 
@@ -437,13 +481,13 @@ print(f"Import time: {{end - start:.4f}} seconds")
 """
 
         start_time = time.time()
-        success, stdout, stderr = self.run_command([
-            str(python_exe), "-c", import_timing_test
-        ], timeout=30)
+        success, stdout, stderr = self.run_command(
+            [str(python_exe), "-c", import_timing_test], timeout=30
+        )
         end_time = time.time()
 
         if success and "Import time:" in stdout:
-            match = re.search(r'Import time: ([\d.]+)', stdout)
+            match = re.search(r"Import time: ([\d.]+)", stdout)
             import_time = float(match.group(1)) if match else end_time - start_time
         else:
             import_time = end_time - start_time
@@ -453,15 +497,21 @@ print(f"Import time: {{end - start:.4f}} seconds")
             "import_time": import_time,
             "total_duration": end_time - start_time,
             "output": stdout,
-            "error": stderr if not success else None
+            "error": stderr if not success else None,
         }
 
         logger.info(f"⚡ Import performance: {import_time:.4f}s")
 
         return result
 
-    def run_package_tests(self, package_name: str, module_name: str, coverage: bool = False,
-                         skip_integration: bool = False, skip_performance: bool = False) -> Dict:
+    def run_package_tests(
+        self,
+        package_name: str,
+        module_name: str,
+        coverage: bool = False,
+        skip_integration: bool = False,
+        skip_performance: bool = False,
+    ) -> Dict:
         """
         Run comprehensive tests for a single package.
 
@@ -478,7 +528,7 @@ print(f"Import time: {{end - start:.4f}} seconds")
         logger.info(f"🎯 Running comprehensive tests for {package_name}")
 
         # Check if virtual environment exists
-        venv_path = self.venv_base_dir / f"{package_name}-venv"
+        venv_path = self.venv_base_dir / f"{package_name}/.venv"
         if not venv_path.exists():
             error_msg = f"Virtual environment not found for {package_name}: {venv_path}"
             logger.error(error_msg)
@@ -487,7 +537,7 @@ print(f"Import time: {{end - start:.4f}} seconds")
                 "module_name": module_name,
                 "status": "error",
                 "error": error_msg,
-                "tests": {}
+                "tests": {},
             }
 
         start_time = time.time()
@@ -497,26 +547,36 @@ print(f"Import time: {{end - start:.4f}} seconds")
             "module_name": module_name,
             "venv_path": str(venv_path),
             "start_time": start_time,
-            "tests": {}
+            "tests": {},
         }
 
         try:
             # Run import tests
-            test_results["tests"]["import"] = self.run_import_tests(package_name, module_name, venv_path)
+            test_results["tests"]["import"] = self.run_import_tests(
+                package_name, module_name, venv_path
+            )
 
             # Run basic unit tests
-            test_results["tests"]["unit"] = self.run_basic_tests(package_name, venv_path, coverage)
+            test_results["tests"]["unit"] = self.run_basic_tests(
+                package_name, venv_path, coverage
+            )
 
             # Run integration tests (if not skipped)
             if not skip_integration:
-                test_results["tests"]["integration"] = self.run_integration_tests(package_name, venv_path)
+                test_results["tests"]["integration"] = self.run_integration_tests(
+                    package_name, venv_path
+                )
 
             # Run performance tests (if not skipped)
             if not skip_performance:
-                test_results["tests"]["performance"] = self.run_performance_tests(package_name, venv_path)
+                test_results["tests"]["performance"] = self.run_performance_tests(
+                    package_name, venv_path
+                )
 
             # Calculate overall status
-            test_statuses = [result["status"] for result in test_results["tests"].values()]
+            test_statuses = [
+                result["status"] for result in test_results["tests"].values()
+            ]
             if all(status in ["passed", "skipped"] for status in test_statuses):
                 test_results["status"] = "passed"
             elif any(status == "failed" for status in test_statuses):
@@ -532,15 +592,24 @@ print(f"Import time: {{end - start:.4f}} seconds")
             logger.debug(traceback.format_exc())
 
         test_results["end_time"] = time.time()
-        test_results["total_duration"] = test_results["end_time"] - test_results["start_time"]
+        test_results["total_duration"] = (
+            test_results["end_time"] - test_results["start_time"]
+        )
 
         status_icon = "✅" if test_results["status"] == "passed" else "❌"
-        logger.info(f"{status_icon} Completed tests for {package_name} ({test_results['total_duration']:.1f}s)")
+        logger.info(
+            f"{status_icon} Completed tests for {package_name} ({test_results['total_duration']:.1f}s)"
+        )
 
         return test_results
 
-    def run_all_tests(self, coverage: bool = False, parallel: bool = False,
-                     skip_integration: bool = False, skip_performance: bool = False) -> Dict:
+    def run_all_tests(
+        self,
+        coverage: bool = False,
+        parallel: bool = False,
+        skip_integration: bool = False,
+        skip_performance: bool = False,
+    ) -> Dict:
         """
         Run tests for all packages.
 
@@ -559,11 +628,7 @@ print(f"Import time: {{end - start:.4f}} seconds")
             "total_packages": len(self.test_order),
             "start_time": time.time(),
             "package_results": [],
-            "summary": {
-                "passed": 0,
-                "failed": 0,
-                "errors": 0
-            }
+            "summary": {"passed": 0, "failed": 0, "errors": 0},
         }
 
         if parallel:
@@ -571,17 +636,27 @@ print(f"Import time: {{end - start:.4f}} seconds")
             # Core first, then swan/schism in parallel, then notebooks
 
             # Phase 1: rompy-core
-            core_result = self.run_package_tests('rompy', 'rompy', coverage,
-                                               skip_integration, skip_performance)
+            core_result = self.run_package_tests(
+                "rompy", "rompy", coverage, skip_integration, skip_performance
+            )
             all_results["package_results"].append(core_result)
             self._update_summary(all_results["summary"], core_result["status"])
 
             # Phase 2: swan and schism in parallel
             with ThreadPoolExecutor(max_workers=2) as executor:
                 futures = []
-                for package_name, module_name in [('rompy-swan', 'rompy_swan'), ('rompy-schism', 'rompy_schism')]:
-                    future = executor.submit(self.run_package_tests, package_name, module_name,
-                                           coverage, skip_integration, skip_performance)
+                for package_name, module_name in [
+                    ("rompy-swan", "rompy_swan"),
+                    ("rompy-schism", "rompy_schism"),
+                ]:
+                    future = executor.submit(
+                        self.run_package_tests,
+                        package_name,
+                        module_name,
+                        coverage,
+                        skip_integration,
+                        skip_performance,
+                    )
                     futures.append((future, package_name))
 
                 for future, package_name in futures:
@@ -590,36 +665,55 @@ print(f"Import time: {{end - start:.4f}} seconds")
                         all_results["package_results"].append(result)
                         self._update_summary(all_results["summary"], result["status"])
                     except Exception as e:
-                        logger.error(f"Failed to complete tests for {package_name}: {e}")
+                        logger.error(
+                            f"Failed to complete tests for {package_name}: {e}"
+                        )
                         error_result = {
                             "package_name": package_name,
                             "status": "error",
-                            "error": str(e)
+                            "error": str(e),
                         }
                         all_results["package_results"].append(error_result)
                         self._update_summary(all_results["summary"], "error")
 
             # Phase 3: notebooks
-            notebooks_result = self.run_package_tests('rompy-notebooks', 'rompy_notebooks',
-                                                    coverage, skip_integration, skip_performance)
+            notebooks_result = self.run_package_tests(
+                "rompy-notebooks",
+                "rompy_notebooks",
+                coverage,
+                skip_integration,
+                skip_performance,
+            )
             all_results["package_results"].append(notebooks_result)
             self._update_summary(all_results["summary"], notebooks_result["status"])
 
         else:
             # Sequential execution
             for package_name, module_name in self.test_order:
-                result = self.run_package_tests(package_name, module_name, coverage,
-                                              skip_integration, skip_performance)
+                result = self.run_package_tests(
+                    package_name,
+                    module_name,
+                    coverage,
+                    skip_integration,
+                    skip_performance,
+                )
                 all_results["package_results"].append(result)
                 self._update_summary(all_results["summary"], result["status"])
 
         all_results["end_time"] = time.time()
-        all_results["total_duration"] = all_results["end_time"] - all_results["start_time"]
-        all_results["overall_success"] = all_results["summary"]["failed"] == 0 and all_results["summary"]["errors"] == 0
+        all_results["total_duration"] = (
+            all_results["end_time"] - all_results["start_time"]
+        )
+        all_results["overall_success"] = (
+            all_results["summary"]["failed"] == 0
+            and all_results["summary"]["errors"] == 0
+        )
 
-        logger.info(f"📊 All tests completed: {all_results['summary']['passed']} passed, "
-                   f"{all_results['summary']['failed']} failed, {all_results['summary']['errors']} errors "
-                   f"({all_results['total_duration']:.1f}s)")
+        logger.info(
+            f"📊 All tests completed: {all_results['summary']['passed']} passed, "
+            f"{all_results['summary']['failed']} failed, {all_results['summary']['errors']} errors "
+            f"({all_results['total_duration']:.1f}s)"
+        )
 
         return all_results
 
@@ -657,8 +751,12 @@ print(f"Import time: {{end - start:.4f}} seconds")
             report.append(f"Passed: {summary['passed']}")
             report.append(f"Failed: {summary['failed']}")
             report.append(f"Errors: {summary['errors']}")
-            report.append(f"Total duration: {results.get('total_duration', 0):.1f} seconds")
-            report.append(f"Overall success: {'✅ YES' if results['overall_success'] else '❌ NO'}")
+            report.append(
+                f"Total duration: {results.get('total_duration', 0):.1f} seconds"
+            )
+            report.append(
+                f"Overall success: {'✅ YES' if results['overall_success'] else '❌ NO'}"
+            )
             report.append("")
 
             for pkg_result in results["package_results"]:
@@ -683,23 +781,31 @@ print(f"Import time: {{end - start:.4f}} seconds")
         if "tests" in pkg_result:
             for test_type, test_result in pkg_result["tests"].items():
                 status = test_result["status"]
-                status_icon = "✅" if status == "passed" else "⚠️" if status == "skipped" else "❌"
+                status_icon = (
+                    "✅" if status == "passed" else "⚠️" if status == "skipped" else "❌"
+                )
 
                 report.append(f"  {test_type.title()} Tests: {status_icon}")
 
                 if test_type == "unit" and "stats" in test_result:
                     stats = test_result["stats"]
                     if stats.get("total_tests", 0) > 0:
-                        report.append(f"    Tests: {stats['passed']}/{stats['total_tests']} passed")
+                        report.append(
+                            f"    Tests: {stats['passed']}/{stats['total_tests']} passed"
+                        )
                         report.append(f"    Success rate: {stats['success_rate']:.1f}%")
                         report.append(f"    Duration: {stats['duration']:.1f}s")
 
                 elif test_type == "import" and "passed" in test_result:
-                    report.append(f"    Imports: {test_result['passed']}/{test_result['total']} successful")
+                    report.append(
+                        f"    Imports: {test_result['passed']}/{test_result['total']} successful"
+                    )
 
                 elif test_type == "integration" and "passed" in test_result:
                     if test_result["total"] > 0:
-                        report.append(f"    Integration: {test_result['passed']}/{test_result['total']} passed")
+                        report.append(
+                            f"    Integration: {test_result['passed']}/{test_result['total']} passed"
+                        )
 
                 elif test_type == "performance" and "import_time" in test_result:
                     report.append(f"    Import time: {test_result['import_time']:.4f}s")
@@ -732,56 +838,46 @@ Examples:
 
   # Run basic tests only (skip integration and performance)
   python run_split_tests.py --split-repos-dir ../split-repos --basic-only
-        """
+        """,
     )
 
     parser.add_argument(
-        '--split-repos-dir',
+        "--split-repos-dir",
         type=Path,
         required=True,
-        help='Directory containing all split repositories'
+        help="Directory containing all split repositories",
     )
 
     parser.add_argument(
-        '--package',
-        choices=['rompy', 'rompy-swan', 'rompy-schism', 'rompy-notebooks'],
-        help='Run tests for specific package only'
+        "--package",
+        choices=["rompy", "rompy-swan", "rompy-schism", "rompy-notebooks"],
+        help="Run tests for specific package only",
     )
 
     parser.add_argument(
-        '--coverage',
-        action='store_true',
-        help='Collect test coverage data'
+        "--coverage", action="store_true", help="Collect test coverage data"
     )
 
     parser.add_argument(
-        '--parallel',
-        action='store_true',
-        help='Run tests in parallel where possible'
+        "--parallel", action="store_true", help="Run tests in parallel where possible"
     )
 
     parser.add_argument(
-        '--basic-only',
-        action='store_true',
-        help='Run only basic unit and import tests (skip integration and performance)'
+        "--basic-only",
+        action="store_true",
+        help="Run only basic unit and import tests (skip integration and performance)",
     )
 
     parser.add_argument(
-        '--skip-integration',
-        action='store_true',
-        help='Skip integration tests'
+        "--skip-integration", action="store_true", help="Skip integration tests"
     )
 
     parser.add_argument(
-        '--skip-performance',
-        action='store_true',
-        help='Skip performance tests'
+        "--skip-performance", action="store_true", help="Skip performance tests"
     )
 
     parser.add_argument(
-        '--verbose', '-v',
-        action='store_true',
-        help='Enable verbose logging'
+        "--verbose", "-v", action="store_true", help="Enable verbose logging"
     )
 
     args = parser.parse_args()
@@ -812,19 +908,25 @@ Examples:
             logger.info(f"🚀 Running tests for {args.package}")
 
             module_map = {
-                'rompy': 'rompy',
-                'rompy-swan': 'rompy_swan',
-                'rompy-schism': 'rompy_schism',
-                'rompy-notebooks': 'rompy_notebooks',
+                "rompy": "rompy",
+                "rompy-swan": "rompy_swan",
+                "rompy-schism": "rompy_schism",
+                "rompy-notebooks": "rompy_notebooks",
             }
 
             module_name = module_map[args.package]
-            results = test_runner.run_package_tests(args.package, module_name, args.coverage,
-                                                   skip_integration, skip_performance)
+            results = test_runner.run_package_tests(
+                args.package,
+                module_name,
+                args.coverage,
+                skip_integration,
+                skip_performance,
+            )
         else:
             # All packages testing
-            results = test_runner.run_all_tests(args.coverage, args.parallel,
-                                              skip_integration, skip_performance)
+            results = test_runner.run_all_tests(
+                args.coverage, args.parallel, skip_integration, skip_performance
+            )
 
         # Generate and display report
         report = test_runner.generate_report(results)
@@ -833,13 +935,13 @@ Examples:
         # Write report to file
         timestamp = time.strftime("%Y%m%d_%H%M%S")
         report_file = f"test_report_{timestamp}.txt"
-        with open(report_file, 'w') as f:
+        with open(report_file, "w") as f:
             f.write(report)
         logger.info(f"📄 Report written to: {report_file}")
 
         # Write JSON results for programmatic access
         json_file = f"test_results_{timestamp}.json"
-        with open(json_file, 'w') as f:
+        with open(json_file, "w") as f:
             json.dump(results, f, indent=2, default=str)
         logger.info(f"📄 JSON results written to: {json_file}")
 
@@ -862,15 +964,39 @@ Examples:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Comprehensive Test Runner for ROMPY Repository Split")
-    parser.add_argument("--split-repos-dir", required=True, help="Directory containing split repositories")
-    parser.add_argument("--package", choices=["rompy", "rompy-swan", "rompy-schism", "rompy-notebooks"], help="Specific package to test")
-    parser.add_argument("--coverage", action="store_true", help="Collect test coverage data")
-    parser.add_argument("--parallel", action="store_true", help="Run tests in parallel where possible")
-    parser.add_argument("--basic-only", action="store_true", help="Run only basic unit and import tests (skip integration and performance)")
-    parser.add_argument("--skip-integration", action="store_true", help="Skip integration tests")
-    parser.add_argument("--skip-performance", action="store_true", help="Skip performance tests")
-    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging")
+    parser = argparse.ArgumentParser(
+        description="Comprehensive Test Runner for ROMPY Repository Split"
+    )
+    parser.add_argument(
+        "--split-repos-dir",
+        required=True,
+        help="Directory containing split repositories",
+    )
+    parser.add_argument(
+        "--package",
+        choices=["rompy", "rompy-swan", "rompy-schism", "rompy-notebooks"],
+        help="Specific package to test",
+    )
+    parser.add_argument(
+        "--coverage", action="store_true", help="Collect test coverage data"
+    )
+    parser.add_argument(
+        "--parallel", action="store_true", help="Run tests in parallel where possible"
+    )
+    parser.add_argument(
+        "--basic-only",
+        action="store_true",
+        help="Run only basic unit and import tests (skip integration and performance)",
+    )
+    parser.add_argument(
+        "--skip-integration", action="store_true", help="Skip integration tests"
+    )
+    parser.add_argument(
+        "--skip-performance", action="store_true", help="Skip performance tests"
+    )
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Enable verbose logging"
+    )
     args = parser.parse_args()
 
     # Convert split_repos_dir to Path
@@ -899,19 +1025,25 @@ if __name__ == "__main__":
             logger.info(f"🚀 Running tests for {args.package}")
 
             module_map = {
-                'rompy': 'rompy',
-                'rompy-swan': 'rompy_swan',
-                'rompy-schism': 'rompy_schism',
-                'rompy-notebooks': 'rompy_notebooks',
+                "rompy": "rompy",
+                "rompy-swan": "rompy_swan",
+                "rompy-schism": "rompy_schism",
+                "rompy-notebooks": "rompy_notebooks",
             }
 
             module_name = module_map[args.package]
-            results = test_runner.run_package_tests(args.package, module_name, args.coverage,
-                                                   skip_integration, skip_performance)
+            results = test_runner.run_package_tests(
+                args.package,
+                module_name,
+                args.coverage,
+                skip_integration,
+                skip_performance,
+            )
         else:
             # All packages testing
-            results = test_runner.run_all_tests(args.coverage, args.parallel,
-                                              skip_integration, skip_performance)
+            results = test_runner.run_all_tests(
+                args.coverage, args.parallel, skip_integration, skip_performance
+            )
 
         # Generate and display report
         report = test_runner.generate_report(results)
@@ -920,13 +1052,13 @@ if __name__ == "__main__":
         # Write report to file
         timestamp = time.strftime("%Y%m%d_%H%M%S")
         report_file = f"test_report_{timestamp}.txt"
-        with open(report_file, 'w') as f:
+        with open(report_file, "w") as f:
             f.write(report)
         logger.info(f"📄 Report written to: {report_file}")
 
         # Write JSON results for programmatic access
         json_file = f"test_results_{timestamp}.json"
-        with open(json_file, 'w') as f:
+        with open(json_file, "w") as f:
             json.dump(results, f, indent=2, default=str)
         logger.info(f"📄 JSON results written to: {json_file}")
 

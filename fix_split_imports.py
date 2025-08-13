@@ -33,58 +33,45 @@ class ImportCorrector:
         Returns:
             List of (old_pattern, new_pattern) tuples
         """
-        if package_type == "core":
-            return [
-                # Core package imports
-                (r"from rompy\.core\.", "from rompy_core.core."),
-                (r"from rompy\.utils", "from rompy_core.utils"),
-                (r"from rompy\.model", "from rompy_core.model"),
-                (r"from rompy\.run", "from rompy_core.run"),
-                (r"from rompy\.formatting", "from rompy_core.formatting"),
-                (r"from rompy\.cli", "from rompy_core.cli"),
-                (r"from rompy\.backends", "from rompy_core.backends"),
-                (r"from rompy\.postprocess", "from rompy_core.postprocess"),
-                (r"from rompy\.pipeline", "from rompy_core.pipeline"),
-                (r"from rompy\.intake", "from rompy_core.intake"),
-                (r"from rompy\.configuration", "from rompy_core.configuration"),
-                (r"from rompy\.templates", "from rompy_core.templates"),
-                # Import statements
-                (r"import rompy\.core\.", "import rompy_core.core."),
-                (r"import rompy\.utils", "import rompy_core.utils"),
-                (r"import rompy\.model", "import rompy_core.model"),
-                (r"import rompy\.run", "import rompy_core.run"),
-                (r"import rompy\.cli", "import rompy_core.cli"),
-                (r"import rompy\.backends", "import rompy_core.backends"),
-                # Direct module references
-                (r"rompy\.core\.", "rompy_core.core."),
-                (r"rompy\.utils\.", "rompy_core.utils."),
-                (r"rompy\.model\.", "rompy_core.model."),
-                (r"rompy\.run\.", "rompy_core.run."),
-                (r"rompy\.cli\.", "rompy_core.cli."),
-                # Entry point references
-                (r'"rompy\.', '"rompy_core.'),
-                (r"'rompy\.", "'rompy_core."),
-                # Special cases for imports within strings
-                (r'patch\("rompy\.', 'patch("rompy_core.'),
-                (r'Mock\("rompy\.', 'Mock("rompy_core.'),
-            ]
-        elif package_type == "swan":
+        # if package_type == "core":
+        #     return [
+        #         # Core package imports
+        #         (r"from rompy\.run", "from rompy_core.run"),
+        #         (r"from rompy\.formatting", "from rompy_core.formatting"),
+        #         (r"from rompy\.cli", "from rompy_core.cli"),
+        #         (r"from rompy\.backends", "from rompy_core.backends"),
+        #         (r"from rompy\.postprocess", "from rompy_core.postprocess"),
+        #         (r"from rompy\.pipeline", "from rompy_core.pipeline"),
+        #         (r"from rompy\.intake", "from rompy_core.intake"),
+        #         (r"from rompy\.configuration", "from rompy_core.configuration"),
+        #         (r"from rompy\.templates", "from rompy_core.templates"),
+        #         # Import statements
+        #         (r"import rompy\.backends", "import rompy_core.backends"),
+        #         # Direct module references
+        #         (r"rompy\.core\.", "rompy_core.core."),
+        #         (r"rompy\.utils\.", "rompy_core.utils."),
+        #         (r"rompy\.model\.", "rompy_core.model."),
+        #         (r"rompy\.run\.", "rompy_core.run."),
+        #         (r"rompy\.cli\.", "rompy_core.cli."),
+        #         # Entry point references
+        #         (r'"rompy\.', '"rompy_core.'),
+        #         (r"'rompy\.", "'rompy_core."),
+        #         # Special cases for imports within strings
+        #         (r'patch\("rompy\.', 'patch("rompy_core.'),
+        #         (r'Mock\("rompy\.', 'Mock("rompy_core.'),
+        #     ]
+        if package_type == "swan":
             return [
                 # Swan specific imports
                 (r"from rompy\.swan\.", "from rompy_swan."),
                 (r"import rompy\.swan\.", "import rompy_swan."),
                 (r"rompy\.swan\.", "rompy_swan."),
                 # Core imports (swan depends on core)
-                (r"from rompy\.core\.", "from rompy_core.core."),
-                (r"from rompy\.utils", "from rompy_core.utils"),
-                (r"import rompy\.core\.", "import rompy_core.core."),
-                (r"rompy\.core\.", "rompy_core.core."),
                 # Entry points
                 (r'"rompy\.swan\.', '"rompy_swan.'),
                 (r"'rompy\.swan\.", "'rompy_swan."),
                 # Patch references
                 (r'patch\("rompy\.swan\.', 'patch("rompy_swan.'),
-                (r'patch\("rompy\.core\.', 'patch("rompy_core.core.'),
             ]
         elif package_type == "schism":
             return [
@@ -92,29 +79,24 @@ class ImportCorrector:
                 (r"from rompy\.schism\.", "from rompy_schism."),
                 (r"import rompy\.schism\.", "import rompy_schism."),
                 (r"rompy\.schism\.", "rompy_schism."),
-                # Core imports (schism depends on core)
-                (r"from rompy\.core\.", "from rompy_core.core."),
-                (r"from rompy\.utils", "from rompy_core.utils"),
-                (r"import rompy\.core\.", "import rompy_core.core."),
-                (r"rompy\.core\.", "rompy_core.core."),
                 # Entry points
                 (r'"rompy\.schism\.', '"rompy_schism.'),
                 (r"'rompy\.schism\.", "'rompy_schism."),
                 # Patch references
                 (r'patch\("rompy\.schism\.', 'patch("rompy_schism.'),
-                (r'patch\("rompy\.core\.', 'patch("rompy_core.core.'),
             ]
         else:
             return []
 
     def get_optional_import_patterns(self) -> List[Tuple[str, str]]:
         """Get patterns for optional imports that might not be present."""
-        return [
-            # General rompy imports that might need context-specific fixing
-            (r"from rompy import", "from rompy_core import"),
-            (r"import rompy$", "import rompy_core"),
-            (r"import rompy,", "import rompy_core,"),
-        ]
+        # return [
+        #     # General rompy imports that might need context-specific fixing
+        #     (r"from rompy import", "from rompy_core import"),
+        #     (r"import rompy$", "import rompy_core"),
+        #     (r"import rompy,", "import rompy_core,"),
+        # ]
+        return []
 
     def apply_import_corrections(
         self, file_path: Path, patterns: List[Tuple[str, str]]
@@ -136,16 +118,20 @@ class ImportCorrector:
             original_content = content
             corrections_in_file = 0
 
-            for old_pattern, new_pattern in patterns:
-                # Update patterns to use 'rompy' as the core
-                if 'rompy_core' in old_pattern or 'rompy-core' in old_pattern:
-                    old_pattern = old_pattern.replace('rompy_core', 'rompy').replace('rompy-core', 'rompy')
-                if 'rompy_core' in new_pattern or 'rompy-core' in new_pattern:
-                    new_pattern = new_pattern.replace('rompy_core', 'rompy').replace('rompy-core', 'rompy')
-                matches = re.findall(old_pattern, content)
-                if matches:
-                    content = re.sub(old_pattern, new_pattern, content)
-                    corrections_in_file += len(matches)
+            # for old_pattern, new_pattern in patterns:
+            #     # Update patterns to use 'rompy' as the core
+            #     if "rompy_core" in old_pattern or "rompy-core" in old_pattern:
+            #         old_pattern = old_pattern.replace("rompy_core", "rompy").replace(
+            #             "rompy-core", "rompy"
+            #         )
+            #     if "rompy_core" in new_pattern or "rompy-core" in new_pattern:
+            #         new_pattern = new_pattern.replace("rompy_core", "rompy").replace(
+            #             "rompy-core", "rompy"
+            #         )
+            #     matches = re.findall(old_pattern, content)
+            #     if matches:
+            #         content = re.sub(old_pattern, new_pattern, content)
+            #         corrections_in_file += len(matches)
 
             # Only write if changes were made
             if content != original_content:

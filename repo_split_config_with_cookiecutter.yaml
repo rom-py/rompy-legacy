@@ -24,6 +24,7 @@ repositories:
       - "rompy/utils.py"
       - "rompy/archive/"
       - "rompy/backends/"
+      - "rompy/logging/"
       - "rompy/pipeline/"
       - "rompy/postprocess/"
       - "rompy/catalogs/"
@@ -104,15 +105,16 @@ repositories:
           - "tests/test_swan*.py"
           - "src/rompy/swan/"
           - "src/rompy/schism/"
-      - action: "correct_imports"
-        package_type: "core"
-        target_package: "rompy"
+      # - action: "correct_imports"
+      #   package_type: "core"
+      #   target_package: "rompy"
 
   rompy-swan:
     description: "SWAN wave model plugin for rompy"
     paths:
       - "rompy/swan/"
       - "tests/swan/"
+      - "tests/data/"
       - "tests/test_utils/"
       - "docs/source/swan/"
       - "docs/Makefile"
@@ -324,7 +326,7 @@ repositories:
         template: "notebooks_readme"
       - action: "create_notebooks_index"
         ecosystem_packages:
-          - "rompy-core"
+          - "rompy"
           - "rompy-swan"
           - "rompy-schism"
 
@@ -391,7 +393,7 @@ templates:
 
     ```bash
     # Core package (always required)
-    pip install rompy-core
+    pip install rompy
 
     # Optional plugins (install as needed)
     pip install rompy-swan      # For SWAN wave modeling
@@ -414,7 +416,7 @@ templates:
 
     ## Contributing
 
-    Please see the main rompy-core repository for contribution guidelines.
+    Please see the main rompy repository for contribution guidelines.
 
     ---
 

@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 
-def fix_test_imports_in_file(file_path):
+def fix_test_imports_in_file(file_path, package):
     """Fix imports in a single test file"""
 
     try:
@@ -22,23 +22,49 @@ def fix_test_imports_in_file(file_path):
         # Fix import patterns to ensure core package is 'rompy', not 'rompy_core'
         patterns = [
             # Revert any previous rompy_core rewrites
-            (r"import rompy_core\\.", "import rompy."),
-            (r"from rompy_core\\.", "from rompy."),
-            (r"import rompy-core\\.", "import rompy."),
-            (r"from rompy-core\\.", "from rompy."),
             # Ensure test_utils imports are absolute
             (r"from \\.test_utils", "from tests.test_utils"),
             (r"import \\.test_utils", "import tests.test_utils"),
+            (r"from test_utils", "from tests.test_utils"),
+            (r"import test_utils", "import tests.test_utils"),
             (r"import test_utils", "import tests.test_utils"),
             (r"from test_utils", "from tests.test_utils"),
         ]
+
+        if package == "rompy-swan":
+            # SWAN specific imports
+            patterns += [
+                (r"from rompy.swan", "from rompy_swan"),
+                (
+                    r'os.environ["ROMPY_PATH"] = str(HERE.parent.parent)',
+                    'os.environ["ROMPY_PATH"] = str(HERE.parent)',
+                ),
+                (
+                    r'catalog_uri=HERE / "../data/catalog.yaml"',
+                    'catalog_uri=HERE / "data/catalog.yaml"',
+                ),
+                (
+                    r'default=str(HERE.parent / "templates" / "swancomp")',
+                    'default=str(HERE / "templates" / "swancomp")',
+                ),
+                (
+                    r"HERE.parent.parent",
+                    "HERE.parent",
+                ),
+            ]
+        elif package == "rompy-schism":
+            # SWAN specific imports
+            patterns += [
+                (r"from tests.schism", "from tests"),
+                (r"from rompy.schism", "from rompy_schism"),
+            ]
 
         for pattern, replacement in patterns:
             content = re.sub(pattern, replacement, content)
 
         # Write back if changed
         if content != original_content:
-            with open(file_pathlogging.getLogger(__name__), "w", encoding="utf-8") as f:
+            with open(file_path, "w") as f:
                 f.write(content)
             return True
 
@@ -141,6 +167,7 @@ def remove_problematic_tests():
 #     print("✅ Created minimal run module stubs")
 #
 
+
 def ensure_test_package_files():
     """Recursively add __init__.py to all test dirs and conftest.py to top-level tests/ in split repos."""
     split_dir = Path("../split-repos").resolve()
@@ -179,7 +206,7 @@ def main():
             test_files = list(tests_dir.rglob("*.py"))
             fixed_count = 0
             for test_file in test_files:
-                if fix_test_imports_in_file(test_file):
+                if fix_test_imports_in_file(test_file, package):
                     fixed_count += 1
             print(f"✅ Fixed imports in {fixed_count} test files for {package}")
 
