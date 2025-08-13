@@ -10,7 +10,7 @@ from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field, field_validator
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.core.types import Coordinate, RompyBaseModel, Spectrum
 from rompy.swan.boundary import Boundnest1

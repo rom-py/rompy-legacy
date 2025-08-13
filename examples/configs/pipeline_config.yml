@@ -1,0 +1,198 @@
+# Pipeline Configuration Example
+# This file demonstrates how to configure complete model pipelines for ROMPY models.
+# Use this file with CLI commands like: rompy pipeline --config pipeline_config.yml
+
+# Pipeline backend type - determines how the pipeline is executed
+pipeline_backend: local
+
+# Model run configuration
+model_run:
+  run_id: "example_pipeline_run"
+  output_dir: "./simulations"
+  delete_existing: true
+  run_id_subdir: true
+
+  # Time period for the model run
+  period:
+    start: "2023-01-01T00:00:00"
+    end: "2023-01-03T00:00:00"
+    interval: "1H"
+
+  # Model configuration (example - replace with actual model config)
+  config:
+    model_type: "swan" # or other supported model types
+    # Add model-specific configuration here
+
+# Run backend configuration
+run_backend:
+  backend_type: local
+  timeout: 7200 # 2 hours
+  command: "python run_model.py"
+  env_vars:
+    OMP_NUM_THREADS: "4"
+    MODEL_CONFIG: "production"
+
+# Postprocessing configuration
+postprocessing:
+  processor: "noop" # or other available processors
+  # Add processor-specific parameters here
+
+# Pipeline-specific settings
+pipeline_settings:
+  # Whether to continue if individual steps fail
+  continue_on_error: false
+
+  # Whether to clean up intermediate files
+  cleanup_intermediate: true
+
+  # Maximum time for entire pipeline
+  max_pipeline_time: 14400 # 4 hours
+
+---
+# Alternative configuration using Docker
+pipeline_backend: local
+
+model_run:
+  run_id: "docker_pipeline_run"
+  output_dir: "./docker_simulations"
+  delete_existing: true
+
+  period:
+    start: "2023-01-01T00:00:00"
+    end: "2023-01-02T00:00:00"
+    interval: "30M"
+
+  config:
+    model_type: "swan"
+
+# Run backend configuration
+run_backend:
+  backend_type: docker
+  image: "swan:latest"
+  timeout: 10800 # 3 hours
+  cpu: 8
+  memory: "4g"
+  mpiexec: "mpirun -np 8"
+  volumes:
+    - "./data:/app/data:rw"
+    - "./results:/app/results:rw"
+  env_vars:
+    MODEL_THREADS: "8"
+    MODEL_PARALLEL: "true"
+    DATA_DIR: "/app/data"
+
+postprocessing:
+  processor: "noop"
+
+pipeline_settings:
+  continue_on_error: false
+  cleanup_intermediate: false # Keep files for debugging
+  max_pipeline_time: 21600 # 6 hours
+
+---
+# Multi-stage pipeline configuration
+pipeline_backend: local
+
+model_run:
+  run_id: "multi_stage_pipeline"
+  output_dir: "./multi_stage_output"
+  delete_existing: true
+
+  period:
+    start: "2023-01-01T00:00:00"
+    end: "2023-01-05T00:00:00"
+    interval: "1H"
+
+  config:
+    model_type: "schism"
+
+# Run configuration for computationally intensive model
+# Run backend configuration
+run_backend:
+  backend_type: docker
+  dockerfile: "./docker/Dockerfile.hpc"
+  build_context: "./docker"
+  build_args:
+    MODEL_VERSION: "5.10.0"
+    COMPILER: "intel"
+  timeout: 86400 # 24 hours
+  cpu: 32
+  memory: "64g"
+  mpiexec: "mpirun -np 32"
+  user: "hpcuser"
+  volumes:
+    - "/scratch:/scratch:rw"
+    - "/ocean_data:/data:ro"
+    - "/results:/results:rw"
+  env_vars:
+    OMP_NUM_THREADS: "1"
+    MODEL_PRECISION: "double"
+    SLURM_NTASKS: "32"
+    SCHISM_NPROC: "32"
+
+# Custom postprocessing
+postprocessing:
+  processor: "custom_analysis"
+  # Custom processor parameters
+  analysis_type: "wave_statistics"
+  output_format: "netcdf"
+  generate_plots: true
+  statistics_window: "24H"
+
+pipeline_settings:
+  continue_on_error: false
+  cleanup_intermediate: true
+  max_pipeline_time: 108000 # 30 hours
+
+  # Additional pipeline-specific settings
+  notification:
+    email: "user@example.com"
+    on_success: true
+    on_failure: true
+
+  monitoring:
+    log_level: "INFO"
+    progress_updates: true
+    resource_monitoring: true
+
+---
+# Development/Testing pipeline configuration
+pipeline_backend: local
+
+model_run:
+  run_id: "test_pipeline"
+  output_dir: "./test_output"
+  delete_existing: true
+
+  # Short period for testing
+  period:
+    start: "2023-01-01T00:00:00"
+    end: "2023-01-01T06:00:00"
+    interval: "1H"
+
+  config:
+    model_type: "swan"
+
+# Fast local execution for testing
+# Run backend configuration
+run_backend:
+  backend_type: local
+  timeout: 1800 # 30 minutes
+  command: "echo 'Test run' && python -m pytest tests/"
+  capture_output: true
+  env_vars:
+    ENV: "testing"
+    LOG_LEVEL: "DEBUG"
+
+postprocessing:
+  processor: "noop"
+
+pipeline_settings:
+  continue_on_error: true # Continue for testing
+  cleanup_intermediate: false # Keep files for inspection
+  max_pipeline_time: 3600 # 1 hour max
+
+  # Testing-specific settings
+  dry_run: false
+  validate_only: false
+  debug_mode: true

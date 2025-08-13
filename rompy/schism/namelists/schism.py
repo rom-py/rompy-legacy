@@ -163,6 +163,90 @@ class NML(NamelistBaseModel):
             if attr is not None:
                 attr.write_nml(workdir)
 
+    def _format_value(self, obj):
+        """Custom formatter for NML values.
+
+        This method provides special formatting for specific types used in
+        NML such as namelist components and parameters.
+
+        Args:
+            obj: The object to format
+
+        Returns:
+            A formatted string or None to use default formatting
+        """
+        # Import specific types and formatting utilities
+        from rompy.logging import LoggingConfig
+        from rompy.formatting import get_formatted_header_footer
+
+        # Get ASCII mode setting from LoggingConfig
+        logging_config = LoggingConfig()
+        USE_ASCII_ONLY = logging_config.use_ascii
+
+        # Format NML (self-formatting)
+        if isinstance(obj, NML):
+            header, footer, bullet = get_formatted_header_footer(
+                title="SCHISM NAMELIST CONFIGURATION", use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            # List active namelist components
+            components = {}
+            if hasattr(obj, "param") and obj.param is not None:
+                components["Parameters"] = type(obj.param).__name__
+            if hasattr(obj, "ice") and obj.ice is not None:
+                components["Ice"] = type(obj.ice).__name__
+            if hasattr(obj, "icm") and obj.icm is not None:
+                components["ICM"] = type(obj.icm).__name__
+            if hasattr(obj, "mice") and obj.mice is not None:
+                components["MICE"] = type(obj.mice).__name__
+            if hasattr(obj, "sediment") and obj.sediment is not None:
+                components["Sediment"] = type(obj.sediment).__name__
+            if hasattr(obj, "cosine") and obj.cosine is not None:
+                components["CoSiNE"] = type(obj.cosine).__name__
+            if hasattr(obj, "wwminput") and obj.wwminput is not None:
+                components["Wave"] = type(obj.wwminput).__name__
+
+            for comp_name, comp_type in components.items():
+                lines.append(f"  {bullet} {comp_name}: {comp_type}")
+
+            if not components:
+                lines.append(f"  {bullet} No modules configured")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Format Param class
+        from .param import Param
+        if isinstance(obj, Param):
+            header, footer, bullet = get_formatted_header_footer(
+                title="SCHISM PARAMETERS", use_ascii=USE_ASCII_ONLY
+            )
+
+            lines = [header]
+
+            # Add key parameter information
+            if hasattr(obj, "core") and obj.core is not None:
+                if hasattr(obj.core, "rnday"):
+                    lines.append(f"  {bullet} Run duration: {obj.core.rnday} days")
+                if hasattr(obj.core, "dt"):
+                    lines.append(f"  {bullet} Time step: {obj.core.dt} seconds")
+
+            if hasattr(obj, "opt") and obj.opt is not None:
+                if hasattr(obj.opt, "nws"):
+                    lines.append(f"  {bullet} Wind forcing: NWS={obj.opt.nws}")
+                if hasattr(obj.opt, "ihot"):
+                    hotstart = "Enabled" if obj.opt.ihot == 1 else "Disabled"
+                    lines.append(f"  {bullet} Hotstart: {hotstart}")
+
+            lines.append(footer)
+            return "\n".join(lines)
+
+        # Use the new formatting framework
+        from rompy.formatting import format_value
+        return format_value(obj)
+
 
 if __name__ == "__main__":
     nml = NML()

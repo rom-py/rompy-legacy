@@ -5,7 +5,6 @@ This module provides classes for handling SCHISM boundary data,
 particularly focusing on boundary data using PyLibs functionality directly.
 """
 
-import logging
 import os
 import sys
 from pathlib import Path
@@ -14,8 +13,9 @@ from typing import Any, Dict, List, Optional, Union
 import numpy as np
 import pandas as pd
 import xarray as xr
+from rompy.logging import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 # Import PyLibs functions directly
 from pylib import *

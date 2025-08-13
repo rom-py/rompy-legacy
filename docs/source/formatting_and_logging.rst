@@ -42,7 +42,7 @@ Basic Usage
 
 .. code-block:: python
 
-    from rompy.core.logging import get_logger
+    from rompy.logging import get_logger
     
     # Get a logger for your module
     logger = get_logger(__name__)
@@ -80,12 +80,14 @@ Programmatic configuration is also available:
 
 .. code-block:: python
 
-    from rompy.core.logging import configure_logging
+    from rompy.logging import LoggingConfig
     
-    configure_logging(
+    # Configure logging
+    config = LoggingConfig()
+    config.update(
         level="DEBUG",
-        format="detailed",
-        log_file="rompy.log"
+        format="verbose",
+        log_dir="./logs"
     )
 
 Hierarchical String Representation
@@ -142,26 +144,33 @@ Boxes and Sections
 
 .. code-block:: python
 
-    from rompy.core.formatting import box, section
+    from rompy.formatting import get_formatted_box, log_box
     
     # Create a simple box
-    print(box("Important Message"))
+    print(get_formatted_box("Important Message"))
     
-    # Create a section with content
-    print(section("Processing Results", ["Item 1", "Item 2", "Item 3"]))
+    # Create a section with content - using the logger
+    from rompy.logging import get_logger
+    logger = get_logger(__name__)
+    log_box("Processing Results", logger=logger)
 
 Progress Indicators
 ~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-    from rompy.core.formatting import ProgressBar
-    import time
+    from rompy.logging import get_logger
+    from rompy.formatting import log_horizontal_line
     
-    with ProgressBar("Processing", total=100) as pbar:
-        for i in range(100):
-            time.sleep(0.1)
-            pbar.update(1)
+    logger = get_logger(__name__)
+    
+    # Show progress with logging
+    logger.info("Starting processing...")
+    log_horizontal_line(logger)
+    for i in range(100):
+        if i % 10 == 0:
+            logger.info(f"Progress: {i}%")
+    logger.success("Processing complete!")
 
 Best Practices
 -------------
@@ -188,8 +197,8 @@ Here's how these components work together in a typical ROMPY module:
 
 .. code-block:: python
 
-    from rompy.core.logging import get_logger
-    from rompy.core.formatting import section
+    from rompy.logging import get_logger
+    from rompy.formatting import section
     from rompy.core.types import RompyBaseModel
     
     logger = get_logger(__name__)

@@ -11,7 +11,7 @@ from pydantic import Field, field_validator, model_validator
 from shapely.geometry import Polygon
 
 from rompy.core.grid import RegularGrid
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.swan.subcomponents.readgrid import GRIDREGULAR
 
 logger = get_logger(__name__)

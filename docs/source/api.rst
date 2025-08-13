@@ -63,6 +63,35 @@ Types
     :no-index:
 
 
+Backend System
+--------------
+
+Backend Configurations
+~~~~~~~~~~~~~~~~~~~~~~~
+.. automodule:: rompy.backends.config
+    :members:
+    :inherited-members: BaseModel
+    :no-index:
+
+Run Backends
+~~~~~~~~~~~~
+.. automodule:: rompy.run
+    :members:
+    :no-index:
+
+Postprocessors
+~~~~~~~~~~~~~~
+.. automodule:: rompy.backends.postprocessors
+    :members:
+    :no-index:
+
+Backend Registry
+~~~~~~~~~~~~~~~~
+.. automodule:: rompy.backends
+    :members:
+    :no-index:
+
+
 Swan classes
 ------------
 

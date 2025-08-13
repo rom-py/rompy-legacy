@@ -4,7 +4,6 @@ Tidal boundary conditions for SCHISM.
 A direct implementation based on PyLibs scripts/gen_bctides.py with no fallbacks.
 """
 
-import logging
 import os
 import subprocess
 import sys
@@ -19,8 +18,10 @@ import pandas as pd
 from pylib import ReadNC
 import xarray as xr
 from scipy.spatial import KDTree
+from rompy.logging import get_logger
+from rompy.formatting import ARROW
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class Bctides:
@@ -203,7 +204,7 @@ class Bctides:
         """Get tidal amplitude, frequency, and species for constituents using pyTMD."""
         if hasattr(self, "amp") and len(self.amp) > 0:
             return
-        logger.info("Computing tidal factors using pyTMD")
+        logger.info(f"{ARROW} Computing tidal factors for {len(self.tnames)} constituents")
         # Use pyTMD for all calculations
         ts = timescale.time.Timescale().from_datetime(self._start_time)
         MJD = ts.MJD
@@ -361,10 +362,7 @@ class Bctides:
                 self.earth_equil_arg + self.nodal_phase_correction, 360.0
             )
         else:
-            logger.info("Setting nodal corrections to 1.0 (no corrections applied)")
             self.nodal_factor = [1.0] * len(self.tnames)
-
-        logger.info(f"Writing bctides.in to {output_file}")
         with open(output_file, "w") as f:
             # Write header with date information
             if isinstance(self._start_time, datetime):
@@ -423,10 +421,8 @@ class Bctides:
             # Use the number of boundaries from self.flags or fallback to grid boundaries
             if hasattr(self, "flags") and self.flags:
                 nope = len(self.flags)
-                logger.info(f"Using {nope} user-defined boundaries from flags")
             elif hasattr(self.gd, "nob") and self.gd.nob > 0:
                 nope = self.gd.nob
-                logger.info(f"Using {nope} boundaries from grid")
             else:
                 # No boundaries in grid and no user-defined flags
                 logger.warning(
@@ -803,5 +799,4 @@ class Bctides:
                 f.write(f"1 !flux boundary {i+1}: number of nodes\n")
                 f.write("1 !node number on the boundary\n")
 
-        logger.info(f"Successfully wrote bctides.in to {output_file}")
         return output_file

@@ -1,0 +1,58 @@
+# Local Backend Configuration Examples
+# Multiple configuration examples for local execution
+
+# Basic local configuration
+backend_type: local
+timeout: 7200 # 2 hours - Maximum execution time in seconds (60-86400)
+command: "python run_model.py"
+shell: true
+capture_output: true
+env_vars:
+  OMP_NUM_THREADS: "4"
+  MODEL_CONFIG: "production"
+  DATA_DIR: "/data"
+  PYTHONPATH: "/app/lib"
+
+---
+# Development configuration
+backend_type: local
+timeout: 1800 # 30 minutes for quick testing
+command: "python -m pytest tests/ && echo 'Tests passed'"
+capture_output: true
+env_vars:
+  ENV: "development"
+  LOG_LEVEL: "DEBUG"
+  PYTHONUNBUFFERED: "1"
+
+---
+# Production configuration
+backend_type: local
+timeout: 14400 # 4 hours for production runs
+env_vars:
+  ENV: "production"
+  LOG_LEVEL: "INFO"
+  OMP_NUM_THREADS: "8"
+  MODEL_PRECISION: "double"
+# Uses model's built-in run method (no custom command)
+
+---
+# Custom environment with specific working directory
+backend_type: local
+timeout: 7200
+command: "bash run_simulation.sh"
+working_dir: "/opt/model/workspace"
+env_vars:
+  MODEL_DATA_DIR: "/data/ocean"
+  RESULTS_DIR: "/results"
+  PARALLEL_JOBS: "4"
+
+---
+# Minimal configuration (uses defaults)
+backend_type: local
+timeout: 3600
+# All other parameters use defaults:
+# - shell: true
+# - capture_output: true
+# - working_dir: null (uses model output directory)
+# - env_vars: {} (empty)
+# - command: null (uses model config.run())
