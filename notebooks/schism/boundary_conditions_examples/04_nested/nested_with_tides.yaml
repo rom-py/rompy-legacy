@@ -1,0 +1,137 @@
+output_dir: schism_nested_with_tides
+period:
+  start: 20230101T00
+  end: 20230101T12
+  interval: 3600
+run_id: nested_with_tides_example
+delete_existing: true
+config:
+  model_type: schism
+  grid:
+    grid_type: schism
+    hgrid:
+      id: hgrid
+      model_type: data_blob
+      source: tests/schism/test_data/hgrid.gr3
+    vgrid:
+      source: tests/schism/test_data/vgrid.in
+    drag: 1
+  data:
+    data_type: schism
+    atmos:
+      air_1:
+        data_type: sflux_air
+        source:
+          model_type: file
+          uri: tests/schism/test_data/era5.nc
+        uwind_name: u10
+        vwind_name: v10
+        prmsl_name: msl
+        filter:
+          sort:
+            coords:
+              - latitude
+        buffer: 5
+    boundary_conditions:
+      data_type: boundary_conditions
+      tidal_data:
+        tidal_database: tests/schism/test_data/tides
+        tidal_model: 'OCEANUM-atlas'
+        constituents:
+        - M2
+        - S2
+        - N2
+        nodal_corrections: false
+        tidal_potential: false
+        extrapolate_tides: true
+      boundaries:
+        0:
+          elev_type: 5
+          elev_source:
+            data_type: boundary
+            source:
+              model_type: file
+              uri: tests/schism/test_data/hycom.nc
+            variables:
+              - surf_el
+            coords:
+              t: time
+              x: xlon
+              y: ylat
+          vel_type: 5
+          inflow_relax: 0.8
+          outflow_relax: 0.2
+          vel_source:
+            data_type: boundary
+            source:
+              model_type: file
+              uri: tests/schism/test_data/hycom.nc
+            variables:
+              - water_u
+              - water_v
+            coords:
+              t: time
+              x: xlon
+              y: ylat
+              z: depth
+          temp_type: 4
+          temp_source:
+            data_type: boundary
+            source:
+              model_type: file
+              uri: tests/schism/test_data/hycom.nc
+            variables:
+              - temperature
+            coords:
+              t: time
+              x: xlon
+              y: ylat
+              z: depth
+          salt_type: 4
+          salt_source:
+            data_type: boundary
+            source:
+              model_type: file
+              uri: tests/schism/test_data/hycom.nc
+            variables:
+              - salinity
+            coords:
+              t: time
+              x: xlon
+              y: ylat
+              z: depth
+    wave:
+      buffer: 0.0
+      coords:
+        t: time
+        x: lon
+        y: lat
+        z: depth
+      id: wavedata
+      source:
+        catalog_uri: tests/data/catalog.yaml
+        dataset_id: ausspec
+        model_type: intake
+  nml:
+    param:
+      core:
+      opt:
+        ihorcon: 0
+        hvis_coef0: 0.02
+      schout:
+        iof_hydro__1: 1
+        iof_hydro__2: 1
+        iof_hydro__14: 1
+        iof_hydro__16: 1
+        # iof_hydro__17: 1 #reduce amount of required scribes for testing
+        # iof_hydro__18: 1
+        # iof_hydro__19: 1
+        # iof_hydro__20: 1
+        # iof_hydro__21: 1
+        # iof_hydro__7: 1
+        iof_wwm__1: 1
+        iof_wwm__9: 1
+        iof_wwm__18: 1
+    wwminput:
+      proc:
+        deltc: 100

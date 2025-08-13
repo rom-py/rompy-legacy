@@ -79,7 +79,6 @@ swan = "rompy.swan.config:SwanConfig"
 swan_components = "rompy.swan.config:SwanConfigComponents"
 schismcsiro = "rompy.schism.config:SchismCSIROConfig"
 schism = "rompy.schism.config:SCHISMConfig"
-schismcsiromigration = "rompy.schism.config:SchismCSIROMigrationConfig"
 
 [project.entry-points."rompy.source"]
 file = "rompy.core.source:SourceFile"
@@ -90,6 +89,16 @@ wavespectra = "rompy.core.source:SourceWavespectra"
 
 [project.entry-points."intake.catalogs"]
 "rompy_data" = "rompy:cat"
+
+[project.entry-points."rompy.run"]
+local = "rompy.run:LocalRunBackend"
+docker = "rompy.run.docker:DockerRunBackend"
+
+[project.entry-points."rompy.postprocess"]
+noop = "rompy.postprocess:NoopPostprocessor"
+
+[project.entry-points."rompy.pipeline"]
+local = "rompy.pipeline:LocalPipelineBackend"
 
 [project.optional-dependencies]
 test = [
@@ -102,9 +111,8 @@ extra = [
     "zarr",
 ]
 schism = [
-    "tqdm_logging_wrapper", # pyschism subpackage dependency
-    "seawater", # pyschism subpackage dependency
-    "xmltodict", # pyschism subpackage dependency
+    "pylibs-ocean",
+    "pytmd",
 ]
 docs = [
     "autodoc_pydantic",

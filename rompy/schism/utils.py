@@ -51,6 +51,7 @@ def schism_plot(
     contours=[10, 30, 50],
     pscale=20,
     cmap=plt.cm.jet,
+    add_coastlines=True,
 ):
     """
     plot output variable in xarray dataset (schout) using mesh information meshtri.
@@ -117,7 +118,9 @@ def schism_plot(
         # threshold of + 0.05 seems pretty good   *** But do we want to use the minimum depth
         # defined in the SCHISM input (H0) and in output schout.minimum_depth
         # bad_idx= schout.elev.values+schout.depth.values<0.05
-        bad_idx = schout.elev.values + schout.depth.values < schout.minimum_depth.values
+        bad_idx = (
+            schout.elevation.values + schout.depth.values < schout.minimum_depth.values
+        )
         # new way
         mask = np.all(np.where(bad_idx[meshtri.triangles], True, False), axis=1)
         meshtri.set_mask(mask)
@@ -138,7 +141,7 @@ def schism_plot(
         cax = ax.tripcolor(meshtri, var, cmap=cmap, vmin=vmin, vmax=vmax)
         # quiver variables if asked
     if vectors:
-        if re.search("WWM", varname):
+        if re.search("sigWaveHeight", varname):
             vtype = "waves"
         if re.search("wind", varname):
             vtype = "wind"
@@ -188,6 +191,8 @@ def schism_plot(
     cbar = plt.colorbar(mappable=cax, shrink=0.5)
     cbar.set_ticks(np.round(np.linspace(vmin, vmax, 5) * 100) / 100)
     cbar.set_label(varname)
+    if add_coastlines:
+        ax.coastlines()
 
     return fig, ax
 
@@ -209,19 +214,19 @@ def schism_calculate_vectors(ax, schout, vtype="waves", dX="auto", mask=True):
     pUTM55 = Proj("epsg:32755")
     # pWGS84 = Proj('epsg:4326')
     if vtype == "waves":
-        idx = (schout.WWM_1 > 0.05) & (schout.elev - schout.depth < 0.1)
-        dp = schout.WWM_18[idx]
+        idx = (schout.sigWaveHeight > 0.05) & (schout.elevation - schout.depth < 0.1)
+        dp = schout.discretePeakDirection[idx]
         # hs=schout.WWM_1[idx]
         hs = np.ones(dp.shape)
         [u, v] = pol2cart2(hs, np.mod(dp + 180, 360))
     elif vtype == "elev" or re.search("curr", vtype):
-        idx = np.sqrt(schout.dahv[:, 0] ** 2 + schout.dahv[:, 1] ** 2) > 0.0
-        u = schout.dahv[idx, 0]
-        v = schout.dahv[idx, 1]
+        idx = np.sqrt(schout.depthAverageVelX**2 + schout.depthAverageVelX**2) > 0.0
+        u = schout.depthAverageVelX[idx]
+        v = schout.depthAverageVelY[idx]
     elif vtype == "wind":
-        idx = np.ones_like(schout.wind_speed[:, 0], dtype=bool)
-        u = schout.wind_speed[idx, 0]
-        v = schout.wind_speed[idx, 1]
+        idx = np.ones_like(schout.windSpeedX, dtype=bool)
+        u = schout.windSpeedX[idx]
+        v = schout.windSpeedY[idx]
     else:
         raise ValueError("*** Warning input vecter data not understood")
     x, y = pUTM55(
@@ -262,8 +267,14 @@ if __name__ == "__main__":
     lons = schout.SCHISM_hgrid_node_y.values
     lats = schout.SCHISM_hgrid_node_x.values
     # plot gridded fields - elevation
-    for variable in ["elev", "wind_speed", "WWM_1", "dahv", "air_pressure"]:
-        # for variable in ["air_pressure"]:
+    for variable in [
+        "elevation",
+        "windSpeedX",
+        "sigWaveHeight",
+        "depthAverageVelX",
+        "airPressure",
+    ]:
+        # for variable in ["airPressure"]:
         for ix, time in enumerate(schout.time.values):
             fig, ax = schism_plot(
                 schout,

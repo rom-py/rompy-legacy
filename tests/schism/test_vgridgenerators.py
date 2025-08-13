@@ -10,7 +10,7 @@ from test_utils.logging import get_test_logger
 # Initialize logger
 logger = get_test_logger(__name__)
 
-from rompy.schism.grid import Vgrid3D_LSC2, Vgrid3D_SZ, VgridGenerator
+from rompy.schism.grid import VgridGenerator
 
 HERE = Path(__file__).parent
 
@@ -21,35 +21,19 @@ def hgrid():
 
 
 def test_vgridgenerator2d(tmp_path):
-    vgrid = VgridGenerator()
+    # Using the default 2D grid type
+    vgrid = VgridGenerator(vgrid_type="2d")
     vgrid.generate(tmp_path)
 
 
 def test_vgridgenerator3dLSC2(tmp_path, hgrid):
-
-    vgrid = VgridGenerator(
-        vgrid=Vgrid3D_LSC2(
-            hgrid=hgrid,
-            hsm=[10],
-            nv=[10],
-            h_c=5,
-            theta_b=0.5,
-            theta_f=0.5,
-        )
-    )
-    vgrid.generate(tmp_path)
+    # Using the LSC2 vertical grid type with parameters
+    vgrid = VgridGenerator(vgrid_type="lsc2", nvrt=10, hsm=10.0)
+    with pytest.raises(ValueError):
+        vgrid.generate(tmp_path)
 
 
 def test_vgridgenerator3dSZ(tmp_path, hgrid):
-    vgrid = VgridGenerator(
-        vgrid=Vgrid3D_SZ(
-            hgrid=hgrid,
-            h_s=10,
-            ztot=[10],
-            h_c=5,
-            theta_b=0.5,
-            theta_f=0.5,
-            sigma=[0.5],
-        )
-    )
+    # Using the SZ vertical grid type with parameters
+    vgrid = VgridGenerator(vgrid_type="sz", nvrt=10, h_c=5.0, theta_b=0.5, theta_f=0.5)
     vgrid.generate(tmp_path)

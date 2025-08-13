@@ -33,17 +33,58 @@ Main objects
 
    rompy.schism.data.SCHISMDataSflux
    rompy.schism.data.SCHISMDataWave
-   rompy.schism.data.SCHISMDataOcean
-   rompy.schism.data.SCHISMDataTides
+   rompy.schism.data.SCHISMDataBoundaryConditions
+   rompy.schism.data.HotstartConfig
    rompy.schism.data.SCHISMData
 
 
+Boundary Conditions
+-------------------
+
+The boundary conditions module provides a unified interface for configuring all types of SCHISM boundary conditions including tidal, ocean, river, and nested model boundaries.
+
+.. toctree::
+   :maxdepth: 2
+
+   boundary_conditions
+
+Hotstart Configuration
+----------------------
+
+The hotstart system provides integrated initial condition file generation, allowing you to create hotstart.nc files from the same ocean data sources used for boundary conditions.
+
+.. toctree::
+   :maxdepth: 2
+
+   hotstart
+
+Backend Framework
+-----------------
+
+The backend framework provides unified execution of SCHISM simulations using Docker containers with automatic image building and comprehensive testing capabilities.
+
+.. toctree::
+   :maxdepth: 2
+
+   backend_framework
+   backend_tutorial
+
+.. autosummary::
+   :nosignatures:
+   :toctree: _generated/
+
+   rompy.schism.data.SCHISMDataBoundaryConditions
+   rompy.schism.data.BoundarySetupWithSource
+   rompy.schism.boundary_conditions.create_tidal_only_boundary_config
+   rompy.schism.boundary_conditions.create_hybrid_boundary_config
+   rompy.schism.boundary_conditions.create_river_boundary_config
+   rompy.schism.boundary_conditions.create_nested_boundary_config
 
 
 Config Minimal
 ---------------
 
-This object has been implemented to meet the initial operational requirements of CSIRO. It is likely that this will be superceded by the full implementation. 
+This object has been implemented to meet the initial operational requirements of CSIRO. It is likely that this will be superceded by the full implementation.
 
 .. autosummary::
    :nosignatures:
@@ -54,7 +95,7 @@ This object has been implemented to meet the initial operational requirements of
 Full Namelist Implementation
 -----------------------------
 
-This object implements a set of models for each namelist and assembles a config object using this group of models.  This is curently only partly implemented.  
+This object implements a set of models for each namelist and assembles a config object using this group of models.  This is curently only partly implemented.
 
 PARAM
 ~~~~~~
@@ -101,13 +142,13 @@ ICM
    rompy.schism.namelists.icm.Ero
    rompy.schism.namelists.icm.Marco
    rompy.schism.namelists.icm.Ph_icm
-   rompy.schism.namelists.icm.Poc 
-   rompy.schism.namelists.icm.Sav 
-   rompy.schism.namelists.icm.Sfm 
+   rompy.schism.namelists.icm.Poc
+   rompy.schism.namelists.icm.Sav
+   rompy.schism.namelists.icm.Sfm
    rompy.schism.namelists.icm.Silica
-   rompy.schism.namelists.icm.Stem 
-   rompy.schism.namelists.icm.Veg 
-   rompy.schism.namelists.icm.Zb 
+   rompy.schism.namelists.icm.Stem
+   rompy.schism.namelists.icm.Veg
+   rompy.schism.namelists.icm.Zb
    rompy.schism.namelists.icm.Icm
 
 SEDIMENT

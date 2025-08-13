@@ -11,7 +11,7 @@ from typing import Literal, Optional, Union
 import pandas as pd
 from pydantic import Field, field_validator, model_validator
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.swan.subcomponents.base import BaseSubComponent
 
 logger = get_logger(__name__)
