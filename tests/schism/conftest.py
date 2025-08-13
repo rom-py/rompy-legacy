@@ -199,11 +199,21 @@ def mock_tidal_data():
     # Mock data for testing - enough for any boundary size
     # For elevation: [amplitude, phase]
     # For velocity: [u_amplitude, u_phase, v_amplitude, v_phase]
-    def mock_data(self, lons, lats, constituent, data_type="h"):
+    def mock_data(self, lons, lats, tnames, data_type="h"):
+        num_nodes = len(lons)
+        num_constituents = len(tnames)
         if data_type == "h":  # Elevation
-            return np.array([[0.5, 45.0] for _ in range(len(lons))])
+            arr = np.zeros((num_nodes, num_constituents, 2))
+            arr[..., 0] = 0.5  # amplitude
+            arr[..., 1] = 45.0  # phase
+            return arr
         elif data_type == "uv":  # Velocity
-            return np.array([[0.1, 30.0, 0.2, 60.0] for _ in range(len(lons))])
+            arr = np.zeros((num_nodes, num_constituents, 4))
+            arr[..., 0] = 0.1  # u_amp
+            arr[..., 1] = 30.0  # u_phase
+            arr[..., 2] = 0.2  # v_amp
+            arr[..., 3] = 60.0  # v_phase
+            return arr
         else:
             raise ValueError(f"Unknown data type: {data_type}")
 
