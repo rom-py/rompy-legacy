@@ -461,6 +461,9 @@ class SCHISMDataSflux(RompyBaseModel):
 
             logger.debug(f"Processing {variable}")
             namelistargs.update(data.namelist)
+            # Expand time by one day on each end
+            if time is not None:
+                time = TimeRange(start=time.start - pd.Timedelta(days=1), end=time.end + pd.Timedelta(days=1))
             ret[variable] = data.get(destdir, grid, time)
 
         # Log summary of atmospheric data processing
