@@ -28,49 +28,56 @@ import logging
 import sys
 import tempfile
 import time
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import yaml
-from datetime import datetime
+
+from rompy.backends import DockerConfig
+from rompy.core.time import TimeRange
 
 # ROMPY imports
 from rompy.model import ModelRun
-from rompy.backends import DockerConfig
-from rompy.core.time import TimeRange
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 logger = logging.getLogger(__name__)
 
+
 # ANSI color codes for output
 class Colors:
-    RED = '\033[0;31m'
-    GREEN = '\033[0;32m'
-    YELLOW = '\033[1;33m'
-    BLUE = '\033[0;34m'
-    BOLD = '\033[1m'
-    NC = '\033[0m'  # No Color
+    RED = "\033[0;31m"
+    GREEN = "\033[0;32m"
+    YELLOW = "\033[1;33m"
+    BLUE = "\033[0;34m"
+    BOLD = "\033[1m"
+    NC = "\033[0m"  # No Color
+
 
 def log_info(message: str) -> None:
     """Log info message with color."""
     print(f"{Colors.BLUE}[INFO]{Colors.NC} {message}")
 
+
 def log_success(message: str) -> None:
     """Log success message with color."""
     print(f"{Colors.GREEN}[SUCCESS]{Colors.NC} {message}")
+
 
 def log_warning(message: str) -> None:
     """Log warning message with color."""
     print(f"{Colors.YELLOW}[WARNING]{Colors.NC} {message}")
 
+
 def log_error(message: str) -> None:
     """Log error message with color."""
     print(f"{Colors.RED}[ERROR]{Colors.NC} {message}")
+
 
 def log_header(message: str) -> None:
     """Log header message with formatting."""
@@ -87,7 +94,9 @@ class SchismExampleRunner:
         """Initialize the runner with example configurations."""
         self.schism_version = "v5.13.0"
         self.project_root = self._find_project_root()
-        self.examples_dir = self.project_root / "notebooks" / "schism" / "boundary_conditions_examples"
+        self.examples_dir = (
+            self.project_root / "notebooks" / "schism" / "boundary_conditions_examples"
+        )
         self.base_output_dir = self.project_root / "boundary_conditions_test_outputs"
 
         # Example definitions with metadata
@@ -108,7 +117,9 @@ class SchismExampleRunner:
                 "exe_suffix": "",
             },
             "tidal_with_potential": {
-                "file": self.examples_dir / "01_tidal_only" / "tidal_with_potential.yaml",
+                "file": self.examples_dir
+                / "01_tidal_only"
+                / "tidal_with_potential.yaml",
                 "description": "Tidal forcing with earth tidal potential and self-attraction loading",
                 "category": "tidal",
                 "schism_dir": "schism_tidal_potential/tidal_potential_example",
@@ -129,7 +140,9 @@ class SchismExampleRunner:
                 "exe_suffix": "",
             },
             "tidal_with_mdt_const": {
-                "file": self.examples_dir / "01_tidal_only" / "tidal_with_mdt_const.yaml",
+                "file": self.examples_dir
+                / "01_tidal_only"
+                / "tidal_with_mdt_const.yaml",
                 "description": "Tidal forcing with constant MDT correction",
                 "category": "tidal",
                 "schism_dir": "schism_tidal_with_mdt_const/tidal_with_mdt_const_example",
@@ -182,9 +195,11 @@ class SchismExampleRunner:
         # Navigate up to find the rompy root
         while current_dir != current_dir.parent:
             # Look for project indicators
-            if (current_dir / "setup.py").exists() or \
-               (current_dir / "pyproject.toml").exists() or \
-               (current_dir / ".git").exists():
+            if (
+                (current_dir / "setup.py").exists()
+                or (current_dir / "pyproject.toml").exists()
+                or (current_dir / ".git").exists()
+            ):
                 return current_dir
             # Also check if this directory contains the rompy package
             if (current_dir / "rompy").exists() and (current_dir / "rompy").is_dir():
@@ -196,7 +211,14 @@ class SchismExampleRunner:
 
     def _extract_tidal_data(self) -> bool:
         """Extract tidal data from archive if needed."""
-        tidal_archive = self.project_root / "tests" / "schism" / "test_data" / "tides" / "oceanum-atlas.tar.gz"
+        tidal_archive = (
+            self.project_root
+            / "tests"
+            / "schism"
+            / "test_data"
+            / "tides"
+            / "oceanum-atlas.tar.gz"
+        )
         tidal_dir = self.project_root / "tests" / "schism" / "test_data" / "tides"
 
         if not tidal_archive.exists():
@@ -210,8 +232,9 @@ class SchismExampleRunner:
 
         log_info("Extracting tidal data...")
         import tarfile
+
         try:
-            with tarfile.open(tidal_archive, 'r:gz') as tar:
+            with tarfile.open(tidal_archive, "r:gz") as tar:
                 tar.extractall(path=tidal_dir)
             log_success("Tidal data extracted successfully")
             return True
@@ -235,7 +258,9 @@ class SchismExampleRunner:
         log_info("Docker files validated successfully")
         return True
 
-    def _get_examples_to_run(self, category: str, single_example: Optional[str] = None) -> List[str]:
+    def _get_examples_to_run(
+        self, category: str, single_example: Optional[str] = None
+    ) -> List[str]:
         """Get list of examples to run based on category."""
         if single_example:
             if single_example in self.examples:
@@ -247,8 +272,11 @@ class SchismExampleRunner:
         if category == "all":
             return list(self.examples.keys())
 
-        return [name for name, config in self.examples.items()
-                if config["category"] == category]
+        return [
+            name
+            for name, config in self.examples.items()
+            if config["category"] == category
+        ]
 
     def _create_docker_config(self, schism_dir: Path, exe_suffix: str) -> DockerConfig:
         """Create Docker configuration for SCHISM execution."""
@@ -264,14 +292,14 @@ class SchismExampleRunner:
             timeout=3600,  # 1 hour timeout
             cpu=8,
             memory="4g",
-            executable=f"bash -c \"{command}\"",
-            volumes=[f"{schism_dir}:/tmp/schism:rw"],
+            executable=f'bash -c "{command}"',
+            volumes=[f"{schism_dir}:/tmp/schism:Z"],
             env_vars={
                 "OMPI_ALLOW_RUN_AS_ROOT": "1",
-                "OMPI_ALLOW_RUN_AS_ROOT_CONFIRM": "1"
+                "OMPI_ALLOW_RUN_AS_ROOT_CONFIRM": "1",
             },
             remove_container=True,
-            user="root"
+            user="root",
         )
 
     def _run_example(self, example_name: str, dry_run: bool = False) -> bool:
@@ -300,7 +328,7 @@ class SchismExampleRunner:
             log_info("Generating SCHISM configuration...")
 
             # Load the YAML configuration
-            with open(config_file, 'r') as f:
+            with open(config_file, "r") as f:
                 config_data = yaml.safe_load(f)
 
             # Create ModelRun from the configuration
@@ -320,6 +348,7 @@ class SchismExampleRunner:
             if station_file.exists():
                 log_info("Copying station.in file to SCHISM directory")
                 import shutil
+
                 shutil.copy2(station_file, schism_dir)
             else:
                 log_warning("station.in file not found, skipping copy")
@@ -332,19 +361,19 @@ class SchismExampleRunner:
             temp_model = ModelRun(
                 run_id=f"{example_name}_execution",
                 period=TimeRange(
-                    start=datetime.now(),
-                    end=datetime.now(),
-                    interval="1H"
+                    start=datetime.now(), end=datetime.now(), interval="1H"
                 ),
                 output_dir=str(schism_dir),
-                delete_existing=False
+                delete_existing=False,
             )
 
             # Run the model using the Docker backend
             success = temp_model.run(backend=docker_config)
 
             if success:
-                log_success(f"SCHISM simulation completed successfully for {example_name}")
+                log_success(
+                    f"SCHISM simulation completed successfully for {example_name}"
+                )
 
                 # Check for output files
                 outputs_dir = schism_dir / "outputs"
@@ -363,8 +392,13 @@ class SchismExampleRunner:
             log_error(f"Error running example {example_name}: {e}")
             return False
 
-    def run_examples(self, category: str = "all", single_example: Optional[str] = None,
-                    dry_run: bool = False, keep_outputs: bool = False) -> Tuple[List[str], List[str]]:
+    def run_examples(
+        self,
+        category: str = "all",
+        single_example: Optional[str] = None,
+        dry_run: bool = False,
+        keep_outputs: bool = False,
+    ) -> Tuple[List[str], List[str]]:
         """Run examples based on category or single example."""
         log_header("SCHISM Boundary Conditions Examples Test Runner")
         log_info(f"Project root: {self.project_root}")
@@ -434,6 +468,7 @@ class SchismExampleRunner:
         if not keep_outputs and not failed_runs:
             log_info("Cleaning up output directories...")
             import shutil
+
             if self.base_output_dir.exists():
                 shutil.rmtree(self.base_output_dir)
             log_info("Cleanup complete")
@@ -471,40 +506,54 @@ def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
         description="SCHISM Boundary Conditions Examples Test Runner",
-        formatter_class=argparse.RawDescriptionHelpFormatter
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
     parser.add_argument(
-        "--all", action="store_const", const="all", dest="category",
-        help="Run all examples (default)"
+        "--all",
+        action="store_const",
+        const="all",
+        dest="category",
+        help="Run all examples (default)",
     )
     parser.add_argument(
-        "--tidal", action="store_const", const="tidal", dest="category",
-        help="Run only tidal examples"
+        "--tidal",
+        action="store_const",
+        const="tidal",
+        dest="category",
+        help="Run only tidal examples",
     )
     parser.add_argument(
-        "--hybrid", action="store_const", const="hybrid", dest="category",
-        help="Run only hybrid examples"
+        "--hybrid",
+        action="store_const",
+        const="hybrid",
+        dest="category",
+        help="Run only hybrid examples",
     )
     parser.add_argument(
-        "--river", action="store_const", const="river", dest="category",
-        help="Run only river examples"
+        "--river",
+        action="store_const",
+        const="river",
+        dest="category",
+        help="Run only river examples",
     )
     parser.add_argument(
-        "--nested", action="store_const", const="nested", dest="category",
-        help="Run only nested examples"
+        "--nested",
+        action="store_const",
+        const="nested",
+        dest="category",
+        help="Run only nested examples",
     )
     parser.add_argument(
-        "--single", type=str, dest="single_example",
-        help="Run single example by name"
+        "--single", type=str, dest="single_example", help="Run single example by name"
     )
     parser.add_argument(
-        "--dry-run", action="store_true",
-        help="Show what would be run without executing"
+        "--dry-run",
+        action="store_true",
+        help="Show what would be run without executing",
     )
     parser.add_argument(
-        "--keep-outputs", action="store_true",
-        help="Keep output directories after run"
+        "--keep-outputs", action="store_true", help="Keep output directories after run"
     )
 
     parser.set_defaults(category="all")
@@ -519,7 +568,7 @@ def main():
             category=args.category,
             single_example=args.single_example,
             dry_run=args.dry_run,
-            keep_outputs=args.keep_outputs
+            keep_outputs=args.keep_outputs,
         )
 
         # Exit with error if any runs failed
