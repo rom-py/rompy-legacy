@@ -2,7 +2,7 @@
 # This file demonstrates how to use the cookiecutter-rompy template as part of the splitting process
 
 source_repo: "."
-target_base_dir: "../split-repos"
+target_base_dir: "/home/tdurrant/source/rompy/split-repos"
 
 # Global settings
 preserve_branches: true
@@ -22,7 +22,6 @@ repositories:
       - "rompy/model.py"
       - "rompy/plotting.py"
       - "rompy/utils.py"
-      - "rompy/archive/"
       - "rompy/backends/"
       - "rompy/logging/"
       - "rompy/pipeline/"
@@ -46,7 +45,6 @@ repositories:
       - "tests/core/"
       - "tests/data/"
       - "tests/example_configs/"
-      - "tests/simulations/"
       - "tests/test_utils/"
       - "tests/utils/"
       - "tests/backends/"
@@ -161,8 +159,8 @@ repositories:
         merges:
           - from: "tests/swan"
             to: "tests"
-          - from: "tests/test_utils"
-            to: "tests"
+          # - from: "tests/test_utils"
+          #   to: "tests"
           - from: "docs/source/swan"
             to: "docs/source"
       # Enhanced: Use cookiecutter for SWAN plugin structure first
@@ -257,8 +255,8 @@ repositories:
         merges:
           - from: "tests/schism"
             to: "tests"
-          - from: "tests/test_utils"
-            to: "tests"
+          # - from: "tests/test_utils"
+          #   to: "tests"
           - from: "docs/source/schism"
             to: "docs/source"
       # Enhanced: Use cookiecutter for SCHISM plugin structure first
