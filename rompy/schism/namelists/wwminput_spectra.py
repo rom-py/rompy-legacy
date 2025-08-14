@@ -359,59 +359,75 @@ class Engs(NamelistBaseModel):
 
 
 class Sin4(NamelistBaseModel):
-    zwnd: Optional[list] = Field([10.0, ""], description="")
-    alpha0: Optional[list] = Field(["9.499999694526196E-003", ""], description="")
-    z0max: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    betamax: Optional[list] = Field([1.54, ""], description="")
-    sinthp: Optional[list] = Field([2.0, ""], description="")
-    zalp: Optional[list] = Field(["6.000000052154064E-003", ""], description="")
-    tauwshelter: Optional[list] = Field([0.300000011920929, ""], description="")
-    swellfpar: Optional[list] = Field([1.0, ""], description="")
-    swellf: Optional[list] = Field([0.660000026226044, ""], description="")
-    swellf2: Optional[list] = Field(["-1.799999922513962E-002", ""], description="")
-    swellf3: Optional[list] = Field(["2.199999988079071E-002", ""], description="")
-    swellf4: Optional[list] = Field([150000.0, ""], description="")
-    swellf5: Optional[list] = Field([1.20000004768372, ""], description="")
-    swellf6: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    swellf7: Optional[list] = Field([360000.0, ""], description="")
-    z0rat: Optional[list] = Field(["3.999999910593033E-002", ""], description="")
-    sinbr: Optional[str] = Field("0.000000000000000E+000", description="")
+    # Fields that need commas in FORTRAN namelist output
+    _comma_fields = {
+        'zwnd', 'alpha0', 'z0max', 'betamax', 'sinthp', 'zalp', 'tauwshelter',
+        'swellfpar', 'swellf', 'swellf2', 'swellf3', 'swellf4', 'swellf5',
+        'swellf6', 'swellf7', 'z0rat'
+    }
+    
+    zwnd: Optional[float] = Field(10.0, description="")
+    alpha0: Optional[float] = Field(9.499999694526196e-3, description="")
+    z0max: Optional[float] = Field(0.0, description="")
+    betamax: Optional[float] = Field(1.54, description="")
+    sinthp: Optional[float] = Field(2.0, description="")
+    zalp: Optional[float] = Field(6.000000052154064e-3, description="")
+    tauwshelter: Optional[float] = Field(0.300000011920929, description="")
+    swellfpar: Optional[float] = Field(1.0, description="")
+    swellf: Optional[float] = Field(0.660000026226044, description="")
+    swellf2: Optional[float] = Field(-1.799999922513962e-2, description="")
+    swellf3: Optional[float] = Field(2.199999988079071e-2, description="")
+    swellf4: Optional[float] = Field(150000.0, description="")
+    swellf5: Optional[float] = Field(1.20000004768372, description="")
+    swellf6: Optional[float] = Field(0.0, description="")
+    swellf7: Optional[float] = Field(360000.0, description="")
+    z0rat: Optional[float] = Field(3.999999910593033e-2, description="")
+    sinbr: Optional[float] = Field(0.0, description="")
 
 
 class Sds4(NamelistBaseModel):
-    sdsc1: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    fxpm3: Optional[list] = Field([4.0, ""], description="")
-    fxfm3: Optional[list] = Field([2.5, ""], description="")
-    fxfmage: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdsc2: Optional[list] = Field(["-2.200000017182902E-005", ""], description="")
-    sdscum: Optional[list] = Field([-0.403439998626709, ""], description="")
-    sdsstrain: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdsc4: Optional[list] = Field([1.0, ""], description="")
-    sdsc5: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdsc6: Optional[list] = Field([0.300000011920929, ""], description="")
-    sdsbr: Optional[list] = Field(["8.999999845400453E-004", ""], description="")
-    sdsbr2: Optional[list] = Field([0.800000011920929, ""], description="")
-    sdsp: Optional[list] = Field([2.0, ""], description="")
-    sdsiso: Optional[list] = Field([2.0, ""], description="")
-    sdsbck: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdsabk: Optional[list] = Field([1.5, ""], description="")
-    sdspbk: Optional[list] = Field([4.0, ""], description="")
-    sdsbint: Optional[list] = Field([0.300000011920929, ""], description="")
-    sdshck: Optional[list] = Field([1.5, ""], description="")
-    sdsdth: Optional[list] = Field([80.0, ""], description="")
-    sdscos: Optional[list] = Field([2.0, ""], description="")
-    sdsbrf1: Optional[list] = Field([0.5, ""], description="")
-    sdsbrfdf: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdsbm0: Optional[list] = Field([1.0, ""], description="")
-    sdsbm1: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdsbm2: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdsbm3: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdsbm4: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdshfgen: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    sdslfgen: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    whitecapwidth: Optional[list] = Field([0.300000011920929, ""], description="")
-    fxincut: Optional[list] = Field(["0.000000000000000E+000", ""], description="")
-    fxdscut: Optional[str] = Field("0.000000000000000E+000", description="")
+    # Fields that need commas in FORTRAN namelist output
+    _comma_fields = {
+        'sdsc1', 'fxpm3', 'fxfm3', 'fxfmage', 'sdsc2', 'sdscum', 'sdsstrain',
+        'sdsc4', 'sdsc5', 'sdsc6', 'sdsbr', 'sdsbr2', 'sdsp', 'sdsiso', 'sdsbck',
+        'sdsabk', 'sdspbk', 'sdsbint', 'sdshck', 'sdsdth', 'sdscos', 'sdsbrf1',
+        'sdsbrfdf', 'sdsbm0', 'sdsbm1', 'sdsbm2', 'sdsbm3', 'sdsbm4', 'sdshfgen',
+        'sdslfgen', 'whitecapwidth', 'fxincut'
+    }
+    
+    sdsc1: Optional[float] = Field(0.0, description="")
+    fxpm3: Optional[float] = Field(4.0, description="")
+    fxfm3: Optional[float] = Field(2.5, description="")
+    fxfmage: Optional[float] = Field(0.0, description="")
+    sdsc2: Optional[float] = Field(-2.200000017182902e-5, description="")
+    sdscum: Optional[float] = Field(-0.403439998626709, description="")
+    sdsstrain: Optional[float] = Field(0.0, description="")
+    sdsc4: Optional[float] = Field(1.0, description="")
+    sdsc5: Optional[float] = Field(0.0, description="")
+    sdsc6: Optional[float] = Field(0.300000011920929, description="")
+    sdsbr: Optional[float] = Field(8.999999845400453e-4, description="")
+    sdsbr2: Optional[float] = Field(0.800000011920929, description="")
+    sdsp: Optional[float] = Field(2.0, description="")
+    sdsiso: Optional[float] = Field(2.0, description="")
+    sdsbck: Optional[float] = Field(0.0, description="")
+    sdsabk: Optional[float] = Field(1.5, description="")
+    sdspbk: Optional[float] = Field(4.0, description="")
+    sdsbint: Optional[float] = Field(0.300000011920929, description="")
+    sdshck: Optional[float] = Field(1.5, description="")
+    sdsdth: Optional[float] = Field(80.0, description="")
+    sdscos: Optional[float] = Field(2.0, description="")
+    sdsbrf1: Optional[float] = Field(0.5, description="")
+    sdsbrfdf: Optional[float] = Field(0.0, description="")
+    sdsbm0: Optional[float] = Field(1.0, description="")
+    sdsbm1: Optional[float] = Field(0.0, description="")
+    sdsbm2: Optional[float] = Field(0.0, description="")
+    sdsbm3: Optional[float] = Field(0.0, description="")
+    sdsbm4: Optional[float] = Field(0.0, description="")
+    sdshfgen: Optional[float] = Field(0.0, description="")
+    sdslfgen: Optional[float] = Field(0.0, description="")
+    whitecapwidth: Optional[float] = Field(0.300000011920929, description="")
+    fxincut: Optional[float] = Field(0.0, description="")
+    fxdscut: Optional[float] = Field(0.0, description="")
 
 
 class Nums(NamelistBaseModel):
@@ -686,12 +702,12 @@ class Station(NamelistBaseModel):
 
 class Petscoptions(NamelistBaseModel):
     ksptype: Optional[str] = Field("bcgs", description="")
-    rtol: Optional[str] = Field(
-        "1.E-20",
+    rtol: Optional[float] = Field(
+        1e-20,
         description="the relative convergence tolerance (relative decrease in the residual norm)",
     )
-    abstol: Optional[str] = Field(
-        "1.E-20",
+    abstol: Optional[float] = Field(
+        1e-20,
         description="the absolute convergence tolerance (absolute size of the residual norm)",
     )
     dtol: Optional[float] = Field(10000.0, description="the divergence tolerance")
