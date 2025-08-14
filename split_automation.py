@@ -523,6 +523,7 @@ Browse the notebooks/ directory to get started!
         entry_points: Dict[str, str] = None,
     ):
         """Update setup.cfg file."""
+        __import__('ipdb').set_trace()
         with open(setup_cfg_path, "r") as f:
             content = f.read()
         lines = content.split("\n")
@@ -1309,37 +1310,145 @@ line-length = 88
 '''
     return content
 
+
+
+def get_core_version():
+    """Read the version string from rompy/rompy/__init__.py"""
+    init_path = Path(__file__).parent / "rompy" / "__init__.py"
+    version = "0.0.0"
+    if init_path.exists():
+        with open(init_path, "r") as f:
+            for line in f:
+                if line.strip().startswith("__version__"):
+                    version = line.split("=")[1].strip().strip('"').strip("'")
+                    break
+    return version
+
+def inject_version_to_plugin_init(plugin_repo_path, package_module, version_str):
+    """Inject __version__ = "..." into plugin __init__.py"""
+    init_path = plugin_repo_path / "src" / package_module / "__init__.py"
+    if not init_path.exists():
+        init_path.parent.mkdir(parents=True, exist_ok=True)
+        init_content = f'__version__ = "{version_str}"\n'
+    else:
+        with open(init_path, "r") as f:
+            lines = f.readlines()
+        # Remove any existing __version__ line
+        lines = [line for line in lines if not line.strip().startswith("__version__")]
+        init_content = f'__version__ = "{version_str}"\n' + "".join(lines)
+    with open(init_path, "w") as f:
+        f.write(init_content)
+    logger.info(f"✅ Injected version {version_str} into {init_path}")
+
 def fix_dependencies(split_repos_dir):
     """Fix dependencies in all split repositories."""
     logger.info("\n🔧 Fixing dependencies in split repositories...")
     split_dir = Path(split_repos_dir).resolve()
-    repos = {
+    plugin_repos = {
         "rompy-swan": fix_rompy_swan_pyproject,
         "rompy-schism": fix_rompy_schism_pyproject,
     }
-    for repo_name, fix_func in repos.items():
-            repo_path = split_dir / repo_name
-            pyproject_path = repo_path / "pyproject.toml"
-            if not repo_path.exists():
-                logger.warning(f"⚠️  Repository not found: {repo_path}")
-                continue
-            logger.info(f"🔧 Fixing {repo_name}/pyproject.toml...")
-            if repo_name == "rompy":
-                # For rompy, use the monorepo pyproject.toml as template
-                monorepo_pyproject = Path(__file__).parent.parent / "pyproject.toml"
+    version_str = get_core_version()
+    # First process plugin repos with their templates
+    for repo_name, fix_func in plugin_repos.items():
+        repo_path = split_dir / repo_name
+        pyproject_path = repo_path / "pyproject.toml"
+        if not repo_path.exists():
+            logger.warning(f"⚠️  Repository not found: {repo_path}")
+            continue
+        logger.info(f"🔧 Fixing {repo_name}/pyproject.toml...")
+        content = fix_func()
+        with open(pyproject_path, 'w') as f:
+            f.write(content)
+        logger.info(f"✅ Fixed {repo_name}/pyproject.toml with template")
+        # Inject version into plugin __init__.py
+        package_module = "rompy_swan" if repo_name == "rompy-swan" else "rompy_schism"
+        inject_version_to_plugin_init(repo_path, package_module, version_str)
+    
+    # Now handle rompy specially - use the cookiecutter-generated pyproject.toml and inject deps
+    repo_name = "rompy"
+    repo_path = split_dir / repo_name
+    pyproject_path = repo_path / "pyproject.toml"
+    if repo_path.exists():
+        logger.info(f"🔧 Processing {repo_name} - keeping cookiecutter pyproject.toml and injecting dependencies")
+        
+        # Make sure the cookiecutter-generated file has proper src layout
+        try:
+            import tomli
+            import tomli_w
+            
+            if pyproject_path.exists():
+                with open(pyproject_path, "rb") as f:
+                    data = tomli.load(f)
+                
+                # Ensure src layout is properly configured
+                if "tool" not in data:
+                    data["tool"] = {}
+                if "setuptools" not in data["tool"]:
+                    data["tool"]["setuptools"] = {}
+                if "packages" not in data["tool"]["setuptools"]:
+                    data["tool"]["setuptools"]["packages"] = {}
+                data["tool"]["setuptools"]["packages"] = {"find": {"where": ["src"]}}
+                
+                # Inject dependencies and entry points from monorepo
+                monorepo_pyproject = Path(__file__).parent / "pyproject.toml"
                 if monorepo_pyproject.exists():
-                    with open(monorepo_pyproject, 'r') as f:
-                        content = f.read()
-                    with open(pyproject_path, 'w') as f:
-                        f.write(content)
-                    logger.info(f"✅ Fixed {repo_name}/pyproject.toml from monorepo template")
+                    with open(monorepo_pyproject, "rb") as f:
+                        monorepo_data = tomli.load(f)
+                    
+                    # Get dependencies from monorepo
+                    deps = monorepo_data.get("project", {}).get("dependencies", [])
+                    opt_deps = monorepo_data.get("project", {}).get("optional-dependencies", {})
+                    entry_points = monorepo_data.get("project", {}).get("entry-points", {})
+                    
+                    # Apply them to the cookiecutter-generated pyproject.toml
+                    if "project" not in data:
+                        data["project"] = {}
+                    
+                    data["project"]["dependencies"] = deps
+                    
+                    if "optional-dependencies" not in data["project"]:
+                        data["project"]["optional-dependencies"] = {}
+                    for group, group_deps in opt_deps.items():
+                        data["project"]["optional-dependencies"][group] = group_deps
+                    
+                    if "entry-points" not in data["project"]:
+                        data["project"]["entry-points"] = {}
+                    
+                    # Add entry points
+                    for group, group_entries in entry_points.items():
+                        data["project"]["entry-points"][group] = group_entries
+                    
+                    # Ensure rompy.config entry point is properly set for the core package
+                    if "rompy.config" in data["project"]["entry-points"]:
+                        data["project"]["entry-points"]["rompy.config"] = {
+                            "base": "rompy.core.config:BaseConfig"
+                        }
+                    
+                    # Make sure setuptools_scm is configured properly
+                    if "tool" not in data:
+                        data["tool"] = {}
+                    if "setuptools_scm" not in data["tool"]:
+                        data["tool"]["setuptools_scm"] = {}
+                    data["tool"]["setuptools_scm"]["write_to"] = "src/rompy/_version.py"
+                    
+                    # Write the modified pyproject.toml
+                    with open(pyproject_path, "wb") as f:
+                        tomli_w.dump(data, f)
+                    
+                    logger.info(f"✅ Updated {repo_name}/pyproject.toml with dependencies and entry points from monorepo")
                 else:
                     logger.warning(f"⚠️ Monorepo pyproject.toml not found: {monorepo_pyproject}")
+                    logger.info(f"✅ Only updated {repo_name}/pyproject.toml src layout configuration")
             else:
-                content = fix_func()
-                with open(pyproject_path, 'w') as f:
-                    f.write(content)
-                logger.info(f"✅ Fixed {repo_name}/pyproject.toml")
+                logger.warning(f"⚠️ {repo_name}/pyproject.toml not found: {pyproject_path}")
+        except ImportError:
+            logger.warning("⚠️ tomli/tomli_w not available, could not update pyproject.toml")
+        except Exception as e:
+            logger.error(f"❌ Failed to update {repo_name}/pyproject.toml: {e}")
+    else:
+        logger.warning(f"⚠️  Repository not found: {repo_path}")
+    
     logger.info("🎉 All pyproject.toml files have been fixed!")
 
 def check_pyproject_entry_points(pyproject_path: Path):
@@ -1475,11 +1584,13 @@ def main():
     # Step 1: Split repository
     splitter = RepositorySplitter(args.config, args.dry_run)
     splitter.run()
+    # Always use the config value for split_repos_dir
+    split_repos_dir = splitter.target_base_dir
     # Step 2: Fix dependencies
-    fix_dependencies(args.split_repos_dir)
+    fix_dependencies(split_repos_dir)
     # Step 3: Fix imports
     # --- BEGIN: ImportCorrector class ---
-    fixer = FinalTestFixer(Path(args.split_repos_dir), args.dry_run)
+    fixer = FinalTestFixer(Path(split_repos_dir), args.dry_run)
     fixer.run_all_fixes()
     logger.info("🎉 Unified split automation complete!")
     return 0
