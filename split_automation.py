@@ -12,7 +12,6 @@ Author: ROMPY Development Team
 
 import argparse
 import logging
-# --- BEGIN: RepositorySplitter and split logic ---
 import os
 import shutil
 import subprocess
