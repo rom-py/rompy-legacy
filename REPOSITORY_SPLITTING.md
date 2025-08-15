@@ -75,17 +75,17 @@ pip install cookiecutter
 
 1. **Validate the configuration:**
    ```bash
-   python validate_config.py --config repo_split_config.yaml
+   python validate_config.py --config repo_split_config_with_cookiecutter.yaml
    ```
 
 2. **Run a dry-run to see what would happen:**
    ```bash
-   python split_repository.py --config repo_split_config.yaml --dry-run
+   python split_automation.py --config repo_split_config_with_cookiecutter.yaml --dry-run
    ```
 
 3. **Execute the actual split:**
    ```bash
-   python split_repository.py --config repo_split_config.yaml
+   python split_automation.py --config repo_split_config_with_cookiecutter.yaml
    ```
 
 4. **Review the results:**
@@ -94,17 +94,43 @@ pip install cookiecutter
    ```
 
 5. **Test the split repositories:**
-   ```bash
-   # Comprehensive testing with virtual environment
-   python test_split.py ../split-repos/
+   (Testing is now integrated into the split automation script. See summary output for next steps.)
    
-   # Or test individual packages
-   python test_split.py ../split-repos/ --package rompy-core
+   # To manually test individual packages after split:
+   ```bash
+   cd ../split-repos/rompy-core
+   pip install -e .[dev]
+   pytest
    ```
 
 ## Configuration
 
-The splitting process is controlled by `repo_split_config.yaml`. Key sections include:
+The splitting process is controlled by a configuration file (typically `repo_split_config_with_cookiecutter.yaml`). Key sections include:
+
+---
+
+## Unified Split Automation Script Usage
+
+The recommended way to split the repository is to use the unified automation script:
+
+```bash
+python split_automation.py [--config CONFIG_FILE] [--dry-run] [--no-test] [--retry-setup] [--split-repos-dir DIR]
+```
+
+**Arguments:**
+- `--config CONFIG_FILE` (default: `repo_split_config_with_cookiecutter.yaml`): Path to the split configuration file
+- `--dry-run`: Show what would be done without making changes
+- `--no-test`: Skip comprehensive testing (testing is normally integrated)
+- `--retry-setup`: Retry setup steps if they fail
+- `--split-repos-dir DIR`: Directory for split repositories (default: `../split-repos`)
+
+**Features:**
+- Handles splitting, dependency fixes, import correction, and summary reporting in one workflow
+- Prints a summary of split repositories and next steps
+- Integrates cookiecutter templates if configured
+- Validates prerequisites and configuration before running
+
+---
 
 ### Repository Definitions
 
@@ -161,7 +187,9 @@ The `apply_cookiecutter_template` action provides enhanced package structure:
 
 ## Process Details
 
-### What the Script Does
+### What the Unified Split Automation Script Does
+
+The unified `split_automation.py` script performs the entire repository splitting workflow in one step:
 
 1. **Clones** the source repository for each target repository
 2. **Filters** using git-filter-repo to keep only specified paths
@@ -169,10 +197,13 @@ The `apply_cookiecutter_template` action provides enhanced package structure:
 4. **Maintains** all branches and tags
 5. **Restructures** files according to post-split actions
 6. **Creates modern src/ layout** following Python packaging best practices
-6. **Updates** package configuration files (pyproject.toml, setup.cfg)
-7. **Generates** modern development tools (tox.ini, pre-commit, GitHub Actions)
-8. **Corrects imports** automatically for each package type
-9. **Validates** the split with comprehensive testing
+7. **Updates** package configuration files (pyproject.toml, setup.cfg)
+8. **Generates** modern development tools (tox.ini, pre-commit, GitHub Actions)
+9. **Corrects imports** automatically for each package type
+10. **Fixes dependencies and injects version info** for plugins and core
+11. **Validates** the split and prints a summary with next steps
+
+All steps are managed by a single script and configuration file, reducing manual effort and errors.
 
 ## Configuration Options
 
@@ -349,6 +380,13 @@ The validator checks:
    - Ensure write permissions to target directory
    - Check that source repository isn't locked by other processes
 
+5. **split_automation.py errors or failures**
+   - Review the summary and error logs printed by the script
+   - Use `--dry-run` to preview actions before making changes
+   - Use `--retry-setup` to retry setup steps if they fail
+   - Ensure all prerequisites are installed (see Prerequisites section)
+   - If a split fails, remove partial results and re-run the script
+
 ### Recovery
 
 If the split fails partway through:
@@ -366,32 +404,37 @@ python split_repository.py --config repo_split_config.yaml --verbose
 
 ## Testing Split Repositories
 
-### Comprehensive Testing Script
+### Integrated Testing and Validation
 
-Use the dedicated testing script to validate your split:
+The unified split automation script (`split_automation.py`) prints a summary and next steps after splitting. Testing is now integrated into the workflow:
+
+- After the split, follow the summary instructions to test each repository:
 
 ```bash
-# Test all packages with virtual environment
-python test_split.py ../split-repos/
-
-# Test specific package only
-python test_split.py ../split-repos/ --package rompy-core
-
-# Keep virtual environment for debugging
-python test_split.py ../split-repos/ --no-cleanup
-
-# Use custom virtual environment location
-python test_split.py ../split-repos/ --venv-dir /tmp/my-test-env
+cd ../split-repos/rompy-core
+pip install -e .[dev]
+pytest
 ```
 
-### What the Test Script Does
+- For plugin repositories, repeat the process in their respective directories.
+- The script also prints recommended next steps for pushing to remote, setting up CI/CD, and validating packaging.
 
-1. **Creates** a clean virtual environment
-2. **Installs** packages in dependency order (core first, then plugins)
-3. **Tests imports** to verify package structure is correct
-4. **Runs test suites** using pytest for each package
-5. **Reports** detailed success/failure information
-6. **Cleans up** automatically (unless --no-cleanup is used)
+### Manual Testing (Optional)
+
+If you wish to run additional manual tests or use a custom environment:
+
+```
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate
+
+# Install and test a package
+pip install -e .[dev]
+pytest
+```
+
+Refer to the summary output from `split_automation.py` for more details.
+
 
 ### Using Makefile Commands
 
@@ -414,12 +457,12 @@ make test-splits
 2. **Clean git status** (commit or stash changes)
 3. **Switch to main branch** (ensure you're on the primary branch)
 4. **Validate configuration** (run validation script)
-5. **Test with dry-run** (verify the plan)
+5. **Test with dry-run** (verify the plan using `split_automation.py --dry-run`)
 
 ### After Splitting
 
-1. **Run comprehensive testing** using `python test_split.py ../split-repos/`
-2. **Review each repository** independently
+1. **Review the summary output** from `split_automation.py` for next steps
+2. **Test each repository** independently as instructed in the summary
 3. **Verify import corrections** worked properly by checking sample files
 4. **Test package installations** and imports using modern src/ layout
 5. **Verify git history** is preserved (`git log --oneline`)
@@ -558,8 +601,11 @@ grep -r "import rompy\." ../split-repos/rompy-swan/src/
 The configuration is designed to be reusable. To re-run:
 1. Update the configuration file
 2. Remove previous results: `rm -rf ../split-repos/`
-3. Re-run the split script
-4. Test the new split: `python test_split.py ../split-repos/`
+3. Re-run the split automation script:
+   ```bash
+   python split_automation.py --config repo_split_config_with_cookiecutter.yaml
+   ```
+4. Test the new split as instructed in the summary output
 
 ### Updating Configurations
 
@@ -608,7 +654,8 @@ The split repositories use modern Python packaging practices:
 For issues with the splitting process:
 1. Check this documentation
 2. Validate your configuration
-3. Review error messages carefully
-4. Consider asking for help with specific error messages
+3. Review error messages and summary output from `split_automation.py` carefully
+4. Use `--dry-run` and `--retry-setup` options for troubleshooting
+5. Consider asking for help with specific error messages
 
 Remember: The goal is to create maintainable, focused repositories while preserving the valuable git history of your work.
