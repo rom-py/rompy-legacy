@@ -256,10 +256,9 @@ repositories:
       # Standard splitting actions
       - action: "create_src_layout"
         base_package: "rompy_schism"
-      - action: "move_files"
-        moves:
-          - from: "tests/schism/conftest_split.py"
-            to: "tests/conftest.py"
+      - action: "rename"
+        from: "tests/schism/conftest_split.py"
+        to: "tests/schism/conftest.py"
       - action: "move_files"
         moves:
           - from: "rompy/schism"
@@ -280,6 +279,9 @@ repositories:
           #   to: "tests"
           - from: "docs/source/schism"
             to: "docs/source"
+      - action: "remove_files"
+        files:
+          - "tests/tset_data"
       # Enhanced: Use cookiecutter for SCHISM plugin structure first
       - action: "apply_cookiecutter_template"
         template_repo: "/home/tdurrant/source/rompy/cookiecutter-rompy"

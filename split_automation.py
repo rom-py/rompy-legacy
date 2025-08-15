@@ -12,18 +12,18 @@ Author: ROMPY Development Team
 
 import argparse
 import logging
-import sys
-from pathlib import Path
-import subprocess
-from final_test_fixes import FinalTestFixer
-
 # --- BEGIN: RepositorySplitter and split logic ---
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
+from pathlib import Path
 from typing import Any, Dict, List, Optional
+
 import yaml
+
+from final_test_fixes import FinalTestFixer
 
 # Import cookiecutter if available
 try:
@@ -307,6 +307,7 @@ Browse the notebooks/ directory to get started!
             elif action_type == "rename":
                 from_path = os.path.join(target_dir, action["from"])
                 to_path = os.path.join(target_dir, action["to"])
+                import shutil
                 if not self.dry_run and os.path.exists(from_path):
                     shutil.move(from_path, to_path)
                     logger.info(f"Renamed {action['from']} to {action['to']}")
@@ -419,8 +420,8 @@ Browse the notebooks/ directory to get started!
                 merge_strategy = action.get("merge_strategy", "overlay")
                 if template_repo and not self.dry_run:
                     if COOKIECUTTER_AVAILABLE:
-                        import tempfile
                         import shutil
+                        import tempfile
                         logger.info(f"Running cookiecutter template: {template_repo} with context: {template_context}")
                         with tempfile.TemporaryDirectory() as temp_dir:
                             # Run cookiecutter to generate template output
@@ -712,7 +713,8 @@ __all__ = ["__version__", "discover_plugins"]
         manifest_path = os.path.join(target_dir, "MANIFEST.in")
         # Try to use the modern template if available
         try:
-            from templates.modern_setup_templates import MANIFEST_IN_SRC_TEMPLATE, format_template
+            from templates.modern_setup_templates import (
+                MANIFEST_IN_SRC_TEMPLATE, format_template)
             template_vars = {
                 'package_module': package_module,
             }
@@ -768,7 +770,8 @@ __all__ = ["__version__", "discover_plugins"]
         """Create modern setup files using templates."""
         if MODERN_TEMPLATES_AVAILABLE:
             try:
-                from templates.modern_setup_templates import create_modern_setup_files
+                from templates.modern_setup_templates import \
+                    create_modern_setup_files
                 repo_name = package_name
                 create_modern_setup_files(
                     target_dir,
@@ -889,6 +892,8 @@ write_to = \"src/{package_module}/_version.py\"
                 (r"``rompy\.schism``", f"``{target_package}``"),
                 (r":mod:`rompy\.schism`", f":mod:`{target_package}`"),
                 (r":py:mod:`rompy\.schism`", f":py:mod:`{target_package}`"),
+                (r"parent.parent", "parent"),
+                (r'"test_data"', '"data" / "schism"'),
             ])
         return corrections
 
@@ -1666,4 +1671,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

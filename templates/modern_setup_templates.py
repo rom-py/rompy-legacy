@@ -228,6 +228,7 @@ include pyproject.toml
 include setup.cfg
 recursive-include src *.py
 recursive-include tests *.py
+recursive-include src/{package_module}/templates *
 recursive-include docs *.rst *.py *.bat Makefile
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
@@ -525,16 +526,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 def get_template(template_name: str) -> str:
     """Get a template by name."""
     templates = {
-        'pyproject_toml_src': PYPROJECT_TOML_SRC_TEMPLATE,
-        'setup_cfg_src': SETUP_CFG_SRC_TEMPLATE,
-        'manifest_in_src': MANIFEST_IN_SRC_TEMPLATE,
-        'init_py_src': INIT_PY_SRC_TEMPLATE,
-        'tox_ini_src': TOX_INI_SRC_TEMPLATE,
-        'github_workflow_src': GITHUB_WORKFLOW_SRC_TEMPLATE,
-        'pre_commit_src': PRE_COMMIT_SRC_TEMPLATE,
-        'readme_src': README_SRC_TEMPLATE,
+        "pyproject_toml_src": PYPROJECT_TOML_SRC_TEMPLATE,
+        "setup_cfg_src": SETUP_CFG_SRC_TEMPLATE,
+        "manifest_in_src": MANIFEST_IN_SRC_TEMPLATE,
+        "init_py_src": INIT_PY_SRC_TEMPLATE,
+        "tox_ini_src": TOX_INI_SRC_TEMPLATE,
+        "github_workflow_src": GITHUB_WORKFLOW_SRC_TEMPLATE,
+        "pre_commit_src": PRE_COMMIT_SRC_TEMPLATE,
+        "readme_src": README_SRC_TEMPLATE,
     }
-    return templates.get(template_name, '')
+    return templates.get(template_name, "")
 
 
 def format_template(template: str, **kwargs) -> str:
@@ -542,9 +543,14 @@ def format_template(template: str, **kwargs) -> str:
     return template.format(**kwargs)
 
 
-def create_modern_setup_files(target_dir: str, package_name: str,
-                             package_module: str, description: str,
-                             repo_name: str, dependencies: list = None):
+def create_modern_setup_files(
+    target_dir: str,
+    package_name: str,
+    package_module: str,
+    description: str,
+    repo_name: str,
+    dependencies: list = None,
+):
     """
     Create modern setup files with src layout in the target directory.
 
@@ -559,58 +565,58 @@ def create_modern_setup_files(target_dir: str, package_name: str,
     import os
 
     dependencies = dependencies or []
-    deps_str = '\n'.join([f'    "{dep}",' for dep in dependencies])
+    deps_str = "\n".join([f'    "{dep}",' for dep in dependencies])
 
     # Format template variables
     template_vars = {
-        'package_name': package_name,
-        'package_module': package_module,
-        'package_title': package_name.replace('-', ' ').title(),
-        'description': description,
-        'repo_name': repo_name,
-        'dependencies': deps_str,
+        "package_name": package_name,
+        "package_module": package_module,
+        "package_title": package_name.replace("-", " ").title(),
+        "description": description,
+        "repo_name": repo_name,
+        "dependencies": deps_str,
     }
 
     # Create pyproject.toml
     pyproject_content = format_template(PYPROJECT_TOML_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(target_dir, 'pyproject.toml'), 'w') as f:
+    with open(os.path.join(target_dir, "pyproject.toml"), "w") as f:
         f.write(pyproject_content)
 
     # Create setup.cfg (for compatibility)
     setup_cfg_content = format_template(SETUP_CFG_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(target_dir, 'setup.cfg'), 'w') as f:
+    with open(os.path.join(target_dir, "setup.cfg"), "w") as f:
         f.write(setup_cfg_content)
 
     # Create MANIFEST.in
     manifest_content = format_template(MANIFEST_IN_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(target_dir, 'MANIFEST.in'), 'w') as f:
+    with open(os.path.join(target_dir, "MANIFEST.in"), "w") as f:
         f.write(manifest_content)
 
     # Create tox.ini
     tox_content = format_template(TOX_INI_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(target_dir, 'tox.ini'), 'w') as f:
+    with open(os.path.join(target_dir, "tox.ini"), "w") as f:
         f.write(tox_content)
 
     # Create .pre-commit-config.yaml
     precommit_content = format_template(PRE_COMMIT_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(target_dir, '.pre-commit-config.yaml'), 'w') as f:
+    with open(os.path.join(target_dir, ".pre-commit-config.yaml"), "w") as f:
         f.write(precommit_content)
 
     # Create GitHub workflow
-    os.makedirs(os.path.join(target_dir, '.github', 'workflows'), exist_ok=True)
+    os.makedirs(os.path.join(target_dir, ".github", "workflows"), exist_ok=True)
     workflow_content = format_template(GITHUB_WORKFLOW_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(target_dir, '.github', 'workflows', 'tests.yml'), 'w') as f:
+    with open(os.path.join(target_dir, ".github", "workflows", "tests.yml"), "w") as f:
         f.write(workflow_content)
 
     # Create modern README
     readme_content = format_template(README_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(target_dir, 'README.md'), 'w') as f:
+    with open(os.path.join(target_dir, "README.md"), "w") as f:
         f.write(readme_content)
 
     # Create src package structure with modern __init__.py
-    src_package_dir = os.path.join(target_dir, 'src', package_module)
+    src_package_dir = os.path.join(target_dir, "src", package_module)
     os.makedirs(src_package_dir, exist_ok=True)
 
     init_content = format_template(INIT_PY_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(src_package_dir, '__init__.py'), 'w') as f:
+    with open(os.path.join(src_package_dir, "__init__.py"), "w") as f:
         f.write(init_content)
