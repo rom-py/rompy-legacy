@@ -43,7 +43,6 @@ repositories:
       - "tests/test_templates.py"
       - "tests/test_time.py"
       - "tests/core/"
-      - "tests/data/"
       - "tests/example_configs/"
       - "tests/test_utils/"
       - "tests/utils/"
@@ -111,7 +110,7 @@ repositories:
     paths:
       - "rompy/swan/"
       - "tests/swan/"
-      - "tests/data/"
+      - "tests/conftest.py"
       - "tests/test_utils/"
       - "docs/source/swan/"
       - "docs/Makefile"
@@ -213,6 +212,7 @@ repositories:
       - "rompy/schism/"
       - "tests/schism/"
       - "tests/test_utils/"
+      - "tests/schism/conftest_split.py"
       - "docs/source/schism/"
       - "docs/Makefile"
       - "docs/make.bat"
@@ -239,6 +239,10 @@ repositories:
       # Standard splitting actions
       - action: "create_src_layout"
         base_package: "rompy_schism"
+      - action: "move_files"
+        moves:
+          - from: "tests/schism/conftest_split.py"
+            to: "tests/conftest.py"
       - action: "move_files"
         moves:
           - from: "rompy/schism"
