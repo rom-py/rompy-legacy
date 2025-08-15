@@ -48,6 +48,7 @@ repositories:
       - "tests/utils/"
       - "tests/backends/"
       - "tests/integration/"
+      - "tests/simulations/"
       # Include complete documentation structure (temporarily removing excludes)
       - "docs/"
       # Include package configuration files
@@ -101,9 +102,15 @@ repositories:
           - "tests/test_swan*.py"
           - "src/rompy/swan/"
           - "src/rompy/schism/"
-      # - action: "correct_imports"
-      #   package_type: "core"
-      #   target_package: "rompy"
+      - action: "correct_manifest"
+        package_name: rompy
+        src_layout: true
+        description: "Core rompy library for ocean wave modeling with plugin system"
+        dependencies:
+          - pydantic>2
+        entry_points:
+          rompy.config: |
+            base = "rompy.core.config:BaseConfig"
 
   rompy-swan:
     description: "SWAN wave model plugin for rompy"
@@ -202,6 +209,16 @@ repositories:
               "sphinx<7.3.6",
               "sphinx-collections"
             ]
+      - action: "correct_manifest"
+        package_name: rompy_swan
+        src_layout: true
+        description: "SWAN wave model plugin for rompy"
+        dependencies:
+          - pydantic>2
+        entry_points:
+          rompy.config: |
+            swan = "rompy_swan.config:SwanConfig"
+            swan_components = "rompy_swan.config:SwanConfigComponents"
       - action: "correct_imports"
         package_type: "swan"
         target_package: "rompy_swan"
@@ -308,6 +325,18 @@ repositories:
               "gcsfs",
               "zarr"
             ]
+      - action: "correct_manifest"
+        package_name: rompy_schism
+        src_layout: true
+        description: "SCHISM model plugin for rompy"
+        dependencies:
+          - pydantic>2
+          - pylibs-ocean
+          - pytmd
+        entry_points:
+          rompy.config: |
+            schismcsiro = "rompy_schism.config:SchismCSIROConfig"
+            schism = "rompy_schism.config:SCHISMConfig"
       - action: "correct_imports"
         package_type: "schism"
         target_package: "rompy_schism"
