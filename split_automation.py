@@ -357,6 +357,24 @@ Browse the notebooks/ directory to get started!
                         description,
                         dependencies,
                     )
+            elif action_type == "correct_manifest":
+                package_name = action.get("package_name")
+                description = action.get("description", "")
+                dependencies = action.get("dependencies", [])
+                src_layout = action.get("src_layout", False)
+                entry_points = action.get("entry_points", {})
+                self._update_setup_files(
+                    target_dir,
+                    package_name,
+                    description,
+                    dependencies,
+                    src_layout,
+                    entry_points,
+                )
+                # Also update MANIFEST.in for src layout
+                package_module = package_name.replace("-", "_") if package_name else ""
+                self._update_manifest_in(target_dir, package_module)
+
             elif action_type == "create_plugin_docs":
                 package_name = action.get("package_name") or ""
                 plugin_name = action.get("plugin_name") or ""
@@ -523,7 +541,6 @@ Browse the notebooks/ directory to get started!
         entry_points: Dict[str, str] = None,
     ):
         """Update setup.cfg file."""
-        __import__('ipdb').set_trace()
         with open(setup_cfg_path, "r") as f:
             content = f.read()
         lines = content.split("\n")
@@ -689,6 +706,57 @@ __all__ = ["__version__", "discover_plugins"]
             f.write(init_content)
         logger.info(f"Created modern __init__.py: {init_file}")
 
+    def _update_manifest_in(self, target_dir: str, package_module: str):
+        """Update MANIFEST.in for src layout."""
+        import os
+        manifest_path = os.path.join(target_dir, "MANIFEST.in")
+        # Try to use the modern template if available
+        try:
+            from templates.modern_setup_templates import MANIFEST_IN_SRC_TEMPLATE, format_template
+            template_vars = {
+                'package_module': package_module,
+            }
+            manifest_content = format_template(MANIFEST_IN_SRC_TEMPLATE, **template_vars)
+            with open(manifest_path, "w") as f:
+                f.write(manifest_content)
+            logger.info(f"Updated MANIFEST.in for src layout using modern template: {manifest_path}")
+            return
+        except Exception as e:
+            logger.warning(f"Could not use modern template for MANIFEST.in: {e}")
+        # Fallback: rewrite existing MANIFEST.in
+        if os.path.exists(manifest_path):
+            with open(manifest_path, "r") as f:
+                lines = f.readlines()
+            new_lines = []
+            for line in lines:
+                # Rewrite recursive-include and include paths to src/{package_module}
+                if line.startswith("recursive-include "):
+                    parts = line.split()
+                    if len(parts) > 2 and not parts[1].startswith("src/"):
+                        parts[1] = f"src/{package_module}"
+                        new_lines.append(" ".join(parts) + "\n")
+                    else:
+                        new_lines.append(line)
+                elif line.startswith("include ") and not line.startswith("include src/"):
+                    # For files like include rompy/*.html, rewrite to src/{package_module}/*.html
+                    parts = line.split()
+                    if len(parts) > 1 and not parts[1].startswith("src/"):
+                        if "/" in parts[1]:
+                            fname = parts[1].split("/", 1)[-1]
+                        else:
+                            fname = parts[1]
+                        parts[1] = f"src/{package_module}/{fname}"
+                        new_lines.append(" ".join(parts) + "\n")
+                    else:
+                        new_lines.append(line)
+                else:
+                    new_lines.append(line)
+            with open(manifest_path, "w") as f:
+                f.writelines(new_lines)
+            logger.info(f"Rewrote MANIFEST.in for src layout: {manifest_path}")
+        else:
+            logger.warning(f"MANIFEST.in not found in {target_dir}, nothing to update.")
+
     def _create_modern_setup_files(
         self,
         target_dir: str,
@@ -812,6 +880,7 @@ write_to = \"src/{package_module}/_version.py\"
                 (r"^from rompy import", "from rompy import"),
                 (r"rompy\.swan\b", f"{target_package}"),
                 (r"parent.parent", "parent"),
+                (r'HERE.parent / "templates" / "swancomp"', 'HERE / "templates" / "swancomp"'), 
             ])
         elif package_type == "schism":
             corrections.extend([
