@@ -33,22 +33,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 @pytest.fixture
-def grid2d():
-    grid = SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
-    return grid
-
-
-@pytest.fixture
-def grid3d():
-    grid = SCHISMGrid(
-        hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"),
-        vgrid=DataBlob(source=HERE / "test_data/vgrid.in"),
-        drag=1,
-    )
-    return grid
-
-
-@pytest.fixture
 def grid_atmos_source():
     return SourceIntake(
         dataset_id="era5",

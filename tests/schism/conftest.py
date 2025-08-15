@@ -162,6 +162,10 @@ def hycom_bnd2d(test_files_dir, hycom_path):
     return DataGrid(
         source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat", z="depth"),
+        variables=["water_temp"],
+        buffer=0.1,
+        filter=Filter(),
+        crop_data=True,
     )
 
 
