@@ -6,7 +6,7 @@ It supports both console and file logging with configurable formatting and verbo
 
 Basic usage:
 
-    from rompy.core.logging import get_logger, config, BoxStyle
+    from rompy.logging import get_logger, config, BoxStyle
 
     # Configure logging
     config.update(level="DEBUG", log_dir="./logs")

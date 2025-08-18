@@ -90,6 +90,16 @@ wavespectra = "rompy.core.source:SourceWavespectra"
 [project.entry-points."intake.catalogs"]
 "rompy_data" = "rompy:cat"
 
+[project.entry-points."rompy.run"]
+local = "rompy.run:LocalRunBackend"
+docker = "rompy.run.docker:DockerRunBackend"
+
+[project.entry-points."rompy.postprocess"]
+noop = "rompy.postprocess:NoopPostprocessor"
+
+[project.entry-points."rompy.pipeline"]
+local = "rompy.pipeline:LocalPipelineBackend"
+
 [project.optional-dependencies]
 test = [
   "pytest",

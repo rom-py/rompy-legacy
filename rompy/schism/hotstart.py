@@ -5,7 +5,6 @@ This module provides functionality to create hotstart.nc files for SCHISM
 by interpolating temperature and salinity data from source datasets to the SCHISM grid.
 """
 
-import logging
 import os
 from datetime import datetime
 from pathlib import Path
@@ -18,11 +17,12 @@ from pydantic import ConfigDict, Field
 from pylib import WriteNC, datenum, loadz, zdata
 
 from rompy.core.data import DataBlob, DataGrid
+from rompy.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
 from rompy.schism.grid import SCHISMGrid
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class SCHISMDataHotstart(DataGrid):
@@ -76,7 +76,7 @@ class SCHISMDataHotstart(DataGrid):
         str
             Path to the generated hotstart file.
         """
-        logger.info(f"Generating hotstart file in {destdir}")
+        logger.debug(f"Generating hotstart file in {destdir}")
         destdir = Path(destdir)
         destdir.mkdir(parents=True, exist_ok=True)
         output_path = destdir / self.output_filename
@@ -124,7 +124,7 @@ class SCHISMDataHotstart(DataGrid):
 
             # Find closest time index
             time_idx = np.argmin(np.abs(time_values - start_t))
-            logger.info(
+            logger.debug(
                 f"Using time index {time_idx} (closest to requested start time)"
             )
 
@@ -212,7 +212,7 @@ class SCHISMDataHotstart(DataGrid):
             setattr(S, var, [])
 
         # Interpolate for each vertical level
-        logger.info(f"interpolating all variables to required {nvrt} levels")
+        logger.debug(f"Interpolating all variables to required {nvrt} levels")
         for k in range(nvrt):
             lzi = lzi0[k]
             bxyz = np.c_[lxi, lyi, lzi]
@@ -530,6 +530,6 @@ class SCHISMDataHotstart(DataGrid):
 
         # Write NetCDF file
         WriteNC(str(output_path), nd)
-        logger.info(f"Successfully created hotstart file: {output_path}")
+        logger.debug(f"Created hotstart file: {output_path}")
 
         return str(output_path)

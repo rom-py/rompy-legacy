@@ -15,7 +15,7 @@ from pydantic import Field, field_validator
 from shapely.geometry import LineString
 
 from rompy.core.boundary import BoundaryWaveStation
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.swan.components.boundary import BOUNDSPEC
 from rompy.swan.grid import SwanGrid

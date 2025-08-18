@@ -5,6 +5,7 @@ Shared fixtures for SCHISM tests.
 This module provides reusable pytest fixtures for testing SCHISM functionality.
 """
 
+import logging
 import os
 from pathlib import Path
 
@@ -16,32 +17,35 @@ from rompy.core.filters import Filter
 from rompy.core.source import SourceFile, SourceIntake
 from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords
-from rompy.schism.data import (
-    SCHISMDataBoundary,
-    SCHISMDataSflux,
-    SfluxAir,
-)
-from rompy.schism.boundary_core import (
-    BoundaryHandler,
-    TidalBoundary,  # Backward compatibility alias
-    TidalDataset,
-)
+from rompy.schism.boundary_core import TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import BoundaryHandler, TidalDataset
+from rompy.schism.data import SCHISMDataBoundary, SCHISMDataSflux, SfluxAir
 
 # Import directly from the new implementation
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.vgrid import VGrid as SchismVGrid
 
-
-@pytest.fixture
-def test_data_dir():
-    """Return path to test data directory."""
-    return Path(__file__).parent / "data"
+logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
 def test_files_dir():
     """Return path to test files directory (old structure)."""
     return Path(__file__).parent / "test_data"
+
+
+@pytest.fixture
+def hycom_path(test_files_dir):
+    """Get the path to HYCOM data."""
+    hycomdata = test_files_dir / "hycom.nc"
+    if not hycomdata.exists():
+        from tests.utils import download_hycom
+
+        logging.info("Hycom test data not found, downloading...")
+        logging.info("This may take a while...only has to be done once.")
+        download_hycom(dest=test_files_dir, hgrid=test_files_dir / "hgrid.gr3")
+
+    return str(hycomdata)
 
 
 @pytest.fixture
@@ -114,10 +118,10 @@ def grid_atmos_source(test_files_dir):
 
 
 @pytest.fixture
-def hycom_bnd_elev(test_files_dir):
+def hycom_bnd_elev(test_files_dir, hycom_path):
     """Create a 2D hydrodynamic boundary source."""
     return DataGrid(
-        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat"),
         variables=["surf_el"],
         buffer=0.1,
@@ -127,10 +131,10 @@ def hycom_bnd_elev(test_files_dir):
 
 
 @pytest.fixture
-def hycom_bnd_vel(test_files_dir):
+def hycom_bnd_vel(test_files_dir, hycom_path):
     """Create a 2D hydrodynamic boundary source."""
     return DataGrid(
-        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat"),
         variables=["water_u", "water_v"],
         buffer=0.1,
@@ -140,10 +144,10 @@ def hycom_bnd_vel(test_files_dir):
 
 
 @pytest.fixture
-def hycom_bnd_temp_3d(test_files_dir):
+def hycom_bnd_temp_3d(test_files_dir, hycom_path):
     """Create a 3D temperature boundary source."""
     return DataGrid(
-        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat", z="depth"),
         variables=["water_temp"],
         buffer=0.1,
@@ -153,10 +157,10 @@ def hycom_bnd_temp_3d(test_files_dir):
 
 
 @pytest.fixture
-def hycom_bnd2d(test_files_dir):
+def hycom_bnd2d(test_files_dir, hycom_path):
     """Create a 3D temperature boundary source."""
     return DataGrid(
-        source=SourceFile(uri=str(test_files_dir / "hycom.nc")),
+        source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat", z="depth"),
     )
 
@@ -165,6 +169,13 @@ def hycom_bnd2d(test_files_dir):
 def tidal_data_files(test_files_dir):
     """Return paths to tidal elevation and velocity files for testing."""
     tidal_database = test_files_dir / "tides"
+    if not (tidal_database / "oceanum-atlas" / "grid_tpxo9_atlas_30_v2.nc").exists():
+        if (tidal_database / "oceanum-atlas.tar.gz").exists():
+            import tarfile
+
+            logger.info(f"Unpacking {tidal_database / 'oceanum-atlas.tar.gz'}")
+            with tarfile.open(tidal_database / "oceanum-atlas.tar.gz") as tar:
+                tar.extractall(path=tidal_database)
     return tidal_database
 
 
@@ -188,11 +199,21 @@ def mock_tidal_data():
     # Mock data for testing - enough for any boundary size
     # For elevation: [amplitude, phase]
     # For velocity: [u_amplitude, u_phase, v_amplitude, v_phase]
-    def mock_data(self, lons, lats, constituent, data_type="h"):
+    def mock_data(self, lons, lats, tnames, data_type="h"):
+        num_nodes = len(lons)
+        num_constituents = len(tnames)
         if data_type == "h":  # Elevation
-            return np.array([[0.5, 45.0] for _ in range(len(lons))])
+            arr = np.zeros((num_nodes, num_constituents, 2))
+            arr[..., 0] = 0.5  # amplitude
+            arr[..., 1] = 45.0  # phase
+            return arr
         elif data_type == "uv":  # Velocity
-            return np.array([[0.1, 30.0, 0.2, 60.0] for _ in range(len(lons))])
+            arr = np.zeros((num_nodes, num_constituents, 4))
+            arr[..., 0] = 0.1  # u_amp
+            arr[..., 1] = 30.0  # u_phase
+            arr[..., 2] = 0.2  # v_amp
+            arr[..., 3] = 60.0  # v_phase
+            return arr
         else:
             raise ValueError(f"Unknown data type: {data_type}")
 

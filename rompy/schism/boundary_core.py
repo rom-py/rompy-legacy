@@ -42,7 +42,6 @@ Example Usage:
     ```
 """
 
-import logging
 import os
 import sys
 from datetime import datetime
@@ -59,18 +58,16 @@ if "/home/tdurrant/source/pylibs" not in sys.path:
     sys.path.append("/home/tdurrant/source/pylibs")
 
 # Import PyLibs functions if available
-try:
-    from pylib import *
-    from src.schism_file import read_schism_hgrid, loadz
-except ImportError:
-    logging.warning("PyLibs not found, some functionality may be limited")
+from pylib import schism_grid, read_schism_hgrid as pylib_read_schism_hgrid
+from src.schism_file import read_schism_hgrid, loadz
 
 # Import from local modules
 from .boundary import BoundaryData
 from .bctides import Bctides
 from rompy.core.boundary import DataBoundary
+from rompy.logging import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class ElevationType(IntEnum):
@@ -204,13 +201,12 @@ class TidalDataset(BaseModel):
             # self._mdt
 
         elif isinstance(self.mean_dynamic_topography, (int, float)):
-            logger.info(
-                f"Using mean dynamic topography value: {self.mean_dynamic_topography}"
-            )
+            # Using mean dynamic topography value
             self._mdt = self.mean_dynamic_topography
 
         if len(extra_databases) > 0:
-            logger.info(f"Loading extra tidal databases from {extra_databases}")
+            # Loading extra tidal databases
+            pass
 
         return {
             "constituents": self.constituents,

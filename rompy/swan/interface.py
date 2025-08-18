@@ -9,7 +9,7 @@ from typing import Any, Literal, Optional, Union
 
 from pydantic import Field, ValidationInfo, field_validator, model_validator
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
 from rompy.swan.boundary import Boundnest1, BoundspecSegmentXY, BoundspecSide

@@ -181,7 +181,7 @@ class LoggingConfig(BaseSettings):
 
         # Check other fields for changes
         for key, value in kwargs.items():
-            if key in self.model_fields and getattr(self, key) != value:
+            if key in self.__class__.model_fields and getattr(self, key) != value:
                 setattr(self, key, value)
                 needs_reconfigure = True
 

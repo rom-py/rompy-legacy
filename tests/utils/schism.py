@@ -28,8 +28,8 @@ def download_hycom(dest=Path("./"), hgrid=Path("./hgrid.gr3")):
     To use the actual implementation, the caller should import the necessary modules.
     """
     try:
-        from rompy.schism.pyschism.mesh.hgrid import Hgrid
         from rompy.schism.pyschism.forcing.hycom.hycom2schism import DownloadHycom
+        from rompy.schism.pyschism.mesh.hgrid import Hgrid
 
         hgrid = Hgrid.open(hgrid, crs="epsg:4326")
         date = datetime(2023, 1, 1)
@@ -50,11 +50,16 @@ def download_hycom(dest=Path("./"), hgrid=Path("./hgrid.gr3")):
             os.remove(file)
     except ImportError:
         logger.warning(
-            "Could not import PySchism modules for HYCOM download. Using stub implementation."
+            "Could not import PySchism modules for HYCOM download. Using try using gzipped file."
         )
-        # Create a dummy HYCOM file for testing
-        with open(dest / "hycom.nc", "w") as f:
-            f.write("# Dummy HYCOM data for testing")
+        if not (dest / "hycom.nc").exists():
+            if (dest / "hycom.nc.gz").exists():
+                import gzip
+
+                logger.info(f"Unpacking {dest / 'hycom.nc.gz'}")
+                with gzip.open(dest / "hycom.nc.gz", "rb") as f_in:
+                    with open(dest / "hycom.nc", "wb") as f_out:
+                        f_out.write(f_in.read())
 
 
 def untar_file(file, dest=Path("./")):

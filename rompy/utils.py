@@ -15,7 +15,7 @@ from scipy.spatial import KDTree
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, create_model
 
-from rompy.core.logging import get_logger
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 

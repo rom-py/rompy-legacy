@@ -4,7 +4,6 @@ Tidal boundary conditions for SCHISM.
 A direct implementation based on PyLibs scripts/gen_bctides.py with no fallbacks.
 """
 
-import logging
 import os
 import subprocess
 import sys
@@ -19,8 +18,10 @@ import pandas as pd
 from pylib import ReadNC
 import xarray as xr
 from scipy.spatial import KDTree
+from rompy.logging import get_logger
+from rompy.formatting import ARROW
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class Bctides:
@@ -133,6 +134,8 @@ class Bctides:
         self.extrapolation_distance = extrapolation_distance
         self.extra_databases = extra_databases
         self.mdt = mdt
+        self._h_coeffs = {} # Placeholder for harmonic coefficients
+        self._uv_coeffs = {}  # Placeholder for UV coefficients
 
         self.ethconst = ethconst
         self.vthconst = vthconst
@@ -201,7 +204,7 @@ class Bctides:
         """Get tidal amplitude, frequency, and species for constituents using pyTMD."""
         if hasattr(self, "amp") and len(self.amp) > 0:
             return
-        logger.info("Computing tidal factors using pyTMD")
+        logger.info(f"{ARROW} Computing tidal factors for {len(self.tnames)} constituents")
         # Use pyTMD for all calculations
         ts = timescale.time.Timescale().from_datetime(self._start_time)
         MJD = ts.MJD
@@ -250,7 +253,7 @@ class Bctides:
         # Store earth equilibrium argument for each constituent
         self.earth_equil_arg = G[0, :]
 
-    def _interpolate_tidal_data(self, lons, lats, constituent, data_type="h"):
+    def _interpolate_tidal_data(self, lons, lats, constituents, data_type="h"):
         """
         Interpolate tidal data for a constituent to boundary points using pyTMD extract_constants.
 
@@ -272,28 +275,28 @@ class Bctides:
             For velocity: [u_amp, u_pha, v_amp, v_pha] (shape: n_points, 4)
         """
         tmd_model = pyTMD.io.model(
-            self.tidal_database, extra_databases=self.extra_databases
+            self.tidal_database, extra_databases=self.extra_databases, constituents=constituents
         )
         if data_type == "h":
             amp, pha, _ = tmd_model.elevation(self.tidal_model).extract_constants(
                 lons,
                 lats,
-                constituents=[constituent],
+                constituents=constituents,
                 method="bilinear",
                 crop=True,
                 extrapolate=self.extrapolate_tides,
                 cutoff=self.extrapolation_distance,
             )
-            amp = amp.squeeze()
-            pha = pha.squeeze()
+            amp = amp.squeeze()[...,None]
+            pha = pha.squeeze()[...,None]
             # Return shape (n_points, 2)
-            return np.column_stack((amp, pha))
+            return np.concatenate((amp, pha), axis=-1)
         elif data_type == "uv":
             amp_u, pha_u, _ = tmd_model.current(self.tidal_model).extract_constants(
                 lons,
                 lats,
                 type="u",
-                constituents=[constituent],
+                constituents=constituents,
                 method="bilinear",
                 crop=True,
                 extrapolate=self.extrapolate_tides,
@@ -303,7 +306,7 @@ class Bctides:
                 lons,
                 lats,
                 type="v",
-                constituents=[constituent],
+                constituents=constituents,
                 method="bilinear",
                 crop=True,
                 extrapolate=self.extrapolate_tides,
@@ -311,14 +314,14 @@ class Bctides:
             )
             amp_u = (
                 amp_u.squeeze() / 100
-            )  # Convert cm/s to m/s - pyTMD always returns in cm/s
-            pha_u = pha_u.squeeze()
+            )[...,None]  # Convert cm/s to m/s - pyTMD always returns in cm/s
+            pha_u = pha_u.squeeze()[...,None]
             amp_v = (
                 amp_v.squeeze() / 100
-            )  # Convert cm/s to m/s - pyTMD always returns in cm/s
-            pha_v = pha_v.squeeze()
+            )[...,None]  # Convert cm/s to m/s - pyTMD always returns in cm/s
+            pha_v = pha_v.squeeze()[...,None]
             # Return shape (n_points, 4)
-            return np.column_stack((amp_u, pha_u, amp_v, pha_v))
+            return np.concatenate((amp_u, pha_u, amp_v, pha_v), axis=-1)
         else:
             raise ValueError(f"Unknown data_type: {data_type}")
 
@@ -359,10 +362,7 @@ class Bctides:
                 self.earth_equil_arg + self.nodal_phase_correction, 360.0
             )
         else:
-            logger.info("Setting nodal corrections to 1.0 (no corrections applied)")
             self.nodal_factor = [1.0] * len(self.tnames)
-
-        logger.info(f"Writing bctides.in to {output_file}")
         with open(output_file, "w") as f:
             # Write header with date information
             if isinstance(self._start_time, datetime):
@@ -421,10 +421,8 @@ class Bctides:
             # Use the number of boundaries from self.flags or fallback to grid boundaries
             if hasattr(self, "flags") and self.flags:
                 nope = len(self.flags)
-                logger.info(f"Using {nope} user-defined boundaries from flags")
             elif hasattr(self.gd, "nob") and self.gd.nob > 0:
                 nope = self.gd.nob
-                logger.info(f"Using {nope} boundaries from grid")
             else:
                 # No boundaries in grid and no user-defined flags
                 logger.warning(
@@ -542,15 +540,18 @@ class Bctides:
                                 f"Invalid mdt type: {type(self.mdt)}. Expected float or xr.Dataset."
                             )
 
+                    logger.info(f"Processing tide for boundary {ibnd+1}")
+                    logger.info(f"Number of boundary nodes: {len(lons)}")
+                    logger.info(f"Number of tidal coefficients: {len(self.tnames)}")
+                    all_tidal_data = self._interpolate_tidal_data(
+                                lons, lats, self.tnames, "h"
+                            )
+                    logger.info(f'Tidal_data shape: {all_tidal_data.shape}')
                     for i, tname in enumerate(self.tnames):
-                        logger.info(f"Processing tide {tname} for boundary {ibnd+1}")
 
                         # Interpolate tidal data for this constituent
                         try:
-                            tidal_data = self._interpolate_tidal_data(
-                                lons, lats, tname, "h"
-                            )
-
+                            tidal_data = all_tidal_data[:, i, :].squeeze()
                             if self.nodal_corrections:
                                 # Apply nodal correction to phase - amplitude is applied within the code?
                                 tidal_data[:, 1] = (
@@ -632,6 +633,8 @@ class Bctides:
                         f.write("z0\n")
                         for n in range(num_nodes):
                             f.write(f"0.0 0.0 0.0 0.0\n")
+                    all_vel_data = self._interpolate_tidal_data(lons, lats, self.tnames, "uv")
+
                     for i, tname in enumerate(self.tnames):
                         # Write header for constituent first
                         f.write(f"{tname}\n")
@@ -640,7 +643,7 @@ class Bctides:
                         # if self.tidal_velocities and os.path.exists(
                         #     self.tidal_velocities
                         # ):
-                        vel_data = self._interpolate_tidal_data(lons, lats, tname, "uv")
+                        vel_data = all_vel_data[:, i, :].squeeze()
 
                         if self.nodal_corrections:
                             # Apply nodal correction to phase for u and v components
@@ -796,5 +799,4 @@ class Bctides:
                 f.write(f"1 !flux boundary {i+1}: number of nodes\n")
                 f.write("1 !node number on the boundary\n")
 
-        logger.info(f"Successfully wrote bctides.in to {output_file}")
         return output_file
