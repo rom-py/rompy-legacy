@@ -1,3 +1,12 @@
+> **⚠️ DEPRECATION NOTICE: This monorepo is no longer maintained. ROMPY has been split into dedicated repositories. Please use the new repos below:**
+>
+> - [rompy-core](https://github.com/rom-py/rompy-core)
+> - [rompy-swan](https://github.com/rom-py/rompy-swan)
+> - [rompy-schism](https://github.com/rom-py/rompy-schism)
+> - [rompy-notebooks](https://github.com/rom-py/rompy-notebooks)
+>
+> **All new development and issues should be directed to the split repositories above. This monorepo is archived and will not receive updates.**
+
 ---
 title: "Relocatable Ocean Modelling in PYthon (rompy)"
 ---
