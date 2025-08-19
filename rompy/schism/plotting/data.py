@@ -428,8 +428,15 @@ class DataPlotter(BasePlotter):
             lons, lats = np.meshgrid(lons, lats)
 
         # Filter out figure-related kwargs that shouldn't go to pcolormesh
-        plot_kwargs = {k: v for k, v in kwargs.items()
-                      if k not in ['figsize', 'dpi', 'save_path', 'use_cartopy']}
+        # Only allow valid matplotlib Axes.pcolormesh arguments
+        valid_pcolormesh_args = [
+            'alpha', 'cmap', 'edgecolors', 'shading', 'snap', 'vmin', 'vmax', 'antialiased', 'rasterized', 'linewidths', 'norm', 'zorder'
+        ]
+        plot_kwargs = {k: v for k, v in kwargs.items() if k in valid_pcolormesh_args}
+        # Warn about any unexpected kwargs
+        unexpected = [k for k in kwargs if k not in valid_pcolormesh_args and k not in ['figsize', 'dpi', 'save_path', 'use_cartopy']]
+        if unexpected:
+            logger.warning(f"Ignoring unexpected plotting kwargs: {unexpected}")
 
         # Plot data
         im = ax.pcolormesh(lons, lats, data, cmap=self.plot_config.cmap, **plot_kwargs)
@@ -623,8 +630,11 @@ class DataPlotter(BasePlotter):
                 self.config.data.boundary_conditions is not None):
                 bc = self.config.data.boundary_conditions
                 if (hasattr(bc, 'setup_type') and bc.setup_type in ['tidal', 'hybrid'] and
-                    hasattr(bc, 'constituents') and bc.constituents):
-                    constituents = bc.constituents
+                    hasattr(bc, 'tidal_data') and getattr(bc, 'tidal_data', None) and getattr(bc.tidal_data, 'constituents', None)):
+                    tidal_data = getattr(bc, 'tidal_data', None)
+                    constituents = getattr(tidal_data, 'constituents', None)
+                    if not constituents:
+                        constituents = ['M2', 'S2', 'N2']
                     logger.info(f"Plotting tidal boundaries with constituents: {', '.join(constituents)}")
                     # Additional tidal boundary plotting could be implemented here
                 else:
@@ -685,7 +695,7 @@ class DataPlotter(BasePlotter):
 
             bc = self.config.data.boundary_conditions
             if not (hasattr(bc, 'setup_type') and bc.setup_type in ['tidal', 'hybrid'] and
-                    hasattr(bc, 'constituents') and bc.constituents):
+                    hasattr(bc, 'tidal_data') and getattr(bc, 'tidal_data', None) and getattr(bc.tidal_data, 'constituents', None)):
                 raise RuntimeError("No tidal constituents found in boundary conditions")
 
             # Get tidal data files
@@ -719,7 +729,10 @@ class DataPlotter(BasePlotter):
             n_times = len(times)
 
             # Get constituents
-            constituents = bc.constituents
+            tidal_data = getattr(bc, "tidal_data", None)
+            constituents = getattr(tidal_data, "constituents", None)
+            if not constituents:
+                constituents = ['M2', 'S2', 'N2']
             logger.info(f"Plotting tidal inputs for constituents: {', '.join(constituents)}")
 
             # Load tidal data and compute time series
@@ -1428,7 +1441,7 @@ class DataPlotter(BasePlotter):
 
             bc = self.config.data.boundary_conditions
             if not (hasattr(bc, 'setup_type') and bc.setup_type in ['tidal', 'hybrid'] and
-                    hasattr(bc, 'constituents') and bc.constituents):
+                    hasattr(bc, 'tidal_data') and getattr(bc, 'tidal_data', None) and getattr(bc.tidal_data, 'constituents', None)):
                 raise RuntimeError("No tidal constituents found in boundary conditions")
 
             # Get tidal data files
@@ -1733,7 +1746,7 @@ class DataPlotter(BasePlotter):
 
                                 # Create spatial scatter plot with boundary data
                                 im = ax.scatter(boundary_x, boundary_y, c=values,
-                                              cmap=self.plot_config.cmap, s=50, **plot_kwargs)
+                                               cmap=self.plot_config.cmap, s=50, **plot_kwargs)
 
                                 # Add colorbar
                                 units = ds[variable].attrs.get("units", "") if variable in ds.attrs else ""
@@ -1753,9 +1766,35 @@ class DataPlotter(BasePlotter):
 
                                 ax.set_xlabel('Longitude')
                                 ax.set_ylabel('Latitude')
-
                             else:
-                                raise ValueError(f"Boundary node count mismatch: grid={len(boundary_node_indices)}, data={n_nodes}")
+                                logger.error(f"Boundary node count mismatch: grid={len(boundary_node_indices)}, data={n_nodes}")
+                                logger.error(f"Grid boundary indices: {boundary_node_indices}")
+                                logger.error(f"Data shape: {values.shape}")
+                                # Fallback: plot as many as possible
+                                min_nodes = min(len(boundary_node_indices), n_nodes, len(values))
+                                logger.warning(f"Plotting only the first {min_nodes} boundary nodes due to mismatch.")
+                                boundary_x = hgrid_x[boundary_node_indices[:min_nodes]]
+                                boundary_y = hgrid_y[boundary_node_indices[:min_nodes]]
+                                plot_values = values[:min_nodes]
+                                im = ax.scatter(boundary_x, boundary_y, c=plot_values,
+                                               cmap=self.plot_config.cmap, s=50, **plot_kwargs)
+                                units = ds[variable].attrs.get("units", "") if variable in ds.attrs else ""
+                                if not units and 'time_series' in ds.data_vars:
+                                    units = ds['time_series'].attrs.get("units", "")
+                                label = f"{variable} ({units})" if units else variable
+                                cbar = self.add_colorbar(fig, ax, im, label=label)
+                                margin = 0.05
+                                x_range = boundary_x.max() - boundary_x.min()
+                                y_range = boundary_y.max() - boundary_y.min()
+                                ax.set_xlim(boundary_x.min() - margin * x_range,
+                                           boundary_x.max() + margin * x_range)
+                                ax.set_ylim(boundary_y.min() - margin * y_range,
+                                           boundary_y.max() + margin * y_range)
+                                ax.set_xlabel('Longitude')
+                                ax.set_ylabel('Latitude')
+
+
+
 
                         except Exception as e:
                             logger.error(f"Could not access grid for boundary plotting: {e}")
@@ -2339,9 +2378,8 @@ class DataPlotter(BasePlotter):
         except Exception as e:
             logger.error(f"Error plotting .gr3 file: {e}")
             # Fallback to simple text display
-            ax.text(0.5, 0.5, f"Error loading .gr3 file:\n{e}",
-                   ha='center', va='center', transform=ax.transAxes)
-            title = f"Error: {Path(file_path).name}"
+            logger.error(f"Error loading .gr3 file: {e}")
+            raise RuntimeError(f"Error loading .gr3 file: {e}") # Do not plot error on figure
 
         return self.finalize_plot(fig, ax, title=title)
 
@@ -2423,9 +2461,8 @@ class DataPlotter(BasePlotter):
 
         except Exception as e:
             logger.error(f"Error parsing bctides.in file: {e}")
-            ax.text(0.5, 0.5, f"Error reading bctides.in:\n{e}",
-                   ha='center', va='center', transform=ax.transAxes)
-            title = f"Error: {Path(file_path).name}"
+            logger.error(f"Error reading bctides.in: {e}")
+            raise RuntimeError(f"Error reading bctides.in: {e}")
 
         return self.finalize_plot(fig, ax, title=title)
 
