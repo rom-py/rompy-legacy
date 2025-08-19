@@ -812,7 +812,7 @@ class SchismPlotter:
 
             # Get same sample points as processed data for fair comparison
             sample_points = self.data_plotter._get_representative_boundary_points(n_points)
-            if not sample_points:
+            if sample_points is None or len(sample_points) == 0:
                 ax.text(0.5, 0.5, "No boundary points available for sampling",
                        ha='center', va='center', transform=ax.transAxes)
                 return
@@ -886,29 +886,12 @@ class SchismPlotter:
                    ha='center', va='center', transform=ax.transAxes, fontsize=8,
                    bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
 
-    def _plot_boundary_points_map(self, ax, n_points: int = 4, **kwargs):
+    def _plot_points_map_with_overlays(self, ax, sample_points, label_prefix, grid=None, boundary_overlay=True, **kwargs):
         """
-        Plot SCHISM grid and boundary points map showing sample locations used for time series.
-
-        Parameters
-        ----------
-        ax : matplotlib.axes.Axes
-            Axes to plot on (should have cartopy projection)
-        n_points : int
-            Number of sample points to show
-        **kwargs : dict
-            Additional plotting parameters
+        Plot SCHISM grid, boundary overlays, and sample points with enhanced styling.
+        Used by both boundary and atmospheric points maps for code reuse.
         """
         try:
-            # Get sample points from data plotter
-            sample_points = self.data_plotter._get_representative_boundary_points(n_points)
-
-            if not sample_points:
-                ax.text(0.5, 0.5, "No boundary points available",
-                       ha='center', va='center', transform=ax.transAxes)
-                ax.set_title("SCHISM Grid - No Data")
-                return
-
             # Import cartopy for coordinate transforms
             try:
                 import cartopy.crs as ccrs
@@ -917,88 +900,76 @@ class SchismPlotter:
                 transform = None
 
             # Plot SCHISM grid structure if available
-            try:
-                grid = self.grid_plotter.grid
-                if grid is not None:
-                    # Add grid overlay (mesh)
-                    from .utils import add_grid_overlay
-                    add_grid_overlay(ax, grid, alpha=0.2, color='lightgray', linewidth=0.3)
-                    logger.info("Added SCHISM grid mesh overlay")
-
-                    # Add boundary overlay (colored boundaries)
+            if grid is not None:
+                from .utils import add_grid_overlay
+                add_grid_overlay(ax, grid, alpha=0.2, color='lightgray', linewidth=0.3)
+                logger.info("Added SCHISM grid mesh overlay")
+                if boundary_overlay:
                     from .utils import add_boundary_overlay
                     boundary_colors = {"ocean": "red", "land": "darkgreen", "tidal": "blue"}
                     add_boundary_overlay(ax, grid, boundary_colors=boundary_colors, linewidth=2.5)
                     logger.info("Added SCHISM boundary overlay")
 
-            except Exception as e:
-                logger.warning(f"Could not add SCHISM grid/boundary overlays: {e}")
-
             # Plot sample points with enhanced styling
             lons = [pt[0] for pt in sample_points]
             lats = [pt[1] for pt in sample_points]
-
-            # Create scatter plot with larger, more visible points
-            ax.scatter(lons, lats, c=np.arange(len(sample_points)),
-                      cmap='Set1', s=200, edgecolors='black', linewidth=3,
-                      marker='o', alpha=0.9, zorder=20,
-                      transform=transform)
-
-            # Add enhanced point labels with better visibility
+            ax.scatter(lons, lats, c='magenta', s=250, edgecolors='black', linewidth=3,
+                      marker='o', alpha=1.0, zorder=20,
+                      transform=transform, label='Sample Points')
             for i, (lon, lat) in enumerate(sample_points):
-                ax.annotate(f'P{i+1}', (lon, lat), xytext=(8, 8),
-                          textcoords='offset points', fontsize=11, fontweight='bold',
+                ax.annotate(f'{label_prefix}{i+1}', (lon, lat), xytext=(8, 8),
+                          textcoords='offset points', fontsize=13, fontweight='bold',
                           bbox=dict(boxstyle="round,pad=0.3", facecolor="yellow",
-                                   alpha=0.9, edgecolor='black', linewidth=1),
+                                   alpha=1.0, edgecolor='black', linewidth=2),
                           transform=transform, zorder=25)
-
-            # Set extent with better margins for grid context
-            if lons and lats:
+            ax.legend(loc='upper right', fontsize=10)
+            if len(lons) > 0 and len(lats) > 0:
                 lon_range = max(lons) - min(lons)
                 lat_range = max(lats) - min(lats)
-                # Use larger margins to show grid context
                 lon_margin = max(lon_range * 0.15, 0.5)
                 lat_margin = max(lat_range * 0.15, 0.5)
                 ax.set_xlim(min(lons) - lon_margin, max(lons) + lon_margin)
                 ax.set_ylim(min(lats) - lat_margin, max(lats) + lat_margin)
-
-            ax.set_title(f"SCHISM Grid & Boundary Points (n={len(sample_points)})", fontsize=12, fontweight='bold')
+            ax.set_title(f"SCHISM Grid & {label_prefix} Points (n={len(sample_points)})", fontsize=12, fontweight='bold')
             ax.set_xlabel('Longitude', fontsize=10)
             ax.set_ylabel('Latitude', fontsize=10)
-
-            # Add enhanced legend with grid info
-            legend_text = '\n'.join([f'P{i+1}: ({lon:.3f}°, {lat:.3f}°)'
+            legend_text = '\n'.join([f'{label_prefix}{i+1}: ({lon:.3f}°, {lat:.3f}°)'
                                    for i, (lon, lat) in enumerate(sample_points)])
-            # Add grid information if available
-            try:
-                grid = self.grid_plotter.grid
-                if grid is not None and hasattr(grid, 'pylibs_hgrid'):
-                    hgrid = grid.pylibs_hgrid
-                    if hgrid is not None:
-                        n_nodes = len(hgrid.x) if hasattr(hgrid, 'x') and hgrid.x is not None else 'Unknown'
-                        n_elements = len(hgrid.elnode) if hasattr(hgrid, 'elnode') and hgrid.elnode is not None else 'Unknown'
-                        legend_text += f'\n\nGrid Info:\nNodes: {n_nodes}\nElements: {n_elements}'
-            except Exception as e:
-                logger.debug(f"Could not get grid info for legend: {e}")
-
             ax.text(0.02, 0.98, legend_text, transform=ax.transAxes,
                    verticalalignment='top', fontsize=8, fontfamily='monospace',
                    bbox=dict(boxstyle="round,pad=0.4", facecolor="lightblue",
                             alpha=0.9, edgecolor='navy', linewidth=1))
+            if boundary_overlay:
+                try:
+                    from matplotlib.lines import Line2D
+                    legend_elements = [
+                        Line2D([0], [0], color='red', lw=3, label='Ocean Boundary'),
+                        Line2D([0], [0], color='darkgreen', lw=3, label='Land Boundary'),
+                        Line2D([0], [0], color='lightgray', lw=1, label='Grid Mesh')
+                    ]
+                    ax.legend(handles=legend_elements, loc='lower right', fontsize=8,
+                             frameon=True, fancybox=True, shadow=True)
+                except Exception as e:
+                    logger.debug(f"Could not add boundary legend: {e}")
+        except Exception as e:
+            logger.error(f"Error plotting SCHISM grid and points: {e}")
+            ax.text(0.5, 0.5, f"Error plotting SCHISM grid:\n{str(e)}",
+                   ha='center', va='center', transform=ax.transAxes, fontsize=8)
+            ax.set_title("SCHISM Grid - Error")
 
-            # Add simple legend for boundary colors
-            try:
-                from matplotlib.lines import Line2D
-                legend_elements = [
-                    Line2D([0], [0], color='red', lw=3, label='Ocean Boundary'),
-                    Line2D([0], [0], color='darkgreen', lw=3, label='Land Boundary'),
-                    Line2D([0], [0], color='lightgray', lw=1, label='Grid Mesh')
-                ]
-                ax.legend(handles=legend_elements, loc='lower right', fontsize=8,
-                         frameon=True, fancybox=True, shadow=True)
-            except Exception as e:
-                logger.debug(f"Could not add boundary legend: {e}")
-
+    def _plot_boundary_points_map(self, ax, n_points: int = 4, **kwargs):
+        """
+        Plot SCHISM grid and boundary points map showing sample locations used for time series.
+        """
+        try:
+            sample_points = self.data_plotter._get_representative_boundary_points(n_points)
+            if sample_points is None or len(sample_points) == 0:
+                ax.text(0.5, 0.5, "No boundary points available",
+                       ha='center', va='center', transform=ax.transAxes)
+                ax.set_title("SCHISM Grid - No Data")
+                return
+            grid = self.grid_plotter.grid
+            self._plot_points_map_with_overlays(ax, sample_points, label_prefix='P', grid=grid, boundary_overlay=True, **kwargs)
         except Exception as e:
             logger.error(f"Error plotting SCHISM grid and boundary points: {e}")
             ax.text(0.5, 0.5, f"Error plotting SCHISM grid:\n{str(e)}",
@@ -1283,71 +1254,20 @@ class SchismPlotter:
         try:
             # Get sample points from data plotter
             sample_points = self.data_plotter._get_representative_atmospheric_points(n_points)
-
-            if not sample_points:
+            if sample_points is None or len(sample_points) == 0:
                 ax.text(0.5, 0.5, "No atmospheric sample points available",
                        ha='center', va='center', transform=ax.transAxes)
                 ax.set_title("Atmospheric Sample Points - No Data")
                 return
-
-            # Import cartopy for coordinate transforms
-            try:
-                import cartopy.crs as ccrs
-                transform = ccrs.PlateCarree()
-            except ImportError:
-                transform = None
-
-            # Plot SCHISM grid structure if available
-            try:
-                grid = self.grid_plotter.grid
-                if grid is not None:
-                    # Add grid overlay (mesh)
-                    from .utils import add_grid_overlay
-                    add_grid_overlay(ax, grid, alpha=0.2, color='lightgray', linewidth=0.3)
-                    logger.info("Added SCHISM grid mesh overlay")
-
-            except Exception as e:
-                logger.debug(f"Could not add SCHISM grid overlay: {e}")
-
-            # Plot sample points with enhanced styling
-            lons = [pt[0] for pt in sample_points]
-            lats = [pt[1] for pt in sample_points]
-
-            # Create scatter plot with larger, more visible points
-            ax.scatter(lons, lats, c=np.arange(len(sample_points)),
-                      cmap='viridis', s=200, edgecolors='black', linewidth=3,
-                      marker='s', alpha=0.9, zorder=20,
-                      transform=transform)
-
-            # Add enhanced point labels with better visibility
-            for i, (lon, lat) in enumerate(sample_points):
-                ax.annotate(f'A{i+1}', (lon, lat), xytext=(8, 8),
-                          textcoords='offset points', fontsize=11, fontweight='bold',
-                          bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgreen",
-                                   alpha=0.9, edgecolor='black', linewidth=1),
-                          transform=transform, zorder=25)
-
-            # Set extent with margins
-            if lons and lats:
-                lon_range = max(lons) - min(lons)
-                lat_range = max(lats) - min(lats)
-                lon_margin = max(lon_range * 0.15, 0.5)
-                lat_margin = max(lat_range * 0.15, 0.5)
-                ax.set_xlim(min(lons) - lon_margin, max(lons) + lon_margin)
-                ax.set_ylim(min(lats) - lat_margin, max(lats) + lat_margin)
-
-            ax.set_title(f"Atmospheric Sample Points (n={len(sample_points)})", fontsize=12, fontweight='bold')
-            ax.set_xlabel('Longitude', fontsize=10)
-            ax.set_ylabel('Latitude', fontsize=10)
-
-            # Add legend with point information
-            legend_text = '\n'.join([f'A{i+1}: ({lon:.3f}°, {lat:.3f}°)'
-                                   for i, (lon, lat) in enumerate(sample_points)])
-            ax.text(0.02, 0.98, legend_text, transform=ax.transAxes,
-                   verticalalignment='top', fontsize=8, fontfamily='monospace',
-                   bbox=dict(boxstyle="round,pad=0.4", facecolor="lightgreen",
-                            alpha=0.9, edgecolor='darkgreen', linewidth=1))
-
+            grid = self.grid_plotter.grid
+            self._plot_points_map_with_overlays(
+                ax,
+                sample_points,
+                label_prefix='A',
+                grid=grid,
+                boundary_overlay=True,
+                **kwargs
+            )
         except Exception as e:
             logger.error(f"Error plotting atmospheric sample points: {e}")
             ax.text(0.5, 0.5, f"Error plotting atmospheric sample points:\n{str(e)}",

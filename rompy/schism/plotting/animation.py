@@ -599,69 +599,25 @@ class AnimationPlotter(BasePlotter):
                             ax.set_ylabel('Latitude')
 
                         else:
-                            logger.warning(f"Boundary node count mismatch: grid={len(boundary_node_indices)}, data={n_nodes}")
-                            # Fallback to line plot with node indices
-                            boundary_indices = np.arange(n_nodes)
-                            ax.plot(boundary_indices, values, 'o-', markersize=4, **plot_kwargs)
-                            ax.set_xlabel('Boundary Node Index')
-                            ax.set_ylabel(variable)
-                            ax.grid(True, alpha=0.3)
+                            raise ValueError(f"Boundary node count mismatch: grid={len(boundary_node_indices)}, data={n_nodes}")
                     else:
-                        logger.warning("No open boundary information found in grid")
-                        # Fallback to line plot with node indices
-                        boundary_indices = np.arange(n_nodes)
-                        ax.plot(boundary_indices, values, 'o-', markersize=4, **plot_kwargs)
-                        ax.set_xlabel('Boundary Node Index')
-                        ax.set_ylabel(variable)
-                        ax.grid(True, alpha=0.3)
+                        raise ValueError("No open boundary information found in grid")
 
                 except Exception as e:
-                    logger.warning(f"Could not access grid for boundary plotting: {e}")
-                    # Fallback: simple index plot
-                    boundary_indices = np.arange(n_nodes)
-                    ax.plot(boundary_indices, values, 'o-', markersize=4, **plot_kwargs)
-                    ax.set_xlabel('Boundary Node Index')
-                    ax.set_ylabel(variable)
-                    ax.grid(True, alpha=0.3)
+                    raise ValueError(f"Could not plot with grid coordinates: {e}")
             else:
-                # No grid available - simple index plot
-                boundary_indices = np.arange(n_nodes)
-                ax.plot(boundary_indices, values, 'o-', markersize=4, **plot_kwargs)
-                ax.set_xlabel('Boundary Node Index')
-                ax.set_ylabel(variable)
-                ax.grid(True, alpha=0.3)
+                raise ValueError("No grid available for non-boundary data plotting")
+
+            # Update time label
+            if self._time_text:
+                time_str = np.datetime_as_string(time_val, unit='m')  # minute precision
+                formatted_time = np.datetime64(time_str).astype('datetime64[s]').astype(str)
+                self._time_text.set_text(f"Time: {formatted_time}")
+
+            return [self._time_text] if self._time_text else []
         else:
-            # Non-boundary data - create scatter plot with grid coordinates if available
-            if self.grid and hasattr(self.grid, 'pylibs_hgrid'):
-                try:
-                    hgrid = self.grid.pylibs_hgrid
-                    if hasattr(hgrid, 'x') and hasattr(hgrid, 'y'):
-                        # Use sequential node indices for non-boundary data
-                        node_indices = np.arange(len(data.values))
-                        x_coords = hgrid.x[node_indices]
-                        y_coords = hgrid.y[node_indices]
+            raise ValueError("Boundary data does not contain 'nOpenBndNodes' dimension")
 
-                        im = ax.scatter(
-                            x_coords, y_coords, c=data.values,
-                            cmap=self.animation_config.cmap, s=50, **plot_kwargs
-                        )
-
-                except Exception as e:
-                    logger.warning(f"Could not plot with grid coordinates: {e}")
-                    # Fallback to simple line plot
-                    ax.plot(data.values, **plot_kwargs)
-            else:
-                # Simple line plot fallback
-                ax.plot(data.values, **plot_kwargs)
-
-        # Update time label
-        if self._time_text:
-            time_str = np.datetime_as_string(time_val,
-                                           unit='m')  # minute precision
-            formatted_time = np.datetime64(time_str).astype('datetime64[s]').astype(str)
-            self._time_text.set_text(f"Time: {formatted_time}")
-
-        return [self._time_text] if self._time_text else []
 
     def _animate_atmospheric_frame(
         self,
@@ -699,8 +655,7 @@ class AnimationPlotter(BasePlotter):
                 cmap=self.animation_config.cmap, **plot_kwargs
             )
         else:
-            # Fallback to simple contour plot
-            im = ax.contourf(data.values, cmap=self.animation_config.cmap, **plot_kwargs)
+            raise ValueError("No valid spatial coordinates found for atmospheric data plotting")
 
         # Update time label
         if self._time_text:
@@ -753,12 +708,9 @@ class AnimationPlotter(BasePlotter):
                                  color=self.animation_config.grid_color)
 
             except Exception as e:
-                logger.warning(f"Could not plot grid data: {e}")
-                # Fallback visualization
-                im = ax.contourf(data.values, cmap=self.animation_config.cmap, **plot_kwargs)
+                raise ValueError(f"Could not plot grid data: {e}")
         else:
-            # Fallback to contour plot
-            im = ax.contourf(data.values, cmap=self.animation_config.cmap, **plot_kwargs)
+            raise ValueError("No grid available for grid-based data plotting")
 
         # Update time label
         if self._time_text:

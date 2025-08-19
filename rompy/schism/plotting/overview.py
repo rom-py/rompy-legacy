@@ -308,9 +308,8 @@ class OverviewPlotter(BasePlotter):
                        verticalalignment='top', bbox=dict(boxstyle='round',
                        facecolor='white', alpha=0.8), fontsize=8)
         except Exception as e:
-            logger.warning(f"Could not plot main grid panel: {e}")
-            ax.text(0.5, 0.5, "Grid visualization unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
+            logger.error(f"Could not plot main grid panel: {e}")
+            raise RuntimeError("Grid visualization unavailable")
 
     def _plot_boundary_panel(self, ax: Axes, **kwargs) -> None:
         """Plot boundary conditions panel."""
@@ -318,9 +317,8 @@ class OverviewPlotter(BasePlotter):
             self.grid_plotter.plot_boundaries(ax=ax, show_colorbar=False, **kwargs)
             ax.set_title('Boundary Conditions', fontweight='bold')
         except Exception as e:
-            logger.warning(f"Could not plot boundary panel: {e}")
-            ax.text(0.5, 0.5, "Boundary data unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
+            logger.error(f"Could not plot boundary panel: {e}")
+            raise RuntimeError("Boundary data unavailable")
 
     def _plot_data_locations_panel(self, ax: Axes, **kwargs) -> None:
         """Plot data locations panel."""
@@ -334,112 +332,21 @@ class OverviewPlotter(BasePlotter):
             self._add_data_source_markers(ax)
             ax.set_title('Data Locations', fontweight='bold')
         except Exception as e:
-            logger.warning(f"Could not plot data locations panel: {e}")
-            ax.text(0.5, 0.5, "Data locations unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
+            logger.error(f"Could not plot data locations panel: {e}")
+            raise RuntimeError("Data locations unavailable")
 
     def _plot_quality_metrics_panel(self, ax: Axes, **kwargs) -> None:
         """Plot grid quality metrics."""
         try:
             if hasattr(self, 'grid') and self.grid is not None:
-                quality_metrics = self._calculate_quality_metrics()
-                self._plot_quality_metrics_chart(ax, quality_metrics)
+                stats = self._calculate_grid_statistics()
+                self._create_statistics_table(ax, stats, "Grid Statistics")
             else:
-                ax.text(0.5, 0.5, "Grid quality metrics unavailable",
-                       ha='center', va='center', transform=ax.transAxes)
+                raise RuntimeError("Grid statistics unavailable")
         except Exception as e:
-            logger.warning(f"Could not plot quality metrics: {e}")
-            ax.text(0.5, 0.5, "Quality metrics unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Grid Quality', fontweight='bold')
+            logger.error(f"Could not plot grid statistics: {e}")
+            raise RuntimeError("Grid statistics unavailable: " + str(e))
 
-    def _plot_validation_panel(self, ax: Axes, **kwargs) -> None:
-        """Plot model setup validation."""
-        try:
-            validation_results = self._run_validation_checks()
-            self._plot_validation_results(ax, validation_results)
-        except Exception as e:
-            logger.warning(f"Could not plot validation panel: {e}")
-            ax.text(0.5, 0.5, "Validation unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Model Validation', fontweight='bold')
-
-    def _plot_data_summary_panel(self, ax: Axes, **kwargs) -> None:
-        """Plot data summary information."""
-        try:
-            data_summary = self._get_data_summary()
-            self._plot_data_summary_chart(ax, data_summary)
-        except Exception as e:
-            logger.warning(f"Could not plot data summary: {e}")
-            ax.text(0.5, 0.5, "Data summary unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Data Summary', fontweight='bold')
-
-    def _plot_timeseries_overview_panel(self, ax: Axes, **kwargs) -> None:
-        """Plot time series overview."""
-        try:
-            self._plot_forcing_timeseries_overview(ax)
-        except Exception as e:
-            logger.warning(f"Could not plot timeseries overview: {e}")
-            ax.text(0.5, 0.5, "Time series unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Forcing Overview', fontweight='bold')
-
-    def _plot_model_info_panel(self, ax: Axes, **kwargs) -> None:
-        """Plot model information panel."""
-        try:
-            model_info = self._get_model_info()
-            self._plot_model_info_table(ax, model_info)
-        except Exception as e:
-            logger.warning(f"Could not plot model info: {e}")
-            ax.text(0.5, 0.5, "Model info unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Model Configuration', fontweight='bold')
-
-    def _get_grid_info(self) -> str:
-        """Get grid information summary."""
-        try:
-            if hasattr(self, 'grid') and self.grid is not None:
-                # Use SCHISMGrid properties instead of coords
-                n_nodes = self.grid.np  # number of points/nodes
-                n_elements = self.grid.ne  # number of elements
-
-                # Get depth from pylibs_hgrid if available
-                hgrid = self.grid.pylibs_hgrid
-                if hasattr(hgrid, 'dp'):
-                    depth_range = (float(hgrid.dp.min()), float(hgrid.dp.max()))
-                    return (f"Nodes: {n_nodes:,}\n"
-                           f"Elements: {n_elements:,}\n"
-                           f"Depth: {depth_range[0]:.1f} to {depth_range[1]:.1f} m")
-                else:
-                    return (f"Nodes: {n_nodes:,}\n"
-                           f"Elements: {n_elements:,}\n"
-                           f"Depth: info unavailable")
-            return "Grid info unavailable"
-        except Exception as e:
-            logger.warning(f"Could not get grid info: {e}")
-            return "Grid info unavailable"
-
-    def _calculate_quality_metrics(self) -> Dict[str, float]:
-        """Calculate grid quality metrics."""
-        try:
-            # Placeholder implementation - would calculate actual quality metrics
-            # like element aspect ratios, skewness, etc.
-            return {
-                'min_aspect_ratio': 0.85,
-                'avg_aspect_ratio': 0.95,
-                'skewness_score': 0.92,
-                'orthogonality_score': 0.88
-            }
-        except Exception as e:
-            logger.warning(f"Could not calculate quality metrics: {e}")
-            return {}
-
-    def _plot_quality_metrics_chart(self, ax: Axes, metrics: Dict[str, float]) -> None:
-        """Plot quality metrics as a bar chart."""
-        if not metrics:
-            ax.text(0.5, 0.5, "No quality metrics available",
-                   ha='center', va='center', transform=ax.transAxes)
             return
 
         names = list(metrics.keys())
@@ -455,19 +362,10 @@ class OverviewPlotter(BasePlotter):
                    f'{value:.2f}', va='center')
 
     def _run_validation_checks(self) -> Dict[str, str]:
-        """Run model setup validation checks."""
-        try:
-            # Placeholder implementation - would run actual validation
-            return {
-                'Grid connectivity': 'PASS',
-                'Boundary conditions': 'PASS',
-                'Time stepping': 'WARNING',
-                'Data coverage': 'PASS',
-                'File integrity': 'PASS'
-            }
-        except Exception as e:
-            logger.warning(f"Could not run validation checks: {e}")
-            return {}
+        """Run model setup validation checks using real model/config data only."""
+        # TODO: Implement real validation logic using model/config data
+        raise NotImplementedError("Validation checks must use real model/config data.")
+
 
     def _plot_validation_results(self, ax: Axes, results: Dict[str, str]) -> None:
         """Plot validation results."""
@@ -495,24 +393,15 @@ class OverviewPlotter(BasePlotter):
                    fontweight='bold', color='white')
 
     def _get_data_summary(self) -> Dict[str, Any]:
-        """Get summary of available data."""
-        try:
-            # Placeholder implementation
-            return {
-                'atmospheric_files': 2,
-                'boundary_files': 3,
-                'tidal_constituents': 8,
-                'time_coverage_days': 30
-            }
-        except Exception as e:
-            logger.warning(f"Could not get data summary: {e}")
-            return {}
+        """Get summary of available data from real model/config/data files only."""
+        # TODO: Implement real data summary extraction from config/data files
+        raise NotImplementedError("Data summary must use real model/config/data files.")
+
 
     def _plot_data_summary_chart(self, ax: Axes, summary: Dict[str, Any]) -> None:
         """Plot data summary as a simple chart."""
         if not summary:
-            ax.text(0.5, 0.5, "No data summary available",
-                   ha='center', va='center', transform=ax.transAxes)
+            raise RuntimeError("No data summary available")
             return
 
         # Create a simple text summary
@@ -526,27 +415,9 @@ class OverviewPlotter(BasePlotter):
         ax.axis('off')
 
     def _plot_forcing_timeseries_overview(self, ax: Axes) -> None:
-        """Plot overview of forcing time series."""
-        try:
-            # Create dummy time series for demonstration
-            import datetime
-            times = [datetime.datetime(2023, 1, 1) + datetime.timedelta(days=i)
-                    for i in range(30)]
-            wind_speed = np.random.normal(8, 3, 30)
-
-            ax.plot(times, wind_speed, 'b-', label='Wind Speed', linewidth=2)
-            ax.set_ylabel('Wind Speed (m/s)')
-            ax.set_xlabel('Time')
-            ax.legend()
-            ax.grid(True, alpha=0.3)
-
-            # Format x-axis
-            ax.tick_params(axis='x', rotation=45)
-
-        except Exception as e:
-            logger.warning(f"Could not plot forcing timeseries: {e}")
-            ax.text(0.5, 0.5, "Time series data unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
+        """Plot overview of forcing time series using real data only."""
+        # TODO: Implement real forcing time series plotting using model/config data
+        raise NotImplementedError("Forcing time series overview must use real model/config data.")
 
     def _get_model_info(self) -> Dict[str, str]:
         """Get model configuration information."""
@@ -566,9 +437,7 @@ class OverviewPlotter(BasePlotter):
     def _plot_model_info_table(self, ax: Axes, info: Dict[str, str]) -> None:
         """Plot model information as a table."""
         if not info:
-            ax.text(0.5, 0.5, "No model info available",
-                   ha='center', va='center', transform=ax.transAxes)
-            ax.axis('off')
+            raise RuntimeError("No model info available")
             return
 
         # Create table data
@@ -623,46 +492,44 @@ class OverviewPlotter(BasePlotter):
                     ax.set_title('Depth Distribution', fontweight='bold')
                     ax.grid(True, alpha=0.3)
                 else:
-                    ax.text(0.5, 0.5, "Depth data unavailable",
-                           ha='center', va='center', transform=ax.transAxes)
+                    raise RuntimeError("Depth data unavailable")
             else:
-                ax.text(0.5, 0.5, "Grid data unavailable",
-                       ha='center', va='center', transform=ax.transAxes)
+                raise RuntimeError("Grid data unavailable")
         except Exception as e:
             logger.warning(f"Could not plot depth histogram: {e}")
             ax.text(0.5, 0.5, "Depth histogram unavailable",
                    ha='center', va='center', transform=ax.transAxes)
 
     def _plot_element_size_histogram(self, ax: Axes, **kwargs) -> None:
-        """Plot element size histogram."""
-        try:
-            # Placeholder implementation - would calculate actual element sizes
-            element_sizes = np.random.lognormal(8, 1, 1000)  # Dummy data
-
-            ax.hist(element_sizes, bins=50, alpha=0.7, edgecolor='black')
-            ax.set_xlabel('Element Size (m²)')
-            ax.set_ylabel('Frequency')
-            ax.set_title('Element Size Distribution', fontweight='bold')
-            ax.set_xscale('log')
-            ax.grid(True, alpha=0.3)
-        except Exception as e:
-            logger.warning(f"Could not plot element size histogram: {e}")
-            ax.text(0.5, 0.5, "Element size histogram unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
+        """Plot element size histogram using real grid data only."""
+        # TODO: Implement real element size histogram using grid data
+        raise RuntimeError("Element size histogram unavailable: must use real grid data.")
 
     def _plot_grid_statistics_table(self, ax: Axes, **kwargs) -> None:
         """Plot grid statistics as a table."""
         try:
             if hasattr(self, 'grid') and self.grid is not None:
-                stats = self._calculate_grid_statistics()
-                self._create_statistics_table(ax, stats, "Grid Statistics")
+                hgrid = self.grid.pylibs_hgrid
+                if hasattr(hgrid, 'dp'):
+                    depths = hgrid.dp
+                    depths = depths[~np.isnan(depths)]
+
+                    ax.hist(depths, bins=50, alpha=0.7, edgecolor='black')
+                    ax.set_xlabel('Depth (m)')
+                    ax.set_ylabel('Frequency')
+                    ax.set_title('Depth Distribution', fontweight='bold')
+                    ax.grid(True, alpha=0.3)
+                else:
+                    raise RuntimeError("Depth data unavailable")
             else:
-                ax.text(0.5, 0.5, "Grid statistics unavailable",
-                       ha='center', va='center', transform=ax.transAxes)
+                raise RuntimeError("Grid data unavailable")
+        except Exception as e:
+            logger.error(f"Could not plot depth histogram: {e}")
+            raise RuntimeError("Depth histogram unavailable: " + str(e))
+
         except Exception as e:
             logger.warning(f"Could not plot grid statistics: {e}")
-            ax.text(0.5, 0.5, "Grid statistics unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
+            raise RuntimeError("Grid statistics unavailable: " + str(e))
 
     def _calculate_grid_statistics(self) -> Dict[str, str]:
         """Calculate comprehensive grid statistics."""
@@ -700,9 +567,7 @@ class OverviewPlotter(BasePlotter):
     def _create_statistics_table(self, ax: Axes, stats: Dict[str, str], title: str) -> None:
         """Create a formatted statistics table."""
         if not stats:
-            ax.text(0.5, 0.5, f"No {title.lower()} available",
-                   ha='center', va='center', transform=ax.transAxes)
-            ax.axis('off')
+            raise RuntimeError(f"No {title.lower()} available")
             return
 
         # Arrange statistics in columns
@@ -761,12 +626,10 @@ class OverviewPlotter(BasePlotter):
                                 if hasattr(coll, 'colorbar') and coll.colorbar:
                                     coll.colorbar.remove()
             else:
-                ax.text(0.5, 0.5, "Atmospheric data unavailable",
-                       ha='center', va='center', transform=ax.transAxes)
+                raise RuntimeError("Atmospheric data unavailable")
         except Exception as e:
             logger.warning(f"Could not plot atmospheric overview: {e}")
-            ax.text(0.5, 0.5, "No atmospheric data available for analysis",
-                   ha='center', va='center', transform=ax.transAxes)
+            raise RuntimeError("No atmospheric data available for analysis: " + str(e))
         ax.set_title('Atmospheric Forcing', fontweight='bold')
 
     def _plot_boundary_data_locations(self, ax: Axes, **kwargs) -> None:
@@ -782,167 +645,33 @@ class OverviewPlotter(BasePlotter):
 
         except Exception as e:
             logger.warning(f"Could not plot boundary data locations: {e}")
-            ax.text(0.5, 0.5, "Boundary locations unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
+            raise RuntimeError("Boundary locations unavailable: " + str(e))
         ax.set_title('Boundary Data Locations', fontweight='bold')
 
     def _plot_data_coverage_timeline(self, ax: Axes, **kwargs) -> None:
-        """Plot data coverage timeline."""
-        try:
-            # Create dummy timeline for demonstration
-            import datetime
-            start_date = datetime.datetime(2023, 1, 1)
-
-            # Different data types with different coverage
-            data_types = ['Atmospheric', 'Boundary T/S', 'Boundary UV', 'Tidal']
-            colors = ['blue', 'green', 'red', 'orange']
-
-            for i, (data_type, color) in enumerate(zip(data_types, colors)):
-                # Create dummy coverage periods
-                coverage_start = start_date + datetime.timedelta(days=i*2)
-                coverage_end = start_date + datetime.timedelta(days=30 - i)
-
-                ax.barh(i, (coverage_end - coverage_start).days,
-                       left=(coverage_start - start_date).days,
-                       height=0.6, color=color, alpha=0.7, label=data_type)
-
-            ax.set_yticks(range(len(data_types)))
-            ax.set_yticklabels(data_types)
-            ax.set_xlabel('Days from Model Start')
-            ax.set_xlim(0, 30)
-            ax.grid(True, alpha=0.3)
-
-        except Exception as e:
-            logger.warning(f"Could not plot data coverage timeline: {e}")
-            ax.text(0.5, 0.5, "Data coverage unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Data Coverage Timeline', fontweight='bold')
+        """Plot data coverage timeline using real data only."""
+        # TODO: Implement real data coverage timeline using model/config/data
+        raise NotImplementedError("Data coverage timeline must use real model/config/data.")
 
     def _plot_atmospheric_timeseries_overview(self, ax: Axes, **kwargs) -> None:
-        """Plot atmospheric time series overview."""
-        try:
-            # Create consistent atmospheric time series (deterministic)
-            import datetime
-            times = [datetime.datetime(2023, 1, 1) + datetime.timedelta(hours=i*6)
-                    for i in range(120)]  # 30 days, 6-hourly
-
-            # Use consistent deterministic data instead of random
-            t = np.linspace(0, 30, 120)  # 30 days
-            wind_u = 3 * np.sin(2 * np.pi * t / 7) + 2 * np.cos(2 * np.pi * t / 3)  # Weekly + 3-day cycles
-            wind_v = 2 * np.cos(2 * np.pi * t / 7) + 1.5 * np.sin(2 * np.pi * t / 2)  # Different phase
-            wind_speed = np.sqrt(wind_u**2 + wind_v**2)
-            pressure = 1013 + 8 * np.sin(2 * np.pi * t / 5) + 3 * np.cos(2 * np.pi * t / 2)  # 5-day + 2-day cycles
-
-            # Create twin axes for different variables
-            ax2 = ax.twinx()
-
-            line1 = ax.plot(times, wind_speed, 'b-', label='Wind Speed (m/s)', linewidth=1.5)
-            line2 = ax2.plot(times, pressure, 'r-', label='Pressure (hPa)', linewidth=1.5)
-
-            ax.set_xlabel('Time')
-            ax.set_ylabel('Wind Speed (m/s)', color='blue')
-            ax2.set_ylabel('Pressure (hPa)', color='red')
-
-            # Combine legends
-            lines = line1 + line2
-            labels = [l.get_label() for l in lines]
-            ax.legend(lines, labels, loc='upper right')
-
-            ax.grid(True, alpha=0.3)
-            ax.tick_params(axis='x', rotation=45)
-
-        except Exception as e:
-            logger.warning(f"Could not plot atmospheric timeseries: {e}")
-            ax.text(0.5, 0.5, "Atmospheric time series unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Atmospheric Forcing Time Series', fontweight='bold')
+        """Plot atmospheric time series overview using real data only."""
+        # TODO: Implement real atmospheric time series plotting using model/config data
+        raise NotImplementedError("Atmospheric time series overview must use real model/config data.")
 
     def _plot_boundary_timeseries_overview(self, ax: Axes, **kwargs) -> None:
-        """Plot boundary time series overview."""
-        try:
-            # Create dummy boundary time series
-            import datetime
-            times = [datetime.datetime(2023, 1, 1) + datetime.timedelta(hours=i)
-                    for i in range(720)]  # 30 days, hourly
-
-            temperature = 15 + 3 * np.sin(np.linspace(0, 30*2*np.pi, 720)) + np.random.normal(0, 0.5, 720)
-            salinity = 35 + 2 * np.sin(np.linspace(0, 30*2*np.pi/2, 720)) + np.random.normal(0, 0.2, 720)
-
-            ax.plot(times, temperature, 'r-', label='Temperature (°C)', linewidth=1.5)
-            ax2 = ax.twinx()
-            ax2.plot(times, salinity, 'b-', label='Salinity (psu)', linewidth=1.5)
-
-            ax.set_xlabel('Time')
-            ax.set_ylabel('Temperature (°C)', color='red')
-            ax2.set_ylabel('Salinity (psu)', color='blue')
-
-            ax.grid(True, alpha=0.3)
-            ax.tick_params(axis='x', rotation=45)
-
-            # Add legends
-            ax.legend(loc='upper left')
-            ax2.legend(loc='upper right')
-
-        except Exception as e:
-            logger.warning(f"Could not plot boundary timeseries: {e}")
-            ax.text(0.5, 0.5, "Boundary time series unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Boundary Conditions', fontweight='bold')
+        """Plot boundary time series overview using real data only."""
+        # TODO: Implement real boundary time series plotting using model/config data
+        raise NotImplementedError("Boundary time series overview must use real model/config data.")
 
     def _plot_data_quality_metrics(self, ax: Axes, **kwargs) -> None:
-        """Plot data quality metrics."""
-        try:
-            # Create dummy quality metrics
-            metrics = {
-                'Completeness': 0.95,
-                'Consistency': 0.88,
-                'Temporal Coverage': 0.92,
-                'Spatial Coverage': 0.85,
-                'Value Ranges': 0.90
-            }
-
-            categories = list(metrics.keys())
-            values = list(metrics.values())
-            colors = ['green' if v >= 0.9 else 'orange' if v >= 0.8 else 'red' for v in values]
-
-            bars = ax.bar(categories, values, color=colors, alpha=0.7, edgecolor='black')
-            ax.set_ylim(0, 1)
-            ax.set_ylabel('Quality Score')
-            ax.set_title('Data Quality Metrics', fontweight='bold')
-            ax.tick_params(axis='x', rotation=45)
-            ax.grid(True, alpha=0.3, axis='y')
-
-            # Add value labels on bars
-            for bar, value in zip(bars, values):
-                height = bar.get_height()
-                ax.text(bar.get_x() + bar.get_width()/2., height + 0.01,
-                       f'{value:.2f}', ha='center', va='bottom', fontweight='bold')
-
-        except Exception as e:
-            logger.warning(f"Could not plot data quality metrics: {e}")
-            ax.text(0.5, 0.5, "Data quality metrics unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
-        ax.set_title('Data Quality', fontweight='bold')
+        """Plot data quality metrics using real data only."""
+        # TODO: Implement real data quality metrics plotting using model/config/data
+        raise NotImplementedError("Data quality metrics must use real model/config/data.")
 
     def _plot_data_statistics_table(self, ax: Axes, **kwargs) -> None:
-        """Plot data statistics table."""
-        try:
-            # Create dummy data statistics
-            stats = {
-                'Atmospheric Files': '3',
-                'Boundary Files': '5',
-                'Time Coverage': '30 days',
-                'Temporal Resolution': '6 hours',
-                'Tidal Constituents': '8',
-                'Grid Points': '2,500'
-            }
-
-            self._create_statistics_table(ax, stats, "Data Statistics")
-
-        except Exception as e:
-            logger.warning(f"Could not plot data statistics: {e}")
-            ax.text(0.5, 0.5, "Data statistics unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
+        """Plot data statistics table using real data only."""
+        # TODO: Implement real data statistics table using model/config/data
+        raise NotImplementedError("Data statistics table must use real model/config/data.")
 
     def plot(self, **kwargs) -> Tuple[Figure, Dict[str, Axes]]:
         """

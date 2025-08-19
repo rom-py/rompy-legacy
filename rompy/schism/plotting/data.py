@@ -52,19 +52,34 @@ class DataPlotter(BasePlotter):
         self,
         config: Optional[Any] = None,
         grid_file: Optional[Union[str, Path]] = None,
-        plot_config: Optional[PlotConfig] = None
+        plot_config: Optional[PlotConfig] = None,
+        file_map: Optional[Dict[str, Union[str, Path]]] = None
     ):
-        """Initialize DataPlotter."""
-        super().__init__(config, grid_file, plot_config)
-
-    def plot(self, file_path: Union[str, Path], **kwargs) -> Tuple[Figure, Axes]:
         """
-        Main plotting method that auto-detects file type.
+        Initialize DataPlotter.
 
         Parameters
         ----------
-        file_path : Union[str, Path]
-            Path to SCHISM data file
+        config : Optional[Any]
+            SCHISM configuration object
+        grid_file : Optional[Union[str, Path]]
+            Path to grid file if config is not provided
+        plot_config : Optional[PlotConfig]
+            Plotting configuration parameters
+        file_map : Optional[Dict[str, Union[str, Path]]]
+            Mapping of logical data keys to file paths (recommended)
+        """
+        super().__init__(config, grid_file, plot_config)
+        self.file_map = file_map or {}
+
+    def plot(self, data_type: str, **kwargs) -> Tuple[Figure, Axes]:
+        """
+        Main plotting method using file_map for file discovery.
+
+        Parameters
+        ----------
+        data_type : str
+            Logical key for SCHISM data file (e.g., 'salinity_3d', 'temperature_3d', 'velocity_3d', 'elevation_2d', 'atmospheric', 'bctides', etc.)
         **kwargs : dict
             Additional plotting parameters
 
@@ -75,24 +90,27 @@ class DataPlotter(BasePlotter):
         ax : Axes
             Axes object
         """
+        if data_type not in self.file_map:
+            raise ValueError(f"Required file for '{data_type}' not found in file_map.")
+        file_path = self.file_map[data_type]
         file_type = detect_file_type(file_path)
 
         if file_type == 'salinity_3d':
-            return self.plot_salinity_3d(file_path, **kwargs)
+            return self.plot_salinity_3d(**kwargs)
         elif file_type == 'temperature_3d':
-            return self.plot_temperature_3d(file_path, **kwargs)
+            return self.plot_temperature_3d(**kwargs)
         elif file_type == 'velocity_3d':
-            return self.plot_velocity_3d(file_path, **kwargs)
+            return self.plot_velocity_3d(**kwargs)
         elif file_type == 'elevation_2d':
-            return self.plot_elevation_2d(file_path, **kwargs)
+            return self.plot_elevation_2d(**kwargs)
         elif file_type == 'atmospheric':
-            return self.plot_atmospheric_spatial(file_path=file_path, **kwargs)
+            return self.plot_atmospheric_spatial(**kwargs)
         elif file_type == 'gr3':
-            return self.plot_gr3_file(file_path, **kwargs)
+            return self.plot_gr3_file(**kwargs)
         elif file_type == 'bctides':
-            return self.plot_bctides_file(file_path, **kwargs)
+            return self.plot_bctides_file(**kwargs)
         else:
-            return self.plot_boundary_data(file_path, **kwargs)
+            return self.plot_boundary_data(**kwargs)
 
     def plot_boundary_data(
         self,
@@ -135,7 +153,7 @@ class DataPlotter(BasePlotter):
 
         # Get variable name
         if variable is None:
-            variable = list(ds.data_vars)[0]
+            variable = str(list(ds.data_vars)[0])
 
         PlotValidator.validate_dataset(ds, required_vars=[variable])
 
@@ -150,19 +168,16 @@ class DataPlotter(BasePlotter):
 
     def plot_salinity_3d(
         self,
-        file_path: Union[str, Path],
         time_idx: int = 0,
         level_idx: int = 0,
         ax: Optional[Axes] = None,
         **kwargs
     ) -> Tuple[Figure, Axes]:
         """
-        Plot 3D salinity boundary data.
+        Plot 3D salinity boundary data using file_map.
 
         Parameters
         ----------
-        file_path : Union[str, Path]
-            Path to SAL_3D.th.nc file
         time_idx : int, optional
             Time index to plot. Default is 0.
         level_idx : int, optional
@@ -179,6 +194,9 @@ class DataPlotter(BasePlotter):
         ax : Axes
             Axes object
         """
+        file_path = self.file_map.get("salinity_3d")
+        if not file_path:
+            raise ValueError("salinity_3d file not found in file_map.")
         return self.plot_boundary_data(
             file_path, variable="salinity", time_idx=time_idx,
             level_idx=level_idx, ax=ax, **kwargs
@@ -186,19 +204,16 @@ class DataPlotter(BasePlotter):
 
     def plot_temperature_3d(
         self,
-        file_path: Union[str, Path],
         time_idx: int = 0,
         level_idx: int = 0,
         ax: Optional[Axes] = None,
         **kwargs
     ) -> Tuple[Figure, Axes]:
         """
-        Plot 3D temperature boundary data.
+        Plot 3D temperature boundary data using file_map.
 
         Parameters
         ----------
-        file_path : Union[str, Path]
-            Path to TEM_3D.th.nc file
         time_idx : int, optional
             Time index to plot. Default is 0.
         level_idx : int, optional
@@ -215,6 +230,9 @@ class DataPlotter(BasePlotter):
         ax : Axes
             Axes object
         """
+        file_path = self.file_map.get("temperature_3d")
+        if not file_path:
+            raise ValueError("temperature_3d file not found in file_map.")
         return self.plot_boundary_data(
             file_path, variable="temperature", time_idx=time_idx,
             level_idx=level_idx, ax=ax, **kwargs
@@ -222,7 +240,6 @@ class DataPlotter(BasePlotter):
 
     def plot_velocity_3d(
         self,
-        file_path: Union[str, Path],
         time_idx: int = 0,
         level_idx: int = 0,
         ax: Optional[Axes] = None,
@@ -230,12 +247,10 @@ class DataPlotter(BasePlotter):
         **kwargs
     ) -> Tuple[Figure, Axes]:
         """
-        Plot 3D velocity boundary data.
+        Plot 3D velocity boundary data using file_map.
 
         Parameters
         ----------
-        file_path : Union[str, Path]
-            Path to uv3D.th.nc file
         time_idx : int, optional
             Time index to plot. Default is 0.
         level_idx : int, optional
@@ -254,16 +269,20 @@ class DataPlotter(BasePlotter):
         ax : Axes
             Axes object
         """
+        file_path = self.file_map.get("velocity_3d")
+        if not file_path:
+            raise ValueError("velocity_3d file not found in file_map.")
         ds = load_schism_data(file_path)
 
         # Find velocity components
         u_var = None
         v_var = None
         for var in ds.data_vars:
-            if 'u' in var.lower() and 'velocity' in var.lower():
-                u_var = var
-            elif 'v' in var.lower() and 'velocity' in var.lower():
-                v_var = var
+            var_str = str(var)
+            if 'u' in var_str.lower() and 'velocity' in var_str.lower():
+                u_var = var_str
+            elif 'v' in var_str.lower() and 'velocity' in var_str.lower():
+                v_var = var_str
 
         if u_var is None or v_var is None:
             # Try common naming conventions
@@ -272,12 +291,12 @@ class DataPlotter(BasePlotter):
 
             for u_name in possible_u:
                 if u_name in ds.data_vars:
-                    u_var = u_name
+                    u_var = str(u_name)
                     break
 
             for v_name in possible_v:
                 if v_name in ds.data_vars:
-                    v_var = v_name
+                    v_var = str(v_name)
                     break
 
         if u_var is None or v_var is None:
@@ -306,18 +325,15 @@ class DataPlotter(BasePlotter):
 
     def plot_elevation_2d(
         self,
-        file_path: Union[str, Path],
         time_idx: int = 0,
         ax: Optional[Axes] = None,
         **kwargs
     ) -> Tuple[Figure, Axes]:
         """
-        Plot 2D elevation boundary data.
+        Plot 2D elevation boundary data using file_map.
 
         Parameters
         ----------
-        file_path : Union[str, Path]
-            Path to elev2D.th.nc file
         time_idx : int, optional
             Time index to plot. Default is 0.
         ax : Optional[Axes]
@@ -332,6 +348,9 @@ class DataPlotter(BasePlotter):
         ax : Axes
             Axes object
         """
+        file_path = self.file_map.get("elevation_2d")
+        if not file_path:
+            raise ValueError("elevation_2d file not found in file_map.")
         return self.plot_boundary_data(
             file_path, variable="elevation", time_idx=time_idx, ax=ax, **kwargs
         )
@@ -348,45 +367,25 @@ class DataPlotter(BasePlotter):
     ) -> Tuple[Figure, Axes]:
         """
         Plot spatial distribution of atmospheric forcing data.
-
-        Parameters
-        ----------
-        variable : str, optional
-            Type of atmospheric data ('air', 'rad', 'prc'). Default is 'air'.
-        parameter : Optional[str]
-            Specific parameter to plot (e.g., 'prmsl', 'uwind', 'vwind').
-            Use 'wind_vectors' for wind vector plots.
-        time_idx : int, optional
-            Time index to plot. Default is 0.
-        level_idx : int, optional
-            Vertical level index for 3D variables. Default is 0.
-        ax : Optional[Axes]
-            Existing axes to plot on
-        file_path : Optional[Union[str, Path]]
-            Path to atmospheric data file. If None, uses config data.
-        **kwargs : dict
-            Additional plotting parameters. For wind vectors:
-            - plot_type: 'quiver' or 'barbs' (default: 'quiver')
-            - uwind_name: name of u-wind variable (default: 'uwind')
-            - vwind_name: name of v-wind variable (default: 'vwind')
-            - vector_density: stride for vector subsampling (default: 1)
-            - vector_scale: scale for vectors (default: None)
-            - barb_length: length for barbs (default: 5)
-
-        Returns
-        -------
-        fig : Figure
-            Figure object
-        ax : Axes
-            Axes object
         """
         fig, ax = self.create_figure(ax=ax, **kwargs)
 
-        # Get dataset
-        if file_path:
+        # Robust file discovery
+        ds = None
+        file_key = variable.lower()
+        file_path_map = self.file_map.get(file_key)
+        if file_path_map:
+            ds = load_schism_data(file_path_map)
+        elif file_path:
             ds = load_schism_data(file_path)
         else:
-            ds = self._get_atmospheric_dataset(variable)
+            try:
+                ds = self._get_atmospheric_dataset(variable)
+            except Exception as e:
+                raise RuntimeError(f"Atmospheric data file for '{variable}' not found in file_map, kwargs, or config: {e}")
+        if ds is None:
+            raise RuntimeError(f"Atmospheric data for '{variable}' could not be loaded.")
+
 
         # Parameter mapping - include both standard names and ERA5 names
         parameter_map = {
@@ -506,7 +505,11 @@ class DataPlotter(BasePlotter):
         fig, ax = self.create_figure(ax=ax, use_cartopy=False, **kwargs)
 
         # Get dataset
-        ds = self._get_atmospheric_dataset(variable)
+        file_path = kwargs.get('file_path')
+        if file_path:
+            ds = load_schism_data(file_path)
+        else:
+            raise RuntimeError("Atmospheric data file_path must be provided for plotting")
 
         # Find parameter
         if parameter is None:
@@ -678,36 +681,37 @@ class DataPlotter(BasePlotter):
             if not (self.config and hasattr(self.config, 'data') and
                     hasattr(self.config.data, 'boundary_conditions') and
                     self.config.data.boundary_conditions is not None):
-                ax.text(0.5, 0.5, "No tidal boundary conditions found in configuration",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title="Tidal Inputs - No Data")
+                raise RuntimeError("No tidal boundary conditions found in configuration")
 
             bc = self.config.data.boundary_conditions
             if not (hasattr(bc, 'setup_type') and bc.setup_type in ['tidal', 'hybrid'] and
                     hasattr(bc, 'constituents') and bc.constituents):
-                ax.text(0.5, 0.5, "No tidal constituents found in boundary conditions",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title="Tidal Inputs - No Constituents")
+                raise RuntimeError("No tidal constituents found in boundary conditions")
 
             # Get tidal data files
             if not (hasattr(bc, 'tidal_data') and bc.tidal_data):
-                ax.text(0.5, 0.5, "No tidal data files specified",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title="Tidal Inputs - No Data Files")
+                raise RuntimeError("No tidal data files specified")
 
             # Import required modules
             import xarray as xr
             import numpy as np
             from datetime import datetime, timedelta
+            from .utils import add_grid_overlay, add_boundary_overlay
 
             # Get sample points
             if sample_points is None:
                 sample_points = self._get_representative_boundary_points(n_points)
 
-            if not sample_points:
-                ax.text(0.5, 0.5, "No boundary points available for sampling",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title="Tidal Inputs - No Points")
+            if sample_points is None or len(sample_points) == 0:
+                raise RuntimeError("No boundary points available for sampling")
+
+            # Add grid and boundary overlays for spatial context if grid is available
+            if hasattr(self, 'grid') and self.grid is not None:
+                try:
+                    add_grid_overlay(ax, self.grid, alpha=0.2, color='lightgray', linewidth=0.3)
+                    add_boundary_overlay(ax, self.grid, boundary_colors={"ocean": "red", "land": "darkgreen", "tidal": "blue"}, linewidth=2.5)
+                except Exception as e:
+                    logger.warning(f"Could not add grid/boundary overlays to time series panel: {e}")
 
             # Create standardized time array
             dt = 0.5  # 30-minute intervals
@@ -744,12 +748,12 @@ class DataPlotter(BasePlotter):
                 raise ValueError(f"Unsupported plot_type: {plot_type}")
 
             # Plot time series for each point
-            colors = plt.cm.tab10(np.linspace(0, 1, len(sample_points)))
+            colors = plt.get_cmap('tab10')(np.linspace(0, 1, len(sample_points)))
 
             for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
                 if i < len(time_series_data):
                     ax.plot(times, time_series_data[i], color=color, linewidth=2,
-                           label=f"Point {i+1} ({lon:.2f}°, {lat:.2f}°)")
+                           label=f"Point {i+1} ({lon:.2f}0, {lat:.2f}0)")
 
             # Format plot
             ax.set_xlabel("Time (hours)")
@@ -765,125 +769,50 @@ class DataPlotter(BasePlotter):
 
         except Exception as e:
             logger.error(f"Error plotting tidal inputs: {e}")
-            ax.text(0.5, 0.5, f"Error plotting tidal inputs:\n{str(e)}",
-                   ha='center', va='center', transform=ax.transAxes,
-                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
-            title_suffix = "Error"
+            raise RuntimeError(f"Error plotting tidal inputs: {str(e)}")
+        # No plot is returned if error is raised above.
 
-        return self.finalize_plot(fig, ax, title=f"Tidal {title_suffix} at Sample Points")
+
 
     def _get_representative_boundary_points(self, n_points: int) -> List[Tuple[float, float]]:
         """Get representative boundary points for tidal input sampling."""
-        try:
-            if not self.grid:
-                logger.info("No grid available, using default sample points")
-                # Return some default coastal points if no grid is available
-                # Use Australian coastal coordinates to match TPXO test data
-                return [
-                    (150.0, -20.0),   # Example: Australian coast
-                    (151.0, -21.0),
-                    (152.0, -22.0),
-                    (153.0, -23.0)
-                ][:n_points]
+        if not self.grid:
+            raise RuntimeError("Grid object required for representative boundary points")
 
-            # Get grid boundary information
-            hgrid = self.grid.pylibs_hgrid if hasattr(self.grid, 'pylibs_hgrid') else self.grid
-            logger.info(f"Processing grid with {len(hgrid.x) if hasattr(hgrid, 'x') else 'unknown'} nodes")
+        hgrid = self.grid.pylibs_hgrid if hasattr(self.grid, 'pylibs_hgrid') else self.grid
 
-            # Ensure boundaries are computed
-            if not hasattr(hgrid, 'nob'):
-                if hasattr(hgrid, 'compute_bnd'):
-                    hgrid.compute_bnd()
-                elif hasattr(hgrid, 'compute_all'):
-                    hgrid.compute_all()
+        # Ensure boundaries are computed
+        if not hasattr(hgrid, 'nob'):
+            if getattr(hgrid, 'compute_bnd', None):
+                hgrid.compute_bnd()
+            elif getattr(hgrid, 'compute_all', None):
+                hgrid.compute_all()
 
-            # Get open boundary nodes
-            if hasattr(hgrid, 'iobn') and len(hgrid.iobn) > 0:
-                # Get first open boundary
-                boundary_nodes = hgrid.iobn[0]
-                logger.info(f"Found {len(boundary_nodes)} boundary nodes")
+        # Get open boundary nodes
+        boundary_nodes = getattr(hgrid, 'iobn', None)
+        if boundary_nodes is not None and len(boundary_nodes) > 0:
+            boundary_nodes = boundary_nodes[0]
+            n_boundary = len(boundary_nodes)
+            if n_boundary == 0:
+                raise RuntimeError("No boundary nodes found in grid")
+            indices = np.linspace(0, n_boundary - 1, min(n_points, n_boundary), dtype=int)
+            sample_points = []
+            hgrid_x = getattr(hgrid, 'x', None)
+            hgrid_y = getattr(hgrid, 'y', None)
+            if hgrid_x is None or hgrid_y is None:
+                raise RuntimeError("Grid missing x or y coordinates")
+            for idx in indices:
+                node_idx = int(boundary_nodes[idx])
+                if 0 <= node_idx < len(hgrid_x):
+                    lon = float(hgrid_x[node_idx])
+                    lat = float(hgrid_y[node_idx])
+                    if not (np.isnan(lon) or np.isnan(lat) or np.isinf(lon) or np.isinf(lat)):
+                        sample_points.append((lon, lat))
+            if sample_points:
+                return sample_points
 
-                # Select representative points along the boundary
-                n_boundary = len(boundary_nodes)
-                if n_boundary == 0:
-                    logger.warning("No boundary nodes found")
-                else:
-                    # Select evenly spaced points along boundary
-                    indices = np.linspace(0, n_boundary - 1, min(n_points, n_boundary), dtype=int)
-                    sample_points = []
-
-                    for idx in indices:
-                        try:
-                            node_idx = int(boundary_nodes[idx])
-                            if 0 <= node_idx < len(hgrid.x):
-                                lon = float(hgrid.x[node_idx])
-                                lat = float(hgrid.y[node_idx])
-
-                                # Validate coordinates
-                                if not (np.isnan(lon) or np.isnan(lat) or np.isinf(lon) or np.isinf(lat)):
-                                    sample_points.append((lon, lat))
-                                    logger.info(f"Added boundary sample point: ({lon:.3f}, {lat:.3f})")
-                        except (ValueError, IndexError, TypeError) as e:
-                            logger.warning(f"Error processing boundary node {idx}: {e}")
-                            continue
-
-                    if sample_points:
-                        logger.info(f"Successfully found {len(sample_points)} boundary sample points")
-                        return sample_points
-
-            # Fallback: use corner and center points of grid extent
-            x_coords = hgrid.x if hasattr(hgrid, 'x') else np.array([])
-            y_coords = hgrid.y if hasattr(hgrid, 'y') else np.array([])
-
-            if len(x_coords) == 0 or len(y_coords) == 0:
-                logger.warning("No grid coordinates available, using default points")
-                return [
-                    (-5.0, 50.0), (-4.0, 50.2), (-3.5, 50.5), (-3.0, 50.8)
-                ][:n_points]
-
-            # Validate coordinates
-            valid_x = x_coords[~np.isnan(x_coords) & ~np.isinf(x_coords)]
-            valid_y = y_coords[~np.isnan(y_coords) & ~np.isinf(y_coords)]
-
-            if len(valid_x) == 0 or len(valid_y) == 0:
-                logger.warning("No valid coordinates found, using default points")
-                # Use Australian coastal coordinates to match TPXO test data
-                return [
-                    (150.0, -20.0), (151.0, -21.0), (152.0, -22.0), (153.0, -23.0)
-                ][:n_points]
-
-            x_min, x_max = valid_x.min(), valid_x.max()
-            y_min, y_max = valid_y.min(), valid_y.max()
-            x_center = (x_min + x_max) / 2
-            y_center = (y_min + y_max) / 2
-
-            logger.info(f"Grid extent: lon=[{x_min:.3f}, {x_max:.3f}], lat=[{y_min:.3f}, {y_max:.3f}]")
-
-            # Create sample points at corners, center, and mid-points
-            fallback_points = [
-                (float(x_min), float(y_min)),     # SW corner
-                (float(x_max), float(y_min)),     # SE corner
-                (float(x_max), float(y_max)),     # NE corner
-                (float(x_min), float(y_max)),     # NW corner
-                (float(x_center), float(y_center)), # Center
-                (float(x_center), float(y_min)),  # S center
-                (float(x_center), float(y_max)),  # N center
-                (float(x_min), float(y_center)),  # W center
-            ][:n_points]
-
-            logger.info(f"Using {len(fallback_points)} fallback sample points from grid extent")
-            for i, (lon, lat) in enumerate(fallback_points):
-                logger.info(f"Fallback point {i+1}: ({lon:.3f}, {lat:.3f})")
-
-            return fallback_points
-
-        except Exception as e:
-            logger.warning(f"Could not get representative boundary points: {e}")
-            # Last resort: return some reasonable default points
-            # Use Australian coastal coordinates to match TPXO test data
-            return [
-                (150.0, -20.0), (151.0, -21.0), (152.0, -22.0), (153.0, -23.0)
-            ][:n_points]
+        # If no boundary nodes found, fail immediately
+        raise RuntimeError("No boundary nodes found in grid; cannot extract representative boundary points.")
 
     def _compute_tidal_elevation_timeseries(
         self,
@@ -926,13 +855,13 @@ class DataPlotter(BasePlotter):
             else:
                 logger.error("Required coordinates 'lon_z' and 'lat_z' not found in dataset")
                 ds.close()
-                return [np.zeros(len(times)) for _ in sample_points]
+                raise RuntimeError("Required coordinates 'lon_z' and 'lat_z' not found in dataset")
 
             # Check for required data variables
             if "ha" not in ds.variables or "hp" not in ds.variables:
                 logger.error("Required variables 'ha' (amplitude) or 'hp' (phase) not found in dataset")
                 ds.close()
-                return [np.zeros(len(times)) for _ in sample_points]
+                raise RuntimeError("Required variables 'ha' (amplitude) or 'hp' (phase) not found in dataset")
 
             # Initialize time series for each point
             time_series_list = []
@@ -1002,9 +931,9 @@ class DataPlotter(BasePlotter):
             import traceback
             logger.error(traceback.format_exc())
 
-            # Return empty data instead of synthetic fallback
-            logger.error("Failed to compute tidal elevation time series - returning empty data")
-            return [np.zeros(len(times)) for _ in sample_points]
+            # Raise error instead of returning synthetic fallback
+            logger.error("Failed to compute tidal elevation time series - no valid data")
+            raise RuntimeError("Failed to compute tidal elevation time series - no valid data")
 
     def _compute_tidal_velocity_timeseries(
         self,
@@ -1042,6 +971,10 @@ class DataPlotter(BasePlotter):
 
         for point_lon, point_lat in sample_points:
             velocity_ts = np.zeros(len(times))
+            amp = None
+            phase = None
+            u_ts = None
+            v_ts = None
 
             if velocity_component == "velocity_magnitude":
                 u_ts = np.zeros(len(times))
@@ -1054,80 +987,58 @@ class DataPlotter(BasePlotter):
                     const_idx = file_constituents.index(const_lower)
 
                     if velocity_component == "velocity_u":
-                        # Get U velocity amplitude and phase
                         amp = ds["ua"][const_idx].values
                         phase = ds["up"][const_idx].values
-
-                        # Use U grid coordinates
                         lon_grid = ds["lon_u"].values
                         lat_grid = ds["lat_u"].values
 
                     elif velocity_component == "velocity_v":
-                        # Get V velocity amplitude and phase
                         amp = ds["va"][const_idx].values
                         phase = ds["vp"][const_idx].values
-
-                        # Use V grid coordinates
                         lon_grid = ds["lon_v"].values
                         lat_grid = ds["lat_v"].values
 
                     elif velocity_component == "velocity_magnitude":
-                        # Get both U and V components
                         u_amp = ds["ua"][const_idx].values
                         u_phase = ds["up"][const_idx].values
                         v_amp = ds["va"][const_idx].values
                         v_phase = ds["vp"][const_idx].values
-
-                        # Interpolate U components
                         lon_u = ds["lon_u"].values
                         lat_u = ds["lat_u"].values
                         u_amp_interp = self._interpolate_to_point(lon_u, lat_u, u_amp, point_lon, point_lat)
                         u_phase_interp = self._interpolate_to_point(lon_u, lat_u, u_phase, point_lon, point_lat)
-
-                        # Interpolate V components
                         lon_v = ds["lon_v"].values
                         lat_v = ds["lat_v"].values
                         v_amp_interp = self._interpolate_to_point(lon_v, lat_v, v_amp, point_lon, point_lat)
                         v_phase_interp = self._interpolate_to_point(lon_v, lat_v, v_phase, point_lon, point_lat)
-
                         if (not np.isnan(u_amp_interp) and not np.isnan(u_phase_interp) and
                             not np.isnan(v_amp_interp) and not np.isnan(v_phase_interp)):
-
-                            # Get tidal frequency
                             freq = self._get_tidal_frequency(const)
                             omega = 2 * np.pi * freq  # rad/hour
-
-                            # Compute U and V time series
                             u_phase_rad = np.deg2rad(u_phase_interp)
                             v_phase_rad = np.deg2rad(v_phase_interp)
-
                             u_constituent = u_amp_interp * np.cos(omega * times - u_phase_rad)
                             v_constituent = v_amp_interp * np.cos(omega * times - v_phase_rad)
-
                             u_ts += u_constituent
                             v_ts += v_constituent
-
                         continue  # Skip the general interpolation below
 
                     # General interpolation for U or V component
-                    amp_interp = self._interpolate_to_point(lon_grid, lat_grid, amp, point_lon, point_lat)
-                    phase_interp = self._interpolate_to_point(lon_grid, lat_grid, phase, point_lon, point_lat)
+                    if amp is not None and phase is not None:
+                        amp_interp = self._interpolate_to_point(lon_grid, lat_grid, amp, point_lon, point_lat)
+                        phase_interp = self._interpolate_to_point(lon_grid, lat_grid, phase, point_lon, point_lat)
+                        if not np.isnan(amp_interp) and not np.isnan(phase_interp):
+                            freq = self._get_tidal_frequency(const)
+                            omega = 2 * np.pi * freq  # rad/hour
+                            phase_rad = np.deg2rad(phase_interp)
+                            constituent_ts = amp_interp * np.cos(omega * times - phase_rad)
+                            velocity_ts += constituent_ts
 
-                    if not np.isnan(amp_interp) and not np.isnan(phase_interp):
-                        # Get tidal frequency
-                        freq = self._get_tidal_frequency(const)
-                        omega = 2 * np.pi * freq  # rad/hour
-
-                        # Compute time series
-                        phase_rad = np.deg2rad(phase_interp)
-                        constituent_ts = amp_interp * np.cos(omega * times - phase_rad)
-
-                        velocity_ts += constituent_ts
-
-            # For magnitude, compute from U and V components
-            if velocity_component == "velocity_magnitude":
+            if velocity_component == "velocity_magnitude" and u_ts is not None and v_ts is not None:
                 velocity_ts = np.sqrt(u_ts**2 + v_ts**2)
 
+            if not np.any(velocity_ts):
+                raise RuntimeError(f"No valid tidal velocity data found for point ({point_lon}, {point_lat})")
             time_series_list.append(velocity_ts)
 
         ds.close()
@@ -1438,17 +1349,15 @@ class DataPlotter(BasePlotter):
 
             bctides_file = Path(bctides_file)
             if not bctides_file.exists():
-                ax.text(0.5, 0.5, f"Bctides file not found: {bctides_file}",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title="SCHISM Boundary Data - File Not Found")
+                raise RuntimeError(f"Bctides file not found: {bctides_file}")
+                # No plot is returned if error is raised above.
 
             # Parse bctides.in file
             boundary_data = self._parse_bctides_file(bctides_file)
 
             if not boundary_data:
-                ax.text(0.5, 0.5, "No boundary data found in bctides.in file",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title="SCHISM Boundary Data - No Data")
+                raise RuntimeError("No boundary data found in bctides.in file")
+                # No plot is returned if error is raised above.
 
             # Create time series from harmonic constituents
             dt = 0.5  # 30-minute intervals
@@ -1478,10 +1387,7 @@ class DataPlotter(BasePlotter):
 
         except Exception as e:
             logger.error(f"Error plotting SCHISM boundary data: {e}")
-            ax.text(0.5, 0.5, f"Error plotting boundary data:\n{str(e)}",
-                   ha='center', va='center', transform=ax.transAxes,
-                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
-            title = "SCHISM Boundary Data - Error"
+            raise RuntimeError(f"Error plotting boundary data: {str(e)}")
 
         return self.finalize_plot(fig, ax, title=title)
 
@@ -1518,25 +1424,16 @@ class DataPlotter(BasePlotter):
             if not (self.config and hasattr(self.config, 'data') and
                     hasattr(self.config.data, 'boundary_conditions') and
                     self.config.data.boundary_conditions is not None):
-                fig, ax = self.create_figure(ax=ax, **kwargs)
-                ax.text(0.5, 0.5, "No tidal boundary conditions found in configuration",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title="Tidal Amplitude/Phase - No Data")
+                raise RuntimeError("No tidal boundary conditions found in configuration")
 
             bc = self.config.data.boundary_conditions
             if not (hasattr(bc, 'setup_type') and bc.setup_type in ['tidal', 'hybrid'] and
                     hasattr(bc, 'constituents') and bc.constituents):
-                fig, ax = self.create_figure(ax=ax, **kwargs)
-                ax.text(0.5, 0.5, "No tidal constituents found in boundary conditions",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title="Tidal Amplitude/Phase - No Constituents")
+                raise RuntimeError("No tidal constituents found in boundary conditions")
 
             # Get tidal data files
             if not (hasattr(bc, 'tidal_data') and bc.tidal_data):
-                fig, ax = self.create_figure(ax=ax, **kwargs)
-                ax.text(0.5, 0.5, "No tidal data files specified",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title="Tidal Amplitude/Phase - No Data Files")
+                raise RuntimeError("No tidal data files specified")
 
             import xarray as xr
             import numpy as np
@@ -1593,23 +1490,14 @@ class DataPlotter(BasePlotter):
                     break
 
             if const_idx is None:
-                fig, ax = self.create_figure(ax=ax, **kwargs)
-                ax.text(0.5, 0.5, f"Constituent {constituent} not found in tidal data\nAvailable: {', '.join(file_constituents)}",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title=f"Tidal {variable.title()} - Constituent Not Found")
+                raise RuntimeError(f"Constituent {constituent} not found in tidal data. Available: {', '.join(file_constituents)}")
 
             # Get data
             if lon_var not in ds.variables or lat_var not in ds.variables:
-                fig, ax = self.create_figure(ax=ax, **kwargs)
-                ax.text(0.5, 0.5, f"Required coordinates '{lon_var}' or '{lat_var}' not found in dataset",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title=f"Tidal {variable.title()} - Missing Coordinates")
+                raise RuntimeError(f"Required coordinates '{lon_var}' or '{lat_var}' not found in dataset")
 
             if amp_var not in ds.variables or phase_var not in ds.variables:
-                fig, ax = self.create_figure(ax=ax, **kwargs)
-                ax.text(0.5, 0.5, f"Required variables '{amp_var}' or '{phase_var}' not found in dataset",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title=f"Tidal {variable.title()} - Missing Variables")
+                raise RuntimeError(f"Required variables '{amp_var}' or '{phase_var}' not found in dataset")
 
             lon_grid = ds[lon_var].values
             lat_grid = ds[lat_var].values
@@ -1626,10 +1514,7 @@ class DataPlotter(BasePlotter):
             logger.info(f"Valid data points: amplitude={valid_amp}, phase={valid_phase}")
 
             if valid_amp == 0:
-                fig, ax = self.create_figure(ax=ax, **kwargs)
-                ax.text(0.5, 0.5, f"No valid amplitude data for {constituent} {variable}",
-                       ha='center', va='center', transform=ax.transAxes)
-                return self.finalize_plot(fig, ax, title=f"Tidal {variable.title()} - No Valid Data")
+                raise RuntimeError(f"No valid amplitude data for {constituent} {variable}")
 
             # Create figure with simplified approach
             fig, ax = self.create_figure(ax=ax, use_cartopy=False, **kwargs)
@@ -1665,19 +1550,14 @@ class DataPlotter(BasePlotter):
 
             except Exception as e:
                 logger.error(f"Error creating amplitude/phase plot: {e}")
-                ax.text(0.5, 0.5, f"Error creating plot:\n{str(e)}",
-                       ha='center', va='center', transform=ax.transAxes)
+                raise RuntimeError(f"Error creating amplitude/phase plot: {str(e)}")
 
             ds.close()
             return self.finalize_plot(fig, ax, title=f'{constituent.upper()} {variable.replace("_", " ").title()}')
 
         except Exception as e:
             logger.error(f"Error plotting tidal amplitude/phase maps: {e}")
-            fig, ax = self.create_figure(ax=ax, **kwargs)
-            ax.text(0.5, 0.5, f"Error plotting tidal amplitude/phase:\n{str(e)}",
-                   ha='center', va='center', transform=ax.transAxes,
-                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
-            return self.finalize_plot(fig, ax, title="Tidal Amplitude/Phase - Error")
+            raise RuntimeError(f"Error plotting tidal amplitude/phase maps: {str(e)}")
 
     def _parse_bctides_file(self, bctides_file: Path) -> dict:
         """Parse bctides.in file to extract boundary data."""
@@ -1739,68 +1619,22 @@ class DataPlotter(BasePlotter):
         import numpy as np
 
         if not boundary_data.get('constituents'):
-            ax.text(0.5, 0.5, "No constituent data available",
-                   ha='center', va='center', transform=ax.transAxes)
-            return
+            raise RuntimeError("No constituent data available for boundary elevation time series plot")
 
-        # Create sample time series for demonstration
-        # In a real implementation, this would use actual harmonic coefficients
-        constituents = boundary_data['constituents']
-
-        # Sample boundary points (would come from actual boundary node data)
-        n_points = min(4, len(constituents))
-        colors = plt.cm.tab10(np.linspace(0, 1, n_points))
-
-        for i in range(n_points):
-            # Create synthetic time series based on constituents
-            elevation = np.zeros(len(times))
-
-            for j, const in enumerate(constituents[:3]):  # Use first 3 constituents
-                freq = self._get_tidal_frequency(const)
-                amp = 0.5 / (j + 1)  # Decreasing amplitude
-                phase = j * np.pi / 3  # Phase shift
-                omega = 2 * np.pi * freq
-                elevation += amp * np.cos(omega * times - phase)
-
-            ax.plot(times, elevation, color=colors[i], linewidth=2,
-                   label=f"Boundary Point {i+1}")
-
-        # Add constituent information
-        const_text = f"Constituents: {', '.join(constituents)}"
-        ax.text(0.02, 0.98, const_text, transform=ax.transAxes,
-               verticalalignment='top', fontsize=10,
-               bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgreen", alpha=0.7))
+        # Real implementation required: must use actual harmonic coefficients and boundary node data
+        raise RuntimeError("Boundary elevation time series plotting requires real harmonic coefficients and boundary node data. Synthetic/demo data is not permitted.")
 
     def _plot_boundary_velocity_timeseries(self, ax: Axes, boundary_data: dict, times: np.ndarray):
         """Plot velocity time series from boundary data."""
         import numpy as np
 
         if not boundary_data.get('constituents'):
-            ax.text(0.5, 0.5, "No constituent data available",
-                   ha='center', va='center', transform=ax.transAxes)
-            return
+            raise RuntimeError("No constituent data available for boundary velocity time series plot")
 
-        constituents = boundary_data['constituents']
-        n_points = min(4, len(constituents))
-        colors = plt.cm.tab10(np.linspace(0, 1, n_points))
+        # Real implementation required: must use actual harmonic coefficients and boundary node data
+        raise RuntimeError("Boundary velocity time series plotting requires real harmonic coefficients and boundary node data. Synthetic/demo data is not permitted.")
 
-        for i in range(n_points):
-            velocity = np.zeros(len(times))
-
-            for j, const in enumerate(constituents[:3]):
-                freq = self._get_tidal_frequency(const)
-                amp = 0.2 / (j + 1)  # Smaller velocity amplitude
-                phase = j * np.pi / 4
-                omega = 2 * np.pi * freq
-                velocity += amp * np.cos(omega * times - phase + np.pi/2)  # Phase shift for velocity
-
-            ax.plot(times, velocity, color=colors[i], linewidth=2,
-                   label=f"Boundary Point {i+1}")
-
-        const_text = f"Constituents: {', '.join(constituents)}"
-        ax.text(0.02, 0.98, const_text, transform=ax.transAxes,
-               verticalalignment='top', fontsize=10,
-               bbox=dict(boxstyle="round,pad=0.3", facecolor="lightblue", alpha=0.7))
+        # No plot is returned if error is raised above.
 
     def _plot_boundary_data_summary(self, ax: Axes, boundary_data: dict):
         """Plot summary of boundary data configuration."""
@@ -1825,8 +1659,7 @@ class DataPlotter(BasePlotter):
                    verticalalignment='top', fontsize=11, fontfamily='monospace',
                    bbox=dict(boxstyle="round,pad=0.5", facecolor="lightyellow", alpha=0.8))
         else:
-            ax.text(0.5, 0.5, "No boundary data summary available",
-                   ha='center', va='center', transform=ax.transAxes)
+            raise RuntimeError("No boundary data summary available")
 
         ax.set_xlim(0, 1)
         ax.set_ylim(0, 1)
@@ -1878,118 +1711,92 @@ class DataPlotter(BasePlotter):
                             hgrid = self.grid.pylibs_hgrid
 
                             # Compute boundaries to get boundary node indices
-                            hgrid.compute_bnd()
-
-                            # Get the first open boundary (assuming single boundary for now)
-                            if hasattr(hgrid, 'iobn') and len(hgrid.iobn) > 0:
-                                boundary_node_indices = hgrid.iobn[0]  # First open boundary
-
-                                if len(boundary_node_indices) == n_nodes:
-                                    # Get actual coordinates for boundary nodes
-                                    boundary_x = hgrid.x[boundary_node_indices]
-                                    boundary_y = hgrid.y[boundary_node_indices]
-
-                                    # Create spatial scatter plot with boundary data
-                                    im = ax.scatter(boundary_x, boundary_y, c=values,
-                                                  cmap=self.plot_config.cmap, s=50, **plot_kwargs)
-
-                                    # Add colorbar
-                                    units = ds[variable].attrs.get("units", "") if variable in ds.attrs else ""
-                                    if not units and 'time_series' in ds.data_vars:
-                                        units = ds['time_series'].attrs.get("units", "")
-                                    label = f"{variable} ({units})" if units else variable
-                                    cbar = self.add_colorbar(fig, ax, im, label=label)
-
-                                    # Set extent based on boundary coordinates
-                                    margin = 0.05  # 5% margin
-                                    x_range = boundary_x.max() - boundary_x.min()
-                                    y_range = boundary_y.max() - boundary_y.min()
-                                    ax.set_xlim(boundary_x.min() - margin * x_range,
-                                               boundary_x.max() + margin * x_range)
-                                    ax.set_ylim(boundary_y.min() - margin * y_range,
-                                               boundary_y.max() + margin * y_range)
-
-                                    ax.set_xlabel('Longitude')
-                                    ax.set_ylabel('Latitude')
-
-                                else:
-                                    logger.warning(f"Boundary node count mismatch: grid={len(boundary_node_indices)}, data={n_nodes}")
-                                    # Fallback to line plot
-                                    boundary_indices = np.arange(n_nodes)
-                                    ax.plot(boundary_indices, values, 'o-', markersize=4, **plot_kwargs)
-                                    ax.set_xlabel('Boundary Node Index')
-                                    ax.set_ylabel(variable)
-                                    ax.grid(True, alpha=0.3)
+                            if hasattr(hgrid, 'compute_bnd') and callable(getattr(hgrid, 'compute_bnd', None)):
+                                hgrid.compute_bnd()
                             else:
-                                logger.warning("No open boundary information found in grid")
-                                # Fallback to line plot
-                                boundary_indices = np.arange(n_nodes)
-                                ax.plot(boundary_indices, values, 'o-', markersize=4, **plot_kwargs)
-                                ax.set_xlabel('Boundary Node Index')
-                                ax.set_ylabel(variable)
-                                ax.grid(True, alpha=0.3)
+                                raise RuntimeError("Grid object missing compute_bnd method")
+
+                            boundary_nodes = getattr(hgrid, 'iobn', None)
+                            if boundary_nodes is None or len(boundary_nodes) == 0:
+                                raise ValueError("No open boundary information found in grid")
+
+                            boundary_node_indices = boundary_nodes[0]
+                            hgrid_x = getattr(hgrid, 'x', None)
+                            hgrid_y = getattr(hgrid, 'y', None)
+                            if hgrid_x is None or hgrid_y is None:
+                                raise RuntimeError("Grid missing x or y coordinates")
+
+                            if len(boundary_node_indices) == n_nodes:
+                                # Get actual coordinates for boundary nodes
+                                boundary_x = hgrid_x[boundary_node_indices]
+                                boundary_y = hgrid_y[boundary_node_indices]
+
+                                # Create spatial scatter plot with boundary data
+                                im = ax.scatter(boundary_x, boundary_y, c=values,
+                                              cmap=self.plot_config.cmap, s=50, **plot_kwargs)
+
+                                # Add colorbar
+                                units = ds[variable].attrs.get("units", "") if variable in ds.attrs else ""
+                                if not units and 'time_series' in ds.data_vars:
+                                    units = ds['time_series'].attrs.get("units", "")
+                                label = f"{variable} ({units})" if units else variable
+                                cbar = self.add_colorbar(fig, ax, im, label=label)
+
+                                # Set extent based on boundary coordinates
+                                margin = 0.05  # 5% margin
+                                x_range = boundary_x.max() - boundary_x.min()
+                                y_range = boundary_y.max() - boundary_y.min()
+                                ax.set_xlim(boundary_x.min() - margin * x_range,
+                                           boundary_x.max() + margin * x_range)
+                                ax.set_ylim(boundary_y.min() - margin * y_range,
+                                           boundary_y.max() + margin * y_range)
+
+                                ax.set_xlabel('Longitude')
+                                ax.set_ylabel('Latitude')
+
+                            else:
+                                raise ValueError(f"Boundary node count mismatch: grid={len(boundary_node_indices)}, data={n_nodes}")
 
                         except Exception as e:
-                            logger.warning(f"Could not access grid for boundary plotting: {e}")
-                            # Fallback: simple index plot
-                            boundary_indices = np.arange(n_nodes)
-                            ax.plot(boundary_indices, values, 'o-', markersize=4)
-                            ax.set_xlabel('Boundary Node Index')
-                            ax.set_ylabel(variable)
-                            ax.grid(True, alpha=0.3)
-                    else:
-                        # No grid available - simple index plot
-                        boundary_indices = np.arange(n_nodes)
-                        ax.plot(boundary_indices, values, 'o-', markersize=4)
-                        ax.set_xlabel('Boundary Node Index')
-                        ax.set_ylabel(variable)
-                        ax.grid(True, alpha=0.3)
-
-            else:
-                # Handle other variable types with spatial coordinates
-                var_data = ds[variable]
-
-                # Extract data for specified time and level
-                if "time" in var_data.dims:
-                    data = var_data.isel(time=time_idx)
-                else:
-                    data = var_data
-
-                if len(data.shape) > 1 and level_idx < data.shape[-1]:
-                    data = data.isel({data.dims[-1]: level_idx})
-
-                # Try to find spatial coordinates
-                if hasattr(data, 'lon') and hasattr(data, 'lat'):
-                    x, y = data.lon.values, data.lat.values
-                elif 'lon' in ds.coords and 'lat' in ds.coords:
-                    x, y = ds.lon.values, ds.lat.values
-                else:
-                    # Fallback to simple plot
-                    ax.plot(data.values, 'o-')
-                    ax.set_ylabel(variable)
-                    ax.grid(True, alpha=0.3)
-                    return self.finalize_plot(fig, ax, title=f"{variable} (Boundary Data)")
-
-                # Create spatial plot
-                im = ax.scatter(x, y, c=data.values, cmap=self.plot_config.cmap, **plot_kwargs)
-
-                # Add colorbar
-                units = ds[variable].attrs.get("units", "")
-                label = f"{variable} ({units})" if units else variable
-                cbar = self.add_colorbar(fig, ax, im, label=label)
-
-                # Set extent
-                extent = get_geographic_extent(x, y)
-                ax.set_xlim(extent[0], extent[1])
-                ax.set_ylim(extent[2], extent[3])
-
+                            logger.error(f"Could not access grid for boundary plotting: {e}")
+                            raise RuntimeError(f"Could not access grid for boundary plotting: {e}")
         except Exception as e:
-            logger.error(f"Error plotting boundary spatial data: {e}")
-            # Fallback: show error message
-            ax.text(0.5, 0.5, f"Error plotting {variable}\n{str(e)}",
-                   ha='center', va='center', transform=ax.transAxes,
-                   bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcoral", alpha=0.7))
-            ax.set_title(f"Error: {Path(file_path).name}" if 'file_path' in locals() else f"Error plotting {variable}")
+            logger.error(f"Error in boundary spatial plotting: {e}")
+            raise
+
+        # Handle other variable types with spatial coordinates
+        if 'time_series' not in ds.data_vars:
+            var_data = ds[variable]
+
+            # Extract data for specified time and level
+            if "time" in var_data.dims:
+                data = var_data.isel(time=time_idx)
+            else:
+                data = var_data
+
+            if len(data.shape) > 1 and level_idx < data.shape[-1]:
+                data = data.isel({data.dims[-1]: level_idx})
+
+        # Try to find spatial coordinates
+        if hasattr(data, 'lon') and hasattr(data, 'lat'):
+            x, y = data.lon.values, data.lat.values
+        elif 'lon' in ds.coords and 'lat' in ds.coords:
+            x, y = ds.lon.values, ds.lat.values
+        else:
+            raise ValueError("No valid spatial coordinates found for boundary data plotting")
+
+        # Create spatial plot
+        im = ax.scatter(x, y, c=data.values, cmap=self.plot_config.cmap, **plot_kwargs)
+
+        # Add colorbar
+        units = ds[variable].attrs.get("units", "")
+        label = f"{variable} ({units})" if units else variable
+        cbar = self.add_colorbar(fig, ax, im, label=label)
+
+        # Set extent
+        extent = get_geographic_extent(x, y)
+        ax.set_xlim(extent[0], extent[1])
+        ax.set_ylim(extent[2], extent[3])
 
         return self.finalize_plot(fig, ax, title=f"{variable} (Boundary Data)")
 
@@ -2476,7 +2283,10 @@ class DataPlotter(BasePlotter):
                 grid = self.grid
                 if hasattr(grid, 'pylibs_hgrid'):
                     hgrid = grid.pylibs_hgrid
-                    x, y = hgrid.x, hgrid.y
+                    x = getattr(hgrid, 'x', None)
+                    y = getattr(hgrid, 'y', None)
+                    if x is None or y is None:
+                        raise RuntimeError("Grid missing x or y coordinates")
 
                     # Read .gr3 file values
                     with open(file_path, 'r') as f:
@@ -2521,7 +2331,6 @@ class DataPlotter(BasePlotter):
 
                     # Set title
                     title = f"{Path(file_path).name} Properties"
-
                 else:
                     raise ValueError("Grid does not have pylibs_hgrid attribute")
             else:
@@ -2736,7 +2545,7 @@ class DataPlotter(BasePlotter):
             if sample_points is None:
                 sample_points = self._get_representative_atmospheric_points(n_points)
 
-            if not sample_points:
+            if sample_points is None or len(sample_points) == 0:
                 ax.text(0.5, 0.5, "No sample points available for atmospheric data",
                        ha='center', va='center', transform=ax.transAxes)
                 return self.finalize_plot(fig, ax, title="Atmospheric Inputs - No Points")
@@ -2760,7 +2569,7 @@ class DataPlotter(BasePlotter):
                 time_series_data = aligned_data
 
             # Plot time series for each point
-            colors = plt.cm.tab10(np.linspace(0, 1, len(sample_points)))
+            colors = plt.get_cmap('tab10')(np.linspace(0, 1, len(sample_points)))
 
             for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
                 if i < len(time_series_data):
@@ -2843,7 +2652,7 @@ class DataPlotter(BasePlotter):
             if sample_points is None:
                 sample_points = self._get_representative_atmospheric_points(n_points)
 
-            if not sample_points:
+            if sample_points is None or len(sample_points) == 0:
                 ax.text(0.5, 0.5, "No sample points available",
                        ha='center', va='center', transform=ax.transAxes)
                 return self.finalize_plot(fig, ax, title="Processed Atmospheric - No Points")
@@ -2867,7 +2676,7 @@ class DataPlotter(BasePlotter):
                 time_series_data = aligned_data
 
             # Plot time series for each point
-            colors = plt.cm.tab10(np.linspace(0, 1, len(sample_points)))
+            colors = plt.get_cmap('tab10')(np.linspace(0, 1, len(sample_points)))
 
             for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
                 if i < len(time_series_data):
@@ -2898,8 +2707,8 @@ class DataPlotter(BasePlotter):
 
     def _get_representative_atmospheric_points(self, n_points: int = 4) -> List[Tuple[float, float]]:
         """
-        Get representative atmospheric points from the atmospheric data domain.
-        This ensures consistent point selection between input and processed data.
+        Get representative atmospheric sample points from the grid boundary nodes.
+        This ensures points are on the actual boundary of the grid.
 
         Parameters
         ----------
@@ -2912,43 +2721,44 @@ class DataPlotter(BasePlotter):
             List of (lon, lat) coordinates
         """
         try:
-            # Get atmospheric data bounds instead of grid bounds for consistency
-            try:
-                ds = self._get_atmospheric_dataset('air')
+            if not self.grid:
+                raise RuntimeError("Grid object required for representative atmospheric points")
 
-                # Handle different coordinate formats
-                if 'longitude' in ds.coords and 'latitude' in ds.coords:
-                    lons = ds.coords['longitude'].values
-                    lats = ds.coords['latitude'].values
-                elif 'lon' in ds.data_vars and 'lat' in ds.data_vars:
-                    lons = ds['lon'].values
-                    lats = ds['lat'].values
-                else:
-                    # Fallback to grid bounds
-                    return self._get_grid_sample_points(n_points)
+            hgrid = self.grid.pylibs_hgrid if hasattr(self.grid, 'pylibs_hgrid') else self.grid
 
-                # Get atmospheric domain bounds
-                x_min, x_max = np.min(lons), np.max(lons)
-                y_min, y_max = np.min(lats), np.max(lats)
+            # Ensure boundaries are computed
+            if not hasattr(hgrid, 'nob'):
+                if getattr(hgrid, 'compute_bnd', None):
+                    hgrid.compute_bnd()
+                elif getattr(hgrid, 'compute_all', None):
+                    hgrid.compute_all()
 
-            except Exception as e:
-                logger.warning(f"Could not get atmospheric data bounds, using grid bounds: {e}")
-                return self._get_grid_sample_points(n_points)
+            # Get open boundary nodes
+            boundary_nodes = getattr(hgrid, 'iobn', None)
+            if boundary_nodes is not None and len(boundary_nodes) > 0:
+                boundary_nodes = boundary_nodes[0]
+                n_boundary = len(boundary_nodes)
+                if n_boundary == 0:
+                    raise RuntimeError("No boundary nodes found in grid")
+                indices = np.linspace(0, n_boundary - 1, min(n_points, n_boundary), dtype=int)
+                sample_points = []
+                hgrid_x = getattr(hgrid, 'x', None)
+                hgrid_y = getattr(hgrid, 'y', None)
+                if hgrid_x is None or hgrid_y is None:
+                    raise RuntimeError("Grid missing x or y coordinates")
+                for idx in indices:
+                    node_idx = int(boundary_nodes[idx])
+                    if 0 <= node_idx < len(hgrid_x):
+                        lon = float(hgrid_x[node_idx])
+                        lat = float(hgrid_y[node_idx])
+                        if not (np.isnan(lon) or np.isnan(lat) or np.isinf(lon) or np.isinf(lat)):
+                            sample_points.append((lon, lat))
+                if sample_points:
+                    logger.info(f"Selected atmospheric sample points on grid boundary: {sample_points}")
+                    return sample_points
 
-            # Create sample points across the atmospheric domain
-            sample_points = []
-
-            # Create a regular grid of sample points within atmospheric bounds
-            x_step = (x_max - x_min) / (n_points + 1)
-            y_step = (y_max - y_min) / (n_points + 1)
-
-            for i in range(1, n_points + 1):
-                x = x_min + i * x_step
-                y = y_min + i * y_step
-                sample_points.append((x, y))
-
-            logger.info(f"Selected atmospheric sample points within bounds: lon=[{x_min:.3f}, {x_max:.3f}], lat=[{y_min:.3f}, {y_max:.3f}]")
-            return sample_points[:n_points]
+            # If no boundary nodes found, fail immediately
+            raise RuntimeError("No boundary nodes found in grid; cannot extract representative atmospheric points.")
 
         except Exception as e:
             logger.error(f"Error getting representative atmospheric points: {e}")
@@ -3377,7 +3187,7 @@ class DataPlotter(BasePlotter):
             if sample_points is None:
                 sample_points = self._get_representative_boundary_points(n_points)
 
-            if not sample_points:
+            if sample_points is None or len(sample_points) == 0:
                 ax.text(0.5, 0.5, "No boundary points available for sampling",
                        ha='center', va='center', transform=ax.transAxes)
                 return self.finalize_plot(fig, ax, title="Ocean Boundary Inputs - No Points")
@@ -3401,7 +3211,7 @@ class DataPlotter(BasePlotter):
                 time_series_data = aligned_data
 
             # Plot time series for each point
-            colors = plt.cm.tab10(np.linspace(0, 1, len(sample_points)))
+            colors = plt.get_cmap('tab10')(np.linspace(0, 1, len(sample_points)))
 
             for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
                 if i < len(time_series_data):
@@ -3498,7 +3308,7 @@ class DataPlotter(BasePlotter):
             if sample_points is None:
                 sample_points = self._get_representative_boundary_points(n_points)
 
-            if not sample_points:
+            if sample_points is None or len(sample_points) == 0:
                 ax.text(0.5, 0.5, "No boundary points available",
                        ha='center', va='center', transform=ax.transAxes)
                 return self.finalize_plot(fig, ax, title="Processed Ocean Boundary - No Points")
@@ -3522,7 +3332,7 @@ class DataPlotter(BasePlotter):
                 time_series_data = aligned_data
 
             # Plot time series for each point
-            colors = plt.cm.tab10(np.linspace(0, 1, len(sample_points)))
+            colors = plt.get_cmap('tab10')(np.linspace(0, 1, len(sample_points)))
 
             for i, ((lon, lat), color) in enumerate(zip(sample_points, colors)):
                 if i < len(time_series_data):

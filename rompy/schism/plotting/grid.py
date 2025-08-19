@@ -580,11 +580,10 @@ class GridPlotter(BasePlotter):
         skewness : np.ndarray
             Skewness values for each element
         """
-        # Simplified skewness calculation
-        # In practice, this would use proper geometric calculations
-        ne = hgrid.ne
-        skewness = np.ones(ne) * 0.5  # Placeholder
-        return skewness
+        # Reason: Remove dummy data, require real skewness values
+        if hasattr(hgrid, 'skewness'):
+            return hgrid.skewness
+        raise RuntimeError("Grid skewness values missing from grid object")
 
     def _calculate_aspect_ratio(self, hgrid) -> np.ndarray:
         """
@@ -601,7 +600,7 @@ class GridPlotter(BasePlotter):
             Aspect ratio values for each element
         """
         # Simplified aspect ratio calculation
-        # In practice, this would use proper geometric calculations
-        ne = hgrid.ne
-        aspect_ratios = np.ones(ne) * 2.0  # Placeholder
-        return aspect_ratios
+        # Reason: Remove dummy data, require real aspect ratio values
+        if hasattr(hgrid, 'aspect_ratios'):
+            return hgrid.aspect_ratios
+        raise RuntimeError("Grid aspect ratio values missing from grid object")
