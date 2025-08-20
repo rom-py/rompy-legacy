@@ -39,6 +39,24 @@ except ImportError:
     MODERN_TEMPLATES_AVAILABLE = False
 
 class RepositorySplitter:
+    def _commit_all_changes(self, target_dir: str, message: str):
+        """
+        Commit all staged changes in the target directory with a descriptive message.
+        """
+        if self.dry_run:
+            logger.info(f"DRY RUN: Would commit changes: {message}")
+            return
+        try:
+            # Only commit if there are staged changes
+            result = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=target_dir)
+            if result.returncode != 0:
+                self._run_command(["git", "commit", "-m", message], cwd=target_dir)
+                logger.info(f"[GIT] Commit: {message}")
+            else:
+                logger.info(f"[GIT] No staged changes to commit for: {message}")
+        except Exception as e:
+            logger.error(f"[GIT] Commit failed: {e}")
+
     """
     Handles the splitting of a monorepo into multiple repositories.
     """
@@ -252,6 +270,7 @@ Browse the notebooks/ directory to get started!
                 if not isinstance(moves, list):
                     moves = list(moves)
                 self._move_files(target_dir, moves)
+                self._commit_all_changes(target_dir, "chore(split): move files after split")
             elif action_type == "merge_directory_contents":
                 merges = action.get("merges")
                 if merges is None:
@@ -259,6 +278,7 @@ Browse the notebooks/ directory to get started!
                 if not isinstance(merges, list):
                     merges = list(merges)
                 self._merge_directory_contents(target_dir, merges)
+                self._commit_all_changes(target_dir, "chore(split): merge directory contents")
             elif action_type == "create_readme":
                 template_name = action.get("template")
                 if template_name is None:
@@ -303,6 +323,7 @@ Browse the notebooks/ directory to get started!
                     src_layout,
                     entry_points,
                 )
+                self._commit_all_changes(target_dir, "chore(split): update setup files and config")
             elif action_type == "rename":
                 from_path = os.path.join(target_dir, action["from"])
                 to_path = os.path.join(target_dir, action["to"])
@@ -357,6 +378,7 @@ Browse the notebooks/ directory to get started!
                         description,
                         dependencies,
                     )
+                    self._commit_all_changes(target_dir, "chore(split): create modern setup files")
             elif action_type == "correct_manifest":
                 package_name = action.get("package_name")
                 description = action.get("description", "")
@@ -374,6 +396,7 @@ Browse the notebooks/ directory to get started!
                 # Also update MANIFEST.in for src layout
                 package_module = package_name.replace("-", "_") if package_name else ""
                 self._update_manifest_in(target_dir, package_module)
+                self._commit_all_changes(target_dir, "chore(split): correct manifest and setup files")
 
             elif action_type == "create_plugin_docs":
                 package_name = action.get("package_name") or ""
@@ -400,6 +423,7 @@ Browse the notebooks/ directory to get started!
                 target_package = action.get("target_package") or ""
                 if package_type and target_package and not self.dry_run:
                     self._correct_imports(target_dir, package_type, target_package)
+                self._commit_all_changes(target_dir, "chore(split): correct imports in code and docs")
             elif action_type == "remove_files":
                 files_to_remove = action.get("files")
                 if files_to_remove is None:
@@ -442,12 +466,13 @@ Browse the notebooks/ directory to get started!
                             else:
                                 self._merge_cookiecutter_output(target_dir, cookiecutter_output, merge_strategy)
                                 logger.info(f"Cookiecutter overlay merge completed for {target_dir}")
+                                self._commit_all_changes(target_dir, "chore(split): apply cookiecutter template overlay")
                     else:
                         logger.warning("Cookiecutter is not available. Skipping template application.")
 
     def _move_files(self, target_dir: str, moves: List[Dict[str, str]]):
         """
-        Move files within the repository after filtering.
+        Move files within the repository after filtering, preserving git history.
         Args:
             target_dir: Repository directory
             moves: List of move operations with 'from' and 'to' keys
@@ -463,8 +488,35 @@ Browse the notebooks/ directory to get started!
                             shutil.rmtree(to_path)
                         else:
                             os.remove(to_path)
-                    shutil.move(from_path, to_path)
-                    logger.info(f"Moved {move['from']} to {move['to']}")
+                    # Check if from_path is tracked by git
+                    try:
+                        result = subprocess.run([
+                            "git", "ls-files", "--error-unmatch", os.path.relpath(from_path, target_dir)
+                        ], cwd=target_dir, capture_output=True)
+                        tracked = result.returncode == 0
+                    except Exception as e:
+                        tracked = False
+                        logger.warning(f"Failed to check git tracking for {from_path}: {e}")
+                    if tracked:
+                        # Use git mv to preserve history
+                        try:
+                            subprocess.run([
+                                "git", "mv", os.path.relpath(from_path, target_dir), os.path.relpath(to_path, target_dir)
+                            ], cwd=target_dir, check=True)
+                            logger.info(f"[GIT] Moved {move['from']} to {move['to']} (git mv)")
+                        except Exception as e:
+                            logger.error(f"[GIT] git mv failed for {move['from']} to {move['to']}: {e}")
+                    else:
+                        # Use shutil.move and git add
+                        shutil.move(from_path, to_path)
+                        logger.info(f"Moved {move['from']} to {move['to']} (shutil.move)")
+                        try:
+                            subprocess.run([
+                                "git", "add", os.path.relpath(to_path, target_dir)
+                            ], cwd=target_dir, check=True)
+                            logger.info(f"[GIT] Added {move['to']} after move (git add)")
+                        except Exception as e:
+                            logger.error(f"[GIT] git add failed for {move['to']}: {e}")
                 else:
                     logger.warning(f"Source path does not exist, skipping move: {move['from']}")
 
@@ -489,7 +541,33 @@ Browse the notebooks/ directory to get started!
                                 shutil.rmtree(dst_item)
                             else:
                                 os.remove(dst_item)
-                        shutil.move(src_item, dst_item)
+                        # Check if src_item is tracked by git
+                        try:
+                            result = subprocess.run([
+                                "git", "ls-files", "--error-unmatch", os.path.relpath(src_item, target_dir)
+                            ], cwd=target_dir, capture_output=True)
+                            tracked = result.returncode == 0
+                        except Exception as e:
+                            tracked = False
+                            logger.warning(f"Failed to check git tracking for {src_item}: {e}")
+                        if tracked:
+                            try:
+                                subprocess.run([
+                                    "git", "mv", os.path.relpath(src_item, target_dir), os.path.relpath(dst_item, target_dir)
+                                ], cwd=target_dir, check=True)
+                                logger.info(f"[GIT] Moved {os.path.relpath(src_item, target_dir)} to {os.path.relpath(dst_item, target_dir)} (git mv)")
+                            except Exception as e:
+                                logger.error(f"[GIT] git mv failed for {src_item} to {dst_item}: {e}")
+                        else:
+                            shutil.move(src_item, dst_item)
+                            logger.info(f"Moved {src_item} to {dst_item} (shutil.move)")
+                            try:
+                                subprocess.run([
+                                    "git", "add", os.path.relpath(dst_item, target_dir)
+                                ], cwd=target_dir, check=True)
+                                logger.info(f"[GIT] Added {os.path.relpath(dst_item, target_dir)} after move (git add)")
+                            except Exception as e:
+                                logger.error(f"[GIT] git add failed for {dst_item}: {e}")
                     os.rmdir(from_path)
                     logger.info(f"Merged contents of {merge['from']} into {merge['to']}")
                 else:
@@ -504,6 +582,14 @@ Browse the notebooks/ directory to get started!
                 with open(readme_path, "w") as f:
                     f.write(readme_content)
                 logger.info(f"Created README.md from template {template_name}")
+                # Add README.md to git
+                try:
+                    subprocess.run([
+                        "git", "add", os.path.relpath(readme_path, target_dir)
+                    ], cwd=target_dir, check=True)
+                    logger.info(f"[GIT] Added README.md to git")
+                except Exception as e:
+                    logger.error(f"[GIT] git add failed for README.md: {e}")
 
     def _update_setup_files(
         self,
@@ -1010,6 +1096,14 @@ write_to = \"src/{package_module}/_version.py\"
                     try:
                         shutil.copy2(src_file, dst_file)
                         logger.debug(f"Copied: {file} -> {rel_path}")
+                        # Add new file to git
+                        try:
+                            subprocess.run([
+                                "git", "add", os.path.relpath(dst_file, target_dir)
+                            ], cwd=target_dir, check=True)
+                            logger.info(f"[GIT] Added {os.path.relpath(dst_file, target_dir)} from cookiecutter")
+                        except Exception as e:
+                            logger.error(f"[GIT] git add failed for {dst_file}: {e}")
                     except Exception as e:
                         logger.warning(f"Failed to copy {file}: {e}")
         logger.info("Cookiecutter template merge completed")
@@ -1138,6 +1232,7 @@ write_to = \"src/{package_module}/_version.py\"
             paths = repo_config.get("paths", [])
             if paths:
                 self._filter_repository(target_dir, paths)
+                self._commit_all_changes(target_dir, "chore(split): initial filter with git-filter-repo")
             post_actions = repo_config.get("post_split_actions", [])
             if post_actions:
                 self._perform_post_split_actions(target_dir, post_actions)
@@ -1664,7 +1759,13 @@ def main():
     # Step 3: Fix imports
     # --- BEGIN: ImportCorrector class ---
     fixer = FinalTestFixer(Path(split_repos_dir), args.dry_run)
-    fixer.run_all_fixes()
+    if not args.no_test:
+        fixer.run_all_fixes()
+        # Final commit for all split repos after test/config fixes
+        for repo_name in os.listdir(split_repos_dir):
+            repo_path = os.path.join(split_repos_dir, repo_name)
+            if os.path.isdir(repo_path) and os.path.exists(os.path.join(repo_path, ".git")):
+                splitter._commit_all_changes(repo_path, "chore(split): final test/config fixes")
     logger.info("🎉 Unified split automation complete!")
     return 0
 
