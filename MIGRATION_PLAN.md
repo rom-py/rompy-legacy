@@ -69,7 +69,7 @@ GitHub automatically sets up redirects when a repository is renamed:
 
 ### 🧬 Preserves history
 - Full development history is retained in `rompy-legacy`.
-- New repos can retain relevant history using `git filter-repo` or `git subtree`.
+- New repos  retain relevant history using `git filter-repo`.
 
 ### 🛠 Easier maintenance
 - Each repository can evolve independently.

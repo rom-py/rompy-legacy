@@ -7,6 +7,8 @@
 > - [rompy-notebooks](https://github.com/rom-py/rompy-notebooks)
 >
 > **All new development and issues should be directed to the split repositories above. This monorepo is archived and will not receive updates.**
+> 
+> See [MIGRATION_PLAN.md]
 
 ---
 title: "Relocatable Ocean Modelling in PYthon (rompy)"
