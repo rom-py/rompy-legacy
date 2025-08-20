@@ -184,13 +184,7 @@ def create_plots_from_real_data(
 
         logger.info("Successfully imported SCHISM plotting components")
 
-        # Initialize plotter with the generated files
-        if files["grid"]:
-            logger.info(f"Initializing plotter with grid file: {files['grid']}")
-            plotter = SchismPlotter(config=model_run.config, grid_file=files["grid"])
-        else:
-            logger.warning("No grid file found, using config only")
-            plotter = SchismPlotter(config=model_run.config)
+        plotter = SchismPlotter(config=model_run.config)
 
         # Create plot output directory
         if save_plots and output_dir:
@@ -216,7 +210,9 @@ def create_plots_from_real_data(
             else:
                 interactive_figures.append(fig)
         except Exception as e:
-            logger.warning(f"Could not create grid plot: {e}")
+            logger.warning(
+                f"Could not create grid plot: {e}\nSee /rompy/schism/plotting/__init__.py for logical key conventions, grid requirements, and troubleshooting steps."
+            )
 
         # 2. Bathymetry Plot
         logger.info("Creating bathymetry plot...")
@@ -231,7 +227,9 @@ def create_plots_from_real_data(
             else:
                 interactive_figures.append(fig)
         except Exception as e:
-            logger.warning(f"Could not create bathymetry plot: {e}")
+            logger.warning(
+                f"Could not create bathymetry plot: {e}\nSee /rompy/schism/plotting/__init__.py for logical key conventions, grid requirements, and troubleshooting steps."
+            )
 
         # 3. Boundaries Plot
         logger.info("Creating boundaries plot...")
@@ -246,7 +244,9 @@ def create_plots_from_real_data(
             else:
                 interactive_figures.append(fig)
         except Exception as e:
-            logger.warning(f"Could not create boundaries plot: {e}")
+            logger.warning(
+                f"Could not create boundaries plot: {e}\nSee /rompy/schism/plotting/__init__.py for logical key conventions, grid requirements, and troubleshooting steps."
+            )
 
         # 4. Atmospheric Forcing Plots (if available)
         if files["atmospheric"]:
@@ -254,7 +254,7 @@ def create_plots_from_real_data(
             for i, atm_file in enumerate(files["atmospheric"]):
                 try:
                     fig, ax = plotter.plot_atmospheric_data(
-                        atmospheric_file=atm_file, figsize=(14, 10)
+                        variable="air", figsize=(14, 10)
                     )
                     if save_plots and plot_dir:
                         fig.savefig(
@@ -268,31 +268,28 @@ def create_plots_from_real_data(
                         interactive_figures.append(fig)
                 except Exception as e:
                     logger.warning(
-                        f"Could not create atmospheric forcing plot for {atm_file}: {e}"
+                        f"Could not create atmospheric forcing plot for {atm_file}: {e}\nSee /rompy/schism/plotting/__init__.py for logical key conventions, grid requirements, and troubleshooting steps."
                     )
 
-        # 5. Boundary Data Plots (if available)
-        if files["boundary_data"]:
-            logger.info("Creating boundary data plots...")
-            for i, boundary_file in enumerate(
-                files["boundary_data"][:3]
-            ):  # Limit to first 3
-                try:
-                    fig, ax = plotter.plot_boundary_data(boundary_file, figsize=(12, 8))
-                    if save_plots and plot_dir:
-                        fig.savefig(
-                            plot_dir / f"05_boundary_data_{i+1}.png",
-                            dpi=150,
-                            bbox_inches="tight",
-                        )
-                        logger.info(f"Saved boundary data plot {i+1}")
-                        plt.close(fig)
-                    else:
-                        interactive_figures.append(fig)
-                except Exception as e:
-                    logger.warning(
-                        f"Could not create boundary data plot for {boundary_file}: {e}"
+        # 5. Boundary Data Plots (using logical keys)
+        logger.info("Creating boundary data plots using logical keys...")
+        for key in ["salinity_3d", "temperature_3d", "velocity_3d", "elevation_2d"]:
+            try:
+                fig, ax = plotter.plot_boundary_data(key, figsize=(12, 8))
+                if save_plots and plot_dir:
+                    fig.savefig(
+                        plot_dir / f"05_boundary_data_{key}.png",
+                        dpi=150,
+                        bbox_inches="tight",
                     )
+                    logger.info(f"Saved boundary data plot for {key}")
+                    plt.close(fig)
+                else:
+                    interactive_figures.append(fig)
+            except Exception as e:
+                logger.warning(
+                    f"Could not create boundary data plot for {key}: {e}\nSee /rompy/schism/plotting/__init__.py for logical key conventions, grid requirements, and troubleshooting steps."
+                )
 
         # 6. Comprehensive Overview
         logger.info("Creating comprehensive overview...")
@@ -349,7 +346,9 @@ def create_plots_from_real_data(
             else:
                 interactive_figures.append(fig)
         except Exception as e:
-            logger.warning(f"Could not create data analysis overview: {e}")
+            logger.warning(
+                f"Could not create data analysis overview: {e}\nSee /rompy/schism/plotting/__init__.py for logical key conventions, grid requirements, and troubleshooting steps."
+            )
 
         # 9. Model Validation
         logger.info("Running model validation...")
@@ -438,15 +437,17 @@ def create_plots_from_real_data(
             else:
                 interactive_figures.append(fig)
         except Exception as e:
-            logger.warning(f"Could not create tidal amplitude/phase maps: {e}")
+            logger.warning(
+                f"Could not create tidal amplitude/phase maps: {e}\nSee /rompy/schism/plotting/__init__.py for logical key conventions, grid requirements, and troubleshooting steps."
+            )
 
         # 11. SCHISM Boundary Data Plots (actual data SCHISM uses)
         if files["bctides"]:
             logger.info("Creating SCHISM boundary data plots...")
             try:
                 # Plot actual SCHISM boundary elevation data from bctides.in
-                fig, ax = plotter.plot_schism_boundary_data(
-                    bctides_file=files["bctides"],
+                fig, ax = plotter.plot_bctides_file(
+                    bctides_key="bctides",
                     plot_type="elevation",
                     figsize=(14, 8),
                 )
@@ -625,7 +626,9 @@ def create_plots_from_real_data(
             else:
                 interactive_figures.append(fig)
         except Exception as e:
-            logger.warning(f"Could not create quality assessment: {e}")
+            logger.warning(
+                f"Could not create quality assessment: {e}\nSee /rompy/schism/plotting/__init__.py for logical key conventions, grid requirements, and troubleshooting steps."
+            )
 
         # Show all plots at once for interactive mode
         if interactive_figures:

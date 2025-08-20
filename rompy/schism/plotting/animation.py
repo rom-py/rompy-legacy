@@ -7,26 +7,21 @@ including boundary conditions, atmospheric forcing, and grid-based temporal data
 
 import logging
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union, Callable
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.pyplot as plt
 import numpy as np
 import xarray as xr
-from matplotlib.axes import Axes
-from matplotlib.figure import Figure
-from matplotlib.collections import LineCollection
 from matplotlib.artist import Artist
+from matplotlib.axes import Axes
+from matplotlib.collections import LineCollection
+from matplotlib.figure import Figure
 
 from .core import BasePlotter, PlotConfig
-from .utils import (
-    detect_file_type,
-    get_variable_info,
-    load_schism_data,
-    setup_colormap,
-    add_boundary_overlay,
-    get_geographic_extent,
-)
+from .utils import (add_boundary_overlay, detect_file_type,
+                    get_geographic_extent, get_variable_info, load_schism_data,
+                    setup_colormap)
 
 logger = logging.getLogger(__name__)
 
@@ -78,8 +73,6 @@ class AnimationPlotter(BasePlotter):
     ----------
     config : Optional[Any]
         SCHISM configuration object
-    grid_file : Optional[Union[str, Path]]
-        Path to grid file if config is not provided
     animation_config : Optional[AnimationConfig]
         Animation configuration parameters
     """
@@ -87,12 +80,11 @@ class AnimationPlotter(BasePlotter):
     def __init__(
         self,
         config: Optional[Any] = None,
-        grid_file: Optional[Union[str, Path]] = None,
-        animation_config: Optional[AnimationConfig] = None
+        animation_config: Optional[AnimationConfig] = None,
     ):
         """Initialize animation plotter."""
         self.animation_config = animation_config or AnimationConfig()
-        super().__init__(config, grid_file, self.animation_config)
+        super().__init__(config, self.animation_config)
 
         # Animation state
         self._current_animation = None
@@ -118,7 +110,7 @@ class AnimationPlotter(BasePlotter):
         variable: str,
         output_file: Optional[Union[str, Path]] = None,
         level_idx: int = 0,
-        **kwargs
+        **kwargs,
     ) -> animation.FuncAnimation:
         """
         Create animation of boundary data time evolution.
@@ -150,12 +142,12 @@ class AnimationPlotter(BasePlotter):
         actual_variable = self._get_actual_variable_name(ds, variable)
         data_var = ds[actual_variable]
 
-        if 'time' not in data_var.dims:
+        if "time" not in data_var.dims:
             raise ValueError("Data must have time dimension for animation")
 
         # Get time range
         time_indices = self._get_time_indices(ds)
-        times = ds['time'].values[time_indices]
+        times = ds["time"].values[time_indices]
 
         # Set up figure and axes
         fig, ax = self.create_figure(use_cartopy=True, **kwargs)
@@ -167,16 +159,24 @@ class AnimationPlotter(BasePlotter):
         def animate_frame(frame_idx: int) -> List[Artist]:
             """Animation function for each frame."""
             return self._animate_boundary_frame(
-                ax, ds, data_var, variable, time_indices[frame_idx],
-                times[frame_idx], level_idx, **kwargs
+                ax,
+                ds,
+                data_var,
+                variable,
+                time_indices[frame_idx],
+                times[frame_idx],
+                level_idx,
+                **kwargs,
             )
 
         # Create animation
         anim = animation.FuncAnimation(
-            fig, animate_frame, frames=len(time_indices),
+            fig,
+            animate_frame,
+            frames=len(time_indices),
             interval=self.animation_config.effective_interval,
             repeat=self.animation_config.repeat,
-            blit=False  # Disable blitting for complex plots
+            blit=False,  # Disable blitting for complex plots
         )
 
         # Save animation if requested
@@ -192,7 +192,7 @@ class AnimationPlotter(BasePlotter):
         variable: str = "air",
         parameter: Optional[str] = None,
         output_file: Optional[Union[str, Path]] = None,
-        **kwargs
+        **kwargs,
     ) -> animation.FuncAnimation:
         """
         Create animation of atmospheric forcing data progression.
@@ -223,7 +223,11 @@ class AnimationPlotter(BasePlotter):
         # Determine parameter to plot
         if not parameter:
             if variable == "air":
-                parameter = "air_temperature" if "air_temperature" in ds.data_vars else list(ds.data_vars)[0]
+                parameter = (
+                    "air_temperature"
+                    if "air_temperature" in ds.data_vars
+                    else list(ds.data_vars)[0]
+                )
             else:
                 parameter = list(ds.data_vars)[0]
 
@@ -231,12 +235,12 @@ class AnimationPlotter(BasePlotter):
             raise ValueError(f"Parameter {parameter} not found in dataset")
 
         data_var = ds[parameter]
-        if 'time' not in data_var.dims:
+        if "time" not in data_var.dims:
             raise ValueError("Data must have time dimension for animation")
 
         # Get time range
         time_indices = self._get_time_indices(ds)
-        times = ds['time'].values[time_indices]
+        times = ds["time"].values[time_indices]
 
         # Set up figure and axes
         fig, ax = self.create_figure(use_cartopy=True, **kwargs)
@@ -248,16 +252,23 @@ class AnimationPlotter(BasePlotter):
         def animate_frame(frame_idx: int) -> List[Artist]:
             """Animation function for each frame."""
             return self._animate_atmospheric_frame(
-                ax, ds, data_var, parameter, time_indices[frame_idx],
-                times[frame_idx], **kwargs
+                ax,
+                ds,
+                data_var,
+                parameter,
+                time_indices[frame_idx],
+                times[frame_idx],
+                **kwargs,
             )
 
         # Create animation
         anim = animation.FuncAnimation(
-            fig, animate_frame, frames=len(time_indices),
+            fig,
+            animate_frame,
+            frames=len(time_indices),
             interval=self.animation_config.effective_interval,
             repeat=self.animation_config.repeat,
-            blit=False
+            blit=False,
         )
 
         # Save animation if requested
@@ -273,7 +284,7 @@ class AnimationPlotter(BasePlotter):
         variable: str,
         output_file: Optional[Union[str, Path]] = None,
         show_grid: bool = True,
-        **kwargs
+        **kwargs,
     ) -> animation.FuncAnimation:
         """
         Create animation of grid-based data with spatial-temporal visualization.
@@ -304,33 +315,43 @@ class AnimationPlotter(BasePlotter):
         # Get the correct variable name
         actual_variable = self._get_actual_variable_name(ds, variable)
         data_var = ds[actual_variable]
-        if 'time' not in data_var.dims:
+        if "time" not in data_var.dims:
             raise ValueError("Data must have time dimension for animation")
 
         # Get time range
         time_indices = self._get_time_indices(ds)
-        times = ds['time'].values[time_indices]
+        times = ds["time"].values[time_indices]
 
         # Set up figure and axes
         fig, ax = self.create_figure(use_cartopy=True, **kwargs)
 
         # Initialize plot elements
-        self._setup_animation_plot(ax, ds, actual_variable, show_grid=show_grid, **kwargs)
+        self._setup_animation_plot(
+            ax, ds, actual_variable, show_grid=show_grid, **kwargs
+        )
 
         # Create animation function
         def animate_frame(frame_idx: int) -> List[Artist]:
             """Animation function for each frame."""
             return self._animate_grid_frame(
-                ax, ds, data_var, actual_variable, time_indices[frame_idx],
-                times[frame_idx], show_grid, **kwargs
+                ax,
+                ds,
+                data_var,
+                actual_variable,
+                time_indices[frame_idx],
+                times[frame_idx],
+                show_grid,
+                **kwargs,
             )
 
         # Create animation
         anim = animation.FuncAnimation(
-            fig, animate_frame, frames=len(time_indices),
+            fig,
+            animate_frame,
+            frames=len(time_indices),
             interval=self.animation_config.effective_interval,
             repeat=self.animation_config.repeat,
-            blit=False
+            blit=False,
         )
 
         # Save animation if requested
@@ -346,7 +367,7 @@ class AnimationPlotter(BasePlotter):
         variables: Dict[str, str],
         output_file: Optional[Union[str, Path]] = None,
         layout: str = "grid",
-        **kwargs
+        **kwargs,
     ) -> animation.FuncAnimation:
         """
         Create multi-panel animation with multiple variables.
@@ -391,7 +412,9 @@ class AnimationPlotter(BasePlotter):
             ds = datasets[panel_name]
             variable = variables[panel_name]
             actual_variable = self._get_actual_variable_name(ds, variable)
-            self._setup_animation_plot(ax, ds, actual_variable, title=panel_name, **kwargs)
+            self._setup_animation_plot(
+                ax, ds, actual_variable, title=panel_name, **kwargs
+            )
 
         # Create animation function
         def animate_frame(frame_idx: int) -> List[Artist]:
@@ -404,7 +427,7 @@ class AnimationPlotter(BasePlotter):
                 actual_variable = self._get_actual_variable_name(ds, variable)
                 data_var = ds[actual_variable]
                 time_idx = time_indices[frame_idx]
-                time_val = ds['time'].values[time_idx]
+                time_val = ds["time"].values[time_idx]
 
                 frame_artists = self._animate_multi_frame(
                     ax, ds, data_var, actual_variable, time_idx, time_val, **kwargs
@@ -414,10 +437,12 @@ class AnimationPlotter(BasePlotter):
 
         # Create animation
         anim = animation.FuncAnimation(
-            fig, animate_frame, frames=len(time_indices),
+            fig,
+            animate_frame,
+            frames=len(time_indices),
             interval=self.animation_config.effective_interval,
             repeat=self.animation_config.repeat,
-            blit=False
+            blit=False,
         )
 
         # Save animation if requested
@@ -429,7 +454,7 @@ class AnimationPlotter(BasePlotter):
 
     def _get_time_indices(self, ds: xr.Dataset) -> np.ndarray:
         """Get time indices for animation based on configuration."""
-        times = ds['time'].values
+        times = ds["time"].values
 
         # Apply time range filtering
         if self.animation_config.time_start or self.animation_config.time_end:
@@ -451,7 +476,7 @@ class AnimationPlotter(BasePlotter):
 
         # Apply time step
         if self.animation_config.time_step:
-            indices = indices[::self.animation_config.time_step]
+            indices = indices[:: self.animation_config.time_step]
 
         return indices
 
@@ -460,7 +485,7 @@ class AnimationPlotter(BasePlotter):
         # Find common time range
         all_times = []
         for ds in datasets.values():
-            all_times.append(ds['time'].values)
+            all_times.append(ds["time"].values)
 
         # Use intersection of all time ranges
         common_start = max(times[0] for times in all_times)
@@ -468,7 +493,7 @@ class AnimationPlotter(BasePlotter):
 
         # Get indices for first dataset (assuming similar time grids)
         first_ds = next(iter(datasets.values()))
-        times = first_ds['time'].values
+        times = first_ds["time"].values
 
         start_idx = np.searchsorted(times, common_start)
         end_idx = np.searchsorted(times, common_end)
@@ -477,7 +502,7 @@ class AnimationPlotter(BasePlotter):
 
         # Apply time step
         if self.animation_config.time_step:
-            indices = indices[::self.animation_config.time_step]
+            indices = indices[:: self.animation_config.time_step]
 
         return indices
 
@@ -488,7 +513,7 @@ class AnimationPlotter(BasePlotter):
         variable: str,
         show_grid: bool = True,
         title: Optional[str] = None,
-        **kwargs
+        **kwargs,
     ) -> None:
         """Set up initial plot elements for animation."""
         # Set title
@@ -502,7 +527,7 @@ class AnimationPlotter(BasePlotter):
             import cartopy.crs as ccrs
             import cartopy.feature as cfeature
 
-            if hasattr(ax, 'projection'):
+            if hasattr(ax, "projection"):
                 if self.animation_config.add_coastlines:
                     ax.add_feature(cfeature.COASTLINE)
                     ax.add_feature(cfeature.LAND, alpha=0.3)
@@ -518,8 +543,9 @@ class AnimationPlotter(BasePlotter):
             self._time_text = ax.text(
                 self.animation_config.time_label_position[0],
                 self.animation_config.time_label_position[1],
-                "", transform=ax.transAxes,
-                bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8)
+                "",
+                transform=ax.transAxes,
+                bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
             )
 
     def _animate_boundary_frame(
@@ -531,7 +557,7 @@ class AnimationPlotter(BasePlotter):
         time_idx: int,
         time_val: np.datetime64,
         level_idx: int,
-        **kwargs
+        **kwargs,
     ) -> List[Artist]:
         """Animate single frame of boundary data."""
         # Clear previous frame
@@ -539,30 +565,33 @@ class AnimationPlotter(BasePlotter):
             collection.remove()
 
         # Get data for current time
-        if 'time' in data_var.dims:
+        if "time" in data_var.dims:
             data = data_var.isel(time=time_idx)
         else:
             data = data_var
 
         # Handle multi-dimensional boundary data (nOpenBndNodes, nLevels, nComponents)
         # Need to select specific level and component for boundary plotting
-        if 'nOpenBndNodes' in data.dims:
+        if "nOpenBndNodes" in data.dims:
             # For boundary data, we need to select both level and component
-            if 'nLevels' in data.dims and data.sizes['nLevels'] > level_idx:
+            if "nLevels" in data.dims and data.sizes["nLevels"] > level_idx:
                 data = data.isel(nLevels=level_idx)
-            if 'nComponents' in data.dims:
+            if "nComponents" in data.dims:
                 data = data.isel(nComponents=0)  # Usually only one component
         elif len(data.shape) > 1 and level_idx < data.shape[-1]:
             # For other multi-dimensional data, use original logic
             data = data.isel({data.dims[-1]: level_idx})
 
         # Filter out figure-level parameters from plotting kwargs
-        plot_kwargs = {k: v for k, v in kwargs.items()
-                      if k not in ['figsize', 'use_cartopy', 'projection', 'cmap']}
+        plot_kwargs = {
+            k: v
+            for k, v in kwargs.items()
+            if k not in ["figsize", "use_cartopy", "projection", "cmap"]
+        }
 
         # Handle boundary data with proper coordinate mapping
-        if 'nOpenBndNodes' in data.dims:
-            n_nodes = data.sizes['nOpenBndNodes']
+        if "nOpenBndNodes" in data.dims:
+            n_nodes = data.sizes["nOpenBndNodes"]
             values = data.values.flatten() if data.values.ndim > 1 else data.values
 
             if self.grid:
@@ -574,7 +603,7 @@ class AnimationPlotter(BasePlotter):
                     hgrid.compute_bnd()
 
                     # Get the first open boundary (assuming single boundary for now)
-                    if hasattr(hgrid, 'iobn') and len(hgrid.iobn) > 0:
+                    if hasattr(hgrid, "iobn") and len(hgrid.iobn) > 0:
                         boundary_node_indices = hgrid.iobn[0]  # First open boundary
 
                         if len(boundary_node_indices) == n_nodes:
@@ -583,23 +612,35 @@ class AnimationPlotter(BasePlotter):
                             boundary_y = hgrid.y[boundary_node_indices]
 
                             # Create spatial scatter plot with boundary data
-                            im = ax.scatter(boundary_x, boundary_y, c=values,
-                                          cmap=self.animation_config.cmap, s=50, **plot_kwargs)
+                            im = ax.scatter(
+                                boundary_x,
+                                boundary_y,
+                                c=values,
+                                cmap=self.animation_config.cmap,
+                                s=50,
+                                **plot_kwargs,
+                            )
 
                             # Set extent based on boundary coordinates
                             margin = 0.05  # 5% margin
                             x_range = boundary_x.max() - boundary_x.min()
                             y_range = boundary_y.max() - boundary_y.min()
-                            ax.set_xlim(boundary_x.min() - margin * x_range,
-                                       boundary_x.max() + margin * x_range)
-                            ax.set_ylim(boundary_y.min() - margin * y_range,
-                                       boundary_y.max() + margin * y_range)
+                            ax.set_xlim(
+                                boundary_x.min() - margin * x_range,
+                                boundary_x.max() + margin * x_range,
+                            )
+                            ax.set_ylim(
+                                boundary_y.min() - margin * y_range,
+                                boundary_y.max() + margin * y_range,
+                            )
 
-                            ax.set_xlabel('Longitude')
-                            ax.set_ylabel('Latitude')
+                            ax.set_xlabel("Longitude")
+                            ax.set_ylabel("Latitude")
 
                         else:
-                            raise ValueError(f"Boundary node count mismatch: grid={len(boundary_node_indices)}, data={n_nodes}")
+                            raise ValueError(
+                                f"Boundary node count mismatch: grid={len(boundary_node_indices)}, data={n_nodes}"
+                            )
                     else:
                         raise ValueError("No open boundary information found in grid")
 
@@ -610,14 +651,15 @@ class AnimationPlotter(BasePlotter):
 
             # Update time label
             if self._time_text:
-                time_str = np.datetime_as_string(time_val, unit='m')  # minute precision
-                formatted_time = np.datetime64(time_str).astype('datetime64[s]').astype(str)
+                time_str = np.datetime_as_string(time_val, unit="m")  # minute precision
+                formatted_time = (
+                    np.datetime64(time_str).astype("datetime64[s]").astype(str)
+                )
                 self._time_text.set_text(f"Time: {formatted_time}")
 
             return [self._time_text] if self._time_text else []
         else:
             raise ValueError("Boundary data does not contain 'nOpenBndNodes' dimension")
-
 
     def _animate_atmospheric_frame(
         self,
@@ -627,7 +669,7 @@ class AnimationPlotter(BasePlotter):
         parameter: str,
         time_idx: int,
         time_val: np.datetime64,
-        **kwargs
+        **kwargs,
     ) -> List[Artist]:
         """Animate single frame of atmospheric data."""
         # Clear previous frame
@@ -637,30 +679,41 @@ class AnimationPlotter(BasePlotter):
             image.remove()
 
         # Filter out figure-level parameters from plotting kwargs
-        plot_kwargs = {k: v for k, v in kwargs.items()
-                      if k not in ['figsize', 'use_cartopy', 'projection', 'cmap']}
+        plot_kwargs = {
+            k: v
+            for k, v in kwargs.items()
+            if k not in ["figsize", "use_cartopy", "projection", "cmap"]
+        }
 
         # Get data for current time
         data = data_var.isel(time=time_idx)
 
         # Create spatial plot
-        if 'x' in data.coords and 'y' in data.coords:
+        if "x" in data.coords and "y" in data.coords:
             im = ax.pcolormesh(
-                data.coords['x'], data.coords['y'], data.values,
-                cmap=self.animation_config.cmap, **plot_kwargs
+                data.coords["x"],
+                data.coords["y"],
+                data.values,
+                cmap=self.animation_config.cmap,
+                **plot_kwargs,
             )
-        elif 'lon' in data.coords and 'lat' in data.coords:
+        elif "lon" in data.coords and "lat" in data.coords:
             im = ax.pcolormesh(
-                data.coords['lon'], data.coords['lat'], data.values,
-                cmap=self.animation_config.cmap, **plot_kwargs
+                data.coords["lon"],
+                data.coords["lat"],
+                data.values,
+                cmap=self.animation_config.cmap,
+                **plot_kwargs,
             )
         else:
-            raise ValueError("No valid spatial coordinates found for atmospheric data plotting")
+            raise ValueError(
+                "No valid spatial coordinates found for atmospheric data plotting"
+            )
 
         # Update time label
         if self._time_text:
-            time_str = np.datetime_as_string(time_val, unit='m')
-            formatted_time = np.datetime64(time_str).astype('datetime64[s]').astype(str)
+            time_str = np.datetime_as_string(time_val, unit="m")
+            formatted_time = np.datetime64(time_str).astype("datetime64[s]").astype(str)
             self._time_text.set_text(f"Time: {formatted_time}")
 
         return [im, self._time_text] if self._time_text else [im]
@@ -674,7 +727,7 @@ class AnimationPlotter(BasePlotter):
         time_idx: int,
         time_val: np.datetime64,
         show_grid: bool,
-        **kwargs
+        **kwargs,
     ) -> List[Artist]:
         """Animate single frame of grid-based data."""
         # Clear previous frame
@@ -684,28 +737,39 @@ class AnimationPlotter(BasePlotter):
             image.remove()
 
         # Filter out figure-level parameters from plotting kwargs
-        plot_kwargs = {k: v for k, v in kwargs.items()
-                      if k not in ['figsize', 'use_cartopy', 'projection', 'cmap']}
+        plot_kwargs = {
+            k: v
+            for k, v in kwargs.items()
+            if k not in ["figsize", "use_cartopy", "projection", "cmap"]
+        }
 
         # Get data for current time
         data = data_var.isel(time=time_idx)
 
         # Create grid-based visualization
-        if self.grid and hasattr(self.grid, 'pylibs_hgrid'):
+        if self.grid and hasattr(self.grid, "pylibs_hgrid"):
             try:
                 hgrid = self.grid.pylibs_hgrid
                 # Plot data on grid
-                if hasattr(hgrid, 'x') and hasattr(hgrid, 'y'):
+                if hasattr(hgrid, "x") and hasattr(hgrid, "y"):
                     im = ax.scatter(
-                        hgrid.x, hgrid.y, c=data.values,
-                        cmap=self.animation_config.cmap, s=20, **plot_kwargs
+                        hgrid.x,
+                        hgrid.y,
+                        c=data.values,
+                        cmap=self.animation_config.cmap,
+                        s=20,
+                        **plot_kwargs,
                     )
 
                     # Add grid overlay if requested
-                    if show_grid and hasattr(hgrid, 'triangles'):
-                        ax.triplot(hgrid.x, hgrid.y, hgrid.triangles,
-                                 alpha=self.animation_config.grid_alpha,
-                                 color=self.animation_config.grid_color)
+                    if show_grid and hasattr(hgrid, "triangles"):
+                        ax.triplot(
+                            hgrid.x,
+                            hgrid.y,
+                            hgrid.triangles,
+                            alpha=self.animation_config.grid_alpha,
+                            color=self.animation_config.grid_color,
+                        )
 
             except Exception as e:
                 raise ValueError(f"Could not plot grid data: {e}")
@@ -714,8 +778,8 @@ class AnimationPlotter(BasePlotter):
 
         # Update time label
         if self._time_text:
-            time_str = np.datetime_as_string(time_val, unit='m')
-            formatted_time = np.datetime64(time_str).astype('datetime64[s]').astype(str)
+            time_str = np.datetime_as_string(time_val, unit="m")
+            formatted_time = np.datetime64(time_str).astype("datetime64[s]").astype(str)
             self._time_text.set_text(f"Time: {formatted_time}")
 
         return [im, self._time_text] if self._time_text else [im]
@@ -746,16 +810,24 @@ class AnimationPlotter(BasePlotter):
         """
         if requested_var in ds.data_vars:
             return requested_var
-        elif 'time_series' in ds.data_vars:
-            return 'time_series'
+        elif "time_series" in ds.data_vars:
+            return "time_series"
         else:
             # Look for the first non-coordinate variable with time dimension
             for var_name, var in ds.data_vars.items():
-                if 'time' in var.dims and var_name not in ['time_step', 'nOpenBndNodes', 'nLevels', 'nComponents', 'one']:
+                if "time" in var.dims and var_name not in [
+                    "time_step",
+                    "nOpenBndNodes",
+                    "nLevels",
+                    "nComponents",
+                    "one",
+                ]:
                     return var_name
             # Raise error if no suitable variable found
             available_vars = list(ds.data_vars.keys())
-            raise ValueError(f"Variable {requested_var} not found in dataset. Available variables: {available_vars}")
+            raise ValueError(
+                f"Variable {requested_var} not found in dataset. Available variables: {available_vars}"
+            )
 
     def _animate_multi_frame(
         self,
@@ -765,15 +837,21 @@ class AnimationPlotter(BasePlotter):
         variable: str,
         time_idx: int,
         time_val: np.datetime64,
-        **kwargs
+        **kwargs,
     ) -> List[Artist]:
         """Animate single frame for multi-panel animation."""
         # Delegate to appropriate frame animation method
-        if 'boundary' in variable.lower() or 'th.nc' in str(ds.encoding.get('source', '')):
+        if "boundary" in variable.lower() or "th.nc" in str(
+            ds.encoding.get("source", "")
+        ):
             return self._animate_boundary_frame(
                 ax, ds, data_var, variable, time_idx, time_val, 0, **kwargs
             )
-        elif 'air' in variable.lower() or 'rad' in variable.lower() or 'prc' in variable.lower():
+        elif (
+            "air" in variable.lower()
+            or "rad" in variable.lower()
+            or "prc" in variable.lower()
+        ):
             return self._animate_atmospheric_frame(
                 ax, ds, data_var, variable, time_idx, time_val, **kwargs
             )
@@ -783,46 +861,45 @@ class AnimationPlotter(BasePlotter):
             )
 
     def _create_multi_panel_figure(
-        self,
-        num_panels: int,
-        layout: str,
-        **kwargs
+        self, num_panels: int, layout: str, **kwargs
     ) -> Tuple[Figure, Dict[str, Axes]]:
         """Create multi-panel figure for animations."""
         # Extract figsize from kwargs or use defaults
-        figsize = kwargs.pop('figsize', None)
+        figsize = kwargs.pop("figsize", None)
 
         if layout == "vertical":
             default_figsize = (12, 4 * num_panels)
-            fig, axes_list = plt.subplots(num_panels, 1,
-                                        figsize=figsize or default_figsize,
-                                        **kwargs)
+            fig, axes_list = plt.subplots(
+                num_panels, 1, figsize=figsize or default_figsize, **kwargs
+            )
         elif layout == "horizontal":
             default_figsize = (6 * num_panels, 8)
-            fig, axes_list = plt.subplots(1, num_panels,
-                                        figsize=figsize or default_figsize,
-                                        **kwargs)
+            fig, axes_list = plt.subplots(
+                1, num_panels, figsize=figsize or default_figsize, **kwargs
+            )
         else:  # grid layout
             rows = int(np.ceil(np.sqrt(num_panels)))
             cols = int(np.ceil(num_panels / rows))
             default_figsize = (6 * cols, 6 * rows)
-            fig, axes_list = plt.subplots(rows, cols,
-                                        figsize=figsize or default_figsize,
-                                        **kwargs)
+            fig, axes_list = plt.subplots(
+                rows, cols, figsize=figsize or default_figsize, **kwargs
+            )
 
         # Convert to dictionary
         if num_panels == 1:
             axes_dict = {"panel_0": axes_list}
         else:
-            axes_flat = axes_list.flatten() if hasattr(axes_list, 'flatten') else axes_list
-            axes_dict = {f"panel_{i}": ax for i, ax in enumerate(axes_flat[:num_panels])}
+            axes_flat = (
+                axes_list.flatten() if hasattr(axes_list, "flatten") else axes_list
+            )
+            axes_dict = {
+                f"panel_{i}": ax for i, ax in enumerate(axes_flat[:num_panels])
+            }
 
         return fig, axes_dict
 
     def _save_animation(
-        self,
-        anim: animation.FuncAnimation,
-        output_file: Union[str, Path]
+        self, anim: animation.FuncAnimation, output_file: Union[str, Path]
     ) -> None:
         """Save animation to file."""
         output_path = Path(output_file)
@@ -833,31 +910,38 @@ class AnimationPlotter(BasePlotter):
         if self.animation_config.show_progress:
             try:
                 from tqdm import tqdm
+
                 progress_callback = lambda i, n: tqdm.write(f"Frame {i+1}/{n}")
             except ImportError:
                 progress_callback = None
         else:
             progress_callback = None
 
-        if output_path.suffix.lower() == '.gif':
+        if output_path.suffix.lower() == ".gif":
             # Save as GIF
             writer = animation.PillowWriter(fps=self.animation_config.frame_rate)
-            anim.save(str(output_path), writer=writer, progress_callback=progress_callback)
-        elif output_path.suffix.lower() == '.mp4':
+            anim.save(
+                str(output_path), writer=writer, progress_callback=progress_callback
+            )
+        elif output_path.suffix.lower() == ".mp4":
             # Save as MP4
             writer = animation.FFMpegWriter(
                 fps=self.animation_config.frame_rate,
-                bitrate=self.animation_config.bitrate
+                bitrate=self.animation_config.bitrate,
             )
-            anim.save(str(output_path), writer=writer, progress_callback=progress_callback)
+            anim.save(
+                str(output_path), writer=writer, progress_callback=progress_callback
+            )
         else:
             # Default to MP4
-            output_path = output_path.with_suffix('.mp4')
+            output_path = output_path.with_suffix(".mp4")
             writer = animation.FFMpegWriter(
                 fps=self.animation_config.frame_rate,
-                bitrate=self.animation_config.bitrate
+                bitrate=self.animation_config.bitrate,
             )
-            anim.save(str(output_path), writer=writer, progress_callback=progress_callback)
+            anim.save(
+                str(output_path), writer=writer, progress_callback=progress_callback
+            )
 
         logger.info(f"Animation saved successfully to {output_path}")
 

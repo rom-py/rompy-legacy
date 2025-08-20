@@ -69,7 +69,7 @@ class DataPlotter(BasePlotter):
         file_map : Optional[Dict[str, Union[str, Path]]]
             Mapping of logical data keys to file paths (recommended)
         """
-        super().__init__(config, grid_file, plot_config)
+        super().__init__(config, plot_config)
         self.file_map = file_map or {}
 
     def plot(self, data_type: str, **kwargs) -> Tuple[Figure, Axes]:
@@ -158,7 +158,11 @@ class DataPlotter(BasePlotter):
         PlotValidator.validate_dataset(ds, required_vars=[variable])
 
         if plot_type == "spatial":
-            return self._plot_boundary_spatial(ds, variable, time_idx, level_idx, ax, **kwargs)
+            result = self._plot_boundary_spatial(ds, variable, time_idx, level_idx, ax, **kwargs)
+            if result == (None, None):
+                logger.info(f"Skipping spatial plot for {file_path}: no valid spatial coordinates (expected for processed boundary files)")
+                return None, None
+            return result
         elif plot_type == "timeseries":
             return self._plot_boundary_timeseries(ds, variable, level_idx, ax, **kwargs)
         elif plot_type == "profile":
@@ -790,7 +794,8 @@ class DataPlotter(BasePlotter):
     def _get_representative_boundary_points(self, n_points: int) -> List[Tuple[float, float]]:
         """Get representative boundary points for tidal input sampling."""
         if not self.grid:
-            raise RuntimeError("Grid object required for representative boundary points")
+            raise RuntimeError("Grid object required for representative boundary points. Check your SCHISM config and grid file. Ensure your grid preprocessing is complete and the grid object is compatible with plotting. If you see this error, verify that your grid file contains boundary information and accessible coordinates. See documentation for grid requirements.")
+# ACTION: Check your grid file and preprocessing steps. The grid must have boundary information and coordinates accessible. See /rompy/schism/plotting/__init__.py for logical key conventions and grid requirements.
 
         hgrid = self.grid.pylibs_hgrid if hasattr(self.grid, 'pylibs_hgrid') else self.grid
 
@@ -813,7 +818,8 @@ class DataPlotter(BasePlotter):
             hgrid_x = getattr(hgrid, 'x', None)
             hgrid_y = getattr(hgrid, 'y', None)
             if hgrid_x is None or hgrid_y is None:
-                raise RuntimeError("Grid missing x or y coordinates")
+                raise RuntimeError("Grid missing x or y coordinates. Check your grid file and preprocessing. The grid must have valid longitude (x) and latitude (y) arrays for plotting. If you see this error, ensure your grid object is compatible with plotting. ACTION: See /rompy/schism/plotting/__init__.py for grid requirements and logical key conventions.")
+# ACTION: Check your grid file and preprocessing steps. The grid must have valid coordinates accessible. See /rompy/schism/plotting/__init__.py for logical key conventions and grid requirements.
             for idx in indices:
                 node_idx = int(boundary_nodes[idx])
                 if 0 <= node_idx < len(hgrid_x):
@@ -1688,7 +1694,11 @@ class DataPlotter(BasePlotter):
         ax: Optional[Axes],
         **kwargs
     ) -> Tuple[Figure, Axes]:
-        """Plot spatial distribution of boundary data."""
+        """
+        Plot spatial distribution of boundary data.
+        This function maps SCHISM boundary NetCDF data to grid coordinates using open boundary node indices.
+        Handles multiple open boundaries, node count mismatches, and missing coordinates robustly.
+        """
         fig, ax = self.create_figure(ax=ax, **kwargs)
 
         # Filter out figure-related kwargs that shouldn't go to plotting functions
@@ -1719,62 +1729,52 @@ class DataPlotter(BasePlotter):
                     values = data.values.flatten() if data.values.ndim > 1 else data.values
 
                     if self.grid:
-                        # Get actual boundary coordinates from grid
                         try:
                             hgrid = self.grid.pylibs_hgrid
-
                             # Compute boundaries to get boundary node indices
                             if hasattr(hgrid, 'compute_bnd') and callable(getattr(hgrid, 'compute_bnd', None)):
                                 hgrid.compute_bnd()
                             else:
-                                raise RuntimeError("Grid object missing compute_bnd method")
+                                raise RuntimeError("Grid object missing compute_bnd method. Please ensure your grid is properly initialized.")
 
                             boundary_nodes = getattr(hgrid, 'iobn', None)
                             if boundary_nodes is None or len(boundary_nodes) == 0:
-                                raise ValueError("No open boundary information found in grid")
+                                raise ValueError("No open boundary information found in grid. Check your grid file and preprocessing.")
 
-                            boundary_node_indices = boundary_nodes[0]
+                            # Handle multiple open boundaries robustly
+                            all_indices = np.concatenate(boundary_nodes) if len(boundary_nodes) > 1 else boundary_nodes[0]
                             hgrid_x = getattr(hgrid, 'x', None)
                             hgrid_y = getattr(hgrid, 'y', None)
                             if hgrid_x is None or hgrid_y is None:
-                                raise RuntimeError("Grid missing x or y coordinates")
+                                raise RuntimeError("Grid missing x or y coordinates. Check your grid file.")
 
-                            if len(boundary_node_indices) == n_nodes:
-                                # Get actual coordinates for boundary nodes
-                                boundary_x = hgrid_x[boundary_node_indices]
-                                boundary_y = hgrid_y[boundary_node_indices]
-
-                                # Create spatial scatter plot with boundary data
+                            if len(all_indices) == n_nodes:
+                                boundary_x = hgrid_x[all_indices]
+                                boundary_y = hgrid_y[all_indices]
                                 im = ax.scatter(boundary_x, boundary_y, c=values,
                                                cmap=self.plot_config.cmap, s=50, **plot_kwargs)
-
-                                # Add colorbar
                                 units = ds[variable].attrs.get("units", "") if variable in ds.attrs else ""
                                 if not units and 'time_series' in ds.data_vars:
                                     units = ds['time_series'].attrs.get("units", "")
                                 label = f"{variable} ({units})" if units else variable
                                 cbar = self.add_colorbar(fig, ax, im, label=label)
-
-                                # Set extent based on boundary coordinates
-                                margin = 0.05  # 5% margin
+                                margin = 0.05
                                 x_range = boundary_x.max() - boundary_x.min()
                                 y_range = boundary_y.max() - boundary_y.min()
                                 ax.set_xlim(boundary_x.min() - margin * x_range,
                                            boundary_x.max() + margin * x_range)
                                 ax.set_ylim(boundary_y.min() - margin * y_range,
                                            boundary_y.max() + margin * y_range)
-
                                 ax.set_xlabel('Longitude')
                                 ax.set_ylabel('Latitude')
                             else:
-                                logger.error(f"Boundary node count mismatch: grid={len(boundary_node_indices)}, data={n_nodes}")
-                                logger.error(f"Grid boundary indices: {boundary_node_indices}")
+                                logger.error(f"Boundary node count mismatch: grid={len(all_indices)}, data={n_nodes}")
+                                logger.error(f"Grid boundary indices: {all_indices}")
                                 logger.error(f"Data shape: {values.shape}")
-                                # Fallback: plot as many as possible
-                                min_nodes = min(len(boundary_node_indices), n_nodes, len(values))
-                                logger.warning(f"Plotting only the first {min_nodes} boundary nodes due to mismatch.")
-                                boundary_x = hgrid_x[boundary_node_indices[:min_nodes]]
-                                boundary_y = hgrid_y[boundary_node_indices[:min_nodes]]
+                                logger.warning(f"Plotting only the first {min(len(all_indices), n_nodes, len(values))} boundary nodes due to mismatch. To fix, ensure your grid and boundary NetCDF files are consistent.")
+                                min_nodes = min(len(all_indices), n_nodes, len(values))
+                                boundary_x = hgrid_x[all_indices[:min_nodes]]
+                                boundary_y = hgrid_y[all_indices[:min_nodes]]
                                 plot_values = values[:min_nodes]
                                 im = ax.scatter(boundary_x, boundary_y, c=plot_values,
                                                cmap=self.plot_config.cmap, s=50, **plot_kwargs)
@@ -1792,13 +1792,9 @@ class DataPlotter(BasePlotter):
                                            boundary_y.max() + margin * y_range)
                                 ax.set_xlabel('Longitude')
                                 ax.set_ylabel('Latitude')
-
-
-
-
                         except Exception as e:
                             logger.error(f"Could not access grid for boundary plotting: {e}")
-                            raise RuntimeError(f"Could not access grid for boundary plotting: {e}")
+                            raise RuntimeError(f"Could not access grid for boundary plotting: {e}. Please check your grid file and ensure it is compatible with your boundary NetCDF file.")
         except Exception as e:
             logger.error(f"Error in boundary spatial plotting: {e}")
             raise
@@ -1806,37 +1802,42 @@ class DataPlotter(BasePlotter):
         # Handle other variable types with spatial coordinates
         if 'time_series' not in ds.data_vars:
             var_data = ds[variable]
-
-            # Extract data for specified time and level
             if "time" in var_data.dims:
                 data = var_data.isel(time=time_idx)
             else:
                 data = var_data
-
             if len(data.shape) > 1 and level_idx < data.shape[-1]:
                 data = data.isel({data.dims[-1]: level_idx})
 
         # Try to find spatial coordinates
+        # Try to extract spatial coordinates from data or dataset
         if hasattr(data, 'lon') and hasattr(data, 'lat'):
+            logger.info("Extracting coordinates from data.lon/data.lat")
             x, y = data.lon.values, data.lat.values
         elif 'lon' in ds.coords and 'lat' in ds.coords:
-            x, y = ds.lon.values, ds.lat.values
+            logger.info("Extracting coordinates from ds.coords['lon']/ds.coords['lat']")
+            x, y = ds.coords['lon'].values, ds.coords['lat'].values
+        elif 'node_x' in ds.coords and 'node_y' in ds.coords:
+            logger.info("Extracting coordinates from ds.coords['node_x']/ds.coords['node_y']")
+            x, y = ds.coords['node_x'].values, ds.coords['node_y'].values
+        elif 'longitude' in ds.coords and 'latitude' in ds.coords:
+            logger.info("Extracting coordinates from ds.coords['longitude']/ds.coords['latitude']")
+            x, y = ds.coords['longitude'].values, ds.coords['latitude'].values
+        elif 'x' in ds.coords and 'y' in ds.coords:
+            logger.info("Extracting coordinates from ds.coords['x']/ds.coords['y']")
+            x, y = ds.coords['x'].values, ds.coords['y'].values
         else:
-            raise ValueError("No valid spatial coordinates found for boundary data plotting")
+            logger.info(f"No valid spatial coordinates found for boundary data plotting. This is expected for processed boundary files. Available coords: {list(ds.coords.keys())}")
+            return None, None
 
-        # Create spatial plot
+
         im = ax.scatter(x, y, c=data.values, cmap=self.plot_config.cmap, **plot_kwargs)
-
-        # Add colorbar
         units = ds[variable].attrs.get("units", "")
         label = f"{variable} ({units})" if units else variable
         cbar = self.add_colorbar(fig, ax, im, label=label)
-
-        # Set extent
         extent = get_geographic_extent(x, y)
         ax.set_xlim(extent[0], extent[1])
         ax.set_ylim(extent[2], extent[3])
-
         return self.finalize_plot(fig, ax, title=f"{variable} (Boundary Data)")
 
     def _plot_boundary_timeseries(

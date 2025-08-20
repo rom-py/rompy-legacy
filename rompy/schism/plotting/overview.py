@@ -12,14 +12,15 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import xarray as xr
-from matplotlib.figure import Figure
 from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 from matplotlib.gridspec import GridSpec
 
 from .core import BasePlotter, PlotConfig, PlotValidator
-from .grid import GridPlotter
 from .data import DataPlotter
-from .utils import setup_cartopy_axis, get_geographic_extent, format_scientific_notation
+from .grid import GridPlotter
+from .utils import (format_scientific_notation, get_geographic_extent,
+                    setup_cartopy_axis)
 
 logger = logging.getLogger(__name__)
 
@@ -36,8 +37,6 @@ class OverviewPlotter(BasePlotter):
     ----------
     config : Optional[Any]
         SCHISM configuration object
-    grid_file : Optional[Union[str, Path]]
-        Path to grid file if config is not provided
     plot_config : Optional[PlotConfig]
         Plot configuration parameters
     """
@@ -45,15 +44,14 @@ class OverviewPlotter(BasePlotter):
     def __init__(
         self,
         config: Optional[Any] = None,
-        grid_file: Optional[Union[str, Path]] = None,
         plot_config: Optional[PlotConfig] = None,
     ):
         """Initialize OverviewPlotter."""
-        super().__init__(config, grid_file, plot_config)
+        super().__init__(config, plot_config)
 
         # Initialize sub-plotters
-        self.grid_plotter = GridPlotter(config, grid_file, plot_config)
-        self.data_plotter = DataPlotter(config, grid_file, plot_config)
+        self.grid_plotter = GridPlotter(config, plot_config)
+        self.data_plotter = DataPlotter(config, plot_config)
 
     def plot_comprehensive_overview(
         self,
@@ -62,7 +60,7 @@ class OverviewPlotter(BasePlotter):
         include_quality_metrics: bool = True,
         include_data_summary: bool = True,
         save_path: Optional[Union[str, Path]] = None,
-        **kwargs
+        **kwargs,
     ) -> Tuple[Figure, Dict[str, Axes]]:
         """
         Create comprehensive multi-panel overview plot.
@@ -110,42 +108,46 @@ class OverviewPlotter(BasePlotter):
         axes = {}
 
         # Main grid panel (top-left, 2x2)
-        axes['grid'] = fig.add_subplot(gs[0:2, 0:2], projection=setup_cartopy_axis())
-        self._plot_main_grid_panel(axes['grid'], **kwargs)
+        axes["grid"] = fig.add_subplot(gs[0:2, 0:2], projection=setup_cartopy_axis())
+        self._plot_main_grid_panel(axes["grid"], **kwargs)
 
         # Boundary conditions panel (top-right, 2x1)
-        axes['boundaries'] = fig.add_subplot(gs[0:2, 2], projection=setup_cartopy_axis())
-        self._plot_boundary_panel(axes['boundaries'], **kwargs)
+        axes["boundaries"] = fig.add_subplot(
+            gs[0:2, 2], projection=setup_cartopy_axis()
+        )
+        self._plot_boundary_panel(axes["boundaries"], **kwargs)
 
         # Data locations panel (top-right, 2x1)
-        axes['data_locations'] = fig.add_subplot(gs[0:2, 3], projection=setup_cartopy_axis())
-        self._plot_data_locations_panel(axes['data_locations'], **kwargs)
+        axes["data_locations"] = fig.add_subplot(
+            gs[0:2, 3], projection=setup_cartopy_axis()
+        )
+        self._plot_data_locations_panel(axes["data_locations"], **kwargs)
 
         # Grid quality metrics (bottom-left)
         if include_quality_metrics:
-            axes['quality'] = fig.add_subplot(gs[2, 0])
-            self._plot_quality_metrics_panel(axes['quality'], **kwargs)
+            axes["quality"] = fig.add_subplot(gs[2, 0])
+            self._plot_quality_metrics_panel(axes["quality"], **kwargs)
 
         # Model validation (bottom-center-left)
         if include_validation:
-            axes['validation'] = fig.add_subplot(gs[2, 1])
-            self._plot_validation_panel(axes['validation'], **kwargs)
+            axes["validation"] = fig.add_subplot(gs[2, 1])
+            self._plot_validation_panel(axes["validation"], **kwargs)
 
         # Data summary (bottom-center-right)
         if include_data_summary:
-            axes['data_summary'] = fig.add_subplot(gs[2, 2])
-            self._plot_data_summary_panel(axes['data_summary'], **kwargs)
+            axes["data_summary"] = fig.add_subplot(gs[2, 2])
+            self._plot_data_summary_panel(axes["data_summary"], **kwargs)
 
         # Time series overview (bottom-right)
-        axes['timeseries'] = fig.add_subplot(gs[2, 3])
-        self._plot_timeseries_overview_panel(axes['timeseries'], **kwargs)
+        axes["timeseries"] = fig.add_subplot(gs[2, 3])
+        self._plot_timeseries_overview_panel(axes["timeseries"], **kwargs)
 
         # Model info panel (bottom row, spanning all columns)
-        axes['info'] = fig.add_subplot(gs[3, :])
-        self._plot_model_info_panel(axes['info'], **kwargs)
+        axes["info"] = fig.add_subplot(gs[3, :])
+        self._plot_model_info_panel(axes["info"], **kwargs)
 
         # Add overall title
-        fig.suptitle('SCHISM Model Overview', fontsize=16, fontweight='bold', y=0.98)
+        fig.suptitle("SCHISM Model Overview", fontsize=16, fontweight="bold", y=0.98)
 
         # Save if requested
         if save_path:
@@ -157,7 +159,7 @@ class OverviewPlotter(BasePlotter):
         self,
         figsize: Tuple[float, float] = (16, 12),
         save_path: Optional[Union[str, Path]] = None,
-        **kwargs
+        **kwargs,
     ) -> Tuple[Figure, Dict[str, Axes]]:
         """
         Create grid-focused analysis overview.
@@ -191,33 +193,33 @@ class OverviewPlotter(BasePlotter):
         axes = {}
 
         # Main grid visualization (top row, spans 2 columns)
-        axes['grid'] = fig.add_subplot(gs[0, 0:2], projection=setup_cartopy_axis())
-        self.grid_plotter.plot_bathymetry(ax=axes['grid'], **kwargs)
-        axes['grid'].set_title('Grid and Bathymetry', fontweight='bold')
+        axes["grid"] = fig.add_subplot(gs[0, 0:2], projection=setup_cartopy_axis())
+        self.grid_plotter.plot_bathymetry(ax=axes["grid"], **kwargs)
+        axes["grid"].set_title("Grid and Bathymetry", fontweight="bold")
 
         # Grid quality (top-right)
-        axes['quality'] = fig.add_subplot(gs[0, 2], projection=setup_cartopy_axis())
-        self.grid_plotter.plot_grid_quality(ax=axes['quality'], **kwargs)
-        axes['quality'].set_title('Element Quality', fontweight='bold')
+        axes["quality"] = fig.add_subplot(gs[0, 2], projection=setup_cartopy_axis())
+        self.grid_plotter.plot_grid_quality(ax=axes["quality"], **kwargs)
+        axes["quality"].set_title("Element Quality", fontweight="bold")
 
         # Boundaries (middle-left)
-        axes['boundaries'] = fig.add_subplot(gs[1, 0], projection=setup_cartopy_axis())
-        self.grid_plotter.plot_boundaries(ax=axes['boundaries'], **kwargs)
-        axes['boundaries'].set_title('Boundaries', fontweight='bold')
+        axes["boundaries"] = fig.add_subplot(gs[1, 0], projection=setup_cartopy_axis())
+        self.grid_plotter.plot_boundaries(ax=axes["boundaries"], **kwargs)
+        axes["boundaries"].set_title("Boundaries", fontweight="bold")
 
         # Depth histogram (middle-center)
-        axes['depth_hist'] = fig.add_subplot(gs[1, 1])
-        self._plot_depth_histogram(axes['depth_hist'], **kwargs)
+        axes["depth_hist"] = fig.add_subplot(gs[1, 1])
+        self._plot_depth_histogram(axes["depth_hist"], **kwargs)
 
         # Element size histogram (middle-right)
-        axes['size_hist'] = fig.add_subplot(gs[1, 2])
-        self._plot_element_size_histogram(axes['size_hist'], **kwargs)
+        axes["size_hist"] = fig.add_subplot(gs[1, 2])
+        self._plot_element_size_histogram(axes["size_hist"], **kwargs)
 
         # Grid statistics table (bottom row)
-        axes['stats'] = fig.add_subplot(gs[2, :])
-        self._plot_grid_statistics_table(axes['stats'], **kwargs)
+        axes["stats"] = fig.add_subplot(gs[2, :])
+        self._plot_grid_statistics_table(axes["stats"], **kwargs)
 
-        fig.suptitle('SCHISM Grid Analysis Overview', fontsize=16, fontweight='bold')
+        fig.suptitle("SCHISM Grid Analysis Overview", fontsize=16, fontweight="bold")
 
         if save_path:
             self._save_plot(fig, save_path)
@@ -228,7 +230,7 @@ class OverviewPlotter(BasePlotter):
         self,
         figsize: Tuple[float, float] = (16, 12),
         save_path: Optional[Union[str, Path]] = None,
-        **kwargs
+        **kwargs,
     ) -> Tuple[Figure, Dict[str, Axes]]:
         """
         Create data-focused analysis overview.
@@ -261,34 +263,36 @@ class OverviewPlotter(BasePlotter):
         axes = {}
 
         # Atmospheric data spatial (top-left)
-        axes['atmospheric'] = fig.add_subplot(gs[0, 0], projection=setup_cartopy_axis())
-        self._plot_atmospheric_overview(axes['atmospheric'], **kwargs)
+        axes["atmospheric"] = fig.add_subplot(gs[0, 0], projection=setup_cartopy_axis())
+        self._plot_atmospheric_overview(axes["atmospheric"], **kwargs)
 
         # Boundary data locations (top-center)
-        axes['boundary_locations'] = fig.add_subplot(gs[0, 1], projection=setup_cartopy_axis())
-        self._plot_boundary_data_locations(axes['boundary_locations'], **kwargs)
+        axes["boundary_locations"] = fig.add_subplot(
+            gs[0, 1], projection=setup_cartopy_axis()
+        )
+        self._plot_boundary_data_locations(axes["boundary_locations"], **kwargs)
 
         # Data coverage timeline (top-right)
-        axes['coverage'] = fig.add_subplot(gs[0, 2])
-        self._plot_data_coverage_timeline(axes['coverage'], **kwargs)
+        axes["coverage"] = fig.add_subplot(gs[0, 2])
+        self._plot_data_coverage_timeline(axes["coverage"], **kwargs)
 
         # Atmospheric time series (middle row)
-        axes['atm_timeseries'] = fig.add_subplot(gs[1, :])
-        self._plot_atmospheric_timeseries_overview(axes['atm_timeseries'], **kwargs)
+        axes["atm_timeseries"] = fig.add_subplot(gs[1, :])
+        self._plot_atmospheric_timeseries_overview(axes["atm_timeseries"], **kwargs)
 
         # Boundary time series (bottom-left)
-        axes['boundary_ts'] = fig.add_subplot(gs[2, 0])
-        self._plot_boundary_timeseries_overview(axes['boundary_ts'], **kwargs)
+        axes["boundary_ts"] = fig.add_subplot(gs[2, 0])
+        self._plot_boundary_timeseries_overview(axes["boundary_ts"], **kwargs)
 
         # Data quality metrics (bottom-center)
-        axes['data_quality'] = fig.add_subplot(gs[2, 1])
-        self._plot_data_quality_metrics(axes['data_quality'], **kwargs)
+        axes["data_quality"] = fig.add_subplot(gs[2, 1])
+        self._plot_data_quality_metrics(axes["data_quality"], **kwargs)
 
         # Data statistics (bottom-right)
-        axes['data_stats'] = fig.add_subplot(gs[2, 2])
-        self._plot_data_statistics_table(axes['data_stats'], **kwargs)
+        axes["data_stats"] = fig.add_subplot(gs[2, 2])
+        self._plot_data_statistics_table(axes["data_stats"], **kwargs)
 
-        fig.suptitle('SCHISM Data Analysis Overview', fontsize=16, fontweight='bold')
+        fig.suptitle("SCHISM Data Analysis Overview", fontsize=16, fontweight="bold")
 
         if save_path:
             self._save_plot(fig, save_path)
@@ -299,14 +303,20 @@ class OverviewPlotter(BasePlotter):
         """Plot main grid panel with bathymetry and key features."""
         try:
             self.grid_plotter.plot_bathymetry(ax=ax, **kwargs)
-            ax.set_title('Grid and Bathymetry', fontweight='bold')
+            ax.set_title("Grid and Bathymetry", fontweight="bold")
 
             # Add grid statistics as text
-            if hasattr(self, 'grid') and self.grid is not None:
+            if hasattr(self, "grid") and self.grid is not None:
                 grid_info = self._get_grid_info()
-                ax.text(0.02, 0.98, grid_info, transform=ax.transAxes,
-                       verticalalignment='top', bbox=dict(boxstyle='round',
-                       facecolor='white', alpha=0.8), fontsize=8)
+                ax.text(
+                    0.02,
+                    0.98,
+                    grid_info,
+                    transform=ax.transAxes,
+                    verticalalignment="top",
+                    bbox=dict(boxstyle="round", facecolor="white", alpha=0.8),
+                    fontsize=8,
+                )
         except Exception as e:
             logger.error(f"Could not plot main grid panel: {e}")
             raise RuntimeError("Grid visualization unavailable")
@@ -315,7 +325,7 @@ class OverviewPlotter(BasePlotter):
         """Plot boundary conditions panel."""
         try:
             self.grid_plotter.plot_boundaries(ax=ax, show_colorbar=False, **kwargs)
-            ax.set_title('Boundary Conditions', fontweight='bold')
+            ax.set_title("Boundary Conditions", fontweight="bold")
         except Exception as e:
             logger.error(f"Could not plot boundary panel: {e}")
             raise RuntimeError("Boundary data unavailable")
@@ -324,13 +334,14 @@ class OverviewPlotter(BasePlotter):
         """Plot data locations panel."""
         try:
             # Plot grid outline
-            if hasattr(self, 'grid') and self.grid is not None:
-                self.grid_plotter.plot_grid(ax=ax, show_elements=False,
-                                          show_colorbar=False, **kwargs)
+            if hasattr(self, "grid") and self.grid is not None:
+                self.grid_plotter.plot_grid(
+                    ax=ax, show_elements=False, show_colorbar=False, **kwargs
+                )
 
             # Add data source locations if available
             self._add_data_source_markers(ax)
-            ax.set_title('Data Locations', fontweight='bold')
+            ax.set_title("Data Locations", fontweight="bold")
         except Exception as e:
             logger.error(f"Could not plot data locations panel: {e}")
             raise RuntimeError("Data locations unavailable")
@@ -338,7 +349,7 @@ class OverviewPlotter(BasePlotter):
     def _plot_quality_metrics_panel(self, ax: Axes, **kwargs) -> None:
         """Plot grid quality metrics."""
         try:
-            if hasattr(self, 'grid') and self.grid is not None:
+            if hasattr(self, "grid") and self.grid is not None:
                 stats = self._calculate_grid_statistics()
                 self._create_statistics_table(ax, stats, "Grid Statistics")
             else:
@@ -352,34 +363,49 @@ class OverviewPlotter(BasePlotter):
         names = list(metrics.keys())
         values = list(metrics.values())
 
-        bars = ax.barh(names, values, color=['green' if v > 0.8 else 'orange' if v > 0.6 else 'red' for v in values])
+        bars = ax.barh(
+            names,
+            values,
+            color=[
+                "green" if v > 0.8 else "orange" if v > 0.6 else "red" for v in values
+            ],
+        )
         ax.set_xlim(0, 1)
-        ax.set_xlabel('Quality Score')
+        ax.set_xlabel("Quality Score")
 
         # Add value labels
         for bar, value in zip(bars, values):
-            ax.text(bar.get_width() + 0.01, bar.get_y() + bar.get_height()/2,
-                   f'{value:.2f}', va='center')
+            ax.text(
+                bar.get_width() + 0.01,
+                bar.get_y() + bar.get_height() / 2,
+                f"{value:.2f}",
+                va="center",
+            )
 
     def _run_validation_checks(self) -> Dict[str, str]:
         """Run model setup validation checks using real model/config data only."""
         # TODO: Implement real validation logic using model/config data
         raise NotImplementedError("Validation checks must use real model/config data.")
 
-
     def _plot_validation_results(self, ax: Axes, results: Dict[str, str]) -> None:
         """Plot validation results."""
         if not results:
-            ax.text(0.5, 0.5, "No validation results",
-                   ha='center', va='center', transform=ax.transAxes)
+            ax.text(
+                0.5,
+                0.5,
+                "No validation results",
+                ha="center",
+                va="center",
+                transform=ax.transAxes,
+            )
             return
 
         y_pos = np.arange(len(results))
         labels = list(results.keys())
         statuses = list(results.values())
 
-        colors = {'PASS': 'green', 'WARNING': 'orange', 'FAIL': 'red'}
-        bar_colors = [colors.get(status, 'gray') for status in statuses]
+        colors = {"PASS": "green", "WARNING": "orange", "FAIL": "red"}
+        bar_colors = [colors.get(status, "gray") for status in statuses]
 
         ax.barh(y_pos, [1] * len(results), color=bar_colors, alpha=0.7)
         ax.set_yticks(y_pos)
@@ -389,14 +415,20 @@ class OverviewPlotter(BasePlotter):
 
         # Add status labels
         for i, status in enumerate(statuses):
-            ax.text(0.5, i, status, ha='center', va='center',
-                   fontweight='bold', color='white')
+            ax.text(
+                0.5,
+                i,
+                status,
+                ha="center",
+                va="center",
+                fontweight="bold",
+                color="white",
+            )
 
     def _get_data_summary(self) -> Dict[str, Any]:
         """Get summary of available data from real model/config/data files only."""
         # TODO: Implement real data summary extraction from config/data files
         raise NotImplementedError("Data summary must use real model/config/data files.")
-
 
     def _plot_data_summary_chart(self, ax: Axes, summary: Dict[str, Any]) -> None:
         """Plot data summary as a simple chart."""
@@ -405,30 +437,39 @@ class OverviewPlotter(BasePlotter):
             return
 
         # Create a simple text summary
-        summary_text = "\n".join([f"{k.replace('_', ' ').title()}: {v}"
-                                 for k, v in summary.items()])
-        ax.text(0.05, 0.95, summary_text, transform=ax.transAxes,
-               verticalalignment='top', fontsize=10,
-               bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
+        summary_text = "\n".join(
+            [f"{k.replace('_', ' ').title()}: {v}" for k, v in summary.items()]
+        )
+        ax.text(
+            0.05,
+            0.95,
+            summary_text,
+            transform=ax.transAxes,
+            verticalalignment="top",
+            fontsize=10,
+            bbox=dict(boxstyle="round", facecolor="lightblue", alpha=0.8),
+        )
         ax.set_xlim(0, 1)
         ax.set_ylim(0, 1)
-        ax.axis('off')
+        ax.axis("off")
 
     def _plot_forcing_timeseries_overview(self, ax: Axes) -> None:
         """Plot overview of forcing time series using real data only."""
         # TODO: Implement real forcing time series plotting using model/config data
-        raise NotImplementedError("Forcing time series overview must use real model/config data.")
+        raise NotImplementedError(
+            "Forcing time series overview must use real model/config data."
+        )
 
     def _get_model_info(self) -> Dict[str, str]:
         """Get model configuration information."""
         try:
             # Placeholder implementation
             return {
-                'SCHISM Version': '5.11.0',
-                'Grid Type': 'Unstructured',
-                'Vertical Layers': '10',
-                'Physics': 'Hydrostatic',
-                'Modules': 'WWM, ICE, SED'
+                "SCHISM Version": "5.11.0",
+                "Grid Type": "Unstructured",
+                "Vertical Layers": "10",
+                "Physics": "Hydrostatic",
+                "Modules": "WWM, ICE, SED",
             }
         except Exception as e:
             logger.warning(f"Could not get model info: {e}")
@@ -444,11 +485,13 @@ class OverviewPlotter(BasePlotter):
         table_data = [[k, v] for k, v in info.items()]
 
         # Create table
-        table = ax.table(cellText=table_data,
-                        colLabels=['Parameter', 'Value'],
-                        cellLoc='left',
-                        loc='center',
-                        colWidths=[0.4, 0.6])
+        table = ax.table(
+            cellText=table_data,
+            colLabels=["Parameter", "Value"],
+            cellLoc="left",
+            loc="center",
+            colWidths=[0.4, 0.6],
+        )
 
         table.auto_set_font_size(False)
         table.set_fontsize(10)
@@ -459,12 +502,12 @@ class OverviewPlotter(BasePlotter):
             for j in range(2):
                 cell = table[(i, j)]
                 if i == 0:  # Header row
-                    cell.set_facecolor('#40466e')
-                    cell.set_text_props(weight='bold', color='white')
+                    cell.set_facecolor("#40466e")
+                    cell.set_text_props(weight="bold", color="white")
                 else:
-                    cell.set_facecolor('#f1f1f2' if i % 2 == 0 else 'white')
+                    cell.set_facecolor("#f1f1f2" if i % 2 == 0 else "white")
 
-        ax.axis('off')
+        ax.axis("off")
 
     def _add_data_source_markers(self, ax: Axes) -> None:
         """Add markers for data source locations."""
@@ -479,17 +522,17 @@ class OverviewPlotter(BasePlotter):
     def _plot_depth_histogram(self, ax: Axes, **kwargs) -> None:
         """Plot depth histogram."""
         try:
-            if hasattr(self, 'grid') and self.grid is not None:
+            if hasattr(self, "grid") and self.grid is not None:
                 # Get depth from pylibs_hgrid
                 hgrid = self.grid.pylibs_hgrid
-                if hasattr(hgrid, 'dp'):
+                if hasattr(hgrid, "dp"):
                     depths = hgrid.dp
                     depths = depths[~np.isnan(depths)]
 
-                    ax.hist(depths, bins=50, alpha=0.7, edgecolor='black')
-                    ax.set_xlabel('Depth (m)')
-                    ax.set_ylabel('Frequency')
-                    ax.set_title('Depth Distribution', fontweight='bold')
+                    ax.hist(depths, bins=50, alpha=0.7, edgecolor="black")
+                    ax.set_xlabel("Depth (m)")
+                    ax.set_ylabel("Frequency")
+                    ax.set_title("Depth Distribution", fontweight="bold")
                     ax.grid(True, alpha=0.3)
                 else:
                     raise RuntimeError("Depth data unavailable")
@@ -497,27 +540,35 @@ class OverviewPlotter(BasePlotter):
                 raise RuntimeError("Grid data unavailable")
         except Exception as e:
             logger.warning(f"Could not plot depth histogram: {e}")
-            ax.text(0.5, 0.5, "Depth histogram unavailable",
-                   ha='center', va='center', transform=ax.transAxes)
+            ax.text(
+                0.5,
+                0.5,
+                "Depth histogram unavailable",
+                ha="center",
+                va="center",
+                transform=ax.transAxes,
+            )
 
     def _plot_element_size_histogram(self, ax: Axes, **kwargs) -> None:
         """Plot element size histogram using real grid data only."""
         # TODO: Implement real element size histogram using grid data
-        raise RuntimeError("Element size histogram unavailable: must use real grid data.")
+        raise RuntimeError(
+            "Element size histogram unavailable: must use real grid data."
+        )
 
     def _plot_grid_statistics_table(self, ax: Axes, **kwargs) -> None:
         """Plot grid statistics as a table."""
         try:
-            if hasattr(self, 'grid') and self.grid is not None:
+            if hasattr(self, "grid") and self.grid is not None:
                 hgrid = self.grid.pylibs_hgrid
-                if hasattr(hgrid, 'dp'):
+                if hasattr(hgrid, "dp"):
                     depths = hgrid.dp
                     depths = depths[~np.isnan(depths)]
 
-                    ax.hist(depths, bins=50, alpha=0.7, edgecolor='black')
-                    ax.set_xlabel('Depth (m)')
-                    ax.set_ylabel('Frequency')
-                    ax.set_title('Depth Distribution', fontweight='bold')
+                    ax.hist(depths, bins=50, alpha=0.7, edgecolor="black")
+                    ax.set_xlabel("Depth (m)")
+                    ax.set_ylabel("Frequency")
+                    ax.set_title("Depth Distribution", fontweight="bold")
                     ax.grid(True, alpha=0.3)
                 else:
                     raise RuntimeError("Depth data unavailable")
@@ -534,37 +585,39 @@ class OverviewPlotter(BasePlotter):
     def _calculate_grid_statistics(self) -> Dict[str, str]:
         """Calculate comprehensive grid statistics."""
         try:
-            if hasattr(self, 'grid') and self.grid is not None:
+            if hasattr(self, "grid") and self.grid is not None:
                 # Use SCHISMGrid properties instead of coords
                 n_nodes = self.grid.np  # number of points/nodes
                 n_elements = self.grid.ne  # number of elements
 
                 # Get depth from pylibs_hgrid if available
                 hgrid = self.grid.pylibs_hgrid
-                if hasattr(hgrid, 'dp'):
+                if hasattr(hgrid, "dp"):
                     depths = hgrid.dp
                     depths = depths[~np.isnan(depths)]
 
                     return {
-                        'Total Nodes': f"{n_nodes:,}",
-                        'Total Elements': f"{n_elements:,}",
-                        'Min Depth': f"{depths.min():.2f} m",
-                        'Max Depth': f"{depths.max():.2f} m",
-                        'Mean Depth': f"{depths.mean():.2f} m",
-                        'Depth Std': f"{depths.std():.2f} m"
+                        "Total Nodes": f"{n_nodes:,}",
+                        "Total Elements": f"{n_elements:,}",
+                        "Min Depth": f"{depths.min():.2f} m",
+                        "Max Depth": f"{depths.max():.2f} m",
+                        "Mean Depth": f"{depths.mean():.2f} m",
+                        "Depth Std": f"{depths.std():.2f} m",
                     }
                 else:
                     return {
-                        'Total Nodes': f"{n_nodes:,}",
-                        'Total Elements': f"{n_elements:,}",
-                        'Depth Stats': "unavailable"
+                        "Total Nodes": f"{n_nodes:,}",
+                        "Total Elements": f"{n_elements:,}",
+                        "Depth Stats": "unavailable",
                     }
             return {}
         except Exception as e:
             logger.warning(f"Could not calculate grid statistics: {e}")
             return {}
 
-    def _create_statistics_table(self, ax: Axes, stats: Dict[str, str], title: str) -> None:
+    def _create_statistics_table(
+        self, ax: Axes, stats: Dict[str, str], title: str
+    ) -> None:
         """Create a formatted statistics table."""
         if not stats:
             raise RuntimeError(f"No {title.lower()} available")
@@ -584,13 +637,11 @@ class OverviewPlotter(BasePlotter):
                     key, value = items[idx]
                     row_data.extend([key, value])
                 else:
-                    row_data.extend(['', ''])
+                    row_data.extend(["", ""])
             table_data.append(row_data)
 
         # Create table
-        table = ax.table(cellText=table_data,
-                        cellLoc='left',
-                        loc='center')
+        table = ax.table(cellText=table_data, cellLoc="left", loc="center")
 
         table.auto_set_font_size(False)
         table.set_fontsize(9)
@@ -601,44 +652,49 @@ class OverviewPlotter(BasePlotter):
             for j in range(n_cols * 2):
                 cell = table[(i, j)]
                 if j % 2 == 0:  # Parameter names
-                    cell.set_facecolor('#f8f9fa')
-                    cell.set_text_props(weight='bold')
+                    cell.set_facecolor("#f8f9fa")
+                    cell.set_text_props(weight="bold")
                 else:  # Values
-                    cell.set_facecolor('white')
+                    cell.set_facecolor("white")
 
-        ax.set_title(title, fontweight='bold', pad=20)
-        ax.axis('off')
+        ax.set_title(title, fontweight="bold", pad=20)
+        ax.axis("off")
 
     # Additional helper methods for data analysis overview
     def _plot_atmospheric_overview(self, ax: Axes, **kwargs) -> None:
         """Plot atmospheric forcing overview."""
         try:
             # Try to get atmospheric data from data plotter
-            if hasattr(self.data_plotter, 'plot_atmospheric_spatial'):
+            if hasattr(self.data_plotter, "plot_atmospheric_spatial"):
                 # Remove show_colorbar parameter that's not accepted by plot_atmospheric_spatial
-                filtered_kwargs = {k: v for k, v in kwargs.items() if k != 'show_colorbar'}
-                fig, _ = self.data_plotter.plot_atmospheric_spatial(ax=ax, **filtered_kwargs)
+                filtered_kwargs = {
+                    k: v for k, v in kwargs.items() if k != "show_colorbar"
+                }
+                fig, _ = self.data_plotter.plot_atmospheric_spatial(
+                    ax=ax, **filtered_kwargs
+                )
                 # Don't add colorbar for overview plots - keep it simple
-                if hasattr(fig, 'axes'):
+                if hasattr(fig, "axes"):
                     for a in fig.axes:
-                        if hasattr(a, 'collections'):
+                        if hasattr(a, "collections"):
                             for coll in a.collections:
-                                if hasattr(coll, 'colorbar') and coll.colorbar:
+                                if hasattr(coll, "colorbar") and coll.colorbar:
                                     coll.colorbar.remove()
             else:
                 raise RuntimeError("Atmospheric data unavailable")
         except Exception as e:
             logger.warning(f"Could not plot atmospheric overview: {e}")
             raise RuntimeError("No atmospheric data available for analysis: " + str(e))
-        ax.set_title('Atmospheric Forcing', fontweight='bold')
+        ax.set_title("Atmospheric Forcing", fontweight="bold")
 
     def _plot_boundary_data_locations(self, ax: Axes, **kwargs) -> None:
         """Plot boundary data locations."""
         try:
             # Plot grid outline first
-            if hasattr(self, 'grid') and self.grid is not None:
-                self.grid_plotter.plot_grid(ax=ax, show_elements=False,
-                                          show_colorbar=False, alpha=0.3, **kwargs)
+            if hasattr(self, "grid") and self.grid is not None:
+                self.grid_plotter.plot_grid(
+                    ax=ax, show_elements=False, show_colorbar=False, alpha=0.3, **kwargs
+                )
 
             # Add boundary locations
             self.grid_plotter.plot_boundaries(ax=ax, show_colorbar=False, **kwargs)
@@ -646,32 +702,42 @@ class OverviewPlotter(BasePlotter):
         except Exception as e:
             logger.warning(f"Could not plot boundary data locations: {e}")
             raise RuntimeError("Boundary locations unavailable: " + str(e))
-        ax.set_title('Boundary Data Locations', fontweight='bold')
+        ax.set_title("Boundary Data Locations", fontweight="bold")
 
     def _plot_data_coverage_timeline(self, ax: Axes, **kwargs) -> None:
         """Plot data coverage timeline using real data only."""
         # TODO: Implement real data coverage timeline using model/config/data
-        raise NotImplementedError("Data coverage timeline must use real model/config/data.")
+        raise NotImplementedError(
+            "Data coverage timeline must use real model/config/data."
+        )
 
     def _plot_atmospheric_timeseries_overview(self, ax: Axes, **kwargs) -> None:
         """Plot atmospheric time series overview using real data only."""
         # TODO: Implement real atmospheric time series plotting using model/config data
-        raise NotImplementedError("Atmospheric time series overview must use real model/config data.")
+        raise NotImplementedError(
+            "Atmospheric time series overview must use real model/config data."
+        )
 
     def _plot_boundary_timeseries_overview(self, ax: Axes, **kwargs) -> None:
         """Plot boundary time series overview using real data only."""
         # TODO: Implement real boundary time series plotting using model/config data
-        raise NotImplementedError("Boundary time series overview must use real model/config data.")
+        raise NotImplementedError(
+            "Boundary time series overview must use real model/config data."
+        )
 
     def _plot_data_quality_metrics(self, ax: Axes, **kwargs) -> None:
         """Plot data quality metrics using real data only."""
         # TODO: Implement real data quality metrics plotting using model/config/data
-        raise NotImplementedError("Data quality metrics must use real model/config/data.")
+        raise NotImplementedError(
+            "Data quality metrics must use real model/config/data."
+        )
 
     def _plot_data_statistics_table(self, ax: Axes, **kwargs) -> None:
         """Plot data statistics table using real data only."""
         # TODO: Implement real data statistics table using model/config/data
-        raise NotImplementedError("Data statistics table must use real model/config/data.")
+        raise NotImplementedError(
+            "Data statistics table must use real model/config/data."
+        )
 
     def plot(self, **kwargs) -> Tuple[Figure, Dict[str, Axes]]:
         """
@@ -699,8 +765,12 @@ class OverviewPlotter(BasePlotter):
             save_path = Path(save_path)
             save_path.parent.mkdir(parents=True, exist_ok=True)
 
-            fig.savefig(save_path, dpi=self.plot_config.dpi,
-                       bbox_inches='tight', facecolor='white')
+            fig.savefig(
+                save_path,
+                dpi=self.plot_config.dpi,
+                bbox_inches="tight",
+                facecolor="white",
+            )
             logger.info(f"Overview plot saved to {save_path}")
             return True
 
