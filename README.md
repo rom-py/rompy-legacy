@@ -1,6 +1,7 @@
 > **⚠️ DEPRECATION NOTICE: This monorepo is no longer maintained. ROMPY has been split into dedicated repositories. Please use the new repos below:**
+
 >
-> - [rompy-core](https://github.com/rom-py/rompy-core)
+> - [rompy](https://github.com/rom-py/rompy)
 > - [rompy-swan](https://github.com/rom-py/rompy-swan)
 > - [rompy-schism](https://github.com/rom-py/rompy-schism)
 > - [rompy-notebooks](https://github.com/rom-py/rompy-notebooks)
