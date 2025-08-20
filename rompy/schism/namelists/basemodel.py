@@ -98,7 +98,13 @@ class NamelistBaseModel(RompyBaseModel):
                             )
                         else:
                             value = self.process_value(value)
-                        ret += [f"{variable} = {value}"]
+                        
+                        # Check if this field needs a comma based on _comma_fields attribute
+                        comma = ""
+                        if hasattr(self, '_comma_fields') and variable.lower() in self._comma_fields:
+                            comma = ","
+                        
+                        ret += [f"{variable} = {value}{comma}"]
                 ret += ["/\n"]
         return "\n".join(ret)
 
