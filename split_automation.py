@@ -1352,6 +1352,7 @@ classifiers = [
 license = {text = "Apache Software License 2.0"}
 requires-python = ">=3.10"
 dependencies = [
+    "rompy",
     "pydantic>2",
 ]
 
@@ -1362,11 +1363,13 @@ dev = [
     "coverage",
     "mypy",
     "pytest",
-    "ruff"
+    "ruff",
+    "requests"
 ]
 test = [
     "pytest",
-    "coverage"
+    "coverage",
+    "requests"
 ]
 
 [project.entry-points."rompy.config"]
@@ -1430,6 +1433,7 @@ classifiers = [
 license = {text = "Apache Software License 2.0"}
 requires-python = ">=3.10"
 dependencies = [
+    "rompy",
     "pydantic>2",
     "pylibs-ocean",
     "pytmd",
@@ -1442,11 +1446,13 @@ dev = [
     "coverage",
     "mypy",
     "pytest",
-    "ruff"
+    "ruff",
+    "requests"
 ]
 test = [
     "pytest",
-    "coverage"
+    "coverage",
+    "requests"
 ]
 
 [project.entry-points."rompy.config"]
