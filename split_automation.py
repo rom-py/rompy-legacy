@@ -1044,7 +1044,7 @@ write_to = \"src/{package_module}/_version.py\"
         self, target_dir: str, cookiecutter_output: str, merge_strategy: str
     ):
         logger.info(f"Merging cookiecutter output with merge strategy: {merge_strategy}")
-        preserve_files = {".git", ".gitignore", "README.md", "LICENSE", "HISTORY.rst"}
+        preserve_files = {".git", ".gitignore", "README.md", "HISTORY.rst"}
         cookiecutter_priority = {
             "pyproject.toml", "setup.cfg", "tox.ini", "requirements_dev.txt", "ruff.toml",
             ".editorconfig", "Makefile", "MANIFEST.in", ".travis.yml", "AUTHORS.rst",
@@ -1339,7 +1339,7 @@ maintainers = [
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: APACHE 2 License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
@@ -1349,7 +1349,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-license = {text = "MIT license"}
+license = {text = "Apache Software License 2.0"}
 requires-python = ">=3.10"
 dependencies = [
     "pydantic>2",
@@ -1417,7 +1417,7 @@ maintainers = [
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License 2.0",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
@@ -1427,7 +1427,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-license = {text = "MIT license"}
+license = {text = "Apache Software License 2.0"}
 requires-python = ">=3.10"
 dependencies = [
     "pydantic>2",
@@ -1761,11 +1761,16 @@ def main():
     fixer = FinalTestFixer(Path(split_repos_dir), args.dry_run)
     if not args.no_test:
         fixer.run_all_fixes()
-        # Final commit for all split repos after test/config fixes
-        for repo_name in os.listdir(split_repos_dir):
-            repo_path = os.path.join(split_repos_dir, repo_name)
-            if os.path.isdir(repo_path) and os.path.exists(os.path.join(repo_path, ".git")):
-                splitter._commit_all_changes(repo_path, "chore(split): final test/config fixes")
+    # Final commit for all split repos after test/config fixes
+    for repo_name in os.listdir(split_repos_dir):
+        repo_path = os.path.join(split_repos_dir, repo_name)
+        if os.path.isdir(repo_path) and os.path.exists(os.path.join(repo_path, ".git")):
+            # Stage all changes before final commit
+            try:
+                subprocess.run(["git", "add", "-A"], cwd=repo_path, check=True)
+            except Exception as e:
+                logger.error(f"[GIT] git add -A failed in {repo_path}: {e}")
+            splitter._commit_all_changes(repo_path, "chore(split): final test/config fixes")
     logger.info("🎉 Unified split automation complete!")
     return 0
 
