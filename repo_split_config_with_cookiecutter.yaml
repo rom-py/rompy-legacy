@@ -63,7 +63,6 @@ repositories:
       - ".readthedocs.yml"
       - "appveyor.yml"
       - "README.md"
-      - "LICENSE"
       - "HISTORY.rst"
       - ".github/"
       - "scripts/"
@@ -80,7 +79,7 @@ repositories:
           project_name: "rompy"
           project_short_description: "Core rompy library for ocean wave modeling with plugin system"
           pypi_username: "rom-py"
-          version: "1.0.0"
+          version: "0.5.3"
           use_pytest: "y"
           use_pypi_deployment_with_travis: "n"
           add_pyup_badge: "n"
@@ -141,8 +140,6 @@ repositories:
       - ".gitignore"
       - ".gitattributes"
       - ".readthedocs.yml"
-      - "README.md"
-      - "LICENSE"
       - "HISTORY.rst"
       - ".github/"
     post_split_actions:
@@ -157,6 +154,10 @@ repositories:
         moves:
           - from: "rompy/templates"
             to: "src/rompy_swan/templates"
+      - action: "move_files"
+        moves:
+          - from: "notebooks/swan"
+            to: "examples"
       - action: "move_files"
         moves:
           - from: "notebooks/schism"
@@ -181,13 +182,13 @@ repositories:
           project_name: "rompy-swan"
           project_short_description: "SWAN wave model plugin for rompy"
           pypi_username: "rom-py"
-          version: "0.1.0"
+          version: "0.5.3"
           use_pytest: "y"
           use_pypi_deployment_with_travis: "n"
           add_pyup_badge: "n"
           command_line_interface: "No command-line interface"
           create_author_file: "y"
-          open_source_license: "MIT license"
+          open_source_license: "Apache Software License 2.0"
           dependencies: |
             [
               "rompy",
@@ -248,8 +249,6 @@ repositories:
       - ".gitignore"
       - ".gitattributes"
       - ".readthedocs.yml"
-      - "README.md"
-      - "LICENSE"
       - "HISTORY.rst"
       - ".github/"
     post_split_actions:
@@ -294,13 +293,13 @@ repositories:
           project_name: "rompy-schism"
           project_short_description: "SCHISM model plugin for rompy"
           pypi_username: "rom-py"
-          version: "1.0.0"
+          version: "0.5.3"
           use_pytest: "y"
           use_pypi_deployment_with_travis: "n"
           add_pyup_badge: "n"
           command_line_interface: "No command-line interface"
           create_author_file: "y"
-          open_source_license: "MIT license"
+          open_source_license: "Apache Software License 2.0"
           dependencies: |
             [
               "rompy",
@@ -349,7 +348,6 @@ repositories:
       - "notebooks/"
       - "docs/source/notebooks/"
       - "README.md"
-      - "LICENSE"
       - ".gitignore"
       - ".gitattributes"
     post_split_actions:
@@ -380,7 +378,7 @@ cookiecutter:
     use_pypi_deployment_with_travis: "n"
     add_pyup_badge: "n"
     create_author_file: "y"
-    open_source_license: "MIT license"
+    open_source_license: "Apache Software License 2.0"
 
   # Merge strategies for different file types
   merge_strategies:
@@ -400,7 +398,6 @@ cookiecutter:
       - ".git/**"
       - ".gitignore"
       - "README.md"
-      - "LICENSE"
       - "HISTORY.rst"
       - "src/**/*.py" # Preserve actual code
       - "tests/**/*.py" # Preserve existing tests
