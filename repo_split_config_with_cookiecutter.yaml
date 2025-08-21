@@ -62,7 +62,6 @@ repositories:
       - ".gitattributes"
       - ".readthedocs.yml"
       - "appveyor.yml"
-      - "README.md"
       - "HISTORY.rst"
       - ".github/"
       - "scripts/"
@@ -106,6 +105,7 @@ repositories:
         src_layout: true
         description: "Core rompy library for ocean wave modeling with plugin system"
         dependencies:
+          - "rompy@git+https://github.com/rom-py/rompy-core.git"
           - pydantic>2
         entry_points:
           rompy.config: |
@@ -191,7 +191,7 @@ repositories:
           open_source_license: "Apache Software License 2.0"
           dependencies: |
             [
-              "rompy",
+              "rompy@git+https://github.com/rom-py/rompy-core.git",
               "gcsfs",
               "zarr"
             ]
@@ -200,6 +200,7 @@ repositories:
               "pytest",
               "envyaml",
               "coverage"
+              "requests"
             ]
           optional_dependencies_docs: |
             [
@@ -302,7 +303,7 @@ repositories:
           open_source_license: "Apache Software License 2.0"
           dependencies: |
             [
-              "rompy",
+              "rompy@git+https://github.com/rom-py/rompy-core.git",
               "pylibs-ocean",
               "pytmd"
             ]
@@ -311,6 +312,7 @@ repositories:
               "pytest",
               "envyaml",
               "coverage"
+              "requests"
             ]
           optional_dependencies_docs: |
             [
@@ -397,7 +399,6 @@ cookiecutter:
     preserve_original:
       - ".git/**"
       - ".gitignore"
-      - "README.md"
       - "HISTORY.rst"
       - "src/**/*.py" # Preserve actual code
       - "tests/**/*.py" # Preserve existing tests
