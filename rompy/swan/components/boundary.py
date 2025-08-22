@@ -12,6 +12,7 @@ from rompy.swan.subcomponents.boundary import (
     HOTSINGLE,
     HOTMULTIPLE,
     SIDE,
+    SIDES,
     SEGMENT,
     PAR,
     CONSTANTPAR,
@@ -113,11 +114,11 @@ class BOUNDSPEC(BaseComponent):
         default="boundspec",
         description="Model type discriminator",
     )
-    shapespec: SHAPESPEC = Field(
-        default_factory=SHAPESPEC,
+    shapespec: Optional[SHAPESPEC] = Field(
+        default=None,
         description="Spectral shape specification",
     )
-    location: SIDE | SEGMENT = Field(
+    location: SIDE | SEGMENT | SIDES = Field(
         description="Location to apply the boundary",
     )
     data: CONSTANTPAR | CONSTANTFILE | VARIABLEPAR | VARIABLEFILE = Field(
@@ -125,8 +126,14 @@ class BOUNDSPEC(BaseComponent):
     )
 
     def cmd(self) -> list:
-        repr = [f"{self.shapespec.render()}"]
-        repr += [f"BOUNDSPEC {self.location.render()}{self.data.render()}"]
+        repr = []
+        if self.shapespec is not None:
+            repr += [f"{self.shapespec.render()}"]
+        if self.location.model_type in ["side", "segment"]:
+            repr += [f"BOUNDSPEC {self.location.render()}{self.data.render()}"]
+        elif self.location.model_type == "sides":
+            for side in self.location.sides:
+                repr += [f"BOUNDSPEC {side.render()}{self.data.render()}"]
         return repr
 
 
