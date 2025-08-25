@@ -499,7 +499,7 @@
 <li><p><strong>Pipeline Backends</strong>: Orchestrate complete workflows</p></li>
 </ul>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
@@ -510,7 +510,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRun</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
 
 <span class="c1"># Configure logging to see backend activity</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -521,7 +521,7 @@
 <h2>Setup: Create a Basic Model Run<a class="headerlink" href="#Setup:-Create-a-Basic-Model-Run" title="Link to this heading">#</a></h2>
 <p>First, let’s create a basic model run that we can use to demonstrate the different backends.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a temporary directory for outputs</span>
@@ -551,7 +551,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Output directory: /tmp/rompy_backend_demo_hs3gz1v0
+Output directory: /tmp/rompy_backend_demo_v01nrn0z
 Model run created: backend_demo
 Period: 2023-01-01 00:00:00 to 2023-01-01 06:00:00
 </pre></div></div>
@@ -561,7 +561,7 @@ Period: 2023-01-01 00:00:00 to 2023-01-01 06:00:00
 <h2>Discovering Available Backends<a class="headerlink" href="#Discovering-Available-Backends" title="Link to this heading">#</a></h2>
 <p>Let’s see what backends are available in the current environment.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">RUN_BACKENDS</span><span class="p">,</span> <span class="n">POSTPROCESSORS</span><span class="p">,</span> <span class="n">PIPELINE_BACKENDS</span>
@@ -604,7 +604,7 @@ Available Pipeline Backends:
 <h3>Local Backend<a class="headerlink" href="#Local-Backend" title="Link to this heading">#</a></h3>
 <p>The local backend runs the model directly on the current system.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span>
@@ -613,7 +613,6 @@ Available Pipeline Backends:
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running with local backend...&quot;</span><span class="p">)</span>
 <span class="n">local_config</span> <span class="o">=</span> <span class="n">LocalConfig</span><span class="p">(</span>
     <span class="n">command</span><span class="o">=</span><span class="s2">&quot;echo &#39;Hello from local backend&#39;&quot;</span><span class="p">,</span>  <span class="c1"># Replace with your actual command</span>
-    <span class="n">working_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">model</span><span class="o">.</span><span class="n">run_id</span><span class="p">),</span>
     <span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span>  <span class="c1"># Optional: timeout in seconds</span>
 <span class="p">)</span>
 <span class="n">success</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">local_config</span><span class="p">)</span>
@@ -637,60 +636,60 @@ Available Pipeline Backends:
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2025-07-09 16:12:37 [INFO] rompy.run           : Starting local execution for run_id: backend_demo
-2025-07-09 16:12:37 [WARNING] rompy.run           : ! No workspace_dir provided, generating files (this may cause double generation in pipeline)
-2025-07-09 16:12:37 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:12:37 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
-2025-07-09 16:12:37 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:12:37 [INFO] rompy.model         :             Run ID : backend_demo
-2025-07-09 16:12:37 [INFO] rompy.model         :         Model Type : BaseConfig
-2025-07-09 16:12:37 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
-2025-07-09 16:12:37 [INFO] rompy.model         :           End Time : 2023-01-01T06:00:00
-2025-07-09 16:12:37 [INFO] rompy.model         :           Duration : 6 hours
-2025-07-09 16:12:37 [INFO] rompy.model         :      Time Interval : 1:00:00
-2025-07-09 16:12:37 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:12:37 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:12:37 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:12:37 [INFO] rompy.model         :
-2025-07-09 16:12:37 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:12:37 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
-2025-07-09 16:12:37 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:12:37 [INFO] root                :
-2025-07-09 16:12:37 [INFO] rompy.model         : BaseConfig:
-2025-07-09 16:12:37 [INFO] rompy.model         :   model_type: base
-2025-07-09 16:12:37 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:12:37 [INFO] rompy.model         :   checkout: main
-2025-07-09 16:12:37 [INFO] rompy.model         :   arg1: demo
-2025-07-09 16:12:37 [INFO] rompy.model         :   arg2: backend_test
-2025-07-09 16:12:37 [INFO] rompy.model         :
-2025-07-09 16:12:37 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:12:37 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
-2025-07-09 16:12:37 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:12:37 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:12:37 [INFO] rompy.model         : Processing model configuration...
-2025-07-09 16:12:37 [INFO] rompy.model         : Running configuration callable...
-2025-07-09 16:12:37 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_hs3gz1v0/backend_demo...
-2025-07-09 16:12:37 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:12:37 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:12:37 [INFO] rompy.core.render   : Using template version: main
-2025-07-09 16:12:37 [INFO] rompy.core.render   :   • Locating template repository...
-2025-07-09 16:12:37 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:12:37 [INFO] rompy.core.render   :   • Generating files from template...
-2025-07-09 16:12:37 [INFO] rompy.core.render   :   • Rendering time:      0.01 seconds
-2025-07-09 16:12:37 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
-2025-07-09 16:12:37 [INFO] rompy.core.render   :   • Files created:       3
-2025-07-09 16:12:37 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_hs3gz1v0/backend_demo
-2025-07-09 16:12:37 [INFO] rompy.model         :
-2025-07-09 16:12:37 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:12:37 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
-2025-07-09 16:12:37 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:12:37 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_hs3gz1v0/backend_demo
-2025-07-09 16:12:37 [INFO] rompy.run           : Model inputs generated in: /tmp/rompy_backend_demo_hs3gz1v0/backend_demo
-2025-07-09 16:12:37 [INFO] rompy.run           : Executing command: echo &#39;Hello from local backend&#39;
-2025-07-09 16:12:37 [INFO] rompy.run           : Command stdout:
+2025-08-25 22:37:23 [INFO] rompy.run           : Starting local execution for run_id: backend_demo
+2025-08-25 22:37:23 [WARNING] rompy.run           : ! No workspace_dir provided, generating files (this may cause double generation in pipeline)
+2025-08-25 22:37:23 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
+2025-08-25 22:37:23 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] rompy.model         :             Run ID : backend_demo
+2025-08-25 22:37:23 [INFO] rompy.model         :         Model Type : BaseConfig
+2025-08-25 22:37:23 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
+2025-08-25 22:37:23 [INFO] rompy.model         :           End Time : 2023-01-01T06:00:00
+2025-08-25 22:37:23 [INFO] rompy.model         :           Duration : 6 hours
+2025-08-25 22:37:23 [INFO] rompy.model         :      Time Interval : 1:00:00
+2025-08-25 22:37:23 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:23 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] rompy.model         :
+2025-08-25 22:37:23 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
+2025-08-25 22:37:23 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] root                :
+2025-08-25 22:37:23 [INFO] rompy.model         : BaseConfig:
+2025-08-25 22:37:23 [INFO] rompy.model         :   model_type: base
+2025-08-25 22:37:23 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:23 [INFO] rompy.model         :   checkout: main
+2025-08-25 22:37:23 [INFO] rompy.model         :   arg1: demo
+2025-08-25 22:37:23 [INFO] rompy.model         :   arg2: backend_test
+2025-08-25 22:37:23 [INFO] rompy.model         :
+2025-08-25 22:37:23 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
+2025-08-25 22:37:23 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:23 [INFO] rompy.model         : Processing model configuration...
+2025-08-25 22:37:23 [INFO] rompy.model         : Running configuration callable...
+2025-08-25 22:37:23 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_v01nrn0z/backend_demo...
+2025-08-25 22:37:23 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:23 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:23 [INFO] rompy.core.render   : Using template version: main
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Locating template repository...
+2025-08-25 22:37:23 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Generating files from template...
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Rendering time:      0.01 seconds
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Files created:       3
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_v01nrn0z/backend_demo
+2025-08-25 22:37:23 [INFO] rompy.model         :
+2025-08-25 22:37:23 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
+2025-08-25 22:37:23 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_v01nrn0z/backend_demo
+2025-08-25 22:37:23 [INFO] rompy.run           : Model inputs generated in: /tmp/rompy_backend_demo_v01nrn0z/backend_demo
+2025-08-25 22:37:23 [INFO] rompy.run           : Executing command: echo &#39;Hello from local backend&#39;
+2025-08-25 22:37:23 [INFO] rompy.run           : Command stdout:
 Hello from local backend
 
-2025-07-09 16:12:37 [INFO] rompy.run           : Local execution completed successfully for run_id: backend_demo
+2025-08-25 22:37:23 [INFO] rompy.run           : Local execution completed successfully for run_id: backend_demo
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -714,7 +713,7 @@ Files created: 5
 <h3>Docker Backend (if available)<a class="headerlink" href="#Docker-Backend-(if-available)" title="Link to this heading">#</a></h3>
 <p>The Docker backend runs the model inside a Docker container. This requires Docker to be installed and running.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DockerConfig</span>
@@ -752,55 +751,55 @@ Files created: 5
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2025-07-09 16:15:43 [WARNING] rompy.run.docker    : ! No workspace_dir provided, generating files (this may cause double generation in pipeline)
-2025-07-09 16:15:43 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:15:43 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
-2025-07-09 16:15:43 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:15:43 [INFO] rompy.model         :             Run ID : backend_demo
-2025-07-09 16:15:43 [INFO] rompy.model         :         Model Type : BaseConfig
-2025-07-09 16:15:43 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
-2025-07-09 16:15:43 [INFO] rompy.model         :           End Time : 2023-01-01T06:00:00
-2025-07-09 16:15:43 [INFO] rompy.model         :           Duration : 6 hours
-2025-07-09 16:15:43 [INFO] rompy.model         :      Time Interval : 1:00:00
-2025-07-09 16:15:43 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:15:43 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:15:43 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:15:43 [INFO] rompy.model         :
-2025-07-09 16:15:43 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:15:43 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
-2025-07-09 16:15:43 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:15:43 [INFO] root                :
-2025-07-09 16:15:43 [INFO] rompy.model         : BaseConfig:
-2025-07-09 16:15:43 [INFO] rompy.model         :   model_type: base
-2025-07-09 16:15:43 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:15:43 [INFO] rompy.model         :   checkout: main
-2025-07-09 16:15:43 [INFO] rompy.model         :   arg1: demo
-2025-07-09 16:15:43 [INFO] rompy.model         :   arg2: backend_test
-2025-07-09 16:15:43 [INFO] rompy.model         :
-2025-07-09 16:15:43 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:15:43 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
-2025-07-09 16:15:43 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:15:43 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:15:43 [INFO] rompy.model         : Processing model configuration...
-2025-07-09 16:15:43 [INFO] rompy.model         : Running configuration callable...
-2025-07-09 16:15:43 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_hs3gz1v0/backend_demo...
-2025-07-09 16:15:43 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:15:43 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:15:43 [INFO] rompy.core.render   : Using template version: main
-2025-07-09 16:15:43 [INFO] rompy.core.render   :   • Locating template repository...
-2025-07-09 16:15:43 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:15:43 [INFO] rompy.core.render   :   • Generating files from template...
-2025-07-09 16:15:43 [INFO] rompy.core.render   :   • Rendering time:      0.00 seconds
-2025-07-09 16:15:43 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
-2025-07-09 16:15:43 [INFO] rompy.core.render   :   • Files created:       3
-2025-07-09 16:15:43 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_hs3gz1v0/backend_demo
-2025-07-09 16:15:43 [INFO] rompy.model         :
-2025-07-09 16:15:43 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:15:43 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
-2025-07-09 16:15:43 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:15:43 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_hs3gz1v0/backend_demo
-2025-07-09 16:15:43 [INFO] rompy.run.docker    : Using provided Docker image: ubuntu:20.04
-2025-07-09 16:15:43 [INFO] rompy.run.docker    : Executing: docker run --rm --user root -e TEST_VAR=backend_demo -v /tmp/rompy_backend_demo_hs3gz1v0/backend_demo:/app/run_id:Z -v /tmp/rompy_backend_demo_hs3gz1v0:/data ubuntu:20.04 bash -c cd /app/run_id &amp;&amp; echo &#39;Directory contents:&#39; &amp;&amp; ls -la &amp;&amp; echo &#39;Executing model...&#39; &amp;&amp; /bin/echo &#39;Hello from Docker container&#39;
+2025-08-25 22:37:23 [WARNING] rompy.run.docker    : ! No workspace_dir provided, generating files (this may cause double generation in pipeline)
+2025-08-25 22:37:23 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
+2025-08-25 22:37:23 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] rompy.model         :             Run ID : backend_demo
+2025-08-25 22:37:23 [INFO] rompy.model         :         Model Type : BaseConfig
+2025-08-25 22:37:23 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
+2025-08-25 22:37:23 [INFO] rompy.model         :           End Time : 2023-01-01T06:00:00
+2025-08-25 22:37:23 [INFO] rompy.model         :           Duration : 6 hours
+2025-08-25 22:37:23 [INFO] rompy.model         :      Time Interval : 1:00:00
+2025-08-25 22:37:23 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:23 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] rompy.model         :
+2025-08-25 22:37:23 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
+2025-08-25 22:37:23 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] root                :
+2025-08-25 22:37:23 [INFO] rompy.model         : BaseConfig:
+2025-08-25 22:37:23 [INFO] rompy.model         :   model_type: base
+2025-08-25 22:37:23 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:23 [INFO] rompy.model         :   checkout: main
+2025-08-25 22:37:23 [INFO] rompy.model         :   arg1: demo
+2025-08-25 22:37:23 [INFO] rompy.model         :   arg2: backend_test
+2025-08-25 22:37:23 [INFO] rompy.model         :
+2025-08-25 22:37:23 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
+2025-08-25 22:37:23 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:23 [INFO] rompy.model         : Processing model configuration...
+2025-08-25 22:37:23 [INFO] rompy.model         : Running configuration callable...
+2025-08-25 22:37:23 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_v01nrn0z/backend_demo...
+2025-08-25 22:37:23 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:23 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:23 [INFO] rompy.core.render   : Using template version: main
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Locating template repository...
+2025-08-25 22:37:23 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Generating files from template...
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Rendering time:      0.01 seconds
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Files created:       3
+2025-08-25 22:37:23 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_v01nrn0z/backend_demo
+2025-08-25 22:37:23 [INFO] rompy.model         :
+2025-08-25 22:37:23 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:23 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
+2025-08-25 22:37:23 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:23 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_v01nrn0z/backend_demo
+2025-08-25 22:37:23 [INFO] rompy.run.docker    : Using provided Docker image: ubuntu:20.04
+2025-08-25 22:37:23 [INFO] rompy.run.docker    : Executing: docker run --rm --user root -e TEST_VAR=backend_demo -v /tmp/rompy_backend_demo_v01nrn0z/backend_demo:/app/run_id:Z -v /tmp/rompy_backend_demo_v01nrn0z:/data ubuntu:20.04 bash -c cd /app/run_id &amp;&amp; echo &#39;Directory contents:&#39; &amp;&amp; ls -la &amp;&amp; echo &#39;Executing model...&#39; &amp;&amp; /bin/echo &#39;Hello from Docker container&#39;
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -819,18 +818,18 @@ Attempting to run with Docker backend...
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2025-07-09 16:15:43 [INFO] rompy.run.docker    : Docker stdout:
+2025-08-25 22:37:23 [INFO] rompy.run.docker    : Docker stdout:
 Directory contents:
 total 4
-drwxr-xr-x. 4 1001 1001 100 Jul  9 06:12 .
-drwxr-xr-x. 1 root root  12 Jul  9 06:15 ..
--rw-r--r--. 1 1001 1001 388 Jul  9 06:15 INPUT
-drwxr-xr-x. 2 1001 1001  60 Jul  9 06:12 datasets
-drwxr-xr-x. 2 1001 1001  60 Jul  9 06:12 outputs
+drwxr-xr-x. 4 1001 1001 100 Aug 25 12:37 .
+drwxr-xr-x. 1 root root  12 Aug 25 12:37 ..
+-rw-r--r--. 1 1001 1001 354 Aug 25 12:37 INPUT
+drwxr-xr-x. 2 1001 1001  60 Aug 25 12:37 datasets
+drwxr-xr-x. 2 1001 1001  60 Aug 25 12:37 outputs
 Executing model...
 Hello from Docker container
 
-2025-07-09 16:15:43 [INFO] rompy.run.docker    : Model run completed successfully with exit code 0
+2025-08-25 22:37:23 [INFO] rompy.run.docker    : Model run completed successfully with exit code 0
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -850,7 +849,7 @@ Docker run successful: True
 <h3>No-op Postprocessor<a class="headerlink" href="#No-op-Postprocessor" title="Link to this heading">#</a></h3>
 <p>The no-op postprocessor is a placeholder that performs no operations.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the no-op postprocessor</span>
@@ -866,9 +865,9 @@ Docker run successful: True
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2025-07-09 16:16:26 [INFO] rompy.postprocess   : Starting no-op postprocessing for run_id: backend_demo
-2025-07-09 16:16:26 [INFO] rompy.postprocess   : Found 3 output files in /tmp/rompy_backend_demo_hs3gz1v0/backend_demo
-2025-07-09 16:16:26 [INFO] rompy.postprocess   : No-op postprocessing completed for run_id: backend_demo
+2025-08-25 22:37:23 [INFO] rompy.postprocess   : Starting no-op postprocessing for run_id: backend_demo
+2025-08-25 22:37:23 [INFO] rompy.postprocess   : Found 3 output files in /tmp/rompy_backend_demo_v01nrn0z/backend_demo
+2025-08-25 22:37:23 [INFO] rompy.postprocess   : No-op postprocessing completed for run_id: backend_demo
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -877,7 +876,7 @@ Docker run successful: True
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Running no-op postprocessor...
-Postprocessing results: {&#39;success&#39;: True, &#39;message&#39;: &#39;No postprocessing requested - validation only&#39;, &#39;run_id&#39;: &#39;backend_demo&#39;, &#39;output_dir&#39;: &#39;/tmp/rompy_backend_demo_hs3gz1v0/backend_demo&#39;, &#39;validated&#39;: True}
+Postprocessing results: {&#39;success&#39;: True, &#39;message&#39;: &#39;No postprocessing requested - validation only&#39;, &#39;run_id&#39;: &#39;backend_demo&#39;, &#39;output_dir&#39;: &#39;/tmp/rompy_backend_demo_v01nrn0z/backend_demo&#39;, &#39;validated&#39;: True}
 </pre></div></div>
 </div>
 </section>
@@ -885,7 +884,7 @@ Postprocessing results: {&#39;success&#39;: True, &#39;message&#39;: &#39;No pos
 <h3>Custom Postprocessor Example<a class="headerlink" href="#Custom-Postprocessor-Example" title="Link to this heading">#</a></h3>
 <p>Let’s create a simple custom postprocessor to demonstrate how to extend the system.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -938,8 +937,8 @@ Custom postprocessing results:
   success: True
   message: Found 3 files
   file_count: 3
-  total_size_bytes: 502
-  output_directory: /tmp/rompy_backend_demo_hs3gz1v0/backend_demo
+  total_size_bytes: 468
+  output_directory: /tmp/rompy_backend_demo_v01nrn0z/backend_demo
 </pre></div></div>
 </div>
 </section>
@@ -951,7 +950,7 @@ Custom postprocessing results:
 <h3>Local Pipeline<a class="headerlink" href="#Local-Pipeline" title="Link to this heading">#</a></h3>
 <p>The local pipeline backend executes the complete workflow locally.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a fresh model run for the pipeline demo</span>
@@ -986,68 +985,68 @@ Custom postprocessing results:
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2025-07-09 16:16:41 [INFO] rompy.pipeline      : Starting pipeline execution for run_id: pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.pipeline      : Pipeline configuration: run_backend=&#39;local&#39;, processor=&#39;noop&#39;
-2025-07-09 16:16:41 [INFO] rompy.pipeline      : Stage 1: Generating input files for pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:16:41 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
-2025-07-09 16:16:41 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:16:41 [INFO] rompy.model         :             Run ID : pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.model         :         Model Type : BaseConfig
-2025-07-09 16:16:41 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
-2025-07-09 16:16:41 [INFO] rompy.model         :           End Time : 2023-01-01T03:00:00
-2025-07-09 16:16:41 [INFO] rompy.model         :           Duration : 3 hours
-2025-07-09 16:16:41 [INFO] rompy.model         :      Time Interval : 1:00:00
-2025-07-09 16:16:41 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:16:41 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:16:41 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:16:41 [INFO] rompy.model         :
-2025-07-09 16:16:41 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:16:41 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
-2025-07-09 16:16:41 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:16:41 [INFO] root                :
-2025-07-09 16:16:41 [INFO] rompy.model         : BaseConfig:
-2025-07-09 16:16:41 [INFO] rompy.model         :   model_type: base
-2025-07-09 16:16:41 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:16:41 [INFO] rompy.model         :   checkout: main
-2025-07-09 16:16:41 [INFO] rompy.model         :   arg1: pipeline
-2025-07-09 16:16:41 [INFO] rompy.model         :   arg2: demo
-2025-07-09 16:16:41 [INFO] rompy.model         :
-2025-07-09 16:16:41 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:16:41 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
-2025-07-09 16:16:41 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:16:41 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:16:41 [INFO] rompy.model         : Processing model configuration...
-2025-07-09 16:16:41 [INFO] rompy.model         : Running configuration callable...
-2025-07-09 16:16:41 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_hs3gz1v0/pipeline_demo...
-2025-07-09 16:16:41 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:16:41 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:16:41 [INFO] rompy.core.render   : Using template version: main
-2025-07-09 16:16:41 [INFO] rompy.core.render   :   • Locating template repository...
-2025-07-09 16:16:41 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:16:41 [INFO] rompy.core.render   :   • Generating files from template...
-2025-07-09 16:16:41 [INFO] rompy.core.render   :   • Rendering time:      0.01 seconds
-2025-07-09 16:16:41 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
-2025-07-09 16:16:41 [INFO] rompy.core.render   :   • Files created:       3
-2025-07-09 16:16:41 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_hs3gz1v0/pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.model         :
-2025-07-09 16:16:41 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:16:41 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
-2025-07-09 16:16:41 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:16:41 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_hs3gz1v0/pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.pipeline      : Input files generated successfully in: /tmp/rompy_backend_demo_hs3gz1v0/pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.pipeline      : Stage 2: Running model using local backend
-2025-07-09 16:16:41 [INFO] rompy.run           : Starting local execution for run_id: pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.run           : Using provided workspace directory: /tmp/rompy_backend_demo_hs3gz1v0/pipeline_demo
-2025-07-09 16:16:41 [WARNING] rompy.run           : ! Model config does not have a run method. Nothing to execute.
-2025-07-09 16:16:41 [INFO] rompy.run           : Local execution completed successfully for run_id: pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.pipeline      : Model run completed successfully
-2025-07-09 16:16:41 [INFO] rompy.pipeline      : Stage 3: Postprocessing with noop
-2025-07-09 16:16:41 [INFO] rompy.postprocess   : Starting no-op postprocessing for run_id: pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.postprocess   : Found 3 output files in /tmp/rompy_backend_demo_hs3gz1v0/pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.postprocess   : No-op postprocessing completed for run_id: pipeline_demo
-2025-07-09 16:16:41 [INFO] rompy.pipeline      : Postprocessing completed
-2025-07-09 16:16:41 [INFO] rompy.pipeline      : Pipeline execution completed successfully for run_id: pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.pipeline      : Starting pipeline execution for run_id: pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.pipeline      : Pipeline configuration: run_backend=&#39;local&#39;, processor=&#39;noop&#39;
+2025-08-25 22:37:24 [INFO] rompy.pipeline      : Stage 1: Generating input files for pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         :             Run ID : pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.model         :         Model Type : BaseConfig
+2025-08-25 22:37:24 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
+2025-08-25 22:37:24 [INFO] rompy.model         :           End Time : 2023-01-01T03:00:00
+2025-08-25 22:37:24 [INFO] rompy.model         :           Duration : 3 hours
+2025-08-25 22:37:24 [INFO] rompy.model         :      Time Interval : 1:00:00
+2025-08-25 22:37:24 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         :
+2025-08-25 22:37:24 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
+2025-08-25 22:37:24 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] root                :
+2025-08-25 22:37:24 [INFO] rompy.model         : BaseConfig:
+2025-08-25 22:37:24 [INFO] rompy.model         :   model_type: base
+2025-08-25 22:37:24 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:24 [INFO] rompy.model         :   checkout: main
+2025-08-25 22:37:24 [INFO] rompy.model         :   arg1: pipeline
+2025-08-25 22:37:24 [INFO] rompy.model         :   arg2: demo
+2025-08-25 22:37:24 [INFO] rompy.model         :
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:24 [INFO] rompy.model         : Processing model configuration...
+2025-08-25 22:37:24 [INFO] rompy.model         : Running configuration callable...
+2025-08-25 22:37:24 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_v01nrn0z/pipeline_demo...
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Using template version: main
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Locating template repository...
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Generating files from template...
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Rendering time:      0.01 seconds
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Files created:       3
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_v01nrn0z/pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.model         :
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_v01nrn0z/pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.pipeline      : Input files generated successfully in: /tmp/rompy_backend_demo_v01nrn0z/pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.pipeline      : Stage 2: Running model using local backend
+2025-08-25 22:37:24 [INFO] rompy.run           : Starting local execution for run_id: pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.run           : Using provided workspace directory: /tmp/rompy_backend_demo_v01nrn0z/pipeline_demo
+2025-08-25 22:37:24 [WARNING] rompy.run           : ! Model config does not have a run method. Nothing to execute.
+2025-08-25 22:37:24 [INFO] rompy.run           : Local execution completed successfully for run_id: pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.pipeline      : Model run completed successfully
+2025-08-25 22:37:24 [INFO] rompy.pipeline      : Stage 3: Postprocessing with noop
+2025-08-25 22:37:24 [INFO] rompy.postprocess   : Starting no-op postprocessing for run_id: pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.postprocess   : Found 3 output files in /tmp/rompy_backend_demo_v01nrn0z/pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.postprocess   : No-op postprocessing completed for run_id: pipeline_demo
+2025-08-25 22:37:24 [INFO] rompy.pipeline      : Postprocessing completed
+2025-08-25 22:37:24 [INFO] rompy.pipeline      : Pipeline execution completed successfully for run_id: pipeline_demo
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1063,9 +1062,9 @@ Pipeline results:
   stages_completed: [&#39;generate&#39;, &#39;run&#39;, &#39;postprocess&#39;]
   run_backend: local
   processor: noop
-  staging_dir: /tmp/rompy_backend_demo_hs3gz1v0/pipeline_demo
+  staging_dir: /tmp/rompy_backend_demo_v01nrn0z/pipeline_demo
   run_success: True
-  postprocess_results: {&#39;success&#39;: True, &#39;message&#39;: &#39;No postprocessing requested - validation only&#39;, &#39;run_id&#39;: &#39;pipeline_demo&#39;, &#39;output_dir&#39;: &#39;/tmp/rompy_backend_demo_hs3gz1v0/pipeline_demo&#39;, &#39;validated&#39;: True}
+  postprocess_results: {&#39;success&#39;: True, &#39;message&#39;: &#39;No postprocessing requested - validation only&#39;, &#39;run_id&#39;: &#39;pipeline_demo&#39;, &#39;output_dir&#39;: &#39;/tmp/rompy_backend_demo_v01nrn0z/pipeline_demo&#39;, &#39;validated&#39;: True}
   message: Pipeline completed successfully
 </pre></div></div>
 </div>
@@ -1075,7 +1074,7 @@ Pipeline results:
 <h2>Error Handling<a class="headerlink" href="#Error-Handling" title="Link to this heading">#</a></h2>
 <p>The backend system provides clear error messages when backends are not found.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span>
@@ -1110,7 +1109,7 @@ Pipeline results:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Run backend error: Backend must be a BackendConfig instance, got InvalidBackendConfig
+Run backend error: Backend must be a subclass of BaseBackendConfig, got InvalidBackendConfig
 Postprocessor error: Unknown postprocessor: invalid. Available processors: noop
 Pipeline backend error: Unknown pipeline backend: unknown. Available backends: local
 </pre></div></div>
@@ -1120,7 +1119,7 @@ Pipeline backend error: Unknown pipeline backend: unknown. Available backends: l
 <h2>Complete Workflow Example<a class="headerlink" href="#Complete-Workflow-Example" title="Link to this heading">#</a></h2>
 <p>Let’s put it all together with a complete workflow that demonstrates the full capability of the backend system.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.backends.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalConfig</span>
@@ -1172,109 +1171,109 @@ Pipeline backend error: Unknown pipeline backend: unknown. Available backends: l
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2025-07-09 16:20:45 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
-2025-07-09 16:20:45 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] rompy.model         :             Run ID : complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.model         :         Model Type : BaseConfig
-2025-07-09 16:20:45 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
-2025-07-09 16:20:45 [INFO] rompy.model         :           End Time : 2023-01-01T06:00:00
-2025-07-09 16:20:45 [INFO] rompy.model         :           Duration : 6 hours
-2025-07-09 16:20:45 [INFO] rompy.model         :      Time Interval : 1:00:00
-2025-07-09 16:20:45 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:20:45 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] rompy.model         :
-2025-07-09 16:20:45 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
-2025-07-09 16:20:45 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] root                :
-2025-07-09 16:20:45 [INFO] rompy.model         : BaseConfig:
-2025-07-09 16:20:45 [INFO] rompy.model         :   model_type: base
-2025-07-09 16:20:45 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:20:45 [INFO] rompy.model         :   checkout: main
-2025-07-09 16:20:45 [INFO] rompy.model         :   arg1: complete
-2025-07-09 16:20:45 [INFO] rompy.model         :   arg2: workflow
-2025-07-09 16:20:45 [INFO] rompy.model         :
-2025-07-09 16:20:45 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
-2025-07-09 16:20:45 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:20:45 [INFO] rompy.model         : Processing model configuration...
-2025-07-09 16:20:45 [INFO] rompy.model         : Running configuration callable...
-2025-07-09 16:20:45 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_hs3gz1v0/complete_workflow...
-2025-07-09 16:20:45 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:20:45 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:20:45 [INFO] rompy.core.render   : Using template version: main
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Locating template repository...
-2025-07-09 16:20:45 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Generating files from template...
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Rendering time:      0.00 seconds
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Files created:       3
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_hs3gz1v0/complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.model         :
-2025-07-09 16:20:45 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
-2025-07-09 16:20:45 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_hs3gz1v0/complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.run           : Starting local execution for run_id: complete_workflow
-2025-07-09 16:20:45 [WARNING] rompy.run           : ! No workspace_dir provided, generating files (this may cause double generation in pipeline)
-2025-07-09 16:20:45 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
-2025-07-09 16:20:45 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] rompy.model         :             Run ID : complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.model         :         Model Type : BaseConfig
-2025-07-09 16:20:45 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
-2025-07-09 16:20:45 [INFO] rompy.model         :           End Time : 2023-01-01T06:00:00
-2025-07-09 16:20:45 [INFO] rompy.model         :           Duration : 6 hours
-2025-07-09 16:20:45 [INFO] rompy.model         :      Time Interval : 1:00:00
-2025-07-09 16:20:45 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:20:45 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] rompy.model         :
-2025-07-09 16:20:45 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
-2025-07-09 16:20:45 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] root                :
-2025-07-09 16:20:45 [INFO] rompy.model         : BaseConfig:
-2025-07-09 16:20:45 [INFO] rompy.model         :   model_type: base
-2025-07-09 16:20:45 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:20:45 [INFO] rompy.model         :   checkout: main
-2025-07-09 16:20:45 [INFO] rompy.model         :   arg1: complete
-2025-07-09 16:20:45 [INFO] rompy.model         :   arg2: workflow
-2025-07-09 16:20:45 [INFO] rompy.model         :
-2025-07-09 16:20:45 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
-2025-07-09 16:20:45 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:20:45 [INFO] rompy.model         : Processing model configuration...
-2025-07-09 16:20:45 [INFO] rompy.model         : Running configuration callable...
-2025-07-09 16:20:45 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_hs3gz1v0/complete_workflow...
-2025-07-09 16:20:45 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:20:45 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_hs3gz1v0
-2025-07-09 16:20:45 [INFO] rompy.core.render   : Using template version: main
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Locating template repository...
-2025-07-09 16:20:45 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Generating files from template...
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Rendering time:      0.01 seconds
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Files created:       3
-2025-07-09 16:20:45 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_hs3gz1v0/complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.model         :
-2025-07-09 16:20:45 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-2025-07-09 16:20:45 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
-2025-07-09 16:20:45 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-2025-07-09 16:20:45 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_hs3gz1v0/complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.run           : Model inputs generated in: /tmp/rompy_backend_demo_hs3gz1v0/complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.run           : Executing command: echo &#39;Running model simulation&#39;
-2025-07-09 16:20:45 [INFO] rompy.run           : Command stdout:
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         :             Run ID : complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.model         :         Model Type : BaseConfig
+2025-08-25 22:37:24 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
+2025-08-25 22:37:24 [INFO] rompy.model         :           End Time : 2023-01-01T06:00:00
+2025-08-25 22:37:24 [INFO] rompy.model         :           Duration : 6 hours
+2025-08-25 22:37:24 [INFO] rompy.model         :      Time Interval : 1:00:00
+2025-08-25 22:37:24 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         :
+2025-08-25 22:37:24 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
+2025-08-25 22:37:24 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] root                :
+2025-08-25 22:37:24 [INFO] rompy.model         : BaseConfig:
+2025-08-25 22:37:24 [INFO] rompy.model         :   model_type: base
+2025-08-25 22:37:24 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:24 [INFO] rompy.model         :   checkout: main
+2025-08-25 22:37:24 [INFO] rompy.model         :   arg1: complete
+2025-08-25 22:37:24 [INFO] rompy.model         :   arg2: workflow
+2025-08-25 22:37:24 [INFO] rompy.model         :
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:24 [INFO] rompy.model         : Processing model configuration...
+2025-08-25 22:37:24 [INFO] rompy.model         : Running configuration callable...
+2025-08-25 22:37:24 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_v01nrn0z/complete_workflow...
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Using template version: main
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Locating template repository...
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Generating files from template...
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Rendering time:      0.01 seconds
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Files created:       3
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_v01nrn0z/complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.model         :
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_v01nrn0z/complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.run           : Starting local execution for run_id: complete_workflow
+2025-08-25 22:37:24 [WARNING] rompy.run           : ! No workspace_dir provided, generating files (this may cause double generation in pipeline)
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┃                      MODEL RUN CONFIGURATION                       ┃
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         :             Run ID : complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.model         :         Model Type : BaseConfig
+2025-08-25 22:37:24 [INFO] rompy.model         :         Start Time : 2023-01-01T00:00:00
+2025-08-25 22:37:24 [INFO] rompy.model         :           End Time : 2023-01-01T06:00:00
+2025-08-25 22:37:24 [INFO] rompy.model         :           Duration : 6 hours
+2025-08-25 22:37:24 [INFO] rompy.model         :      Time Interval : 1:00:00
+2025-08-25 22:37:24 [INFO] rompy.model         :   Output Directory : /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         :
+2025-08-25 22:37:24 [INFO] root                : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] root                : ┃                  MODEL CONFIGURATION (BaseConfig)                  ┃
+2025-08-25 22:37:24 [INFO] root                : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] root                :
+2025-08-25 22:37:24 [INFO] rompy.model         : BaseConfig:
+2025-08-25 22:37:24 [INFO] rompy.model         :   model_type: base
+2025-08-25 22:37:24 [INFO] rompy.model         :   template: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:24 [INFO] rompy.model         :   checkout: main
+2025-08-25 22:37:24 [INFO] rompy.model         :   arg1: complete
+2025-08-25 22:37:24 [INFO] rompy.model         :   arg2: workflow
+2025-08-25 22:37:24 [INFO] rompy.model         :
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┃                     STARTING MODEL GENERATION                      ┃
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         : Preparing input files in /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:24 [INFO] rompy.model         : Processing model configuration...
+2025-08-25 22:37:24 [INFO] rompy.model         : Running configuration callable...
+2025-08-25 22:37:24 [INFO] rompy.model         : Rendering model templates to /tmp/rompy_backend_demo_v01nrn0z/complete_workflow...
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Template source: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Output directory: /tmp/rompy_backend_demo_v01nrn0z
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Using template version: main
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Locating template repository...
+2025-08-25 22:37:24 [INFO] rompy.core.render   : Template repository located at: /home/tdurrant/source/rompy/rompy/rompy/templates/base
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Generating files from template...
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Rendering time:      0.01 seconds
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Total process time:  0.01 seconds
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Files created:       3
+2025-08-25 22:37:24 [INFO] rompy.core.render   :   • Output location:     /tmp/rompy_backend_demo_v01nrn0z/complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.model         :
+2025-08-25 22:37:24 [INFO] rompy.model         : ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+2025-08-25 22:37:24 [INFO] rompy.model         : ┃                     MODEL GENERATION COMPLETE                      ┃
+2025-08-25 22:37:24 [INFO] rompy.model         : ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+2025-08-25 22:37:24 [INFO] rompy.model         : Model files generated at: /tmp/rompy_backend_demo_v01nrn0z/complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.run           : Model inputs generated in: /tmp/rompy_backend_demo_v01nrn0z/complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.run           : Executing command: echo &#39;Running model simulation&#39;
+2025-08-25 22:37:24 [INFO] rompy.run           : Command stdout:
 Running model simulation
 
-2025-07-09 16:20:45 [INFO] rompy.run           : Local execution completed successfully for run_id: complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.postprocess   : Starting no-op postprocessing for run_id: complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.postprocess   : Found 3 output files in /tmp/rompy_backend_demo_hs3gz1v0/complete_workflow
-2025-07-09 16:20:45 [INFO] rompy.postprocess   : No-op postprocessing completed for run_id: complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.run           : Local execution completed successfully for run_id: complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.postprocess   : Starting no-op postprocessing for run_id: complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.postprocess   : Found 3 output files in /tmp/rompy_backend_demo_v01nrn0z/complete_workflow
+2025-08-25 22:37:24 [INFO] rompy.postprocess   : No-op postprocessing completed for run_id: complete_workflow
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1293,9 +1292,9 @@ Running model simulation
 
 4. Results summary:
    - Run ID: complete_workflow
-   - Output directory: /tmp/rompy_backend_demo_hs3gz1v0/complete_workflow
+   - Output directory: /tmp/rompy_backend_demo_v01nrn0z/complete_workflow
    - Run successful: True
-   - Process results: {&#39;success&#39;: True, &#39;message&#39;: &#39;No postprocessing requested - validation only&#39;, &#39;run_id&#39;: &#39;complete_workflow&#39;, &#39;output_dir&#39;: &#39;/tmp/rompy_backend_demo_hs3gz1v0/complete_workflow&#39;, &#39;validated&#39;: True}
+   - Process results: {&#39;success&#39;: True, &#39;message&#39;: &#39;No postprocessing requested - validation only&#39;, &#39;run_id&#39;: &#39;complete_workflow&#39;, &#39;output_dir&#39;: &#39;/tmp/rompy_backend_demo_v01nrn0z/complete_workflow&#39;, &#39;validated&#39;: True}
 </pre></div></div>
 </div>
 </section>
@@ -1311,7 +1310,7 @@ Running model simulation
 </ol>
 <p>The entry point-based architecture makes it easy to extend rompy with custom backends without modifying the core library. Simply implement the required interface and register your backend through Python entry points.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cleanup: Remove temporary files</span>
@@ -1330,8 +1329,16 @@ Running model simulation
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Cleaned up temporary directory: /tmp/rompy_backend_demo_hs3gz1v0
+Cleaned up temporary directory: /tmp/rompy_backend_demo_v01nrn0z
 </pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 </div>
 </section>
 </section>
