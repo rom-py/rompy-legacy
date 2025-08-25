@@ -602,16 +602,16 @@ def create_modern_setup_files(
     with open(os.path.join(target_dir, ".pre-commit-config.yaml"), "w") as f:
         f.write(precommit_content)
 
-    # Create GitHub workflow
-    os.makedirs(os.path.join(target_dir, ".github", "workflows"), exist_ok=True)
-    workflow_content = format_template(GITHUB_WORKFLOW_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(target_dir, ".github", "workflows", "tests.yml"), "w") as f:
-        f.write(workflow_content)
+    # # Create GitHub workflow
+    # os.makedirs(os.path.join(target_dir, ".github", "workflows"), exist_ok=True)
+    # workflow_content = format_template(GITHUB_WORKFLOW_SRC_TEMPLATE, **template_vars)
+    # with open(os.path.join(target_dir, ".github", "workflows", "tests.yml"), "w") as f:
+    #     f.write(workflow_content)
 
-    # Create modern README
-    readme_content = format_template(README_SRC_TEMPLATE, **template_vars)
-    with open(os.path.join(target_dir, "README.md"), "w") as f:
-        f.write(readme_content)
+    # # Create modern README
+    # readme_content = format_template(README_SRC_TEMPLATE, **template_vars)
+    # with open(os.path.join(target_dir, "README.md"), "w") as f:
+    #     f.write(readme_content)
 
     # Create src package structure with modern __init__.py
     src_package_dir = os.path.join(target_dir, "src", package_module)
