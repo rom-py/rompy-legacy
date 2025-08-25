@@ -1352,7 +1352,8 @@ classifiers = [
 license = {text = "Apache Software License 2.0"}
 requires-python = ">=3.10"
 dependencies = [
-    "rompy",
+    # "rompy",
+    "rompy@git+https://github.com/rom-py/rompy-core.git",
     "pydantic>2",
 ]
 
@@ -1364,12 +1365,22 @@ dev = [
     "mypy",
     "pytest",
     "ruff",
-    "requests"
+    "requests",
+    "envyaml"
 ]
 test = [
     "pytest",
     "coverage",
-    "requests"
+    "requests",
+    "envyaml"
+]
+docs = [
+    "autodoc_pydantic",
+    "ipython",
+    "nbsphinx",
+    "pydata_sphinx_theme",
+    "sphinx<7.3.6",
+    "sphinx-collections",
 ]
 
 [project.entry-points."rompy.config"]
@@ -1433,7 +1444,8 @@ classifiers = [
 license = {text = "Apache Software License 2.0"}
 requires-python = ">=3.10"
 dependencies = [
-    "rompy",
+    # "rompy",
+    "rompy@git+https://github.com/rom-py/rompy-core.git",
     "pydantic>2",
     "pylibs-ocean",
     "pytmd",
@@ -1453,6 +1465,14 @@ test = [
     "pytest",
     "coverage",
     "requests"
+]
+docs = [
+    "autodoc_pydantic",
+    "ipython",
+    "nbsphinx",
+    "pydata_sphinx_theme",
+    "sphinx<7.3.6",
+    "sphinx-collections",
 ]
 
 [project.entry-points."rompy.config"]
