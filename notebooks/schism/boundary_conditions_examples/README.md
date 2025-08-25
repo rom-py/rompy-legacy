@@ -93,6 +93,50 @@ The `setup_type` field provides pre-configured boundary setups:
 
 ## Usage Instructions
 
+---
+
+## Automated Example Testing with `run_boundary_conditions_examples.py`
+
+A key feature of this directory is the automated test runner script: [`run_boundary_conditions_examples.py`](../run_boundary_conditions_examples.py). This script validates all boundary condition example configurations using the ROMPY backend framework and Docker, ensuring reproducibility and correct setup.
+
+### What Does the Script Do?
+- Runs each example YAML configuration in this directory using the ROMPY backend system
+- Automatically builds the SCHISM Docker image if needed
+- Executes each example in an isolated Docker container for consistent results
+- Validates outputs and reports success/failure for each example
+- Supports running all examples, or filtering by type (tidal, hybrid, river, nested)
+
+### How to Use
+From the project root, run:
+```bash
+python notebooks/schism/run_boundary_conditions_examples.py [OPTIONS]
+```
+
+**Common options:**
+- `--all` (default): Run all examples
+- `--tidal`, `--hybrid`, `--river`, `--nested`: Run only specific categories
+- `--single <name>`: Run a single example by name
+- `--dry-run`: Show what would be run without executing
+- `--keep-outputs`: Preserve output directories after run
+- `--help`: Show help and available examples
+
+### How the Docker Backend Works
+- The script uses ROMPY's Docker backend to build and run the SCHISM model in a container
+- The Docker image is built from [`docker/schism/Dockerfile`](../../../docker/schism/Dockerfile) and includes all dependencies
+- Each example is run in a fresh container, mounting the generated SCHISM configuration and output directories
+- This ensures a clean, reproducible environment for every test
+- Output files are validated after each run; results are summarized at the end
+
+### Best Practices
+- Always run the script from the ROMPY project root to ensure correct file paths
+- Make sure Docker is installed and running on your system
+- If you encounter errors, check that all required data files and Dockerfiles exist
+- Use `--dry-run` to preview actions before executing
+- Use `--keep-outputs` to inspect results for debugging
+
+---
+
+
 ### Basic Workflow
 
 1. **Choose your use case**: Select the directory that matches your modeling scenario
