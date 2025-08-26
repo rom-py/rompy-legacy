@@ -89,41 +89,12 @@ def image_available(image: str) -> bool:
         return False
 
 
-def build_image_if_needed(image_name: str, dockerfile_path: Path, context_path: Path, build_args: dict = None) -> bool:
-    """Build Docker image if it doesn't exist."""
-    if image_available(image_name):
-        print(f"✓ Image {image_name} already exists")
-        return True
-    
-    print(f"Building image {image_name} from {dockerfile_path}...")
-    try:
-        # Build command with optional build args
-        cmd = ["docker", "build", "-t", image_name, "-f", str(dockerfile_path)]
-        if build_args:
-            for key, value in build_args.items():
-                cmd.extend(["--build-arg", f"{key}={value}"])
-        cmd.append(str(context_path))
-        
-        # Show build logs in real-time instead of capturing them
-        result = subprocess.run(cmd, timeout=1800)  # 30 minute timeout for builds
-        
-        if result.returncode == 0:
-            print(f"✓ Successfully built image {image_name}")
-            return True
-        else:
-            print(f"✗ Failed to build image {image_name} (return code: {result.returncode})")
-            return False
-    except subprocess.TimeoutExpired:
-        print(f"✗ Build timed out for image {image_name} (30 minutes)")
-        return False
-    except Exception as e:
-        print(f"✗ Error building image {image_name}: {e}")
-        return False
+
 
 
 @pytest.fixture(scope="session")
 def schism_image():
-    """Ensure SCHISM image is available, building if necessary."""
+    """Validate SCHISM Docker prerequisites for DockerRunBackend."""
     if not docker_available():
         pytest.skip("Docker not available")
     
@@ -141,13 +112,17 @@ def schism_image():
     if not context_path.exists():
         pytest.skip(f"SCHISM build context not found at {context_path}")
     
-    # Build image if needed
-    if build_image_if_needed("schism", dockerfile_path, context_path):
-        return "schism"
+    # Check if image already exists (optional optimization)
+    if image_available("schism"):
+        print(f"✓ Image schism already exists")
     else:
-        pytest.skip("Failed to build SCHISM image")
+        print(f"Image schism not found, DockerRunBackend will build it")
+    
+    # Return None since we're not using image name anymore
+    return None
 
 
+@pytest.mark.slow
 @pytest.mark.skipif(not docker_available(), reason="Docker not available")
 @pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Docker build tests in CI environment")
 def test_schism_container_runs_with_existing_test_data(tmp_path, schism_image):
@@ -209,8 +184,13 @@ def test_schism_container_runs_with_existing_test_data(tmp_path, schism_image):
     # Minimal container run: use mpirun with 6 processes (4 scribes + 2 compute) and latest compiled SCHISM
     run_cmd = "schism_v5.13.0 4"
 
+    # Get dockerfile paths for DockerRunBackend to handle building if needed
+    repo_root = Path(__file__).resolve().parents[2]
+    context_path = repo_root / "docker" / "schism"
+    
     docker_config = DockerConfig(
-        image=schism_image,
+        dockerfile=Path("Dockerfile"),  # Relative to build context
+        build_context=context_path,
         executable=run_cmd,
         mpiexec="mpirun",
         cpu=6,
@@ -278,7 +258,7 @@ def test_schism_container_runs_with_existing_test_data(tmp_path, schism_image):
 
 @pytest.fixture(scope="session")
 def swan_image():
-    """Ensure SWAN image is available, building if necessary."""
+    """Validate SWAN Docker prerequisites for DockerRunBackend."""
     if not docker_available():
         pytest.skip("Docker not available")
     
@@ -296,13 +276,17 @@ def swan_image():
     if not context_path.exists():
         pytest.skip(f"SWAN build context not found at {context_path}")
     
-    # Build image if needed - no build args needed since using latest Git version
-    if build_image_if_needed("oceanum/swan:latest", dockerfile_path, context_path):
-        return "oceanum/swan:latest"
+    # Check if image already exists (optional optimization)
+    if image_available("oceanum/swan:latest"):
+        print(f"✓ Image oceanum/swan:latest already exists")
     else:
-        pytest.skip("Failed to build SWAN image")
+        print(f"Image oceanum/swan:latest not found, DockerRunBackend will build it")
+    
+    # Return None since we're not using image name anymore
+    return None
 
 
+@pytest.mark.slow
 @pytest.mark.skipif(not docker_available(), reason="Docker not available")
 @pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Docker build tests in CI environment")
 def test_swan_container_basic_config(tmp_path, swan_image):
@@ -370,21 +354,22 @@ def test_swan_container_basic_config(tmp_path, swan_image):
         )
     )
     
-    generated_dir = Path(model_run.generate())
-    assert generated_dir.exists()
-    
     # Use single processor to avoid MPI root issues and segfaults
     run_cmd = "bash -c \"cd /app/run_id && swan.exe\""
     
+    # Get dockerfile paths for DockerRunBackend to handle building if needed
+    repo_root = Path(__file__).resolve().parents[2]
+    context_path = repo_root / "docker" / "swan"
+    
     docker_config = DockerConfig(
-        image=swan_image,
+        dockerfile=Path("Dockerfile"),  # Relative to build context
+        build_context=context_path,
         executable=run_cmd,
         cpu=1,  # Single CPU since we're not using MPI
     )
     
     backend = DockerRunBackend()
-    with patch("rompy.model.ModelRun.generate", return_value=str(generated_dir)):
-        result = backend.run(model_run, docker_config)
+    result = backend.run(model_run, docker_config)
     
     # Note: result may be False due to SWAN segfault (no wave forcing), 
     # but this test validates framework integration and template fixes
@@ -394,6 +379,7 @@ def test_swan_container_basic_config(tmp_path, swan_image):
     # 2. ✅ SWAN framework integration working  
     # 3. ✅ Container execution successful
     
+    generated_dir = Path(model_run.output_dir) / model_run.run_id
     print(f"\nSWAN container test completed for: {generated_dir}")
     
     # Main success: INPUT file generated with proper frequency
@@ -436,6 +422,7 @@ def test_swan_container_basic_config(tmp_path, swan_image):
         print("   But core framework integration is VALIDATED! 🎯")
 
 
+@pytest.mark.slow
 @pytest.mark.skipif(not docker_available(), reason="Docker not available") 
 @pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Docker build tests in CI environment")
 def test_swan_container_runs_with_existing_test_data(tmp_path, swan_image):
@@ -497,26 +484,28 @@ def test_swan_container_runs_with_existing_test_data(tmp_path, swan_image):
         config=model_cfg,
     )
 
-    generated_dir = Path(model_run.generate())
-    assert generated_dir.exists()
-
     run_cmd = (
         "bash -c \"cd /app/run_id && (mpiexec -n 2 swan.exe || swan.exe)\""
     )
 
+    # Get dockerfile paths for DockerRunBackend to handle building if needed
+    repo_root = Path(__file__).resolve().parents[2]
+    context_path = repo_root / "docker" / "swan"
+
     docker_config = DockerConfig(
-        image=swan_image,
+        dockerfile=Path("Dockerfile"),  # Relative to build context
+        build_context=context_path,
         executable=run_cmd,
         cpu=2,
     )
 
     backend = DockerRunBackend()
-    with patch("rompy.model.ModelRun.generate", return_value=str(generated_dir)):
-        result = backend.run(model_run, docker_config)
+    result = backend.run(model_run, docker_config)
 
     assert result is True
 
     # Verify that SWAN container executed successfully
+    generated_dir = Path(model_run.output_dir) / model_run.run_id
     print(f"\nSWAN container test completed in: {generated_dir}")
     
     # Check that SWAN ran - look for evidence of execution
