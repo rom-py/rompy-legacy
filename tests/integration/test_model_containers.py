@@ -17,7 +17,6 @@ To force Docker builds in CI, set ROMPY_ENABLE_DOCKER_IN_CI=1
 import os
 from pathlib import Path
 import subprocess
-from unittest.mock import patch
 
 import pytest
 
@@ -92,40 +91,13 @@ def image_available(image: str) -> bool:
 
 
 
-@pytest.fixture(scope="session")
-def schism_image():
-    """Validate SCHISM Docker prerequisites for DockerRunBackend."""
-    if not docker_available():
-        pytest.skip("Docker not available")
-    
-    if should_skip_docker_builds():
-        pytest.skip("Skipping Docker build tests in CI environment")
-    
-    # Get paths relative to the repository root
-    repo_root = Path(__file__).resolve().parents[2]
-    dockerfile_path = repo_root / "docker" / "schism" / "Dockerfile"
-    context_path = repo_root / "docker" / "schism"
-    
-    if not dockerfile_path.exists():
-        pytest.skip(f"SCHISM Dockerfile not found at {dockerfile_path}")
-    
-    if not context_path.exists():
-        pytest.skip(f"SCHISM build context not found at {context_path}")
-    
-    # Check if image already exists (optional optimization)
-    if image_available("schism"):
-        print(f"✓ Image schism already exists")
-    else:
-        print(f"Image schism not found, DockerRunBackend will build it")
-    
-    # Return None since we're not using image name anymore
-    return None
+
 
 
 @pytest.mark.slow
 @pytest.mark.skipif(not docker_available(), reason="Docker not available")
-@pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Docker build tests in CI environment")
-def test_schism_container_runs_with_existing_test_data(tmp_path, schism_image):
+@pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Potential Docker build tests in CI environment")
+def test_schism_container_runs_with_existing_test_data(tmp_path):
     """Run SCHISM via container using a known-good YAML example to generate inputs.
 
     Uses the 'basic_tidal' example YAML which renders a complete, valid set of
@@ -133,8 +105,6 @@ def test_schism_container_runs_with_existing_test_data(tmp_path, schism_image):
     """
     import yaml
     import tarfile
-    import shutil
-    import os
 
     # Paths
     repo_root = Path(__file__).resolve().parents[2]
@@ -168,18 +138,8 @@ def test_schism_container_runs_with_existing_test_data(tmp_path, schism_image):
         print(f"[debug] Could not disable station output: {e}")
         pass
 
-    # Create ModelRun from YAML and generate inputs
+    # Create ModelRun from YAML 
     model_run = ModelRun(**config_data)
-    generated_dir = Path(model_run.generate())
-    assert generated_dir.exists(), "SCHISM generation did not produce a directory"
-
-    # Persist a debug copy and a runnable Docker script for manual debugging
-    debug_root = repo_root / "tests" / "integration" / "_debug_schism_container"
-    debug_root.mkdir(parents=True, exist_ok=True)
-    debug_run_dir = debug_root / generated_dir.name
-    if debug_run_dir.exists():
-        shutil.rmtree(debug_run_dir)
-    shutil.copytree(generated_dir, debug_run_dir)
 
     # Minimal container run: use mpirun with 6 processes (4 scribes + 2 compute) and latest compiled SCHISM
     run_cmd = "schism_v5.13.0 4"
@@ -202,23 +162,15 @@ def test_schism_container_runs_with_existing_test_data(tmp_path, schism_image):
 
     backend = DockerRunBackend()
 
-    # Write a helper script to run the exact docker command manually for debugging
-    docker_run_script = debug_root / "run_docker.sh"
-    docker_run_script.write_text(
-        "#!/usr/bin/env bash\n"
-        "set -euo pipefail\n"
-        f"docker run --rm --user root -e OMPI_ALLOW_RUN_AS_ROOT=1 -e OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 -v {debug_run_dir}:/app/run_id:Z {schism_image} bash -c 'cd /app/run_id && mpirun --allow-run-as-root -n 6 {run_cmd}'\n"
-    )
-    os.chmod(docker_run_script, 0o755)
-
-    print(f"\n[debug] SCHISM debug directory: {debug_run_dir}")
-    print(f"[debug] Run the container manually with: {docker_run_script}\n")
-
-    # Ensure the backend uses our pre-generated directory
-    with patch("rompy.model.ModelRun.generate", return_value=str(generated_dir)):
-        result = backend.run(model_run, docker_config, workspace_dir=str(generated_dir))
+    # Run the model (this will generate inputs automatically)
+    result = backend.run(model_run, docker_config)
 
     assert result is True
+
+    # Get the generated directory from the model_run (it will be set after generation)
+    generated_dir = Path(model_run.staging_dir)
+
+
 
     # Verify outputs
     outputs_dir = generated_dir / "outputs"
@@ -256,40 +208,13 @@ def test_schism_container_runs_with_existing_test_data(tmp_path, schism_image):
         raise AssertionError(f"Failed to validate SCHISM output file {out2d_file}: {e}")
 
 
-@pytest.fixture(scope="session")
-def swan_image():
-    """Validate SWAN Docker prerequisites for DockerRunBackend."""
-    if not docker_available():
-        pytest.skip("Docker not available")
-    
-    if should_skip_docker_builds():
-        pytest.skip("Skipping Docker build tests in CI environment")
-    
-    # Get paths relative to the repository root
-    repo_root = Path(__file__).resolve().parents[2]
-    dockerfile_path = repo_root / "docker" / "swan" / "Dockerfile"
-    context_path = repo_root / "docker" / "swan"
-    
-    if not dockerfile_path.exists():
-        pytest.skip(f"SWAN Dockerfile not found at {dockerfile_path}")
-    
-    if not context_path.exists():
-        pytest.skip(f"SWAN build context not found at {context_path}")
-    
-    # Check if image already exists (optional optimization)
-    if image_available("oceanum/swan:latest"):
-        print(f"✓ Image oceanum/swan:latest already exists")
-    else:
-        print(f"Image oceanum/swan:latest not found, DockerRunBackend will build it")
-    
-    # Return None since we're not using image name anymore
-    return None
+
 
 
 @pytest.mark.slow
 @pytest.mark.skipif(not docker_available(), reason="Docker not available")
-@pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Docker build tests in CI environment")
-def test_swan_container_basic_config(tmp_path, swan_image):
+@pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Potential Docker build tests in CI environment")
+def test_swan_container_basic_config(tmp_path):
     """Test SWAN container with framework integration - validates template rendering and Docker execution.
     
     This test demonstrates that the critical SWAN framework issues are resolved:
@@ -424,8 +349,8 @@ def test_swan_container_basic_config(tmp_path, swan_image):
 
 @pytest.mark.slow
 @pytest.mark.skipif(not docker_available(), reason="Docker not available") 
-@pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Docker build tests in CI environment")
-def test_swan_container_runs_with_existing_test_data(tmp_path, swan_image):
+@pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Potential Docker build tests in CI environment")
+def test_swan_container_runs_with_existing_test_data(tmp_path):
     """Run SWAN inside the container using inputs rendered from existing tests.
 
     Reuses `tests/swan/swan_model.yml` to render an INPUT file and runs swan.exe
