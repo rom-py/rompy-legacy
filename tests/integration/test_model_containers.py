@@ -160,10 +160,8 @@ def test_schism_container_runs_with_existing_test_data(tmp_path):
         },
     )
 
-    backend = DockerRunBackend()
-
     # Run the model (this will generate inputs automatically)
-    result = backend.run(model_run, docker_config)
+    result = model_run.run(backend=docker_config)
 
     assert result is True
 
@@ -293,8 +291,7 @@ def test_swan_container_basic_config(tmp_path):
         cpu=1,  # Single CPU since we're not using MPI
     )
     
-    backend = DockerRunBackend()
-    result = backend.run(model_run, docker_config)
+    result = model_run.run(backend=docker_config)
     
     # Note: result may be False due to SWAN segfault (no wave forcing), 
     # but this test validates framework integration and template fixes
@@ -424,8 +421,7 @@ def test_swan_container_runs_with_existing_test_data(tmp_path):
         cpu=2,
     )
 
-    backend = DockerRunBackend()
-    result = backend.run(model_run, docker_config)
+    result = model_run.run(backend=docker_config)
 
     assert result is True
 
