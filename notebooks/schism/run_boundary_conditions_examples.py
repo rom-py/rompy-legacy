@@ -281,7 +281,7 @@ class SchismExampleRunner:
     def _create_docker_config(self, schism_dir: Path, exe_suffix: str) -> DockerConfig:
         """Create Docker configuration for SCHISM execution."""
         # Create the command to run SCHISM
-        command = f"cd /tmp/schism && mpirun --allow-run-as-root -n 8 schism_{self.schism_version}{exe_suffix} 4"
+        command = f"cd /tmp/schism && mpirun --oversubscribe --allow-run-as-root -n 8 schism_{self.schism_version}{exe_suffix} 4"
 
         # Ensure the directory exists for volume validation
         schism_dir.mkdir(parents=True, exist_ok=True)
