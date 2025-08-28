@@ -497,68 +497,28 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseComponent</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.inpgrid</span><span class="w"> </span><span class="kn">import</span> <span class="n">CURVILINEAR</span><span class="p">,</span> <span class="n">ICE</span><span class="p">,</span> <span class="n">REGULAR</span><span class="p">,</span> <span class="n">UNSTRUCTURED</span><span class="p">,</span> <span class="n">WIND</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.inpgrid</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">CURVILINEAR</span><span class="p">,</span> <span class="n">ICE</span><span class="p">,</span> <span class="n">REGULAR</span><span class="p">,</span>
+                                           <span class="n">UNSTRUCTURED</span><span class="p">,</span> <span class="n">WIND</span><span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.lockup</span><span class="w"> </span><span class="kn">import</span> <span class="n">COMPUTE_NONSTAT</span><span class="p">,</span> <span class="n">COMPUTE_STAT</span><span class="p">,</span> <span class="n">STOP</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.output</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">BLOCK</span><span class="p">,</span>
-    <span class="n">BLOCKS</span><span class="p">,</span>
-    <span class="n">CURVES</span><span class="p">,</span>
-    <span class="n">FRAME</span><span class="p">,</span>
-    <span class="n">GROUP</span><span class="p">,</span>
-    <span class="n">ISOLINE</span><span class="p">,</span>
-    <span class="n">NESTOUT</span><span class="p">,</span>
-    <span class="n">NGRID</span><span class="p">,</span>
-    <span class="n">NGRID_UNSTRUCTURED</span><span class="p">,</span>
-    <span class="n">OUTPUT_OPTIONS</span><span class="p">,</span>
-    <span class="n">POINTS</span><span class="p">,</span>
-    <span class="n">POINTS_FILE</span><span class="p">,</span>
-    <span class="n">QUANTITIES</span><span class="p">,</span>
-    <span class="n">RAY</span><span class="p">,</span>
-    <span class="n">SPECIAL_NAMES</span><span class="p">,</span>
-    <span class="n">SPECOUT</span><span class="p">,</span>
-    <span class="n">TABLE</span><span class="p">,</span>
-    <span class="n">TEST</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.physics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">BRAGG</span><span class="p">,</span>
-    <span class="n">BRAGG_FILE</span><span class="p">,</span>
-    <span class="n">BRAGG_FT</span><span class="p">,</span>
-    <span class="n">BREAKING_BKD</span><span class="p">,</span>
-    <span class="n">BREAKING_CONSTANT</span><span class="p">,</span>
-    <span class="n">DIFFRACTION</span><span class="p">,</span>
-    <span class="n">FRICTION_COLLINS</span><span class="p">,</span>
-    <span class="n">FRICTION_JONSWAP</span><span class="p">,</span>
-    <span class="n">FRICTION_MADSEN</span><span class="p">,</span>
-    <span class="n">FRICTION_RIPPLES</span><span class="p">,</span>
-    <span class="n">GEN1</span><span class="p">,</span>
-    <span class="n">GEN2</span><span class="p">,</span>
-    <span class="n">GEN3</span><span class="p">,</span>
-    <span class="n">LIMITER</span><span class="p">,</span>
-    <span class="n">MUD</span><span class="p">,</span>
-    <span class="n">NEGATINP</span><span class="p">,</span>
-    <span class="n">OBSTACLES</span><span class="p">,</span>
-    <span class="n">OFFS</span><span class="p">,</span>
-    <span class="n">QUADRUPL</span><span class="p">,</span>
-    <span class="n">SCAT</span><span class="p">,</span>
-    <span class="n">SETUP</span><span class="p">,</span>
-    <span class="n">SICE</span><span class="p">,</span>
-    <span class="n">SICE_D15</span><span class="p">,</span>
-    <span class="n">SICE_M18</span><span class="p">,</span>
-    <span class="n">SICE_R19</span><span class="p">,</span>
-    <span class="n">SICE_R21B</span><span class="p">,</span>
-    <span class="n">SSWELL_ARDHUIN</span><span class="p">,</span>
-    <span class="n">SSWELL_ROGERS</span><span class="p">,</span>
-    <span class="n">SSWELL_ZIEGER</span><span class="p">,</span>
-    <span class="n">SURFBEAT</span><span class="p">,</span>
-    <span class="n">TRIAD</span><span class="p">,</span>
-    <span class="n">TRIAD_DCTA</span><span class="p">,</span>
-    <span class="n">TRIAD_LTA</span><span class="p">,</span>
-    <span class="n">TRIAD_SPB</span><span class="p">,</span>
-    <span class="n">TURBULENCE</span><span class="p">,</span>
-    <span class="n">VEGETATION</span><span class="p">,</span>
-    <span class="n">WCAPPING_AB</span><span class="p">,</span>
-    <span class="n">WCAPPING_KOMEN</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.output</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">BLOCK</span><span class="p">,</span> <span class="n">BLOCKS</span><span class="p">,</span> <span class="n">CURVES</span><span class="p">,</span> <span class="n">FRAME</span><span class="p">,</span> <span class="n">GROUP</span><span class="p">,</span>
+                                          <span class="n">ISOLINE</span><span class="p">,</span> <span class="n">NESTOUT</span><span class="p">,</span> <span class="n">NGRID</span><span class="p">,</span>
+                                          <span class="n">NGRID_UNSTRUCTURED</span><span class="p">,</span> <span class="n">OUTPUT_OPTIONS</span><span class="p">,</span>
+                                          <span class="n">POINTS</span><span class="p">,</span> <span class="n">POINTS_FILE</span><span class="p">,</span> <span class="n">QUANTITIES</span><span class="p">,</span> <span class="n">RAY</span><span class="p">,</span>
+                                          <span class="n">SPECIAL_NAMES</span><span class="p">,</span> <span class="n">SPECOUT</span><span class="p">,</span> <span class="n">TABLE</span><span class="p">,</span> <span class="n">TEST</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.physics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">BRAGG</span><span class="p">,</span> <span class="n">BRAGG_FILE</span><span class="p">,</span> <span class="n">BRAGG_FT</span><span class="p">,</span>
+                                           <span class="n">BREAKING_BKD</span><span class="p">,</span> <span class="n">BREAKING_CONSTANT</span><span class="p">,</span>
+                                           <span class="n">DIFFRACTION</span><span class="p">,</span> <span class="n">FRICTION_COLLINS</span><span class="p">,</span>
+                                           <span class="n">FRICTION_JONSWAP</span><span class="p">,</span> <span class="n">FRICTION_MADSEN</span><span class="p">,</span>
+                                           <span class="n">FRICTION_RIPPLES</span><span class="p">,</span> <span class="n">GEN1</span><span class="p">,</span> <span class="n">GEN2</span><span class="p">,</span> <span class="n">GEN3</span><span class="p">,</span>
+                                           <span class="n">LIMITER</span><span class="p">,</span> <span class="n">MUD</span><span class="p">,</span> <span class="n">NEGATINP</span><span class="p">,</span> <span class="n">OBSTACLES</span><span class="p">,</span>
+                                           <span class="n">OFFS</span><span class="p">,</span> <span class="n">QUADRUPL</span><span class="p">,</span> <span class="n">SCAT</span><span class="p">,</span> <span class="n">SETUP</span><span class="p">,</span> <span class="n">SICE</span><span class="p">,</span>
+                                           <span class="n">SICE_D15</span><span class="p">,</span> <span class="n">SICE_M18</span><span class="p">,</span> <span class="n">SICE_R19</span><span class="p">,</span>
+                                           <span class="n">SICE_R21B</span><span class="p">,</span> <span class="n">SSWELL_ARDHUIN</span><span class="p">,</span>
+                                           <span class="n">SSWELL_ROGERS</span><span class="p">,</span> <span class="n">SSWELL_ZIEGER</span><span class="p">,</span>
+                                           <span class="n">SURFBEAT</span><span class="p">,</span> <span class="n">TRIAD</span><span class="p">,</span> <span class="n">TRIAD_DCTA</span><span class="p">,</span>
+                                           <span class="n">TRIAD_LTA</span><span class="p">,</span> <span class="n">TRIAD_SPB</span><span class="p">,</span> <span class="n">TURBULENCE</span><span class="p">,</span>
+                                           <span class="n">VEGETATION</span><span class="p">,</span> <span class="n">WCAPPING_AB</span><span class="p">,</span>
+                                           <span class="n">WCAPPING_KOMEN</span><span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.startup</span><span class="w"> </span><span class="kn">import</span> <span class="n">COORDINATES</span><span class="p">,</span> <span class="n">MODE</span><span class="p">,</span> <span class="n">PROJECT</span><span class="p">,</span> <span class="n">SET</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhysicsOff</span>
 

@@ -487,26 +487,17 @@
   <h1>Source code for rompy.swan.components.boundary</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Boundary for SWAN.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.components.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseComponent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.subcomponents.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">CONSTANTFILE</span><span class="p">,</span> <span class="n">CONSTANTPAR</span><span class="p">,</span>
+                                               <span class="n">DEFAULT</span><span class="p">,</span> <span class="n">HOTMULTIPLE</span><span class="p">,</span> <span class="n">HOTSINGLE</span><span class="p">,</span>
+                                               <span class="n">PAR</span><span class="p">,</span> <span class="n">SEGMENT</span><span class="p">,</span> <span class="n">SIDE</span><span class="p">,</span>
+                                               <span class="n">VARIABLEFILE</span><span class="p">,</span> <span class="n">VARIABLEPAR</span><span class="p">,</span> <span class="n">ZERO</span><span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.subcomponents.spectrum</span><span class="w"> </span><span class="kn">import</span> <span class="n">SHAPESPEC</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.subcomponents.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">DEFAULT</span><span class="p">,</span>
-    <span class="n">ZERO</span><span class="p">,</span>
-    <span class="n">HOTSINGLE</span><span class="p">,</span>
-    <span class="n">HOTMULTIPLE</span><span class="p">,</span>
-    <span class="n">SIDE</span><span class="p">,</span>
-    <span class="n">SEGMENT</span><span class="p">,</span>
-    <span class="n">PAR</span><span class="p">,</span>
-    <span class="n">CONSTANTPAR</span><span class="p">,</span>
-    <span class="n">VARIABLEPAR</span><span class="p">,</span>
-    <span class="n">CONSTANTFILE</span><span class="p">,</span>
-    <span class="n">VARIABLEFILE</span><span class="p">,</span>
-<span class="p">)</span>
-
 
 <span class="n">HERE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 
