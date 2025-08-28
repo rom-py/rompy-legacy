@@ -620,7 +620,7 @@ class Bctides:
 
                 # Then write tidal constituents for velocity
                 # Only write tidal constituents for tidal velocity types (3 or 5)
-                if vel_type == 3 or vel_type == 5:
+                if vel_type in {3, 5}:
                     if self.mdt is not None:
                         f.write("z0\n")
                         for n in range(num_nodes):

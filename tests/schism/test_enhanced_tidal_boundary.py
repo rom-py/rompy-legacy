@@ -336,7 +336,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         )
 
                     line_index += 1
-        elif ifltype == 4 or ifltype == -4:
+        elif ifltype in (4, -4):
             # 3D input - no input in bctides.in (except relaxation for -4)
             if ifltype == -4:
                 if line_index >= len(lines):

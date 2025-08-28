@@ -58,15 +58,15 @@ def validate_numpy_types(cls):
     for field_name in cls.model_fields:
         # Add appropriate validators based on field type
         field_info = cls.model_fields[field_name]
-        if field_info.annotation == bool or field_info.annotation == NumpyBool:
+        if field_info.annotation in (bool, NumpyBool):
             cls.model_validators[f"_validate_{field_name}"] = field_validator(
                 field_name
             )(numpy_bool_validator)
-        elif field_info.annotation == int or field_info.annotation == NumpyInt:
+        elif field_info.annotation in (int, NumpyInt):
             cls.model_validators[f"_validate_{field_name}"] = field_validator(
                 field_name
             )(numpy_int_validator)
-        elif field_info.annotation == float or field_info.annotation == NumpyFloat:
+        elif field_info.annotation in (float, NumpyFloat):
             cls.model_validators[f"_validate_{field_name}"] = field_validator(
                 field_name
             )(numpy_float_validator)

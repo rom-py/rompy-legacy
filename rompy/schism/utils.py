@@ -79,7 +79,7 @@ def schism_plot(
         contours = np.flip(-1 * np.asarray(contours))
     else:
         contours = np.asarray(contours)
-    if varname == "depth" or varname == "z":
+    if varname in {"depth", "z"}:
         var = z
     elif varname == "wind_speed":
         var = np.sqrt(schout.wind_speed[:, 0] ** 2 + schout.wind_speed[:, 1] ** 2)
