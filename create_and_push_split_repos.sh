@@ -7,15 +7,12 @@ set -e
 
 ORG="rom-py"
 #REPOS=("rompy-core" "rompy-swan" "rompy-schism" "rompy-notebooks")
-REPOS=("rompy-core" "rompy-swan" "rompy-schism")
+# REPOS=("rompy" "rompy-swan" "rompy-schism")
+REPOS=("rompy")
 SPLIT_DIR="../split-repos"
 
 for REPO in "${REPOS[@]}"; do
-    if [ $REPO = "rompy-core" ]; then
-        REPO_PATH="$SPLIT_DIR/rompy"
-    else
-        REPO_PATH="$SPLIT_DIR/$REPO"
-    fi
+    REPO_PATH="$SPLIT_DIR/$REPO"
     if [ ! -d "$REPO_PATH" ]; then
         echo "[SKIP] Directory $REPO_PATH does not exist. Skipping $REPO."
         continue
@@ -23,19 +20,24 @@ for REPO in "${REPOS[@]}"; do
     echo "[INFO] Processing $REPO..."
     cd "$REPO_PATH"
 
-    # # Delete exiting repo if it exists remotely using gh with confirmation
-    # if gh repo view "$ORG/$REPO" > /dev/null 2>&1; then
-    #     echo "[DELETE] Deleting existing remote repo $ORG/$REPO..."
-    #     gh repo delete "$ORG/$REPO" 
-    # fi
-
-    # Create repo in org if it doesn't exist
-    if ! gh repo view "$ORG/$REPO" > /dev/null 2>&1; then
+    # Delete exiting repo if it exists remotely using gh with confirmation
+    if gh repo view "$ORG/$REPO" > /dev/null 2>&1; then
+        echo "[DELETE] Deleting existing remote repo $ORG/$REPO..."
+        gh repo delete "$ORG/$REPO" 
         echo "[CREATE] Creating repo $ORG/$REPO on GitHub..."
-        gh repo create "$ORG/$REPO" --public --confirm --description "Split from ROMPY monorepo. See https://github.com/rom-py/rompy for history."
+        gh repo create "$ORG/$REPO" --public --confirm --description "Split from ROMPY monorepo. See https://github.com/rom-py/rompy-legacy for history."
     else
-        echo "[INFO] Repo $ORG/$REPO already exists on GitHub."
+        echo "[INFO] Repo $ORG/$REPO does not exist on GitHub. Proceeding to create."
+        gh repo create "$ORG/$REPO" --public --confirm --description "Split from ROMPY monorepo. See https://github.com/rom-py/rompy-legacy for history."
     fi
+
+    # # Create repo in org if it doesn't exist
+    # if ! gh repo view "$ORG/$REPO" > /dev/null 2>&1; then
+    #     echo "[CREATE] Creating repo $ORG/$REPO on GitHub..."
+    #     gh repo create "$ORG/$REPO" --public --confirm --description "Split from ROMPY monorepo. See https://github.com/rom-py/rompy-legacy for history."
+    # else
+    #     echo "[INFO] Repo $ORG/$REPO already exists on GitHub."
+    # fi
 
 
     # Add remote if not present
@@ -57,7 +59,7 @@ for REPO in "${REPOS[@]}"; do
 
     # Push local 'main' to remote 'main' (force if needed)
     echo "[PUSH] Pushing local 'main' to remote 'main'..."
-    git push -u origin main --force
+    git push -u origin main
 
     echo "[DONE] $REPO pushed to https://github.com/$ORG/$REPO"
     cd - > /dev/null
