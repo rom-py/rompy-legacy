@@ -16,9 +16,8 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import yaml
 
@@ -211,7 +210,7 @@ Indices and tables
                 logger.info(f"Created core documentation configuration for {package_name}")
 
     def _create_notebooks_index(self, target_dir: str, ecosystem_packages: List[str]):
-        index_content = f"""
+        index_content = """
 # Rompy Ecosystem Examples
 
 This repository contains examples and tutorials for the rompy ecosystem.
@@ -587,7 +586,7 @@ Browse the notebooks/ directory to get started!
                     subprocess.run([
                         "git", "add", os.path.relpath(readme_path, target_dir)
                     ], cwd=target_dir, check=True)
-                    logger.info(f"[GIT] Added README.md to git")
+                    logger.info("[GIT] Added README.md to git")
                 except Exception as e:
                     logger.error(f"[GIT] git add failed for README.md: {e}")
 
@@ -671,7 +670,7 @@ Browse the notebooks/ directory to get started!
         if entry_points:
             new_lines.append("")
             for group, entry_point in entry_points.items():
-                new_lines.append(f"[options.entry_points]")
+                new_lines.append("[options.entry_points]")
                 new_lines.append(f"{group} =")
                 new_lines.append(f"    {entry_point}")
         with open(setup_cfg_path, "w") as f:
@@ -1191,12 +1190,12 @@ write_to = \"src/{package_module}/_version.py\"
                     data["project"]["entry-points"]["rompy.source"] = (
                         monorepo_entry_points["rompy.source"]
                     )
-                    logger.info(f"[inject_deps] Injected rompy.source entry-points from monorepo into split package.")
+                    logger.info("[inject_deps] Injected rompy.source entry-points from monorepo into split package.")
             if "rompy.config" in data["project"].get("entry-points", {}):
                 data["project"]["entry-points"]["rompy.config"] = {
                     "base": "rompy.core.config:BaseConfig"
                 }
-                logger.info(f"[inject_deps] Set rompy.config entry-point to only base=rompy.core.config:BaseConfig for core package.")
+                logger.info("[inject_deps] Set rompy.config entry-point to only base=rompy.core.config:BaseConfig for core package.")
         with open(pyproject_path, "wb") as f:
             tomli_w.dump(data, f)
         logger.info(f"[inject_deps] Injected dependencies into pyproject.toml in {target_dir}")
@@ -1284,17 +1283,17 @@ write_to = \"src/{package_module}/_version.py\"
                     print(f"   Branches: {branch_count}")
                 except Exception:
                     pass
-        print(f"\n🎯 Next steps:")
+        print("\n🎯 Next steps:")
         print(f"   1. Review each split repository in: {self.target_base_dir}")
-        print(f"   2. Test that each repository works independently:")
+        print("   2. Test that each repository works independently:")
         print(f"      cd {self.target_base_dir}/<repo-name>")
-        print(f"      pip install -e .[dev]")
-        print(f"      pytest")
-        print(f"   3. Create remote repositories and push:")
-        print(f"      git remote add origin <remote-url>")
-        print(f"      git push -u origin --all")
-        print(f"      git push --tags")
-        print(f"   4. Set up CI/CD and documentation")
+        print("      pip install -e .[dev]")
+        print("      pytest")
+        print("   3. Create remote repositories and push:")
+        print("      git remote add origin <remote-url>")
+        print("      git push -u origin --all")
+        print("      git push --tags")
+        print("   4. Set up CI/CD and documentation")
         print("\n💡 Modern src/ layout benefits:")
         print("   - Cleaner package structure")
         print("   - Better import isolation")

@@ -4,7 +4,6 @@ Comprehensive script to apply all manual fixes discovered during repository spli
 This script applies all the critical fixes needed to make the split repositories fully functional.
 """
 
-import os
 import sys
 from pathlib import Path
 

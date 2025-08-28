@@ -15,17 +15,12 @@ from pathlib import Path
 
 import pytest
 import requests
-import xarray as xr
 
 from rompy.core.data import DataBlob, DataGrid
 from rompy.core.filters import Filter
-from rompy.core.source import SourceFile, SourceIntake
-from rompy.core.time import TimeRange
+from rompy.core.source import SourceFile
 from rompy.core.types import DatasetCoords
-from rompy.schism.boundary_core import \
-    TidalBoundary  # Backward compatibility alias
-from rompy.schism.boundary_core import BoundaryHandler, TidalDataset
-from rompy.schism.data import SCHISMDataBoundary, SCHISMDataSflux, SfluxAir
+from rompy.schism.boundary_core import TidalDataset
 # Import directly from the new implementation
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.vgrid import VGrid as SchismVGrid
@@ -283,7 +278,6 @@ def tidal_data_files(test_files_dir):
 @pytest.fixture
 def tidal_dataset(tidal_data_files):
     """Return a tidal dataset instance for testing."""
-    from rompy.schism.boundary_core import TidalDataset
 
     return TidalDataset(
         tidal_database=tidal_data_files,
