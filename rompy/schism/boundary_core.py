@@ -47,25 +47,20 @@ import sys
 from datetime import datetime
 from enum import IntEnum
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Union, Any
+from typing import Any, Dict, List, Literal, Optional, Union
 
 import numpy as np
-from pydantic import ConfigDict, Field, BaseModel, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pylib import read_schism_hgrid as pylib_read_schism_hgrid
+from pylib import schism_grid
+from src.schism_file import loadz, read_schism_hgrid
 
-
-# Ensure path to pylibs is available if needed
-if "/home/tdurrant/source/pylibs" not in sys.path:
-    sys.path.append("/home/tdurrant/source/pylibs")
-
-# Import PyLibs functions if available
-from pylib import schism_grid, read_schism_hgrid as pylib_read_schism_hgrid
-from src.schism_file import read_schism_hgrid, loadz
-
-# Import from local modules
-from .boundary import BoundaryData
-from .bctides import Bctides
 from rompy.core.boundary import DataBoundary
 from rompy.logging import get_logger
+
+from .bctides import Bctides
+# Import from local modules
+from .boundary import BoundaryData
 
 logger = get_logger(__name__)
 
@@ -1014,7 +1009,8 @@ def create_hybrid_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
+    from rompy.schism.data import (BoundarySetupWithSource,
+                                   SCHISMDataBoundaryConditions)
     from rompy.schism.tides_enhanced import TidalDataset
 
     # Create tidal dataset
@@ -1093,7 +1089,8 @@ def create_river_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
+    from rompy.schism.data import (BoundarySetupWithSource,
+                                   SCHISMDataBoundaryConditions)
     from rompy.schism.tides_enhanced import TidalDataset
 
     # Create tidal dataset if both paths are provided and needed
@@ -1183,7 +1180,8 @@ def create_nested_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    from rompy.schism.data import SCHISMDataBoundaryConditions, BoundarySetupWithSource
+    from rompy.schism.data import (BoundarySetupWithSource,
+                                   SCHISMDataBoundaryConditions)
     from rompy.schism.tides_enhanced import TidalDataset
 
     # Create tidal dataset if both paths are provided and needed
