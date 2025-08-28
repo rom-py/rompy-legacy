@@ -2,7 +2,6 @@
 
 from pathlib import Path
 import pytest
-import xarray as xr
 
 from rompy import filesystem as fs
 

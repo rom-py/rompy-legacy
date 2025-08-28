@@ -5,12 +5,10 @@ Tests cover the enhanced LocalRunBackend, NoopPostprocessor, and LocalPipelineBa
 with their new validation, error handling, and logging capabilities.
 """
 
-import os
 import pytest
 import subprocess
 from datetime import datetime
-from pathlib import Path
-from unittest.mock import patch, MagicMock, call
+from unittest.mock import patch, MagicMock
 
 from rompy.backends import LocalConfig
 from rompy.core.config import BaseConfig

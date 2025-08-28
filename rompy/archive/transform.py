@@ -1,7 +1,7 @@
 """Dataset transform functions."""
 
 import logging
-from collections.abc import Iterable, Mapping
+from collections.abc import Iterable
 import xarray as xr
 
 

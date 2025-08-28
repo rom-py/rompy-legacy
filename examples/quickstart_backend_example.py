@@ -14,7 +14,6 @@ This is a hands-on tutorial for learning ROMPY backends.
 
 import logging
 import tempfile
-from pathlib import Path
 from datetime import datetime
 
 # ROMPY imports

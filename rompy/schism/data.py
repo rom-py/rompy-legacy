@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import IntEnum
 from pathlib import Path
 from typing import Any, Dict, Literal, Optional, Union
 
@@ -7,23 +6,18 @@ import numpy as np
 import pandas as pd
 import scipy as sp
 import xarray as xr
-from cloudpathlib import AnyPath
 from pydantic import ConfigDict, Field, model_validator
-from pylib import compute_zcor, read_schism_bpfile, read_schism_hgrid, read_schism_vgrid
 
 from rompy.core.boundary import BoundaryWaveStation, DataBoundary
 from rompy.core.data import DataBlob, DataGrid
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
-from rompy.schism.bctides import Bctides
-from rompy.schism.boundary import Boundary3D, BoundaryData
 from rompy.schism.boundary_core import (
     BoundaryHandler,
     ElevationType,
     TidalDataset,
     TracerType,
     VelocityType,
-    create_tidal_boundary,
 )
 from rompy.schism.grid import SCHISMGrid
 from rompy.logging import get_logger
@@ -260,7 +254,7 @@ class SfluxAir(SfluxSource):
                 else:
                     # If no URI, create a minimal valid source
                     logger.warning(
-                        f"Source dictionary does not contain URI, creating a minimal source"
+                        "Source dictionary does not contain URI, creating a minimal source"
                     )
                     # Default to a sample data source for testing
                     source_obj = SourceFile(
@@ -376,7 +370,7 @@ class SCHISMDataSflux(RompyBaseModel):
 
                     air_value = SfluxAir(**air_value)
                     logger.info(
-                        f"Successfully created SfluxAir instance from dictionary"
+                        "Successfully created SfluxAir instance from dictionary"
                     )
                 except Exception as e:
                     logger.error(f"Failed to create SfluxAir instance: {e}")
@@ -401,7 +395,7 @@ class SCHISMDataSflux(RompyBaseModel):
                     f"Converting air_1 dictionary to SfluxAir object: {self.air_1}"
                 )
                 self.air_1 = SfluxAir(**self.air_1)
-                logger.info(f"Successfully converted air_1 to SfluxAir instance")
+                logger.info("Successfully converted air_1 to SfluxAir instance")
             except Exception as e:
                 logger.error(f"Error converting air_1 dictionary to SfluxAir: {e}")
                 logger.error(f"Input data: {self.air_1}")
@@ -415,7 +409,7 @@ class SCHISMDataSflux(RompyBaseModel):
                     f"Converting air_2 dictionary to SfluxAir object: {self.air_2}"
                 )
                 self.air_2 = SfluxAir(**self.air_2)
-                logger.info(f"Successfully converted air_2 to SfluxAir instance")
+                logger.info("Successfully converted air_2 to SfluxAir instance")
             except Exception as e:
                 logger.error(f"Error converting air_2 dictionary to SfluxAir: {e}")
                 logger.error(f"Input data: {self.air_2}")
@@ -586,7 +580,7 @@ class SCHISMDataWave(BoundaryWaveStation):
         return ds
 
     def __str__(self):
-        return f"SCHISMDataWave"
+        return "SCHISMDataWave"
 
 
 class SCHISMDataBoundary(DataBoundary):

@@ -1,9 +1,8 @@
 # This file was auto generated from a SCHISM namelist file on 2025-01-24.
 
-from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, field_validator
 from rompy.schism.namelists.basemodel import NamelistBaseModel
 
 

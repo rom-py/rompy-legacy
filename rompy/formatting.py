@@ -5,11 +5,9 @@ This module provides various formatting utilities for creating consistent and
 visually appealing output in the ROMPY codebase.
 """
 
-import os
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from rompy.logging import LogFormat, LoggingConfig, LogLevel, get_logger
-from rompy.logging.formatter import BoxFormatter, BoxStyle, formatter
 
 # Initialize the logger
 logger = get_logger(__name__)

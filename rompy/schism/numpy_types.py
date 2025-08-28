@@ -6,7 +6,7 @@ without compromising type safety.
 """
 
 import numpy as np
-from typing import Any, Union, Callable
+from typing import Any
 from pydantic import field_validator
 
 # Type aliases for type annotations

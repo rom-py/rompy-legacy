@@ -13,8 +13,6 @@ def scatter(ds, color, minLon=None, minLat=None, maxLon=None, maxLat=None, fscal
     from datetime import datetime
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
-    import cartopy.mpl.ticker as cticker
-    from shapely.geometry import MultiPoint
     from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 
     # First set some plot parameters:

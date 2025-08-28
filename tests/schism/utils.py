@@ -10,7 +10,6 @@ from pathlib import Path
 from time import time
 
 import xarray as xr
-from matplotlib.transforms import Bbox
 
 from rompy.schism.namelists.generate_models import nml_to_dict
 # from rompy.schism.pyschism.forcing.hycom.hycom2schism import DownloadHycom  # TODO: Replace with PyLibs equivalent
@@ -70,7 +69,7 @@ def compare_nmls_values(nml1, nml2, raise_missing=False):
     for key, value in nml1.items():
         if key == "description":
             continue
-        if not key in nml2:
+        if key not in nml2:
             if raise_missing:
                 raise KeyError(f"Key {key} not found in nml2")
             print(f"Key {key} not found in nml2")

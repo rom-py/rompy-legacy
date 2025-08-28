@@ -1,6 +1,5 @@
 """Test inpgrid component."""
 
-import logging
 import pytest
 
 from pydantic import ValidationError
@@ -20,7 +19,7 @@ from rompy.swan.components.inpgrid import (
     UNSTRUCTURED,
     READINP,
 )
-from rompy.swan.subcomponents.time import NONSTATIONARY, Time, Delt
+from rompy.swan.subcomponents.time import NONSTATIONARY
 
 
 @pytest.fixture(scope="module")

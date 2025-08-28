@@ -21,7 +21,6 @@ from rompy.swan.subcomponents.boundary import (
     PAR,
     CONSTANTPAR,
     ZERO,
-    DEFAULT,
     HOTMULTIPLE,
     HOTSINGLE,
 )
@@ -29,12 +28,12 @@ from rompy.swan.subcomponents.boundary import (
 
 def test_initial_default():
     par = INITIAL()
-    assert par.render() == f"INITIAL DEFAULT"
+    assert par.render() == "INITIAL DEFAULT"
 
 
 def test_initial_zero():
     par = INITIAL(kind=ZERO())
-    assert par.render() == f"INITIAL ZERO"
+    assert par.render() == "INITIAL ZERO"
 
 
 def test_initial_par():

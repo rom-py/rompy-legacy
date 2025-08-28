@@ -30,12 +30,6 @@ from rompy.swan.components.physics import (
     BRAGG_FILE,
     LIMITER,
     OBSTACLE,
-    OBSTACLE_FIG,
-    OBSTACLES,
-    SETUP,
-    DIFFRACTION,
-    SURFBEAT,
-    SCAT,
     OFF,
     OFFS,
 )

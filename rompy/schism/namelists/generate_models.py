@@ -84,8 +84,8 @@ def generate_pydantic_models(
         file.write(
             f"# This file was auto generated from a schism namelist file on {datetime.datetime.now().strftime('%Y-%m-%d')}.\n\n"
         )
-        file.write(f"from typing import Optional\n")
-        file.write(f"from pydantic import Field\n")
+        file.write("from typing import Optional\n")
+        file.write("from pydantic import Field\n")
         basemodellist = basemodel.split(".")
         file.write(
             f"from {'.'.join(basemodellist[0:-1])} import {basemodellist[-1]}\n\n"
@@ -213,8 +213,8 @@ def main():
                 f.write(
                     f"from .{classname} import {classname.split('_')[0].capitalize()}\n"
                 )
-        f.write(f"from .sflux import Sflux_Inputs\n")
-        f.write(f"from .schism import NML")
+        f.write("from .sflux import Sflux_Inputs\n")
+        f.write("from .schism import NML")
     run(["isort", "__init__.py"])
     run(["black", "__init__.py"])
 

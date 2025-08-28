@@ -7,11 +7,8 @@ the backend system work correctly with the current ROMPY implementation.
 """
 
 import sys
-import os
 import tempfile
-import shutil
 from pathlib import Path
-from typing import Dict, Any, List, Tuple
 import logging
 
 # Add the parent directory to the path so we can import rompy
@@ -82,7 +79,7 @@ def test_model_run_integration():
             command="echo 'Integration test completed'",
         )
 
-        logger.info(f"✅ ModelRun created with LocalConfig")
+        logger.info("✅ ModelRun created with LocalConfig")
         assert model is not None
         assert model.run_id == "test_integration"
         assert local_config is not None

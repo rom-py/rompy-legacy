@@ -12,7 +12,7 @@ from pydantic import Field, model_validator
 
 from rompy.core.config import BaseConfig
 from rompy.logging import get_logger
-from rompy.formatting import get_formatted_box, get_formatted_header_footer
+from rompy.formatting import get_formatted_header_footer
 from rompy.swan.components import boundary, cgrid, numerics
 from rompy.swan.components.group import INPGRIDS, LOCKUP, OUTPUT, PHYSICS, STARTUP
 from rompy.swan.grid import SwanGrid
@@ -291,9 +291,9 @@ class SwanConfigComponents(BaseConfig):
                                     f"      Quantities: {qty_count} output group(s)"
                                 )
                             if hasattr(component, "block"):
-                                lines.append(f"      Block output: Yes")
+                                lines.append("      Block output: Yes")
                             if hasattr(component, "specout"):
-                                lines.append(f"      Spectral output: Yes")
+                                lines.append("      Spectral output: Yes")
 
             # Add template info if available
             if hasattr(obj, "template"):
@@ -366,7 +366,6 @@ class SwanConfigComponents(BaseConfig):
             return "\n".join(lines)
 
         # Format grid directly
-        from rompy.swan.grid import SwanGrid
 
         if isinstance(obj, SwanGrid):
             header, footer, _ = get_formatted_header_footer(

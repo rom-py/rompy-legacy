@@ -11,8 +11,7 @@ from datetime import datetime, timedelta
 import pytest
 
 import rompy
-from rompy.core.data import DataBlob, DataGrid
-from rompy.core.grid import BaseGrid
+from rompy.core.data import DataGrid
 
 # round now to the nearest 6 hours
 cycle = datetime.utcnow().replace(

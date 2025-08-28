@@ -4,16 +4,10 @@ Unit tests for SCHISM grid functionality.
 This module tests the core grid components of the SCHISM implementation.
 """
 
-import os
-from pathlib import Path
 
-import numpy as np
 import pytest
 
-from rompy.core.data import DataBlob
-from rompy.core.grid import BaseGrid
-from rompy.schism import SCHISMGrid
-from rompy.schism.grid import GR3Generator, WWMBNDGR3Generator
+from rompy.schism.grid import GR3Generator
 
 pytest.importorskip("rompy.schism")
 

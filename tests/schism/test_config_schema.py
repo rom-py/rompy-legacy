@@ -7,7 +7,6 @@ despite having numpy boolean types in its model definitions.
 
 import json
 import tempfile
-from pathlib import Path
 
 import pytest
 

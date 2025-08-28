@@ -5,7 +5,6 @@ This module contains components for configuring the physical processes in SWAN,
 including wind generation, whitecapping, quadruplet interactions, and wave breaking.
 """
 
-import logging
 from typing import Annotated, Any, Literal, Optional, Union
 
 from pydantic import Field, ValidationInfo, field_validator, model_validator
@@ -574,7 +573,7 @@ class WCAPPING_KOMEN(BaseComponent):
 
     def cmd(self) -> str:
         """Command file string for this component."""
-        repr = f"WCAPPING KOMEN"
+        repr = "WCAPPING KOMEN"
         if self.cds2 is not None:
             repr += f" cds2={self.cds2}"
         if self.stpm is not None:
@@ -641,13 +640,13 @@ class WCAPPING_AB(BaseComponent):
 
     def cmd(self) -> str:
         """Command file string for this component."""
-        repr = f"WCAPPING AB"
+        repr = "WCAPPING AB"
         if self.cds2 is not None:
             repr += f" cds2={self.cds2}"
         if self.br is not None:
             repr += f" br={self.br}"
         if self.current:
-            repr += f" CURRENT"
+            repr += " CURRENT"
         if self.cds3 is not None:
             repr += f" cds3={self.cds3}"
         return repr
@@ -745,7 +744,7 @@ class QUADRUPL(BaseComponent):
 
     def cmd(self) -> str:
         """Command file string for this component."""
-        repr = f"QUADRUPL"
+        repr = "QUADRUPL"
         if self.iquad is not None:
             repr += f" iquad={self.iquad}"
         if self.lambd is not None:

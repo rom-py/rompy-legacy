@@ -8,7 +8,6 @@ hotstart file generation using the same data sources as boundary conditions.
 import pytest
 import tempfile
 from pathlib import Path
-from datetime import datetime
 
 from rompy.core.source import SourceFile
 from rompy.core.time import TimeRange

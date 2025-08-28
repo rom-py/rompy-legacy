@@ -2,24 +2,13 @@ import os
 import pytest
 from pathlib import Path
 from datetime import datetime
-import numpy as np
 
 from rompy.schism.boundary_core import (
     BoundaryConfig,
     ElevationType,
-    BoundaryHandler,
     TidalBoundary,  # Backward compatibility alias
     VelocityType,
-    TracerType,
-    create_nested_boundary,
-    create_river_boundary,
     create_tidal_boundary,
-)
-from rompy.schism.tides_enhanced import (
-    create_tidal_only_config,
-    create_hybrid_config,
-    create_river_config,
-    create_nested_config,
 )
 
 

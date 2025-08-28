@@ -4,7 +4,6 @@ This is a PySchism-free version of utils.py.
 """
 
 import logging
-import os
 from pathlib import Path
 import tarfile
 

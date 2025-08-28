@@ -1,6 +1,5 @@
 """Test swan_config class."""
 
-import logging
 import os
 from pathlib import Path
 

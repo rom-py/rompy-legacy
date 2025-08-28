@@ -1,12 +1,9 @@
 import os
-import pytest
 import tempfile
-import numpy as np
 from pathlib import Path
 from datetime import datetime
 
 from rompy.schism.boundary_core import (
-    BoundaryHandler,
     TidalBoundary,  # Backward compatibility alias
     BoundaryConfig,
     ElevationType,
@@ -14,7 +11,6 @@ from rompy.schism.boundary_core import (
     create_tidal_boundary,
 )
 from rompy.schism.bctides import Bctides
-from rompy.schism.grid import SCHISMGrid
 
 
 def validate_constituent_case_consistency(file_path):

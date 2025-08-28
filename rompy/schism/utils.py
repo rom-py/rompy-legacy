@@ -1,13 +1,11 @@
 import logging
 import re
 import sys
-from pathlib import Path
 
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import xarray as xr
 from cartopy.mpl.ticker import LatitudeFormatter, LongitudeFormatter
 from matplotlib.tri import Triangulation

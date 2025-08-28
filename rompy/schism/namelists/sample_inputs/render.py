@@ -20,7 +20,7 @@ def create_pydantic_model(section):
     for line in section_content.split("\n"):
         if line.strip().startswith("!"):
             continue
-        if not "=" in line:
+        if "=" not in line:
             continue
         components = line.split("=")
         var_name, var_value = components[0], "=".join(components[1:])

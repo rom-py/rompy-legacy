@@ -7,15 +7,12 @@ as well as the factory functions for common configurations.
 """
 
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
-import numpy as np
 import pytest
-import xarray as xr
 
 from rompy.core.data import DataBlob
-from rompy.core.source import SourceFile
 from rompy.core.time import TimeRange
 from rompy.schism.boundary_conditions import (
     create_hybrid_boundary_config,
@@ -25,17 +22,13 @@ from rompy.schism.boundary_conditions import (
 )
 from rompy.schism.boundary_core import (
     ElevationType,
-    TidalDataset,
     TracerType,
     VelocityType,
 )
 from rompy.schism.data import (
     BoundarySetupWithSource,
-    SCHISMDataBoundary,
     SCHISMDataBoundaryConditions,
 )
-from rompy.schism.grid import SCHISMGrid
-from rompy.schism.tides_enhanced import TidalDataset
 
 
 @pytest.fixture

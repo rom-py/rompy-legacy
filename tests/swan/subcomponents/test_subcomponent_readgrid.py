@@ -1,10 +1,9 @@
 """Test readgrid sub-components."""
 
-import logging
 import pytest
 
 from pydantic import ValidationError
-from rompy.swan.subcomponents.readgrid import READGRID, READCOORD, READINP, GRIDREGULAR
+from rompy.swan.subcomponents.readgrid import READGRID, READCOORD, GRIDREGULAR
 
 # Import test utilities
 from test_utils.logging import get_test_logger
@@ -51,7 +50,7 @@ def test_readgrid_fixed_form():
         format="fixed",
         form="(10X,12F5.0)",
     )
-    assert readgrid.format_repr == f"FORMAT form='(10X,12F5.0)'"
+    assert readgrid.format_repr == "FORMAT form='(10X,12F5.0)'"
 
 
 def test_readgrid_fixed_idfm():
@@ -66,7 +65,7 @@ def test_readgrid_fixed_idfm():
         format="fixed",
         idfm=1,
     )
-    assert readgrid.format_repr == f"FORMAT idfm=1"
+    assert readgrid.format_repr == "FORMAT idfm=1"
 
 
 def test_coord():

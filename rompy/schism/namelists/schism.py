@@ -136,7 +136,7 @@ class NML(NamelistBaseModel):
                     }
                 )
         if ("atmos" in datasources) and (datasources["atmos"] is not None):
-            if self.param.opt.nws is not 2:
+            if self.param.opt.nws != 2:
                 logger.warn(
                     f"Overwriting param nws value of {self.param.opt.nws} to 2 to use rompy generated sflux data"
                 )

@@ -24,7 +24,7 @@ class LongRender(BaseComponent):
 
     def cmd(self):
         """Render the component to a string."""
-        repr = f"COMPONENT"
+        repr = "COMPONENT"
         for k, v in self.options.items():
             if k == "A":
                 repr += f"\n{k}={v}"

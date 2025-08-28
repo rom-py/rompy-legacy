@@ -1,20 +1,14 @@
 """Tests for the boundary plotting methods in SCHISMConfig."""
 
-import os
 from pathlib import Path
 import pytest
 import numpy as np
 import pandas as pd
 import xarray as xr
-from datetime import datetime, timedelta
+from datetime import datetime
 
 pytest.importorskip("rompy.schism")
 
-from rompy.core.data import DataBlob, DataGrid
-from rompy.core.time import TimeRange
-from rompy.schism.data import SCHISMData, SCHISMDataBoundary
-from rompy.schism.grid import SCHISMGrid
-from rompy.schism.config import SCHISMConfig
 
 
 # Define the location of test files
