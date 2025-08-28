@@ -176,8 +176,8 @@ class NML(NamelistBaseModel):
             A formatted string or None to use default formatting
         """
         # Import specific types and formatting utilities
-        from rompy.logging import LoggingConfig
         from rompy.formatting import get_formatted_header_footer
+        from rompy.logging import LoggingConfig
 
         # Get ASCII mode setting from LoggingConfig
         logging_config = LoggingConfig()

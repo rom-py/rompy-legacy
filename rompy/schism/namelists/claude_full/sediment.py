@@ -2,11 +2,7 @@
 
 from typing import List, Literal, Optional
 
-from pydantic import (
-    Field,
-    field_validator,
-    ConfigDict,
-)
+from pydantic import ConfigDict, Field, field_validator
 
 from rompy.schism.namelists.basemodel import NamelistBaseModel
 

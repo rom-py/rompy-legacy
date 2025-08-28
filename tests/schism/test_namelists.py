@@ -1,11 +1,10 @@
 from pathlib import Path
 
 import pytest
-from tests.utils import compare_nmls
-
-
 # Import test utilities
 from test_utils.logging import get_test_logger
+
+from tests.utils import compare_nmls
 
 # Initialize logger
 logger = get_test_logger(__name__)

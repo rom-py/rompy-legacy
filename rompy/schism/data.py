@@ -12,16 +12,11 @@ from rompy.core.boundary import BoundaryWaveStation, DataBoundary
 from rompy.core.data import DataBlob, DataGrid
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
-from rompy.schism.boundary_core import (
-    BoundaryHandler,
-    ElevationType,
-    TidalDataset,
-    TracerType,
-    VelocityType,
-)
-from rompy.schism.grid import SCHISMGrid
-from rompy.logging import get_logger
 from rompy.formatting import ARROW
+from rompy.logging import get_logger
+from rompy.schism.boundary_core import (BoundaryHandler, ElevationType,
+                                        TidalDataset, TracerType, VelocityType)
+from rompy.schism.grid import SCHISMGrid
 from rompy.schism.tides_enhanced import BoundarySetup
 from rompy.utils import total_seconds
 
@@ -1135,8 +1130,8 @@ class SCHISMData(RompyBaseModel):
             A formatted string or None to use default formatting
         """
         # Import specific types and formatting utilities
-        from rompy.logging import LoggingConfig
         from rompy.formatting import get_formatted_header_footer
+        from rompy.logging import LoggingConfig
 
         # Get ASCII mode setting from LoggingConfig
         logging_config = LoggingConfig()

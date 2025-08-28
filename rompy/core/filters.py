@@ -9,10 +9,9 @@
 from typing import Optional
 
 import xarray as xr
+from pydantic import field_validator
 
 from .types import RompyBaseModel, Slice
-
-from pydantic import field_validator
 
 
 # pydantic class to apply all the filters to the dataset

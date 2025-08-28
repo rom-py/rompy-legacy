@@ -16,10 +16,10 @@ import logging
 import tempfile
 from datetime import datetime
 
+from rompy.backends import DockerConfig, LocalConfig
+from rompy.core.time import TimeRange
 # ROMPY imports
 from rompy.model import ModelRun
-from rompy.core.time import TimeRange
-from rompy.backends import LocalConfig, DockerConfig
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")

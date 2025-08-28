@@ -1,16 +1,13 @@
 import os
 import tempfile
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
-from rompy.schism.boundary_core import (
-    TidalBoundary,  # Backward compatibility alias
-    BoundaryConfig,
-    ElevationType,
-    VelocityType,
-    create_tidal_boundary,
-)
 from rompy.schism.bctides import Bctides
+from rompy.schism.boundary_core import \
+    TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
+                                        VelocityType, create_tidal_boundary)
 
 
 def validate_constituent_case_consistency(file_path):

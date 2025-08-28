@@ -15,10 +15,7 @@ import pytest
 # Add the parent directory to the path to import the module
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from rompy.logging import (
-    get_logger,
-    LoggingConfig,
-)
+from rompy.logging import LoggingConfig, get_logger
 from rompy.logging.formatter import BoxFormatter
 
 # Initialize logger

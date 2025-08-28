@@ -1,11 +1,11 @@
 import logging
-from typing import Optional, Literal
+from typing import Literal, Optional
+
 import numpy as np
 from pydantic import Field, model_validator
 from pydantic_numpy.typing import Np1DArray
 
 from rompy.core.types import RompyBaseModel
-
 
 logger = logging.getLogger(__name__)
 

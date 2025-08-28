@@ -1,8 +1,9 @@
 import os
 import tempfile
-import numpy as np
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
+import numpy as np
 
 # Import Bctides class directly
 from rompy.schism.bctides import Bctides

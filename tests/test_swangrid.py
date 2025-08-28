@@ -1,13 +1,11 @@
 import numpy as np
 import pytest
 import shapely
+# Import test utilities
+from test_utils.logging import get_test_logger
 
 from rompy.swan import SwanGrid
 from rompy.swan.subcomponents.readgrid import GRIDREGULAR
-
-
-# Import test utilities
-from test_utils.logging import get_test_logger
 
 # Initialize logger
 logger = get_test_logger(__name__)

@@ -1,15 +1,15 @@
 """Input grid for SWAN."""
 
-from typing import Literal, Optional
-from pathlib import Path
-from pydantic import Field, model_validator
 from abc import ABC
+from pathlib import Path
+from typing import Literal, Optional
+
+from pydantic import Field, model_validator
 
 from rompy.swan.components.base import BaseComponent
-from rompy.swan.subcomponents.time import NONSTATIONARY
 from rompy.swan.subcomponents.readgrid import READINP
+from rompy.swan.subcomponents.time import NONSTATIONARY
 from rompy.swan.types import GridOptions
-
 
 # TODO: Components are a bit mixed up here, define them a bit better.
 

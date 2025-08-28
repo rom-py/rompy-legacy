@@ -7,16 +7,16 @@ This example demonstrates how to:
 3. Use it to process model outputs
 """
 
+import logging
 import os
 import zipfile
-import logging
-from pathlib import Path
-from typing import Dict, Any
 from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict
 
-from rompy.model import ModelRun
-from rompy.core.time import TimeRange
 from rompy.backends import LocalConfig
+from rompy.core.time import TimeRange
+from rompy.model import ModelRun
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

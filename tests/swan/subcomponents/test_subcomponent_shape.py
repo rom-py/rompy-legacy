@@ -7,7 +7,8 @@ logger = get_test_logger(__name__)
 
 """Test SWAN subcomponents."""
 
-from rompy.swan.subcomponents.spectrum import JONSWAP, TMA, PM, GAUSS, BIN, SHAPESPEC
+from rompy.swan.subcomponents.spectrum import (BIN, GAUSS, JONSWAP, PM,
+                                               SHAPESPEC, TMA)
 
 
 def test_jonswap():

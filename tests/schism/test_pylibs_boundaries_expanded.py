@@ -3,11 +3,11 @@ Extended test script for finding boundary information in PyLibs grid objects.
 This script explores PyLibs-specific methods for accessing boundary information.
 """
 
-import os
 import logging
+import os
 import sys
-import numpy as np
 
+import numpy as np
 from pylib import read_schism_hgrid
 
 # Configure logging

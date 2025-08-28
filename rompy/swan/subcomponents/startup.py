@@ -1,6 +1,7 @@
 """SWAN startup subcomponents."""
 
 from typing import Literal
+
 from pydantic import Field
 
 from rompy.swan.subcomponents.base import BaseSubComponent

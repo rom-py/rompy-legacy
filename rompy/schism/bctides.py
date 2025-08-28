@@ -5,13 +5,15 @@ A direct implementation based on PyLibs scripts/gen_bctides.py with no fallbacks
 """
 
 from datetime import datetime
+
 import numpy as np
 import pyTMD
 import timescale
 import xarray as xr
 from scipy.spatial import KDTree
-from rompy.logging import get_logger
+
 from rompy.formatting import ARROW
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 
@@ -620,7 +622,7 @@ class Bctides:
 
                 # Then write tidal constituents for velocity
                 # Only write tidal constituents for tidal velocity types (3 or 5)
-                if vel_type == 3 or vel_type == 5:
+                if vel_type in {3, 5}:
                     if self.mdt is not None:
                         f.write("z0\n")
                         for n in range(num_nodes):

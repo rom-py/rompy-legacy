@@ -1,8 +1,9 @@
 """SWAN physics subcomponents."""
 
-from typing import Annotated, Literal, Optional
-from pydantic import field_validator, Field, model_validator
 from abc import ABC
+from typing import Annotated, Literal, Optional
+
+from pydantic import Field, field_validator, model_validator
 from pydantic_numpy.typing import Np2DArray
 
 from rompy.swan.subcomponents.base import BaseSubComponent
