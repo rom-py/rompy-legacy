@@ -15,8 +15,8 @@ from pydantic import Field
 from pylib import WriteNC, datenum, zdata
 
 from rompy.core.data import DataGrid
-from rompy.logging import get_logger
 from rompy.core.time import TimeRange
+from rompy.logging import get_logger
 from rompy.schism.grid import SCHISMGrid
 
 logger = get_logger(__name__)

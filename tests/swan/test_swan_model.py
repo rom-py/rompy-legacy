@@ -5,15 +5,14 @@ from pathlib import Path
 
 import pytest
 from envyaml import EnvYAML
+# Import test utilities
+from test_utils.logging import get_test_logger
 
 from rompy.core.source import SourceIntake
 from rompy.model import ModelRun
 from rompy.swan import Boundnest1
 from rompy.swan.config import SwanConfigComponents
 from rompy.swan.interface import BoundaryInterface
-
-# Import test utilities
-from test_utils.logging import get_test_logger
 
 # Initialize logger
 logger = get_test_logger(__name__)

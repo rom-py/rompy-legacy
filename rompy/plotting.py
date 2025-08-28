@@ -8,12 +8,13 @@
 
 
 def scatter(ds, color, minLon=None, minLat=None, maxLon=None, maxLat=None, fscale=10):
-    import matplotlib.pyplot as plt
-    from mpl_toolkits.axes_grid1.inset_locator import inset_axes
     from datetime import datetime
+
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
-    from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
+    import matplotlib.pyplot as plt
+    from cartopy.mpl.gridliner import LATITUDE_FORMATTER, LONGITUDE_FORMATTER
+    from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
     # First set some plot parameters:
     if not minLon:

@@ -9,8 +9,8 @@ import cookiecutter.repository as cc_repository
 from cookiecutter.exceptions import NonTemplatedInputDirException
 from cookiecutter.find import find_template
 
-from rompy.logging import get_logger
 from rompy.core.types import RompyBaseModel
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 

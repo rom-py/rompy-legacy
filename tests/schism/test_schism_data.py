@@ -3,8 +3,6 @@ import os
 from pathlib import Path
 
 import pytest
-
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -17,11 +15,7 @@ import xarray as xr
 from rompy.core.data import DataBlob
 from rompy.core.source import SourceFile, SourceIntake
 from rompy.schism import SCHISMGrid
-from rompy.schism.data import (
-    SCHISMDataBoundary,
-    SCHISMDataSflux,
-    SfluxAir,
-)
+from rompy.schism.data import SCHISMDataBoundary, SCHISMDataSflux, SfluxAir
 
 HERE = Path(__file__).parent
 DATAMESH_TOKEN = os.environ.get("DATAMESH_TOKEN")

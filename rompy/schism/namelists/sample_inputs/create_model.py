@@ -1,6 +1,7 @@
-from pydantic import BaseModel
 from typing import List
+
 from cookiecutter.main import cookiecutter
+from pydantic import BaseModel
 
 
 class NameModel(BaseModel):

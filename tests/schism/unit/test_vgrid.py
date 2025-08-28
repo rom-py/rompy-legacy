@@ -6,11 +6,7 @@ This module tests the vertical grid components of the SCHISM implementation.
 
 import pytest
 
-from rompy.schism.grid import (
-    VGRID_TYPE_LSC2,
-    VGRID_TYPE_SZ,
-    VgridGenerator,
-)
+from rompy.schism.grid import VGRID_TYPE_LSC2, VGRID_TYPE_SZ, VgridGenerator
 
 pytest.importorskip("rompy.schism")
 

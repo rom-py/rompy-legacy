@@ -9,11 +9,7 @@ import pytest
 import yaml
 
 from rompy.core.source import SourceFile
-from rompy.schism.data import (
-    SCHISMDataBoundary,
-    SCHISMDataSflux,
-)
-
+from rompy.schism.data import SCHISMDataBoundary, SCHISMDataSflux
 # Import our stub class from test_namelist instead of the non-existent module
 from tests.schism.integration.test_namelist import SCHISMNamelist
 

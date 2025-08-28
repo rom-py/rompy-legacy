@@ -1,25 +1,18 @@
 """Test inpgrid component."""
 
 import pytest
-
 from pydantic import ValidationError
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
 # Initialize logger
 logger = get_test_logger(__name__)
 
-from rompy.swan.types import GridOptions
 from rompy.swan.components.group import INPGRIDS
-from rompy.swan.components.inpgrid import (
-    INPGRID,
-    REGULAR,
-    CURVILINEAR,
-    UNSTRUCTURED,
-    READINP,
-)
+from rompy.swan.components.inpgrid import (CURVILINEAR, INPGRID, READINP,
+                                           REGULAR, UNSTRUCTURED)
 from rompy.swan.subcomponents.time import NONSTATIONARY
+from rompy.swan.types import GridOptions
 
 
 @pytest.fixture(scope="module")

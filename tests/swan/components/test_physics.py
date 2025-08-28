@@ -2,7 +2,6 @@
 
 import pytest
 from pydantic import ValidationError
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -10,29 +9,12 @@ from test_utils.logging import get_test_logger
 logger = get_test_logger(__name__)
 
 from rompy.swan.components.group import PHYSICS
-from rompy.swan.components.physics import (
-    GEN1,
-    GEN2,
-    GEN3,
-    TRIAD_DCTA,
-    TRIAD_LTA,
-    TRIAD_SPB,
-    VEGETATION,
-    MUD,
-    SICE,
-    SICE_R19,
-    SICE_D15,
-    SICE_M18,
-    SICE_R21B,
-    TURBULENCE,
-    BRAGG,
-    BRAGG_FT,
-    BRAGG_FILE,
-    LIMITER,
-    OBSTACLE,
-    OFF,
-    OFFS,
-)
+from rompy.swan.components.physics import (BRAGG, BRAGG_FILE, BRAGG_FT, GEN1,
+                                           GEN2, GEN3, LIMITER, MUD, OBSTACLE,
+                                           OFF, OFFS, SICE, SICE_D15, SICE_M18,
+                                           SICE_R19, SICE_R21B, TRIAD_DCTA,
+                                           TRIAD_LTA, TRIAD_SPB, TURBULENCE,
+                                           VEGETATION)
 
 
 # =====================================================================================

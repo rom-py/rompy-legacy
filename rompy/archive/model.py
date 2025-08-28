@@ -9,11 +9,12 @@ pydantic
 """
 
 from __future__ import annotations
+
 import logging
 import shutil
 from pathlib import Path
-from pydantic import BaseModel
 
+from pydantic import BaseModel
 
 logger = logging.getLogger(__file__)
 

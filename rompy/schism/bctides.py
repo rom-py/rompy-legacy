@@ -5,13 +5,15 @@ A direct implementation based on PyLibs scripts/gen_bctides.py with no fallbacks
 """
 
 from datetime import datetime
+
 import numpy as np
 import pyTMD
 import timescale
 import xarray as xr
 from scipy.spatial import KDTree
-from rompy.logging import get_logger
+
 from rompy.formatting import ARROW
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 

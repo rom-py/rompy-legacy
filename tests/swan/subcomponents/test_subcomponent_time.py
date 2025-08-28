@@ -1,7 +1,6 @@
 """Test time sub-component."""
 
 import pytest
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -10,14 +9,9 @@ logger = get_test_logger(__name__)
 
 from datetime import datetime, timedelta
 
-from rompy.swan.subcomponents.time import (
-    Time,
-    Delt,
-    TimeRangeOpen,
-    TimeRangeClosed,
-    STATIONARY,
-    NONSTATIONARY,
-)
+from rompy.swan.subcomponents.time import (NONSTATIONARY, STATIONARY, Delt,
+                                           Time, TimeRangeClosed,
+                                           TimeRangeOpen)
 
 
 @pytest.mark.parametrize(

@@ -20,7 +20,8 @@ import yaml
 import rompy
 from rompy.backends import DockerConfig, LocalConfig
 from rompy.logging import LogFormat, LoggingConfig, LogLevel, get_logger
-from rompy.model import PIPELINE_BACKENDS, POSTPROCESSORS, RUN_BACKENDS, ModelRun
+from rompy.model import (PIPELINE_BACKENDS, POSTPROCESSORS, RUN_BACKENDS,
+                         ModelRun)
 
 # Initialize the logger
 logger = get_logger(__name__)

@@ -11,8 +11,8 @@ from typing import Literal, Union
 
 from pydantic import Field
 
-from rompy.core.types import RompyBaseModel
 from rompy.core.time import TimeRange
+from rompy.core.types import RompyBaseModel
 from rompy.schism.data import SCHISMData
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.namelists import NML

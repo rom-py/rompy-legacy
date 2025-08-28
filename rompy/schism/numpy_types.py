@@ -5,8 +5,9 @@ This module provides utilities for handling numpy types in Pydantic models
 without compromising type safety.
 """
 
-import numpy as np
 from typing import Any
+
+import numpy as np
 from pydantic import field_validator
 
 # Type aliases for type annotations

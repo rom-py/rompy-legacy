@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from run_boundary_conditions_examples import SchismExampleRunner
 
+
 def test_runner_initialization():
     """Test that the runner initializes correctly."""
     print("Testing SchismExampleRunner initialization...")

@@ -6,14 +6,13 @@ This module provides various utility functions used throughout the ROMPY codebas
 
 import importlib
 from importlib.metadata import entry_points
-from typing import Optional
+from typing import Literal, Optional
 
 import numpy as np
 import pandas as pd
 import xarray as xr
-from scipy.spatial import KDTree
-from typing import Literal
 from pydantic import BaseModel, ConfigDict, create_model
+from scipy.spatial import KDTree
 
 from rompy.logging import get_logger
 

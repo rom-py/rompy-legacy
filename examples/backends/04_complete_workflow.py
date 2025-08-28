@@ -10,11 +10,11 @@ This example demonstrates how to:
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
-from rompy.model import ModelRun
-from rompy.core.time import TimeRange
 from rompy.backends import LocalConfig
+from rompy.core.time import TimeRange
+from rompy.model import ModelRun
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

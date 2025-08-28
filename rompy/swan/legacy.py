@@ -10,9 +10,9 @@ from typing import Optional
 
 from pydantic import Field, field_validator
 
-from rompy.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.core.types import Coordinate, RompyBaseModel, Spectrum
+from rompy.logging import get_logger
 from rompy.swan.boundary import Boundnest1
 from rompy.swan.data import SwanDataGrid
 from rompy.swan.grid import SwanGrid

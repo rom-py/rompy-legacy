@@ -13,8 +13,8 @@ from typing import Literal, Optional
 
 from pydantic import ConfigDict, Field
 
-from rompy.logging import get_logger
 from rompy.core.types import RompyBaseModel
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 

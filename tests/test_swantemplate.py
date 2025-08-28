@@ -1,7 +1,6 @@
 from datetime import datetime
 from pathlib import Path
 
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -11,13 +10,13 @@ logger = get_test_logger(__name__)
 import numpy as np
 import pytest
 import xarray as xr
-from tests.utils import compare_files
 
 from rompy.core.source import SourceFile
 from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords
 from rompy.model import ModelRun
 from rompy.swan import Boundnest1, SwanConfig, SwanDataGrid, SwanGrid
+from tests.utils import compare_files
 
 HERE = Path(__file__).parent
 

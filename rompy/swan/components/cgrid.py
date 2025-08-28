@@ -1,14 +1,14 @@
 """Computational grid for SWAN."""
 
 import logging
-from pydantic import Field, model_validator
-from typing import Literal, Optional
 from abc import ABC, abstractmethod
+from typing import Literal, Optional
+
+from pydantic import Field, model_validator
 
 from rompy.swan.components.base import BaseComponent
+from rompy.swan.subcomponents.readgrid import GRIDREGULAR, READCOORD
 from rompy.swan.subcomponents.spectrum import SPECTRUM
-from rompy.swan.subcomponents.readgrid import READCOORD, GRIDREGULAR
-
 
 logger = logging.getLogger(__name__)
 

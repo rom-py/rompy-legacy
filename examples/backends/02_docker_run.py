@@ -11,9 +11,9 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
-from rompy.model import ModelRun
-from rompy.core.time import TimeRange
 from rompy.backends import DockerConfig
+from rompy.core.time import TimeRange
+from rompy.model import ModelRun
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

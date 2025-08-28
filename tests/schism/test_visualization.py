@@ -14,14 +14,12 @@ pytest.importorskip("rompy.schism")
 import yaml
 
 from rompy.model import ModelRun
-from rompy.schism.config_plotting import plot_sflux_spatial, plot_sflux_timeseries
-
+from rompy.schism.config_plotting import (plot_sflux_spatial,
+                                          plot_sflux_timeseries)
 # Import the plotting modules directly
-from rompy.schism.config_plotting_boundary import (
-    plot_boundary_points,
-    plot_boundary_profile,
-    plot_boundary_timeseries,
-)
+from rompy.schism.config_plotting_boundary import (plot_boundary_points,
+                                                   plot_boundary_profile,
+                                                   plot_boundary_timeseries)
 
 HERE = Path(__file__).parent
 import logging

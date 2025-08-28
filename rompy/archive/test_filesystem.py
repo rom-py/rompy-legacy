@@ -1,10 +1,10 @@
 """Test filesystem functions."""
 
 from pathlib import Path
+
 import pytest
 
 from rompy import filesystem as fs
-
 
 HERE = Path(__file__).parent
 

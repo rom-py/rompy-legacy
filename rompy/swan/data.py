@@ -15,9 +15,9 @@ import xarray as xr
 from pydantic import Field, model_validator
 
 from rompy.core.data import DataGrid
-from rompy.logging import get_logger
 from rompy.core.time import TimeRange
 from rompy.formatting import get_formatted_box, log_box
+from rompy.logging import get_logger
 from rompy.swan.grid import SwanGrid
 from rompy.swan.types import GridOptions
 

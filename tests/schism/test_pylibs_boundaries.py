@@ -2,8 +2,8 @@
 Test script to determine which boundary extraction method works with PyLibs.
 """
 
-import os
 import logging
+import os
 import sys
 
 from pylib import read_schism_hgrid

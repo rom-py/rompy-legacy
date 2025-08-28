@@ -1,11 +1,12 @@
 """Tests for the boundary plotting methods in SCHISMDataBoundary."""
 
+from datetime import datetime
 from pathlib import Path
-import pytest
+
 import numpy as np
 import pandas as pd
+import pytest
 import xarray as xr
-from datetime import datetime
 
 pytest.importorskip("rompy.schism")
 

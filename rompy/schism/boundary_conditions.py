@@ -62,23 +62,18 @@ __all__ = [
     "create_nested_boundary",
 ]
 
-# Import factory functions and core components from boundary_core
-from rompy.schism.boundary_core import (
-    ElevationType,
-    VelocityType,
-    TracerType,
-    BoundaryConfig,
-    BoundaryHandler,
-    create_tidal_boundary,
-    create_hybrid_boundary,
-    create_river_boundary,
-    create_nested_boundary,
-    create_tidal_only_boundary_config,
-    create_hybrid_boundary_config,
-    create_river_boundary_config,
-    create_nested_boundary_config,
-)
 from rompy.logging import get_logger
+# Import factory functions and core components from boundary_core
+from rompy.schism.boundary_core import (BoundaryConfig, BoundaryHandler,
+                                        ElevationType, TracerType,
+                                        VelocityType, create_hybrid_boundary,
+                                        create_hybrid_boundary_config,
+                                        create_nested_boundary,
+                                        create_nested_boundary_config,
+                                        create_river_boundary,
+                                        create_river_boundary_config,
+                                        create_tidal_boundary,
+                                        create_tidal_only_boundary_config)
 
 logger = get_logger(__name__)
 

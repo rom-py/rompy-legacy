@@ -1,15 +1,13 @@
 import os
-import pytest
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
-from rompy.schism.boundary_core import (
-    BoundaryConfig,
-    ElevationType,
-    TidalBoundary,  # Backward compatibility alias
-    VelocityType,
-    create_tidal_boundary,
-)
+import pytest
+
+from rompy.schism.boundary_core import \
+    TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
+                                        VelocityType, create_tidal_boundary)
 
 
 def test_files_dir():
