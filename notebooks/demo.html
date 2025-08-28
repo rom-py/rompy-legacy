@@ -1155,7 +1155,7 @@ Raises ValidationError if the input data cannot be parsed to form a valid model.
 
 <span class="k">def</span><span class="w"> </span><span class="nf">nc_bathy</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">datagrid</span><span class="p">):</span>
     <span class="c1"># touch temp netcdf file</span>
-    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
     <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span> <span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;bathy.nc&quot;</span><span class="p">)</span>
     <span class="n">bbox</span> <span class="o">=</span> <span class="n">bottom</span><span class="o">.</span><span class="n">bbox</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">bottom</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span>
@@ -1174,7 +1174,7 @@ Raises ValidationError if the input data cannot be parsed to form a valid model.
 
 <span class="c1"># and same again for wind</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">nc_data_source</span><span class="p">(</span><span class="n">wind_grid</span><span class="o">=</span><span class="n">datagrid</span><span class="p">):</span>
-    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
     <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;simulations&quot;</span><span class="p">,</span> <span class="s2">&quot;test_swantemplate&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;wind_inputs.nc&quot;</span><span class="p">)</span>
 
     <span class="n">bbox</span> <span class="o">=</span> <span class="n">wind_grid</span><span class="o">.</span><span class="n">bbox</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>

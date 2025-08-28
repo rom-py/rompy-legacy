@@ -577,7 +577,7 @@
         <span class="c1"># Check for objects with their own __str__ method (not inherited from object or base classes)</span>
         <span class="c1"># But don&#39;t use it for RompyBaseModel instances (use our hierarchical formatting instead)</span>
         <span class="n">str_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="s2">&quot;__str__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">base_str_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">,</span> <span class="s2">&quot;__str__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">RompyBaseModel</span><span class="p">,</span> <span class="s2">&quot;__str__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">object_str_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="s2">&quot;__str__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="p">(</span>
