@@ -565,7 +565,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">intake</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
@@ -598,7 +597,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grid object</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inputs</span><span class="p">,</span> <span class="n">SCHISMGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMGrid</span>
 
 <span class="c1">#SCHISMGrid?</span>
 
@@ -688,13 +687,13 @@ INFO:rompy.schism.grid:Linking hgrid.gr3 to schism_procedural/hgrid_WWM.gr3
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMDataSflux</span><span class="p">,</span> <span class="n">SCHISMDataOcean</span><span class="p">,</span> <span class="n">SCHISMDataWave</span><span class="p">,</span> <span class="n">SCHISMDataTides</span>
 
 <span class="c1"># Sets also import a few of the minor classes that are used in the construction of these main classes for use in this demo</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SfluxSource</span><span class="p">,</span> <span class="n">TidalDataset</span><span class="p">,</span> <span class="n">SfluxAir</span><span class="p">,</span> <span class="n">SCHISMDataBoundary</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TidalDataset</span><span class="p">,</span> <span class="n">SfluxAir</span><span class="p">,</span> <span class="n">SCHISMDataBoundary</span>
 
 <span class="c1"># And also lets import some of the core data source objects. These are data input abstractions that work in exactly the same way as</span>
 <span class="c1"># with the swan classes, and can be used interchangeably in each of the data classes depending on the data source. We will use a</span>
 <span class="c1"># bit of a mix here for illustration purposes.</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataBlob</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">SourceFile</span><span class="p">,</span> <span class="n">SourceDataset</span><span class="p">,</span> <span class="n">SourceIntake</span><span class="p">,</span> <span class="n">SourceDatamesh</span><span class="p">,</span> <span class="n">SourceWavespectra</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">SourceFile</span><span class="p">,</span> <span class="n">SourceIntake</span>
 </pre></div>
 </div>
 </div>
@@ -704,8 +703,7 @@ INFO:rompy.schism.grid:Linking hgrid.gr3 to schism_procedural/hgrid_WWM.gr3
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.namelists</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sflux_Inputs</span>
-<span class="c1"># SCHISMDataSflux??</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SCHISMDataSflux??</span>
 <span class="c1"># SfluxSource??</span>
 <span class="c1"># Sflux_Inputs??</span>
 <br/><br/></pre></div>
@@ -715,8 +713,7 @@ INFO:rompy.schism.grid:Linking hgrid.gr3 to schism_procedural/hgrid_WWM.gr3
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">intake</span>
-<span class="n">nn</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nn</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">cat</span> <span class="o">=</span> <span class="n">intake</span><span class="o">.</span><span class="n">open_catalog</span><span class="p">(</span><span class="n">HERE</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;catalog.yaml&quot;</span><span class="p">)</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">HERE</span><span class="o">/</span> <span class="s2">&quot;test_data&quot;</span> <span class="o">/</span> <span class="s2">&quot;era5.nc&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>

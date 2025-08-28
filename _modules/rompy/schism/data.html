@@ -486,7 +486,6 @@
                   
   <h1>Source code for rompy.schism.data</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntEnum</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
@@ -494,23 +493,18 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cloudpathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyPath</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pylib</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_zcor</span><span class="p">,</span> <span class="n">read_schism_bpfile</span><span class="p">,</span> <span class="n">read_schism_hgrid</span><span class="p">,</span> <span class="n">read_schism_vgrid</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundaryWaveStation</span><span class="p">,</span> <span class="n">DataBoundary</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataBlob</span><span class="p">,</span> <span class="n">DataGrid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">RompyBaseModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.bctides</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bctides</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.boundary</span><span class="w"> </span><span class="kn">import</span> <span class="n">Boundary3D</span><span class="p">,</span> <span class="n">BoundaryData</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.boundary_core</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">BoundaryHandler</span><span class="p">,</span>
     <span class="n">ElevationType</span><span class="p">,</span>
     <span class="n">TidalDataset</span><span class="p">,</span>
     <span class="n">TracerType</span><span class="p">,</span>
     <span class="n">VelocityType</span><span class="p">,</span>
-    <span class="n">create_tidal_boundary</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.schism.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCHISMGrid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
@@ -752,7 +746,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># If no URI, create a minimal valid source</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Source dictionary does not contain URI, creating a minimal source&quot;</span>
+                        <span class="s2">&quot;Source dictionary does not contain URI, creating a minimal source&quot;</span>
                     <span class="p">)</span>
                     <span class="c1"># Default to a sample data source for testing</span>
                     <span class="n">source_obj</span> <span class="o">=</span> <span class="n">SourceFile</span><span class="p">(</span>
@@ -877,7 +871,7 @@
 
                     <span class="n">air_value</span> <span class="o">=</span> <span class="n">SfluxAir</span><span class="p">(</span><span class="o">**</span><span class="n">air_value</span><span class="p">)</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Successfully created SfluxAir instance from dictionary&quot;</span>
+                        <span class="s2">&quot;Successfully created SfluxAir instance from dictionary&quot;</span>
                     <span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to create SfluxAir instance: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -904,7 +898,7 @@
                     <span class="sa">f</span><span class="s2">&quot;Converting air_1 dictionary to SfluxAir object: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">air_1</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">air_1</span> <span class="o">=</span> <span class="n">SfluxAir</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">air_1</span><span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully converted air_1 to SfluxAir instance&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Successfully converted air_1 to SfluxAir instance&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error converting air_1 dictionary to SfluxAir: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input data: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">air_1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -918,7 +912,7 @@
                     <span class="sa">f</span><span class="s2">&quot;Converting air_2 dictionary to SfluxAir object: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">air_2</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">air_2</span> <span class="o">=</span> <span class="n">SfluxAir</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">air_2</span><span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully converted air_2 to SfluxAir instance&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Successfully converted air_2 to SfluxAir instance&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error converting air_2 dictionary to SfluxAir: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input data: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">air_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1102,7 +1096,7 @@
         <span class="k">return</span> <span class="n">ds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SCHISMDataWave&quot;</span></div>
+        <span class="k">return</span> <span class="s2">&quot;SCHISMDataWave&quot;</span></div>
 
 
 

@@ -2664,7 +2664,7 @@
     "c = oceanum.isel(time=[0]).spec.hs()\n",
     "p = ax.scatter(oceanum.lon, oceanum.lat, s=6, c=c, cmap=\"turbo\", vmin=0, vmax=4)\n",
     "ax.set_title(c.time.to_index().to_pydatetime()[0])\n",
-    "plt.colorbar(p, label=f\"Hs (m)\")\n",
+    "plt.colorbar(p, label=\"Hs (m)\")\n",
     "ax.coastlines()\n",
     "grid.plot(ax=ax);"
    ]
@@ -3219,7 +3219,7 @@
     "\n",
     "# Axis settings\n",
     "ax.set_title(c.time.to_index().to_pydatetime()[0])\n",
-    "plt.colorbar(p, label=f\"Hs (m)\")\n",
+    "plt.colorbar(p, label=\"Hs (m)\")\n",
     "ax.coastlines()\n",
     "ax.set_extent([ds.lon.min()-3, ds.lon.max()+3, ds.lat.min()-3, ds.lat.max()+3])"
    ]
@@ -4207,7 +4207,6 @@
    "outputs": [],
    "source": [
     "import os\n",
-    "import numpy as np\n",
     "import pandas as pd\n",
     "import xarray as xr\n",
     "import matplotlib.pyplot as plt\n",
@@ -5880,7 +5879,7 @@
     "p = ax3.scatter(dset.lon, dset.lat, s=15, c=stats.dpm, vmin=0, vmax=360, cmap=\"hsv\")\n",
     "plt.colorbar(p, label=\"Dpm (deg)\")\n",
     "for ax in [ax1, ax2, ax3]:\n",
-    "    ax.coastlines();"
+    "    ax.coastlines()"
    ]
   }
  ],

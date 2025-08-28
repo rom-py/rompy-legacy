@@ -560,7 +560,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import some core objects</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRun</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span><span class="p">,</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">BaseGrid</span><span class="p">,</span> <span class="n">RegularGrid</span><span class="p">,</span> <span class="n">DatasetXarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeRange</span><span class="p">,</span> <span class="n">DatasetXarray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanConfig</span><span class="p">,</span> <span class="n">SwanDataGrid</span><span class="p">,</span> <span class="n">SwanGrid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanDataGrid</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
@@ -821,7 +821,7 @@ Raises ValidationError if the input data cannot be parsed to form a valid model.
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now lets look at some on the the swan specific classes that inherit from these base classes</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanDataGrid</span><span class="p">,</span> <span class="n">SwanGrid</span><span class="p">,</span> <span class="n">SwanConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanDataGrid</span>
 </pre></div>
 </div>
 </div>
@@ -912,7 +912,7 @@ Raises ValidationError if the input data cannot be parsed to form a valid model.
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># So we can see that the SwanConfig is a BaseConfig with some additional arguments.</span>
 <span class="c1"># These arguments are broken up into several compoents, lets examine these individually.</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwanSpectrum</span><span class="p">,</span> <span class="n">ForcingData</span><span class="p">,</span> <span class="n">SwanPhysics</span><span class="p">,</span> <span class="n">Outputs</span><span class="p">,</span> <span class="n">SwanDataGrid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ForcingData</span><span class="p">,</span> <span class="n">SwanPhysics</span><span class="p">,</span> <span class="n">Outputs</span><span class="p">,</span> <span class="n">SwanDataGrid</span>
 </pre></div>
 </div>
 </div>
@@ -1353,7 +1353,6 @@ INFO:rompy.swan.data:   Writing wind to ./wind.grd
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The boundary object work in a similar way but is a little more complex as it must determine points around the boundary of the model domain.</span>
 <span class="c1"># First lets have a look at the boundary object</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rompy.swan</span><span class="w"> </span><span class="kn">import</span> <span class="n">Boundnest1</span>
 Boundnest1<span class="o">?</span>
 </pre></div>
 </div>
@@ -1864,7 +1863,6 @@ config:
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initantiating a model run using this config</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="n">args</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;demo.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">wavespectra</span>
 <span class="n">run</span> <span class="o">=</span> <span class="n">ModelRun</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
 
 <span class="c1"># and then calling as before</span>
