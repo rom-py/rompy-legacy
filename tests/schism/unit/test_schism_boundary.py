@@ -94,7 +94,7 @@ class TestBoundaryHandling:
     def test_boundary_to_file(self, grid2d, hycom_bnd2d, tmp_path):
         """Test writing boundary data to files."""
         # Create a data boundary
-        data_boundary = SCHISMDataBoundary(
+        SCHISMDataBoundary(
             id="test_boundary_file",
             source=hycom_bnd2d.source,  # Use SourceFile directly
             variables=["surf_el"],

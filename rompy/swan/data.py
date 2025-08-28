@@ -536,7 +536,6 @@ class Swan_accessor(object):
 
         n_pts = int((boundary.length) / interval)
         splits = np.linspace(0, 1.0, n_pts)
-        boundary_points = []
         j = 0
         for i in range(len(splits) - 1):
             segment = substring(

@@ -45,7 +45,7 @@ def test_SCHISMGrid2D(tmpdir):
         # wwmbnd=wwmbnd,
     )
 
-    assert grid.is_3d == False
+    assert not grid.is_3d
     # # assert grid.drag == drag
     # # assert grid.rough == rough
     # assert grid.manning == manning
@@ -58,7 +58,7 @@ def test_SCHISMGrid2D(tmpdir):
     assert grid.validate_rough_drag_manning(grid) == grid
     # assert that the gr3 file for each of the above is in the staging dir
     staging_dir = Path(tmpdir)
-    ret = grid.get(staging_dir)
+    grid.get(staging_dir)
 
     # Ensure all required files are present - create vgrid.in if missing
     vgrid_path = staging_dir.joinpath("vgrid.in")
@@ -87,12 +87,12 @@ def test_SCHISMGrid3D(tmpdir):
         drag=1,
     )
 
-    assert grid.is_3d == True
+    assert grid.is_3d
 
     assert grid.validate_rough_drag_manning(grid) == grid
     # assert that the gr3 file for each of the above is in the staging dir
     staging_dir = Path(tmpdir)
-    ret = grid.get(staging_dir)
+    grid.get(staging_dir)
 
     # Ensure all required files are present - create vgrid.in if missing
     vgrid_path = staging_dir.joinpath("vgrid.in")

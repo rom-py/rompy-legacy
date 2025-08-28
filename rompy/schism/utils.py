@@ -148,7 +148,7 @@ def schism_plot(
         LonI, LatI, UI, VI = schism_calculate_vectors(ax, schout, vtype=vtype)
         ax.quiver(LonI, LatI, UI, VI, color="k")
 
-    con = ax.tricontour(meshtri, z, contours, colors="k")
+    ax.tricontour(meshtri, z, contours, colors="k")
     # ax.clabel(con, con.levels, inline=True, fmt='%i', fontsize=12)
     if not (project):
         ax.set_aspect("equal")

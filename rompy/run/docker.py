@@ -364,7 +364,7 @@ class DockerRunBackend:
             True if image exists, False otherwise
         """
         try:
-            result = subprocess.run(
+            subprocess.run(
                 ["docker", "image", "inspect", image_name],
                 check=True,
                 stdout=subprocess.PIPE,

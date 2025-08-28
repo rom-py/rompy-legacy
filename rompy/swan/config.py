@@ -526,7 +526,6 @@ class SwanConfigComponents(BaseConfig):
         from rompy.logging import LoggingConfig
 
         logging_config = LoggingConfig()
-        USE_ASCII_ONLY = logging_config.use_ascii
         SIMPLE_LOGS = logging_config.format == "simple"
 
         # Use the log_box utility function

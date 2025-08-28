@@ -153,4 +153,4 @@ def test_inpgrids_unique_var(nonstat, readinp):
     )
 
     with pytest.raises(ValidationError):
-        inpgrids = INPGRIDS(inpgrids=[bottom, wind])
+        INPGRIDS(inpgrids=[bottom, wind])

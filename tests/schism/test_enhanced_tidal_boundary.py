@@ -52,7 +52,7 @@ def validate_ntip_section(file_path):
 
     try:
         ntip = int(parts[0])
-        tip_dp = float(parts[1])
+        float(parts[1])
     except ValueError:
         return False, "Invalid ntip or tip_dp values"
 
@@ -76,11 +76,11 @@ def validate_ntip_section(file_path):
                 return False, f"Invalid tidal potential format for {constituent}"
 
             try:
-                species = int(parts[0])
-                amp = float(parts[1])
-                freq = float(parts[2])
-                nodal = float(parts[3])
-                ear = float(parts[4])
+                int(parts[0])
+                float(parts[1])
+                float(parts[2])
+                float(parts[3])
+                float(parts[4])
             except ValueError:
                 return False, f"Invalid tidal potential values for {constituent}"
 
@@ -129,9 +129,9 @@ def validate_nbfr_section(file_path, start_line):
             return False, f"Invalid frequency format for {constituent}", 0
 
         try:
-            freq = float(parts[0])
-            nodal = float(parts[1])
-            ear = float(parts[2])
+            float(parts[0])
+            float(parts[1])
+            float(parts[2])
         except ValueError:
             return False, f"Invalid frequency values for {constituent}", 0
 
@@ -176,8 +176,8 @@ def validate_boundary_section(file_path, start_line, nbfr):
             neta = int(parts[0])
             iettype = int(parts[1])  # Elevation type
             ifltype = int(parts[2])  # Velocity type
-            itetype = int(parts[3])  # Temperature type
-            isatype = int(parts[4])  # Salinity type
+            int(parts[3])  # Temperature type
+            int(parts[4])  # Salinity type
         except ValueError:
             return False, f"Invalid boundary flag values for segment {j+1}"
 
@@ -193,7 +193,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
                 return False, f"Missing constant elevation for segment {j+1}"
 
             try:
-                ethconst = float(lines[line_index])
+                float(lines[line_index])
                 line_index += 1
             except ValueError:
                 return False, f"Invalid constant elevation for segment {j+1}"
@@ -207,7 +207,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         f"Missing constituent name for elevation on segment {j+1}",
                     )
 
-                constituent = lines[line_index].strip()
+                lines[line_index].strip()
                 line_index += 1
 
                 # Parse amplitude and phase for each node
@@ -226,8 +226,8 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         )
 
                     try:
-                        amp = float(parts[0])
-                        phase = float(parts[1])
+                        float(parts[0])
+                        float(parts[1])
                     except ValueError:
                         return (
                             False,
@@ -248,7 +248,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         f"Missing constituent name for elevation on segment {j+1}",
                     )
 
-                constituent = lines[line_index].strip()
+                lines[line_index].strip()
                 line_index += 1
 
                 # Parse amplitude and phase for each node
@@ -267,8 +267,8 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         )
 
                     try:
-                        amp = float(parts[0])
-                        phase = float(parts[1])
+                        float(parts[0])
+                        float(parts[1])
                     except ValueError:
                         return (
                             False,
@@ -292,7 +292,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
                 return False, f"Missing constant discharge for segment {j+1}"
 
             try:
-                vthconst = float(lines[line_index])
+                float(lines[line_index])
                 line_index += 1
             except ValueError:
                 return False, f"Invalid constant discharge for segment {j+1}"
@@ -306,7 +306,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         f"Missing constituent name for velocity on segment {j+1}",
                     )
 
-                constituent = lines[line_index].strip()
+                lines[line_index].strip()
                 line_index += 1
 
                 # Parse amplitude and phase for each node
@@ -325,10 +325,10 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         )
 
                     try:
-                        uamp = float(parts[0])
-                        uphase = float(parts[1])
-                        vamp = float(parts[2])
-                        vphase = float(parts[3])
+                        float(parts[0])
+                        float(parts[1])
+                        float(parts[2])
+                        float(parts[3])
                     except ValueError:
                         return (
                             False,
@@ -347,8 +347,8 @@ def validate_boundary_section(file_path, start_line, nbfr):
                     return False, f"Invalid relaxation format for segment {j+1}"
 
                 try:
-                    rel1 = float(parts[0])
-                    rel2 = float(parts[1])
+                    float(parts[0])
+                    float(parts[1])
                 except ValueError:
                     return False, f"Invalid relaxation values for segment {j+1}"
 
@@ -363,7 +363,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         f"Missing constituent name for velocity on segment {j+1}",
                     )
 
-                constituent = lines[line_index].strip()
+                lines[line_index].strip()
                 line_index += 1
 
                 # Parse amplitude and phase for each node
@@ -382,10 +382,10 @@ def validate_boundary_section(file_path, start_line, nbfr):
                         )
 
                     try:
-                        uamp = float(parts[0])
-                        uphase = float(parts[1])
-                        vamp = float(parts[2])
-                        vphase = float(parts[3])
+                        float(parts[0])
+                        float(parts[1])
+                        float(parts[2])
+                        float(parts[3])
                     except ValueError:
                         return (
                             False,
@@ -413,7 +413,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
                     )
 
                 try:
-                    eta_mean = float(lines[line_index])
+                    float(lines[line_index])
                     line_index += 1
                 except ValueError:
                     return (
@@ -439,7 +439,7 @@ def validate_boundary_section(file_path, start_line, nbfr):
                     )
 
                 try:
-                    vn_mean = float(lines[line_index])
+                    float(lines[line_index])
                     line_index += 1
                 except ValueError:
                     return (

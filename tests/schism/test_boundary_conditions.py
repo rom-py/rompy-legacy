@@ -109,7 +109,7 @@ class TestBoundarySetupWithSource:
     def test_validation_warnings(self, caplog):
         """Test that warnings are logged for missing data sources."""
         # Create a boundary that should have data sources but doesn't
-        boundary = BoundarySetupWithSource(
+        BoundarySetupWithSource(
             elev_type=ElevationType.EXTERNAL,
             vel_type=VelocityType.RELAXED,
             temp_type=TracerType.EXTERNAL,
@@ -189,7 +189,7 @@ class TestSCHISMDataBoundaryConditions:
             ValueError,
             match="Tidal data is required for HARMONIC or HARMONICEXTERNAL boundary types",
         ):
-            bc_tidal = SCHISMDataBoundaryConditions(
+            SCHISMDataBoundaryConditions(
                 setup_type="tidal"
                 # Missing tidal_data should cause validation error
             )

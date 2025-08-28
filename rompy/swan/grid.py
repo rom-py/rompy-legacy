@@ -210,11 +210,10 @@ class SwanGrid(RegularGrid):
             ax.scatter(ds_spec.lon, ds_spec.lat)
 
         specPoints = []
-        specPointCoords = []
         for i in range(pol.shape[1] - 1):
             p1 = pol[:, i]
             p2 = pol[:, i + 1]
-            line = np.stack((p1, p2))
+            np.stack((p1, p2))
             output = np.array(
                 list(map(lambda xi: _nearestPointOnLine(p1, p2, xi), p3s))
             )

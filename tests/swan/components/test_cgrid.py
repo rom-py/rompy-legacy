@@ -66,7 +66,7 @@ def test_spectrum_flow_less_than_fhigh():
 
 
 def test_regular():
-    cgrid = REGULAR(
+    REGULAR(
         spectrum=SPECTRUM(
             mdc=36,
             flow=0.04,

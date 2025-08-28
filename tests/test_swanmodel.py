@@ -67,7 +67,7 @@ def test_swan_input(tmp_path, grid):
 
 def test_failing_friction(tmp_path):
     with pytest.raises(ValueError):
-        model = ModelRun(
+        ModelRun(
             run_id="test_swan",
             output_dir=str(tmp_path),
             config=dict(friction="BAD", model_type="swan"),

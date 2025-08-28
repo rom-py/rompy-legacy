@@ -303,7 +303,7 @@ def plot_sflux_timeseries(
     import xarray as xr
     from scipy.spatial import cKDTree
 
-    logger = logging.getLogger(__name__)
+    logging.getLogger(__name__)
 
     # Check if we have atmospheric data in the config
     if not hasattr(self, "data") or not hasattr(self.data, "sflux"):

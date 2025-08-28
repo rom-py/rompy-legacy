@@ -230,7 +230,7 @@ class TestTidesOceanConsistency:
         # Update tidal dataset with specific constituents
         tidal_dataset.constituents = ["M2", "S2"]
 
-        tides = SCHISMDataTidesEnhanced(
+        SCHISMDataTidesEnhanced(
             tidal_data=tidal_dataset,
             boundaries={
                 0: BoundarySetup(
@@ -243,7 +243,7 @@ class TestTidesOceanConsistency:
         )
 
         # Create ocean boundary data without temperature - should log a warning
-        elev_boundary = SCHISMDataBoundary(
+        SCHISMDataBoundary(
             source=hycom_bnd2d.source,
             variables=["surf_el"],
         )
@@ -260,7 +260,7 @@ class TestTidesOceanConsistency:
         # Update tidal dataset with specific constituents
         tidal_dataset.constituents = ["M2", "S2"]
 
-        tides = SCHISMDataTidesEnhanced(
+        SCHISMDataTidesEnhanced(
             tidal_data=tidal_dataset,
             boundaries={
                 0: BoundarySetup(
@@ -273,7 +273,7 @@ class TestTidesOceanConsistency:
         )
 
         # Create ocean boundary data without salinity - should log a warning
-        elev_boundary = SCHISMDataBoundary(
+        SCHISMDataBoundary(
             source=hycom_bnd2d.source,
             variables=["surf_el"],
         )

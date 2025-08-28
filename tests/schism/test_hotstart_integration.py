@@ -287,7 +287,7 @@ class TestBoundaryConditionsHotstartIntegration:
             source=hycom_source, variables=["temperature"], coords=hycom_coords
         )
 
-        boundary_setup = BoundarySetupWithSource(
+        BoundarySetupWithSource(
             elev_type=5,
             vel_type=4,
             temp_type=4,

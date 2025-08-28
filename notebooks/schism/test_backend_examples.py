@@ -154,7 +154,7 @@ def test_docker_config_creation():
         print(f"  - Timeout: {config.timeout}")
 
         # Test with WWM executable
-        config_wwm = runner._create_docker_config(test_path, "_WWM")
+        runner._create_docker_config(test_path, "_WWM")
         print("✓ Docker config created for WWM executable")
 
         # Clean up test directory

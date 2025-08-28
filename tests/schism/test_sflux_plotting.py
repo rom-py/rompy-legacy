@@ -143,7 +143,7 @@ def test_plot_sflux_spatial(grid2d, test_sflux_data):
 
     # Plot wind vectors on a subset of the grid for clarity
     skip = 2  # Skip every other grid point
-    q = ax.quiver(
+    ax.quiver(
         lon_grid[::skip, ::skip],
         lat_grid[::skip, ::skip],
         air_ds.uwind[0, ::skip, ::skip],
@@ -237,7 +237,7 @@ def test_sflux_plotting_workflow(grid2d, test_sflux_data):
     # 2. Wind vectors plot
     ax2 = fig.add_subplot(gs[0, 1])
     skip = 2  # Skip grid points for clarity
-    q = ax2.quiver(
+    ax2.quiver(
         lon_grid[::skip, ::skip],
         lat_grid[::skip, ::skip],
         air_ds.uwind[0, ::skip, ::skip],

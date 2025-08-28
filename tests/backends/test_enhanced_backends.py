@@ -190,7 +190,7 @@ class TestEnhancedLocalRunBackend:
 
     def test_run_with_nonexistent_working_dir(self, model_run, tmp_path):
         """Test execution with nonexistent working directory."""
-        backend = LocalRunBackend()
+        LocalRunBackend()
 
         nonexistent_dir = tmp_path / "nonexistent"
 

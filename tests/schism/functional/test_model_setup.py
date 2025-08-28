@@ -78,13 +78,6 @@ class TestFullModelSetup:
         model_dir.mkdir()
 
         # 1. Create all GR3 files
-        gr3_types = {
-            "drag": 0.0025,
-            "diffmin": 1.0e-6,
-            "diffmax": 1.0,
-            "watertype": 1,
-            "albedo": 0.15,
-        }
 
         # Here we would generate all gr3 files
         # For now, just check that we have the data we need

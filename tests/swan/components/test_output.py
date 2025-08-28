@@ -259,7 +259,7 @@ def test_ngrid_unstructured():
     ],
 )
 def test_quantity(kwargs):
-    quant = QUANTITY(**kwargs)
+    QUANTITY(**kwargs)
 
 
 def test_quantity_valid_output():
