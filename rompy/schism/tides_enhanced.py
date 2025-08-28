@@ -678,14 +678,14 @@ def create_river_config(
 
     # Configure other boundaries if needed
     if other_boundaries == "tidal":
-        other_config = BoundarySetup(
+        BoundarySetup(
             elev_type=ElevationType.HARMONIC,
             vel_type=VelocityType.HARMONIC,
             temp_type=TracerType.NONE,
             salt_type=TracerType.NONE,
         )
     else:
-        other_config = BoundarySetup(
+        BoundarySetup(
             elev_type=ElevationType.NONE,
             vel_type=VelocityType.NONE,
             temp_type=TracerType.NONE,

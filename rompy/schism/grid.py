@@ -339,7 +339,7 @@ class WWMBNDGR3Generator(GeneratorBase):
                     f"List of flags {nope2} must be the same length as the number of open boundaries in the hgrid.gr3 file ({nope})"
                 )
 
-            neta = int(file.readline().split()[0].strip())
+            int(file.readline().split()[0].strip())
 
             for k in range(nope):
                 nond = int(file.readline().split()[0].strip())

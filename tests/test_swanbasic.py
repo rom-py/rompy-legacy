@@ -21,7 +21,7 @@ here = Path(__file__).parent
 @pytest.mark.skip(reason="frequency removed from ModelRun so this template breaks")
 def test_swanbasic(tmpdir):
     """Test the swantemplate function."""
-    time = TimeRange(
+    TimeRange(
         start=datetime(2020, 2, 21, 4), end=datetime(2020, 2, 24, 4), interval="15M"
     )
     runtime = ModelRun(

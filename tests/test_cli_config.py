@@ -118,7 +118,7 @@ class TestCLIConfigFromEnv:
     def test_validate_with_config_from_env(self):
         """Test validate command with config from environment variable."""
         with patch.dict(os.environ, {"ROMPY_CONFIG": self.config_json}):
-            with patch("rompy.cli.ModelRun") as mock_model_run:
+            with patch("rompy.cli.ModelRun"):
                 result = self.runner.invoke(cli, ["validate", "--config-from-env"])
                 assert result.exit_code == 0
 
@@ -146,7 +146,7 @@ class TestCLIConfigFromEnv:
     def test_generate_with_config_from_env(self):
         """Test generate command with config from environment variable."""
         with patch.dict(os.environ, {"ROMPY_CONFIG": self.config_json}):
-            with patch("rompy.cli.ModelRun") as mock_model_run:
+            with patch("rompy.cli.ModelRun"):
                 result = self.runner.invoke(cli, ["generate", "--config-from-env"])
                 assert result.exit_code == 0
 
@@ -175,7 +175,7 @@ class TestCLIConfigFromEnv:
 
         try:
             with patch.dict(os.environ, {"ROMPY_CONFIG": self.config_json}):
-                with patch("rompy.cli.ModelRun") as mock_model_run:
+                with patch("rompy.cli.ModelRun"):
                     with patch("rompy.cli._load_backend_config"):
                         result = self.runner.invoke(
                             cli,
@@ -194,7 +194,7 @@ class TestCLIConfigFromEnv:
     def test_pipeline_with_config_from_env(self):
         """Test pipeline command with config from environment variable."""
         with patch.dict(os.environ, {"ROMPY_CONFIG": self.config_json}):
-            with patch("rompy.cli.ModelRun") as mock_model_run:
+            with patch("rompy.cli.ModelRun"):
                 result = self.runner.invoke(
                     cli,
                     [
@@ -230,7 +230,7 @@ class TestCLIConfigFromEnv:
         config_yaml = yaml.dump(self.config_data)
 
         with patch.dict(os.environ, {"ROMPY_CONFIG": config_yaml}):
-            with patch("rompy.cli.ModelRun") as mock_model_run:
+            with patch("rompy.cli.ModelRun"):
                 result = self.runner.invoke(cli, ["validate", "--config-from-env"])
                 assert result.exit_code == 0
 
@@ -283,7 +283,7 @@ class TestCLIBackwardCompatibility:
             config_path = f.name
 
         try:
-            with patch("rompy.cli.ModelRun") as mock_model_run:
+            with patch("rompy.cli.ModelRun"):
                 result = self.runner.invoke(cli, ["validate", config_path])
                 assert result.exit_code == 0
         finally:
@@ -296,7 +296,7 @@ class TestCLIBackwardCompatibility:
             config_path = f.name
 
         try:
-            with patch("rompy.cli.ModelRun") as mock_model_run:
+            with patch("rompy.cli.ModelRun"):
                 result = self.runner.invoke(cli, ["generate", config_path])
                 assert result.exit_code == 0
         finally:
@@ -315,7 +315,7 @@ class TestCLIBackwardCompatibility:
             backend_path = f2.name
 
         try:
-            with patch("rompy.cli.ModelRun") as mock_model_run:
+            with patch("rompy.cli.ModelRun"):
                 with patch("rompy.cli._load_backend_config"):
                     result = self.runner.invoke(
                         cli,

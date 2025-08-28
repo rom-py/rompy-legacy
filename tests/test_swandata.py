@@ -88,4 +88,4 @@ def test_swandata_write(tmp_path, nc_data_source):
 
 
 def test_bathy_write(tmp_path, nc_bathy):
-    config = nc_bathy.get(tmp_path)
+    nc_bathy.get(tmp_path)

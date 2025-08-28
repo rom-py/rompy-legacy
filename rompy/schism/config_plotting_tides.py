@@ -489,7 +489,6 @@ def plot_tidal_rose(
 
     # Plot ellipses for each constituent
     colors = plt.cm.tab10.colors
-    legend_handles = []
 
     for i, const in enumerate(constituents):
         if const not in dataset.constituent.values:

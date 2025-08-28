@@ -2059,7 +2059,7 @@ class TURBULENCE(BaseComponent):
 
     @model_validator(mode="after")
     def tbcur_only_with_current(self) -> "TURBULENCE":
-        if self.current == False and self.tbcur is not None:
+        if not self.current and self.tbcur is not None:
             raise ValueError("`tbcur` can only be defined if `current` is True")
         return self
 

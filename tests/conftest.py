@@ -40,7 +40,7 @@ def pytest_configure(config):
 
     # Get log level from command line or use default
     log_level_str = config.getoption("--rompy-log-level")
-    log_level = getattr(logging, log_level_str)
+    getattr(logging, log_level_str)
 
     # Configure logging for tests
     configure_test_logging(level=log_level_str)

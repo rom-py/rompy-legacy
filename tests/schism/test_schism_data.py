@@ -122,7 +122,7 @@ def test_oceandataboundary(tmp_path, grid2d, hycom_bnd2d):
         logging.info(f"NetCDF has {len(bnd.nOpenBndNodes)} boundary nodes")
 
         assert bnd.nOpenBndNodes.size == grid2d.nobn
-        assert grid2d.nvrt == None
+        assert grid2d.nvrt is None
 
         logging.info(f"Grid has {len(bnd.nOpenBndNodes)} boundary nodes")
         assert bnd.time_series.isnull().sum() == 0

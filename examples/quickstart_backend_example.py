@@ -240,7 +240,7 @@ def example_configuration_validation():
 
     # Valid local configuration
     try:
-        config = LocalConfig(
+        LocalConfig(
             timeout=3600,
             command="echo 'Valid configuration'",
             env_vars={"TEST": "value"},
@@ -252,7 +252,7 @@ def example_configuration_validation():
     # Invalid configuration (timeout too high)
     logger.info("Testing invalid configuration (timeout too high)...")
     try:
-        config = LocalConfig(
+        LocalConfig(
             timeout=100000,  # Too high (max is 86400)
             command="echo 'Invalid configuration'",
         )
@@ -262,7 +262,7 @@ def example_configuration_validation():
 
     # Valid Docker configuration
     try:
-        config = DockerConfig(image="python:3.9-slim", timeout=3600, cpu=2, memory="1g")
+        DockerConfig(image="python:3.9-slim", timeout=3600, cpu=2, memory="1g")
         logger.info("✅ Valid DockerConfig created successfully")
     except Exception as e:
         logger.error(f"❌ DockerConfig validation failed: {e}")
@@ -270,7 +270,7 @@ def example_configuration_validation():
     # Invalid Docker configuration (no image or dockerfile)
     logger.info("Testing invalid Docker configuration (missing image)...")
     try:
-        config = DockerConfig(
+        DockerConfig(
             timeout=3600,
             cpu=2,
             memory="1g",

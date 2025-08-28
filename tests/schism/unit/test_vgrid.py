@@ -57,7 +57,7 @@ class TestVgridGenerator:
 
         # Create vgrid.in file
         with pytest.raises(ValueError):
-            vgrid_file = vgrid_generator.generate(tmp_path)
+            vgrid_generator.generate(tmp_path)
 
     def test_vgrid_sz(self, hgrid_path, tmp_path):
         """Test SZ vertical grid specifically."""

@@ -102,7 +102,7 @@ def test_intake_grid(tmp_path, grid_data_source):
     assert data.ds.latitude.min() == 0
     assert data.ds.longitude.max() == 20
     assert data.ds.longitude.min() == 0
-    outfile = downloaded = data.get(tmp_path)
+    outfile = data.get(tmp_path)
     dset = xr.open_dataset(outfile)
     assert dset.equals(data.ds)
 

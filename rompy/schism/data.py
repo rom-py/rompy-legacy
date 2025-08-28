@@ -291,7 +291,7 @@ class SfluxAir(SfluxSource):
         ds = super().ds
         for variable in self._variable_names:
             data_var = getattr(self, variable)
-            if data_var == None:
+            if data_var is None:
                 proxy_var = variable.replace("_name", "")
                 ds[proxy_var] = ds[self.uwind_name].copy()
                 if variable == "spfh_name":
@@ -1484,13 +1484,12 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
     def _create_boundary_config(self, grid):
         """Create a TidalBoundary object based on the configuration."""
         # Get tidal data paths
-        tidal_database = None
         if self.tidal_data:
             if (
                 hasattr(self.tidal_data, "tidal_database")
                 and self.tidal_data.tidal_database
             ):
-                tidal_database = str(self.tidal_data.tidal_database)
+                str(self.tidal_data.tidal_database)
 
         # Ensure boundary information is computed
         if hasattr(grid.pylibs_hgrid, "compute_bnd"):

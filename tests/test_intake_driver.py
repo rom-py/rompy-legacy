@@ -86,7 +86,7 @@ def test_csiro(tmpdir, csiro):
     assert csiro.ds.lat.min() == 0
     assert csiro.ds.lon.max() == 10
     assert csiro.ds.lon.min() == 0
-    downloaded = gfs.get(tmpdir)
+    gfs.get(tmpdir)
     # These may not be exact, may need to fine tune
     # assert downloaded.ds.lat.max() == 10
     # assert downloaded.ds.lat.min() == 0

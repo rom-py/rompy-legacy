@@ -27,7 +27,7 @@ def validate_bctides_format(file_path):
 
     try:
         ntip = int(parts[0])
-        tip_dp = float(parts[1])
+        float(parts[1])
     except ValueError:
         return False, "Invalid ntip or tip_dp values"
 
@@ -51,11 +51,11 @@ def validate_bctides_format(file_path):
                 return False, f"Invalid tidal potential format for {constituent}"
 
             try:
-                species = int(parts[0])
-                amp = float(parts[1])
-                freq = float(parts[2])
-                nodal = float(parts[3])
-                ear = float(parts[4])
+                int(parts[0])
+                float(parts[1])
+                float(parts[2])
+                float(parts[3])
+                float(parts[4])
             except ValueError:
                 return False, f"Invalid tidal potential values for {constituent}"
 
@@ -90,9 +90,9 @@ def validate_bctides_format(file_path):
             return False, f"Invalid frequency format for {constituent}"
 
         try:
-            freq = float(parts[0])
-            nodal = float(parts[1])
-            ear = float(parts[2])
+            float(parts[0])
+            float(parts[1])
+            float(parts[2])
         except ValueError:
             return False, f"Invalid frequency values for {constituent}"
 
@@ -103,7 +103,7 @@ def validate_bctides_format(file_path):
         return False, "Missing nope value"
 
     try:
-        nope = int(lines[line_index])
+        int(lines[line_index])
     except ValueError:
         return False, "Invalid nope value"
 
