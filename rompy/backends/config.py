@@ -6,16 +6,14 @@ execution backends. These configurations handle transient execution parameters
 while maintaining type safety and validation.
 """
 
-import os
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 if TYPE_CHECKING:
-    from rompy.run import LocalRunBackend
-    from rompy.run.docker import DockerRunBackend
+    pass
 
 
 class BaseBackendConfig(BaseModel, ABC):

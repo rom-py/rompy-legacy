@@ -5,11 +5,10 @@ These tests require Docker to be installed and running.
 They test the full Docker backend functionality with real containers.
 """
 
-import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 

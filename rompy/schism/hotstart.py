@@ -5,21 +5,18 @@ This module provides functionality to create hotstart.nc files for SCHISM
 by interpolating temperature and salinity data from source datasets to the SCHISM grid.
 """
 
-import os
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 import numpy as np
 import scipy as sp
-import xarray as xr
-from pydantic import ConfigDict, Field
-from pylib import WriteNC, datenum, loadz, zdata
+from pydantic import Field
+from pylib import WriteNC, datenum, zdata
 
-from rompy.core.data import DataBlob, DataGrid
+from rompy.core.data import DataGrid
 from rompy.logging import get_logger
 from rompy.core.time import TimeRange
-from rompy.core.types import RompyBaseModel
 from rompy.schism.grid import SCHISMGrid
 
 logger = get_logger(__name__)
@@ -396,7 +393,7 @@ class SCHISMDataHotstart(DataGrid):
         tr_nd = np.r_[S.temp[None, ...], S.salt[None, ...]].T
         # Check for NaNs in tr_nd
         if np.any(np.isnan(tr_nd)):
-            logger.warning(f"Found NaN values in tracer data, replacing with zeros")
+            logger.warning("Found NaN values in tracer data, replacing with zeros")
             tr_nd = np.nan_to_num(tr_nd, nan=0.0)
 
         # Calculate element tracers from node tracers

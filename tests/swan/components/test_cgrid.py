@@ -11,7 +11,6 @@ logger = get_test_logger(__name__)
 from rompy.swan.subcomponents.readgrid import GRIDREGULAR
 from rompy.swan.components.cgrid import (
     SPECTRUM,
-    CGRID,
     REGULAR,
     CURVILINEAR,
     UNSTRUCTURED,

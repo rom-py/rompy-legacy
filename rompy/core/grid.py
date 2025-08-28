@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Literal, Optional, Union
+from typing import Literal, Optional
 
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
@@ -294,7 +294,6 @@ class RegularGrid(BaseGrid):
 
 
 if __name__ == "__main__":
-    import copy
 
     grid0 = RegularGrid(x0=-1, y0=1, rot=35, nx=10, ny=10, dx=1, dy=2)
     grid1 = RegularGrid(x=grid0.x, y=grid0.y)

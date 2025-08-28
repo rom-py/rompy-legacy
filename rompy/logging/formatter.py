@@ -10,11 +10,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, ClassVar, Dict, List, Literal, Optional, Tuple, Type, TypeVar
+from typing import List, Optional
 
-from pydantic import Field, field_validator, model_validator
 
-from .config import LoggingConfig, LogLevel
+from .config import LoggingConfig
 
 
 class BoxStyle(str, Enum):

@@ -6,7 +6,7 @@ of the SWAN model configuration in the ROMPY framework.
 """
 
 from pathlib import Path
-from typing import Annotated, Literal, Optional, Union
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -127,14 +127,14 @@ class SwanPhysics(RompyBaseModel):
     @property
     def cmd(self):
         ret = ""
-        ret += f"GEN3 WESTH 0.000075 0.00175\n"
-        ret += f"BREAKING\n"
+        ret += "GEN3 WESTH 0.000075 0.00175\n"
+        ret += "BREAKING\n"
         ret += f"FRICTION {self.friction} {self.friction_coeff}\n"
         ret += "\n"
-        ret += f"TRIADS\n"
+        ret += "TRIADS\n"
         ret += "\n"
-        ret += f"PROP BSBT\n"
-        ret += f"NUM ACCUR 0.02 0.02 0.02 95 NONSTAT 20\n"
+        ret += "PROP BSBT\n"
+        ret += "NUM ACCUR 0.02 0.02 0.02 95 NONSTAT 20\n"
         return ret
 
 
@@ -194,7 +194,7 @@ class Outputs(RompyBaseModel):
         ret += f"BLOCK 'COMPGRID' HEADER 'outputs/swan_out.nc' LAYOUT 1 {' '.join(self.grid.variables)} OUT {self.grid.period.start.strftime(self._datefmt)} {out_intvl}\n"
         ret += "\n"
         if len(self.spec.locations.coords) > 0:
-            ret += f"POINTs 'pts' FILE 'out.loc'\n"
+            ret += "POINTs 'pts' FILE 'out.loc'\n"
             ret += f"SPECout 'pts' SPEC2D ABS 'outputs/spec_out.nc' OUTPUT {self.spec.period.start.strftime(self._datefmt)} {out_intvl}\n"
             ret += f"TABle 'pts' HEADer 'outputs/tab_out.nc' TIME XP YP HS TPS TM01 DIR DSPR WIND OUTPUT {self.grid.period.start.strftime(self._datefmt)} {out_intvl}\n"
         return ret

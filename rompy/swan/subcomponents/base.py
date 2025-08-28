@@ -5,7 +5,7 @@ This module provides the base classes for SWAN subcomponents in the ROMPY framew
 """
 
 from abc import ABC
-from typing import Literal, Optional
+from typing import Literal
 
 from pydantic import ConfigDict, Field, model_validator
 
@@ -79,7 +79,7 @@ class XY(BaseSubComponent):
     @model_validator(mode="after")
     def validate_size(self) -> "XY":
         if len(self.x) != len(self.y):
-            raise ValueError(f"x and y must be the same size")
+            raise ValueError("x and y must be the same size")
         return self
 
     @property
@@ -127,7 +127,7 @@ class IJ(BaseSubComponent):
     @model_validator(mode="after")
     def validate_size(self) -> "IJ":
         if len(self.i) != len(self.j):
-            raise ValueError(f"i and j must be the same size")
+            raise ValueError("i and j must be the same size")
         return self
 
     @property

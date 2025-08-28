@@ -1,11 +1,9 @@
 import pytest
 import os
 from pathlib import Path
-import numpy as np
 from datetime import datetime
 
 from rompy.core.time import TimeRange
-from rompy.schism.grid import SCHISMGrid
 from rompy.schism.tides_enhanced import (
     SCHISMDataTidesEnhanced,
     BoundarySetup,
@@ -15,7 +13,7 @@ from rompy.schism.tides_enhanced import (
     create_river_config,
     create_nested_config,
 )
-from rompy.schism.data import SCHISMData, SCHISMDataBoundary
+from rompy.schism.data import SCHISMDataBoundary
 from rompy.schism.boundary_core import ElevationType, VelocityType, TracerType
 
 # We'll use the grid2d fixture from the parent conftest.py

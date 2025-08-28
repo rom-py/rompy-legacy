@@ -27,7 +27,6 @@ def plot_boundary_points(self, variable=None, ax=None, figsize=(10, 8), **kwargs
         The axes object.
     """
     import matplotlib.pyplot as plt
-    import numpy as np
     import logging
 
     logger = logging.getLogger(__name__)

@@ -1,6 +1,6 @@
 """Input grid for SWAN."""
 
-from typing import Literal, Union, Annotated, Optional
+from typing import Literal, Optional
 from pathlib import Path
 from pydantic import Field, model_validator
 from abc import ABC

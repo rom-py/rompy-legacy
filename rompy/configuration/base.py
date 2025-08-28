@@ -2,11 +2,8 @@ from __future__ import annotations
 
 import logging
 import os
-from datetime import datetime
-from typing import Optional
 
-import yaml
-from pydantic import BaseModel, PrivateAttr, validator
+from pydantic import PrivateAttr
 
 from rompy import TEMPLATES_DIR
 from rompy.types import RompyBaseModel

@@ -1,10 +1,8 @@
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Literal, Optional
 
 import numpy as np
-import pandas as pd
 from pydantic import (
-    ConfigDict,
     Field,
     PrivateAttr,
     field_validator,
@@ -12,14 +10,11 @@ from pydantic import (
     model_validator,
 )
 from pylib import (
-    compute_zcor,
-    create_schism_vgrid,
     read_schism_hgrid,
     read_schism_vgrid,
-    save_schism_grid,
     schism_grid,
 )
-from shapely.geometry import MultiPoint, Polygon
+from shapely.geometry import Polygon
 
 from rompy.core.data import DataBlob
 from rompy.core.grid import BaseGrid
@@ -262,7 +257,7 @@ class VgridGenerator(GeneratorBase):
 
     def _create_2d_vgrid(self, destdir: str | Path) -> Path:
         """Create a 2D vgrid.in file using the refactored VGrid class."""
-        logger.info(f"Creating 2D vgrid.in using VGrid.create_2d_vgrid()")
+        logger.info("Creating 2D vgrid.in using VGrid.create_2d_vgrid()")
         try:
             # Create a 2D vgrid using the new implementation
             vgrid = create_2d_vgrid()
@@ -967,7 +962,6 @@ class SCHISMGrid(BaseGrid):
             The axes objects for the bathymetry and mesh panels.
         """
         import matplotlib.pyplot as plt
-        import numpy as np
         from matplotlib.tri import Triangulation
 
         # Create figure with two subplots
@@ -1207,8 +1201,6 @@ class SCHISMGrid(BaseGrid):
 
 
 if __name__ == "__main__":
-    import cartopy.crs as ccrs
-    import matplotlib.pyplot as plt
 
     grid = SCHISMGrid(
         hgrid=DataBlob(

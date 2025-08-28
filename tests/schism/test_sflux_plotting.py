@@ -1,19 +1,14 @@
 """Tests for the atmospheric forcing (sflux) plotting methods in SCHISMDataSflux."""
 
-import os
 from pathlib import Path
 import pytest
 import numpy as np
 import pandas as pd
 import xarray as xr
-from datetime import datetime, timedelta
+from datetime import datetime
 
 pytest.importorskip("rompy.schism")
 
-from rompy.core.data import DataBlob
-from rompy.core.time import TimeRange
-from rompy.schism.data import SCHISMDataSflux, SfluxAir, SfluxRad, SfluxPrc
-from rompy.schism.grid import SCHISMGrid
 
 # Define the location of test files
 HERE = Path(__file__).parent
@@ -265,7 +260,7 @@ def test_sflux_plotting_workflow(grid2d, test_sflux_data):
     ax3.plot(air_ds.time, air_ds.stmp[:, lat_idx, lon_idx], "r-", marker="o")
     ax3.set_xlabel("Time")
     ax3.set_ylabel("Temperature (°C)")
-    ax3.set_title(f"Air Temperature Time Series")
+    ax3.set_title("Air Temperature Time Series")
     ax3.grid(True)
 
     # 4. Pressure field at a different time

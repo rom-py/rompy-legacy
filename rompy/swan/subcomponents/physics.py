@@ -90,7 +90,7 @@ class JANSSEN(SourceTerms):
             repr += f" delta={self.delta}"
         repr += f" DRAG {self.wind_drag.upper()}"
         if self.agrow:
-            repr += f" AGROW"
+            repr += " AGROW"
         if self.a is not None and self.agrow:
             repr += f" a={self.a}"
         return repr
@@ -148,7 +148,7 @@ class KOMEN(SourceTerms):
             repr += f" stpm={self.stpm}"
         repr += f" DRAG {self.wind_drag.upper()}"
         if self.agrow:
-            repr += f" AGROW"
+            repr += " AGROW"
         if self.a is not None and self.agrow:
             repr += f" a={self.a}"
         return repr
@@ -211,7 +211,7 @@ class WESTHUYSEN(SourceTerms):
             repr += f" br={self.br}"
         repr += f" DRAG {self.wind_drag.upper()}"
         if self.agrow:
-            repr += f" AGROW"
+            repr += " AGROW"
         if self.a is not None and self.agrow:
             repr += f" a={self.a}"
         return repr
@@ -360,7 +360,7 @@ class ST6(SourceTerms):
         if self.cdfac is not None:
             repr += f" DEBIAS cdfac={self.cdfac}"
         if self.agrow:
-            repr += f" AGROW"
+            repr += " AGROW"
         if self.a is not None and self.agrow:
             repr += f" a={self.a}"
         return repr

@@ -5,7 +5,7 @@ This module provides group components for organizing SWAN model configurations i
 """
 
 import logging
-from typing import Annotated, Any, Literal, Optional, Union
+from typing import Annotated, Literal, Optional, Union
 
 from pydantic import Field, field_validator, model_validator
 
@@ -50,7 +50,6 @@ from rompy.swan.components.physics import (
     MUD,
     NEGATINP,
     OBSTACLES,
-    OFF,
     OFFS,
     QUADRUPL,
     SCAT,

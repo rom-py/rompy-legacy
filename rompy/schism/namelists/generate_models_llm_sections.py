@@ -6,7 +6,6 @@ from subprocess import run
 from typing import Any
 
 import anthropic
-from pydantic import Field, root_validator, validator
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates")
 VAR_SPEC_DIR = "variable_specifications"
@@ -199,7 +198,7 @@ def generate_pydantic_model(
                     if line == "@model_validator":
                         line += "(mode='before')"
                     file.write("    " + line + "\n")
-                if not "return" in line:
+                if "return" not in line:
                     file.write(
                         "        " + "return self" + "\n"
                     )  # addresses tendency for cluude to omit return self
@@ -235,9 +234,9 @@ def nml_to_models(file_in: str, file_out: str):
         file.write(
             f"# This file was auto generated from a SCHISM namelist file on {datetime.datetime.now().strftime('%Y-%m-%d')}.\n\n"
         )
-        file.write(f"from typing import Optional, List\n")
-        file.write(f"from pydantic import Field, field_validator, model_validator\n")
-        file.write(f"from datetime import datetime\n")
+        file.write("from typing import Optional, List\n")
+        file.write("from pydantic import Field, field_validator, model_validator\n")
+        file.write("from datetime import datetime\n")
         basemodellist = basemodel.split(".")
         file.write(
             f"from {'.'.join(basemodellist[0:-1])} import {basemodellist[-1]}\n\n"
@@ -324,8 +323,8 @@ def main():
                 f.write(
                     f"from .{classname} import {classname.split('_')[0].capitalize()}\n"
                 )
-        f.write(f"from .sflux import Sflux_Inputs\n")
-        f.write(f"from .schism import NML")
+        f.write("from .sflux import Sflux_Inputs\n")
+        f.write("from .schism import NML")
     run(["isort", "__init__.py"])
     run(["black", "__init__.py"])
 

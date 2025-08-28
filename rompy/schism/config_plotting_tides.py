@@ -29,7 +29,6 @@ def plot_tidal_boundaries(self, ax=None, c="rb", lw=1.0, figsize=(10, 8), **kwar
         The axes object.
     """
     import matplotlib.pyplot as plt
-    import numpy as np
     import logging
 
     logger = logging.getLogger(__name__)
@@ -339,7 +338,6 @@ def plot_tidal_rose(
     import matplotlib.pyplot as plt
     import numpy as np
     import logging
-    from matplotlib.patches import Ellipse
 
     logger = logging.getLogger(__name__)
 
@@ -483,7 +481,7 @@ def plot_tidal_rose(
 
     # Check that at least one constituent exists
     if not any(c in dataset.constituent.values for c in constituents):
-        raise ValueError(f"None of the requested constituents found in dataset")
+        raise ValueError("None of the requested constituents found in dataset")
 
     # Set up plot
     ax.set_aspect("equal")

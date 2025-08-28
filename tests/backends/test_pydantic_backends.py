@@ -5,7 +5,6 @@ Tests verify that the new backend configuration classes work correctly,
 provide proper validation, and integrate seamlessly with existing backends.
 """
 
-import os
 import pytest
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -14,7 +13,6 @@ from unittest.mock import MagicMock, patch
 from pydantic import ValidationError
 
 from rompy.backends import (
-    BackendConfig,
     BaseBackendConfig,
     DockerConfig,
     LocalConfig,

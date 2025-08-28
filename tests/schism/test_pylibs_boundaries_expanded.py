@@ -7,7 +7,6 @@ import os
 import logging
 import sys
 import numpy as np
-from pathlib import Path
 
 from pylib import read_schism_hgrid
 

@@ -1,19 +1,14 @@
-import os
-import shutil
 import tempfile
 from pathlib import Path
-import numpy as np
 from datetime import datetime
 import re
 
 # Import necessary modules from rompy
 from rompy.schism.boundary_core import (
-    BoundaryHandler,
     TidalBoundary,  # Backward compatibility alias
     BoundaryConfig,
     ElevationType,
     VelocityType,
-    TracerType,
     TidalDataset,
 )
 

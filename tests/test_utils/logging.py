@@ -5,8 +5,7 @@ This module provides utilities to configure logging consistently across all test
 """
 
 import logging
-import os
-from typing import Optional, Union, Type
+from typing import Optional, Union
 
 # Import from rompy.logging
 from rompy.logging import get_logger, config, LogLevel, LogFormat

@@ -156,7 +156,7 @@ class LocalRunBackend:
                     logger.error(f"Command stderr:\n{result.stderr}")
 
             if result.returncode == 0:
-                logger.debug(f"Command completed successfully")
+                logger.debug("Command completed successfully")
                 return True
             else:
                 logger.error(f"Command failed with return code: {result.returncode}")

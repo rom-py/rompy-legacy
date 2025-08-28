@@ -1,19 +1,14 @@
 """Tests for the boundary plotting methods in SCHISMDataBoundary."""
 
-import os
 from pathlib import Path
 import pytest
 import numpy as np
 import pandas as pd
 import xarray as xr
-from datetime import datetime, timedelta
+from datetime import datetime
 
 pytest.importorskip("rompy.schism")
 
-from rompy.core.data import DataBlob
-from rompy.core.time import TimeRange
-from rompy.schism.data import SCHISMDataBoundary
-from rompy.schism.grid import SCHISMGrid
 
 
 # Define the location of test files
@@ -107,7 +102,6 @@ def test_plot_boundary_points(grid2d, test_boundary_data):
 def test_plot_boundary_timeseries(grid2d, test_boundary_data):
     """Test plotting of boundary time series."""
     import matplotlib.pyplot as plt
-    import xarray as xr
 
     # Get the sample dataset directly from the fixture
     ds = test_boundary_data.ds()

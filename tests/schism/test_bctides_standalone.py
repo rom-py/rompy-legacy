@@ -1,27 +1,9 @@
 import os
-import sys
-import pytest
 from pathlib import Path
-from datetime import datetime
 import tempfile
 import numpy as np
 
 # Import needed modules
-from rompy.schism.boundary_core import (
-    BoundaryHandler,
-    TidalBoundary,  # Backward compatibility alias
-    ElevationType,
-    VelocityType,
-    TracerType,
-    TidalSpecies,
-    BoundaryConfig,
-    create_tidal_boundary,
-    create_hybrid_boundary,
-    create_river_boundary,
-    create_nested_boundary,
-)
-from rompy.schism import SCHISMGrid
-from rompy.core.data import DataBlob
 
 # Path to test data
 here = Path(__file__).parent

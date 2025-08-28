@@ -20,7 +20,7 @@ def get_model_field_type(
                         return arg
             elif issubclass(annotation, BaseModel):
                 return annotation
-        except Exception as e:
+        except Exception:
             __import__("ipdb").set_trace()
 
     return None

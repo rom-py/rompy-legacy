@@ -13,9 +13,7 @@ logger = get_test_logger(__name__)
 pytest.importorskip("rompy.schism")
 
 from rompy.core.data import DataBlob
-from rompy.core.grid import BaseGrid
 from rompy.schism import SCHISMGrid
-from rompy.schism.grid import WWMBNDGR3Generator
 
 
 here = Path(__file__).parent

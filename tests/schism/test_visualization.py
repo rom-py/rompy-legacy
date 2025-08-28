@@ -1,10 +1,7 @@
 """Tests for the visualization methods in SCHISM Config class."""
 
-import os
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, Optional
-from unittest.mock import MagicMock, patch
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,11 +13,7 @@ pytest.importorskip("rompy.schism")
 # Import yaml for configuration loading
 import yaml
 
-from rompy.core.data import DataBlob, DataGrid
-from rompy.core.time import TimeRange
 from rompy.model import ModelRun
-from rompy.schism import SCHISMGrid
-from rompy.schism.config import SCHISMConfig
 from rompy.schism.config_plotting import plot_sflux_spatial, plot_sflux_timeseries
 
 # Import the plotting modules directly
@@ -29,7 +22,6 @@ from rompy.schism.config_plotting_boundary import (
     plot_boundary_profile,
     plot_boundary_timeseries,
 )
-from rompy.schism.config_plotting_tides import plot_tidal_boundaries, plot_tidal_rose
 
 HERE = Path(__file__).parent
 import logging

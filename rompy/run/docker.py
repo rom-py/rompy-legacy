@@ -7,7 +7,6 @@ This module provides a Docker-based execution backend for rompy models.
 import hashlib
 import json
 import logging
-import os
 import pathlib
 import subprocess
 import time
@@ -300,7 +299,7 @@ class DockerRunBackend:
 
             # Check return code manually
             if result.returncode == 0:
-                logger.info(f"Model run completed successfully with exit code 0")
+                logger.info("Model run completed successfully with exit code 0")
                 return True
             else:
                 logger.error(f"Model run failed with exit code {result.returncode}")

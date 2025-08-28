@@ -8,12 +8,11 @@ It uses Pydantic for validation and environment variable support.
 from __future__ import annotations
 
 import logging
-import os
 from enum import Enum
 from pathlib import Path
-from typing import Any, ClassVar, Dict, Optional
+from typing import ClassVar, Optional
 
-from pydantic import ConfigDict, Field, field_validator, model_validator
+from pydantic import ConfigDict, Field
 from pydantic_settings import BaseSettings
 
 

@@ -1,14 +1,11 @@
 from pathlib import Path
-from typing import Any, Literal, Optional, Union
+from typing import Literal, Optional
 import warnings
 
 from pydantic import ConfigDict, Field, model_serializer, model_validator
 
 from rompy.core.config import BaseConfig
-from rompy.core.data import DataBlob
 from rompy.logging import get_logger
-from rompy.core.time import TimeRange
-from rompy.core.types import RompyBaseModel, Spectrum
 
 from .config_legacy import SchismCSIROConfig as _LegacySchismCSIROConfig
 
@@ -27,7 +24,6 @@ from .config_plotting_tides import (
 )
 from .data import SCHISMData
 from .grid import SCHISMGrid
-from .interface import TimeInterface
 from .namelists import NML
 from .namelists.param import Param
 

@@ -8,10 +8,9 @@ This example demonstrates how to:
 """
 
 import logging
-import subprocess
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 from rompy.model import ModelRun
 from rompy.core.time import TimeRange

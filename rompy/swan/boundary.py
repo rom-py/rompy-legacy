@@ -6,28 +6,23 @@ This module provides boundary condition handling for the SWAN model within the R
 
 from abc import ABC
 from pathlib import Path
-from typing import Annotated, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 import numpy as np
 import pandas as pd
-import xarray as xr
 from pydantic import Field, field_validator
 from shapely.geometry import LineString
 
 from rompy.core.boundary import BoundaryWaveStation
 from rompy.logging import get_logger
 from rompy.core.time import TimeRange
-from rompy.swan.components.boundary import BOUNDSPEC
 from rompy.swan.grid import SwanGrid
-from rompy.swan.subcomponents.base import IJ, XY, BaseSubComponent
+from rompy.swan.subcomponents.base import XY
 from rompy.swan.subcomponents.boundary import (
     CONSTANTFILE,
-    CONSTANTPAR,
     SEGMENT,
     SIDE,
     SIDES,
-    VARIABLEFILE,
-    VARIABLEPAR,
 )
 from rompy.swan.subcomponents.spectrum import SHAPESPEC
 

@@ -6,10 +6,7 @@ This module tests common end-to-end workflows for SCHISM model setup and configu
 
 import pytest
 
-from rompy.core.data import DataBlob
 from rompy.core.source import SourceFile
-from rompy.core.time import TimeRange
-from rompy.schism import SCHISMGrid
 from rompy.schism.data import (
     SCHISMDataBoundary,
     SCHISMDataSflux,
@@ -114,7 +111,6 @@ class TestCommonWorkflows:
 
         # 3. Test that the boundary conditions system can be imported and used
         from rompy.schism.boundary_conditions import create_tidal_only_boundary_config
-        from rompy.schism.data import SCHISMDataBoundaryConditions
 
         # Just test that we can import and create the basic configuration type
         # without requiring actual tidal data files in this integration test

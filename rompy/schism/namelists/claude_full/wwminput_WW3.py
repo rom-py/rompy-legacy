@@ -2,7 +2,7 @@
 
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, field_validator, model_validator, validator
+from pydantic import Field, field_validator, model_validator
 
 from rompy.schism.namelists.basemodel import NamelistBaseModel
 

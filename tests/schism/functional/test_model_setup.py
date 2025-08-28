@@ -4,16 +4,11 @@ Functional tests for SCHISM model setup.
 This module tests complete end-to-end model setup and preparation.
 """
 
-import os
-from pathlib import Path
 
 import pytest
 import yaml
 
-from rompy.core.data import DataBlob
 from rompy.core.source import SourceFile
-from rompy.core.time import TimeRange
-from rompy.schism import SCHISMGrid
 from rompy.schism.data import (
     SCHISMDataBoundary,
     SCHISMDataSflux,
