@@ -517,7 +517,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Related Projects
 
-- [rompy-core](https://github.com/rompy/rompy-core) - Core rompy functionality
+- [rompy](https://github.com/rompy/rompy) - Core rompy functionality
 - [rompy-swan](https://github.com/rompy/rompy-swan) - SWAN model integration
 - [rompy-schism](https://github.com/rompy/rompy-schism) - SCHISM model integration
 """
