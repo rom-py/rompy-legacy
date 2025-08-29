@@ -87,13 +87,6 @@ def image_available(image: str) -> bool:
     except Exception:
         return False
 
-
-
-
-
-
-
-
 @pytest.mark.slow
 @pytest.mark.skipif(not docker_available(), reason="Docker not available")
 @pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Potential Docker build tests in CI environment")
@@ -168,8 +161,6 @@ def test_schism_container_runs_with_existing_test_data(tmp_path):
     # Get the generated directory from the model_run (it will be set after generation)
     generated_dir = Path(model_run.staging_dir)
 
-
-
     # Verify outputs
     outputs_dir = generated_dir / "outputs"
     assert outputs_dir.exists(), f"SCHISM outputs directory not created: {outputs_dir}"
@@ -180,30 +171,18 @@ def test_schism_container_runs_with_existing_test_data(tmp_path):
     assert out2d_file.stat().st_size > 512, "Output file too small; model may have failed early"
     
     # Verify output file structure using xarray
-    try:
-        import xarray as xr
-        ds = xr.open_dataset(out2d_file)
-        
-        # Check for required dimensions
-        assert "time" in ds.dims, "Missing 'time' dimension in SCHISM output"
-        assert "nSCHISM_hgrid_node" in ds.dims, "Missing 'nSCHISM_hgrid_node' dimension in SCHISM output"
-        
-        # Check that dimensions have reasonable sizes
-        assert ds.dims["time"] > 1, f"Time dimension too small: {ds.dims['time']} (expected > 1)"
-        assert ds.dims["nSCHISM_hgrid_node"] > 1, f"Node dimension too small: {ds.dims['nSCHISM_hgrid_node']} (expected > 1)"
-        
-        print(f"SCHISM output validation passed:")
-        print(f"  - File: {out2d_file.name}")
-        print(f"  - Time steps: {ds.dims['time']}")
-        print(f"  - Grid nodes: {ds.dims['nSCHISM_hgrid_node']}")
-        print(f"  - File size: {out2d_file.stat().st_size / 1024:.1f} KB")
-        
-        ds.close()
-    except ImportError:
-        # Fallback if xarray not available - just check file exists and has reasonable size
-        print("Warning: xarray not available, skipping detailed output validation")
-    except Exception as e:
-        raise AssertionError(f"Failed to validate SCHISM output file {out2d_file}: {e}")
+    import xarray as xr
+    ds = xr.open_dataset(out2d_file)
+    
+    # Check for required dimensions
+    assert "time" in ds.dims, "Missing 'time' dimension in SCHISM output"
+    assert "nSCHISM_hgrid_node" in ds.dims, "Missing 'nSCHISM_hgrid_node' dimension in SCHISM output"
+    
+    # Check that dimensions have reasonable sizes
+    assert ds.dims["time"] > 1, f"Time dimension too small: {ds.dims['time']} (expected > 1)"
+    assert ds.dims["nSCHISM_hgrid_node"] > 1, f"Node dimension too small: {ds.dims['nSCHISM_hgrid_node']} (expected > 1)"
+    
+    ds.close()
 
 
 @pytest.mark.slow
@@ -455,7 +434,6 @@ def test_swan_container_basic_config(tmp_path):
     # Check if SWAN produced any output files (bonus if it works)
     output_files = list((generated_dir / "outputs").glob("*.nc"))
     if output_files:
-        print(f"SWAN produced {len(output_files)} output files!")
         for f in output_files:
             print(f"  - {f.name} ({f.stat().st_size} bytes)")
             
