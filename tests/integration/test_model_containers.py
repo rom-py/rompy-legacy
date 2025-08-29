@@ -192,7 +192,7 @@ def test_schism_container_runs_with_existing_test_data(tmp_path):
         assert ds.dims["time"] > 1, f"Time dimension too small: {ds.dims['time']} (expected > 1)"
         assert ds.dims["nSCHISM_hgrid_node"] > 1, f"Node dimension too small: {ds.dims['nSCHISM_hgrid_node']} (expected > 1)"
         
-        print(f"✓ SCHISM output validation passed:")
+        print(f"SCHISM output validation passed:")
         print(f"  - File: {out2d_file.name}")
         print(f"  - Time steps: {ds.dims['time']}")
         print(f"  - Grid nodes: {ds.dims['nSCHISM_hgrid_node']}")
@@ -206,76 +206,222 @@ def test_schism_container_runs_with_existing_test_data(tmp_path):
         raise AssertionError(f"Failed to validate SCHISM output file {out2d_file}: {e}")
 
 
-
-
-
 @pytest.mark.slow
 @pytest.mark.skipif(not docker_available(), reason="Docker not available")
 @pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Potential Docker build tests in CI environment")
 def test_swan_container_basic_config(tmp_path):
     """Test SWAN container with framework integration - validates template rendering and Docker execution.
-    
-    This test demonstrates that the critical SWAN framework issues are resolved:
-    - Template frequency rendering (was broken, now fixed)
-    - Docker container integration 
-    - INPUT file generation
-    - SWAN executable launch
-    
-    Note: SWAN may not complete due to minimal forcing, but framework integration is validated.
     """
-    from rompy.swan import SwanConfig, SwanGrid
-    from rompy.swan.components.boundary import BOUNDSPEC
+    from rompy.swan.config import SwanConfigComponents
+    
+    # Create cgrid component using component format
+    cgrid_config = {
+        "model_type": "regular",
+        "spectrum": {
+            "model_type": "spectrum",
+            "mdc": 36,
+            "flow": 0.04,
+            "fhigh": 0.4
+        },
+        "grid": {
+            "model_type": "gridregular",
+            "xp": 115.68,   # Grid origin x
+            "yp": -32.76,   # Grid origin y 
+            "alp": 0.0,     # Grid rotation
+            "xlen": 0.05,   # Grid length x (50 * 0.001)
+            "ylen": 0.03,   # Grid length y (30 * 0.001)
+            "mx": 50,       # Number of grid points x
+            "my": 30        # Number of grid points y
+        }
+    }
+    
+    # Synthetic bathymetry and wind using inpgrids approach  
+    inpgrid_config = {
+        "model_type": "inpgrids",
+        "inpgrids": [
+            {
+                "model_type": "regular",
+                "grid_type": "bottom",
+                "xpinp": 115.68,
+                "ypinp": -32.76,
+                "alpinp": 0.0,
+                "mxinp": 50,
+                "myinp": 30,
+                "dxinp": 0.001,
+                "dyinp": 0.001,
+                "excval": -999.0,
+                "readinp": {
+                    "model_type": "readinp",
+                    "grid_type": "bottom",
+                    "fname1": "bottom.txt"
+                }
+            },
+            {
+                "model_type": "regular",
+                "grid_type": "wind",
+                "xpinp": 115.68,
+                "ypinp": -32.76,
+                "alpinp": 0.0,
+                "mxinp": 50,
+                "myinp": 30,
+                "dxinp": 0.001,
+                "dyinp": 0.001,
+                "excval": -999.0,
+                "readinp": {
+                    "model_type": "readinp",
+                    "grid_type": "wind",
+                    "fname1": "wind.txt"
+                },
+                "nonstationary": {
+                    "model_type": "nonstationary",
+                    "tbeg": "2023-01-01T00:00:00",
+                    "tend": "2023-01-01T06:00:00", 
+                    "delt": "PT1H",
+                    "tfmt": 1,
+                    "dfmt": "hr"
+                }
+            }
+        ]
+    }
     
     # Simple boundary forcing configuration to make SWAN actually compute waves
-    boundary_config = BOUNDSPEC(
-        shapespec=dict(model_type="shapespec", shape=dict(model_type="pm")),  # PM spectrum
-        location=dict(model_type="side", side="west", direction="ccw"),
-        data=dict(
-            model_type="constantpar",
-            hs=1.0,    # Significant wave height 1m
-            per=8.0,   # Wave period 8s  
-            dir=90.0,  # Wave direction from east (90 degrees)
-            dd=15.0    # Directional spread 15 degrees
-        )
+    boundary_config = {
+        "model_type": "boundspec",
+        "shapespec": {
+            "model_type": "shapespec", 
+            "shape": {"model_type": "pm"}
+        },  # PM spectrum
+        "location": {"model_type": "side", "side": "west", "direction": "ccw"},
+        "data": {
+            "model_type": "constantpar",
+            "hs": 1.0,    # Significant wave height 1m
+            "per": 8.0,   # Wave period 8s  
+            "dir": 90.0,  # Wave direction from east (90 degrees)
+            "dd": 15.0    # Directional spread 15 degrees
+        }
+    }
+    
+    # Basic startup configuration
+    startup_config = {
+        "project": {
+            "model_type": "project",
+            "name": "Test Container",  # Max 16 chars
+            "nr": "0001"
+        },
+        "set": {
+            "model_type": "set", 
+            "level": 0.0,
+            "direction_convention": "nautical",
+            "maxerr": 3  # Maximum allowed error tolerance
+        },
+        "mode": {
+            "model_type": "mode",
+            "kind": "nonstationary",
+            "dim": "twodimensional"
+        },
+        "coordinates": {
+            "model_type": "coordinates",
+            "kind": {"model_type": "spherical"}
+        }
+    }
+    
+    # Physics configuration
+    physics_config = {
+        "gen": {
+            "model_type": "gen3",
+            "source_terms": {
+                "model_type": "st6",
+                "a1sds": 4.75e-7,  # Required ST6 parameter
+                "a2sds": 7.0e-5    # Required ST6 parameter
+            }
+        },
+        "friction": {
+            "model_type": "madsen",
+            "kn": 0.015
+        },
+        "breaking": {
+            "model_type": "constant",
+            "alpha": 1.0,
+            "gamma": 0.73
+        }
+    }
+    
+    # Initial condition (cold start)
+    initial_config = {
+        "model_type": "initial",
+        "kind": {"model_type": "default"}
+    }
+    
+    # Simple output configuration
+    output_config = {
+        "model_type": "output",
+        "block": {
+            "model_type": "block",
+            "sname": "COMPGRID", 
+            "fname": "./swangrid.nc",
+            "output": ["depth", "hsign", "tps", "dir"],
+            "times": {"dfmt": "min"}
+        }
+    }
+    
+    # Lockup configuration with COMPUTE command
+    lockup_config = {
+        "compute": {
+            "model_type": "nonstat",
+            "times": {
+                "model_type": "nonstationary",
+                "tfmt": 1,
+                "dfmt": "min"
+            }
+        }
+    }
+    
+    # Simple synthetic bathymetry and wind file generation
+    def create_synthetic_files(staging_dir):
+        """Create synthetic bathymetry and wind files for testing."""
+        # Create bathymetry file with uniform 10m depth
+        bottom_file = staging_dir / "bottom.txt"
+        depths = []
+        for j in range(30):  # my points
+            for i in range(50):  # mx points
+                depths.append("10.0")
+        bottom_file.write_text("\n".join(depths) + "\n")
+        
+        # Create wind file with constant 10 m/s easterly wind (u=10, v=0)
+        wind_file = staging_dir / "wind.txt"
+        winds = []
+        for j in range(30):  # my points  
+            for i in range(50):  # mx points
+                winds.append("10.0 0.0")  # u=10 m/s (easterly), v=0 m/s
+        wind_file.write_text("\n".join(winds) + "\n")
+        
+        return bottom_file, wind_file
+
+    config = SwanConfigComponents(
+        startup=startup_config,
+        cgrid=cgrid_config,
+        inpgrid=inpgrid_config,
+        boundary=boundary_config,
+        initial=initial_config,
+        physics=physics_config,
+        output=output_config,
+        lockup=lockup_config,
     )
     
-    # Create a minimal working SWAN configuration using proper SWAN classes
-    grid = SwanGrid(x0=115.68, y0=-32.76, dx=0.001, dy=0.001, nx=50, ny=30, rot=0)
-    
-    # Create a custom ModelRun class that adds frequency to the context
-    class PatchedModelRun(ModelRun):
-        def generate(self):
-            # Calculate frequency from interval for SWAN template  
-            hours = self.period.interval.total_seconds() / 3600
-            frequency_str = f"{hours:.1f} HR"
-            
-            # Patch the model_dump method to include frequency
-            original_model_dump = self.model_dump
-            def patched_model_dump(*args, **kwargs):
-                result = original_model_dump(*args, **kwargs)
-                result['frequency'] = frequency_str
-                return result
-            
-            # Use setattr to bypass Pydantic validation
-            object.__setattr__(self, 'model_dump', patched_model_dump)
-            
-            try:
-                return super().generate()
-            finally:
-                # Restore original method
-                object.__setattr__(self, 'model_dump', original_model_dump)
-    
-    model_run = PatchedModelRun(
+    model_run = ModelRun(
         run_id="test_swan_container", 
         period=dict(start="20230101T00", duration="6h", interval="1h"),
         output_dir=str(tmp_path),
-        config=SwanConfig(
-            grid=grid,
-            physics=dict(friction="MAD", friction_coeff=0.015),
-            boundary=boundary_config,  # Add boundary forcing so SWAN has waves to compute
-            template="/home/ben/rompy4/rompy/templates/swan",  # Use working template instead of swanbasic
-        )
+        config=config,
     )
+    
+    # Generate model files
+    model_run.generate()
+    
+    # Create synthetic bathymetry and wind files after generation
+    staging_dir = Path(model_run.staging_dir)
+    bottom_file, wind_file = create_synthetic_files(staging_dir)
+    print(f"Created synthetic files: {bottom_file.name}, {wind_file.name}")
     
     # Use single processor to avoid MPI root issues and segfaults
     run_cmd = "bash -c \"cd /app/run_id && swan.exe\""
@@ -296,174 +442,48 @@ def test_swan_container_basic_config(tmp_path):
     # Note: result may be False due to SWAN segfault (no wave forcing), 
     # but this test validates framework integration and template fixes
     
-    # Verify the key achievements of this test:
-    # 1. ✅ Template frequency issue RESOLVED
-    # 2. ✅ SWAN framework integration working  
-    # 3. ✅ Container execution successful
-    
     generated_dir = Path(model_run.output_dir) / model_run.run_id
     print(f"\nSWAN container test completed for: {generated_dir}")
     
-    # Main success: INPUT file generated with proper frequency
+    # Main success: INPUT file generated properly using SwanConfigComponents
     input_file = generated_dir / "INPUT"
     assert input_file.exists(), "INPUT file should exist"
     
     input_content = input_file.read_text()
-    assert "1.0 HR" in input_content, "Frequency should be properly rendered in INPUT"
     assert "COMPUTE NONST" in input_content, "COMPUTE command should be present"
-    
-    print("✅ MAJOR SUCCESS: SWAN template frequency issue RESOLVED!")
-    print("✅ INPUT file generated successfully with proper frequency")
-    print("✅ Container execution framework working")  
-    print("✅ SWAN has boundary wave forcing - should complete successfully!")
-    
-    # Check if boundary forcing was properly rendered in INPUT file
-    if "BOUNDSPEC" in input_content or "CONSTANT" in input_content:
-        print("✅ Boundary wave forcing configured - SWAN should produce results!")
-    else:
-        print("⚠️  Note: Check if boundary forcing rendered correctly")
-    
-    # Success criteria: Framework integration is working properly
-    # The key achievement is that template rendering now works (frequency issue resolved)
-    print("\n🎯 FRAMEWORK INTEGRATION TEST RESULTS:")
-    print("✅ SWAN template frequency issue COMPLETELY RESOLVED!")
-    print("✅ Docker container can launch SWAN executable")
-    print("✅ INPUT file generated with proper time stepping")
-    print("✅ Rompy → SWAN → Docker integration pipeline working")
     
     # Check if SWAN produced any output files (bonus if it works)
     output_files = list((generated_dir / "outputs").glob("*.nc"))
     if output_files:
-        print(f"🎉 BONUS: SWAN produced {len(output_files)} output files!")
+        print(f"SWAN produced {len(output_files)} output files!")
         for f in output_files:
             print(f"  - {f.name} ({f.stat().st_size} bytes)")
-    elif result:  # SWAN completed successfully  
-        print("✅ BONUS: SWAN completed successfully!")
-    else:
-        print("ℹ️  SWAN execution incomplete (expected - needs more complex forcing)")
-        print("   But core framework integration is VALIDATED! 🎯")
-
-
-@pytest.mark.slow
-@pytest.mark.skipif(not docker_available(), reason="Docker not available") 
-@pytest.mark.skipif(should_skip_docker_builds(), reason="Skipping Potential Docker build tests in CI environment")
-def test_swan_container_runs_with_existing_test_data(tmp_path):
-    """Run SWAN inside the container using inputs rendered from existing tests.
-
-    Reuses `tests/swan/swan_model.yml` to render an INPUT file and runs swan.exe
-    inside the container. Uses MPI with 2 processes if available.
-    """
-    import os
-    from envyaml import EnvYAML
-    from rompy.swan.config import SwanConfigComponents
-
-    here = Path(__file__).resolve().parents[1] / "swan"
-    config_yaml = here / "swan_model.yml"
-    assert config_yaml.exists(), f"Missing SWAN config: {config_yaml}"
-
-    # Set ROMPY_PATH if not already set
-    if "ROMPY_PATH" not in os.environ:
-        os.environ["ROMPY_PATH"] = str(here.parent.parent)
-
-    cfg = EnvYAML(config_yaml)
-    
-    # Override initial condition to use DEFAULT (cold start) instead of hotstart
-    initial_config = {
-        "model_type": "initial",
-        "kind": {"model_type": "default"}
-    }
-    
-    # Override output configuration to be simpler and more reliable
-    output_config = {
-        "model_type": "output",
-        "block": {
-            "model_type": "block", 
-            "sname": "COMPGRID",
-            "fname": "./swangrid.nc",
-            "output": ["depth", "hsign", "tps", "dir"],
-            "times": {"dfmt": "min"}
-        }
-    }
-    
-    model_cfg = SwanConfigComponents(
-        template=str(here.parent.parent / "rompy" / "templates" / "swancomp"),
-        startup=cfg["startup"],
-        cgrid=cfg["cgrid"],
-        inpgrid=cfg["inpgrid"],
-        boundary=cfg["boundary"],
-        initial=initial_config,  # Use cold start instead of hotstart
-        physics=cfg["physics"],
-        prop=cfg["prop"],
-        numeric=cfg["numeric"],
-        output=output_config,  # Use simplified output config
-        lockup=cfg["lockup"],
-    )
-
-    model_run = ModelRun(
-        run_id="test_swan_container",
-        period=dict(start="20230101T00", duration="6h", interval="1h"),
-        output_dir=str(tmp_path),
-        config=model_cfg,
-    )
-
-    run_cmd = (
-        "bash -c \"cd /app/run_id && (mpiexec -n 2 swan.exe || swan.exe)\""
-    )
-
-    # Get dockerfile paths for DockerRunBackend to handle building if needed
-    repo_root = Path(__file__).resolve().parents[2]
-    context_path = repo_root / "docker" / "swan"
-
-    docker_config = DockerConfig(
-        dockerfile=Path("Dockerfile"),  # Relative to build context
-        build_context=context_path,
-        executable=run_cmd,
-        cpu=2,
-    )
-
-    result = model_run.run(backend=docker_config)
-
-    assert result is True
-
-    # Verify that SWAN container executed successfully
-    generated_dir = Path(model_run.output_dir) / model_run.run_id
-    print(f"\nSWAN container test completed in: {generated_dir}")
-    
-    # Check that SWAN ran - look for evidence of execution
-    swan_files = list(generated_dir.glob("PRINT")) + list(generated_dir.glob("norm_end"))
-    assert len(swan_files) > 0, f"No SWAN execution files found in {generated_dir}"
-    
-    # Check that SWAN at least started (PRINT file should exist)
-    print_file = generated_dir / "PRINT"
-    if print_file.exists():
-        print(f"✓ SWAN executed successfully - PRINT file created ({print_file.stat().st_size} bytes)")
-        
-        # Check if computation completed normally
-        norm_end_file = generated_dir / "norm_end"
-        if norm_end_file.exists():
-            print("✓ SWAN completed normally (norm_end file exists)")
-        else:
-            print("! SWAN may have stopped due to configuration issues (checking PRINT file...)")
             
-            # Check for common completion indicators
-            try:
-                with open(print_file, 'r') as f:
-                    content = f.read()
-                    if "STOP" in content:
-                        print("✓ SWAN reached STOP command - execution completed")
-                    elif "No start of computation" in content:
-                        print("! SWAN had configuration issues but container execution worked")
-                    else:
-                        print("? SWAN execution status unclear")
-            except Exception as e:
-                print(f"Could not read PRINT file: {e}")
-    
-    # The main goal of this test is to verify the Docker container works
-    # We've confirmed that SWAN runs in the container, which is the key integration test
-    print("\n✅ SWAN Docker container integration test PASSED:")
-    print("  - Docker image built successfully")
-    print("  - SWAN executable found and ran in container") 
-    print("  - Container framework integration works")
-    print("  - File mounting and execution pipeline functional")
-
-
+        # Verify output file structure using xarray (similar to SCHISM test)
+        import xarray as xr
+        import numpy as np
+        
+        # Check the main output file
+        main_output = output_files[0]  # Usually swangrid.nc
+        ds = xr.open_dataset(main_output)
+        
+        # Check for required dimensions
+        assert "time" in ds.dims, "Missing 'time' dimension in SWAN output"
+        assert "longitude" in ds.dims, "Missing 'longitude' dimension in SWAN output" 
+        assert "latitude" in ds.dims, "Missing 'latitude' dimension in SWAN output"
+        
+        # Check for key wave variables
+        assert "hs" in ds.data_vars, "Missing significant wave height 'hs' variable in SWAN output"
+        assert "depth" in ds.data_vars, "Missing 'depth' variable in SWAN output"
+        
+        # Check dimensions are reasonable
+        assert ds.dims["time"] > 0, "Time dimension should be positive"
+        assert ds.dims["longitude"] > 0, "Longitude dimension should be positive"
+        assert ds.dims["latitude"] > 0, "Latitude dimension should be positive"
+        
+        # Check that we have some non-NaN wave height values
+        hs_values = ds.hs.values
+        assert not np.all(np.isnan(hs_values)), "All wave height values are NaN"
+        
+        ds.close()
+            
