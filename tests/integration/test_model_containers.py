@@ -25,25 +25,6 @@ from rompy.model import ModelRun
 from rompy.run.docker import DockerRunBackend
 
 
-def image_available(image: str) -> bool:
-    try:
-        # docker image inspect returns non-zero if image not found
-        result = subprocess.run(
-            [
-                "docker",
-                "image",
-                "inspect",
-                image,
-            ],
-            capture_output=True,
-            text=True,
-            timeout=10,
-        )
-        return result.returncode == 0
-    except Exception:
-        return False
-
-
 @pytest.mark.slow
 def test_schism_container_basic_config(
     tmp_path, docker_available, should_skip_docker_builds
