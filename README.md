@@ -24,7 +24,18 @@ title: "Relocatable Ocean Modelling in PYthon (rompy)"
 
 # Introduction
 
-Relocatable Ocean Modelling in PYthon (rompy) combines templated cookie-cutter model configuration with various `xarray` extensions to assist in the setup and evaluation of coastal ocean models, and is intended to simplify their configuration, execution and analysis. This repository also includes [Jupyter notebooks](./notebooks) that provide examples to illustrate the use of `rompy` code, create visualisations and provide inline documentation. Currently `rompy` implements one model class for the [SWAN wave model](https://swanmodel.sourceforge.io/) developed by Delft University of Technology. Work is underway on a lightweight wrapper for SCHISM and XBeach.
+Relocatable Ocean Modelling in PYthon (rompy) is a modular Python library that aims to streamline the setup, configuration, execution, and analysis of coastal ocean models. Rompy combines templated model configuration with powerful xarray-based data handling and pydantic validation, enabling users to efficiently generate model control files and input datasets for a variety of ocean and wave models. The architecture centers on high-level execution control (`ModelRun`) and flexible configuration objects, supporting both persistent scientific model state and runtime backend selection. Rompy provides unified interfaces for grids, data sources, boundary conditions, and spectra, with extensible plugin support for new models and execution environments. Comprehensive documentation, example Jupyter notebooks, and a robust logging/formatting framework make rompy accessible for both research and operational workflows. Current model support includes SWAN and SCHISM, with ongoing development for additional models and cloud/HPC backends.
+
+Key Features:
+- Modular architecture with clear separation of configuration and execution logic
+- Templated, reproducible model configuration using pydantic and xarray
+- Unified interfaces for grids, data, boundaries, and spectra
+- Extensible plugin system for models, data sources, backends, and postprocessors
+- Robust logging and formatting for consistent output and diagnostics
+- Example notebooks and comprehensive documentation for rapid onboarding
+- Support for local, Docker, and HPC execution backends
+
+rompy is under active development—features, model support, and documentation are continually evolving. Contributions and feedback are welcome!
 
 # Documentation
 
