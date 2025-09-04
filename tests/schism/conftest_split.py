@@ -21,6 +21,7 @@ from rompy.core.filters import Filter
 from rompy.core.source import SourceFile
 from rompy.core.types import DatasetCoords
 from rompy.schism.boundary_core import TidalDataset
+
 # Import directly from the new implementation
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.vgrid import VGrid as SchismVGrid
@@ -36,6 +37,63 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 from test_utils.logging import configure_test_logging
 
 logger = logging.getLogger(__name__)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def docker_available() -> bool:
+    try:
+        result = subprocess.run(
+            [
+                "docker",
+                "info",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
+
+
+# Helper to detect CI environment
+def is_ci_environment():
+    """Detect if running in a CI environment."""
+    ci_vars = [
+        "CI",
+        "GITHUB_ACTIONS",
+        "GITLAB_CI",
+        "TRAVIS",
+        "CIRCLECI",
+        "APPVEYOR",
+        "BUILDKITE",
+        "TEAMCITY_VERSION",
+    ]
+    return any(
+        os.environ.get(var, "").lower() in ("1", "true", "yes", "on") for var in ci_vars
+    )
+
+
+@pytest.fixture(scope="session")
+def should_skip_docker_builds():
+    """Fixture to determine if Docker builds should be skipped."""
+    if os.environ.get("SKIP_DOCKER_BUILDS", "").lower() in ("1", "true", "yes", "on"):
+        return True
+    if os.environ.get("ROMPY_SKIP_DOCKER_BUILDS", "").lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    ):
+        return True
+    if os.environ.get("ROMPY_ENABLE_DOCKER_IN_CI", "").lower() not in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    ):
+        return is_ci_environment()
+    return False
 
 
 def pytest_addoption(parser):
