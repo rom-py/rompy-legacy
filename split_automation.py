@@ -1352,7 +1352,7 @@ license = {text = "Apache Software License 2.0"}
 requires-python = ">=3.10"
 dependencies = [
     # "rompy",
-    "rompy@git+https://github.com/rom-py/rompy-core.git",
+    "rompy@git+https://github.com/rom-py/rompy.git",
     "pydantic>2",
 ]
 
@@ -1444,7 +1444,7 @@ license = {text = "Apache Software License 2.0"}
 requires-python = ">=3.10"
 dependencies = [
     # "rompy",
-    "rompy@git+https://github.com/rom-py/rompy-core.git",
+    "rompy@git+https://github.com/rom-py/rompy.git",
     "pydantic>2",
     "pylibs-ocean",
     "pytmd",
