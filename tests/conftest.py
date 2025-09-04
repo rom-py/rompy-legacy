@@ -1,8 +1,6 @@
 import os
 import shutil
 import subprocess
-
->>>>>>> main
 import sys
 import tempfile
 import zipfile
@@ -104,6 +102,7 @@ if not os.path.exists(DATA_DIR) or not os.listdir(DATA_DIR):
     except Exception as e:
         print(f"Failed to download test data: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 # Helper to detect CI environment
 def is_ci_environment():
