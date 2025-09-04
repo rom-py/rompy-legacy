@@ -4,24 +4,10 @@ Tests for the rompy.logging module.
 This module tests the centralized logging and formatting utilities.
 """
 
-import os
 import logging
-import tempfile
-import shutil
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
-import pytest
-
-from rompy.logging import (
-    LoggingConfig,
-    LogLevel,
-    LogFormat,
-    BoxStyle,
-    get_logger,
-    RompyLogger,
-    formatter,
-)
+from rompy.logging import (BoxStyle, LogFormat, LoggingConfig, LogLevel,
+                           formatter, get_logger)
 
 
 class TestLoggingConfig:

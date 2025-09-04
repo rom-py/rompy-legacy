@@ -6,15 +6,7 @@ This module tests the vertical grid components of the SCHISM implementation.
 
 import pytest
 
-from rompy.core.data import DataBlob
-from rompy.schism import SCHISMGrid
-from rompy.schism.grid import (
-    VGRID_TYPE_2D,
-    VGRID_TYPE_LSC2,
-    VGRID_TYPE_SZ,
-    VgridGenerator,
-)
-from rompy.schism.vgrid import VGrid
+from rompy.schism.grid import VGRID_TYPE_LSC2, VGRID_TYPE_SZ, VgridGenerator
 
 pytest.importorskip("rompy.schism")
 
@@ -61,7 +53,7 @@ class TestVgridGenerator:
 
         # Create vgrid.in file
         with pytest.raises(ValueError):
-            vgrid_file = vgrid_generator.generate(tmp_path)
+            vgrid_generator.generate(tmp_path)
 
     def test_vgrid_sz(self, hgrid_path, tmp_path):
         """Test SZ vertical grid specifically."""

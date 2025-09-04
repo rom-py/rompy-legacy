@@ -1,21 +1,13 @@
-import os
-import shutil
-import tempfile
-from pathlib import Path
-import numpy as np
-from datetime import datetime
 import re
+import tempfile
+from datetime import datetime
+from pathlib import Path
 
 # Import necessary modules from rompy
-from rompy.schism.boundary_core import (
-    BoundaryHandler,
-    TidalBoundary,  # Backward compatibility alias
-    BoundaryConfig,
-    ElevationType,
-    VelocityType,
-    TracerType,
-    TidalDataset,
-)
+from rompy.schism.boundary_core import \
+    TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
+                                        TidalDataset, VelocityType)
 
 
 def validate_bctides_file(file_path):

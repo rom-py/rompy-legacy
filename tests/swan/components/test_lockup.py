@@ -1,25 +1,18 @@
 """Test lockup components."""
 
-import pytest
 from copy import deepcopy
-from pydantic import ValidationError
 
-
+import pytest
 # Import test utilities
 from test_utils.logging import get_test_logger
 
 # Initialize logger
 logger = get_test_logger(__name__)
 
-from rompy.swan.subcomponents.time import STATIONARY, NONSTATIONARY
 from rompy.swan.components.group import LOCKUP
-from rompy.swan.components.lockup import (
-    COMPUTE,
-    HOTFILE,
-    COMPUTE_STAT,
-    COMPUTE_NONSTAT,
-    STOP,
-)
+from rompy.swan.components.lockup import (COMPUTE, COMPUTE_NONSTAT,
+                                          COMPUTE_STAT, HOTFILE, STOP)
+from rompy.swan.subcomponents.time import NONSTATIONARY, STATIONARY
 
 
 @pytest.fixture(scope="module")

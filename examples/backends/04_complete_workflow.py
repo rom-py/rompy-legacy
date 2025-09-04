@@ -8,14 +8,13 @@ This example demonstrates how to:
 """
 
 import logging
-import subprocess
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Any, Dict
 
-from rompy.model import ModelRun
-from rompy.core.time import TimeRange
 from rompy.backends import LocalConfig
+from rompy.core.time import TimeRange
+from rompy.model import ModelRun
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

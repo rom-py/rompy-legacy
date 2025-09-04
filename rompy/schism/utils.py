@@ -1,13 +1,11 @@
 import logging
 import re
 import sys
-from pathlib import Path
 
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import xarray as xr
 from cartopy.mpl.ticker import LatitudeFormatter, LongitudeFormatter
 from matplotlib.tri import Triangulation
@@ -81,7 +79,7 @@ def schism_plot(
         contours = np.flip(-1 * np.asarray(contours))
     else:
         contours = np.asarray(contours)
-    if varname == "depth" or varname == "z":
+    if varname in {"depth", "z"}:
         var = z
     elif varname == "wind_speed":
         var = np.sqrt(schout.wind_speed[:, 0] ** 2 + schout.wind_speed[:, 1] ** 2)
@@ -150,7 +148,7 @@ def schism_plot(
         LonI, LatI, UI, VI = schism_calculate_vectors(ax, schout, vtype=vtype)
         ax.quiver(LonI, LatI, UI, VI, color="k")
 
-    con = ax.tricontour(meshtri, z, contours, colors="k")
+    ax.tricontour(meshtri, z, contours, colors="k")
     # ax.clabel(con, con.levels, inline=True, fmt='%i', fontsize=12)
     if not (project):
         ax.set_aspect("equal")

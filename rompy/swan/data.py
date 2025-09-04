@@ -5,21 +5,19 @@ This module provides data handling functionality for the SWAN model within the R
 """
 
 import os
-import sys
 import time as time_module
-from datetime import timedelta
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 import numpy as np
 import pandas as pd
 import xarray as xr
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, model_validator
 
 from rompy.core.data import DataGrid
-from rompy.logging import get_logger
 from rompy.core.time import TimeRange
-from rompy.formatting import get_formatted_box, get_formatted_header_footer, log_box
+from rompy.formatting import get_formatted_box, log_box
+from rompy.logging import get_logger
 from rompy.swan.grid import SwanGrid
 from rompy.swan.types import GridOptions
 
@@ -538,7 +536,6 @@ class Swan_accessor(object):
 
         n_pts = int((boundary.length) / interval)
         splits = np.linspace(0, 1.0, n_pts)
-        boundary_points = []
         j = 0
         for i in range(len(splits) - 1):
             segment = substring(

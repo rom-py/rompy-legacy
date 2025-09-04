@@ -9,7 +9,6 @@ Usage: python test_backend_examples.py
 """
 
 import sys
-import logging
 from pathlib import Path
 
 # Add the rompy directory to Python path if needed
@@ -17,13 +16,14 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from run_boundary_conditions_examples import SchismExampleRunner
 
+
 def test_runner_initialization():
     """Test that the runner initializes correctly."""
     print("Testing SchismExampleRunner initialization...")
 
     try:
         runner = SchismExampleRunner()
-        print(f"✓ Runner initialized successfully")
+        print("✓ Runner initialized successfully")
         print(f"✓ Project root: {runner.project_root}")
         print(f"✓ Examples directory: {runner.examples_dir}")
         print(f"✓ Found {len(runner.examples)} example configurations")
@@ -147,7 +147,7 @@ def test_docker_config_creation():
 
         # Test with normal executable
         config = runner._create_docker_config(test_path, "")
-        print(f"✓ Docker config created for standard executable")
+        print("✓ Docker config created for standard executable")
         print(f"  - Dockerfile: {config.dockerfile}")
         print(f"  - Build context: {config.build_context}")
         print(f"  - CPU: {config.cpu}")
@@ -155,8 +155,8 @@ def test_docker_config_creation():
         print(f"  - Timeout: {config.timeout}")
 
         # Test with WWM executable
-        config_wwm = runner._create_docker_config(test_path, "_WWM")
-        print(f"✓ Docker config created for WWM executable")
+        runner._create_docker_config(test_path, "_WWM")
+        print("✓ Docker config created for WWM executable")
 
         # Clean up test directory
         import shutil

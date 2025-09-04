@@ -11,8 +11,7 @@ from datetime import datetime, timedelta
 import pytest
 
 import rompy
-from rompy.core.data import DataBlob, DataGrid
-from rompy.core.grid import BaseGrid
+from rompy.core.data import DataGrid
 
 # round now to the nearest 6 hours
 cycle = datetime.utcnow().replace(
@@ -87,7 +86,7 @@ def test_csiro(tmpdir, csiro):
     assert csiro.ds.lat.min() == 0
     assert csiro.ds.lon.max() == 10
     assert csiro.ds.lon.min() == 0
-    downloaded = gfs.get(tmpdir)
+    gfs.get(tmpdir)
     # These may not be exact, may need to fine tune
     # assert downloaded.ds.lat.max() == 10
     # assert downloaded.ds.lat.min() == 0

@@ -1,12 +1,10 @@
 from datetime import datetime, timedelta
 
 import pytest
-
-from rompy.core.time import TimeRange
-
-
 # Import test utilities
 from test_utils.logging import get_test_logger
+
+from rompy.core.time import TimeRange
 
 # Initialize logger
 logger = get_test_logger(__name__)
@@ -31,13 +29,13 @@ def test_dtr(dtr_hourly):
 
 def test_bad_args():
     with pytest.raises(ValueError):
-        t = TimeRange(start="2019-01-01")
+        TimeRange(start="2019-01-01")
     with pytest.raises(ValueError):
-        t = TimeRange(end="2019-01-01")
+        TimeRange(end="2019-01-01")
     with pytest.raises(ValueError):
-        t = TimeRange(start="2019-01-01", end="2019-01-01", duration="1d")
+        TimeRange(start="2019-01-01", end="2019-01-01", duration="1d")
     with pytest.raises(ValueError):
-        t = TimeRange()
+        TimeRange()
 
 
 def test_date_range_hourly(dtr_hourly):

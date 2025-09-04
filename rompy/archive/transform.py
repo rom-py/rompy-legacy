@@ -1,9 +1,9 @@
 """Dataset transform functions."""
 
 import logging
-from collections.abc import Iterable, Mapping
-import xarray as xr
+from collections.abc import Iterable
 
+import xarray as xr
 
 logger = logging.getLogger(__file__)
 
@@ -74,7 +74,7 @@ def crop(dset: xr.Dataset, **data_slice):
 
 
 def timenorm(ds, interval="hour", reftime=None):
-    from pandas import to_timedelta, to_datetime
+    from pandas import to_datetime, to_timedelta
 
     dt = to_timedelta("1 " + interval)
     if reftime is None:

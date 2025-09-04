@@ -4,10 +4,9 @@ Comparison utilities for tests.
 This module provides functions for comparing files and namelists used across tests.
 """
 
-import pathlib
-from pathlib import Path
-import tarfile
 import logging
+import tarfile
+from pathlib import Path
 
 # Initialize logger
 logging.basicConfig(

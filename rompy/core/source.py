@@ -1,7 +1,6 @@
 """Rompy source objects."""
 
 import logging
-import sys
 from abc import ABC, abstractmethod
 from functools import cached_property
 from pathlib import Path
@@ -15,7 +14,7 @@ import xarray as xr
 from intake.catalog import Catalog
 from intake.catalog.local import YAMLFileCatalog
 from oceanum.datamesh import Connector
-from pydantic import ConfigDict, Field, field_validator, model_validator
+from pydantic import ConfigDict, Field, model_validator
 
 from rompy.core.filters import Filter
 from rompy.core.types import DatasetCoords, RompyBaseModel
@@ -24,7 +23,8 @@ logger = logging.getLogger(__name__)
 
 # Import stubs for classes moved to rompy_binary_datasources
 try:
-    from rompy_binary_datasources import SourceDataset, SourceTimeseriesDataFrame
+    from rompy_binary_datasources import (SourceDataset,
+                                          SourceTimeseriesDataFrame)
 except ImportError:
     from rompy.utils import create_import_error_class
 
@@ -170,7 +170,7 @@ class SourceIntake(SourceBase):
         else:
             fs = fsspec.filesystem("memory")
             fs_map = fs.get_mapper()
-            fs_map[f"/temp.yaml"] = self.catalog_yaml.encode("utf-8")
+            fs_map["/temp.yaml"] = self.catalog_yaml.encode("utf-8")
             return YAMLFileCatalog("temp.yaml", fs=fs)
 
     def _open(self) -> xr.Dataset:

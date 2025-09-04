@@ -1,21 +1,15 @@
 """Test cgrid component."""
 
 import pytest
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
 # Initialize logger
 logger = get_test_logger(__name__)
 
+from rompy.swan.components.cgrid import (CURVILINEAR, REGULAR, SPECTRUM,
+                                         UNSTRUCTURED)
 from rompy.swan.subcomponents.readgrid import GRIDREGULAR
-from rompy.swan.components.cgrid import (
-    SPECTRUM,
-    CGRID,
-    REGULAR,
-    CURVILINEAR,
-    UNSTRUCTURED,
-)
 
 
 @pytest.fixture(scope="module")
@@ -67,7 +61,7 @@ def test_spectrum_flow_less_than_fhigh():
 
 
 def test_regular():
-    cgrid = REGULAR(
+    REGULAR(
         spectrum=SPECTRUM(
             mdc=36,
             flow=0.04,

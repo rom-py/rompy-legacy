@@ -1,8 +1,8 @@
 """Test output components."""
 
 import copy
-import pytest
 
+import pytest
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -12,31 +12,14 @@ logger = get_test_logger(__name__)
 import numpy as np
 from pydantic import ValidationError
 
-from rompy.swan.subcomponents.time import TimeRangeOpen
 from rompy.swan.components.group import OUTPUT
-from rompy.swan.components.output import (
-    SPECIAL_NAMES,
-    BaseLocation,
-    FRAME,
-    GROUP,
-    CURVE,
-    CURVES,
-    RAY,
-    ISOLINE,
-    POINTS,
-    POINTS_FILE,
-    NGRID,
-    NGRID_UNSTRUCTURED,
-    QUANTITY,
-    QUANTITIES,
-    OUTPUT_OPTIONS,
-    BLOCK,
-    BLOCKS,
-    TABLE,
-    SPECOUT,
-    NESTOUT,
-    TEST,
-)
+from rompy.swan.components.output import (BLOCK, BLOCKS, CURVE, CURVES, FRAME,
+                                          GROUP, ISOLINE, NESTOUT, NGRID,
+                                          NGRID_UNSTRUCTURED, OUTPUT_OPTIONS,
+                                          POINTS, POINTS_FILE, QUANTITIES,
+                                          QUANTITY, RAY, SPECIAL_NAMES,
+                                          SPECOUT, TABLE, TEST, BaseLocation)
+from rompy.swan.subcomponents.time import TimeRangeOpen
 
 
 @pytest.fixture(scope="module")
@@ -259,7 +242,7 @@ def test_ngrid_unstructured():
     ],
 )
 def test_quantity(kwargs):
-    quant = QUANTITY(**kwargs)
+    QUANTITY(**kwargs)
 
 
 def test_quantity_valid_output():

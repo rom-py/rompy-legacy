@@ -4,9 +4,8 @@ This is a PySchism-free version of utils.py.
 """
 
 import logging
-import os
-from pathlib import Path
 import tarfile
+from pathlib import Path
 
 # Initialize logger
 logging.basicConfig(

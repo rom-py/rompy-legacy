@@ -5,21 +5,18 @@ This module tests the new integrated hotstart configuration that allows
 hotstart file generation using the same data sources as boundary conditions.
 """
 
-import pytest
 import tempfile
 from pathlib import Path
-from datetime import datetime
+
+import pytest
 
 from rompy.core.source import SourceFile
 from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords
-from rompy.schism.data import (
-    HotstartConfig,
-    SCHISMDataBoundaryConditions,
-    BoundarySetupWithSource,
-    SCHISMDataBoundary,
-)
 from rompy.schism.boundary_core import TidalDataset
+from rompy.schism.data import (BoundarySetupWithSource, HotstartConfig,
+                               SCHISMDataBoundary,
+                               SCHISMDataBoundaryConditions)
 
 
 class TestHotstartConfig:
@@ -288,7 +285,7 @@ class TestBoundaryConditionsHotstartIntegration:
             source=hycom_source, variables=["temperature"], coords=hycom_coords
         )
 
-        boundary_setup = BoundarySetupWithSource(
+        BoundarySetupWithSource(
             elev_type=5,
             vel_type=4,
             temp_type=4,

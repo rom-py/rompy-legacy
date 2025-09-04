@@ -1,8 +1,9 @@
 """SWAN physics subcomponents."""
 
-from typing import Annotated, Literal, Optional
-from pydantic import field_validator, Field, model_validator
 from abc import ABC
+from typing import Annotated, Literal, Optional
+
+from pydantic import Field, field_validator, model_validator
 from pydantic_numpy.typing import Np2DArray
 
 from rompy.swan.subcomponents.base import BaseSubComponent
@@ -90,7 +91,7 @@ class JANSSEN(SourceTerms):
             repr += f" delta={self.delta}"
         repr += f" DRAG {self.wind_drag.upper()}"
         if self.agrow:
-            repr += f" AGROW"
+            repr += " AGROW"
         if self.a is not None and self.agrow:
             repr += f" a={self.a}"
         return repr
@@ -148,7 +149,7 @@ class KOMEN(SourceTerms):
             repr += f" stpm={self.stpm}"
         repr += f" DRAG {self.wind_drag.upper()}"
         if self.agrow:
-            repr += f" AGROW"
+            repr += " AGROW"
         if self.a is not None and self.agrow:
             repr += f" a={self.a}"
         return repr
@@ -211,7 +212,7 @@ class WESTHUYSEN(SourceTerms):
             repr += f" br={self.br}"
         repr += f" DRAG {self.wind_drag.upper()}"
         if self.agrow:
-            repr += f" AGROW"
+            repr += " AGROW"
         if self.a is not None and self.agrow:
             repr += f" a={self.a}"
         return repr
@@ -360,7 +361,7 @@ class ST6(SourceTerms):
         if self.cdfac is not None:
             repr += f" DEBIAS cdfac={self.cdfac}"
         if self.agrow:
-            repr += f" AGROW"
+            repr += " AGROW"
         if self.a is not None and self.agrow:
             repr += f" a={self.a}"
         return repr

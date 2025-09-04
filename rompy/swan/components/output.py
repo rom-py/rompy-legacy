@@ -571,7 +571,7 @@ class POINTS(BaseLocation):
     @model_validator(mode="after")
     def ensure_equal_size(self) -> "POINTS":
         if len(self.xp) != len(self.yp):
-            raise ValueError(f"xp and yp must be the same size")
+            raise ValueError("xp and yp must be the same size")
         return self
 
     def cmd(self) -> str:
@@ -1058,7 +1058,7 @@ class OUTPUT_OPTIONS(BaseComponent):
         if self.field is not None:
             repr += f" TABLE field={self.field}"
         if self.ndec_block is not None or self.len is not None:
-            repr += f" BLOCK"
+            repr += " BLOCK"
             if self.ndec_block is not None:
                 repr += f" ndec={self.ndec_block}"
             if self.len is not None:

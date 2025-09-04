@@ -8,8 +8,6 @@ system and handles ASCII mode settings.
 
 import os
 import sys
-import importlib
-import unittest
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -17,14 +15,7 @@ import pytest
 # Add the parent directory to the path to import the module
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from rompy.logging import (
-    get_logger,
-    LoggingConfig,
-    LogLevel,
-    LogFormat,
-    BoxStyle,
-    formatter,
-)
+from rompy.logging import LoggingConfig, get_logger
 from rompy.logging.formatter import BoxFormatter
 
 # Initialize logger

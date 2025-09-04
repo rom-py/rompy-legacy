@@ -6,9 +6,9 @@ This module provides the local pipeline backend implementation.
 
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional, Union
+from typing import Any, Dict, Optional, Union
 
-from rompy.backends import LocalConfig, DockerConfig
+from rompy.backends import DockerConfig, LocalConfig
 
 logger = logging.getLogger(__name__)
 

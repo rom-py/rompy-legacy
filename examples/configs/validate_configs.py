@@ -6,11 +6,12 @@ This script validates the YAML configuration files in this directory
 to ensure they follow the correct schema and can be loaded properly.
 """
 
-import sys
-import yaml
-from pathlib import Path
-from typing import Dict, Any, List
 import logging
+import sys
+from pathlib import Path
+from typing import Any, Dict, List
+
+import yaml
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

@@ -4,7 +4,8 @@ import json
 from datetime import datetime
 from typing import Any, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import (BaseModel, ConfigDict, Field, field_validator,
+                      model_validator)
 
 
 class RompyBaseModel(BaseModel):
@@ -82,7 +83,7 @@ class RompyBaseModel(BaseModel):
         # Check for objects with their own __str__ method (not inherited from object or base classes)
         # But don't use it for RompyBaseModel instances (use our hierarchical formatting instead)
         str_method = getattr(obj.__class__, "__str__", None)
-        base_str_method = getattr(RompyBaseModel, "__str__", None)
+        getattr(RompyBaseModel, "__str__", None)
         object_str_method = getattr(object, "__str__", None)
 
         if (

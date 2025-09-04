@@ -1,7 +1,6 @@
 """Boundary classes."""
 
 import logging
-from importlib.metadata import entry_points
 from pathlib import Path
 from typing import Literal, Optional, Union
 
@@ -347,7 +346,6 @@ def scatter_plot(bnd, ds=None, fscale=10, ax=None, **kwargs):
         max(ds[bnd.coords.x]),
         max(ds[bnd.coords.y]),
     )
-    extents = [minLon, maxLon, minLat, maxLat]
 
     if ax is None:
         # create figure and plot/map

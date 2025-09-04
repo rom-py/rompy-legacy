@@ -2,10 +2,10 @@
 
 import logging
 from typing import Any, Literal, Optional
+
 from pydantic import Field, model_validator
 
 from rompy.swan.subcomponents.base import BaseSubComponent
-
 
 logger = logging.getLogger(__name__)
 

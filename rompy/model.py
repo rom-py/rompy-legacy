@@ -5,27 +5,23 @@ This module provides the ModelRun class which is the main entry point for
 running models with ROMPY.
 """
 
-import glob
 import os
 import platform
 import shutil
-import sys
-import textwrap
-import time as time_module
 import zipfile as zf
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Literal, Optional, Union
 
-from pydantic import Field, model_validator
+from pydantic import Field
 
 from rompy.backends import BackendConfig
 from rompy.backends.config import BaseBackendConfig
 from rompy.core.config import BaseConfig
-from rompy.logging import LogFormat, LoggingConfig, LogLevel, get_logger
 from rompy.core.render import render
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
+from rompy.logging import get_logger
 from rompy.utils import load_entry_points
 
 # Initialize the logger
@@ -149,7 +145,7 @@ class ModelRun(RompyBaseModel):
 
         """
         # Import formatting utilities
-        from rompy.formatting import format_table_row, get_formatted_box, log_box
+        from rompy.formatting import format_table_row, log_box
 
         # Format model settings in a structured way
         config_type = type(self.config).__name__

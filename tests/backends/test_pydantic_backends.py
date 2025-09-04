@@ -5,20 +5,14 @@ Tests verify that the new backend configuration classes work correctly,
 provide proper validation, and integrate seamlessly with existing backends.
 """
 
-import os
-import pytest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import MagicMock, patch
 
+import pytest
 from pydantic import ValidationError
 
-from rompy.backends import (
-    BackendConfig,
-    BaseBackendConfig,
-    DockerConfig,
-    LocalConfig,
-)
+from rompy.backends import BaseBackendConfig, DockerConfig, LocalConfig
 
 
 class TestBaseBackendConfig:
@@ -443,8 +437,9 @@ class TestBackendIntegration:
 
     def test_pydantic_config_integration(self, mock_model_run):
         """Test that backends work with Pydantic config objects only."""
-        from rompy.run import LocalRunBackend
         import tempfile
+
+        from rompy.run import LocalRunBackend
 
         config = LocalConfig(
             command="echo 'pydantic config test'",

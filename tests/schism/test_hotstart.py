@@ -2,7 +2,6 @@
 Tests for the SCHISM hotstart functionality.
 """
 
-import os
 from datetime import datetime
 from pathlib import Path
 

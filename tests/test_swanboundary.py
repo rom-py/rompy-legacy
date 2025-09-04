@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import pytest
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -137,7 +136,7 @@ def test_boundspecsegmentxy_from_side(tmp_path, time, grid):
         sel_method_kwargs={"tolerance": 3.0},
         location={"model_type": "side", "side": "west"},
     )
-    cmds = bnd.get(destdir=tmp_path, grid=grid, time=time)
+    bnd.get(destdir=tmp_path, grid=grid, time=time)
 
 
 def test_boundspecsegmentxy_from_sides(tmp_path, time, grid):
@@ -154,7 +153,7 @@ def test_boundspecsegmentxy_from_sides(tmp_path, time, grid):
             "sides": [{"side": "west"}, {"side": "south"}],
         },
     )
-    cmds = bnd.get(destdir=tmp_path, grid=grid, time=time)
+    bnd.get(destdir=tmp_path, grid=grid, time=time)
 
 
 def test_source_wavespectra_ploting(tmp_path):

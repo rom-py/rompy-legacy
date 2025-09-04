@@ -1,30 +1,16 @@
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Literal, Optional
 
 import numpy as np
-import pandas as pd
-from pydantic import (
-    ConfigDict,
-    Field,
-    PrivateAttr,
-    field_validator,
-    model_serializer,
-    model_validator,
-)
-from pylib import (
-    compute_zcor,
-    create_schism_vgrid,
-    read_schism_hgrid,
-    read_schism_vgrid,
-    save_schism_grid,
-    schism_grid,
-)
-from shapely.geometry import MultiPoint, Polygon
+from pydantic import (Field, PrivateAttr, field_validator, model_serializer,
+                      model_validator)
+from pylib import read_schism_hgrid, read_schism_vgrid, schism_grid
+from shapely.geometry import Polygon
 
 from rompy.core.data import DataBlob
 from rompy.core.grid import BaseGrid
-from rompy.logging import get_logger
 from rompy.core.types import RompyBaseModel
+from rompy.logging import get_logger
 
 from .vgrid import VGrid, create_2d_vgrid
 
@@ -262,7 +248,7 @@ class VgridGenerator(GeneratorBase):
 
     def _create_2d_vgrid(self, destdir: str | Path) -> Path:
         """Create a 2D vgrid.in file using the refactored VGrid class."""
-        logger.info(f"Creating 2D vgrid.in using VGrid.create_2d_vgrid()")
+        logger.info("Creating 2D vgrid.in using VGrid.create_2d_vgrid()")
         try:
             # Create a 2D vgrid using the new implementation
             vgrid = create_2d_vgrid()
@@ -344,7 +330,7 @@ class WWMBNDGR3Generator(GeneratorBase):
                     f"List of flags {nope2} must be the same length as the number of open boundaries in the hgrid.gr3 file ({nope})"
                 )
 
-            neta = int(file.readline().split()[0].strip())
+            int(file.readline().split()[0].strip())
 
             for k in range(nope):
                 nond = int(file.readline().split()[0].strip())
@@ -967,7 +953,6 @@ class SCHISMGrid(BaseGrid):
             The axes objects for the bathymetry and mesh panels.
         """
         import matplotlib.pyplot as plt
-        import numpy as np
         from matplotlib.tri import Triangulation
 
         # Create figure with two subplots
@@ -1086,8 +1071,8 @@ class SCHISMGrid(BaseGrid):
             A formatted string or None to use default formatting
         """
         # Import specific types and formatting utilities
-        from rompy.logging import LoggingConfig
         from rompy.formatting import get_formatted_header_footer
+        from rompy.logging import LoggingConfig
 
         # Get ASCII mode setting from LoggingConfig
         logging_config = LoggingConfig()
@@ -1207,8 +1192,6 @@ class SCHISMGrid(BaseGrid):
 
 
 if __name__ == "__main__":
-    import cartopy.crs as ccrs
-    import matplotlib.pyplot as plt
 
     grid = SCHISMGrid(
         hgrid=DataBlob(

@@ -1,10 +1,10 @@
 """Light interface to fsspec filesystem operations."""
 
+import logging
 import os
 from pathlib import Path
-import logging
-from fsspec import get_mapper
 
+from fsspec import get_mapper
 
 logger = logging.getLogger(__name__)
 

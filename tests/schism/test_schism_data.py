@@ -1,11 +1,8 @@
 import logging
 import os
-from datetime import datetime
 from pathlib import Path
 
 import pytest
-
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -16,15 +13,9 @@ pytest.importorskip("rompy.schism")
 import xarray as xr
 
 from rompy.core.data import DataBlob
-from rompy.core.time import TimeRange
 from rompy.core.source import SourceFile, SourceIntake
 from rompy.schism import SCHISMGrid
-from rompy.schism.data import (
-    SCHISMDataBoundary,
-    SCHISMDataSflux,
-    SfluxAir,
-    TidalDataset,
-)
+from rompy.schism.data import SCHISMDataBoundary, SCHISMDataSflux, SfluxAir
 
 HERE = Path(__file__).parent
 DATAMESH_TOKEN = os.environ.get("DATAMESH_TOKEN")
@@ -141,7 +132,7 @@ def test_oceandataboundary(tmp_path, grid2d, hycom_bnd2d):
         logging.info(f"NetCDF has {len(bnd.nOpenBndNodes)} boundary nodes")
 
         assert bnd.nOpenBndNodes.size == grid2d.nobn
-        assert grid2d.nvrt == None
+        assert grid2d.nvrt is None
 
         logging.info(f"Grid has {len(bnd.nOpenBndNodes)} boundary nodes")
         assert bnd.time_series.isnull().sum() == 0

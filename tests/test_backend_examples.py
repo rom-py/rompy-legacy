@@ -6,21 +6,19 @@ This script validates that all backend examples, configuration files, and
 the backend system work correctly with the current ROMPY implementation.
 """
 
-import sys
-import os
-import tempfile
-import shutil
-from pathlib import Path
-from typing import Dict, Any, List, Tuple
 import logging
+import sys
+import tempfile
+from pathlib import Path
 
 # Add the parent directory to the path so we can import rompy
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from rompy.backends import LocalConfig, DockerConfig
-from rompy.model import ModelRun
-from rompy.core.time import TimeRange
 from datetime import datetime
+
+from rompy.backends import DockerConfig, LocalConfig
+from rompy.core.time import TimeRange
+from rompy.model import ModelRun
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -82,7 +80,7 @@ def test_model_run_integration():
             command="echo 'Integration test completed'",
         )
 
-        logger.info(f"✅ ModelRun created with LocalConfig")
+        logger.info("✅ ModelRun created with LocalConfig")
         assert model is not None
         assert model.run_id == "test_integration"
         assert local_config is not None

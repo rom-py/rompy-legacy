@@ -58,7 +58,7 @@ class Sflux_Inputs(NamelistBaseModel):
         """Render the namelist variable as a string"""
         # create string of the form "variable = value"
         ret = []
-        ret += [f"! SCHISM sflux namelist rendered from Rompy"]
+        ret += ["! SCHISM sflux namelist rendered from Rompy"]
         ret += ["&sflux_inputs"]
         for key, value in self.model_dump().items():
             if key in ["id", "priority", "file_number"]:

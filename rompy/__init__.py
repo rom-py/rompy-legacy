@@ -26,12 +26,12 @@ warnings.filterwarnings(
 )
 
 # __version__ = _version.get_versions()["version"]
-__version__ = "0.5.3"
+__version__ = "0.5.4"
 
-# Import logging configuration
-from .logging import LoggingConfig
 # Import and re-export formatting utilities
 from .formatting import get_formatted_box, get_formatted_header_footer
+# Import logging configuration
+from .logging import LoggingConfig
 
 # Root directory and templates directory paths
 ROOT_DIR = Path(__file__).parent.resolve()

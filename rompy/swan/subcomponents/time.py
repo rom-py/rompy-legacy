@@ -6,10 +6,10 @@ including time ranges, intervals, and time format conversions.
 """
 
 from datetime import datetime, timedelta
-from typing import Literal, Optional, Union
+from typing import Literal, Union
 
 import pandas as pd
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, field_validator
 
 from rompy.logging import get_logger
 from rompy.swan.subcomponents.base import BaseSubComponent

@@ -1,19 +1,15 @@
 """Tests for the atmospheric forcing (sflux) plotting methods in SCHISMDataSflux."""
 
-import os
+from datetime import datetime
 from pathlib import Path
-import pytest
+
 import numpy as np
 import pandas as pd
+import pytest
 import xarray as xr
-from datetime import datetime, timedelta
 
 pytest.importorskip("rompy.schism")
 
-from rompy.core.data import DataBlob
-from rompy.core.time import TimeRange
-from rompy.schism.data import SCHISMDataSflux, SfluxAir, SfluxRad, SfluxPrc
-from rompy.schism.grid import SCHISMGrid
 
 # Define the location of test files
 HERE = Path(__file__).parent
@@ -148,7 +144,7 @@ def test_plot_sflux_spatial(grid2d, test_sflux_data):
 
     # Plot wind vectors on a subset of the grid for clarity
     skip = 2  # Skip every other grid point
-    q = ax.quiver(
+    ax.quiver(
         lon_grid[::skip, ::skip],
         lat_grid[::skip, ::skip],
         air_ds.uwind[0, ::skip, ::skip],
@@ -242,7 +238,7 @@ def test_sflux_plotting_workflow(grid2d, test_sflux_data):
     # 2. Wind vectors plot
     ax2 = fig.add_subplot(gs[0, 1])
     skip = 2  # Skip grid points for clarity
-    q = ax2.quiver(
+    ax2.quiver(
         lon_grid[::skip, ::skip],
         lat_grid[::skip, ::skip],
         air_ds.uwind[0, ::skip, ::skip],
@@ -265,7 +261,7 @@ def test_sflux_plotting_workflow(grid2d, test_sflux_data):
     ax3.plot(air_ds.time, air_ds.stmp[:, lat_idx, lon_idx], "r-", marker="o")
     ax3.set_xlabel("Time")
     ax3.set_ylabel("Temperature (°C)")
-    ax3.set_title(f"Air Temperature Time Series")
+    ax3.set_title("Air Temperature Time Series")
     ax3.grid(True)
 
     # 4. Pressure field at a different time

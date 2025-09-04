@@ -6,38 +6,20 @@ with support for all boundary condition types specified in the SCHISM
 documentation.
 """
 
-import os
-from datetime import datetime
-from enum import IntEnum
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Union, Any, cast
+from typing import Dict, List, Literal, Optional
 
 import numpy as np
-from pydantic import ConfigDict, Field, model_validator, field_validator
+from pydantic import ConfigDict, Field, model_validator
 
-from rompy.core.config import BaseConfig
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
-from rompy.schism.grid import SCHISMGrid
-
-# Import bctides and boundary modules
-from .bctides import Bctides
-from rompy.schism.boundary_core import (
-    BoundaryHandler,
-    TidalDataset,
-    BoundaryConfig,
-    ElevationType,
-    VelocityType,
-    TracerType,
-    create_tidal_boundary,
-    create_hybrid_boundary,
-    create_river_boundary,
-    create_nested_boundary,
-    # Keep backward compatibility
-    TidalBoundary,
-)
-
 from rompy.logging import get_logger
+# Import bctides and boundary modules
+from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
+                                        TidalBoundary, TidalDataset,
+                                        TracerType, VelocityType)
+from rompy.schism.grid import SCHISMGrid
 
 logger = get_logger(__name__)
 
@@ -689,14 +671,14 @@ def create_river_config(
 
     # Configure other boundaries if needed
     if other_boundaries == "tidal":
-        other_config = BoundarySetup(
+        BoundarySetup(
             elev_type=ElevationType.HARMONIC,
             vel_type=VelocityType.HARMONIC,
             temp_type=TracerType.NONE,
             salt_type=TracerType.NONE,
         )
     else:
-        other_config = BoundarySetup(
+        BoundarySetup(
             elev_type=ElevationType.NONE,
             vel_type=VelocityType.NONE,
             temp_type=TracerType.NONE,

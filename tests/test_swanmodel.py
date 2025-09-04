@@ -1,11 +1,11 @@
 from pathlib import Path
+
 import pytest
-from tests.utils import compare_files
-
-from rompy.model import ModelRun
-
 # Import test utilities
 from test_utils.logging import get_test_logger
+
+from rompy.model import ModelRun
+from tests.utils import compare_files
 
 # Initialize logger
 logger = get_test_logger(__name__)
@@ -67,7 +67,7 @@ def test_swan_input(tmp_path, grid):
 
 def test_failing_friction(tmp_path):
     with pytest.raises(ValueError):
-        model = ModelRun(
+        ModelRun(
             run_id="test_swan",
             output_dir=str(tmp_path),
             config=dict(friction="BAD", model_type="swan"),

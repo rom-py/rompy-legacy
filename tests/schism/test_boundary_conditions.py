@@ -7,35 +7,19 @@ as well as the factory functions for common configurations.
 """
 
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
-import numpy as np
 import pytest
-import xarray as xr
 
 from rompy.core.data import DataBlob
-from rompy.core.source import SourceFile
 from rompy.core.time import TimeRange
 from rompy.schism.boundary_conditions import (
-    create_hybrid_boundary_config,
-    create_nested_boundary_config,
-    create_river_boundary_config,
-    create_tidal_only_boundary_config,
-)
-from rompy.schism.boundary_core import (
-    ElevationType,
-    TidalDataset,
-    TracerType,
-    VelocityType,
-)
-from rompy.schism.data import (
-    BoundarySetupWithSource,
-    SCHISMDataBoundary,
-    SCHISMDataBoundaryConditions,
-)
-from rompy.schism.grid import SCHISMGrid
-from rompy.schism.tides_enhanced import TidalDataset
+    create_hybrid_boundary_config, create_nested_boundary_config,
+    create_river_boundary_config, create_tidal_only_boundary_config)
+from rompy.schism.boundary_core import ElevationType, TracerType, VelocityType
+from rompy.schism.data import (BoundarySetupWithSource,
+                               SCHISMDataBoundaryConditions)
 
 
 @pytest.fixture
@@ -116,7 +100,7 @@ class TestBoundarySetupWithSource:
     def test_validation_warnings(self, caplog):
         """Test that warnings are logged for missing data sources."""
         # Create a boundary that should have data sources but doesn't
-        boundary = BoundarySetupWithSource(
+        BoundarySetupWithSource(
             elev_type=ElevationType.EXTERNAL,
             vel_type=VelocityType.RELAXED,
             temp_type=TracerType.EXTERNAL,
@@ -196,7 +180,7 @@ class TestSCHISMDataBoundaryConditions:
             ValueError,
             match="Tidal data is required for HARMONIC or HARMONICEXTERNAL boundary types",
         ):
-            bc_tidal = SCHISMDataBoundaryConditions(
+            SCHISMDataBoundaryConditions(
                 setup_type="tidal"
                 # Missing tidal_data should cause validation error
             )

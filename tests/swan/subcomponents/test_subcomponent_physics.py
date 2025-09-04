@@ -2,35 +2,17 @@
 
 import pytest
 from pydantic import ValidationError
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
 # Initialize logger
 logger = get_test_logger(__name__)
-from rompy.swan.subcomponents.physics import (
-    JANSSEN,
-    KOMEN,
-    WESTHUYSEN,
-    ST6,
-    ST6C1,
-    ST6C2,
-    ST6C3,
-    ST6C4,
-    ST6C5,
-    ELDEBERKY,
-    DEWIT,
-    TRANSM,
-    TRANS1D,
-    TRANS2D,
-    GODA,
-    DANGREMOND,
-    REFL,
-    RSPEC,
-    RDIFF,
-    FREEBOARD,
-    LINE,
-)
+from rompy.swan.subcomponents.physics import (DANGREMOND, DEWIT, ELDEBERKY,
+                                              FREEBOARD, GODA, JANSSEN, KOMEN,
+                                              LINE, RDIFF, REFL, RSPEC, ST6,
+                                              ST6C1, ST6C2, ST6C3, ST6C4,
+                                              ST6C5, TRANS1D, TRANS2D, TRANSM,
+                                              WESTHUYSEN)
 
 
 # =====================================================================================

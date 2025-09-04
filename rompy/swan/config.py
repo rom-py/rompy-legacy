@@ -11,17 +11,14 @@ from typing import Annotated, Literal, Optional, Union
 from pydantic import Field, model_validator
 
 from rompy.core.config import BaseConfig
+from rompy.formatting import get_formatted_header_footer
 from rompy.logging import get_logger
-from rompy.formatting import get_formatted_box, get_formatted_header_footer
 from rompy.swan.components import boundary, cgrid, numerics
-from rompy.swan.components.group import INPGRIDS, LOCKUP, OUTPUT, PHYSICS, STARTUP
+from rompy.swan.components.group import (INPGRIDS, LOCKUP, OUTPUT, PHYSICS,
+                                         STARTUP)
 from rompy.swan.grid import SwanGrid
-from rompy.swan.interface import (
-    BoundaryInterface,
-    DataInterface,
-    LockupInterface,
-    OutputInterface,
-)
+from rompy.swan.interface import (BoundaryInterface, DataInterface,
+                                  LockupInterface, OutputInterface)
 from rompy.swan.legacy import ForcingData, Outputs, SwanPhysics, SwanSpectrum
 
 logger = get_logger(__name__)
@@ -291,9 +288,9 @@ class SwanConfigComponents(BaseConfig):
                                     f"      Quantities: {qty_count} output group(s)"
                                 )
                             if hasattr(component, "block"):
-                                lines.append(f"      Block output: Yes")
+                                lines.append("      Block output: Yes")
                             if hasattr(component, "specout"):
-                                lines.append(f"      Spectral output: Yes")
+                                lines.append("      Spectral output: Yes")
 
             # Add template info if available
             if hasattr(obj, "template"):
@@ -366,7 +363,6 @@ class SwanConfigComponents(BaseConfig):
             return "\n".join(lines)
 
         # Format grid directly
-        from rompy.swan.grid import SwanGrid
 
         if isinstance(obj, SwanGrid):
             header, footer, _ = get_formatted_header_footer(
@@ -527,7 +523,6 @@ class SwanConfigComponents(BaseConfig):
         from rompy.logging import LoggingConfig
 
         logging_config = LoggingConfig()
-        USE_ASCII_ONLY = logging_config.use_ascii
         SIMPLE_LOGS = logging_config.format == "simple"
 
         # Use the log_box utility function

@@ -5,20 +5,19 @@ Tests cover the enhanced LocalRunBackend, NoopPostprocessor, and LocalPipelineBa
 with their new validation, error handling, and logging capabilities.
 """
 
-import os
-import pytest
 import subprocess
 from datetime import datetime
-from pathlib import Path
-from unittest.mock import patch, MagicMock, call
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 from rompy.backends import LocalConfig
 from rompy.core.config import BaseConfig
 from rompy.core.time import TimeRange
 from rompy.model import ModelRun
-from rompy.run import LocalRunBackend
-from rompy.postprocess import NoopPostprocessor
 from rompy.pipeline import LocalPipelineBackend
+from rompy.postprocess import NoopPostprocessor
+from rompy.run import LocalRunBackend
 
 
 @pytest.fixture
@@ -192,7 +191,7 @@ class TestEnhancedLocalRunBackend:
 
     def test_run_with_nonexistent_working_dir(self, model_run, tmp_path):
         """Test execution with nonexistent working directory."""
-        backend = LocalRunBackend()
+        LocalRunBackend()
 
         nonexistent_dir = tmp_path / "nonexistent"
 

@@ -4,16 +4,10 @@ Unit tests for SCHISM boundary functionality.
 This module tests the boundary components and data handling for SCHISM.
 """
 
-import os
-from pathlib import Path
 
 import pytest
-import xarray as xr
 
 from rompy.core.data import DataBlob
-from rompy.core.source import SourceFile
-from rompy.core.time import TimeRange
-from rompy.schism import SCHISMGrid
 from rompy.schism.data import SCHISMDataBoundary
 
 pytest.importorskip("rompy.schism")
@@ -100,7 +94,7 @@ class TestBoundaryHandling:
     def test_boundary_to_file(self, grid2d, hycom_bnd2d, tmp_path):
         """Test writing boundary data to files."""
         # Create a data boundary
-        data_boundary = SCHISMDataBoundary(
+        SCHISMDataBoundary(
             id="test_boundary_file",
             source=hycom_bnd2d.source,  # Use SourceFile directly
             variables=["surf_el"],

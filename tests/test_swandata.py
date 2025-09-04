@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import pytest
-
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -88,4 +87,4 @@ def test_swandata_write(tmp_path, nc_data_source):
 
 
 def test_bathy_write(tmp_path, nc_bathy):
-    config = nc_bathy.get(tmp_path)
+    nc_bathy.get(tmp_path)

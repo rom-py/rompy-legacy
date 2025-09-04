@@ -1,6 +1,5 @@
 import os
 import time as time_module
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -10,8 +9,8 @@ import cookiecutter.repository as cc_repository
 from cookiecutter.exceptions import NonTemplatedInputDirException
 from cookiecutter.find import find_template
 
-from rompy.logging import get_logger
 from rompy.core.types import RompyBaseModel
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 

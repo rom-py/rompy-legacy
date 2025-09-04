@@ -4,7 +4,6 @@ from pathlib import Path
 from time import time
 
 import xarray as xr
-from matplotlib.transforms import Bbox
 from pyschism.forcing.hycom.hycom2schism import DownloadHycom
 from pyschism.mesh.hgrid import Hgrid
 

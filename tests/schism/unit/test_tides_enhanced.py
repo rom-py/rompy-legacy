@@ -1,22 +1,18 @@
-import pytest
 import os
-from pathlib import Path
-import numpy as np
 from datetime import datetime
+from pathlib import Path
+
+import pytest
 
 from rompy.core.time import TimeRange
-from rompy.schism.grid import SCHISMGrid
-from rompy.schism.tides_enhanced import (
-    SCHISMDataTidesEnhanced,
-    BoundarySetup,
-    TidalDataset,
-    create_tidal_only_config,
-    create_hybrid_config,
-    create_river_config,
-    create_nested_config,
-)
-from rompy.schism.data import SCHISMData, SCHISMDataBoundary
-from rompy.schism.boundary_core import ElevationType, VelocityType, TracerType
+from rompy.schism.boundary_core import ElevationType, TracerType, VelocityType
+from rompy.schism.data import SCHISMDataBoundary
+from rompy.schism.tides_enhanced import (BoundarySetup,
+                                         SCHISMDataTidesEnhanced, TidalDataset,
+                                         create_hybrid_config,
+                                         create_nested_config,
+                                         create_river_config,
+                                         create_tidal_only_config)
 
 # We'll use the grid2d fixture from the parent conftest.py
 # No need to redefine it here
@@ -232,7 +228,7 @@ class TestTidesOceanConsistency:
         # Update tidal dataset with specific constituents
         tidal_dataset.constituents = ["M2", "S2"]
 
-        tides = SCHISMDataTidesEnhanced(
+        SCHISMDataTidesEnhanced(
             tidal_data=tidal_dataset,
             boundaries={
                 0: BoundarySetup(
@@ -245,7 +241,7 @@ class TestTidesOceanConsistency:
         )
 
         # Create ocean boundary data without temperature - should log a warning
-        elev_boundary = SCHISMDataBoundary(
+        SCHISMDataBoundary(
             source=hycom_bnd2d.source,
             variables=["surf_el"],
         )
@@ -262,7 +258,7 @@ class TestTidesOceanConsistency:
         # Update tidal dataset with specific constituents
         tidal_dataset.constituents = ["M2", "S2"]
 
-        tides = SCHISMDataTidesEnhanced(
+        SCHISMDataTidesEnhanced(
             tidal_data=tidal_dataset,
             boundaries={
                 0: BoundarySetup(
@@ -275,7 +271,7 @@ class TestTidesOceanConsistency:
         )
 
         # Create ocean boundary data without salinity - should log a warning
-        elev_boundary = SCHISMDataBoundary(
+        SCHISMDataBoundary(
             source=hycom_bnd2d.source,
             variables=["surf_el"],
         )

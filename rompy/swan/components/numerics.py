@@ -11,17 +11,9 @@ from pydantic import Field
 
 from rompy.logging import get_logger
 from rompy.swan.components.base import BaseComponent
-from rompy.swan.subcomponents.numerics import (
-    ACCUR,
-    BSBT,
-    CSIGMA,
-    CTHETA,
-    DIRIMPL,
-    GSE,
-    SETUP,
-    SIGIMPL,
-    STOPC,
-)
+from rompy.swan.subcomponents.numerics import (ACCUR, BSBT, CSIGMA, CTHETA,
+                                               DIRIMPL, GSE, SETUP, SIGIMPL,
+                                               STOPC)
 
 logger = get_logger(__name__)
 

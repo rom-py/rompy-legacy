@@ -1,19 +1,19 @@
 # This file was auto generated from a SCHISM namelist file on 2025-01-24.
 
-from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import Field, field_validator, model_validator
+
 from rompy.schism.namelists.basemodel import NamelistBaseModel
 
 
 class Sed_core(NamelistBaseModel):
     sd50: Optional[list] = Field(
-        ["0.12d0", "0.18d0", "0.39d0", "0.60d0", "1.2d0"],
+        [0.12, 0.18, 0.39, 0.60, 1.2],
         description="Median sediment grain diameter (D50) for each sediment tracer, specified in millimeters. This is a list of values corresponding to the number of sediment tracers (Ntracers).",
     )
     erate: Optional[list] = Field(
-        ["1.6d-3", "1.6d-3", "1.6d-3", "1.6d-3", "1.6d-3"],
+        [1.6e-3, 1.6e-3, 1.6e-3, 1.6e-3, 1.6e-3],
         description="Surface erosion rate for each sediment tracer. The interpretation and units depend on the 'ierosion' parameter. If ierosion=0, the units are kg/m²/s. If ierosion=1, the units are s/m (as per M_E in Winterwerp et al. 2012, JGR, vol 117).",
     )
 
@@ -44,7 +44,7 @@ class Sed_opt(NamelistBaseModel):
         description="Sediment type for each class. 0: MUD-like (suspension only), 1: SAND-like (suspension + bedload), 2: GRAVEL-like (not available)",
     )
     srho: Optional[list] = Field(
-        ["2650.0d0", "2650.0d0", "2650.0d0", "2650.0d0", "2650.0d0"],
+        [2650.0, 2650.0, 2650.0, 2650.0, 2650.0],
         description="Sediment grain density (kg/m3) for each sediment class",
     )
     comp_ws: Optional[int] = Field(
@@ -56,11 +56,11 @@ class Sed_opt(NamelistBaseModel):
         description="Flag to enable/disable computation of sediment critical shear stress. 0: Disabled (user-defined), 1: Enabled (computed from SAND_SD50 and SAND_SRHO)",
     )
     wsed: Optional[list] = Field(
-        ["1.06d0", "3.92d0", "5.43d0", "10.19d0", "28.65d0"],
+        [1.06, 3.92, 5.43, 10.19, 28.65],
         description="Particle settling velocity (mm/s) for each sediment class",
     )
     tau_ce: Optional[list] = Field(
-        ["0.15d0", "0.17d0", "0.23d0", "0.3d0", "0.6d0"],
+        [0.15, 0.17, 0.23, 0.3, 0.6],
         description="Critical shear stress for erosion (Pa) for each sediment class",
     )
     sed_debug: Optional[int] = Field(
@@ -87,27 +87,27 @@ class Sed_opt(NamelistBaseModel):
         description="Flag to enable/disable suspended load transport. 0: Disabled, 1: Enabled",
     )
     iasym: Optional[int] = Field(0, description="")
-    w_asym_max: Optional[str] = Field("0.4d0", description="")
+    w_asym_max: Optional[float] = Field(0.4, description="")
     elfrink_filter: Optional[int] = Field(0, description="")
     ech_uorb: Optional[int] = Field(200, description="")
     bedload_acc: Optional[int] = Field(0, description="")
     bedload_acc_filter: Optional[int] = Field(0, description="")
-    kacc_hoe: Optional[str] = Field("1.4d-4", description="")
-    kacc_dub: Optional[str] = Field("0.631d-4", description="")
+    kacc_hoe: Optional[float] = Field(1.4e-4, description="")
+    kacc_dub: Optional[float] = Field(6.31e-5, description="")
     thresh_acc_opt: Optional[int] = Field(2, description="")
-    acrit: Optional[str] = Field("0.2d0", description="")
+    acrit: Optional[float] = Field(0.2, description="")
     tau_option: Optional[int] = Field(1, description="")
-    tau_max: Optional[str] = Field("10.0d0", description="[Pa]")
-    zstress: Optional[str] = Field(
-        "0.2d0", description="[m]; only used if tau_option/=1"
+    tau_max: Optional[float] = Field(10.0, description="[Pa]")
+    zstress: Optional[float] = Field(
+        0.2, description="[m]; only used if tau_option/=1"
     )
     ierosion: Optional[int] = Field(0, description="")
     slope_formulation: Optional[int] = Field(4, description="")
-    alpha_bs: Optional[str] = Field(
-        "1.0d0", description="only used if slope_formulation=4"
+    alpha_bs: Optional[float] = Field(
+        1.0, description="only used if slope_formulation=4"
     )
-    alpha_bn: Optional[str] = Field(
-        "1.5d0", description="only used if slope_formulation=4"
+    alpha_bn: Optional[float] = Field(
+        1.5, description="only used if slope_formulation=4"
     )
     ised_bc_bot: Optional[int] = Field(1, description="")
     alphd: Optional[float] = Field(1.0, description="")
@@ -115,8 +115,8 @@ class Sed_opt(NamelistBaseModel):
     tbp: Optional[float] = Field(100.0, description="suggested value: 100;")
     im_pick_up: Optional[int] = Field(4, description="")
     sed_morph: Optional[int] = Field(0, description="")
-    sed_morph_time: Optional[str] = Field("1.d0", description="")
-    morph_fac: Optional[str] = Field("1.0d0", description="for all classes")
+    sed_morph_time: Optional[float] = Field(1.0, description="")
+    morph_fac: Optional[float] = Field(1.0, description="for all classes")
     drag_formulation: Optional[int] = Field(1, description="")
     ddensed: Optional[int] = Field(0, description="")
     bedforms_rough: Optional[int] = Field(0, description="")
@@ -128,14 +128,14 @@ class Sed_opt(NamelistBaseModel):
     bedmass_filter: Optional[int] = Field(0, description="")
     bedmass_threshold: Optional[float] = Field(0.025, description="")
     bdldiffu: Optional[float] = Field(0.5, description="")
-    bedload_coeff: Optional[str] = Field("1.0d0", description="")
-    cdb_min: Optional[str] = Field("1.d-6", description="")
+    bedload_coeff: Optional[float] = Field(1.0, description="")
+    cdb_min: Optional[float] = Field(1e-6, description="")
     cdb_max: Optional[float] = Field(0.01, description="")
-    actv_max: Optional[str] = Field("0.05d0", description="")
+    actv_max: Optional[float] = Field(0.05, description="")
     nbed: Optional[int] = Field(1, description="")
     sedlay_ini_opt: Optional[int] = Field(0, description="")
-    toplay_inithick: Optional[str] = Field("10.0d-2", description="")
-    newlayer_thick: Optional[str] = Field("0.001d0", description="")
+    toplay_inithick: Optional[float] = Field(0.1, description="")
+    newlayer_thick: Optional[float] = Field(0.001, description="")
     imeth_bed_evol: Optional[int] = Field(2, description="")
     poro_option: Optional[int] = Field(1, description="")
     porosity: Optional[float] = Field(0.4, description="")

@@ -4,22 +4,16 @@ Tidal boundary conditions for SCHISM.
 A direct implementation based on PyLibs scripts/gen_bctides.py with no fallbacks.
 """
 
-import os
-import subprocess
-import sys
-import tempfile
 from datetime import datetime
-from pathlib import Path
-from typing import Any, List, Optional, Tuple, Union
+
 import numpy as np
 import pyTMD
 import timescale
-import pandas as pd
-from pylib import ReadNC
 import xarray as xr
 from scipy.spatial import KDTree
-from rompy.logging import get_logger
+
 from rompy.formatting import ARROW
+from rompy.logging import get_logger
 
 logger = get_logger(__name__)
 
@@ -402,14 +396,14 @@ class Bctides:
                 )
 
             n_constituents = len(self.tnames)
-            if not self.mdt is None:
+            if self.mdt is not None:
                 # If mdt is provided, we have a constant elevation for all constituents
                 n_constituents += 1
             f.write(f"{n_constituents} !nbfr\n")
-            if not self.mdt is None:
+            if self.mdt is not None:
                 # Write mdt as a special constant elevation
                 f.write("z0\n")
-                f.write(f"0.0 1.0 0.0\n")
+                f.write("0.0 1.0 0.0\n")
 
             # Write frequency info for each constituent
             for i, tname in enumerate(self.tnames):
@@ -480,7 +474,7 @@ class Bctides:
                     f.write("! Time history of elevation will be read from elev.th\n")
                 # Type 2: Constant elevation
                 elif elev_type == 2 and len(self.ethconst) > 0:
-                    if not self.mdt is None:
+                    if self.mdt is not None:
                         logger.warning(
                             "Using mdt value for constant elevation, ignoring ethconst"
                         )
@@ -628,11 +622,11 @@ class Bctides:
 
                 # Then write tidal constituents for velocity
                 # Only write tidal constituents for tidal velocity types (3 or 5)
-                if vel_type == 3 or vel_type == 5:
+                if vel_type in {3, 5}:
                     if self.mdt is not None:
                         f.write("z0\n")
                         for n in range(num_nodes):
-                            f.write(f"0.0 0.0 0.0 0.0\n")
+                            f.write("0.0 0.0 0.0 0.0\n")
                     all_vel_data = self._interpolate_tidal_data(lons, lats, self.tnames, "uv")
 
                     for i, tname in enumerate(self.tnames):

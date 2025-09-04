@@ -28,9 +28,9 @@ def plot_tidal_boundaries(self, ax=None, c="rb", lw=1.0, figsize=(10, 8), **kwar
     ax : matplotlib.axes.Axes
         The axes object.
     """
-    import matplotlib.pyplot as plt
-    import numpy as np
     import logging
+
+    import matplotlib.pyplot as plt
 
     logger = logging.getLogger(__name__)
 
@@ -140,9 +140,10 @@ def plot_tidal_stations(
     ax : matplotlib.axes.Axes
         The axes object.
     """
+    import logging
+
     import matplotlib.pyplot as plt
     import numpy as np
-    import logging
 
     logger = logging.getLogger(__name__)
 
@@ -219,8 +220,8 @@ def plot_tidal_stations(
         except Exception as e:
             logger.warning(f"Error creating dataset from TidalDataset: {e}")
             # Create a minimal synthetic dataset for plotting
-            import xarray as xr
             import numpy as np
+            import xarray as xr
 
             stations = np.arange(5)
             constituents = ["M2", "S2", "N2"]
@@ -336,10 +337,10 @@ def plot_tidal_rose(
     fig : matplotlib.figure.Figure
         The figure object.
     """
+    import logging
+
     import matplotlib.pyplot as plt
     import numpy as np
-    import logging
-    from matplotlib.patches import Ellipse
 
     logger = logging.getLogger(__name__)
 
@@ -413,8 +414,8 @@ def plot_tidal_rose(
         except Exception as e:
             logger.warning(f"Error creating dataset from TidalDataset: {e}")
             # Create a minimal synthetic dataset for plotting
-            import xarray as xr
             import numpy as np
+            import xarray as xr
 
             stations = np.arange(5)
             constituents = ["M2", "S2", "N2"]
@@ -483,7 +484,7 @@ def plot_tidal_rose(
 
     # Check that at least one constituent exists
     if not any(c in dataset.constituent.values for c in constituents):
-        raise ValueError(f"None of the requested constituents found in dataset")
+        raise ValueError("None of the requested constituents found in dataset")
 
     # Set up plot
     ax.set_aspect("equal")
@@ -491,7 +492,6 @@ def plot_tidal_rose(
 
     # Plot ellipses for each constituent
     colors = plt.cm.tab10.colors
-    legend_handles = []
 
     for i, const in enumerate(constituents):
         if const not in dataset.constituent.values:
@@ -591,9 +591,10 @@ def plot_tidal_dataset(self, figsize=(12, 8)):
     fig : matplotlib.figure.Figure
         The figure object.
     """
+    import logging
+
     import matplotlib.pyplot as plt
     import numpy as np
-    import logging
 
     logger = logging.getLogger(__name__)
 
@@ -667,8 +668,8 @@ def plot_tidal_dataset(self, figsize=(12, 8)):
         except Exception as e:
             logger.warning(f"Error creating dataset from TidalDataset: {e}")
             # Create a minimal synthetic dataset for plotting
-            import xarray as xr
             import numpy as np
+            import xarray as xr
 
             stations = np.arange(5)
             constituents = ["M2", "S2", "N2"]
@@ -709,8 +710,8 @@ def plot_tidal_dataset(self, figsize=(12, 8)):
 
         # Try to add coastlines if cartopy is available
         try:
-            import cartopy.feature as cfeature
             import cartopy.crs as ccrs
+            import cartopy.feature as cfeature
 
             if not hasattr(ax1, "add_feature"):
                 # If we don't have a cartopy axes, just add a note

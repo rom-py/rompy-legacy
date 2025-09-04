@@ -5,36 +5,18 @@ This module contains components for configuring the physical processes in SWAN,
 including wind generation, whitecapping, quadruplet interactions, and wave breaking.
 """
 
-import logging
 from typing import Annotated, Any, Literal, Optional, Union
 
 from pydantic import Field, ValidationInfo, field_validator, model_validator
 
 from rompy.logging import get_logger
 from rompy.swan.components.base import BaseComponent
-from rompy.swan.subcomponents.physics import (
-    DANGREMOND,
-    DEWIT,
-    ELDEBERKY,
-    FREEBOARD,
-    GODA,
-    JANSSEN,
-    KOMEN,
-    LINE,
-    RDIFF,
-    REFL,
-    RSPEC,
-    ST6,
-    ST6C1,
-    ST6C2,
-    ST6C3,
-    ST6C4,
-    ST6C5,
-    TRANS1D,
-    TRANS2D,
-    TRANSM,
-    WESTHUYSEN,
-)
+from rompy.swan.subcomponents.physics import (DANGREMOND, DEWIT, ELDEBERKY,
+                                              FREEBOARD, GODA, JANSSEN, KOMEN,
+                                              LINE, RDIFF, REFL, RSPEC, ST6,
+                                              ST6C1, ST6C2, ST6C3, ST6C4,
+                                              ST6C5, TRANS1D, TRANS2D, TRANSM,
+                                              WESTHUYSEN)
 from rompy.swan.types import IDLA, PhysicsOff
 
 logger = get_logger(__name__)
@@ -574,7 +556,7 @@ class WCAPPING_KOMEN(BaseComponent):
 
     def cmd(self) -> str:
         """Command file string for this component."""
-        repr = f"WCAPPING KOMEN"
+        repr = "WCAPPING KOMEN"
         if self.cds2 is not None:
             repr += f" cds2={self.cds2}"
         if self.stpm is not None:
@@ -641,13 +623,13 @@ class WCAPPING_AB(BaseComponent):
 
     def cmd(self) -> str:
         """Command file string for this component."""
-        repr = f"WCAPPING AB"
+        repr = "WCAPPING AB"
         if self.cds2 is not None:
             repr += f" cds2={self.cds2}"
         if self.br is not None:
             repr += f" br={self.br}"
         if self.current:
-            repr += f" CURRENT"
+            repr += " CURRENT"
         if self.cds3 is not None:
             repr += f" cds3={self.cds3}"
         return repr
@@ -745,7 +727,7 @@ class QUADRUPL(BaseComponent):
 
     def cmd(self) -> str:
         """Command file string for this component."""
-        repr = f"QUADRUPL"
+        repr = "QUADRUPL"
         if self.iquad is not None:
             repr += f" iquad={self.iquad}"
         if self.lambd is not None:
@@ -2060,7 +2042,7 @@ class TURBULENCE(BaseComponent):
 
     @model_validator(mode="after")
     def tbcur_only_with_current(self) -> "TURBULENCE":
-        if self.current == False and self.tbcur is not None:
+        if not self.current and self.tbcur is not None:
             raise ValueError("`tbcur` can only be defined if `current` is True")
         return self
 

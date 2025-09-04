@@ -1,33 +1,22 @@
-from pathlib import Path
-from typing import Any, Literal, Optional, Union
 import warnings
+from pathlib import Path
+from typing import Literal, Optional
 
 from pydantic import ConfigDict, Field, model_serializer, model_validator
 
 from rompy.core.config import BaseConfig
-from rompy.core.data import DataBlob
 from rompy.logging import get_logger
-from rompy.core.time import TimeRange
-from rompy.core.types import RompyBaseModel, Spectrum
 
 from .config_legacy import SchismCSIROConfig as _LegacySchismCSIROConfig
-
 # Import plotting functions
 from .config_plotting import plot_sflux_spatial, plot_sflux_timeseries
-from .config_plotting_boundary import (
-    plot_boundary_points,
-    plot_boundary_profile,
-    plot_boundary_timeseries,
-)
-from .config_plotting_tides import (
-    plot_tidal_boundaries,
-    plot_tidal_dataset,
-    plot_tidal_rose,
-    plot_tidal_stations,
-)
+from .config_plotting_boundary import (plot_boundary_points,
+                                       plot_boundary_profile,
+                                       plot_boundary_timeseries)
+from .config_plotting_tides import (plot_tidal_boundaries, plot_tidal_dataset,
+                                    plot_tidal_rose, plot_tidal_stations)
 from .data import SCHISMData
 from .grid import SCHISMGrid
-from .interface import TimeInterface
 from .namelists import NML
 from .namelists.param import Param
 
@@ -123,7 +112,7 @@ class SCHISMConfig(BaseConfig):
     plot_tidal_dataset = plot_tidal_dataset
 
     def __call__(self, runtime) -> str:
-        from rompy.formatting import log_box, ARROW
+        from rompy.formatting import ARROW, log_box
 
         # Grid generation section
         log_box(
@@ -222,8 +211,8 @@ class SCHISMConfig(BaseConfig):
             A formatted string or None to use default formatting
         """
         # Import specific types and formatting utilities
-        from rompy.logging import LoggingConfig
         from rompy.formatting import get_formatted_header_footer
+        from rompy.logging import LoggingConfig
 
         # Get ASCII mode setting from LoggingConfig
         logging_config = LoggingConfig()

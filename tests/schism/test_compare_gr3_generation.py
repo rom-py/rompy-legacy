@@ -2,11 +2,10 @@
 Test for GR3 file generation using PyLibs implementation.
 """
 
-import os
-import pytest
 import tempfile
 from pathlib import Path
-import shutil
+
+import pytest
 
 from rompy.schism.grid import GR3Generator
 

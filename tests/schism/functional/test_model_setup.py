@@ -4,21 +4,12 @@ Functional tests for SCHISM model setup.
 This module tests complete end-to-end model setup and preparation.
 """
 
-import os
-from pathlib import Path
 
 import pytest
 import yaml
 
-from rompy.core.data import DataBlob
 from rompy.core.source import SourceFile
-from rompy.core.time import TimeRange
-from rompy.schism import SCHISMGrid
-from rompy.schism.data import (
-    SCHISMDataBoundary,
-    SCHISMDataSflux,
-)
-
+from rompy.schism.data import SCHISMDataBoundary, SCHISMDataSflux
 # Import our stub class from test_namelist instead of the non-existent module
 from tests.schism.integration.test_namelist import SCHISMNamelist
 
@@ -83,13 +74,6 @@ class TestFullModelSetup:
         model_dir.mkdir()
 
         # 1. Create all GR3 files
-        gr3_types = {
-            "drag": 0.0025,
-            "diffmin": 1.0e-6,
-            "diffmax": 1.0,
-            "watertype": 1,
-            "albedo": 0.15,
-        }
 
         # Here we would generate all gr3 files
         # For now, just check that we have the data we need
