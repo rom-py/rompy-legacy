@@ -126,8 +126,6 @@ repositories:
       - "docs/requirements.txt"
       - "docs/environment.yml"
       - "docker/swan"
-      - "docker/.env"
-      - "docker/compose.yaml"
       - "rompy/templates/swanbasic"
       - "rompy/templates/swan"
       - "rompy/templates/swancomp"
@@ -154,6 +152,21 @@ repositories:
         moves:
           - from: "rompy/swan"
             to: "src/rompy_swan"
+      - action: "move_files"
+        moves:
+          - from: "docker/swan"
+            to: "docker2"
+      - action: "remove_files"
+        files:
+          - "docker"
+      - action: "move_files"
+        moves:
+          - from: "docker2"
+            to: "docker"
+      - action: "move_files"
+        moves:
+          - from: "docker/swan"
+            to: "docker"
       - action: "move_files"
         moves:
           - from: "rompy/templates"
