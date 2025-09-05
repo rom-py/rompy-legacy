@@ -940,9 +940,7 @@ __all__ = ["__version__", "discover_plugins"]
         # Try to use the modern template if available
         try:
             from templates.modern_setup_templates import (
-                MANIFEST_IN_SRC_TEMPLATE,
-                format_template,
-            )
+                MANIFEST_IN_SRC_TEMPLATE, format_template)
 
             template_vars = {
                 "package_module": package_module,
@@ -1005,7 +1003,8 @@ __all__ = ["__version__", "discover_plugins"]
         """Create modern setup files using templates."""
         if MODERN_TEMPLATES_AVAILABLE:
             try:
-                from templates.modern_setup_templates import create_modern_setup_files
+                from templates.modern_setup_templates import \
+                    create_modern_setup_files
 
                 repo_name = package_name
                 create_modern_setup_files(
@@ -1579,7 +1578,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rompy-swan"
 description = "SWAN wave model plugin for rompy"
-readme = "README.rst"
+readme = "README.md"
 authors = [
   {name = "Rompy Contributors", email = "developers@rompy.com"}
 ]
@@ -1589,7 +1588,7 @@ maintainers = [
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: APACHE 2 License",
+    "License :: OSI Approved :: Apache Software License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
@@ -1672,7 +1671,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rompy-schism"
 description = "SCHISM model plugin for rompy"
-readme = "README.rst"
+readme = "README.md"
 authors = [
   {name = "Rompy Contributors", email = "developers@rompy.com"}
 ]
@@ -1682,7 +1681,7 @@ maintainers = [
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: Apache Software License 2.0",
+    "License :: OSI Approved :: Apache Software License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",

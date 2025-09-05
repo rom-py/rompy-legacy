@@ -66,6 +66,7 @@ repositories:
       - "LICENSE"
       - "NOTICE"
       - "CONTRIBUTORS"
+      - "README_split.md"
     post_split_actions:
       # Enhanced: Apply cookiecutter template first for infrastructure
       - action: "apply_cookiecutter_template"
@@ -98,6 +99,7 @@ repositories:
           - "tests/swan/"
           - "tests/schism/"
           - ".github/workflows/swan-ci.yml"
+          - "README.rst"
         patterns:
           - "tests/test_swan*.py"
           - "src/rompy/swan/"
@@ -112,6 +114,9 @@ repositories:
         entry_points:
           rompy.config: |
             base = "rompy.core.config:BaseConfig"
+      - action: "rename"
+        from: "README_split.md"
+        to: "README.md"
 
   rompy-swan:
     description: "SWAN wave model plugin for rompy"
@@ -144,8 +149,12 @@ repositories:
       - "LICENSE"
       - "NOTICE"
       - "CONTRIBUTORS"
+      - "README_split.md"
     post_split_actions:
       # Standard splitting actions
+      - action: "rename"
+        from: "README_split.md"
+        to: "README.md"
       - action: "create_src_layout"
         base_package: "rompy_swan"
       - action: "move_files"
@@ -271,6 +280,7 @@ repositories:
       - "LICENSE"
       - "NOTICE"
       - "CONTRIBUTORS"
+      - "README_split.md"
     post_split_actions:
       # Standard splitting actions
       - action: "create_src_layout"
@@ -278,6 +288,9 @@ repositories:
       - action: "rename"
         from: "tests/schism/conftest_split.py"
         to: "tests/schism/conftest.py"
+      - action: "rename"
+        from: "README_split.md"
+        to: "README.md"
       - action: "move_files"
         moves:
           - from: "rompy/schism"
@@ -301,6 +314,7 @@ repositories:
       - action: "remove_files"
         files:
           - "tests/tset_data"
+          - "README.rst"
       - action: "remove_files"
         files:
           - "examples/run_boundary_conditions_examples.sh"
@@ -372,7 +386,7 @@ repositories:
     paths:
       - "notebooks/"
       - "docs/source/notebooks/"
-      - "README.md"
+      - "README_split.md"
       - ".gitignore"
       - ".gitattributes"
     post_split_actions:
