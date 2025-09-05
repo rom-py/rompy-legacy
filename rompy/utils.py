@@ -82,6 +82,7 @@ def load_config(*args, **kwargs):
     This is a lazy import wrapper to avoid circular imports.
     """
     from rompy.cli import load_config as _load_config
+
     return _load_config(*args, **kwargs)
 
 

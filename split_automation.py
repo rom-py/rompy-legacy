@@ -26,6 +26,7 @@ from final_test_fixes import FinalTestFixer
 # Import cookiecutter if available
 try:
     from cookiecutter.main import cookiecutter
+
     COOKIECUTTER_AVAILABLE = True
 except ImportError:
     COOKIECUTTER_AVAILABLE = False
@@ -33,9 +34,11 @@ except ImportError:
 # Import modern templates if available
 try:
     from templates.modern_setup_templates import create_modern_setup_files
+
     MODERN_TEMPLATES_AVAILABLE = True
 except ImportError:
     MODERN_TEMPLATES_AVAILABLE = False
+
 
 class RepositorySplitter:
     def _commit_all_changes(self, target_dir: str, message: str):
@@ -47,7 +50,9 @@ class RepositorySplitter:
             return
         try:
             # Only commit if there are staged changes
-            result = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=target_dir)
+            result = subprocess.run(
+                ["git", "diff", "--cached", "--quiet"], cwd=target_dir
+            )
             if result.returncode != 0:
                 self._run_command(["git", "commit", "-m", message], cwd=target_dir)
                 logger.info(f"[GIT] Commit: {message}")
@@ -59,6 +64,7 @@ class RepositorySplitter:
     """
     Handles the splitting of a monorepo into multiple repositories.
     """
+
     def __init__(self, config_path: str, dry_run: bool = False):
         self.config_path = config_path
         self.dry_run = dry_run
@@ -76,14 +82,18 @@ class RepositorySplitter:
             logger.error(f"Failed to load configuration: {e}")
             sys.exit(1)
 
-    def _run_command(self, cmd: List[str], cwd: str = None, check: bool = True) -> subprocess.CompletedProcess:
+    def _run_command(
+        self, cmd: List[str], cwd: str = None, check: bool = True
+    ) -> subprocess.CompletedProcess:
         cmd_str = " ".join(cmd)
         logger.info(f"Running: {cmd_str} (cwd: {cwd or 'current'})")
         if self.dry_run:
             logger.info("DRY RUN: Command would be executed")
             return subprocess.CompletedProcess(cmd, 0, "", "")
         try:
-            result = subprocess.run(cmd, cwd=cwd, check=check, capture_output=True, text=True)
+            result = subprocess.run(
+                cmd, cwd=cwd, check=check, capture_output=True, text=True
+            )
             if result.stdout:
                 logger.debug(f"STDOUT: {result.stdout}")
             if result.stderr:
@@ -107,7 +117,9 @@ class RepositorySplitter:
             self._run_command(["git-filter-repo", "--version"])
             logger.info("git-filter-repo is available")
         except (subprocess.CalledProcessError, FileNotFoundError):
-            logger.error("git-filter-repo is not available. Install with: pip install git-filter-repo")
+            logger.error(
+                "git-filter-repo is not available. Install with: pip install git-filter-repo"
+            )
             sys.exit(1)
 
     def _create_target_directory(self, repo_name: str) -> str:
@@ -144,12 +156,20 @@ class RepositorySplitter:
         cmd.extend(path_filters)
         self._run_command(cmd, cwd=target_dir)
 
-    def _create_plugin_documentation(self, target_dir: str, package_name: str, plugin_name: str, extends_core_docs: bool):
+    def _create_plugin_documentation(
+        self,
+        target_dir: str,
+        package_name: str,
+        plugin_name: str,
+        extends_core_docs: bool,
+    ):
         docs_dir = os.path.join(target_dir, "docs", "source")
         os.makedirs(docs_dir, exist_ok=True)
         conf_template = self.config.get("templates", {}).get("plugin_docs_conf", "")
         if conf_template:
-            conf_content = conf_template.format(package_name=package_name, plugin_name=plugin_name)
+            conf_content = conf_template.format(
+                package_name=package_name, plugin_name=plugin_name
+            )
             conf_path = os.path.join(docs_dir, "conf.py")
             with open(conf_path, "w") as f:
                 f.write(conf_content)
@@ -194,20 +214,32 @@ Indices and tables
                 f.write(index_content)
             logger.info(f"Created plugin documentation index for {package_name}")
 
-    def _update_docs_configuration(self, target_dir: str, package_name: str, is_core: bool, plugin_discovery: bool):
+    def _update_docs_configuration(
+        self, target_dir: str, package_name: str, is_core: bool, plugin_discovery: bool
+    ):
         if is_core and plugin_discovery:
             docs_dir = os.path.join(target_dir, "docs", "source")
             os.makedirs(docs_dir, exist_ok=True)
-            conf_base_template = self.config.get("templates", {}).get("core_docs_conf", "")
+            conf_base_template = self.config.get("templates", {}).get(
+                "core_docs_conf", ""
+            )
             if conf_base_template:
-                conf_base_path = os.path.join(target_dir, "src", package_name.replace("-", "_"), "docs", "conf_base.py")
+                conf_base_path = os.path.join(
+                    target_dir,
+                    "src",
+                    package_name.replace("-", "_"),
+                    "docs",
+                    "conf_base.py",
+                )
                 os.makedirs(os.path.dirname(conf_base_path), exist_ok=True)
                 with open(conf_base_path, "w") as f:
                     f.write(conf_base_template)
                 conf_path = os.path.join(docs_dir, "conf.py")
                 with open(conf_path, "w") as f:
                     f.write(conf_base_template)
-                logger.info(f"Created core documentation configuration for {package_name}")
+                logger.info(
+                    f"Created core documentation configuration for {package_name}"
+                )
 
     def _create_notebooks_index(self, target_dir: str, ecosystem_packages: List[str]):
         index_content = """
@@ -258,7 +290,9 @@ Browse the notebooks/ directory to get started!
             f.write(index_content)
         logger.info("Created notebooks index and README")
 
-    def _perform_post_split_actions(self, target_dir: str, actions: List[Dict[str, Any]]):
+    def _perform_post_split_actions(
+        self, target_dir: str, actions: List[Dict[str, Any]]
+    ):
         """Perform post-split actions like moving files and updating configs."""
         for action in actions:
             action_type = action.get("action")
@@ -269,7 +303,9 @@ Browse the notebooks/ directory to get started!
                 if not isinstance(moves, list):
                     moves = list(moves)
                 self._move_files(target_dir, moves)
-                self._commit_all_changes(target_dir, "chore(split): move files after split")
+                self._commit_all_changes(
+                    target_dir, "chore(split): move files after split"
+                )
             elif action_type == "merge_directory_contents":
                 merges = action.get("merges")
                 if merges is None:
@@ -277,7 +313,9 @@ Browse the notebooks/ directory to get started!
                 if not isinstance(merges, list):
                     merges = list(merges)
                 self._merge_directory_contents(target_dir, merges)
-                self._commit_all_changes(target_dir, "chore(split): merge directory contents")
+                self._commit_all_changes(
+                    target_dir, "chore(split): merge directory contents"
+                )
             elif action_type == "create_readme":
                 template_name = action.get("template")
                 if template_name is None:
@@ -308,9 +346,13 @@ Browse the notebooks/ directory to get started!
                 if description is None:
                     description = ""
                 if not isinstance(dependencies, list):
-                    dependencies = list(dependencies) if dependencies is not None else []
+                    dependencies = (
+                        list(dependencies) if dependencies is not None else []
+                    )
                 if not isinstance(entry_points, dict):
-                    entry_points = dict(entry_points) if entry_points is not None else {}
+                    entry_points = (
+                        dict(entry_points) if entry_points is not None else {}
+                    )
                 # Ensure description is not None
                 if description is None:
                     description = ""
@@ -322,11 +364,14 @@ Browse the notebooks/ directory to get started!
                     src_layout,
                     entry_points,
                 )
-                self._commit_all_changes(target_dir, "chore(split): update setup files and config")
+                self._commit_all_changes(
+                    target_dir, "chore(split): update setup files and config"
+                )
             elif action_type == "rename":
                 from_path = os.path.join(target_dir, action["from"])
                 to_path = os.path.join(target_dir, action["to"])
                 import shutil
+
                 if not self.dry_run and os.path.exists(from_path):
                     shutil.move(from_path, to_path)
                     logger.info(f"Renamed {action['from']} to {action['to']}")
@@ -352,9 +397,12 @@ Browse the notebooks/ directory to get started!
                         os.makedirs(package_dir, exist_ok=True)
                         logger.info(f"Created package directory: {package_dir}")
                     is_plugin = (
-                        package_name.startswith("rompy_") and package_name != "rompy_core"
+                        package_name.startswith("rompy_")
+                        and package_name != "rompy_core"
                     )
-                    plugin_name = package_name.replace("rompy_", "") if is_plugin else ""
+                    plugin_name = (
+                        package_name.replace("rompy_", "") if is_plugin else ""
+                    )
                     if plugin_name is None:
                         plugin_name = ""
                     self._create_modern_init_py(
@@ -377,7 +425,9 @@ Browse the notebooks/ directory to get started!
                         description,
                         dependencies,
                     )
-                    self._commit_all_changes(target_dir, "chore(split): create modern setup files")
+                    self._commit_all_changes(
+                        target_dir, "chore(split): create modern setup files"
+                    )
             elif action_type == "correct_manifest":
                 package_name = action.get("package_name")
                 description = action.get("description", "")
@@ -395,7 +445,9 @@ Browse the notebooks/ directory to get started!
                 # Also update MANIFEST.in for src layout
                 package_module = package_name.replace("-", "_") if package_name else ""
                 self._update_manifest_in(target_dir, package_module)
-                self._commit_all_changes(target_dir, "chore(split): correct manifest and setup files")
+                self._commit_all_changes(
+                    target_dir, "chore(split): correct manifest and setup files"
+                )
 
             elif action_type == "create_plugin_docs":
                 package_name = action.get("package_name") or ""
@@ -422,7 +474,9 @@ Browse the notebooks/ directory to get started!
                 target_package = action.get("target_package") or ""
                 if package_type and target_package and not self.dry_run:
                     self._correct_imports(target_dir, package_type, target_package)
-                self._commit_all_changes(target_dir, "chore(split): correct imports in code and docs")
+                self._commit_all_changes(
+                    target_dir, "chore(split): correct imports in code and docs"
+                )
             elif action_type == "remove_files":
                 files_to_remove = action.get("files")
                 if files_to_remove is None:
@@ -444,30 +498,48 @@ Browse the notebooks/ directory to get started!
                     if COOKIECUTTER_AVAILABLE:
                         import shutil
                         import tempfile
-                        logger.info(f"Running cookiecutter template: {template_repo} with context: {template_context}")
+
+                        logger.info(
+                            f"Running cookiecutter template: {template_repo} with context: {template_context}"
+                        )
                         with tempfile.TemporaryDirectory() as temp_dir:
                             # Run cookiecutter to generate template output
                             cookiecutter(
                                 template_repo,
                                 no_input=True,
                                 extra_context=template_context,
-                                output_dir=temp_dir
+                                output_dir=temp_dir,
                             )
                             # The output dir will contain a subdir named after project_name
                             project_name = template_context.get("project_name")
                             cookiecutter_output = os.path.join(temp_dir, project_name)
                             if not os.path.exists(cookiecutter_output):
                                 # Fallback: try slug
-                                project_slug = template_context.get("project_slug", project_name)
-                                cookiecutter_output = os.path.join(temp_dir, project_slug)
+                                project_slug = template_context.get(
+                                    "project_slug", project_name
+                                )
+                                cookiecutter_output = os.path.join(
+                                    temp_dir, project_slug
+                                )
                             if not os.path.exists(cookiecutter_output):
-                                logger.error(f"Cookiecutter output directory not found: {cookiecutter_output}")
+                                logger.error(
+                                    f"Cookiecutter output directory not found: {cookiecutter_output}"
+                                )
                             else:
-                                self._merge_cookiecutter_output(target_dir, cookiecutter_output, merge_strategy)
-                                logger.info(f"Cookiecutter overlay merge completed for {target_dir}")
-                                self._commit_all_changes(target_dir, "chore(split): apply cookiecutter template overlay")
+                                self._merge_cookiecutter_output(
+                                    target_dir, cookiecutter_output, merge_strategy
+                                )
+                                logger.info(
+                                    f"Cookiecutter overlay merge completed for {target_dir}"
+                                )
+                                self._commit_all_changes(
+                                    target_dir,
+                                    "chore(split): apply cookiecutter template overlay",
+                                )
                     else:
-                        logger.warning("Cookiecutter is not available. Skipping template application.")
+                        logger.warning(
+                            "Cookiecutter is not available. Skipping template application."
+                        )
 
     def _move_files(self, target_dir: str, moves: List[Dict[str, str]]):
         """
@@ -489,35 +561,63 @@ Browse the notebooks/ directory to get started!
                             os.remove(to_path)
                     # Check if from_path is tracked by git
                     try:
-                        result = subprocess.run([
-                            "git", "ls-files", "--error-unmatch", os.path.relpath(from_path, target_dir)
-                        ], cwd=target_dir, capture_output=True)
+                        result = subprocess.run(
+                            [
+                                "git",
+                                "ls-files",
+                                "--error-unmatch",
+                                os.path.relpath(from_path, target_dir),
+                            ],
+                            cwd=target_dir,
+                            capture_output=True,
+                        )
                         tracked = result.returncode == 0
                     except Exception as e:
                         tracked = False
-                        logger.warning(f"Failed to check git tracking for {from_path}: {e}")
+                        logger.warning(
+                            f"Failed to check git tracking for {from_path}: {e}"
+                        )
                     if tracked:
                         # Use git mv to preserve history
                         try:
-                            subprocess.run([
-                                "git", "mv", os.path.relpath(from_path, target_dir), os.path.relpath(to_path, target_dir)
-                            ], cwd=target_dir, check=True)
-                            logger.info(f"[GIT] Moved {move['from']} to {move['to']} (git mv)")
+                            subprocess.run(
+                                [
+                                    "git",
+                                    "mv",
+                                    os.path.relpath(from_path, target_dir),
+                                    os.path.relpath(to_path, target_dir),
+                                ],
+                                cwd=target_dir,
+                                check=True,
+                            )
+                            logger.info(
+                                f"[GIT] Moved {move['from']} to {move['to']} (git mv)"
+                            )
                         except Exception as e:
-                            logger.error(f"[GIT] git mv failed for {move['from']} to {move['to']}: {e}")
+                            logger.error(
+                                f"[GIT] git mv failed for {move['from']} to {move['to']}: {e}"
+                            )
                     else:
                         # Use shutil.move and git add
                         shutil.move(from_path, to_path)
-                        logger.info(f"Moved {move['from']} to {move['to']} (shutil.move)")
+                        logger.info(
+                            f"Moved {move['from']} to {move['to']} (shutil.move)"
+                        )
                         try:
-                            subprocess.run([
-                                "git", "add", os.path.relpath(to_path, target_dir)
-                            ], cwd=target_dir, check=True)
-                            logger.info(f"[GIT] Added {move['to']} after move (git add)")
+                            subprocess.run(
+                                ["git", "add", os.path.relpath(to_path, target_dir)],
+                                cwd=target_dir,
+                                check=True,
+                            )
+                            logger.info(
+                                f"[GIT] Added {move['to']} after move (git add)"
+                            )
                         except Exception as e:
                             logger.error(f"[GIT] git add failed for {move['to']}: {e}")
                 else:
-                    logger.warning(f"Source path does not exist, skipping move: {move['from']}")
+                    logger.warning(
+                        f"Source path does not exist, skipping move: {move['from']}"
+                    )
 
     def _merge_directory_contents(self, target_dir: str, merges: List[Dict[str, str]]):
         """
@@ -542,35 +642,69 @@ Browse the notebooks/ directory to get started!
                                 os.remove(dst_item)
                         # Check if src_item is tracked by git
                         try:
-                            result = subprocess.run([
-                                "git", "ls-files", "--error-unmatch", os.path.relpath(src_item, target_dir)
-                            ], cwd=target_dir, capture_output=True)
+                            result = subprocess.run(
+                                [
+                                    "git",
+                                    "ls-files",
+                                    "--error-unmatch",
+                                    os.path.relpath(src_item, target_dir),
+                                ],
+                                cwd=target_dir,
+                                capture_output=True,
+                            )
                             tracked = result.returncode == 0
                         except Exception as e:
                             tracked = False
-                            logger.warning(f"Failed to check git tracking for {src_item}: {e}")
+                            logger.warning(
+                                f"Failed to check git tracking for {src_item}: {e}"
+                            )
                         if tracked:
                             try:
-                                subprocess.run([
-                                    "git", "mv", os.path.relpath(src_item, target_dir), os.path.relpath(dst_item, target_dir)
-                                ], cwd=target_dir, check=True)
-                                logger.info(f"[GIT] Moved {os.path.relpath(src_item, target_dir)} to {os.path.relpath(dst_item, target_dir)} (git mv)")
+                                subprocess.run(
+                                    [
+                                        "git",
+                                        "mv",
+                                        os.path.relpath(src_item, target_dir),
+                                        os.path.relpath(dst_item, target_dir),
+                                    ],
+                                    cwd=target_dir,
+                                    check=True,
+                                )
+                                logger.info(
+                                    f"[GIT] Moved {os.path.relpath(src_item, target_dir)} to {os.path.relpath(dst_item, target_dir)} (git mv)"
+                                )
                             except Exception as e:
-                                logger.error(f"[GIT] git mv failed for {src_item} to {dst_item}: {e}")
+                                logger.error(
+                                    f"[GIT] git mv failed for {src_item} to {dst_item}: {e}"
+                                )
                         else:
                             shutil.move(src_item, dst_item)
                             logger.info(f"Moved {src_item} to {dst_item} (shutil.move)")
                             try:
-                                subprocess.run([
-                                    "git", "add", os.path.relpath(dst_item, target_dir)
-                                ], cwd=target_dir, check=True)
-                                logger.info(f"[GIT] Added {os.path.relpath(dst_item, target_dir)} after move (git add)")
+                                subprocess.run(
+                                    [
+                                        "git",
+                                        "add",
+                                        os.path.relpath(dst_item, target_dir),
+                                    ],
+                                    cwd=target_dir,
+                                    check=True,
+                                )
+                                logger.info(
+                                    f"[GIT] Added {os.path.relpath(dst_item, target_dir)} after move (git add)"
+                                )
                             except Exception as e:
-                                logger.error(f"[GIT] git add failed for {dst_item}: {e}")
+                                logger.error(
+                                    f"[GIT] git add failed for {dst_item}: {e}"
+                                )
                     os.rmdir(from_path)
-                    logger.info(f"Merged contents of {merge['from']} into {merge['to']}")
+                    logger.info(
+                        f"Merged contents of {merge['from']} into {merge['to']}"
+                    )
                 else:
-                    logger.warning(f"Source directory does not exist or is not a directory, skipping merge: {merge['from']}")
+                    logger.warning(
+                        f"Source directory does not exist or is not a directory, skipping merge: {merge['from']}"
+                    )
 
     def _create_readme(self, target_dir: str, template_name: str):
         """Create README.md from template."""
@@ -583,9 +717,11 @@ Browse the notebooks/ directory to get started!
                 logger.info(f"Created README.md from template {template_name}")
                 # Add README.md to git
                 try:
-                    subprocess.run([
-                        "git", "add", os.path.relpath(readme_path, target_dir)
-                    ], cwd=target_dir, check=True)
+                    subprocess.run(
+                        ["git", "add", os.path.relpath(readme_path, target_dir)],
+                        cwd=target_dir,
+                        check=True,
+                    )
                     logger.info("[GIT] Added README.md to git")
                 except Exception as e:
                     logger.error(f"[GIT] git add failed for README.md: {e}")
@@ -692,6 +828,7 @@ Browse the notebooks/ directory to get started!
         try:
             import tomli
             import tomli_w
+
             with open(pyproject_path, "rb") as f:
                 data = tomli.load(f)
             if "project" in data:
@@ -724,7 +861,9 @@ Browse the notebooks/ directory to get started!
                 f"Updated pyproject.toml for {package_name} with {'src layout' if src_layout else 'standard layout'}"
             )
         except ImportError:
-            logger.warning("tomli/tomli_w not available, skipping pyproject.toml update")
+            logger.warning(
+                "tomli/tomli_w not available, skipping pyproject.toml update"
+            )
         except Exception as e:
             logger.error(f"Failed to update pyproject.toml: {e}")
 
@@ -786,7 +925,9 @@ def discover_plugins():
     except ImportError:
         return {{}}
 __all__ = ["__version__", "discover_plugins"]
-''' .format(title=package_name.replace('_', ' ').title())
+'''.format(
+                title=package_name.replace("_", " ").title()
+            )
         with open(init_file, "w") as f:
             f.write(init_content)
         logger.info(f"Created modern __init__.py: {init_file}")
@@ -794,18 +935,26 @@ __all__ = ["__version__", "discover_plugins"]
     def _update_manifest_in(self, target_dir: str, package_module: str):
         """Update MANIFEST.in for src layout."""
         import os
+
         manifest_path = os.path.join(target_dir, "MANIFEST.in")
         # Try to use the modern template if available
         try:
             from templates.modern_setup_templates import (
-                MANIFEST_IN_SRC_TEMPLATE, format_template)
+                MANIFEST_IN_SRC_TEMPLATE,
+                format_template,
+            )
+
             template_vars = {
-                'package_module': package_module,
+                "package_module": package_module,
             }
-            manifest_content = format_template(MANIFEST_IN_SRC_TEMPLATE, **template_vars)
+            manifest_content = format_template(
+                MANIFEST_IN_SRC_TEMPLATE, **template_vars
+            )
             with open(manifest_path, "w") as f:
                 f.write(manifest_content)
-            logger.info(f"Updated MANIFEST.in for src layout using modern template: {manifest_path}")
+            logger.info(
+                f"Updated MANIFEST.in for src layout using modern template: {manifest_path}"
+            )
             return
         except Exception as e:
             logger.warning(f"Could not use modern template for MANIFEST.in: {e}")
@@ -823,7 +972,9 @@ __all__ = ["__version__", "discover_plugins"]
                         new_lines.append(" ".join(parts) + "\n")
                     else:
                         new_lines.append(line)
-                elif line.startswith("include ") and not line.startswith("include src/"):
+                elif line.startswith("include ") and not line.startswith(
+                    "include src/"
+                ):
                     # For files like include rompy/*.html, rewrite to src/{package_module}/*.html
                     parts = line.split()
                     if len(parts) > 1 and not parts[1].startswith("src/"):
@@ -854,8 +1005,8 @@ __all__ = ["__version__", "discover_plugins"]
         """Create modern setup files using templates."""
         if MODERN_TEMPLATES_AVAILABLE:
             try:
-                from templates.modern_setup_templates import \
-                    create_modern_setup_files
+                from templates.modern_setup_templates import create_modern_setup_files
+
                 repo_name = package_name
                 create_modern_setup_files(
                     target_dir,
@@ -938,7 +1089,9 @@ write_to = \"src/{package_module}/_version.py\"
                     file_path = os.path.join(root, file)
                     files_to_process.add(file_path)
                     logger.debug(f"[IMPORT FIX] Found doc file: {file_path}")
-        logger.info(f"Found {len(files_to_process)} files to process for import correction (code + docs)")
+        logger.info(
+            f"Found {len(files_to_process)} files to process for import correction (code + docs)"
+        )
         files_modified = 0
         for file_path in files_to_process:
             if self._apply_import_corrections(file_path, corrections):
@@ -949,49 +1102,63 @@ write_to = \"src/{package_module}/_version.py\"
     def _get_import_corrections(self, package_type: str, target_package: str) -> list:
         corrections = []
         if package_type == "core":
-            corrections.extend([
-                (r"^from rompy\.core", f"from {target_package}.core"),
-                (r"^from rompy\.([^.\s]+)", f"from {target_package}.\\1"),
-                (r"^import rompy\.core", f"import {target_package}.core"),
-                (r"^import rompy\.([^.\s]+)", f"import {target_package}.\\1"),
-                (r"^import rompy$", f"import {target_package}"),
-                (r"^from rompy import", f"from {target_package} import"),
-            ])
+            corrections.extend(
+                [
+                    (r"^from rompy\.core", f"from {target_package}.core"),
+                    (r"^from rompy\.([^.\s]+)", f"from {target_package}.\\1"),
+                    (r"^import rompy\.core", f"import {target_package}.core"),
+                    (r"^import rompy\.([^.\s]+)", f"import {target_package}.\\1"),
+                    (r"^import rompy$", f"import {target_package}"),
+                    (r"^from rompy import", f"from {target_package} import"),
+                ]
+            )
         elif package_type == "swan":
-            corrections.extend([
-                (r"rompy\.swan\.", f"{target_package}."),
-                (r"rompy\.swan\b", f"{target_package}"),
-                (r"^from rompy\\.([^.\\s]+)", "from rompy.\\1"),
-                (r"^import rompy\\.([^.\\s]+)", "import rompy.\\1"),
-                (r"^import rompy$", "import rompy"),
-                (r"^from rompy import", "from rompy import"),
-                (r"rompy\.swan\b", f"{target_package}"),
-                (r"parent.parent", "parent"),
-                (r'HERE.parent / "templates" / "swancomp"', 'HERE / "templates" / "swancomp"'), 
-            ])
+            corrections.extend(
+                [
+                    (r"rompy\.swan\.", f"{target_package}."),
+                    (r"rompy\.swan\b", f"{target_package}"),
+                    (r"^from rompy\\.([^.\\s]+)", "from rompy.\\1"),
+                    (r"^import rompy\\.([^.\\s]+)", "import rompy.\\1"),
+                    (r"^import rompy$", "import rompy"),
+                    (r"^from rompy import", "from rompy import"),
+                    (r"rompy\.swan\b", f"{target_package}"),
+                    (r"parent.parent", "parent"),
+                    (
+                        r'HERE.parent / "templates" / "swancomp"',
+                        'HERE / "templates" / "swancomp"',
+                    ),
+                ]
+            )
         elif package_type == "schism":
-            corrections.extend([
-                (r"\brompy\.schism\.", f"{target_package}."),
-                (r"\brompy\.schism\b", f"{target_package}"),
-                (r"``rompy\.schism``", f"``{target_package}``"),
-                (r":mod:`rompy\.schism`", f":mod:`{target_package}`"),
-                (r":py:mod:`rompy\.schism`", f":py:mod:`{target_package}`"),
-                (r"parent.parent", "parent"),
-                (r'"test_data"', '"data" / "schism"'),
-            ])
+            corrections.extend(
+                [
+                    (r"\brompy\.schism\.", f"{target_package}."),
+                    (r"\brompy\.schism\b", f"{target_package}"),
+                    (r"``rompy\.schism``", f"``{target_package}``"),
+                    (r":mod:`rompy\.schism`", f":mod:`{target_package}`"),
+                    (r":py:mod:`rompy\.schism`", f":py:mod:`{target_package}`"),
+                    (r"parent.parent", "parent"),
+                    (r'"test_data"', '"data" / "schism"'),
+                ]
+            )
         return corrections
 
     def _apply_import_corrections(self, file_path: str, corrections: list) -> bool:
         import re
+
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
             original_content = content
             modified_content = content
-            corrections_sorted = sorted(corrections, key=lambda x: len(x[0]), reverse=True)
+            corrections_sorted = sorted(
+                corrections, key=lambda x: len(x[0]), reverse=True
+            )
             for pattern, replacement in corrections_sorted:
                 flags = re.MULTILINE | re.DOTALL
-                modified_content = re.sub(pattern, replacement, modified_content, flags=flags)
+                modified_content = re.sub(
+                    pattern, replacement, modified_content, flags=flags
+                )
             if modified_content != original_content:
                 with open(file_path, "w", encoding="utf-8") as f:
                     f.write(modified_content)
@@ -1006,6 +1173,7 @@ write_to = \"src/{package_module}/_version.py\"
         self, target_dir: str, files_to_remove: list, patterns_to_remove: list
     ):
         import glob
+
         logger.info(f"Removing unwanted files from {target_dir}")
         removed_count = 0
         for file_path in files_to_remove:
@@ -1042,16 +1210,34 @@ write_to = \"src/{package_module}/_version.py\"
     def _merge_cookiecutter_output(
         self, target_dir: str, cookiecutter_output: str, merge_strategy: str
     ):
-        logger.info(f"Merging cookiecutter output with merge strategy: {merge_strategy}")
+        logger.info(
+            f"Merging cookiecutter output with merge strategy: {merge_strategy}"
+        )
         preserve_files = {".git", ".gitignore", "README.md", "HISTORY.rst"}
         cookiecutter_priority = {
-            "pyproject.toml", "setup.cfg", "tox.ini", "requirements_dev.txt", "ruff.toml",
-            ".editorconfig", "Makefile", "MANIFEST.in", ".travis.yml", "AUTHORS.rst",
-            "CODE_OF_CONDUCT.rst", "CONTRIBUTING.rst"
+            "pyproject.toml",
+            "setup.cfg",
+            "tox.ini",
+            "requirements_dev.txt",
+            "ruff.toml",
+            ".editorconfig",
+            "Makefile",
+            "MANIFEST.in",
+            ".travis.yml",
+            "AUTHORS.rst",
+            "CODE_OF_CONDUCT.rst",
+            "CONTRIBUTING.rst",
         }
         exclude_cookiecutter_dirs = {"src", "tests", "docs", "examples", "notebooks"}
         preserve_source_extensions = {
-            ".py", ".rst", ".md", ".yml", ".yaml", ".json", ".txt", ".sh"
+            ".py",
+            ".rst",
+            ".md",
+            ".yml",
+            ".yaml",
+            ".json",
+            ".txt",
+            ".sh",
         }
         for root, dirs, files in os.walk(cookiecutter_output):
             rel_path = os.path.relpath(root, cookiecutter_output)
@@ -1085,7 +1271,9 @@ write_to = \"src/{package_module}/_version.py\"
                         logger.debug(f"Preserving protected file: {file}")
                     elif not os.path.exists(dst_file):
                         should_copy = True
-                        logger.debug(f"Adding new file from cookiecutter: {rel_path}/{file}")
+                        logger.debug(
+                            f"Adding new file from cookiecutter: {rel_path}/{file}"
+                        )
                     else:
                         should_copy = False
                         logger.debug(f"Preserving existing file: {rel_path}/{file}")
@@ -1097,10 +1285,14 @@ write_to = \"src/{package_module}/_version.py\"
                         logger.debug(f"Copied: {file} -> {rel_path}")
                         # Add new file to git
                         try:
-                            subprocess.run([
-                                "git", "add", os.path.relpath(dst_file, target_dir)
-                            ], cwd=target_dir, check=True)
-                            logger.info(f"[GIT] Added {os.path.relpath(dst_file, target_dir)} from cookiecutter")
+                            subprocess.run(
+                                ["git", "add", os.path.relpath(dst_file, target_dir)],
+                                cwd=target_dir,
+                                check=True,
+                            )
+                            logger.info(
+                                f"[GIT] Added {os.path.relpath(dst_file, target_dir)} from cookiecutter"
+                            )
                         except Exception as e:
                             logger.error(f"[GIT] git add failed for {dst_file}: {e}")
                     except Exception as e:
@@ -1111,16 +1303,21 @@ write_to = \"src/{package_module}/_version.py\"
         self, target_dir: str, template_context: dict
     ):
         import ast
+
         try:
             import tomli
             import tomli_w
         except ImportError:
-            logger.warning("tomli/tomli_w not available, skipping pyproject.toml dependency injection")
+            logger.warning(
+                "tomli/tomli_w not available, skipping pyproject.toml dependency injection"
+            )
             return
         pyproject_path = os.path.join(target_dir, "pyproject.toml")
         logger.info(f"[inject_deps] Looking for pyproject.toml at: {pyproject_path}")
         if not os.path.exists(pyproject_path):
-            logger.warning(f"[inject_deps] No pyproject.toml found in {target_dir}, skipping dependency injection")
+            logger.warning(
+                f"[inject_deps] No pyproject.toml found in {target_dir}, skipping dependency injection"
+            )
             return
         dependencies = []
         optional_deps = {}
@@ -1139,7 +1336,9 @@ write_to = \"src/{package_module}/_version.py\"
                     optional_deps[group] = (
                         ast.literal_eval(value) if isinstance(value, str) else value
                     )
-                    logger.info(f"[inject_deps] Parsed optional deps for {group}: {optional_deps[group]}")
+                    logger.info(
+                        f"[inject_deps] Parsed optional deps for {group}: {optional_deps[group]}"
+                    )
                 except Exception as e:
                     logger.warning(f"[inject_deps] Failed to parse {key}: {e}")
         package_name = (
@@ -1152,20 +1351,34 @@ write_to = \"src/{package_module}/_version.py\"
             monorepo_pyproject = os.path.join(
                 os.path.dirname(__file__), "pyproject.toml"
             )
-            logger.info(f"[inject_deps] No dependencies in template_context for rompy, extracting from monorepo: {monorepo_pyproject}")
+            logger.info(
+                f"[inject_deps] No dependencies in template_context for rompy, extracting from monorepo: {monorepo_pyproject}"
+            )
             if os.path.exists(monorepo_pyproject):
                 with open(monorepo_pyproject, "rb") as f:
                     monorepo_data = tomli.load(f)
                 deps = monorepo_data.get("project", {}).get("dependencies", [])
-                opt_deps = monorepo_data.get("project", {}).get("optional-dependencies", {})
+                opt_deps = monorepo_data.get("project", {}).get(
+                    "optional-dependencies", {}
+                )
                 dependencies = deps
                 optional_deps = opt_deps
-                monorepo_entry_points = monorepo_data.get("project", {}).get("entry-points", {})
-                logger.info(f"[inject_deps] Extracted dependencies from monorepo: {dependencies}")
-                logger.info(f"[inject_deps] Extracted optional dependencies from monorepo: {optional_deps}")
-                logger.info(f"[inject_deps] Extracted entry-points from monorepo: {monorepo_entry_points}")
+                monorepo_entry_points = monorepo_data.get("project", {}).get(
+                    "entry-points", {}
+                )
+                logger.info(
+                    f"[inject_deps] Extracted dependencies from monorepo: {dependencies}"
+                )
+                logger.info(
+                    f"[inject_deps] Extracted optional dependencies from monorepo: {optional_deps}"
+                )
+                logger.info(
+                    f"[inject_deps] Extracted entry-points from monorepo: {monorepo_entry_points}"
+                )
             else:
-                logger.warning(f"[inject_deps] Could not find monorepo pyproject.toml at {monorepo_pyproject}")
+                logger.warning(
+                    f"[inject_deps] Could not find monorepo pyproject.toml at {monorepo_pyproject}"
+                )
         with open(pyproject_path, "rb") as f:
             data = tomli.load(f)
         if "project" not in data:
@@ -1190,15 +1403,21 @@ write_to = \"src/{package_module}/_version.py\"
                     data["project"]["entry-points"]["rompy.source"] = (
                         monorepo_entry_points["rompy.source"]
                     )
-                    logger.info("[inject_deps] Injected rompy.source entry-points from monorepo into split package.")
+                    logger.info(
+                        "[inject_deps] Injected rompy.source entry-points from monorepo into split package."
+                    )
             if "rompy.config" in data["project"].get("entry-points", {}):
                 data["project"]["entry-points"]["rompy.config"] = {
                     "base": "rompy.core.config:BaseConfig"
                 }
-                logger.info("[inject_deps] Set rompy.config entry-point to only base=rompy.core.config:BaseConfig for core package.")
+                logger.info(
+                    "[inject_deps] Set rompy.config entry-point to only base=rompy.core.config:BaseConfig for core package."
+                )
         with open(pyproject_path, "wb") as f:
             tomli_w.dump(data, f)
-        logger.info(f"[inject_deps] Injected dependencies into pyproject.toml in {target_dir}")
+        logger.info(
+            f"[inject_deps] Injected dependencies into pyproject.toml in {target_dir}"
+        )
         with open(pyproject_path, "r") as f:
             logger.info(f"[inject_deps] Final pyproject.toml contents:\n{f.read()}")
 
@@ -1218,7 +1437,6 @@ write_to = \"src/{package_module}/_version.py\"
                 except OSError:
                     pass
 
-
     def split_repository(self, repo_name: str, repo_config: Dict[str, Any]):
         """
         Split a single repository according to its configuration.
@@ -1231,7 +1449,9 @@ write_to = \"src/{package_module}/_version.py\"
             paths = repo_config.get("paths", [])
             if paths:
                 self._filter_repository(target_dir, paths)
-                self._commit_all_changes(target_dir, "chore(split): initial filter with git-filter-repo")
+                self._commit_all_changes(
+                    target_dir, "chore(split): initial filter with git-filter-repo"
+                )
             post_actions = repo_config.get("post_split_actions", [])
             if post_actions:
                 self._perform_post_split_actions(target_dir, post_actions)
@@ -1275,11 +1495,23 @@ write_to = \"src/{package_module}/_version.py\"
             print(f"   Location: {target_dir}")
             if not self.dry_run and os.path.exists(target_dir):
                 try:
-                    result = self._run_command(["git", "rev-list", "--count", "HEAD"], cwd=target_dir, check=False)
-                    commit_count = result.stdout.strip() if result.returncode == 0 else "Unknown"
+                    result = self._run_command(
+                        ["git", "rev-list", "--count", "HEAD"],
+                        cwd=target_dir,
+                        check=False,
+                    )
+                    commit_count = (
+                        result.stdout.strip() if result.returncode == 0 else "Unknown"
+                    )
                     print(f"   Commits: {commit_count}")
-                    result = self._run_command(["git", "branch", "-a"], cwd=target_dir, check=False)
-                    branch_count = len([l for l in result.stdout.split("\n") if l.strip()]) if result.returncode == 0 else 0
+                    result = self._run_command(
+                        ["git", "branch", "-a"], cwd=target_dir, check=False
+                    )
+                    branch_count = (
+                        len([l for l in result.stdout.split("\n") if l.strip()])
+                        if result.returncode == 0
+                        else 0
+                    )
                     print(f"   Branches: {branch_count}")
                 except Exception:
                     pass
@@ -1301,27 +1533,46 @@ write_to = \"src/{package_module}/_version.py\"
         print("   - Improved testing and development workflow")
         print("\n")
 
+
 # --- END: RepositorySplitter and split logic ---
 
 
-
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Unified ROMPY split automation")
-    parser.add_argument("--config", default="repo_split_config_with_cookiecutter.yaml", help="Path to split config file")
-    parser.add_argument("--dry-run", action="store_true", help="Show what would be done without making changes")
-    parser.add_argument("--no-test", action="store_true", help="Skip comprehensive testing")
-    parser.add_argument("--retry-setup", action="store_true", help="Retry setup steps if they fail")
-    parser.add_argument("--split-repos-dir", default="../split-repos", help="Directory for split repositories")
+    parser.add_argument(
+        "--config",
+        default="repo_split_config_with_cookiecutter.yaml",
+        help="Path to split config file",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would be done without making changes",
+    )
+    parser.add_argument(
+        "--no-test", action="store_true", help="Skip comprehensive testing"
+    )
+    parser.add_argument(
+        "--retry-setup", action="store_true", help="Retry setup steps if they fail"
+    )
+    parser.add_argument(
+        "--split-repos-dir",
+        default="../split-repos",
+        help="Directory for split repositories",
+    )
     return parser.parse_args()
 
 
 def fix_rompy_swan_pyproject():
     """Fix rompy-swan pyproject.toml"""
-    content = '''[build-system]
+    content = """[build-system]
 requires = ["setuptools", "versioneer[toml]"]
 build-backend = "setuptools.build_meta"
 
@@ -1408,12 +1659,13 @@ log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 
 [tool.black]
 line-length = 88
-'''
+"""
     return content
+
 
 def fix_rompy_schism_pyproject():
     """Fix rompy-schism pyproject.toml"""
-    content = '''[build-system]
+    content = """[build-system]
 requires = ["setuptools", "versioneer[toml]"]
 build-backend = "setuptools.build_meta"
 
@@ -1500,9 +1752,8 @@ log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 
 [tool.black]
 line-length = 88
-'''
+"""
     return content
-
 
 
 def get_core_version():
@@ -1516,6 +1767,7 @@ def get_core_version():
                     version = line.split("=")[1].strip().strip('"').strip("'")
                     break
     return version
+
 
 def inject_version_to_plugin_init(plugin_repo_path, package_module, version_str):
     """Inject __version__ = "..." into plugin __init__.py"""
@@ -1532,6 +1784,7 @@ def inject_version_to_plugin_init(plugin_repo_path, package_module, version_str)
     with open(init_path, "w") as f:
         f.write(init_content)
     logger.info(f"✅ Injected version {version_str} into {init_path}")
+
 
 def fix_dependencies(split_repos_dir):
     """Fix dependencies in all split repositories."""
@@ -1551,29 +1804,31 @@ def fix_dependencies(split_repos_dir):
             continue
         logger.info(f"🔧 Fixing {repo_name}/pyproject.toml...")
         content = fix_func()
-        with open(pyproject_path, 'w') as f:
+        with open(pyproject_path, "w") as f:
             f.write(content)
         logger.info(f"✅ Fixed {repo_name}/pyproject.toml with template")
         # Inject version into plugin __init__.py
         package_module = "rompy_swan" if repo_name == "rompy-swan" else "rompy_schism"
         inject_version_to_plugin_init(repo_path, package_module, version_str)
-    
+
     # Now handle rompy specially - use the cookiecutter-generated pyproject.toml and inject deps
     repo_name = "rompy"
     repo_path = split_dir / repo_name
     pyproject_path = repo_path / "pyproject.toml"
     if repo_path.exists():
-        logger.info(f"🔧 Processing {repo_name} - keeping cookiecutter pyproject.toml and injecting dependencies")
-        
+        logger.info(
+            f"🔧 Processing {repo_name} - keeping cookiecutter pyproject.toml and injecting dependencies"
+        )
+
         # Make sure the cookiecutter-generated file has proper src layout
         try:
             import tomli
             import tomli_w
-            
+
             if pyproject_path.exists():
                 with open(pyproject_path, "rb") as f:
                     data = tomli.load(f)
-                
+
                 # Ensure src layout is properly configured
                 if "tool" not in data:
                     data["tool"] = {}
@@ -1582,76 +1837,92 @@ def fix_dependencies(split_repos_dir):
                 if "packages" not in data["tool"]["setuptools"]:
                     data["tool"]["setuptools"]["packages"] = {}
                 data["tool"]["setuptools"]["packages"] = {"find": {"where": ["src"]}}
-                
+
                 # Inject dependencies and entry points from monorepo
                 monorepo_pyproject = Path(__file__).parent / "pyproject.toml"
                 if monorepo_pyproject.exists():
                     with open(monorepo_pyproject, "rb") as f:
                         monorepo_data = tomli.load(f)
-                    
+
                     # Get dependencies from monorepo
                     deps = monorepo_data.get("project", {}).get("dependencies", [])
-                    opt_deps = monorepo_data.get("project", {}).get("optional-dependencies", {})
-                    entry_points = monorepo_data.get("project", {}).get("entry-points", {})
-                    
+                    opt_deps = monorepo_data.get("project", {}).get(
+                        "optional-dependencies", {}
+                    )
+                    entry_points = monorepo_data.get("project", {}).get(
+                        "entry-points", {}
+                    )
+
                     # Apply them to the cookiecutter-generated pyproject.toml
                     if "project" not in data:
                         data["project"] = {}
-                    
+
                     data["project"]["dependencies"] = deps
-                    
+
                     if "optional-dependencies" not in data["project"]:
                         data["project"]["optional-dependencies"] = {}
                     for group, group_deps in opt_deps.items():
                         data["project"]["optional-dependencies"][group] = group_deps
-                    
+
                     if "entry-points" not in data["project"]:
                         data["project"]["entry-points"] = {}
-                    
+
                     # Add entry points
                     for group, group_entries in entry_points.items():
                         data["project"]["entry-points"][group] = group_entries
-                    
+
                     # Ensure rompy.config entry point is properly set for the core package
                     if "rompy.config" in data["project"]["entry-points"]:
                         data["project"]["entry-points"]["rompy.config"] = {
                             "base": "rompy.core.config:BaseConfig"
                         }
-                    
+
                     # Make sure setuptools_scm is configured properly
                     if "tool" not in data:
                         data["tool"] = {}
                     if "setuptools_scm" not in data["tool"]:
                         data["tool"]["setuptools_scm"] = {}
                     data["tool"]["setuptools_scm"]["write_to"] = "src/rompy/_version.py"
-                    
+
                     # Write the modified pyproject.toml
                     with open(pyproject_path, "wb") as f:
                         tomli_w.dump(data, f)
-                    
-                    logger.info(f"✅ Updated {repo_name}/pyproject.toml with dependencies and entry points from monorepo")
+
+                    logger.info(
+                        f"✅ Updated {repo_name}/pyproject.toml with dependencies and entry points from monorepo"
+                    )
                 else:
-                    logger.warning(f"⚠️ Monorepo pyproject.toml not found: {monorepo_pyproject}")
-                    logger.info(f"✅ Only updated {repo_name}/pyproject.toml src layout configuration")
+                    logger.warning(
+                        f"⚠️ Monorepo pyproject.toml not found: {monorepo_pyproject}"
+                    )
+                    logger.info(
+                        f"✅ Only updated {repo_name}/pyproject.toml src layout configuration"
+                    )
             else:
-                logger.warning(f"⚠️ {repo_name}/pyproject.toml not found: {pyproject_path}")
+                logger.warning(
+                    f"⚠️ {repo_name}/pyproject.toml not found: {pyproject_path}"
+                )
         except ImportError:
-            logger.warning("⚠️ tomli/tomli_w not available, could not update pyproject.toml")
+            logger.warning(
+                "⚠️ tomli/tomli_w not available, could not update pyproject.toml"
+            )
         except Exception as e:
             logger.error(f"❌ Failed to update {repo_name}/pyproject.toml: {e}")
     else:
         logger.warning(f"⚠️  Repository not found: {repo_path}")
-    
+
     logger.info("🎉 All pyproject.toml files have been fixed!")
+
 
 def check_pyproject_entry_points(pyproject_path: Path):
     """Check entry points defined in pyproject.toml."""
     import re
+
     if not pyproject_path.exists():
         logger.error(f"❌ pyproject.toml not found: {pyproject_path}")
         return {}
     try:
-        with open(pyproject_path, 'r') as f:
+        with open(pyproject_path, "r") as f:
             content = f.read()
         entry_point_groups = {}
         pattern = r'\[project\.entry-points\."([^"]+)"\](.*?)(?=\[project\.|\Z)'
@@ -1659,10 +1930,10 @@ def check_pyproject_entry_points(pyproject_path: Path):
             group_name = match.group(1)
             group_content = match.group(2)
             entry_points_list = []
-            for line in group_content.strip().split('\n'):
+            for line in group_content.strip().split("\n"):
                 line = line.strip()
-                if '=' in line:
-                    entry_name = line.split('=')[0].strip().strip('"\'')
+                if "=" in line:
+                    entry_name = line.split("=")[0].strip().strip("\"'")
                     entry_points_list.append(entry_name)
             entry_point_groups[group_name] = entry_points_list
         return entry_point_groups
@@ -1670,20 +1941,31 @@ def check_pyproject_entry_points(pyproject_path: Path):
         logger.error(f"❌ Error reading pyproject.toml: {e}")
         return {}
 
+
 def test_load_entry_points_function(split_repos_dir: Path) -> bool:
     """Test the load_entry_points function by importing it and calling it."""
     import sys
+
     try:
         sys.path.insert(0, str(split_repos_dir / "rompy" / "src"))
         import rompy.utils
+
         load_entry_points = rompy.utils.load_entry_points
         sources = load_entry_points("rompy.source")
-        logger.info(f"  ✅ load_entry_points('rompy.source') returned {len(sources)} entries")
+        logger.info(
+            f"  ✅ load_entry_points('rompy.source') returned {len(sources)} entries"
+        )
         sources_ts = load_entry_points("rompy.source", etype="timeseries")
-        logger.info(f"  ✅ load_entry_points('rompy.source', etype='timeseries') returned {len(sources_ts)} entries")
+        logger.info(
+            f"  ✅ load_entry_points('rompy.source', etype='timeseries') returned {len(sources_ts)} entries"
+        )
         if len(sources_ts) == 0:
-            logger.warning("⚠️ SOURCE_TYPES_TS is empty! This will cause errors in data.py")
-            logger.warning("   Make sure at least one entry point with ':timeseries' is defined")
+            logger.warning(
+                "⚠️ SOURCE_TYPES_TS is empty! This will cause errors in data.py"
+            )
+            logger.warning(
+                "   Make sure at least one entry point with ':timeseries' is defined"
+            )
             return False
         return True
     except Exception as e:
@@ -1693,15 +1975,17 @@ def test_load_entry_points_function(split_repos_dir: Path) -> bool:
         if str(split_repos_dir / "rompy" / "src") in sys.path:
             sys.path.remove(str(split_repos_dir / "rompy" / "src"))
 
+
 def test_source_types_ts_in_data(split_repos_dir: Path) -> bool:
     """Test that SOURCE_TYPES_TS is properly defined and used in data.py."""
     import re
+
     data_py_path = split_repos_dir / "rompy" / "src" / "rompy" / "core" / "data.py"
     if not data_py_path.exists():
         logger.error(f"❌ data.py not found: {data_py_path}")
         return False
     try:
-        with open(data_py_path, 'r') as f:
+        with open(data_py_path, "r") as f:
             content = f.read()
         if "SOURCE_TYPES_TS = load_entry_points" not in content:
             logger.error("❌ SOURCE_TYPES_TS is not defined in data.py")
@@ -1722,18 +2006,19 @@ def test_source_types_ts_in_data(split_repos_dir: Path) -> bool:
         logger.error(f"❌ Error checking data.py: {e}")
         return False
 
+
 def verify_entry_points(split_repos_dir):
     """Verify entry points in all split repositories."""
     logger.info("\n🔍 Verifying entry points...")
     split_dir = Path(split_repos_dir).resolve()
-    package_names = ['rompy', 'rompy-swan', 'rompy-schism']
+    package_names = ["rompy", "rompy-swan", "rompy-schism"]
     all_verified = True
     for package in package_names:
-        if package == 'rompy':
+        if package == "rompy":
             package_dir = split_dir / "rompy" / "src" / "rompy"
-        elif package == 'rompy-swan':
+        elif package == "rompy-swan":
             package_dir = split_dir / "rompy-swan" / "src" / "rompy_swan"
-        elif package == 'rompy-schism':
+        elif package == "rompy-schism":
             package_dir = split_dir / "rompy-schism" / "src" / "rompy_schism"
         else:
             logger.warning(f"⚠️ Unknown package: {package}")
@@ -1750,7 +2035,9 @@ def verify_entry_points(split_repos_dir):
             logger.info(f"  - {group}: {len(entries)} entries")
             timeseries_entries = [e for e in entries if ":timeseries" in e]
             if timeseries_entries:
-                logger.info(f"    ✅ Found {len(timeseries_entries)} timeseries entries: {timeseries_entries}")
+                logger.info(
+                    f"    ✅ Found {len(timeseries_entries)} timeseries entries: {timeseries_entries}"
+                )
             elif package == "rompy" and "rompy_core.source" in group:
                 logger.warning(f"    ⚠️ No timeseries entries found in {group}")
                 all_verified = False
@@ -1769,6 +2056,7 @@ def verify_entry_points(split_repos_dir):
     else:
         logger.error("❌ Some entry point verifications failed")
     return all_verified
+
 
 def main():
     args = parse_args()
@@ -1795,9 +2083,12 @@ def main():
                 subprocess.run(["git", "add", "-A"], cwd=repo_path, check=True)
             except Exception as e:
                 logger.error(f"[GIT] git add -A failed in {repo_path}: {e}")
-            splitter._commit_all_changes(repo_path, "chore(split): final test/config fixes")
+            splitter._commit_all_changes(
+                repo_path, "chore(split): final test/config fixes"
+            )
     logger.info("🎉 Unified split automation complete!")
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())
