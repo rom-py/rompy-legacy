@@ -5,14 +5,17 @@ import numpy as np
 import pytest
 
 from rompy.schism.bctides import Bctides
-from rompy.schism.boundary_core import \
-    TidalBoundary  # Backward compatibility alias
-from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
-                                        TracerType, VelocityType,
-                                        create_hybrid_boundary,
-                                        create_nested_boundary,
-                                        create_river_boundary,
-                                        create_tidal_boundary)
+from rompy.schism.boundary_core import TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import (
+    BoundaryConfig,
+    ElevationType,
+    TracerType,
+    VelocityType,
+    create_hybrid_boundary,
+    create_nested_boundary,
+    create_river_boundary,
+    create_tidal_boundary,
+)
 
 
 class TestBoundaryConfig:

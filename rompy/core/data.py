@@ -30,8 +30,7 @@ class DataBase(ABC, RompyBaseModel):
         description="Model type discriminator",
     )
     id: str = Field(
-        default="data",
-        description="Unique identifier for this data source"
+        default="data", description="Unique identifier for this data source"
     )
 
     @abstractmethod

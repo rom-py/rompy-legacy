@@ -11,7 +11,6 @@ import xarray as xr
 pytest.importorskip("rompy.schism")
 
 
-
 # Define the location of test files
 HERE = Path(__file__).parent
 

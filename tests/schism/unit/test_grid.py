@@ -4,7 +4,6 @@ Unit tests for SCHISM grid functionality.
 This module tests the core grid components of the SCHISM implementation.
 """
 
-
 import pytest
 
 from rompy.schism.grid import GR3Generator

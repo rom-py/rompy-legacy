@@ -98,9 +98,7 @@ class Sed_opt(NamelistBaseModel):
     acrit: Optional[float] = Field(0.2, description="")
     tau_option: Optional[int] = Field(1, description="")
     tau_max: Optional[float] = Field(10.0, description="[Pa]")
-    zstress: Optional[float] = Field(
-        0.2, description="[m]; only used if tau_option/=1"
-    )
+    zstress: Optional[float] = Field(0.2, description="[m]; only used if tau_option/=1")
     ierosion: Optional[int] = Field(0, description="")
     slope_formulation: Optional[int] = Field(4, description="")
     alpha_bs: Optional[float] = Field(

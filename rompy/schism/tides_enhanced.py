@@ -15,10 +15,16 @@ from pydantic import ConfigDict, Field, model_validator
 from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
 from rompy.logging import get_logger
+
 # Import bctides and boundary modules
-from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
-                                        TidalBoundary, TidalDataset,
-                                        TracerType, VelocityType)
+from rompy.schism.boundary_core import (
+    BoundaryConfig,
+    ElevationType,
+    TidalBoundary,
+    TidalDataset,
+    TracerType,
+    VelocityType,
+)
 from rompy.schism.grid import SCHISMGrid
 
 logger = get_logger(__name__)

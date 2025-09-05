@@ -4,7 +4,6 @@ Unit tests for SCHISM boundary functionality.
 This module tests the boundary components and data handling for SCHISM.
 """
 
-
 import pytest
 
 from rompy.core.data import DataBlob

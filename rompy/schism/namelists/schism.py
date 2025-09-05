@@ -219,6 +219,7 @@ class NML(NamelistBaseModel):
 
         # Format Param class
         from .param import Param
+
         if isinstance(obj, Param):
             header, footer, bullet = get_formatted_header_footer(
                 title="SCHISM PARAMETERS", use_ascii=USE_ASCII_ONLY
@@ -245,6 +246,7 @@ class NML(NamelistBaseModel):
 
         # Use the new formatting framework
         from rompy.formatting import format_value
+
         return format_value(obj)
 
 

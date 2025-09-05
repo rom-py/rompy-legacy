@@ -52,6 +52,7 @@ from rompy.core.boundary import DataBoundary
 from rompy.logging import get_logger
 
 from .bctides import Bctides
+
 # Import from local modules
 from .boundary import BoundaryData
 
@@ -1002,8 +1003,7 @@ def create_hybrid_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    from rompy.schism.data import (BoundarySetupWithSource,
-                                   SCHISMDataBoundaryConditions)
+    from rompy.schism.data import BoundarySetupWithSource, SCHISMDataBoundaryConditions
     from rompy.schism.tides_enhanced import TidalDataset
 
     # Create tidal dataset
@@ -1082,8 +1082,7 @@ def create_river_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    from rompy.schism.data import (BoundarySetupWithSource,
-                                   SCHISMDataBoundaryConditions)
+    from rompy.schism.data import BoundarySetupWithSource, SCHISMDataBoundaryConditions
     from rompy.schism.tides_enhanced import TidalDataset
 
     # Create tidal dataset if both paths are provided and needed
@@ -1173,8 +1172,7 @@ def create_nested_boundary_config(
     SCHISMDataBoundaryConditions
         Configured boundary conditions
     """
-    from rompy.schism.data import (BoundarySetupWithSource,
-                                   SCHISMDataBoundaryConditions)
+    from rompy.schism.data import BoundarySetupWithSource, SCHISMDataBoundaryConditions
     from rompy.schism.tides_enhanced import TidalDataset
 
     # Create tidal dataset if both paths are provided and needed
