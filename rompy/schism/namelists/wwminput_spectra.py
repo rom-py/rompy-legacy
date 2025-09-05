@@ -361,11 +361,24 @@ class Engs(NamelistBaseModel):
 class Sin4(NamelistBaseModel):
     # Fields that need commas in FORTRAN namelist output
     _comma_fields = {
-        'zwnd', 'alpha0', 'z0max', 'betamax', 'sinthp', 'zalp', 'tauwshelter',
-        'swellfpar', 'swellf', 'swellf2', 'swellf3', 'swellf4', 'swellf5',
-        'swellf6', 'swellf7', 'z0rat'
+        "zwnd",
+        "alpha0",
+        "z0max",
+        "betamax",
+        "sinthp",
+        "zalp",
+        "tauwshelter",
+        "swellfpar",
+        "swellf",
+        "swellf2",
+        "swellf3",
+        "swellf4",
+        "swellf5",
+        "swellf6",
+        "swellf7",
+        "z0rat",
     }
-    
+
     zwnd: Optional[float] = Field(10.0, description="")
     alpha0: Optional[float] = Field(9.499999694526196e-3, description="")
     z0max: Optional[float] = Field(0.0, description="")
@@ -388,13 +401,40 @@ class Sin4(NamelistBaseModel):
 class Sds4(NamelistBaseModel):
     # Fields that need commas in FORTRAN namelist output
     _comma_fields = {
-        'sdsc1', 'fxpm3', 'fxfm3', 'fxfmage', 'sdsc2', 'sdscum', 'sdsstrain',
-        'sdsc4', 'sdsc5', 'sdsc6', 'sdsbr', 'sdsbr2', 'sdsp', 'sdsiso', 'sdsbck',
-        'sdsabk', 'sdspbk', 'sdsbint', 'sdshck', 'sdsdth', 'sdscos', 'sdsbrf1',
-        'sdsbrfdf', 'sdsbm0', 'sdsbm1', 'sdsbm2', 'sdsbm3', 'sdsbm4', 'sdshfgen',
-        'sdslfgen', 'whitecapwidth', 'fxincut'
+        "sdsc1",
+        "fxpm3",
+        "fxfm3",
+        "fxfmage",
+        "sdsc2",
+        "sdscum",
+        "sdsstrain",
+        "sdsc4",
+        "sdsc5",
+        "sdsc6",
+        "sdsbr",
+        "sdsbr2",
+        "sdsp",
+        "sdsiso",
+        "sdsbck",
+        "sdsabk",
+        "sdspbk",
+        "sdsbint",
+        "sdshck",
+        "sdsdth",
+        "sdscos",
+        "sdsbrf1",
+        "sdsbrfdf",
+        "sdsbm0",
+        "sdsbm1",
+        "sdsbm2",
+        "sdsbm3",
+        "sdsbm4",
+        "sdshfgen",
+        "sdslfgen",
+        "whitecapwidth",
+        "fxincut",
     }
-    
+
     sdsc1: Optional[float] = Field(0.0, description="")
     fxpm3: Optional[float] = Field(4.0, description="")
     fxfm3: Optional[float] = Field(2.5, description="")

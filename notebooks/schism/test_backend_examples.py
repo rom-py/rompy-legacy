@@ -32,6 +32,7 @@ def test_runner_initialization():
         print(f"✗ Runner initialization failed: {e}")
         return False
 
+
 def test_example_discovery():
     """Test that examples are discovered correctly."""
     print("\nTesting example discovery...")
@@ -62,6 +63,7 @@ def test_example_discovery():
         print(f"✗ Example discovery failed: {e}")
         return False
 
+
 def test_configuration_validation():
     """Test that example configurations are valid."""
     print("\nTesting configuration validation...")
@@ -78,7 +80,8 @@ def test_configuration_validation():
             if config_file.exists():
                 try:
                     import yaml
-                    with open(config_file, 'r') as f:
+
+                    with open(config_file, "r") as f:
                         yaml_data = yaml.safe_load(f)
 
                     # Check for required fields
@@ -108,6 +111,7 @@ def test_configuration_validation():
         print(f"✗ Configuration validation failed: {e}")
         return False
 
+
 def test_dry_run():
     """Test dry run functionality."""
     print("\nTesting dry run functionality...")
@@ -120,7 +124,7 @@ def test_dry_run():
             category="all",
             single_example="basic_tidal",
             dry_run=True,
-            keep_outputs=True
+            keep_outputs=True,
         )
 
         if successful_runs == ["basic_tidal"] and not failed_runs:
@@ -133,6 +137,7 @@ def test_dry_run():
     except Exception as e:
         print(f"✗ Dry run failed: {e}")
         return False
+
 
 def test_docker_config_creation():
     """Test Docker configuration creation."""
@@ -160,6 +165,7 @@ def test_docker_config_creation():
 
         # Clean up test directory
         import shutil
+
         if test_path.exists():
             shutil.rmtree(test_path)
 
@@ -168,6 +174,7 @@ def test_docker_config_creation():
     except Exception as e:
         print(f"✗ Docker config creation failed: {e}")
         return False
+
 
 def test_prerequisites():
     """Test prerequisites checking."""
@@ -180,8 +187,13 @@ def test_prerequisites():
         required_paths = [
             runner.project_root / "docker" / "schism" / "Dockerfile",
             runner.project_root / "docker" / "schism",  # Docker context
-            runner.project_root / "tests" / "schism" / "test_data" / "tides" / "oceanum-atlas.tar.gz",
-            runner.examples_dir
+            runner.project_root
+            / "tests"
+            / "schism"
+            / "test_data"
+            / "tides"
+            / "oceanum-atlas.tar.gz",
+            runner.examples_dir,
         ]
 
         missing_paths = []
@@ -203,6 +215,7 @@ def test_prerequisites():
         print(f"✗ Prerequisites check failed: {e}")
         return False
 
+
 def main():
     """Run all tests."""
     print("=" * 60)
@@ -215,7 +228,7 @@ def main():
         test_configuration_validation,
         test_dry_run,
         test_docker_config_creation,
-        test_prerequisites
+        test_prerequisites,
     ]
 
     passed = 0
@@ -246,6 +259,7 @@ def main():
     else:
         print(f"\n❌ {failed} test(s) failed")
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

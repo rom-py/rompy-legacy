@@ -2,6 +2,7 @@
 
 import pytest
 from pydantic import ValidationError
+
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -9,8 +10,13 @@ from test_utils.logging import get_test_logger
 logger = get_test_logger(__name__)
 
 from rompy.swan.components.group import INPGRIDS
-from rompy.swan.components.inpgrid import (CURVILINEAR, INPGRID, READINP,
-                                           REGULAR, UNSTRUCTURED)
+from rompy.swan.components.inpgrid import (
+    CURVILINEAR,
+    INPGRID,
+    READINP,
+    REGULAR,
+    UNSTRUCTURED,
+)
 from rompy.swan.subcomponents.time import NONSTATIONARY
 from rompy.swan.types import GridOptions
 

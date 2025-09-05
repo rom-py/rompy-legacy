@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import pytest
+
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -12,7 +13,6 @@ logger = get_test_logger(__name__)
 pytest.importorskip("rompy.schism")
 import xarray as xr
 
-from rompy.core.data import DataBlob
 from rompy.core.source import SourceFile, SourceIntake
 from rompy.schism import SCHISMGrid
 from rompy.schism.data import SCHISMDataBoundary, SCHISMDataSflux, SfluxAir
@@ -21,22 +21,6 @@ HERE = Path(__file__).parent
 DATAMESH_TOKEN = os.environ.get("DATAMESH_TOKEN")
 
 logging.basicConfig(level=logging.INFO)
-
-
-@pytest.fixture
-def grid2d():
-    grid = SCHISMGrid(hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"), drag=1)
-    return grid
-
-
-@pytest.fixture
-def grid3d():
-    grid = SCHISMGrid(
-        hgrid=DataBlob(source=HERE / "test_data/hgrid.gr3"),
-        vgrid=DataBlob(source=HERE / "test_data/vgrid.in"),
-        drag=1,
-    )
-    return grid
 
 
 @pytest.fixture

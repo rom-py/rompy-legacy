@@ -3,6 +3,7 @@
 import copy
 
 import pytest
+
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -13,12 +14,29 @@ import numpy as np
 from pydantic import ValidationError
 
 from rompy.swan.components.group import OUTPUT
-from rompy.swan.components.output import (BLOCK, BLOCKS, CURVE, CURVES, FRAME,
-                                          GROUP, ISOLINE, NESTOUT, NGRID,
-                                          NGRID_UNSTRUCTURED, OUTPUT_OPTIONS,
-                                          POINTS, POINTS_FILE, QUANTITIES,
-                                          QUANTITY, RAY, SPECIAL_NAMES,
-                                          SPECOUT, TABLE, TEST, BaseLocation)
+from rompy.swan.components.output import (
+    BLOCK,
+    BLOCKS,
+    CURVE,
+    CURVES,
+    FRAME,
+    GROUP,
+    ISOLINE,
+    NESTOUT,
+    NGRID,
+    NGRID_UNSTRUCTURED,
+    OUTPUT_OPTIONS,
+    POINTS,
+    POINTS_FILE,
+    QUANTITIES,
+    QUANTITY,
+    RAY,
+    SPECIAL_NAMES,
+    SPECOUT,
+    TABLE,
+    TEST,
+    BaseLocation,
+)
 from rompy.swan.subcomponents.time import TimeRangeOpen
 
 

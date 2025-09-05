@@ -6,10 +6,19 @@ from typing import Literal, Optional
 from pydantic import Field
 
 from rompy.swan.components.base import BaseComponent
-from rompy.swan.subcomponents.boundary import (CONSTANTFILE, CONSTANTPAR,
-                                               DEFAULT, HOTMULTIPLE, HOTSINGLE,
-                                               PAR, SEGMENT, SIDE,
-                                               VARIABLEFILE, VARIABLEPAR, ZERO)
+from rompy.swan.subcomponents.boundary import (
+    CONSTANTFILE,
+    CONSTANTPAR,
+    DEFAULT,
+    HOTMULTIPLE,
+    HOTSINGLE,
+    PAR,
+    SEGMENT,
+    SIDE,
+    VARIABLEFILE,
+    VARIABLEPAR,
+    ZERO,
+)
 from rompy.swan.subcomponents.spectrum import SHAPESPEC
 
 HERE = Path(__file__).parent

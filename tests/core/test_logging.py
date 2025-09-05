@@ -6,8 +6,14 @@ This module tests the centralized logging and formatting utilities.
 
 import logging
 
-from rompy.logging import (BoxStyle, LogFormat, LoggingConfig, LogLevel,
-                           formatter, get_logger)
+from rompy.logging import (
+    BoxStyle,
+    LogFormat,
+    LoggingConfig,
+    LogLevel,
+    formatter,
+    get_logger,
+)
 
 
 class TestLoggingConfig:

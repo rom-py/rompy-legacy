@@ -2,8 +2,14 @@ from datetime import datetime, timedelta
 from typing import Any, Optional, Union
 
 import isodate
-from pydantic import (BaseModel, ConfigDict, Field, field_validator,
-                      model_serializer, model_validator)
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_serializer,
+    model_validator,
+)
 
 time_units = {
     "h": "hours",

@@ -15,8 +15,7 @@ from rompy.logging import get_logger
 from rompy.swan.boundary import Boundnest1, BoundspecSegmentXY, BoundspecSide
 from rompy.swan.data import SwanDataGrid
 from rompy.swan.grid import SwanGrid
-from rompy.swan.subcomponents.time import (NONSTATIONARY, STATIONARY,
-                                           TimeRangeOpen)
+from rompy.swan.subcomponents.time import NONSTATIONARY, STATIONARY, TimeRangeOpen
 
 logger = get_logger(__name__)
 

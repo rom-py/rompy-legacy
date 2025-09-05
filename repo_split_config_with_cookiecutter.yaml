@@ -1,0 +1,525 @@
+# Enhanced Configuration for splitting rompy repository with cookiecutter integration
+# This file demonstrates how to use the cookiecutter-rompy template as part of the splitting process
+
+source_repo: "."
+target_base_dir: "/home/tdurrant/source/rompy/split-repos"
+
+# Global settings
+preserve_branches: true
+preserve_tags: true
+cleanup_after_split: false # Set to true to remove temporary directories
+
+# Define the split repositories with optional cookiecutter enhancement
+repositories:
+  rompy:
+    description: "Core rompy library with base functionality and plugin system"
+    paths:
+      # Include specific rompy subdirectories (excluding swan and schism)
+      - "rompy/__init__.py"
+      - "rompy/_version.py"
+      - "rompy/cli.py"
+      - "rompy/formatting.py"
+      - "rompy/model.py"
+      - "rompy/plotting.py"
+      - "rompy/utils.py"
+      - "rompy/backends/"
+      - "rompy/logging/"
+      - "rompy/pipeline/"
+      - "rompy/postprocess/"
+      - "rompy/core/"
+      - "rompy/run/"
+      - "rompy/templates/base"
+      - "examples/"
+      # Include specific test directories (excluding swan and schism)
+      - "tests/__init__.py"
+      - "tests/conftest.py"
+      - "tests/test_basegrid.py"
+      - "tests/test_basemodel.py"
+      - "tests/test_data.py"
+      - "tests/test_intake_driver.py"
+      - "tests/test_serilization.py"
+      - "tests/test_templates.py"
+      - "tests/test_time.py"
+      - "tests/core/"
+      - "tests/example_configs/"
+      - "tests/test_utils/"
+      - "tests/utils/"
+      - "tests/backends/"
+      - "tests/integration/"
+      - "tests/simulations/"
+      # Include complete documentation structure (temporarily removing excludes)
+      - "docs/"
+      # Include package configuration files
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "MANIFEST.in"
+      - "pytest.ini"
+      - ".coveragerc"
+      - ".ci-coveragerc"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".readthedocs.yml"
+      - "appveyor.yml"
+      - "HISTORY.rst"
+      - ".github/"
+      - "scripts/"
+      - "LICENSE"
+      - "NOTICE"
+      - "CONTRIBUTORS"
+      - "README_split.md"
+    post_split_actions:
+      # Enhanced: Apply cookiecutter template first for infrastructure
+      - action: "apply_cookiecutter_template"
+        template_repo: "/home/tdurrant/source/rompy/cookiecutter-rompy"
+        merge_strategy: "overlay" # Use infrastructure files from cookiecutter
+        template_context:
+          full_name: "Rompy Contributors"
+          email: "developers@rompy.com"
+          github_username: "rom-py"
+          model_name: "core"
+          project_name: "rompy"
+          project_short_description: "Core rompy library for ocean wave modeling with plugin system"
+          pypi_username: "rom-py"
+          version: "0.5.4"
+          use_pytest: "y"
+          use_pypi_deployment_with_travis: "n"
+          add_pyup_badge: "n"
+          command_line_interface: "Typer"
+          create_author_file: "y"
+          open_source_license: "Apache Software License 2.0"
+      # Then apply standard splitting actions
+      - action: "create_src_layout"
+        base_package: "rompy"
+      - action: "merge_directory_contents"
+        merges:
+          - from: "rompy"
+            to: "src/rompy"
+      - action: "remove_files"
+        files:
+          - "tests/swan/"
+          - "tests/schism/"
+          - ".github/workflows/swan-ci.yml"
+          - "README.rst"
+        patterns:
+          - "tests/test_swan*.py"
+          - "src/rompy/swan/"
+          - "src/rompy/schism/"
+      - action: "correct_manifest"
+        package_name: rompy
+        src_layout: true
+        description: "Core rompy library for ocean wave modeling with plugin system"
+        dependencies:
+          - "rompy@git+https://github.com/rom-py/rompy.git"
+          - pydantic>2
+        entry_points:
+          rompy.config: |
+            base = "rompy.core.config:BaseConfig"
+      - action: "rename"
+        from: "README_split.md"
+        to: "README.md"
+
+  rompy-swan:
+    description: "SWAN wave model plugin for rompy"
+    paths:
+      - "rompy/swan/"
+      - "tests/swan/"
+      - "tests/conftest.py"
+      - "tests/test_utils/"
+      - "docs/source/swan/"
+      - "docs/Makefile"
+      - "docs/make.bat"
+      - "docs/requirements.txt"
+      - "docs/environment.yml"
+      - "docker/swan"
+      - "rompy/templates/swanbasic"
+      - "rompy/templates/swan"
+      - "rompy/templates/swancomp"
+      - "notebooks/swan/example_declarative.yml"
+      - "notebooks/swan/example_sensitivity.yml"
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "MANIFEST.in"
+      - "pytest.ini"
+      - ".coveragerc"
+      - ".ci-coveragerc"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".github/workflows/swan-ci.yml"
+      - "HISTORY.rst"
+      - "LICENSE"
+      - "NOTICE"
+      - "CONTRIBUTORS"
+      - "README_split.md"
+    post_split_actions:
+      # Standard splitting actions
+      - action: "rename"
+        from: "README_split.md"
+        to: "README.md"
+      - action: "create_src_layout"
+        base_package: "rompy_swan"
+      - action: "move_files"
+        moves:
+          - from: "rompy/swan"
+            to: "src/rompy_swan"
+      - action: "move_files"
+        moves:
+          - from: "docker/swan"
+            to: "docker2"
+      - action: "remove_files"
+        files:
+          - "docker"
+      - action: "move_files"
+        moves:
+          - from: "docker2"
+            to: "docker"
+      - action: "move_files"
+        moves:
+          - from: "docker/swan"
+            to: "docker"
+      - action: "move_files"
+        moves:
+          - from: "rompy/templates"
+            to: "src/rompy_swan/templates"
+      - action: "move_files"
+        moves:
+          - from: "notebooks/swan"
+            to: "examples"
+      - action: "move_files"
+        moves:
+          - from: "notebooks/schism"
+            to: "examples"
+      - action: "merge_directory_contents"
+        merges:
+          - from: "tests/swan"
+            to: "tests"
+          # - from: "tests/test_utils"
+          #   to: "tests"
+          - from: "docs/source/swan"
+            to: "docs/source"
+      # Enhanced: Use cookiecutter for SWAN plugin structure first
+      - action: "apply_cookiecutter_template"
+        template_repo: "/home/tdurrant/source/rompy/cookiecutter-rompy"
+        merge_strategy: "overlay"
+        template_context:
+          full_name: "Rompy Contributors"
+          email: "developers@rompy.com"
+          github_username: "rom-py"
+          model_name: "swan"
+          project_name: "rompy-swan"
+          project_short_description: "SWAN wave model plugin for rompy"
+          pypi_username: "rom-py"
+          version: "0.5.4"
+          use_pytest: "y"
+          use_pypi_deployment_with_travis: "n"
+          add_pyup_badge: "n"
+          command_line_interface: "No command-line interface"
+          create_author_file: "y"
+          open_source_license: "Apache Software License 2.0"
+          dependencies: |
+            [
+              "rompy@git+https://github.com/rom-py/rompy.git",
+              "gcsfs",
+              "zarr"
+            ]
+          optional_dependencies_test: |
+            [
+              "pytest",
+              "envyaml",
+              "coverage",
+              "requests"
+            ]
+          optional_dependencies_docs: |
+            [
+              "autodoc_pydantic",
+              "ipython",
+              "nbsphinx",
+              "pydata_sphinx_theme",
+              "sphinx<7.3.6",
+              "sphinx-collections"
+            ]
+      - action: "correct_manifest"
+        package_name: rompy_swan
+        src_layout: true
+        description: "SWAN wave model plugin for rompy"
+        dependencies:
+          - pydantic>2
+        entry_points:
+          rompy.config: |
+            swan = "rompy_swan.config:SwanConfig"
+            swan_components = "rompy_swan.config:SwanConfigComponents"
+      - action: "correct_imports"
+        package_type: "swan"
+        target_package: "rompy_swan"
+
+  rompy-schism:
+    description: "SCHISM model plugin for rompy"
+    paths:
+      - "rompy/schism/"
+      - "tests/schism/"
+      - "tests/test_utils/"
+      - "tests/schism/conftest_split.py"
+      - "docs/source/schism/"
+      - "docs/Makefile"
+      - "docs/make.bat"
+      - "docs/requirements.txt"
+      - "docs/environment.yml"
+      - "notebooks/schism/"
+      - "rompy/templates/schism"
+      - "rompy/templates/schismcsiro"
+      - "docker/schism"
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "MANIFEST.in"
+      - "pytest.ini"
+      - ".coveragerc"
+      - ".ci-coveragerc"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".readthedocs.yml"
+      - "HISTORY.rst"
+      - "LICENSE"
+      - "NOTICE"
+      - "CONTRIBUTORS"
+      - "README_split.md"
+    post_split_actions:
+      # Standard splitting actions
+      - action: "create_src_layout"
+        base_package: "rompy_schism"
+      - action: "rename"
+        from: "tests/schism/conftest_split.py"
+        to: "tests/schism/conftest.py"
+      - action: "rename"
+        from: "README_split.md"
+        to: "README.md"
+      - action: "move_files"
+        moves:
+          - from: "rompy/schism"
+            to: "src/rompy_schism"
+      - action: "move_files"
+        moves:
+          - from: "rompy/templates"
+            to: "src/rompy_schism/templates"
+      - action: "move_files"
+        moves:
+          - from: "notebooks/schism"
+            to: "examples"
+      - action: "merge_directory_contents"
+        merges:
+          - from: "tests/schism"
+            to: "tests"
+          # - from: "tests/test_utils"
+          #   to: "tests"
+          - from: "docs/source/schism"
+            to: "docs/source"
+      - action: "remove_files"
+        files:
+          - "tests/tset_data"
+          - "README.rst"
+      - action: "remove_files"
+        files:
+          - "examples/run_boundary_conditions_examples.sh"
+          - "examples/schism_procedural.ipynb"
+      # Enhanced: Use cookiecutter for SCHISM plugin structure first
+      - action: "apply_cookiecutter_template"
+        template_repo: "/home/tdurrant/source/rompy/cookiecutter-rompy"
+        merge_strategy: "overlay"
+        template_context:
+          full_name: "Rompy Contributors"
+          email: "developers@rompy.com"
+          github_username: "rom-py"
+          model_name: "schism"
+          project_name: "rompy-schism"
+          project_short_description: "SCHISM model plugin for rompy"
+          pypi_username: "rom-py"
+          version: "0.5.4"
+          use_pytest: "y"
+          use_pypi_deployment_with_travis: "n"
+          add_pyup_badge: "n"
+          command_line_interface: "No command-line interface"
+          create_author_file: "y"
+          open_source_license: "Apache Software License 2.0"
+          dependencies: |
+            [
+              "rompy@git+https://github.com/rom-py/rompy.git",
+              "pylibs-ocean",
+              "pytmd"
+            ]
+          optional_dependencies_test: |
+            [
+              "pytest",
+              "envyaml",
+              "coverage",
+              "requests"
+            ]
+          optional_dependencies_docs: |
+            [
+              "autodoc_pydantic",
+              "ipython",
+              "nbsphinx",
+              "pydata_sphinx_theme",
+              "sphinx<7.3.6",
+              "sphinx-collections"
+            ]
+          optional_dependencies_extra: |
+            [
+              "gcsfs",
+              "zarr"
+            ]
+      - action: "correct_manifest"
+        package_name: rompy_schism
+        src_layout: true
+        description: "SCHISM model plugin for rompy"
+        dependencies:
+          - pydantic>2
+          - pylibs-ocean
+          - pytmd
+        entry_points:
+          rompy.config: |
+            schismcsiro = "rompy_schism.config:SchismCSIROConfig"
+            schism = "rompy_schism.config:SCHISMConfig"
+      - action: "correct_imports"
+        package_type: "schism"
+        target_package: "rompy_schism"
+
+  rompy-notebooks:
+    description: "Example notebooks and tutorials for rompy ecosystem"
+    paths:
+      - "notebooks/"
+      - "docs/source/notebooks/"
+      - "README_split.md"
+      - ".gitignore"
+      - ".gitattributes"
+    post_split_actions:
+      - action: "create_readme"
+        template: "notebooks_readme"
+      - action: "create_notebooks_index"
+        ecosystem_packages:
+          - "rompy"
+          - "rompy-swan"
+          - "rompy-schism"
+
+# Enhanced cookiecutter integration options
+cookiecutter:
+  # Default template repository (can be overridden per repository)
+  default_template: "/home/tdurrant/source/rompy/cookiecutter-rompy"
+
+  # Alternative: Use remote template
+  # default_template: "https://github.com/rom-py/cookiecutter-rompy"
+
+  # Global template context (can be overridden per repository)
+  global_context:
+    full_name: "Rompy Contributors"
+    email: "developers@rompy.com"
+    github_username: "rom-py"
+    pypi_username: "rom-py"
+    version: "1.0.0"
+    use_pytest: "y"
+    use_pypi_deployment_with_travis: "n"
+    add_pyup_badge: "n"
+    create_author_file: "y"
+    open_source_license: "Apache Software License 2.0"
+
+  # Merge strategies for different file types
+  merge_strategies:
+    # Always take from cookiecutter (modern packaging)
+    cookiecutter_priority:
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "tox.ini"
+      - "requirements_dev.txt"
+      - "ruff.toml"
+      - ".editorconfig"
+      - "Makefile"
+      - "MANIFEST.in"
+
+    # Always preserve from git history (project-specific)
+    preserve_original:
+      - ".git/**"
+      - ".gitignore"
+      - "HISTORY.rst"
+      - "src/**/*.py" # Preserve actual code
+      - "tests/**/*.py" # Preserve existing tests
+      - "docs/**/*.rst" # Preserve existing docs
+
+    # Merge intelligently (combine both)
+    merge_intelligent:
+      - ".github/**" # Combine CI/CD workflows
+      - "docs/conf.py" # Merge documentation config
+
+# Templates for generated files (same as before, but enhanced with cookiecutter awareness)
+templates:
+  notebooks_readme: |
+    # Rompy Notebooks
+
+    This repository contains example notebooks and tutorials for the rompy ecosystem.
+
+    ## Requirements
+
+    Install the required rompy packages:
+
+    ```bash
+    # Core package (always required)
+    pip install rompy
+
+    # Optional plugins (install as needed)
+    pip install rompy-swan      # For SWAN wave modeling
+    pip install rompy-schism    # For SCHISM modeling
+    ```
+
+    ## Notebooks
+
+    - Browse the notebooks/ directory for examples
+    - Each notebook includes setup instructions and explanations
+    - Notebooks are organized by plugin/functionality
+
+    ## Plugin-Based Examples
+
+    The notebooks demonstrate rompy's plugin architecture:
+    - **Core examples**: Basic rompy functionality
+    - **SWAN examples**: Wave modeling with SWAN (requires rompy-swan)
+    - **SCHISM examples**: SCHISM modeling (requires rompy-schism)
+    - **Integration examples**: Using multiple plugins together
+
+    ## Contributing
+
+    Please see the main rompy repository for contribution guidelines.
+
+    ---
+
+    *This repository structure was generated using the cookiecutter-rompy template for consistency across the rompy ecosystem.*
+
+# Git settings
+git:
+  # Branches to include in split (empty means all branches)
+  branches: []
+  # Tags to include in split (empty means all tags)
+  tags: []
+  # Whether to rewrite commit messages
+  rewrite_messages: false
+  # Author rewriting (if needed)
+  author_rewrites: {}
+# Usage Instructions:
+#
+# 1. To use this enhanced configuration with cookiecutter integration:
+#    python split_repository.py --config repo_split_config_with_cookiecutter.yaml
+#
+# 2. To use without cookiecutter (fallback to original behavior):
+#    Comment out the "apply_cookiecutter_template" actions above
+#
+# 3. To use a different cookiecutter template:
+#    Update the template_repo paths in the actions
+#
+# 4. To customize the project structure:
+#    Modify the template_context values for each repository
+#
+# Benefits of cookiecutter integration:
+# - Consistent project structure across all split repositories
+# - Modern Python packaging best practices
+# - Pre-configured entry points for plugin discovery
+# - Standardized CI/CD, documentation, and testing setup
+# - Easy to maintain and update project templates
+#
+# The merge strategy options:
+# - "overlay": Cookiecutter files take priority, but preserve git history and code
+# - "replace": Use cookiecutter structure, preserve only git history
+# - "preserve": Only add missing files from cookiecutter, keep all existing files

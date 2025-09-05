@@ -128,7 +128,7 @@ class Bctides:
         self.extrapolation_distance = extrapolation_distance
         self.extra_databases = extra_databases
         self.mdt = mdt
-        self._h_coeffs = {} # Placeholder for harmonic coefficients
+        self._h_coeffs = {}  # Placeholder for harmonic coefficients
         self._uv_coeffs = {}  # Placeholder for UV coefficients
 
         self.ethconst = ethconst
@@ -198,7 +198,9 @@ class Bctides:
         """Get tidal amplitude, frequency, and species for constituents using pyTMD."""
         if hasattr(self, "amp") and len(self.amp) > 0:
             return
-        logger.info(f"{ARROW} Computing tidal factors for {len(self.tnames)} constituents")
+        logger.info(
+            f"{ARROW} Computing tidal factors for {len(self.tnames)} constituents"
+        )
         # Use pyTMD for all calculations
         ts = timescale.time.Timescale().from_datetime(self._start_time)
         MJD = ts.MJD
@@ -269,7 +271,9 @@ class Bctides:
             For velocity: [u_amp, u_pha, v_amp, v_pha] (shape: n_points, 4)
         """
         tmd_model = pyTMD.io.model(
-            self.tidal_database, extra_databases=self.extra_databases, constituents=constituents
+            self.tidal_database,
+            extra_databases=self.extra_databases,
+            constituents=constituents,
         )
         if data_type == "h":
             amp, pha, _ = tmd_model.elevation(self.tidal_model).extract_constants(
@@ -281,8 +285,8 @@ class Bctides:
                 extrapolate=self.extrapolate_tides,
                 cutoff=self.extrapolation_distance,
             )
-            amp = amp.squeeze()[...,None]
-            pha = pha.squeeze()[...,None]
+            amp = amp.squeeze()[..., None]
+            pha = pha.squeeze()[..., None]
             # Return shape (n_points, 2)
             return np.concatenate((amp, pha), axis=-1)
         elif data_type == "uv":
@@ -306,14 +310,14 @@ class Bctides:
                 extrapolate=self.extrapolate_tides,
                 cutoff=self.extrapolation_distance,
             )
-            amp_u = (
-                amp_u.squeeze() / 100
-            )[...,None]  # Convert cm/s to m/s - pyTMD always returns in cm/s
-            pha_u = pha_u.squeeze()[...,None]
-            amp_v = (
-                amp_v.squeeze() / 100
-            )[...,None]  # Convert cm/s to m/s - pyTMD always returns in cm/s
-            pha_v = pha_v.squeeze()[...,None]
+            amp_u = (amp_u.squeeze() / 100)[
+                ..., None
+            ]  # Convert cm/s to m/s - pyTMD always returns in cm/s
+            pha_u = pha_u.squeeze()[..., None]
+            amp_v = (amp_v.squeeze() / 100)[
+                ..., None
+            ]  # Convert cm/s to m/s - pyTMD always returns in cm/s
+            pha_v = pha_v.squeeze()[..., None]
             # Return shape (n_points, 4)
             return np.concatenate((amp_u, pha_u, amp_v, pha_v), axis=-1)
         else:
@@ -538,9 +542,9 @@ class Bctides:
                     logger.info(f"Number of boundary nodes: {len(lons)}")
                     logger.info(f"Number of tidal coefficients: {len(self.tnames)}")
                     all_tidal_data = self._interpolate_tidal_data(
-                                lons, lats, self.tnames, "h"
-                            )
-                    logger.info(f'Tidal_data shape: {all_tidal_data.shape}')
+                        lons, lats, self.tnames, "h"
+                    )
+                    logger.info(f"Tidal_data shape: {all_tidal_data.shape}")
                     for i, tname in enumerate(self.tnames):
 
                         # Interpolate tidal data for this constituent
@@ -627,7 +631,9 @@ class Bctides:
                         f.write("z0\n")
                         for n in range(num_nodes):
                             f.write("0.0 0.0 0.0 0.0\n")
-                    all_vel_data = self._interpolate_tidal_data(lons, lats, self.tnames, "uv")
+                    all_vel_data = self._interpolate_tidal_data(
+                        lons, lats, self.tnames, "uv"
+                    )
 
                     for i, tname in enumerate(self.tnames):
                         # Write header for constituent first

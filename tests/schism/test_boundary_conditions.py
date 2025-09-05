@@ -15,11 +15,13 @@ import pytest
 from rompy.core.data import DataBlob
 from rompy.core.time import TimeRange
 from rompy.schism.boundary_conditions import (
-    create_hybrid_boundary_config, create_nested_boundary_config,
-    create_river_boundary_config, create_tidal_only_boundary_config)
+    create_hybrid_boundary_config,
+    create_nested_boundary_config,
+    create_river_boundary_config,
+    create_tidal_only_boundary_config,
+)
 from rompy.schism.boundary_core import ElevationType, TracerType, VelocityType
-from rompy.schism.data import (BoundarySetupWithSource,
-                               SCHISMDataBoundaryConditions)
+from rompy.schism.data import BoundarySetupWithSource, SCHISMDataBoundaryConditions
 
 
 @pytest.fixture

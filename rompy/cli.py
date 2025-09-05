@@ -20,8 +20,7 @@ import yaml
 import rompy
 from rompy.backends import DockerConfig, LocalConfig
 from rompy.logging import LogFormat, LoggingConfig, LogLevel, get_logger
-from rompy.model import (PIPELINE_BACKENDS, POSTPROCESSORS, RUN_BACKENDS,
-                         ModelRun)
+from rompy.model import PIPELINE_BACKENDS, POSTPROCESSORS, RUN_BACKENDS, ModelRun
 
 # Initialize the logger
 logger = get_logger(__name__)
@@ -481,9 +480,15 @@ def generate(
 
 @cli.command()
 @click.argument("config", type=click.Path(exists=True), required=False)
-@click.option("--processor", default="noop", help="Postprocessor to use (default: noop)")
+@click.option(
+    "--processor", default="noop", help="Postprocessor to use (default: noop)"
+)
 @click.option("--output-dir", help="Override output directory for postprocessing")
-@click.option("--validate-outputs/--no-validate", default=True, help="Validate outputs exist (default: True)")
+@click.option(
+    "--validate-outputs/--no-validate",
+    default=True,
+    help="Validate outputs exist (default: True)",
+)
 @add_common_options
 def postprocess(
     config,
@@ -532,6 +537,7 @@ def postprocess(
         if verbose > 0:
             logger.exception("Full traceback:")
         sys.exit(1)
+
 
 @cli.command()
 @click.argument("config", type=click.Path(exists=True), required=False)

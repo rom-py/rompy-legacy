@@ -1,0 +1,439 @@
+# Configuration for splitting rompy repository into multiple packages
+# This file defines how to split the monorepo while preserving git history
+
+source_repo: "."
+target_base_dir: "../split-repos"
+
+# Global settings
+preserve_branches: true
+preserve_tags: true
+cleanup_after_split: false # Set to true to remove temporary directories
+
+# Define the split repositories
+repositories:
+  rompy-core:
+    description: "Core rompy library with base functionality and plugin system"
+    paths:
+      # Include specific rompy subdirectories (excluding swan and schism)
+      - "rompy/__init__.py"
+      - "rompy/_version.py"
+      - "rompy/cli.py"
+      - "rompy/formatting.py"
+      - "rompy/model.py"
+      - "rompy/plotting.py"
+      - "rompy/utils.py"
+      - "rompy/archive/"
+      - "rompy/catalogs/"
+      - "rompy/configuration/"
+      - "rompy/core/"
+      - "rompy/templates/"
+      # Include specific test directories (excluding swan and schism)
+      - "tests/__init__.py"
+      - "tests/conftest.py"
+      - "tests/test_basegrid.py"
+      - "tests/test_basemodel.py"
+      - "tests/test_data.py"
+      - "tests/test_intake_driver.py"
+      - "tests/test_serilization.py"
+      - "tests/test_templates.py"
+      - "tests/test_time.py"
+      - "tests/core/"
+      - "tests/data/"
+      - "tests/example_configs/"
+      - "tests/simulations/"
+      - "tests/test_utils/"
+      - "tests/utils/"
+      - "tests/backends/"
+      - "tests/integration/"
+      # Include complete documentation structure
+      - "docs/"
+      - "!docs/source/swan/"
+      - "!docs/source/schism/"
+      - "!docs/source/notebooks/"
+      # Include package configuration files
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "MANIFEST.in"
+      - "versioneer.py"
+      - "pytest.ini"
+      - ".coveragerc"
+      - ".ci-coveragerc"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".readthedocs.yml"
+      - "appveyor.yml"
+      - "README.md"
+      - "LICENSE"
+      - "HISTORY.rst"
+      - ".github/"
+      - "scripts/"
+    post_split_actions:
+      - action: "create_src_layout"
+        base_package: "rompy_core"
+      - action: "merge_directory_contents"
+        merges:
+          - from: "rompy"
+            to: "src/rompy_core"
+      - action: "update_docs_config"
+        package_name: "rompy-core"
+        is_core_package: true
+        plugin_discovery: true
+      - action: "update_setup"
+        package_name: "rompy-core"
+        description: "Core rompy library for ocean wave modeling with plugin system"
+        src_layout: true
+      - action: "create_modern_setup"
+        package_name: "rompy-core"
+        package_module: "rompy_core"
+        description: "Core rompy library for ocean wave modeling with plugin system"
+        dependencies:
+          - "cartopy"
+          - "click"
+          - "cloudpathlib"
+          - "cookiecutter>=2.6"
+          - "dask"
+          - "fsspec"
+          - "geopandas"
+          - "h5py"
+          - "intake"
+          - "intake-xarray"
+          - "intake-geopandas"
+          - "matplotlib"
+          - "netcdf4"
+          - "numpy"
+          - "oceanum"
+          - "owslib"
+          - "pandas"
+          - "pydantic>2"
+          - "pydantic-settings"
+          - "pydantic_numpy"
+          - "scipy"
+          - "tqdm"
+          - "xarray"
+          - "wavespectra"
+          - "isodate"
+          - "appdirs"
+      - action: "remove_files"
+        files:
+          - "tests/swan/"
+          - "tests/schism/"
+        patterns:
+          - "tests/test_swan*.py"
+          - "src/rompy_core/swan/"
+          - "src/rompy_core/schism/"
+      - action: "correct_imports"
+        package_type: "core"
+        target_package: "rompy_core"
+
+  rompy-swan:
+    description: "SWAN wave model plugin for rompy"
+    paths:
+      - "rompy/swan/"
+      - "tests/swan/"
+      - "docs/source/swan/"
+      - "docs/Makefile"
+      - "docs/make.bat"
+      - "docs/requirements.txt"
+      - "docs/environment.yml"
+      - "docker/"
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "MANIFEST.in"
+      - "versioneer.py"
+      - "pytest.ini"
+      - ".coveragerc"
+      - ".ci-coveragerc"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".readthedocs.yml"
+      - "README.md"
+      - "LICENSE"
+      - "HISTORY.rst"
+      - ".github/"
+    post_split_actions:
+      - action: "create_src_layout"
+        base_package: "rompy_swan"
+      - action: "move_files"
+        moves:
+          - from: "rompy/swan"
+            to: "src/rompy_swan"
+      - action: "merge_directory_contents"
+        merges:
+          - from: "tests/swan"
+            to: "tests"
+          - from: "docs/source/swan"
+            to: "docs/source"
+      - action: "create_plugin_docs"
+        package_name: "rompy-swan"
+        plugin_name: "swan"
+        extends_core_docs: true
+      - action: "update_setup"
+        package_name: "rompy-swan"
+        description: "SWAN wave model plugin for rompy"
+        src_layout: true
+        entry_points:
+          "rompy.plugins": "swan = rompy_swan:SwanPlugin"
+        dependencies:
+          - "rompy-core"
+      - action: "create_modern_setup"
+        package_name: "rompy-swan"
+        package_module: "rompy_swan"
+        description: "SWAN wave model plugin for rompy"
+        dependencies:
+          - "rompy-core"
+          - "cartopy"
+          - "click"
+          - "cookiecutter>=2.6"
+          - "matplotlib"
+          - "numpy"
+          - "pandas"
+          - "pydantic>2"
+          - "scipy"
+          - "xarray"
+          - "wavespectra"
+      - action: "correct_imports"
+        package_type: "swan"
+        target_package: "rompy_swan"
+
+  rompy-schism:
+    description: "SCHISM model plugin for rompy"
+    paths:
+      - "rompy/schism/"
+      - "tests/schism/"
+      - "docs/source/schism/"
+      - "docs/Makefile"
+      - "docs/make.bat"
+      - "docs/requirements.txt"
+      - "docs/environment.yml"
+      - "pyproject.toml"
+      - "setup.cfg"
+      - "MANIFEST.in"
+      - "versioneer.py"
+      - "pytest.ini"
+      - ".coveragerc"
+      - ".ci-coveragerc"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".readthedocs.yml"
+      - "README.md"
+      - "LICENSE"
+      - "HISTORY.rst"
+      - ".github/"
+    post_split_actions:
+      - action: "create_src_layout"
+        base_package: "rompy_schism"
+      - action: "move_files"
+        moves:
+          - from: "rompy/schism"
+            to: "src/rompy_schism"
+      - action: "merge_directory_contents"
+        merges:
+          - from: "tests/schism"
+            to: "tests"
+          - from: "docs/source/schism"
+            to: "docs/source"
+      - action: "create_plugin_docs"
+        package_name: "rompy-schism"
+        plugin_name: "schism"
+        extends_core_docs: true
+      - action: "update_setup"
+        package_name: "rompy-schism"
+        description: "SCHISM model plugin for rompy"
+        src_layout: true
+        entry_points:
+          "rompy.plugins": "schism = rompy_schism:SchismPlugin"
+        dependencies:
+          - "rompy-core"
+      - action: "create_modern_setup"
+        package_name: "rompy-schism"
+        package_module: "rompy_schism"
+        description: "SCHISM model plugin for rompy"
+        dependencies:
+          - "rompy-core"
+          - "cartopy"
+          - "geopandas"
+          - "h5py"
+          - "matplotlib"
+          - "netcdf4"
+          - "numpy"
+          - "pandas"
+          - "pydantic>2"
+          - "scipy"
+          - "xarray"
+          - "pylibs-ocean"
+          - "pytmd"
+          - "appdirs"
+      - action: "correct_imports"
+        package_type: "schism"
+        target_package: "rompy_schism"
+
+  rompy-notebooks:
+    description: "Example notebooks and tutorials for rompy ecosystem"
+    paths:
+      - "notebooks/"
+      - "docs/source/notebooks/"
+      - "README.md"
+      - "LICENSE"
+      - ".gitignore"
+      - ".gitattributes"
+    post_split_actions:
+      - action: "create_readme"
+        template: "notebooks_readme"
+      - action: "create_notebooks_index"
+        ecosystem_packages:
+          - "rompy-core"
+          - "rompy-swan"
+          - "rompy-schism"
+      - action: "update_setup"
+        package_name: "rompy-notebooks"
+        description: "Example notebooks and tutorials for rompy ecosystem"
+        dependencies:
+          - "rompy-core"
+          - "rompy-swan"
+          - "rompy-schism"
+
+# Templates for generated files
+templates:
+  notebooks_readme: |
+    # Rompy Notebooks
+
+    This repository contains example notebooks and tutorials for the rompy ecosystem.
+
+    ## Requirements
+
+    Install the required rompy packages:
+
+    ```bash
+    # Core package (always required)
+    pip install rompy-core
+
+    # Optional plugins (install as needed)
+    pip install rompy-swan      # For SWAN wave modeling
+    pip install rompy-schism    # For SCHISM modeling
+    ```
+
+    ## Notebooks
+
+    - Browse the notebooks/ directory for examples
+    - Each notebook includes setup instructions and explanations
+    - Notebooks are organized by plugin/functionality
+
+    ## Plugin-Based Examples
+
+    The notebooks demonstrate rompy's plugin architecture:
+    - **Core examples**: Basic rompy functionality
+    - **SWAN examples**: Wave modeling with SWAN (requires rompy-swan)
+    - **SCHISM examples**: SCHISM modeling (requires rompy-schism)
+    - **Integration examples**: Using multiple plugins together
+
+    ## Contributing
+
+    Please see the main rompy-core repository for contribution guidelines.
+
+  plugin_docs_conf: |
+    # Configuration for plugin documentation
+    # This extends the base rompy-core documentation configuration
+
+    import sys
+    import os
+    sys.path.insert(0, os.path.abspath('../../src'))
+
+    # Try to import base config from rompy-core
+    try:
+        from rompy_core.docs.conf_base import *
+    except ImportError:
+        # Fallback configuration if rompy-core not available
+        extensions = [
+            'sphinx.ext.autodoc',
+            'sphinx.ext.viewcode',
+            'sphinx.ext.intersphinx',
+            'sphinx.ext.napoleon',
+            'myst_parser',
+        ]
+        html_theme = 'sphinx_rtd_theme'
+
+    # Plugin-specific configuration
+    project = '{package_name}'
+    release = '1.0.0'
+
+    # Intersphinx mapping for cross-references
+    intersphinx_mapping = {{
+        'rompy-core': ('https://rompy-core.readthedocs.io/', None),
+        'python': ('https://docs.python.org/3/', None),
+        'numpy': ('https://numpy.org/doc/stable/', None),
+        'pandas': ('https://pandas.pydata.org/docs/', None),
+    }}
+
+    # Plugin documentation settings
+    autodoc_default_options = {{
+        'members': True,
+        'member-order': 'bysource',
+        'special-members': '__init__',
+        'undoc-members': True,
+    }}
+
+  core_docs_conf: |
+    # Base configuration for rompy-core documentation
+    # This provides the foundation for all plugin documentation
+
+    import sys
+    import os
+    sys.path.insert(0, os.path.abspath('../../src'))
+
+    # Sphinx extensions
+    extensions = [
+        'sphinx.ext.autodoc',
+        'sphinx.ext.viewcode',
+        'sphinx.ext.intersphinx',
+        'sphinx.ext.napoleon',
+        'sphinx.ext.todo',
+        'myst_parser',
+        'sphinx_autodoc_typehints',
+    ]
+
+    # Project information
+    project = 'rompy-core'
+    author = 'Rompy Contributors'
+    release = '1.0.0'
+
+    # Theme and appearance
+    html_theme = 'sphinx_rtd_theme'
+    html_static_path = ['_static']
+    templates_path = ['_templates']
+
+    # Plugin discovery for documentation
+    def discover_rompy_plugins():
+        """Discover installed rompy plugins for documentation."""
+        try:
+            import pkg_resources
+            plugins = {{}}
+            for ep in pkg_resources.iter_entry_points('rompy.plugins'):
+                try:
+                    plugin = ep.load()
+                    plugins[ep.name] = {{
+                        'name': ep.name,
+                        'docs_url': getattr(plugin, '__docs_url__', None),
+                        'description': getattr(plugin, '__description__', ''),
+                        'version': getattr(plugin, '__version__', 'unknown'),
+                    }}
+                except ImportError:
+                    continue
+            return plugins
+        except ImportError:
+            return {{}}
+
+    # Make plugin discovery available to templates
+    html_context = {{
+        'rompy_plugins': discover_rompy_plugins(),
+    }}
+
+# Git settings
+git:
+  # Branches to include in split (empty means all branches)
+  branches: []
+  # Tags to include in split (empty means all tags)
+  tags: []
+  # Whether to rewrite commit messages
+  rewrite_messages: false
+  # Author rewriting (if needed)
+  author_rewrites: {}

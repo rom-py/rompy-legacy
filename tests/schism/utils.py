@@ -1,3 +1,6 @@
+# NOTE: This file previously used PySchism modules which have been removed.
+# Consider updating to use PyLibs equivalents or other alternatives.
+# PySchism imports have been commented out - functionality may be limited.
 import logging
 import os
 import tarfile
@@ -9,8 +12,9 @@ from time import time
 import xarray as xr
 
 from rompy.schism.namelists.generate_models import nml_to_dict
-from rompy.schism.pyschism.forcing.hycom.hycom2schism import DownloadHycom
-from rompy.schism.pyschism.mesh.hgrid import Hgrid
+
+# from rompy.schism.pyschism.forcing.hycom.hycom2schism import DownloadHycom  # TODO: Replace with PyLibs equivalent
+# from rompy.schism.pyschism.mesh.hgrid import Hgrid  # TODO: Replace with PyLibs equivalent
 
 """
 Download hycom data for Fortran scripts.
