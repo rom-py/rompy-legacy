@@ -28,8 +28,7 @@ def download_hycom(dest=Path("./"), hgrid=Path("./hgrid.gr3")):
     To use the actual implementation, the caller should import the necessary modules.
     """
     try:
-        from rompy.schism.pyschism.forcing.hycom.hycom2schism import \
-            DownloadHycom
+        from rompy.schism.pyschism.forcing.hycom.hycom2schism import DownloadHycom
         from rompy.schism.pyschism.mesh.hgrid import Hgrid
 
         hgrid = Hgrid.open(hgrid, crs="epsg:4326")

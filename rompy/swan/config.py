@@ -14,11 +14,14 @@ from rompy.core.config import BaseConfig
 from rompy.formatting import get_formatted_header_footer
 from rompy.logging import get_logger
 from rompy.swan.components import boundary, cgrid, numerics
-from rompy.swan.components.group import (INPGRIDS, LOCKUP, OUTPUT, PHYSICS,
-                                         STARTUP)
+from rompy.swan.components.group import INPGRIDS, LOCKUP, OUTPUT, PHYSICS, STARTUP
 from rompy.swan.grid import SwanGrid
-from rompy.swan.interface import (BoundaryInterface, DataInterface,
-                                  LockupInterface, OutputInterface)
+from rompy.swan.interface import (
+    BoundaryInterface,
+    DataInterface,
+    LockupInterface,
+    OutputInterface,
+)
 from rompy.swan.legacy import ForcingData, Outputs, SwanPhysics, SwanSpectrum
 
 logger = get_logger(__name__)

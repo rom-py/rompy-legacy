@@ -2,8 +2,13 @@ from pathlib import Path
 from typing import Literal, Optional
 
 import numpy as np
-from pydantic import (Field, PrivateAttr, field_validator, model_serializer,
-                      model_validator)
+from pydantic import (
+    Field,
+    PrivateAttr,
+    field_validator,
+    model_serializer,
+    model_validator,
+)
 from pylib import read_schism_hgrid, read_schism_vgrid, schism_grid
 from shapely.geometry import Polygon
 
@@ -1088,7 +1093,9 @@ class SCHISMGrid(BaseGrid):
 
             # Add horizontal grid information
             if hasattr(obj, "hgrid") and obj.hgrid is not None:
-                hgrid_path = str(obj.hgrid.uri if hasattr(obj.hgrid, "uri") else obj.hgrid)
+                hgrid_path = str(
+                    obj.hgrid.uri if hasattr(obj.hgrid, "uri") else obj.hgrid
+                )
                 if len(hgrid_path) > 50:
                     hgrid_path = "..." + hgrid_path[-47:]
                 lines.append(f"  {bullet} Horizontal Grid: {hgrid_path}")
@@ -1139,7 +1146,13 @@ class SCHISMGrid(BaseGrid):
 
             # Add other grid files
             other_files = []
-            for attr in ["diffmin", "diffmax", "albedo", "watertype", "windrot_geo2proj"]:
+            for attr in [
+                "diffmin",
+                "diffmax",
+                "albedo",
+                "watertype",
+                "windrot_geo2proj",
+            ]:
                 if hasattr(obj, attr) and getattr(obj, attr) is not None:
                     other_files.append(attr)
 
@@ -1163,10 +1176,7 @@ class SCHISMGrid(BaseGrid):
             value = getattr(obj, "value", "unknown")
 
             return (
-                f"{header}\n"
-                f"  Type:  {gr3_type}\n"
-                f"  Value: {value}\n"
-                f"{footer}"
+                f"{header}\n" f"  Type:  {gr3_type}\n" f"  Value: {value}\n" f"{footer}"
             )
 
         # Format VgridGenerator
@@ -1188,6 +1198,7 @@ class SCHISMGrid(BaseGrid):
 
         # Use the new formatting framework
         from rompy.formatting import format_value
+
         return format_value(obj)
 
 

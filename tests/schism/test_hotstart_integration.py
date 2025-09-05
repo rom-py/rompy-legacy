@@ -14,9 +14,12 @@ from rompy.core.source import SourceFile
 from rompy.core.time import TimeRange
 from rompy.core.types import DatasetCoords
 from rompy.schism.boundary_core import TidalDataset
-from rompy.schism.data import (BoundarySetupWithSource, HotstartConfig,
-                               SCHISMDataBoundary,
-                               SCHISMDataBoundaryConditions)
+from rompy.schism.data import (
+    BoundarySetupWithSource,
+    HotstartConfig,
+    SCHISMDataBoundary,
+    SCHISMDataBoundaryConditions,
+)
 
 
 class TestHotstartConfig:

@@ -4,10 +4,13 @@ from datetime import datetime
 from pathlib import Path
 
 # Import necessary modules from rompy
-from rompy.schism.boundary_core import \
-    TidalBoundary  # Backward compatibility alias
-from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
-                                        TidalDataset, VelocityType)
+from rompy.schism.boundary_core import TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import (
+    BoundaryConfig,
+    ElevationType,
+    TidalDataset,
+    VelocityType,
+)
 
 
 def validate_bctides_file(file_path):
