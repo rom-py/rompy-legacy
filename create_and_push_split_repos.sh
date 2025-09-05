@@ -6,9 +6,9 @@
 set -e
 
 ORG="rom-py"
-#REPOS=("rompy-core" "rompy-swan" "rompy-schism" "rompy-notebooks")
-# REPOS=("rompy" "rompy-swan" "rompy-schism")
-REPOS=("rompy")
+REPOS=("rompy-core" "rompy-swan" "rompy-schism" "rompy-notebooks")
+# REPOS=("rompy-swan" "rompy-schism")
+#REPOS=("rompy")
 SPLIT_DIR="../split-repos"
 
 for REPO in "${REPOS[@]}"; do
