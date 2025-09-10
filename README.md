@@ -1,5 +1,6 @@
 > **⚠️ DEPRECATION NOTICE: This monorepo is no longer maintained. ROMPY has been split into dedicated repositories. Please use the new repos below:**
-
+>
+> **The final PyPI release of this version of rompy is v0.5.4. Any install of rompy >=0.6 will install the new split version of the code, which contains only the core rompy functionality.**
 >
 > - [rompy](https://github.com/rom-py/rompy)
 > - [rompy-swan](https://github.com/rom-py/rompy-swan)
