@@ -4,10 +4,13 @@ from datetime import datetime
 from pathlib import Path
 
 # Import necessary modules from rompy
-from rompy.schism.boundary_core import \
-    TidalBoundary  # Backward compatibility alias
-from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
-                                        TidalDataset, VelocityType)
+from rompy.schism.boundary_core import TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import (
+    BoundaryConfig,
+    ElevationType,
+    TidalDataset,
+    VelocityType,
+)
 
 
 def validate_bctides_file(file_path):
@@ -53,7 +56,7 @@ def test_simple_bctides_format():
     # Create a temporary directory for our test
     with tempfile.TemporaryDirectory() as temp_dir:
         # Find grid file path
-        grid_path = Path(__file__).parent / "hgrid_20kmto60km_rompyschism_testing.gr3"
+        grid_path = Path(__file__).parent / "hgrid_20kmto60km_schism_testing.gr3"
         if not grid_path.exists():
             grid_path = Path(__file__).parent / "test_data" / "hgrid.gr3"
 

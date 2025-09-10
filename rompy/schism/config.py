@@ -8,13 +8,20 @@ from rompy.core.config import BaseConfig
 from rompy.logging import get_logger
 
 from .config_legacy import SchismCSIROConfig as _LegacySchismCSIROConfig
+
 # Import plotting functions
 from .config_plotting import plot_sflux_spatial, plot_sflux_timeseries
-from .config_plotting_boundary import (plot_boundary_points,
-                                       plot_boundary_profile,
-                                       plot_boundary_timeseries)
-from .config_plotting_tides import (plot_tidal_boundaries, plot_tidal_dataset,
-                                    plot_tidal_rose, plot_tidal_stations)
+from .config_plotting_boundary import (
+    plot_boundary_points,
+    plot_boundary_profile,
+    plot_boundary_timeseries,
+)
+from .config_plotting_tides import (
+    plot_tidal_boundaries,
+    plot_tidal_dataset,
+    plot_tidal_rose,
+    plot_tidal_stations,
+)
 from .data import SCHISMData
 from .grid import SCHISMGrid
 from .namelists import NML
@@ -151,7 +158,10 @@ class SCHISMConfig(BaseConfig):
                 data_components.append("Atmospheric")
             if hasattr(self.data, "wave") and self.data.wave is not None:
                 data_components.append("Wave")
-            if hasattr(self.data, "boundary_conditions") and self.data.boundary_conditions is not None:
+            if (
+                hasattr(self.data, "boundary_conditions")
+                and self.data.boundary_conditions is not None
+            ):
                 data_components.append("Boundary Conditions")
 
             if data_components:
@@ -234,7 +244,9 @@ class SCHISMConfig(BaseConfig):
                 # Try to get grid details
                 if hasattr(obj.grid, "hgrid"):
                     hgrid = obj.grid.hgrid
-                    hgrid_path = str(getattr(hgrid, "uri", getattr(hgrid, "source", hgrid)))
+                    hgrid_path = str(
+                        getattr(hgrid, "uri", getattr(hgrid, "source", hgrid))
+                    )
                     if len(hgrid_path) > 50:
                         hgrid_path = "..." + hgrid_path[-47:]
                     lines.append(f"      Horizontal grid: {hgrid_path}")
@@ -254,7 +266,10 @@ class SCHISMConfig(BaseConfig):
                     data_components.append("Atmospheric")
                 if hasattr(obj.data, "wave") and obj.data.wave is not None:
                     data_components.append("Wave")
-                if hasattr(obj.data, "boundary_conditions") and obj.data.boundary_conditions is not None:
+                if (
+                    hasattr(obj.data, "boundary_conditions")
+                    and obj.data.boundary_conditions is not None
+                ):
                     data_components.append("Boundary Conditions")
 
                 if data_components:
@@ -293,6 +308,7 @@ class SCHISMConfig(BaseConfig):
 
         # Format SCHISMGrid
         from .grid import SCHISMGrid
+
         if isinstance(obj, SCHISMGrid):
             header, footer, bullet = get_formatted_header_footer(
                 title="SCHISM GRID", use_ascii=USE_ASCII_ONLY
@@ -322,6 +338,7 @@ class SCHISMConfig(BaseConfig):
 
         # Format SCHISMData
         from .data import SCHISMData
+
         if isinstance(obj, SCHISMData):
             header, footer, bullet = get_formatted_header_footer(
                 title="SCHISM DATA", use_ascii=USE_ASCII_ONLY
@@ -335,8 +352,13 @@ class SCHISMConfig(BaseConfig):
                 components["Atmospheric"] = type(obj.atmos).__name__
             if hasattr(obj, "wave") and obj.wave is not None:
                 components["Wave"] = type(obj.wave).__name__
-            if hasattr(obj, "boundary_conditions") and obj.boundary_conditions is not None:
-                components["Boundary Conditions"] = type(obj.boundary_conditions).__name__
+            if (
+                hasattr(obj, "boundary_conditions")
+                and obj.boundary_conditions is not None
+            ):
+                components["Boundary Conditions"] = type(
+                    obj.boundary_conditions
+                ).__name__
 
             for comp_name, comp_type in components.items():
                 lines.append(f"  {bullet} {comp_name}: {comp_type}")
@@ -349,6 +371,7 @@ class SCHISMConfig(BaseConfig):
 
         # Format NML
         from .namelists import NML
+
         if isinstance(obj, NML):
             header, footer, bullet = get_formatted_header_footer(
                 title="SCHISM NAMELIST", use_ascii=USE_ASCII_ONLY
@@ -384,6 +407,7 @@ class SCHISMConfig(BaseConfig):
 
         # Use the new formatting framework
         from rompy.formatting import format_value
+
         return format_value(obj)
 
 

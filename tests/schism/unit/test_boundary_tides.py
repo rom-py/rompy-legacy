@@ -5,14 +5,17 @@ import numpy as np
 import pytest
 
 from rompy.schism.bctides import Bctides
-from rompy.schism.boundary_core import \
-    TidalBoundary  # Backward compatibility alias
-from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
-                                        TracerType, VelocityType,
-                                        create_hybrid_boundary,
-                                        create_nested_boundary,
-                                        create_river_boundary,
-                                        create_tidal_boundary)
+from rompy.schism.boundary_core import TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import (
+    BoundaryConfig,
+    ElevationType,
+    TracerType,
+    VelocityType,
+    create_hybrid_boundary,
+    create_nested_boundary,
+    create_river_boundary,
+    create_tidal_boundary,
+)
 
 
 class TestBoundaryConfig:
@@ -90,9 +93,7 @@ class TestBoundaryConfig:
 @pytest.fixture
 def sample_grid_path():
     """Return path to a test grid file."""
-    grid_path = (
-        Path(__file__).parent.parent / "hgrid_20kmto60km_rompyschism_testing.gr3"
-    )
+    grid_path = Path(__file__).parent.parent / "hgrid_20kmto60km_schism_testing.gr3"
     if not grid_path.exists():
         pytest.skip("Test grid file not found")
     return str(grid_path)

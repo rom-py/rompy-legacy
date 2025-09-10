@@ -14,8 +14,13 @@ from rompy.core.time import TimeRange
 from rompy.core.types import RompyBaseModel
 from rompy.formatting import ARROW
 from rompy.logging import get_logger
-from rompy.schism.boundary_core import (BoundaryHandler, ElevationType,
-                                        TidalDataset, TracerType, VelocityType)
+from rompy.schism.boundary_core import (
+    BoundaryHandler,
+    ElevationType,
+    TidalDataset,
+    TracerType,
+    VelocityType,
+)
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.tides_enhanced import BoundarySetup
 from rompy.utils import total_seconds
@@ -445,14 +450,17 @@ class SCHISMDataSflux(RompyBaseModel):
             active_variables.append(variable)
 
             # Get source information
-            if hasattr(data, 'source') and hasattr(data.source, 'uri'):
+            if hasattr(data, "source") and hasattr(data.source, "uri"):
                 source_info[variable] = str(data.source.uri)
 
             logger.debug(f"Processing {variable}")
             namelistargs.update(data.namelist)
             # Expand time by one day on each end
             if time is not None:
-                time = TimeRange(start=time.start - pd.Timedelta(days=1), end=time.end + pd.Timedelta(days=1))
+                time = TimeRange(
+                    start=time.start - pd.Timedelta(days=1),
+                    end=time.end + pd.Timedelta(days=1),
+                )
             ret[variable] = data.get(destdir, grid, time)
 
         # Log summary of atmospheric data processing
@@ -1004,7 +1012,9 @@ class SCHISMDataBoundary(DataBoundary):
         # Handle missing values more robustly
         null_count = schism_ds.time_series.isnull().sum().item()
         if null_count > 0:
-            logger.debug(f"Found {null_count} null values, applying interpolation and filling")
+            logger.debug(
+                f"Found {null_count} null values, applying interpolation and filling"
+            )
 
             # Try interpolating along different dimensions
             for dim in ["nOpenBndNodes", "time", "nLevels"]:
@@ -1013,7 +1023,9 @@ class SCHISMDataBoundary(DataBoundary):
                         dim=dim
                     )
                     if not schism_ds.time_series.isnull().any():
-                        logger.debug(f"Interpolated missing values along {dim} dimension")
+                        logger.debug(
+                            f"Interpolated missing values along {dim} dimension"
+                        )
                         break
 
             # If still have NaNs, use more aggressive filling methods
@@ -1098,10 +1110,14 @@ class SCHISMData(RompyBaseModel):
         if self.wave:
             logger.info(f"{ARROW} Processing wave boundary data")
             # Get source information
-            if hasattr(self.wave, 'source') and hasattr(self.wave.source, 'uri'):
+            if hasattr(self.wave, "source") and hasattr(self.wave.source, "uri"):
                 logger.info(f"  • Source: {self.wave.source.uri}")
-            elif hasattr(self.wave, 'source') and hasattr(self.wave.source, 'catalog_uri'):
-                logger.info(f"  • Source: {self.wave.source.catalog_uri} (dataset: {getattr(self.wave.source, 'dataset_id', 'unknown')})")
+            elif hasattr(self.wave, "source") and hasattr(
+                self.wave.source, "catalog_uri"
+            ):
+                logger.info(
+                    f"  • Source: {self.wave.source.catalog_uri} (dataset: {getattr(self.wave.source, 'dataset_id', 'unknown')})"
+                )
 
             results["wave"] = self.wave.get(destdir, grid, time)
             logger.info(f"  • Output: {results['wave']}")
@@ -1165,8 +1181,13 @@ class SCHISMData(RompyBaseModel):
             if hasattr(obj, "wave") and obj.wave is not None:
                 components["Wave"] = type(obj.wave).__name__
 
-            if hasattr(obj, "boundary_conditions") and obj.boundary_conditions is not None:
-                components["Boundary Conditions"] = type(obj.boundary_conditions).__name__
+            if (
+                hasattr(obj, "boundary_conditions")
+                and obj.boundary_conditions is not None
+            ):
+                components["Boundary Conditions"] = type(
+                    obj.boundary_conditions
+                ).__name__
 
             for comp_name, comp_type in components.items():
                 lines.append(f"  {bullet} {comp_name}: {comp_type}")
@@ -1258,6 +1279,7 @@ class SCHISMData(RompyBaseModel):
 
         # Use the new formatting framework
         from rompy.formatting import format_value
+
         return format_value(obj)
 
 
@@ -1582,7 +1604,9 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
 
         # # 1. Process tidal data if needed
         if self.tidal_data:
-            logger.info(f"{ARROW} Processing tidal constituents: {', '.join(self.tidal_data.constituents) if hasattr(self.tidal_data, 'constituents') else 'default'}")
+            logger.info(
+                f"{ARROW} Processing tidal constituents: {', '.join(self.tidal_data.constituents) if hasattr(self.tidal_data, 'constituents') else 'default'}"
+            )
             self.tidal_data.get(grid)
 
         # 2. Create boundary condition file (bctides.in)
@@ -1631,25 +1655,47 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
         variables_to_process = []
         source_files = set()
         for idx, setup in self.boundaries.items():
-            if setup.elev_type in [ElevationType.EXTERNAL, ElevationType.HARMONICEXTERNAL] and setup.elev_source:
+            if (
+                setup.elev_type
+                in [ElevationType.EXTERNAL, ElevationType.HARMONICEXTERNAL]
+                and setup.elev_source
+            ):
                 variables_to_process.append("elevation")
-                if hasattr(setup.elev_source, 'source') and hasattr(setup.elev_source.source, 'uri'):
+                if hasattr(setup.elev_source, "source") and hasattr(
+                    setup.elev_source.source, "uri"
+                ):
                     source_files.add(str(setup.elev_source.source.uri))
-            if setup.vel_type in [VelocityType.EXTERNAL, VelocityType.HARMONICEXTERNAL, VelocityType.RELAXED] and setup.vel_source:
+            if (
+                setup.vel_type
+                in [
+                    VelocityType.EXTERNAL,
+                    VelocityType.HARMONICEXTERNAL,
+                    VelocityType.RELAXED,
+                ]
+                and setup.vel_source
+            ):
                 variables_to_process.append("velocity")
-                if hasattr(setup.vel_source, 'source') and hasattr(setup.vel_source.source, 'uri'):
+                if hasattr(setup.vel_source, "source") and hasattr(
+                    setup.vel_source.source, "uri"
+                ):
                     source_files.add(str(setup.vel_source.source.uri))
             if setup.temp_type == TracerType.EXTERNAL and setup.temp_source:
                 variables_to_process.append("temperature")
-                if hasattr(setup.temp_source, 'source') and hasattr(setup.temp_source.source, 'uri'):
+                if hasattr(setup.temp_source, "source") and hasattr(
+                    setup.temp_source.source, "uri"
+                ):
                     source_files.add(str(setup.temp_source.source.uri))
             if setup.salt_type == TracerType.EXTERNAL and setup.salt_source:
                 variables_to_process.append("salinity")
-                if hasattr(setup.salt_source, 'source') and hasattr(setup.salt_source.source, 'uri'):
+                if hasattr(setup.salt_source, "source") and hasattr(
+                    setup.salt_source.source, "uri"
+                ):
                     source_files.add(str(setup.salt_source.source.uri))
 
         if variables_to_process:
-            unique_vars = list(dict.fromkeys(variables_to_process))  # Remove duplicates while preserving order
+            unique_vars = list(
+                dict.fromkeys(variables_to_process)
+            )  # Remove duplicates while preserving order
             logger.info(f"{ARROW} Processing boundary data: {', '.join(unique_vars)}")
             if source_files:
                 if len(source_files) == 1:
@@ -1734,9 +1780,11 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
             logger.info(f"  • Output: {hotstart_path}")
 
         # Log summary of processed files with more details
-        boundary_data_files = [f for k, f in processed_files.items() if 'boundary' in k]
+        boundary_data_files = [f for k, f in processed_files.items() if "boundary" in k]
         if boundary_data_files:
-            logger.info(f"  • Files: {', '.join([Path(f).name for f in boundary_data_files])}")
+            logger.info(
+                f"  • Files: {', '.join([Path(f).name for f in boundary_data_files])}"
+            )
 
         return processed_files
 
@@ -1791,7 +1839,7 @@ class SCHISMDataBoundaryConditions(RompyBaseModel):
 
         # Log hotstart generation details
         logger.info(f"  • Variables: {temp_var_name}, {salt_var_name}")
-        if hasattr(temp_source, 'source') and hasattr(temp_source.source, 'uri'):
+        if hasattr(temp_source, "source") and hasattr(temp_source.source, "uri"):
             logger.info(f"  • Source: {temp_source.source.uri}")
 
         hotstart_data = SCHISMDataHotstart(

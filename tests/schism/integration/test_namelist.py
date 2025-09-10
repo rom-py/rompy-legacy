@@ -4,9 +4,9 @@ Integration tests for SCHISM namelist functionality.
 This module tests the generation and validation of SCHISM namelists.
 """
 
-
 import pytest
 import yaml
+
 # Since rompy.schism.nml doesn't exist, we'll create stub classes for testing
 from pydantic import BaseModel, Field, model_validator
 

@@ -24,8 +24,7 @@ def test_swan_container_basic_config(
     from rompy.swan.components.inpgrid import UNSTRUCTURED
     from rompy.swan.components.lockup import COMPUTE_NONSTAT
     from rompy.swan.components.output import BLOCK
-    from rompy.swan.components.physics import (BREAKING_CONSTANT,
-                                               FRICTION_MADSEN, GEN3)
+    from rompy.swan.components.physics import BREAKING_CONSTANT, FRICTION_MADSEN, GEN3
     from rompy.swan.components.startup import COORDINATES, MODE, PROJECT, SET
     from rompy.swan.config import SwanConfigComponents
     from rompy.swan.subcomponents.boundary import CONSTANTPAR, DEFAULT, SIDE

@@ -321,11 +321,18 @@ class Opt(NamelistBaseModel):
     flag_ic__10: Optional[int] = Field(1, description="TIMOR")
     flag_ic__11: Optional[int] = Field(1, description="FABM")
     flag_ic__12: Optional[int] = Field(0, description="DVD (must=0)")
-    gen_wsett: Optional[float] = Field(0, description="Settling vel [m/s] for GEN module")
+    gen_wsett: Optional[float] = Field(
+        0, description="Settling vel [m/s] for GEN module"
+    )
     ibcc_mean: Optional[int] = Field(0, description="")
     rmaxvel: Optional[float] = Field(5.0, description="")
-    velmin_btrack: Optional[float] = Field(1e-4, description="min. vel for invoking btrack and for abnormal exit in quicksearch")
-    btrack_nudge: Optional[float] = Field(9.013e-3, description="Nudging factors for starting side/node")
+    velmin_btrack: Optional[float] = Field(
+        1e-4,
+        description="min. vel for invoking btrack and for abnormal exit in quicksearch",
+    )
+    btrack_nudge: Optional[float] = Field(
+        9.013e-3, description="Nudging factors for starting side/node"
+    )
     ihhat: Optional[int] = Field(1, description="")
     inunfl: Optional[int] = Field(0, description="")
     h0: Optional[float] = Field(

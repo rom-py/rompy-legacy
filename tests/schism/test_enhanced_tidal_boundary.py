@@ -4,10 +4,13 @@ from pathlib import Path
 
 import pytest
 
-from rompy.schism.boundary_core import \
-    TidalBoundary  # Backward compatibility alias
-from rompy.schism.boundary_core import (BoundaryConfig, ElevationType,
-                                        VelocityType, create_tidal_boundary)
+from rompy.schism.boundary_core import TidalBoundary  # Backward compatibility alias
+from rompy.schism.boundary_core import (
+    BoundaryConfig,
+    ElevationType,
+    VelocityType,
+    create_tidal_boundary,
+)
 
 
 def test_files_dir():
@@ -659,7 +662,7 @@ def test_multi_segment_boundary_format(grid2d, tidal_dataset, tmp_path):
     # Create a custom boundary
     boundary = TidalBoundary(
         grid_path=str(
-            test_files_dir() / "hgrid_20kmto60km_rompyschism_testing.gr3"
+            test_files_dir() / "hgrid_20kmto60km_schism_testing.gr3"
         ),  # Add grid_path parameter
         boundary_configs=configs,
         constituents=["M2"],
@@ -687,7 +690,7 @@ def test_multi_segment_boundary_format(grid2d, tidal_dataset, tmp_path):
 def test_bctides_nbfr_format(grid2d, tidal_dataset, tmp_path):
     """Test that nbfr section correctly includes all constituents."""
     # Use the grid path directly instead of accessing pylibs_hgrid
-    grid_path = str(test_files_dir() / "hgrid_20kmto60km_rompyschism_testing.gr3")
+    grid_path = str(test_files_dir() / "hgrid_20kmto60km_schism_testing.gr3")
     boundary = create_tidal_boundary(
         grid_path=grid_path,
         constituents=["M2", "S2", "K1", "O1"],  # Multiple constituents

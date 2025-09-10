@@ -15,6 +15,7 @@ from rompy.core.filters import Filter
 from rompy.core.source import SourceFile
 from rompy.core.types import DatasetCoords
 from rompy.schism.boundary_core import TidalDataset
+
 # Import directly from the new implementation
 from rompy.schism.grid import SCHISMGrid
 from rompy.schism.vgrid import VGrid as SchismVGrid
@@ -156,6 +157,10 @@ def hycom_bnd2d(test_files_dir, hycom_path):
     return DataGrid(
         source=SourceFile(uri=hycom_path),
         coords=DatasetCoords(t="time", x="lon", y="lat", z="depth"),
+        variables=["water_temp"],
+        buffer=0.1,
+        filter=Filter(),
+        crop_data=True,
     )
 
 

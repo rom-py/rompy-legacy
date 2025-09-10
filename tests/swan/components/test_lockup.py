@@ -3,6 +3,7 @@
 from copy import deepcopy
 
 import pytest
+
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -10,8 +11,13 @@ from test_utils.logging import get_test_logger
 logger = get_test_logger(__name__)
 
 from rompy.swan.components.group import LOCKUP
-from rompy.swan.components.lockup import (COMPUTE, COMPUTE_NONSTAT,
-                                          COMPUTE_STAT, HOTFILE, STOP)
+from rompy.swan.components.lockup import (
+    COMPUTE,
+    COMPUTE_NONSTAT,
+    COMPUTE_STAT,
+    HOTFILE,
+    STOP,
+)
 from rompy.swan.subcomponents.time import NONSTATIONARY, STATIONARY
 
 

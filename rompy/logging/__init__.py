@@ -29,8 +29,16 @@ Basic usage:
 """
 
 from .config import LogFormat, LoggingConfig, LogLevel, config
-from .formatter import (AsciiGlyphs, BoxFormatter, BoxStyle, UnicodeGlyphs,
-                        box, bullet_list, formatter, status_box)
+from .formatter import (
+    AsciiGlyphs,
+    BoxFormatter,
+    BoxStyle,
+    UnicodeGlyphs,
+    box,
+    bullet_list,
+    formatter,
+    status_box,
+)
 from .logger import RompyLogger, get_logger
 
 # Re-export commonly used items

@@ -8,9 +8,7 @@ import sys
 from pathlib import Path
 
 # Import utilities from modules
-from .compare import (compare_files, compare_nmls, compare_nmls_values,
-                      untar_file)
-from .schism import download_hycom
+from .compare import compare_files, compare_nmls, compare_nmls_values, untar_file
 
 # Export the utility functions
 __all__ = [
@@ -19,6 +17,4 @@ __all__ = [
     "compare_nmls",
     "compare_nmls_values",
     "untar_file",
-    # SCHISM-specific utilities
-    "download_hycom",
 ]

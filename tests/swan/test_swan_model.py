@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 from envyaml import EnvYAML
+
 # Import test utilities
 from test_utils.logging import get_test_logger
 
@@ -29,7 +30,6 @@ def config_dict():
 
 def test_swan_model(tmpdir, config_dict):
     config = SwanConfigComponents(
-        template=str(HERE / "../../rompy/templates/swancomp"),
         startup=config_dict["startup"],
         cgrid=config_dict["cgrid"],
         inpgrid=config_dict["inpgrid"],
@@ -52,7 +52,6 @@ def test_swan_model(tmpdir, config_dict):
 
 def test_swan_model_boundary(tmpdir, config_dict):
     config = SwanConfigComponents(
-        template=str(HERE / "../../rompy/templates/swancomp"),
         startup=config_dict["startup"],
         cgrid=config_dict["cgrid"],
         inpgrid=config_dict["inpgrid"],
